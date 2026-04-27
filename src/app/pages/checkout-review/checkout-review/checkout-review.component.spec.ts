@@ -8,6 +8,7 @@ import { instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -37,9 +38,15 @@ describe('Checkout Review Component', () => {
   let fixture: ComponentFixture<CheckoutReviewComponent>;
   let element: HTMLElement;
   let appFacade: AppFacade;
+  let checkoutFacade: CheckoutFacade;
 
   beforeEach(async () => {
     appFacade = mock(AppFacade);
+    checkoutFacade = mock(CheckoutFacade);
+
+    when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
+    when(checkoutFacade.eligiblePaymentMethods$()).thenReturn(of([]));
+
     await TestBed.configureTestingModule({
       declarations: [
         CheckoutReviewComponent,
@@ -60,7 +67,10 @@ describe('Checkout Review Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+      ],
       imports: [
         FeatureToggleModule.forTesting(),
         FormlyModule.forRoot({

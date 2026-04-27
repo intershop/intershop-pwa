@@ -164,3 +164,10 @@ export const getStaticEndpoint = createSelector(
         }/${locale}`
       : undefined
 );
+
+const DEFAULT_PAYPAL_CLIENT_CONFIG = { googlePayEnvironment: 'TEST' };
+
+export const getPaypalClientConfig = createSelector(
+  getConfigurationState,
+  state => state.paypal || DEFAULT_PAYPAL_CLIENT_CONFIG
+);

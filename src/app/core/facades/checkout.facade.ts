@@ -2,7 +2,19 @@ import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
 import { formatISO } from 'date-fns';
 import { Subject, combineLatest, iif, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, sample, switchMap, take, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  exhaustMap,
+  filter,
+  map,
+  sample,
+  shareReplay,
+  startWith,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
@@ -72,7 +84,12 @@ import {
   updateConcardisCvcLastUpdated,
   updatePaypalCreditCardPaymentInstrument,
 } from 'ish-core/store/customer/basket';
-import { getOrdersError, getSelectedOrder } from 'ish-core/store/customer/orders';
+import {
+  getOrdersError,
+  getSelectedOrder,
+  processPaypalOrderCreation,
+  startPaypalOrderCreation,
+} from 'ish-core/store/customer/orders';
 import { getRecurringOrder } from 'ish-core/store/customer/recurring-orders';
 import { getLoggedInUser, getUserCostCenters, loadUserCostCenters } from 'ish-core/store/customer/user';
 import { whenFalsy, whenTruthy } from 'ish-core/utils/operators';
@@ -344,6 +361,29 @@ export class CheckoutFacade {
 
   submitPaypalPaymentInstrument(paymentInstrument: PaymentInstrument) {
     this.store.dispatch(updatePaypalCreditCardPaymentInstrument({ paymentInstrument }));
+  }
+
+  processPaypalOrderCreation(orderId?: string) {
+    if (orderId) {
+      this.store.dispatch(processPaypalOrderCreation({ orderId }));
+    } else {
+      this.store.dispatch(startPaypalOrderCreation());
+    }
+  }
+
+  getBasketPaypalPaymentMethod() {
+    return this.basket$.pipe(
+      filter(basket => !!basket?.payment?.paymentInstrument?.id),
+      distinctUntilChanged((a, b) => a.payment?.paymentInstrument?.id === b.payment?.paymentInstrument?.id),
+      exhaustMap(basket =>
+        this.eligiblePaymentMethods$().pipe(
+          map(methods => methods?.find(method => method.id === basket.payment?.paymentInstrument?.id)),
+          map(method => (method?.capabilities?.includes('PaypalAlternativeWallet') ? method : undefined))
+        )
+      ),
+      startWith(undefined),
+      shareReplay(1)
+    );
   }
 
   // ADDRESSES

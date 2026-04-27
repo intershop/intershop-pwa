@@ -58,7 +58,7 @@ export class PaymentPaypalService {
 
   initializePaypalExperienceContextFlow(
     paymentInstrument: PaymentInstrument
-  ): Observable<{ orderId: string; paymentInstrumentId: string }> {
+  ): Observable<{ paypalOrderId: string; paymentInstrumentId: string }> {
     let loc = `${location.origin}${this.baseHref}`;
     // Remove trailing slash if present
     if (loc.endsWith('/')) {
@@ -82,7 +82,7 @@ export class PaymentPaypalService {
               .put<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', body, {
                 headers: this.basketHeaders,
               })
-              .pipe(map(response => ({ orderId: response.data.orderId, paymentInstrumentId: pi.id })));
+              .pipe(map(response => ({ paypalOrderId: response.data.orderId, paymentInstrumentId: pi.id })));
           })
         )
       )

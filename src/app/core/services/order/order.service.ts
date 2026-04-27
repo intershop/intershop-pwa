@@ -71,7 +71,6 @@ export class OrderService {
    */
   createOrder(basketId: string, termsAndConditionsAccepted: boolean = false): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
-
     if (!basketId) {
       return throwError(() => new Error('createOrder() called without basketId'));
     }
@@ -247,5 +246,32 @@ export class OrderService {
         }
       )
       .pipe(map(() => orderId));
+  }
+
+  /**
+   * Continues the order creation process for an existing order.
+   * Used for PayPal payment flows where the order was created but order creation was stopped
+   * waiting for payment confirmation.
+   *
+   * @param orderId The (uuid) of the order to continue.
+   * @returns       The updated order.
+   */
+  continueOrderCreation(orderId: string): Observable<Order> {
+    const params = new HttpParams().set('include', this.allOrderIncludes.join());
+
+    if (!orderId) {
+      return throwError(() => new Error('continueOrderCreation() called without orderId'));
+    }
+
+    return this.apiService
+      .patch<OrderData>(
+        `orders/${orderId}`,
+        { orderCreation: { status: 'CONTINUE' } },
+        {
+          headers: this.orderHeaders,
+          params,
+        }
+      )
+      .pipe(map(OrderMapper.fromData));
   }
 }

@@ -5,6 +5,8 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 import { PaypalConfigService } from './paypal-config.service';
@@ -292,6 +294,8 @@ describe('Paypal Config Service', () => {
       delete windowRef.PPCP_ISH_PAYPAL_CARD;
       delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
       delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.google;
     });
 
     afterEach(() => {
@@ -300,6 +304,8 @@ describe('Paypal Config Service', () => {
       delete windowRef.PPCP_ISH_PAYPAL_CARD;
       delete windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY;
       delete windowRef.PPCP_ISH_PAYPAL_INELIGIBLE;
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.google;
     });
 
     it('should return empty array when input is null', async () => {
@@ -356,8 +362,37 @@ describe('Paypal Config Service', () => {
         capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
       };
 
-      windowRef.PPCP_ISH_PAYPAL_GOOGLEPAY = {
-        Googlepay: () => ({}),
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
+      // PaypalAlternativeWallet uses PPCP_ALTERNATIVE_PAYMENT namespace
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      // Mock Google Pay SDK load
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+
+      // Mock paypalClientConfig$
+      when(appFacade.paypalClientConfig$).thenReturn(of({ googlePayEnvironment: 'TEST' }));
+
+      // Mock Google Pay PaymentsClient
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              isReadyToPay() {
+                return Promise.resolve({ result: true });
+              }
+            },
+          },
+        },
       };
 
       const result = await firstValueFrom(service.filterByPaypalEligibility([paypalGooglePayMethod]));
@@ -476,6 +511,485 @@ describe('Paypal Config Service', () => {
       const result = await firstValueFrom(service.filterByPaypalEligibility([invoiceMethod, paypalMethod]));
 
       expect(result).toEqual([invoiceMethod]);
+    });
+  });
+
+  describe('getPaypalScriptNameSpace', () => {
+    it('should return PPCP_MESSAGES when no payment method is provided', () => {
+      expect(service.getPaypalScriptNameSpace()).toBe('PPCP_MESSAGES');
+    });
+
+    it('should return PPCP_MESSAGES when payment method is undefined', () => {
+      expect(service.getPaypalScriptNameSpace(undefined)).toBe('PPCP_MESSAGES');
+    });
+
+    it('should return PPCP_ALTERNATIVE_PAYMENT for PaypalAlternativeWallet capability', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet'],
+      } as PaymentMethod;
+
+      expect(service.getPaypalScriptNameSpace(paymentMethod)).toBe('PPCP_ALTERNATIVE_PAYMENT');
+    });
+
+    it('should generate namespace from payment method ID', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL_CARD',
+        capabilities: ['PaypalExperienceContext'],
+      } as PaymentMethod;
+
+      expect(service.getPaypalScriptNameSpace(paymentMethod)).toBe('PPCP_ISH_PAYPAL_CARD');
+    });
+
+    it('should convert namespace to uppercase', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ish_paypal_card',
+        capabilities: [],
+      } as PaymentMethod;
+
+      expect(service.getPaypalScriptNameSpace(paymentMethod)).toBe('PPCP_ISH_PAYPAL_CARD');
+    });
+
+    it('should remove spaces from payment method ID', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH PAYPAL CARD',
+        capabilities: [],
+      } as PaymentMethod;
+
+      expect(service.getPaypalScriptNameSpace(paymentMethod)).toBe('PPCP_ISHPAYPALCARD');
+    });
+
+    it('should handle payment method without capabilities', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL',
+      } as PaymentMethod;
+
+      expect(service.getPaypalScriptNameSpace(paymentMethod)).toBe('PPCP_ISH_PAYPAL');
+    });
+  });
+
+  describe('getPaypalComponent', () => {
+    beforeEach(() => {
+      delete windowRef.PPCP_ISH_PAYPAL;
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.PPCP_MESSAGES;
+    });
+
+    afterEach(() => {
+      delete windowRef.PPCP_ISH_PAYPAL;
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.PPCP_MESSAGES;
+    });
+
+    it('should return PayPal component from window for standard payment method', () => {
+      const mockPaypalComponent = { Buttons: jest.fn(), CardFields: jest.fn() };
+      windowRef.PPCP_ISH_PAYPAL = mockPaypalComponent;
+
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const result = service.getPaypalComponent(paymentMethod);
+
+      expect(result).toBe(mockPaypalComponent);
+    });
+
+    it('should return PayPal component from PPCP_ALTERNATIVE_PAYMENT for alternative wallet', () => {
+      const mockPaypalComponent = { Googlepay: jest.fn(), Applepay: jest.fn() };
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = mockPaypalComponent;
+
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet'],
+      } as PaymentMethod;
+
+      const result = service.getPaypalComponent(paymentMethod);
+
+      expect(result).toBe(mockPaypalComponent);
+    });
+
+    it('should return PayPal component from PPCP_MESSAGES when no payment method provided', () => {
+      const mockPaypalComponent = { Messages: jest.fn() };
+      windowRef.PPCP_MESSAGES = mockPaypalComponent;
+
+      const result = service.getPaypalComponent();
+
+      expect(result).toBe(mockPaypalComponent);
+    });
+
+    it('should return undefined when PayPal component is not loaded', () => {
+      const paymentMethod: PaymentMethod = {
+        id: 'ISH_PAYPAL_MISSING',
+        capabilities: [],
+      } as PaymentMethod;
+
+      const result = service.getPaypalComponent(paymentMethod);
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('checkPaypalGooglePayEligibility (via filterByPaypalEligibility)', () => {
+    beforeEach(() => {
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.google;
+    });
+
+    afterEach(() => {
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete windowRef.google;
+    });
+
+    it('should return eligible when Google Pay isReadyToPay returns true', async () => {
+      const googlePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
+      };
+
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+      when(appFacade.paypalClientConfig$).thenReturn(of({ googlePayEnvironment: 'TEST' }));
+
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              isReadyToPay() {
+                return Promise.resolve({ result: true });
+              }
+            },
+          },
+        },
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([googlePayMethod]));
+
+      expect(result).toEqual([googlePayMethod]);
+    });
+
+    it('should return ineligible when Google Pay isReadyToPay returns false', async () => {
+      const googlePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
+      };
+
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+      when(appFacade.paypalClientConfig$).thenReturn(of({ googlePayEnvironment: 'TEST' }));
+
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              isReadyToPay() {
+                return Promise.resolve({ result: false });
+              }
+            },
+          },
+        },
+      };
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([googlePayMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should use PRODUCTION environment when configured', async () => {
+      const googlePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
+      };
+
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+      when(appFacade.paypalClientConfig$).thenReturn(of({ googlePayEnvironment: 'PRODUCTION' }));
+
+      let capturedEnvironment: string;
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              constructor(config: { googlePayEnvironment: string }) {
+                capturedEnvironment = config.googlePayEnvironment;
+              }
+              isReadyToPay() {
+                return Promise.resolve({ result: true });
+              }
+            },
+          },
+        },
+      };
+
+      await firstValueFrom(service.filterByPaypalEligibility([googlePayMethod]));
+
+      expect(capturedEnvironment).toBe('PRODUCTION');
+    });
+
+    it('should pass undefined as environment when not configured', async () => {
+      const googlePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_GOOGLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalGooglePay'],
+      };
+
+      const mockGooglePayConfig = {
+        allowedPaymentMethods: [{ type: 'CARD' }],
+        merchantInfo: { merchantId: 'test-merchant' },
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Googlepay: () => ({
+          config: () => Promise.resolve(mockGooglePayConfig),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalGooglePayAdapter.GOOGLE_PAY_SDK_URL, loaded: true })
+      );
+      // eslint-disable-next-line unicorn/no-null
+      when(appFacade.paypalClientConfig$).thenReturn(of(null));
+
+      let capturedEnvironment: string;
+      windowRef.google = {
+        payments: {
+          api: {
+            PaymentsClient: class {
+              constructor(config: { googlePayEnvironment: string }) {
+                capturedEnvironment = config.googlePayEnvironment;
+              }
+              isReadyToPay() {
+                return Promise.resolve({ result: true });
+              }
+            },
+          },
+        },
+      };
+
+      await firstValueFrom(service.filterByPaypalEligibility([googlePayMethod]));
+
+      expect(capturedEnvironment).toBeUndefined();
+    });
+  });
+
+  describe('checkPaypalApplePayEligibility (via filterByPaypalEligibility)', () => {
+    const originalApplePaySession = (window as unknown as Record<string, unknown>).ApplePaySession;
+
+    beforeEach(() => {
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      delete (window as unknown as Record<string, unknown>).ApplePaySession;
+    });
+
+    afterEach(() => {
+      delete windowRef.PPCP_ALTERNATIVE_PAYMENT;
+      if (originalApplePaySession) {
+        (window as unknown as Record<string, unknown>).ApplePaySession = originalApplePaySession;
+      } else {
+        delete (window as unknown as Record<string, unknown>).ApplePaySession;
+      }
+    });
+
+    it('should return ineligible when Apple Pay is not available in browser', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.resolve({ isEligible: true }),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: true })
+      );
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should return eligible when Apple Pay is available and config isEligible is true', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      // Mock ApplePaySession with all required methods
+      (window as unknown as Record<string, unknown>).ApplePaySession = {
+        canMakePayments: () => true,
+        supportsVersion: () => true,
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.resolve({ isEligible: true }),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: true })
+      );
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toEqual([applePayMethod]);
+    });
+
+    it('should return ineligible when Apple Pay config isEligible is false', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      // Mock ApplePaySession with all required methods
+      (window as unknown as Record<string, unknown>).ApplePaySession = {
+        canMakePayments: () => true,
+        supportsVersion: () => true,
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.resolve({ isEligible: false }),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: true })
+      );
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should return ineligible when Apple Pay canMakePayments returns false', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      // Mock ApplePaySession that cannot make payments
+      (window as unknown as Record<string, unknown>).ApplePaySession = {
+        canMakePayments: () => false,
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.resolve({ isEligible: true }),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: true })
+      );
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should return ineligible when Apple Pay config throws an error', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      // Mock ApplePaySession with all required methods
+      (window as unknown as Record<string, unknown>).ApplePaySession = {
+        canMakePayments: () => true,
+        supportsVersion: () => true,
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.reject(new Error('Apple Pay config error')),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: true })
+      );
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toBeEmpty();
+    });
+
+    it('should return ineligible when Apple Pay SDK fails to load', async () => {
+      const applePayMethod: PaymentMethod = {
+        ...mockPaymentMethod,
+        id: 'ISH_PAYPAL_APPLEPAY',
+        capabilities: ['PaypalAlternativeWallet', 'PaypalApplePay'],
+      };
+
+      // Mock ApplePaySession with all required methods
+      (window as unknown as Record<string, unknown>).ApplePaySession = {
+        canMakePayments: () => true,
+        supportsVersion: () => true,
+      };
+
+      windowRef.PPCP_ALTERNATIVE_PAYMENT = {
+        Applepay: () => ({
+          config: () => Promise.resolve({ isEligible: true }),
+        }),
+      };
+
+      when(scriptLoader.load(PaypalApplePayAdapter.APPLE_PAY_SDK_URL)).thenReturn(
+        of({ src: PaypalApplePayAdapter.APPLE_PAY_SDK_URL, loaded: false })
+      );
+
+      // The service checks isApplePayAvailable first, so if ApplePaySession doesn't exist after loading, it returns false
+      delete (window as unknown as Record<string, unknown>).ApplePaySession;
+
+      const result = await firstValueFrom(service.filterByPaypalEligibility([applePayMethod]));
+
+      expect(result).toBeEmpty();
     });
   });
 });

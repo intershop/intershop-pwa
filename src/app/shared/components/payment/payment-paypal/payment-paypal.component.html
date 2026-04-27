@@ -1,6 +1,6 @@
-<div class="row pt-2">
-  <div [ngClass]="'col-12'">
-    <!-- PayPal Button container -->
+<div class="row">
+  <div [class.pt-2]="adapterType === 'Messages' || pageType === 'cart'">
+    <!-- PayPal Button, Messages, Google Pay and Apple Pay container -->
     @if (adapterType !== 'CardFields') {
     <div [id]="paypalComponentContainerId"></div>
     } @else {

@@ -12,6 +12,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
@@ -56,7 +57,10 @@ describe('Checkout Payment Component', () => {
         PaymentParameterFormComponent,
       ],
       imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [provideRouter([{ path: 'checkout/review', children: [] }])],
+      providers: [
+        { provide: PaypalConfigService, useValue: { getPaypalAdapterType: (): undefined => undefined } },
+        provideRouter([{ path: 'checkout/review', children: [] }]),
+      ],
     })
       .overrideComponent(CheckoutPaymentComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

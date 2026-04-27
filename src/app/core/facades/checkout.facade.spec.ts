@@ -1,12 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import {
+  getBasketEligiblePaymentMethods,
   getBasketEligibleShippingMethods,
   getBasketInvoiceAddress,
   getBasketLastTimeProductAdded,
@@ -180,6 +182,103 @@ describe('Checkout Facade', () => {
       facade.canUseBasketForRecurringOrder$.subscribe(result => {
         expect(result).toBeFalse();
         done();
+      });
+    });
+  });
+
+  describe('getBasketPaypalPaymentMethod()', () => {
+    const paypalMethod: PaymentMethod = {
+      id: 'ISH_PayPal',
+      displayName: 'PayPal',
+      capabilities: ['PaypalAlternativeWallet'],
+    } as PaymentMethod;
+
+    const nonPaypalMethod: PaymentMethod = {
+      id: 'ISH_PayPal',
+      displayName: 'PayPal',
+      capabilities: ['SomeOtherCapability'],
+    } as PaymentMethod;
+
+    const basketWithPaypalInstrument = {
+      ...BasketMockData.getBasket(),
+      payment: { ...BasketMockData.getPayment(), paymentInstrument: { id: 'ISH_PayPal' } },
+    };
+
+    it('should emit undefined initially via startWith', done => {
+      facade
+        .getBasketPaypalPaymentMethod()
+        .pipe(take(1))
+        .subscribe(result => {
+          expect(result).toBeUndefined();
+          done();
+        });
+    });
+
+    it('should emit undefined when basket has no payment instrument', done => {
+      store$.overrideSelector(getCurrentBasket, {
+        ...BasketMockData.getBasket(),
+        payment: undefined,
+      });
+      store$.refreshState();
+
+      const results: (PaymentMethod | undefined)[] = [];
+      facade
+        .getBasketPaypalPaymentMethod()
+        .pipe(take(1))
+        .subscribe(result => {
+          results.push(result);
+          expect(results[0]).toBeUndefined();
+          done();
+        });
+    });
+
+    it('should emit undefined when matching payment method lacks PaypalAlternativeWallet capability', done => {
+      store$.overrideSelector(getCurrentBasket, basketWithPaypalInstrument);
+      store$.overrideSelector(getBasketEligiblePaymentMethods, [nonPaypalMethod]);
+      store$.refreshState();
+
+      const results: (PaymentMethod | undefined)[] = [];
+      facade.getBasketPaypalPaymentMethod().subscribe(result => {
+        results.push(result);
+        if (results.length === 2) {
+          expect(results[0]).toBeUndefined();
+          expect(results[1]).toBeUndefined();
+          done();
+        }
+      });
+    });
+
+    it('should emit the PayPal payment method when it has PaypalAlternativeWallet capability', done => {
+      store$.overrideSelector(getCurrentBasket, basketWithPaypalInstrument);
+      store$.overrideSelector(getBasketEligiblePaymentMethods, [paypalMethod]);
+      store$.refreshState();
+
+      const results: (PaymentMethod | undefined)[] = [];
+      facade.getBasketPaypalPaymentMethod().subscribe(result => {
+        results.push(result);
+        if (results.length === 2) {
+          expect(results[0]).toBeUndefined();
+          expect(results[1]).toEqual(paypalMethod);
+          done();
+        }
+      });
+    });
+
+    it('should emit undefined when no eligible payment method matches the basket instrument id', done => {
+      store$.overrideSelector(getCurrentBasket, basketWithPaypalInstrument);
+      store$.overrideSelector(getBasketEligiblePaymentMethods, [
+        { ...paypalMethod, id: 'ISH_OtherMethod' } as PaymentMethod,
+      ]);
+      store$.refreshState();
+
+      const results: (PaymentMethod | undefined)[] = [];
+      facade.getBasketPaypalPaymentMethod().subscribe(result => {
+        results.push(result);
+        if (results.length === 2) {
+          expect(results[0]).toBeUndefined();
+          expect(results[1]).toBeUndefined();
+          done();
+        }
       });
     });
   });

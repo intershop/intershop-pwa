@@ -9,6 +9,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 
 import { PaypalButtonsAdapter } from './paypal-buttons.adapter';
@@ -35,6 +36,7 @@ describe('Paypal Buttons Adapter', () => {
   let paypalButtons: TestablePaypalButtons;
   let checkoutFacade: CheckoutFacade;
   let paypalDataTransferService: PaypalDataTransferService;
+  let paypalConfigServiceMock: { getPaypalComponent: jest.Mock };
 
   const mockPaymentMethod = {
     id: 'ISH_PAYPAL',
@@ -73,7 +75,7 @@ describe('Paypal Buttons Adapter', () => {
 
   const mockConfig: PaypalComponentsConfig = {
     containerId: 'paypal-button-container',
-    scriptNamespace: 'testPaypal',
+    scriptNamespace: 'PPCP_ISH_PAYPAL',
     paypalPaymentMethod: mockPaymentMethod,
     pageType: 'checkout',
     adapterType: 'Buttons',
@@ -84,10 +86,13 @@ describe('Paypal Buttons Adapter', () => {
   beforeEach(() => {
     checkoutFacade = mock(CheckoutFacade);
     paypalDataTransferService = mock(PaypalDataTransferService);
+    paypalConfigServiceMock = {
+      getPaypalComponent: jest.fn().mockImplementation(() => (window as any).PPCP_ISH_PAYPAL),
+    };
 
     // Mock paypalOrder$ to emit orderId
     when(paypalDataTransferService.paypalOrder$).thenReturn(
-      of({ orderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
+      of({ paypalOrderId: 'ORDER123', paymentInstrumentId: 'test-instrument-id' })
     );
 
     // Create mock PayPal Buttons component
@@ -96,13 +101,14 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     // Setup mock PayPal SDK on window
-    (window as any).testPaypal = {
+    (window as any).PPCP_ISH_PAYPAL = {
       Buttons: mockPaypalButtons,
     };
 
     TestBed.configureTestingModule({
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: PaypalConfigService, useValue: paypalConfigServiceMock },
         { provide: PaypalDataTransferService, useFactory: () => instance(paypalDataTransferService) },
         TestablePaypalButtons,
       ],
@@ -113,7 +119,7 @@ describe('Paypal Buttons Adapter', () => {
 
   afterEach(() => {
     // Cleanup window mock
-    delete (window as any).testPaypal;
+    delete (window as any).PPCP_ISH_PAYPAL;
     // Cleanup DOM elements
     document.body.innerHTML = '';
   });
@@ -150,7 +156,7 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should resolve with orderId from paypalOrder$ stream', async () => {
       when(paypalDataTransferService.paypalOrder$).thenReturn(
-        of({ orderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
+        of({ paypalOrderId: 'ORDER999', paymentInstrumentId: 'test-instrument-id' })
       );
 
       const orderId = await paypalButtons.testCreateOrder(mockPaymentMethod);
@@ -166,7 +172,7 @@ describe('Paypal Buttons Adapter', () => {
 
     it('should reject when paypalOrder$ emits empty orderId', async () => {
       when(paypalDataTransferService.paypalOrder$).thenReturn(
-        of({ orderId: '', paymentInstrumentId: 'test-instrument-id' })
+        of({ paypalOrderId: '', paymentInstrumentId: 'test-instrument-id' })
       );
 
       await expect(paypalButtons.testCreateOrder(mockPaymentMethod)).rejects.toThrow('PayPal order ID is empty');
@@ -480,30 +486,28 @@ describe('Paypal Buttons Adapter', () => {
     });
 
     it('should throw error when PayPal Buttons is not available', async () => {
-      delete (window as any).testPaypal.Buttons;
+      delete (window as any).PPCP_ISH_PAYPAL.Buttons;
 
       try {
         await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'testPaypal'"
+          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
         );
       }
     });
 
     it('should throw error when PayPal namespace does not exist', async () => {
-      const invalidConfig = {
-        ...mockConfig,
-        scriptNamespace: 'nonExistentNamespace',
-      };
+      // Delete the PayPal namespace to simulate it not being loaded
+      delete (window as any).PPCP_ISH_PAYPAL;
 
       try {
-        await paypalButtons.renderButtons(invalidConfig);
+        await paypalButtons.renderButtons(mockConfig);
         fail('Should have thrown an error');
       } catch (error) {
         expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'nonExistentNamespace'"
+          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
         );
       }
     });
