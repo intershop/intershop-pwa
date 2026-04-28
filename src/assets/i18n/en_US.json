@@ -1544,6 +1544,7 @@
   "suggest.terms.headline": "Search suggestions",
   "suggest.view_all.link": "Show all results",
   "textarea.max_limit": "Your message: {{0}} characters remaining.",
+  "update_email.error.invalid.password": "The password you entered is incorrect.",
   "user.csv.import.create.button.label": "Create users",
   "user.csv.import.file.invalid.format": "The file format is invalid. Please use a CSV file.",
   "user.csv.import.file.invalid.input": "The input is invalid. Please check if your CSV file has the correct structure.",

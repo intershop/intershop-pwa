@@ -1544,6 +1544,7 @@
   "suggest.terms.headline": "Suchvorschläge",
   "suggest.view_all.link": "Alle Ergebnisse anzeigen",
   "textarea.max_limit": "Ihre Nachricht: {{0}} Zeichen verbleibend.",
+  "update_email.error.invalid.password": "Das eingegebene Kennwort ist nicht korrekt.",
   "user.csv.import.create.button.label": "Benutzer anlegen",
   "user.csv.import.file.invalid.format": "Das Dateiformat ist ungültig. Bitte verwenden Sie eine CSV-Datei.",
   "user.csv.import.file.invalid.input": "Die Eingabe ist ungültig. Bitte prüfen Sie, ob Ihre CSV-Datei die richtige Struktur hat.",

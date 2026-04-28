@@ -1544,6 +1544,7 @@
   "suggest.terms.headline": "Suggestions de recherche",
   "suggest.view_all.link": "Afficher tous les résultats",
   "textarea.max_limit": "Votre message : {{0}} caractères restants.",
+  "update_email.error.invalid.password": "Le mot de passe saisi est incorrect.",
   "user.csv.import.create.button.label": "Créer des utilisateurs",
   "user.csv.import.file.invalid.format": "Le format de fichier n’est pas valide. Veuillez utiliser un fichier CSV.",
   "user.csv.import.file.invalid.input": "La saisie n’est pas valide. Veuillez vérifier si la structure de votre fichier CSV est correcte.",
