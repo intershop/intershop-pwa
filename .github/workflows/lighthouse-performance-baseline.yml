@@ -58,7 +58,6 @@ jobs:
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)
         env:
-          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
