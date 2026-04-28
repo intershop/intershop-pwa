@@ -35,14 +35,12 @@ export class CookiesBannerComponent implements OnInit {
    * - consent outdated
    */
   private showBannerIfNecessary() {
-    if (!SSR) {
-      const cookieConsentSettings = JSON.parse(
-        this.cookiesService.get('cookieConsent') || 'null'
-      ) as CookieConsentSettings;
-      const cookieConsentVersion = this.transferState.get<number>(COOKIE_CONSENT_VERSION, 1);
-      if (!cookieConsentSettings || cookieConsentSettings.version < cookieConsentVersion) {
-        this.showBanner = true;
-      }
+    const cookieConsentSettings = JSON.parse(
+      this.cookiesService.get('cookieConsent') || 'null'
+    ) as CookieConsentSettings;
+    const cookieConsentVersion = this.transferState.get<number>(COOKIE_CONSENT_VERSION, 1);
+    if (!cookieConsentSettings || cookieConsentSettings.version < cookieConsentVersion) {
+      this.showBanner = true;
     }
   }
 
