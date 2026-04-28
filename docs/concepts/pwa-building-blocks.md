@@ -10,7 +10,7 @@ kb_sync_latest_only
 - [Intershop Commerce Management (ICM)](#intershop-commerce-management-icm)
 - [PWA - Server-Side Rendering (SSR)](#pwa---server-side-rendering-ssr)
 - [PWA - Nginx](#pwa---nginx)
-  - [CSR Mode with Nginx](#csr-mode-with-nginx)
+  - [CSR Mode with nginx](#csr-mode-with-nginx)
 - [Browser](#browser)
 - [Default Production Deployment](#default-production-deployment)
 - [Deployment Without Nginx](#deployment-without-nginx)
@@ -49,12 +49,13 @@ Nginx enables the following features to be used in an Intershop PWA deployment:
 - Customizable compression for downstream services.
 - Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
 
-### CSR Mode with Nginx
+### CSR Mode with nginx
 
 It is also possible to run the nginx container without SSR for browser requests by disabling SSR in the nginx configuration (see [Building and Running nginx Docker Image](../guides/nginx-startup.md)).
 In this client-side rendering (CSR) mode, nginx still acts as reverse proxy, but the initial page is no longer pre-rendered by Angular SSR.
 
-**Pros**: Lower operational complexity and no SSR rendering overhead on the server side.<br>
+**Pros**: Lower operational complexity and no SSR rendering overhead on the server side.
+
 **Cons**: No pre-rendered HTML, weaker SEO, slower first meaningful content for users, and some SSR-based configuration scenarios are not available.
 
 For a public production PWA deployment, CSR mode is generally not recommended.

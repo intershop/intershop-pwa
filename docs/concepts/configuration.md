@@ -294,10 +294,8 @@ To add languages other than English, German, or French:
 3. (optional) Add the new language switch translation keys to the existing locale files, for example to `de_DE.json`:
 
    ```json
-   {
-     "locale.nl_NL.long": "Niederländisch",
-     "locale.nl_NL.short": "nl"
-   }
+   "locale.nl_NL.long": "Niederländisch",
+   "locale.nl_NL.short": "nl",
    ```
 
 4. (optional) Add the locale-specific currency override to the environment files under `src/environments`, e.g.,
@@ -345,7 +343,7 @@ To add languages other than English, German, or French:
 If the feature toggle `saveLanguageSelection` is enabled, the selected language is saved as a browser cookie and restored after the PWA has loaded.
 
 > [!NOTE]
-> If SSR is disabled in NGINX (CSR mode) and the language is not part of the multi-site channel configuration, this feature toggle is not supported.
+> If SSR is disabled in nginx (resulting in client-side rendering (CSR) mode) and the language is not part of the URL configured in the multi-site configuration, the `saveLanguageSelection` feature toggle is not supported.
 
 ## Further References
 
