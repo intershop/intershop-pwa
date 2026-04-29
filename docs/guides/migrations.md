@@ -46,7 +46,7 @@ If this mirror is unreachable, pass `--build-arg UBUNTU_MIRROR=` to the pipeline
 **PayPal Google Pay and Apple Pay functionality**
 
 The Intershop PWA now supports Google Pay and Apple Pay as additional payment methods via PayPal.
-Two new adapters have been added — `PaypalGooglePayAdapter` and `PaypalApplePayAdapter` — which integrate with the PayPal SDK to render the respective payment buttons and handle the associated payment flows.
+Two new adapters have been added - `PaypalGooglePayAdapter` and `PaypalApplePayAdapter` - that integrate with the PayPal SDK to render the respective payment buttons and handle the associated payment flows.
 This functionality requires the **Intershop PPCP Connector version 3.1.0** or higher (ICM 14.2.2+, Google Pay JS API 2.0, Apple Pay JS API 4).
 For details, see the [PayPal Integration Guide](./paypal.md).
 
