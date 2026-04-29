@@ -9,80 +9,64 @@ footer {
   // h4 is obsolete, should use .link-group-heading instead
   h4,
   .link-group-heading {
-    margin-top: divide($space-default * 2, 3);
+    @media (max-width: $screen-md-max) {
+      margin-top: divide($space-default * 2, 3);
+    }
+
     margin-bottom: $space-default;
-    font-family: $font-family-regular;
+    font-family: $font-family-condensedbold;
     font-size: 18px;
-    color: $text-color-inverse;
     text-transform: uppercase;
   }
 
-  .footer-top {
-    padding: 20px 0;
+  .footer-custom {
+    padding: ($space-default * 2) 0;
     background: $color-primary;
   }
 
-  .storefinder {
-    @media (max-width: $screen-sm-max) {
-      float: none;
-      width: 100%;
-    }
+  .footer-fix {
+    margin: ($space-default * 2) 0;
 
-    .storefinder-icon {
-      float: left;
-      display: block;
-      padding: 20px $space-default 20px 0;
-      font-size: 40px;
-      color: $text-color-inverse;
-    }
-
-    .link-group-heading {
-      margin: 34px 0 0;
-      line-height: 20px;
-    }
-
-    a {
-      color: $text-color-inverse;
-      text-transform: uppercase;
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
+    .list-inline-item:not(:last-child) {
+      margin-right: $space-default * 2;
     }
   }
 
   .footer {
-    padding: ($space-default * 2) 0 ($space-default);
+    padding: 0 0 ($space-default);
     margin-top: 0;
     background: $color-dark;
 
     @media (max-width: $screen-xs-max) {
-      padding: ($space-default * 2) 0 ($space-default);
+      padding: 0 0 ($space-default);
     }
 
     // h4 is obsolete, should use .link-group-heading instead
     h4,
     .link-group-heading {
       font-family: $font-family-condensedbold;
+      color: $text-color-quaternary;
     }
 
-    li {
-      a,
-      a:not([href]):not([tabindex]) {
-        font-family: $font-family-condensedregular;
-        color: $text-color-tertiary;
-        text-decoration: none;
+    li a,
+    li a:not([href]):not([tabindex]),
+    .footer-link,
+    .footer-link-highlighted {
+      font-family: $font-family-condensedregular;
+      color: $text-color-inverse;
+      text-decoration: none;
 
-        &:hover {
-          text-decoration: underline;
-        }
+      &:hover {
+        text-decoration: underline;
       }
+    }
+
+    .footer-link-highlighted {
+      color: $CORPORATE-LIGHT;
     }
 
     ul {
       padding: 0;
-      margin: 0;
       list-style: none;
     }
 
@@ -98,12 +82,6 @@ footer {
 
 .disclaimer {
   padding: 0 ($space-default);
-}
-
-.copyright {
-  width: 100%;
-  padding: ($space-default * 3) ($space-default) 0;
-  font-size: 12px;
 }
 
 @media (max-width: $screen-xs-max) {
