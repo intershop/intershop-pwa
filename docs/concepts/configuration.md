@@ -25,8 +25,10 @@ kb_sync_latest_only
   - [Configuring Features](#configuring-features)
   - [Programmatically Switching Features](#programmatically-switching-features)
   - [Unit Testing with Feature Toggles](#unit-testing-with-feature-toggles)
-- [Setting Default Locale](#setting-default-locale)
-- [Extend Locales](#extend-locales)
+- [Locale Configuration](#locale-configuration)
+  - [Setting Default Locale](#setting-default-locale)
+  - [Extend Locales](#extend-locales)
+  - [Language Cookie](#language-cookie)
 - [Further References](#further-references)
 
 In a complex application like the Intershop Progressive Web App, there are multiple ways and kinds of configuration.
@@ -263,7 +265,9 @@ Switching features in tests can be triggered by calling [`FeatureToggleModule.sw
 
 [feature-toggle-module]: ../../src/app/core/feature-toggle.module.ts
 
-## Setting Default Locale
+## Locale Configuration
+
+### Setting Default Locale
 
 The default locale is set by providing `LOCALE_ID` in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) using BCP 47 format, e.g., `'de-DE'`:
 
@@ -277,31 +281,30 @@ To set the default locale dynamically, use the URL parameter `lang` when rewriti
 The `fallbackLocales` property in the Angular CLI environment files defines the available translations when there is no connection to the server.
 These locales correspond to the local translation files shipped with the application (e.g., `src/assets/i18n/en_US.json`) and ensure the translation functionality works even if the ICM REST API is unavailable.
 
-## Extend Locales
+### Extend Locales
 
-To add other languages except English, German, or French:
+To add languages other than English, German, or French:
 
 1. Add the locale to the ICM channel configuration.
 
-2. Create a new json mapping file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
+2. Create a new JSON mapping file with all translations, e.g., `src/assets/i18n/nl_NL.json`.
 
 <!-- spell-checker: words Niederländisch -->
 
-3. (optional) Add the new language switch translation keys to other locales:
-   _example de_DE.json_:
+3. (optional) Add the new language switch translation keys to the existing locale files, for example to `de_DE.json`:
 
-   ```
-     "locale.nl_NL.long": "Niederländisch",
-     "locale.nl_NL.short": "nl",
+   ```json
+   "locale.nl_NL.long": "Niederländisch",
+   "locale.nl_NL.short": "nl",
    ```
 
-4. (optional) Add the locale-specific currency filter to the environments under `src/environments`, e.g.,
+4. (optional) Add the locale-specific currency override to the environment files under `src/environments`, e.g.,
 
    ```typescript
-    localeCurrencyOverride: {
-      ...
-      nl_NL: 'EUR',
-    },
+   localeCurrencyOverride: {
+     ...
+     nl_NL: 'EUR',
+   },
    ```
 
 5. Import the Angular locale data in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts):
@@ -310,32 +313,37 @@ To add other languages except English, German, or French:
    import localeNl from '@angular/common/locales/nl';
    ```
 
-6. Register the locale using `registerLocaleData` in the constructor:
+6. Register the locale data in the module constructor using `registerLocaleData`:
 
    ```typescript
    registerLocaleData(localeNl);
    ```
 
-7. Add new json mapping file import to `LOCAL_TRANSLATIONS` injection token in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts) provider:
+7. Add the new locale to the `LOCAL_TRANSLATIONS` provider in the [`InternationalizationModule`](../../src/app/core/internationalization.module.ts):
 
    ```typescript
-    providers: [
-      {
-        provide: LOCAL_TRANSLATIONS,
-        useValue: {
-          useFactory: (lang: string) => {
-            switch (lang) {
-              // other added json-mapping-file imports with translations
-              ...
-              case: nl_NL {
-                return import('../../assets/i18n/nl_NL.json');
-              }
-            }
-          },
-        },
-      }
-   ]
+   providers: [
+     {
+       provide: LOCAL_TRANSLATIONS,
+       useValue: {
+         useFactory: (lang: string) => {
+           switch (lang) {
+             // other locale JSON imports
+             case 'nl_NL':
+               return import('../../assets/i18n/nl_NL.json');
+           }
+         },
+       },
+     },
+   ];
    ```
+
+### Language Cookie
+
+If the feature toggle `saveLanguageSelection` is enabled, the selected language is saved as a browser cookie and restored after the PWA has loaded.
+
+> [!NOTE]
+> If SSR is disabled in nginx (resulting in client-side rendering (CSR) mode) and the language is not part of the URL configured in the multi-site configuration, the `saveLanguageSelection` feature toggle is not supported.
 
 ## Further References
 
