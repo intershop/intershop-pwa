@@ -1,0 +1,22 @@
+<form
+  [formGroup]="withdrawalForm"
+  ishFormSubmit
+  #form="ngForm"
+  (ngSubmit)="submitForm()"
+  class="form-horizontal"
+  novalidate
+>
+  <formly-form [form]="withdrawalForm" [fields]="fields$ | async" [model]="model" />
+  <div class="row">
+    <div class="offset-md-4 col-md-8">
+      <button
+        type="submit"
+        name="submitWithdrawal"
+        class="btn btn-primary"
+        [disabled]="withdrawalForm.invalid && form.submitted"
+      >
+        {{ submitButtonLabel | translate }}
+      </button>
+    </div>
+  </div>
+</form>

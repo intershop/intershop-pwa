@@ -26,6 +26,13 @@
         <li class="list-inline-item">
           <a class="footer-link" [routerLink]="['/cookies']">{{ 'footer.manage_cookies.link' | translate }}</a>
         </li>
+        @if ('preferences.WithdrawalPreferences.WithdrawalEnabled' | ishServerSetting) {
+        <li class="list-inline-item">
+          <a class="footer-link-highlighted" [routerLink]="['/withdrawal']">{{
+            'footer.withdrawal.link' | translate
+          }}</a>
+        </li>
+        }
       </ul>
       <div [ishServerHtml]="'footer.disclaimer' | translate" class="clearfix"></div>
       <div [ishServerHtml]="'footer.copyright' | translate : { appVersion: appVersion }" class="clearfix"></div>

@@ -125,6 +125,16 @@ const routes: Routes = [
       },
     },
   },
+  {
+    path: 'withdrawal',
+    loadChildren: () => import('./withdrawal/withdrawal-page.module').then(m => m.WithdrawalPageModule),
+    data: {
+      meta: {
+        title: 'account.withdrawal.heading',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
   { path: 'cobrowse', loadChildren: () => import('./co-browse/co-browse-page.module').then(m => m.CoBrowsePageModule) },
 ];
