@@ -97,10 +97,13 @@ export class BasketPaymentEffects {
       mapToPayloadProperty('paymentInstrumentId'),
       concatMap(paymentInstrumentId =>
         this.paymentPaypalService.getPaypalToken(paymentInstrumentId).pipe(
-          concatMap(token => [setBasketPaymentSuccess(), emitPaypalOrderId({ orderId: token, paymentInstrumentId })]),
+          concatMap(token => [
+            setBasketPaymentSuccess(),
+            emitPaypalOrderId({ paypalOrderId: token, paymentInstrumentId }),
+          ]),
           // In case of an error during token retrieval, the information must passed to the adapter
           // to handle this error in the correct way e.g close the overlay.
-          catchError(() => [emitPaypalOrderId({ orderId: undefined, paymentInstrumentId })])
+          catchError(() => [emitPaypalOrderId({ paymentInstrumentId })])
         )
       )
     )
@@ -161,7 +164,10 @@ export class BasketPaymentEffects {
       concatMap(payload =>
         this.paymentPaypalService.initializePaypalExperienceContextFlow(payload.paymentInstrument).pipe(
           map(response =>
-            emitPaypalOrderId({ orderId: response.orderId, paymentInstrumentId: response.paymentInstrumentId })
+            emitPaypalOrderId({
+              paypalOrderId: response.paypalOrderId,
+              paymentInstrumentId: response.paymentInstrumentId,
+            })
           ),
           mapErrorToAction(setBasketPaymentFail)
         )
@@ -178,10 +184,20 @@ export class BasketPaymentEffects {
         ofType(emitPaypalOrderId),
         mapToPayload(),
         concatMap(payload => {
-          this.paypalDataTransferService.emitPaypalOrderData({
-            orderId: payload.orderId,
-            paymentInstrumentId: payload.paymentInstrumentId,
-          });
+          if (payload.paymentInstrumentId) {
+            this.paypalDataTransferService.emitPaypalOrderData({
+              paypalOrderId: payload.paypalOrderId,
+              paymentInstrumentId: payload.paymentInstrumentId,
+              orderStatus: payload.orderStatus,
+            });
+          } else {
+            this.paypalDataTransferService.emitPaypalOrderData({
+              orderId: payload.orderId,
+              paypalOrderId: payload.paypalOrderId,
+              orderStatus: payload.orderStatus,
+            });
+          }
+
           return EMPTY;
         })
       ),

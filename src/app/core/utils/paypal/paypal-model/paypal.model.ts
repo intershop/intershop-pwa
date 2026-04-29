@@ -1,3 +1,6 @@
+import { PaypalApplePayComponent } from './paypal-apple-pay.model';
+import { PaypalGooglePayComponent } from './paypal-google-pay.model';
+
 interface PaypalCardFieldsStyleOptions {
   appearance?: string;
   color?: string;
@@ -132,7 +135,7 @@ export interface PaypalCardFieldsIndividualField {
   close(): Promise<void>;
 }
 
-interface PaypalComponentBasics {
+export interface PaypalComponentBasics {
   createOrder(): Promise<string>;
   onApprove(): void;
   onError(err: Record<string, unknown>): void;
@@ -161,4 +164,8 @@ export interface PaypalComponent {
   Marks(options: unknown): PaypalComponentBasics;
   /** Creates PayPal hosted card input fields */
   CardFields?(options?: unknown): PaypalCardFieldsComponent;
+  /** Creates PayPal Google Pay component */
+  Googlepay?(options?: unknown): PaypalGooglePayComponent;
+  /** Creates PayPal Apple Pay component */
+  Applepay?(options?: unknown): PaypalApplePayComponent;
 }

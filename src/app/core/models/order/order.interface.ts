@@ -11,15 +11,29 @@ import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-me
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
+export type OrderCreationStatus = 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+
+export type OrderStopActionReason =
+  | 'waiting_for_pending_payments'
+  | 'redirect_urls_required'
+  | 'recurring.order'
+  | 'paypal_wallet_initialized';
+
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
   creationDate: string;
   orderCreation: {
-    status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+    status: OrderCreationStatus;
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
+      exitReason?: OrderStopActionReason;
       redirectUrl?: string;
+    };
+    redirect?: {
+      parameters: {
+        name: string;
+        value: string;
+      }[];
     };
   };
   statusCode: string;

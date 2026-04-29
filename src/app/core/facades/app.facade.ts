@@ -11,6 +11,7 @@ import {
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPaypalClientConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
@@ -48,6 +49,8 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
+
+  paypalClientConfig$ = this.store.pipe(select(getPaypalClientConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),

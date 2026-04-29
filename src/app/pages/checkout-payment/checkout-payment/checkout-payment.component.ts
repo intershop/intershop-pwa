@@ -22,7 +22,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
-import { PaypalAdapterTypes } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 /**
@@ -68,7 +68,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private paypalConfigService: PaypalConfigService) {}
 
   /**
    * create payment form
@@ -143,11 +143,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
    * Estimate the PayPal adapter type for a given payment method based on its capabilities.
    */
   getPaypalAdapterType(method?: PaymentMethod): PaypalAdapterTypes {
-    if (method?.capabilities?.includes('PaypalExperienceContext')) {
-      return 'CardFields';
-    } else {
-      return 'Buttons';
-    }
+    return this.paypalConfigService.getPaypalAdapterType(method);
   }
 
   /**

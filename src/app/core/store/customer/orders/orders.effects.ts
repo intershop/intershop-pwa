@@ -7,16 +7,23 @@ import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { EMPTY, from, merge, race } from 'rxjs';
-import { concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
+import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
+import { Order } from 'ish-core/models/order/order.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { continueCheckoutWithIssues, getCurrentBasketId, loadBasket } from 'ish-core/store/customer/basket';
+import {
+  continueCheckoutWithIssues,
+  emitPaypalOrderId,
+  getCurrentBasketId,
+  loadBasket,
+} from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
+  cancelPaypalOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -28,6 +35,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
+  processPaypalOrderCreation,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
@@ -256,4 +264,82 @@ export class OrdersEffects {
       )
     )
   );
+
+  startPaypalOrderCreation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(processPaypalOrderCreation),
+      filter(action => !action.payload.orderId),
+      switchMap(() =>
+        this.store.pipe(
+          select(getCurrentBasketId),
+          take(1),
+          switchMap(basketId =>
+            this.orderService.createOrder(basketId, true).pipe(
+              map(order =>
+                emitPaypalOrderId({
+                  paypalOrderId: this.getPaypalOrderId(order),
+                  orderId: order.id,
+                })
+              ),
+              catchError(error => [createOrderFail({ error }), emitPaypalOrderId({ orderStatus: 'ERROR' })])
+            )
+          )
+        )
+      )
+    )
+  );
+
+  continuePaypalOrderCreation$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(processPaypalOrderCreation),
+      filter(action => !!action.payload.orderId),
+      mapToPayloadProperty('orderId'),
+      concatMap(orderId =>
+        this.store.pipe(
+          select(getCurrentBasketId),
+          take(1),
+          map(basketId => [orderId, basketId])
+        )
+      ),
+      switchMap(([orderId, basketId]) =>
+        this.orderService.continueOrderCreation(orderId).pipe(
+          mergeMap(order =>
+            order.orderCreation.status === 'ROLLED_BACK'
+              ? [
+                  cancelPaypalOrderCreation(),
+                  emitPaypalOrderId({
+                    paypalOrderId: this.getPaypalOrderId(order),
+                    orderId: order.id,
+                    orderStatus: 'CANCELLED',
+                  }),
+                ]
+              : [
+                  createOrderSuccess({ order, basketId }),
+                  emitPaypalOrderId({
+                    paypalOrderId: this.getPaypalOrderId(order),
+                    orderId: order.id,
+                    orderStatus: 'SUCCESS',
+                  }),
+                ]
+          ),
+          mapErrorToAction(createOrderFail)
+        )
+      )
+    )
+  );
+
+  cancelPaypalOrderCreation$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cancelPaypalOrderCreation),
+        concatMap(() => from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel' } })))
+      ),
+    { dispatch: false }
+  );
+
+  private getPaypalOrderId(order: Order): string {
+    return (
+      order.orderCreation?.redirect?.parameters?.find((p: { name: string }) => p.name === 'PayPalOrderID')?.value || ''
+    );
+  }
 }

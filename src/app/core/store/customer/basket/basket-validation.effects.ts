@@ -5,7 +5,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { intersection } from 'lodash-es';
 import { EMPTY, Observable, from } from 'rxjs';
-import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import {
@@ -15,7 +15,7 @@ import {
 import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
-import { createOrder } from 'ish-core/store/customer/orders';
+import { createOrder, processPaypalOrderCreation, startPaypalOrderCreation } from 'ish-core/store/customer/orders';
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -25,6 +25,7 @@ import {
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
   continueWithFastCheckout,
+  emitPaypalOrderId,
   loadBasketEligiblePaymentMethods,
   loadBasketEligibleShippingMethods,
   loadBasketFail,
@@ -162,6 +163,32 @@ export class BasketValidationEffects {
           mapErrorToAction(continueCheckoutFail)
         );
       })
+    )
+  );
+
+  /**
+   * Validates the basket when a PayPal alternative wallet payment (e.g. Google Pay, Apple Pay) order creation is initiated.
+   * If the basket is valid, the PayPal order creation process continues. Otherwise, the user is redirected with validation issues.
+   */
+  validatePaypalAlternativeWalletBasket$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startPaypalOrderCreation),
+      switchMap(() =>
+        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.Review].scopes).pipe(
+          concatMap(basketValidation =>
+            basketValidation.results.valid
+              ? [processPaypalOrderCreation({})]
+              : [
+                  continueCheckoutWithIssues({
+                    targetRoute: this.validationSteps[CheckoutStepType.Receipt].route,
+                    basketValidation,
+                  }),
+                  emitPaypalOrderId({ paypalOrderId: undefined, orderStatus: 'ERROR' }),
+                ]
+          ),
+          mapErrorToAction(continueCheckoutFail)
+        )
+      )
     )
   );
 

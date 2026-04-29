@@ -125,11 +125,33 @@
       <form [formGroup]="form" ishFormSubmit #tcForm="ngForm" (ngSubmit)="submitOrder()">
         <formly-form [form]="form" [model]="model" [fields]="fields$ | async" [options]="options" />
         <div class="d-grid">
-          @if ((form.invalid && tcForm.submitted) || multipleBuckets || submitting) {
+          @if (form.invalid && tcForm.submitted || multipleBuckets || submitting) {
           <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
             {{ 'checkout.order_review.submit.validation.message' | translate }}
           </div>
-          }
+          } @if (paypalPaymentMethod$ | async; as paypalMethod) {
+          <div class="position-relative">
+            <ish-payment-paypal
+              [attr.inert]="form.invalid ? '' : null"
+              [adapterType]="getPaypalAdapterType(paypalMethod)"
+              [pageType]="'checkout'"
+              [selectedPaymentMethod]="paypalMethod"
+            />
+            @if (form.invalid) {
+            <button
+              class="position-absolute top-0 start-0 w-100 h-100 bg-transparent border-0"
+              [attr.tabindex]="form.invalid ? 0 : -1"
+              type="submit"
+              [attr.aria-label]="
+                getPaypalAdapterType(paypalMethod) === 'GooglePay'
+                  ? ('checkout.payment.paypal.google_pay.button.label' | translate)
+                  : ('checkout.payment.paypal.apple_pay.button.label' | translate)
+              "
+            ></button>
+            }
+          </div>
+          } @else {
+
           <button
             class="btn btn-lg btn-block btn-primary"
             [attr.aria-describedby]="
@@ -145,6 +167,7 @@
                 | translate
             }}
           </button>
+          }
         </div>
       </form>
     </div>

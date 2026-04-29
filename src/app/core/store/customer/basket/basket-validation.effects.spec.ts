@@ -14,7 +14,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { createOrder } from 'ish-core/store/customer/orders';
+import { createOrder, processPaypalOrderCreation, startPaypalOrderCreation } from 'ish-core/store/customer/orders';
 import { loadProductSuccess } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -26,6 +26,7 @@ import {
   continueCheckoutSuccess,
   continueCheckoutWithIssues,
   continueWithFastCheckout,
+  emitPaypalOrderId,
   loadBasketSuccess,
   startCheckout,
   startCheckoutFail,
@@ -503,6 +504,71 @@ describe('Basket Validation Effects', () => {
           complete: noop,
         });
       });
+    });
+  });
+
+  describe('validatePaypalAlternativeWalletBasket$', () => {
+    const basketValidation: BasketValidation = {
+      basket: BasketMockData.getBasket(),
+      results: {
+        valid: true,
+        adjusted: false,
+      },
+    };
+
+    beforeEach(() => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(basketValidation));
+    });
+
+    it('should call the basketService to validate the basket', done => {
+      const action = startPaypalOrderCreation();
+      actions$ = of(action);
+
+      effects.validatePaypalAlternativeWalletBasket$.subscribe(() => {
+        verify(basketServiceMock.validateBasket(anything())).once();
+        done();
+      });
+    });
+
+    it('should map to action of type ProcessPaypalOrderCreation if basket is valid', () => {
+      const action = startPaypalOrderCreation();
+      const completion = processPaypalOrderCreation({});
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validatePaypalAlternativeWalletBasket$).toBeObservable(expected$);
+    });
+
+    it('should map to action of type ContinueCheckoutWithIssues if basket is not valid', () => {
+      const invalidBasketValidation: BasketValidation = {
+        ...basketValidation,
+        results: { valid: false, adjusted: false },
+      };
+      when(basketServiceMock.validateBasket(anything())).thenReturn(of(invalidBasketValidation));
+
+      const action = startPaypalOrderCreation();
+      const completion1 = continueCheckoutWithIssues({
+        targetRoute: 'auto',
+        basketValidation: invalidBasketValidation,
+      });
+      const completion2 = emitPaypalOrderId({ paypalOrderId: undefined, orderStatus: 'ERROR' });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+
+      expect(effects.validatePaypalAlternativeWalletBasket$).toBeObservable(expected$);
+    });
+
+    it('should map invalid request to action of type ContinueCheckoutFail', () => {
+      when(basketServiceMock.validateBasket(anything())).thenReturn(
+        throwError(() => makeHttpError({ message: 'invalid' }))
+      );
+
+      const action = startPaypalOrderCreation();
+      const completion = continueCheckoutFail({ error: makeHttpError({ message: 'invalid' }) });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.validatePaypalAlternativeWalletBasket$).toBeObservable(expected$);
     });
   });
 });

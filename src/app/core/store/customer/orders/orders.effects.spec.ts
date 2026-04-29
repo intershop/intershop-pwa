@@ -6,7 +6,7 @@ import { Action, Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { take, toArray } from 'rxjs/operators';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -15,7 +15,7 @@ import { Order, Orders } from 'ish-core/models/order/order.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderService } from 'ish-core/services/order/order.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
+import { emitPaypalOrderId, loadBasket, loadBasketSuccess } from 'ish-core/store/customer/basket';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -23,6 +23,7 @@ import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
 import {
+  cancelPaypalOrderCreation,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -34,6 +35,7 @@ import {
   loadOrders,
   loadOrdersFail,
   loadOrdersSuccess,
+  processPaypalOrderCreation,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
@@ -492,6 +494,136 @@ describe('Orders Effects', () => {
           }
         `);
         done();
+      });
+    });
+  });
+
+  describe('processPaypalOrderCreation$', () => {
+    const orderWithPaypalRedirect = {
+      id: 'ORDER123',
+      documentNo: '00000123',
+      lineItems: [],
+      orderCreation: {
+        status: 'STOPPED',
+        redirect: {
+          parameters: [{ name: 'PayPalOrderID', value: 'PAYPAL_ORDER_456' }],
+        },
+      },
+    } as Order;
+
+    beforeEach(() => {
+      store.dispatch(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
+    });
+
+    describe('startPaypalOrderCreation$', () => {
+      it('should call orderService.createOrder with basketId', done => {
+        when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(orderWithPaypalRedirect));
+        const action = processPaypalOrderCreation({});
+        actions$ = of(action);
+
+        effects.startPaypalOrderCreation$.subscribe(() => {
+          verify(orderServiceMock.createOrder('BID', true)).once();
+          done();
+        });
+      });
+
+      it('should dispatch emitPaypalOrderId action on success', () => {
+        when(orderServiceMock.createOrder(anything(), anything())).thenReturn(of(orderWithPaypalRedirect));
+        const action = processPaypalOrderCreation({});
+        const completion = emitPaypalOrderId({
+          paypalOrderId: 'PAYPAL_ORDER_456',
+          orderId: 'ORDER123',
+        });
+        actions$ = hot('-a-a-a', { a: action });
+        const expected$ = cold('-c-c-c', { c: completion });
+
+        expect(effects.startPaypalOrderCreation$).toBeObservable(expected$);
+      });
+
+      it('should dispatch createOrderFail and emitPaypalOrderId actions on error', done => {
+        when(orderServiceMock.createOrder(anything(), anything())).thenReturn(
+          throwError(() => makeHttpError({ message: 'error' }))
+        );
+        const action = processPaypalOrderCreation({});
+        actions$ = of(action);
+
+        effects.startPaypalOrderCreation$.pipe(take(2), toArray()).subscribe(actions => {
+          expect(actions).toHaveLength(2);
+          expect(actions[0]).toEqual(createOrderFail({ error: makeHttpError({ message: 'error' }) }));
+          expect(actions[1]).toEqual(emitPaypalOrderId({ orderStatus: 'ERROR' }));
+          done();
+        });
+      });
+    });
+
+    describe('continuePaypalOrderCreation$', () => {
+      it('should call orderService.continueOrderCreation with orderId', done => {
+        when(orderServiceMock.continueOrderCreation(anyString())).thenReturn(of(orderWithPaypalRedirect));
+        const action = processPaypalOrderCreation({ orderId: 'ORDER123' });
+        actions$ = of(action);
+
+        effects.continuePaypalOrderCreation$.subscribe(() => {
+          verify(orderServiceMock.continueOrderCreation('ORDER123')).once();
+          done();
+        });
+      });
+
+      it('should dispatch createOrderSuccess and emitPaypalOrderId actions on success', done => {
+        when(orderServiceMock.continueOrderCreation(anyString())).thenReturn(of(orderWithPaypalRedirect));
+        const action = processPaypalOrderCreation({ orderId: 'ORDER123' });
+        actions$ = of(action);
+
+        effects.continuePaypalOrderCreation$.pipe(toArray()).subscribe(actions => {
+          expect(actions).toHaveLength(2);
+          expect(actions[0]).toEqual(createOrderSuccess({ order: orderWithPaypalRedirect, basketId: 'BID' }));
+          expect(actions[1]).toEqual(
+            emitPaypalOrderId({
+              paypalOrderId: 'PAYPAL_ORDER_456',
+              orderId: 'ORDER123',
+              orderStatus: 'SUCCESS',
+            })
+          );
+          done();
+        });
+      });
+
+      it('should dispatch cancelPaypalOrderCreation and emitPaypalOrderId actions when order is cancelled', done => {
+        const cancelledOrder = {
+          ...orderWithPaypalRedirect,
+          orderCreation: {
+            ...orderWithPaypalRedirect.orderCreation,
+            status: 'ROLLED_BACK',
+          },
+        } as Order;
+        when(orderServiceMock.continueOrderCreation(anyString())).thenReturn(of(cancelledOrder));
+        const action = processPaypalOrderCreation({ orderId: 'ORDER123' });
+        actions$ = of(action);
+
+        effects.continuePaypalOrderCreation$.pipe(toArray()).subscribe(actions => {
+          expect(actions).toHaveLength(2);
+          expect(actions[0]).toEqual(cancelPaypalOrderCreation());
+          expect(actions[1]).toEqual(
+            emitPaypalOrderId({
+              paypalOrderId: 'PAYPAL_ORDER_456',
+              orderId: 'ORDER123',
+              orderStatus: 'CANCELLED',
+            })
+          );
+          done();
+        });
+      });
+
+      it('should dispatch createOrderFail action on error', done => {
+        when(orderServiceMock.continueOrderCreation(anyString())).thenReturn(
+          throwError(() => makeHttpError({ message: 'error' }))
+        );
+        const action = processPaypalOrderCreation({ orderId: 'ORDER123' });
+        actions$ = of(action);
+
+        effects.continuePaypalOrderCreation$.subscribe(action => {
+          expect(action).toEqual(createOrderFail({ error: makeHttpError({ message: 'error' }) }));
+          done();
+        });
       });
     });
   });
