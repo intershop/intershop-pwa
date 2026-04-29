@@ -1,9 +1,6 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { Request } from 'express';
 import { noop } from 'rxjs';
-
-import { REQUEST } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { CookiesService } from './cookies.service';
 
