@@ -1,8 +1,11 @@
-import { UrlMatchResult, UrlSegment } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanMatchFn, UrlMatchResult, UrlSegment } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { MonoTypeOperatorFunction, filter } from 'rxjs';
 
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
+import { loadContentPage } from 'ish-core/store/content/pages';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { sanitizeSlugData } from 'ish-core/utils/routing';
@@ -19,6 +22,18 @@ function generateLocalizedContentPageSlug(page: ContentPageTreeElement) {
 
 // matcher to check if a given url is a content page route
 const contentRouteFormat = /^\/(?!page\/.*$)(.*-)?pg(.*)$/;
+
+function contentPageIdFromSegments(segments: UrlSegment[]) {
+  // compatibility to old routes
+  if (segments && segments.length === 2 && segments[0].path === 'page') {
+    return segments[1].path;
+  }
+
+  const url = `/${segments.map(s => s.path).join('/')}`;
+  if (contentRouteFormat.test(url)) {
+    return contentRouteFormat.exec(url)[2];
+  }
+}
 
 /**
  * check if given url is a content page route
@@ -48,6 +63,16 @@ export function matchContentRoute(segments: UrlSegment[]): UrlMatchResult {
   }
   return;
 }
+
+export const prefetchContentPage: CanMatchFn = (_route, segments) => {
+  const contentPageId = contentPageIdFromSegments(segments);
+
+  if (contentPageId) {
+    inject(Store).dispatch(loadContentPage({ contentPageId }));
+  }
+
+  return true;
+};
 
 /**
  * generate a localized content page url from a content page
