@@ -1,16 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation, A11y } from 'swiper';
-import { SwiperComponent } from 'swiper/angular';
+import Swiper from 'swiper';
+import { A11y, Navigation } from 'swiper/modules';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-
-SwiperCore.use([Navigation, A11y]);
 
 /**
  * The Product Images Component
@@ -28,21 +34,41 @@ SwiperCore.use([Navigation, A11y]);
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { ngSkipHydration: 'true' },
 })
-export class ProductImagesComponent implements OnInit {
-  @ViewChild('carousel') carousel: SwiperComponent;
+export class ProductImagesComponent implements OnInit, OnDestroy {
+  private swiper: Swiper;
+
+  @ViewChild('swiper') set swiperRef(ref: ElementRef) {
+    if (ref && !this.swiper && !SSR) {
+      const swiperEl = ref.nativeElement;
+      this.swiper = new Swiper(swiperEl, {
+        modules: [A11y, Navigation],
+        navigation: {
+          nextEl: swiperEl.querySelector('.swiper-button-next'),
+          prevEl: swiperEl.querySelector('.swiper-button-prev'),
+        },
+        on: {
+          slideChange: () => this.cdRef.markForCheck(),
+        },
+      });
+    }
+  }
+
   @ViewChild('zoomDialog') zoomDialog: ModalDialogComponent<unknown>;
 
   product$: Observable<ProductView>;
   zoomImageIds$: Observable<string[]>;
 
-  constructor(private context: ProductContextFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.product$ = this.context.select('product').pipe(
       whenTruthy(),
       distinctUntilKeyChanged('sku'),
       tap(() => {
-        if (this.carousel?.swiperRef?.activeIndex) {
+        if (this.swiper?.activeIndex) {
           this.setActiveSlide(0);
         }
       }),
@@ -64,7 +90,7 @@ export class ProductImagesComponent implements OnInit {
    * @param slideIndex The slide index to set the active slide
    */
   setActiveSlide(slideIndex: number) {
-    this.carousel?.swiperRef?.slideTo(slideIndex);
+    this.swiper?.slideTo(slideIndex);
   }
 
   /**
@@ -74,7 +100,7 @@ export class ProductImagesComponent implements OnInit {
    * @returns True if the given slide index is the active slide, false otherwise
    */
   isActiveSlide(slideIndex: number): boolean {
-    return this.carousel?.swiperRef?.activeIndex === slideIndex;
+    return (this.swiper?.activeIndex ?? 0) === slideIndex;
   }
 
   getZoomImageAnchorId(i: number) {
@@ -87,5 +113,9 @@ export class ProductImagesComponent implements OnInit {
       this.zoomDialog.scrollToAnchor(this.getZoomImageAnchorId(i));
     }
     return false;
+  }
+
+  ngOnDestroy(): void {
+    this.swiper?.destroy();
   }
 }

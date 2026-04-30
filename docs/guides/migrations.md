@@ -7,6 +7,18 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 11.1.0 to 12.0.0
+
+**Swiper 12 upgrade**
+
+Swiper has been upgraded from version 8 to 12.
+This upgrade spans multiple major versions and includes several breaking changes:
+
+- Removal of Swiper Angular components (now using Swiper's [JavaScript API](https://swiperjs.com/swiper-api))
+- Changed module import path
+
+For further details, see the official Swiper migration guides for [v9](https://swiperjs.com/migration-guide-v9), [v10](https://swiperjs.com/migration-guide-v10), and [v11](https://swiperjs.com/migration-guide-v11).
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

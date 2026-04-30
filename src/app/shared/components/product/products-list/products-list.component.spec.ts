@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
+import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
@@ -23,7 +23,7 @@ describe('Products List Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         MockComponent(ProductItemComponent),
-        MockComponent(SwiperComponent),
+        MockDirective(BrowserLazyViewDirective),
         MockDirective(ProductContextDirective),
         ProductsListComponent,
       ],
@@ -52,7 +52,8 @@ describe('Products List Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`<div class="product-list"><swiper></swiper></div>`);
+    expect(element.querySelector('.swiper')).toBeTruthy();
+    expect(element.querySelectorAll('.swiper-slide')).toHaveLength(2);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {

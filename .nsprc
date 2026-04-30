@@ -6,6 +6,5 @@
   "GHSA-x288-3778-4hhx": "Ignored since there probably won't be a fix for Angular 18",
   "GHSA-g93w-mfhg-p222": "Ignored since there probably won't be a fix for Angular 18",
   "GHSA-45q2-gjvg-7973": "Ignored since there probably won't be a fix for Angular 18",
-  "GHSA-rfh7-fxqc-q52v": "Ignored since there probably won't be a fix for Angular 18",
-  "GHSA-hmx5-qpq5-p643": "Ignored until we migrate the integration to the current swiper version"
+  "GHSA-rfh7-fxqc-q52v": "Ignored since there probably won't be a fix for Angular 18"
 }

@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -70,7 +69,7 @@ describe('Product Images Component', () => {
     );
     await TestBed.configureTestingModule({
       imports: [MockComponent(ProductImageComponent)],
-      declarations: [MockComponent(ProductLabelComponent), MockComponent(SwiperComponent), ProductImagesComponent],
+      declarations: [MockComponent(ProductLabelComponent), ProductImagesComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });
@@ -89,7 +88,7 @@ describe('Product Images Component', () => {
 
   it('should render carousel on component', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(2);
+    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(4);
   });
 
   it('should render thumbnails on component', () => {
@@ -116,6 +115,6 @@ describe('Product Images Component', () => {
     );
 
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(1);
+    expect(element.getElementsByTagName('ish-product-image')).toHaveLength(2);
   });
 });

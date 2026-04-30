@@ -12,7 +12,6 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -196,7 +195,6 @@ const importExportModules = [
   RecentlyExportsModule,
   RoleToggleModule,
   RouterModule,
-  SwiperModule,
   TranslateModule,
   WishlistsExportsModule,
 ];

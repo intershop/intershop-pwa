@@ -8,16 +8,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 
 const tsConfig = require('comment-json').parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' }));
 
-const esModules = [
-  'lodash-es/.*',
-  'swiper',
-  'ssr-window',
-  'dom7',
-  'uuid',
-  'rxjs',
-  '@angular/common/locales/.*\\.js$',
-  '.*\\.mjs$',
-];
+const esModules = ['lodash-es/.*', 'uuid', 'rxjs', '@angular/common/locales/.*\\.js$', '.*\\.mjs$'];
 
 export default {
   globals: {
@@ -32,7 +23,6 @@ export default {
   modulePaths: [tsConfig.compilerOptions.baseUrl],
   moduleNameMapper: {
     ...pathsToModuleNameMapper(tsConfig.compilerOptions.paths, { prefix: '<rootDir>' }),
-    '^swiper_angular$': '<rootDir>/node_modules/swiper/angular/fesm2015/swiper_angular.mjs',
   },
   snapshotSerializers: [
     './src/jest-serializer/AngularHTMLSerializer.js',
