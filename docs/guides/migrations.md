@@ -228,6 +228,9 @@ Key changes:
 
 For further details, see [Concept - Logging](../concepts/logging.md).
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 9.0.0 to version 10.0.0](https://public.academy.intershop.com/plus/catalog/courses/482).
+
 ## From 9.0.0 to 9.1.0
 
 Catalogs (root-level categories in ICM terminology) with _Show In Menu_ being disabled are now hidden from the main header navigation.
