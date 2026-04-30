@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { WithdrawalFacade } from 'ish-core/facades/withdrawal.facade';
 import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
@@ -16,7 +16,7 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [WithdrawalFacade],
 })
-export class WithdrawalRequestComponent implements OnInit, OnDestroy {
+export class WithdrawalRequestComponent implements OnInit {
   private withdrawalFacade = inject(WithdrawalFacade);
 
   withdrawal = this.withdrawalFacade.withdrawal;
@@ -24,7 +24,7 @@ export class WithdrawalRequestComponent implements OnInit, OnDestroy {
   error = this.withdrawalFacade.error;
 
   ngOnInit(): void {
-    this.withdrawalFacade.getWithdrawalFromLocalStorage();
+    this.withdrawalFacade.getWithdrawalFromRoute();
   }
 
   createWithdrawal(data: { orderDocumentNumber: string; orderEmail: string }) {
@@ -33,9 +33,5 @@ export class WithdrawalRequestComponent implements OnInit, OnDestroy {
 
   submitWithdrawal(data: Withdrawal) {
     this.withdrawalFacade.sendWithdrawal(data);
-  }
-
-  ngOnDestroy(): void {
-    this.withdrawalFacade.cleanup();
   }
 }

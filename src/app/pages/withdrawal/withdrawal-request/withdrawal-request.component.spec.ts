@@ -53,11 +53,6 @@ describe('Withdrawal Request Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should call getWithdrawalFromLocalStorage on init', () => {
-    fixture.detectChanges();
-    verify(withdrawalFacade.getWithdrawalFromLocalStorage()).once();
-  });
-
   it('should delegate createWithdrawal to facade', () => {
     component.createWithdrawal({ orderDocumentNumber: '12345', orderEmail: 'test@example.com' });
     verify(withdrawalFacade.createWithdrawal('12345', 'test@example.com')).once();
@@ -67,11 +62,5 @@ describe('Withdrawal Request Component', () => {
     const withdrawal = { orderDocumentNumber: '12345' } as Withdrawal;
     component.submitWithdrawal(withdrawal);
     verify(withdrawalFacade.sendWithdrawal(withdrawal)).once();
-  });
-
-  it('should call cleanup on destroy', () => {
-    fixture.detectChanges();
-    fixture.destroy();
-    verify(withdrawalFacade.cleanup()).once();
   });
 });

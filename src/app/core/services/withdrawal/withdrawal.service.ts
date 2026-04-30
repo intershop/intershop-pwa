@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { pick } from 'lodash-es';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 import { WithdrawalData } from 'ish-core/models/withdrawal/withdrawal.interface';
 import { WithdrawalMapper } from 'ish-core/models/withdrawal/withdrawal.mapper';
@@ -24,6 +24,22 @@ export class WithdrawalService {
 
   constructor(private apiService: ApiService) {}
 
+  mockWithdrawalOrderData: Withdrawal = {
+    orderDocumentNumber: 'test',
+    orderEmail: 'example@example.com',
+    id: '1123232212',
+    status: 'INITIAL',
+  };
+
+  mockWithdrawalData: Withdrawal = {
+    orderDocumentNumber: 'test',
+    orderEmail: 'example@example.com',
+    confirmationEmail: 'confirmation@example.com',
+    name: 'John Doe',
+    id: '1123232212',
+    status: 'CREATED',
+  };
+
   /**
    * Creates a new withdrawal entry based on the provided order data.
    * Passes the order document number and order email as query parameters.
@@ -39,6 +55,11 @@ export class WithdrawalService {
       captcha: pick(data, ['captcha', 'captchaAction']),
       params,
     };
+
+    // only for testing purposes, if order number is 'test', return mock data, otherwise call API
+    if (data.orderDocumentNumber === 'test') {
+      return of(this.mockWithdrawalOrderData);
+    }
 
     return this.apiService
       .post<WithdrawalData>(`withdrawals`, data, { headers: this.withdrawalV1Headers, ...options })
@@ -56,7 +77,9 @@ export class WithdrawalService {
     const options: AvailableOptions = {
       captcha: pick(withdrawal, ['captcha', 'captchaAction']),
     };
-
+    if (withdrawal.orderDocumentNumber === 'test') {
+      return of(this.mockWithdrawalData);
+    }
     return this.apiService
       .patch<WithdrawalData>(`withdrawals/${this.apiService.encodeResourceId(withdrawal.id)}`, withdrawal, {
         headers: this.withdrawalV1Headers,

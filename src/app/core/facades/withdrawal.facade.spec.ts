@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { Subject, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -11,6 +12,7 @@ import { WithdrawalFacade } from './withdrawal.facade';
 describe('Withdrawal Facade', () => {
   let facade: WithdrawalFacade;
   let withdrawalService: WithdrawalService;
+  let queryParamMap$: Subject<ReturnType<typeof convertToParamMap>>;
 
   const mockWithdrawal: Withdrawal = {
     id: 'w1',
@@ -21,16 +23,18 @@ describe('Withdrawal Facade', () => {
 
   beforeEach(() => {
     withdrawalService = mock(WithdrawalService);
+    queryParamMap$ = new Subject();
 
     TestBed.configureTestingModule({
-      providers: [{ provide: WithdrawalService, useFactory: () => instance(withdrawalService) }, WithdrawalFacade],
+      providers: [
+        { provide: ActivatedRoute, useValue: { queryParamMap: queryParamMap$.asObservable() } },
+        { provide: Router, useValue: { navigate: () => Promise.resolve(true) } },
+        { provide: WithdrawalService, useFactory: () => instance(withdrawalService) },
+        WithdrawalFacade,
+      ],
     });
 
     facade = TestBed.inject(WithdrawalFacade);
-  });
-
-  afterEach(() => {
-    localStorage.removeItem('withdrawal');
   });
 
   it('should be created', () => {
@@ -51,19 +55,36 @@ describe('Withdrawal Facade', () => {
     });
   });
 
-  describe('getWithdrawalFromLocalStorage()', () => {
-    it('should set withdrawal signal when localStorage entry exists', () => {
-      localStorage.setItem('withdrawal', JSON.stringify(mockWithdrawal));
+  describe('getWithdrawalFromRoute()', () => {
+    it('should set withdrawal signal when all required params are present', () => {
+      facade.getWithdrawalFromRoute();
 
-      facade.getWithdrawalFromLocalStorage();
+      queryParamMap$.next(
+        convertToParamMap({ orderDocumentNumber: 'ORDER-123', orderEmail: 'test@example.com', withdrawal: 'w1' })
+      );
 
-      expect(facade.withdrawal()).toEqual(mockWithdrawal);
+      expect(facade.withdrawal()).toEqual({
+        orderDocumentNumber: 'ORDER-123',
+        orderEmail: 'test@example.com',
+        id: 'w1',
+      });
     });
 
-    it('should not update withdrawal signal when localStorage has no entry', () => {
-      localStorage.removeItem('withdrawal');
+    it('should not set withdrawal signal when required params are missing', () => {
+      facade.getWithdrawalFromRoute();
 
-      facade.getWithdrawalFromLocalStorage();
+      queryParamMap$.next(convertToParamMap({ orderDocumentNumber: 'ORDER-123' }));
+
+      expect(facade.withdrawal()).toBeUndefined();
+    });
+
+    it('should not set withdrawal signal when initialRouteChanges is true', () => {
+      facade.initialRouteChanges = true;
+      facade.getWithdrawalFromRoute();
+
+      queryParamMap$.next(
+        convertToParamMap({ orderDocumentNumber: 'ORDER-123', orderEmail: 'test@example.com', withdrawal: 'w1' })
+      );
 
       expect(facade.withdrawal()).toBeUndefined();
     });
@@ -84,14 +105,6 @@ describe('Withdrawal Facade', () => {
       facade.createWithdrawal('ORDER-123', 'test@example.com');
 
       expect(facade.withdrawal()).toEqual(mockWithdrawal);
-    });
-
-    it('should save result to localStorage on success', () => {
-      when(withdrawalService.createWithdrawal(anything())).thenReturn(of(mockWithdrawal));
-
-      facade.createWithdrawal('ORDER-123', 'test@example.com');
-
-      expect(localStorage.getItem('withdrawal')).toEqual(JSON.stringify(mockWithdrawal));
     });
 
     it('should clear error signal before calling service', () => {
@@ -151,14 +164,6 @@ describe('Withdrawal Facade', () => {
       expect(facade.withdrawal()).toEqual(withdrawalRequest);
     });
 
-    it('should save result to localStorage on success', () => {
-      when(withdrawalService.sendWithdrawalRequest(anything())).thenReturn(of(withdrawalRequest));
-
-      facade.sendWithdrawal(withdrawalRequest);
-
-      expect(localStorage.getItem('withdrawal')).toEqual(JSON.stringify(withdrawalRequest));
-    });
-
     it('should set loading to false on success', () => {
       when(withdrawalService.sendWithdrawalRequest(anything())).thenReturn(of(withdrawalRequest));
 
@@ -184,16 +189,6 @@ describe('Withdrawal Facade', () => {
       facade.sendWithdrawal(withdrawalRequest);
 
       expect(facade.loading()).toBeFalse();
-    });
-  });
-
-  describe('cleanup()', () => {
-    it('should remove withdrawal from localStorage', () => {
-      localStorage.setItem('withdrawal', JSON.stringify(mockWithdrawal));
-
-      facade.cleanup();
-
-      expect(localStorage.getItem('withdrawal')).toBeNull();
     });
   });
 });
