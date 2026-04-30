@@ -2,22 +2,25 @@
   @if (products.length) {
     @if (listStyle === 'carousel') {
       <div class="product-list">
-        <swiper [config]="swiperConfig">
-          @for (sku of products; track $index) {
-            <ng-template let-data swiperSlide>
-              <div [ngClass]="listItemCSSClass">
-                @if (lazyFetch(data.isVisible, sku)) {
+        <div #swiper class="swiper">
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-wrapper">
+            @for (sku of products; track $index) {
+              <div class="swiper-slide">
+                <div [ngClass]="listItemCSSClass">
                   <ish-product-item
                     ishProductContext
                     [configuration]="listItemConfiguration"
                     [displayType]="listItemStyle"
                     [sku]="sku"
                   />
-                }
+                </div>
               </div>
-            </ng-template>
-          }
-        </swiper>
+            }
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+        </div>
       </div>
     } @else {
       <div class="product-list row">

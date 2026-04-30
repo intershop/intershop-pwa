@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
 import { RxState } from '@rx-angular/state';
-import { EMPTY, Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions, A11y } from 'swiper';
+import Swiper from 'swiper';
+import { A11y, Navigation, Pagination } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -10,8 +12,6 @@ import { ProductLinks } from 'ish-core/models/product-links/product-links.model'
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
-
-SwiperCore.use([Navigation, Pagination, A11y]);
 
 /**
  * The Product Link Carousel Component
@@ -28,7 +28,7 @@ SwiperCore.use([Navigation, Pagination, A11y]);
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
 })
-export class ProductLinksCarouselComponent {
+export class ProductLinksCarouselComponent implements OnDestroy {
   /**
    * list of products which are assigned to the specific product link type
    */
@@ -48,16 +48,34 @@ export class ProductLinksCarouselComponent {
 
   productSKUs$ = this.state.select('products$');
 
-  /**
-   * track already fetched SKUs
-   */
-  private fetchedSKUs = new Set<Observable<string>>();
+  private swiper: Swiper;
+  private swiperInitialized = false;
 
-  /**
-   * configuration of swiper carousel
-   * https://swiperjs.com/swiper-api
-   */
-  swiperConfig: SwiperOptions;
+  @ViewChild('swiper') set swiperRef(ref: ElementRef) {
+    if (ref && !this.swiperInitialized && !SSR) {
+      this.swiperInitialized = true;
+      const swiperEl = ref.nativeElement;
+      this.swiper = new Swiper(swiperEl, {
+        modules: [A11y, Navigation, Pagination],
+        ...this.swiperConfig,
+        navigation: {
+          nextEl: swiperEl.querySelector('.swiper-button-next'),
+          prevEl: swiperEl.querySelector('.swiper-button-prev'),
+        },
+        pagination: {
+          el: swiperEl.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+      });
+    }
+  }
+
+  // configuration of swiper carousel: https://swiperjs.com/swiper-api
+  private swiperConfig: SwiperOptions = {
+    watchSlidesProgress: true,
+    direction: 'horizontal',
+    breakpoints: {},
+  };
 
   constructor(
     @Inject(LARGE_BREAKPOINT_WIDTH) largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
@@ -75,26 +93,18 @@ export class ProductLinksCarouselComponent {
       displayOnlyAvailableProducts: false,
     }));
 
-    this.swiperConfig = {
-      watchSlidesProgress: true,
-      direction: 'horizontal',
-      navigation: true,
-      pagination: {
-        clickable: true,
+    this.swiperConfig.breakpoints = {
+      0: {
+        slidesPerView: 2,
+        slidesPerGroup: 2,
       },
-      breakpoints: {
-        0: {
-          slidesPerView: 2,
-          slidesPerGroup: 2,
-        },
-        [mediumBreakpointWidth]: {
-          slidesPerView: 3,
-          slidesPerGroup: 3,
-        },
-        [largeBreakpointWidth]: {
-          slidesPerView: 4,
-          slidesPerGroup: 4,
-        },
+      [mediumBreakpointWidth]: {
+        slidesPerView: 3,
+        slidesPerGroup: 3,
+      },
+      [largeBreakpointWidth]: {
+        slidesPerView: 4,
+        slidesPerGroup: 4,
       },
     };
 
@@ -132,13 +142,7 @@ export class ProductLinksCarouselComponent {
     this.state.connect('products$', filteredProducts$);
   }
 
-  lazyFetch(fetch: boolean, sku$: Observable<string>): Observable<string> {
-    if (fetch) {
-      this.fetchedSKUs.add(sku$);
-    }
-    if (this.fetchedSKUs.has(sku$)) {
-      return sku$;
-    }
-    return EMPTY;
+  ngOnDestroy(): void {
+    this.swiper?.destroy();
   }
 }

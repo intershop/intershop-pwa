@@ -13,8 +13,7 @@
       ],
       "requisition-management": [
         "projects/requisition-management/src/app/exports"
-      ],
-      "swiper_angular": ["node_modules/swiper/angular"]
+      ]
     },
 
     /* Language & Environment */
