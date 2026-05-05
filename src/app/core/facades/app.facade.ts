@@ -17,7 +17,11 @@ import {
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
-import { getExtraConfigParameter, getServerConfigParameter } from 'ish-core/store/core/server-config';
+import {
+  getExtraConfigParameter,
+  getServerConfigParameter,
+  isServerConfigurationLoaded,
+} from 'ish-core/store/core/server-config';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
@@ -46,6 +50,7 @@ export class AppFacade {
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
   currentCurrency$ = this.store.pipe(select(getCurrentCurrency));
+  serverConfigurationLoaded$ = this.store.pipe(select(isServerConfigurationLoaded));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));
