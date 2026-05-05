@@ -13,20 +13,20 @@ kb_sync_latest_only
 
 With Intershop PWA 11.0.0, the project was updated to Angular 18.
 In addition, several dependencies such as Formly, ESLint, Jest, Prettier and TypeScript have been updated.
-The Angular update replaces the deprecated i18n API - for example `getCurrencySymbol` - with the new `Intl` API.
-For a list of all deprecations, see this [github page](https://github.com/angular/angular/issues/54470).
+The Angular update replaces the deprecated i18n API—for example, `getCurrencySymbol`—with the new `Intl` API.
+For a list of all deprecations, see the [Angular page in GitHub](https://github.com/angular/angular/issues/54470).
 
 For more details about the Angular 18 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=17.0-18.0&l=3).
 
 **Formly 7 update**
 
 Formly was updated to version 7.
-For more information see the [Formly migration guide](https://formly.dev/docs/guide/migration).
+For more information, see the [Formly migration guide](https://formly.dev/docs/guide/migration).
 
 **ESLint 9 update**
 
-With the update to ESLint 9, the configuration format changed from the legacy `.eslintrc.json` to the new flat config format `eslint.config.mjs`.
-The separate `.eslintrc.json` files previously located in the `e2e/` and `schematics/` folders have been consolidated into the root `eslint.config.mjs` as file-specific override blocks.
+With the update to ESLint 9, the configuration format changed from the legacy _.eslintrc.json_ to the new flat config format _eslint.config.mjs_.
+The separate _.eslintrc.json_ files previously located in the _e2e/_ and _schematics/_ folders have been consolidated into the root _eslint.config.mjs_ as file-specific override blocks.
 The new config also includes `eslint:recommended` and `eslint:stylistic` for TypeScript files.
 Some ESLint-related packages were renamed and updated to their latest versions, resulting in changes to the available rules and their default values.
 
@@ -72,17 +72,18 @@ The VS Code CSpell extension is disabled for TypeScript and JavaScript files to 
 To migrate custom code:
 
 - Run `npm run lint` to check for spelling errors in TypeScript and JavaScript files.
-- Add project-specific words to `intershop.txt`.
+- Add project-specific words to _intershop.txt_.
 
 **Jest 30 update**
 
-Jest and related packages such as `jest-preset-angular` have been updated to their latest major versions, including several breaking changes.
+Jest and related packages such as `jest-preset-angular` have been updated to their latest major versions.
+The update includes several breaking changes.
 
 Key changes:
 
-- The configuration format changed from `jest.config.js` to `jest.config.ts`, using the new `createCjsPreset()` from `jest-preset-angular` instead of the previous `preset` string.
+- The configuration format changed from _jest.config.js_ to _jest.config.ts_, using the new `createCjsPreset()` from `jest-preset-angular` instead of the previous `preset` string.
 - The test runner is explicitly set to `jest-jasmine2` to maintain backward compatibility, since Jest 30 defaults to `jest-circus`.
-- The `jest-environment-jsdom` package now uses JSDOM v26, which may introduce behavior changes in the DOM test environment. Mocking `window.location` is no longer possible with the current JSDOM version, so affected tests must be refactored or temporarily disabled.
+- The `jest-environment-jsdom` package now uses JSDOM v26, which can introduce behavior changes in the DOM test environment. Mocking `window.location` is no longer possible with the current JSDOM version; affected tests must be refactored or temporarily disabled.
 
 For more details about the Jest 30 update, see the [Jest Upgrade Guide](https://jestjs.io/docs/upgrading-to-jest30).
 
@@ -131,20 +132,20 @@ See the updated [NGINX Startup Guide](./nginx-startup.md#https-or-ssl) for detai
 
 **NGINX Docker build uses Ubuntu mirror**
 
-The NGINX Docker build now defaults to `azure.archive.ubuntu.com` for apt packages to improve build reliability on Azure and GitHub Actions.
+The NGINX Docker build now defaults to _azure.archive.ubuntu.com_ for apt packages to improve build reliability on Azure and GitHub Actions.
 If this mirror is unreachable, pass `--build-arg UBUNTU_MIRROR=` to the pipeline to fall back to the default Ubuntu repositories.
 
 **PayPal Google Pay and Apple Pay functionality**
 
 The Intershop PWA now supports Google Pay and Apple Pay as additional payment methods via PayPal.
-Two new adapters have been added - `PaypalGooglePayAdapter` and `PaypalApplePayAdapter` - that integrate with the PayPal SDK to render the respective payment buttons and handle the associated payment flows.
-This functionality requires the **Intershop PPCP Connector version 3.1.0** or higher (ICM 14.2.2+, Google Pay JS API 2.0, Apple Pay JS API 4).
+Two new adapters have been added, `PaypalGooglePayAdapter` and `PaypalApplePayAdapter`, that integrate with the PayPal SDK to render the respective payment buttons and handle the associated payment flows.
+This functionality requires Intershop PPCP Connector version 3.1.0 or higher (ICM 14.2.2+, Google Pay JS API 2.0, Apple Pay JS API 4).
 For details, see the [PayPal Integration Guide](./paypal.md).
 
 **Language switch component**
 
-The behavior of the language switch component was changed.
-It will no longer render if only one language is configured in ICM and therefore no language switch options would be available.
+The behavior of the language switch component has changed.
+The component no longer renders when only one language is configured in ICM, and therefore no language switch options are available.
 
 ## From 9.1.0 to 10.0.0
 
