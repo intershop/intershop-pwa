@@ -23,8 +23,6 @@ export class LanguageSwitchComponent implements OnInit {
    */
   @Input() placement: '' | 'up' = '';
 
-  locale$: Observable<string>;
-  availableLocales$: Observable<string[]>;
   languageSwitchData$: Observable<{ locale: string; availableLocales: string[] }>;
 
   constructor(
@@ -35,11 +33,9 @@ export class LanguageSwitchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.locale$ = this.appFacade.currentLocale$;
-    this.availableLocales$ = this.appFacade.availableLocales$;
     this.languageSwitchData$ = combineLatest([
-      this.locale$,
-      this.availableLocales$,
+      this.appFacade.currentLocale$,
+      this.appFacade.availableLocales$,
       this.appFacade.serverConfigurationLoaded$,
     ]).pipe(
       filter(

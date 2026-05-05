@@ -19,15 +19,15 @@
     <div class="language-switch-container dropdown-menu" ngbDropdownMenu role="menu" style="left: 0 !important">
       <div class="language-switch-menu-container">
         <ul>
-          @for (l of data.availableLocales; track l) {
-            @if (l !== data.locale) {
+          @for (loc of data.availableLocales; track loc) {
+            @if (loc !== data.locale) {
               <li>
                 <a
-                  [href]="location | ishMakeHref: { lang: l } | async"
-                  [lang]="'locale.' + l + '.short' | translate"
-                  (click)="setLocaleCookie(l)"
+                  [href]="location | ishMakeHref: { lang: loc } | async"
+                  [lang]="'locale.' + loc + '.short' | translate"
+                  (click)="setLocaleCookie(loc)"
                 >
-                  {{ 'locale.' + l + '.long' | translate }}
+                  {{ 'locale.' + loc + '.long' | translate }}
                 </a>
               </li>
             }

@@ -141,6 +141,11 @@ Two new adapters have been added - `PaypalGooglePayAdapter` and `PaypalApplePayA
 This functionality requires the **Intershop PPCP Connector version 3.1.0** or higher (ICM 14.2.2+, Google Pay JS API 2.0, Apple Pay JS API 4).
 For details, see the [PayPal Integration Guide](./paypal.md).
 
+**Language switch component**
+
+The behavior of the language switch component was changed.
+It will no longer render if only one language is configured in ICM and therefore no language switch options would be available.
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**
