@@ -7,7 +7,6 @@ import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
-import { prefetchSearchPage } from 'ish-core/routing/search/search.route';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -56,7 +55,6 @@ const routes: Routes = [
   },
   {
     path: 'search',
-    canMatch: [prefetchSearchPage],
     loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule),
   },
   {

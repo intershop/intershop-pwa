@@ -1,13 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlMatchResult, UrlSegment } from '@angular/router';
-import { Store } from '@ngrx/store';
 
 import { createContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageTreeHelper } from 'ish-core/models/content-page-tree/content-page-tree.helper';
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
-import { loadContentPage } from 'ish-core/store/content/pages';
 
-import { generateContentPageUrl, matchContentRoute, prefetchContentPage } from './content-page.route';
+import { generateContentPageUrl, matchContentRoute } from './content-page.route';
 
 describe('Content Page Route', () => {
   const topElement: ContentPageTreeElement = { contentPageId: 'top', name: 'top layer', path: ['top'] };
@@ -33,14 +31,9 @@ describe('Content Page Route', () => {
   });
 
   let wrap: (url: string) => UrlSegment[];
-  let store: { dispatch: jest.Mock };
 
   beforeEach(() => {
-    store = { dispatch: jest.fn() };
-
-    TestBed.configureTestingModule({
-      providers: [{ provide: Store, useValue: store }],
-    });
+    TestBed.configureTestingModule({});
     const router = TestBed.inject(Router);
     wrap = url => {
       const primary = router.parseUrl(url).root.children.primary;
@@ -75,28 +68,6 @@ describe('Content Page Route', () => {
           "contentPageId": "top",
         }
       `);
-    });
-  });
-
-  describe('prefetchContentPage', () => {
-    it('should prefetch old content page routes before the lazy module is loaded', () => {
-      TestBed.runInInjectionContext(() => prefetchContentPage(undefined, wrap('/page/page.demodisclaimer')));
-
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(loadContentPage({ contentPageId: 'page.demodisclaimer' }));
-    });
-
-    it('should prefetch generated content page routes before the lazy module is loaded', () => {
-      TestBed.runInInjectionContext(() => prefetchContentPage(undefined, wrap('/top-layer-pgtop')));
-
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(loadContentPage({ contentPageId: 'top' }));
-    });
-
-    it('should ignore routes without a content page id', () => {
-      TestBed.runInInjectionContext(() => prefetchContentPage(undefined, wrap('/home')));
-
-      expect(store.dispatch).not.toHaveBeenCalled();
     });
   });
 

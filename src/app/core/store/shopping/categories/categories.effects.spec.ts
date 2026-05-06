@@ -206,7 +206,7 @@ describe('Categories Effects', () => {
     it('should call the categoriesService for LoadCategoryByRef action', done => {
       const categoryId = '123@domain';
       const action = loadCategoryByRef({ categoryId });
-      actions$ = of(personalizationStatusDetermined(), action);
+      actions$ = of(action);
 
       effects.loadCategory$.subscribe(() => {
         verify(categoriesServiceMock.getCategory(categoryId)).once();
@@ -225,8 +225,8 @@ describe('Categories Effects', () => {
         } as Category,
       ]);
       const completion = loadCategorySuccess({ categories: response });
-      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
-      const expected$ = cold('--c-c-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
     });
@@ -235,8 +235,8 @@ describe('Categories Effects', () => {
       const categoryId = 'invalid';
       const action = loadCategoryByRef({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
-      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
-      const expected$ = cold('--c-c-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
     });
@@ -244,7 +244,7 @@ describe('Categories Effects', () => {
     it('should call the categoriesService for LoadCategory action', done => {
       const categoryId = '123';
       const action = loadCategory({ categoryId });
-      actions$ = of(personalizationStatusDetermined(), action);
+      actions$ = of(action);
 
       effects.loadCategory$.subscribe(() => {
         verify(categoriesServiceMock.getCategory(categoryId)).once();
@@ -262,8 +262,8 @@ describe('Categories Effects', () => {
         } as Category,
       ]);
       const completion = loadCategorySuccess({ categories: response });
-      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
-      const expected$ = cold('--c-c-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
     });
@@ -272,8 +272,8 @@ describe('Categories Effects', () => {
       const categoryId = 'invalid';
       const action = loadCategory({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
-      actions$ = hot('b-a-a-a', { a: action, b: personalizationStatusDetermined() });
-      const expected$ = cold('--c-c-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadCategory$).toBeObservable(expected$);
     });

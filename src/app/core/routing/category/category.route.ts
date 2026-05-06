@@ -1,6 +1,4 @@
-import { inject } from '@angular/core';
-import { CanMatchFn, UrlMatchResult, UrlSegment } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { UrlMatchResult, UrlSegment } from '@angular/router';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -8,7 +6,6 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { Category } from 'ish-core/models/category/category.model';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam, selectRouteParamAorB } from 'ish-core/store/core/router';
-import { loadCategory, loadCategoryByRef } from 'ish-core/store/shopping/categories';
 import { sanitizeSlugData } from 'ish-core/utils/routing';
 
 /**
@@ -23,24 +20,6 @@ export function generateLocalizedCategorySlug(category: Category) {
 
 // matcher to check if a given url is a category route
 const categoryRouteFormat = /^\/(?!category|categoryref\/.*$)(.*?)-?ctg(.*)$/;
-
-function categoryParamsFromSegments(segments: UrlSegment[]) {
-  // compatibility to old routes
-  if (segments && segments.length === 2 && segments[0].path === 'category') {
-    return { categoryUniqueId: segments[1].path };
-  }
-  if (segments && segments.length === 2 && segments[0].path === 'categoryref') {
-    return { categoryRefId: segments[1].path };
-  }
-
-  const url = `/${segments.map(s => s.path).join('/')}`;
-  if (categoryRouteFormat.test(url)) {
-    const match = categoryRouteFormat.exec(url);
-    if (match[2]) {
-      return { categoryUniqueId: match[2] };
-    }
-  }
-}
 
 /**
  * check if given url is a category route
@@ -72,18 +51,6 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   }
   return;
 }
-
-export const prefetchCategoryPage: CanMatchFn = (_route, segments) => {
-  const categoryParams = categoryParamsFromSegments(segments);
-
-  if (categoryParams?.categoryUniqueId) {
-    inject(Store).dispatch(loadCategory({ categoryId: categoryParams.categoryUniqueId }));
-  } else if (categoryParams?.categoryRefId) {
-    inject(Store).dispatch(loadCategoryByRef({ categoryId: categoryParams.categoryRefId }));
-  }
-
-  return true;
-};
 
 /**
  * generate a localized category url from a category view
