@@ -1,4 +1,6 @@
-import { UrlMatchResult, UrlSegment } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanMatchFn, UrlMatchResult, UrlSegment } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { MonoTypeOperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -8,6 +10,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { loadProduct } from 'ish-core/store/shopping/products';
 import { sanitizeSlugData } from 'ish-core/utils/routing';
 
 /**
@@ -37,6 +40,25 @@ function generateLocalizedProductSlug(product: ProductView) {
 
 // matcher to check if a given url is a product url
 const productRouteFormat = /\/(?!ctg)(?!.*-ctg.*-prd)(.*?)-?prd(.*?)(-ctg(.*))?$/;
+
+function productParamsFromSegments(segments: UrlSegment[]) {
+  // compatibility to old routes
+  if (segments && segments.length > 1 && segments[0].path === 'product') {
+    return { sku: segments[1].path };
+  }
+  if (segments?.length > 3 && segments[0].path === 'category' && segments[2].path === 'product') {
+    return { categoryUniqueId: segments[1].path, sku: segments[3].path };
+  }
+
+  const url = `/${segments.map(s => s.path).join('/')}`;
+  if (productRouteFormat.test(url)) {
+    const match = productRouteFormat.exec(url);
+    return {
+      categoryUniqueId: match[4],
+      sku: match[2],
+    };
+  }
+}
 
 /**
  * check if a given url is a product url
@@ -73,6 +95,16 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   }
   return;
 }
+
+export const prefetchProductPage: CanMatchFn = (_route, segments) => {
+  const productParams = productParamsFromSegments(segments);
+
+  if (productParams?.sku) {
+    inject(Store).dispatch(loadProduct({ sku: productParams.sku }));
+  }
+
+  return true;
+};
 
 /**
  * generate a localized product url from a product view

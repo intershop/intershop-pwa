@@ -17,6 +17,7 @@ import { loadMoreProducts } from 'ish-core/store/shopping/product-listing';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import {
+  delayUntil,
   mapErrorToAction,
   mapToPayload,
   mapToPayloadProperty,
@@ -96,6 +97,7 @@ export class CategoriesEffects {
   loadCategory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadCategory, loadCategoryByRef),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('categoryId'),
       mergeMap(id =>
         this.categoryService.getCategory(id).pipe(
