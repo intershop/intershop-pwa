@@ -7,14 +7,16 @@
           <div class="swiper-wrapper">
             @for (sku of products; track $index) {
               <div class="swiper-slide">
-                <div [ngClass]="listItemCSSClass">
-                  <ish-product-item
-                    ishProductContext
-                    [configuration]="listItemConfiguration"
-                    [displayType]="listItemStyle"
-                    [sku]="sku"
-                  />
-                </div>
+                <ish-deferred-item [cssClass]="listItemCSSClass">
+                  <ng-template ishLazyLoadingContent>
+                    <ish-product-item
+                      ishProductContext
+                      [configuration]="listItemConfiguration"
+                      [displayType]="listItemStyle"
+                      [sku]="sku"
+                    />
+                  </ng-template>
+                </ish-deferred-item>
               </div>
             }
           </div>

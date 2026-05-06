@@ -90,6 +90,7 @@ import { BasketShippingAddressWidgetComponent } from './components/checkout/bask
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
+import { DeferredItemComponent } from './components/common/deferred-item/deferred-item.component';
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
 import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
@@ -287,6 +288,7 @@ const exportedComponents = [
   InfoBoxComponent,
   InfoMessageComponent,
   InPlaceEditComponent,
+  DeferredItemComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,
