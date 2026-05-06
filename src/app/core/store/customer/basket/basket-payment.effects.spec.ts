@@ -769,10 +769,6 @@ describe('Basket Payment Effects', () => {
           basket: {
             id: 'BID',
             lineItems: [],
-            payment: {
-              id: 'paypal-payment',
-              capabilities: ['PaypalCheckout'],
-            },
           } as Basket,
         })
       );
