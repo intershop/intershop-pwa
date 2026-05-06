@@ -29,6 +29,7 @@ function getScaledPriceItem(priceItem: ProductPriceItemData): ScaledPriceItem {
 
 @Injectable({ providedIn: 'root' })
 export class ProductPricesMapper {
+  // eslint-disable-next-line complexity
   static fromData(data: ProductPriceDetailsData): ProductPriceDetails {
     const scaledPrices = data?.prices?.SalePrice?.map(priceItem => getScaledPriceItem(priceItem))
       .filter(priceItem => priceItem.minQuantity !== 1)

@@ -9,7 +9,10 @@ import { StoreLocationMapper } from '../../models/store-location/store-location.
 
 @Injectable({ providedIn: 'root' })
 export class StoresService {
-  constructor(private apiService: ApiService, private storeLocationMapper: StoreLocationMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private storeLocationMapper: StoreLocationMapper
+  ) {}
 
   getStores(countryCode?: string, postalCode?: string, city?: string) {
     let params = new HttpParams();

@@ -1,18 +1,18 @@
 <h1>{{ 'account.costcenter.create.heading' | translate }}</h1>
 
-<form [formGroup]="form" (ngSubmit)="submitForm()" ishFormSubmit #ccForm="ngForm" class="form-horizontal" novalidate>
+<form #ccForm="ngForm" class="form-horizontal" ishFormSubmit novalidate [formGroup]="form" (ngSubmit)="submitForm()">
   <ish-cost-center-form [form]="form" />
   <div class="row">
     <div class="offset-md-4 col-md-8">
       <button
-        type="submit"
         class="btn btn-primary"
-        [disabled]="form.invalid && ccForm.submitted"
         data-testing-id="create-cost-center-submit"
+        type="submit"
+        [disabled]="form.invalid && ccForm.submitted"
       >
         {{ 'account.costcenter.create.button.label' | translate }}
       </button>
-      <a routerLink="../" class="btn btn-secondary" data-testing-id="create-cost-center-cancel">{{
+      <a class="btn btn-secondary" data-testing-id="create-cost-center-cancel" routerLink="../">{{
         'account.cancel.link' | translate
       }}</a>
     </div>
@@ -22,5 +22,5 @@
 <ish-cost-center-csv-import />
 
 @if (loading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

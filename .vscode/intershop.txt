@@ -4,6 +4,8 @@ addtocart
 angulartics
 anonymization
 apitoken
+appl
+applepay
 appr
 appserver
 backoffice
@@ -11,10 +13,12 @@ bitnami
 blocklist
 breakline
 brotli
+buttonstyle
 callparametersstring
 categoryref
 chatflow
 chatflowid
+clazz
 clickability
 clickjacking
 clid
@@ -51,6 +55,7 @@ entrypoint
 errorpage
 extralarge
 fastpay
+fesm
 fieldgroup
 flowise
 flushdb
@@ -61,8 +66,10 @@ foos
 formly
 français
 geolocation
+getmetrics
 giftwrap
 gomplate
+googlepay
 greaterthan
 grecaptcha
 heapsnapshot
@@ -72,6 +79,7 @@ hoverable
 iban
 icecat
 iframes
+iisnode
 includeid
 infobox
 installable
@@ -95,6 +103,7 @@ loglevel
 luarocks
 matomo
 maxlength
+merchantid
 mergeable
 minibasket
 minlength
@@ -105,6 +114,7 @@ mouseout
 ngcc
 ngmodule
 ngrx
+nodir
 nofollow
 noindex
 noneditable
@@ -114,6 +124,9 @@ novalidate
 npsc
 objs
 oidc
+onpaymentauthorized
+onpaymentmethodselected
+onvalidatemerchant
 openid
 ordertemplate
 ordertemplates
@@ -182,6 +195,7 @@ setuprequest
 silktide
 sitekey
 skus
+smarttools
 sortings
 sparque
 spgid

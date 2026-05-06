@@ -79,13 +79,13 @@ describe('Product Reviews Effects', () => {
     });
 
     it('should map to action of type loadProductReviewsSuccess', () => {
-      const reviews: ProductReviews = {
+      const productReviews: ProductReviews = {
         sku: '123',
         reviews: [],
       };
 
       const action = loadProductReviews({ sku: '123' });
-      const completion = loadProductReviewsSuccess({ reviews });
+      const completion = loadProductReviewsSuccess({ reviews: productReviews });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -162,10 +162,10 @@ describe('Product Reviews Effects', () => {
   });
 
   describe('deleteProductReview$', () => {
-    const review = { id: 'xyz', rating: 3, title: 'review title', content: 'review content' } as ProductReview;
+    const productReview = { id: 'xyz', rating: 3, title: 'review title', content: 'review content' } as ProductReview;
 
     it('should call the service when DeleteProductReview event is called', done => {
-      const action = deleteProductReview({ sku: '123', review });
+      const action = deleteProductReview({ sku: '123', review: productReview });
       actions$ = of(action);
       effects.deleteProductReview$.subscribe(() => {
         verify(reviewsServiceMock.deleteProductReview('123', anything())).once();
@@ -174,8 +174,8 @@ describe('Product Reviews Effects', () => {
     });
 
     it('should dispatch a DeleteProductReviewSuccess action on successful', () => {
-      const action = deleteProductReview({ sku: '123', review });
-      const completion1 = deleteProductReviewSuccess({ sku: '123', review });
+      const action = deleteProductReview({ sku: '123', review: productReview });
+      const completion1 = deleteProductReviewSuccess({ sku: '123', review: productReview });
 
       const completion2 = displaySuccessMessage({
         message: 'product.reviews.delete.success.message',
@@ -193,7 +193,7 @@ describe('Product Reviews Effects', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
       when(reviewsServiceMock.deleteProductReview(anyString(), anything())).thenReturn(throwError(() => error));
 
-      const action = deleteProductReview({ sku: '123', review });
+      const action = deleteProductReview({ sku: '123', review: productReview });
       const completion = deleteProductReviewFail({
         error,
       });

@@ -59,7 +59,7 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   if (productRouteFormat.test(url)) {
     // select product sku and categoryUniqueId to render a product detail page
     const match = productRouteFormat.exec(url);
-    const posParams: { [id: string]: UrlSegment } = {};
+    const posParams: Record<string, UrlSegment> = {};
     if (match[4]) {
       posParams.categoryUniqueId = new UrlSegment(match[4], {});
     }

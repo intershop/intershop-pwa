@@ -1,5 +1,28 @@
+import { Writable } from 'stream';
+
+// Suppress pino output in tests — pino writes to fd 1 directly, bypassing Jest's console capture
+const noopStream = new Writable({
+  write(_chunk, _enc, cb) {
+    cb();
+  },
+});
+
+jest.mock('pino', () => {
+  const actualPino = jest.requireActual('pino');
+  const original = typeof actualPino === 'function' ? actualPino : (actualPino.default ?? actualPino);
+  // eslint-disable-next-line ban/ban
+  const mockedPino = Object.assign((...args: unknown[]) => original(args[0], noopStream), original);
+  return { ...actualPino, __esModule: true, default: mockedPino };
+});
+
 describe('Ssr Logging Service', () => {
   const originalEnv = process.env;
+  const originalMaxListeners = process.getMaxListeners();
+
+  beforeAll(() => {
+    // Each test re-imports the module which creates a new pino logger that registers exit listeners
+    process.setMaxListeners(20);
+  });
 
   beforeEach(() => {
     // Reset module cache to re-initialize the singleton logger with fresh environment variables
@@ -10,6 +33,7 @@ describe('Ssr Logging Service', () => {
 
   afterAll(() => {
     process.env = originalEnv;
+    process.setMaxListeners(originalMaxListeners);
   });
 
   describe('getComponentLogger', () => {

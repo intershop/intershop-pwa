@@ -64,10 +64,10 @@ describe('Radio Field Component', () => {
         ><input
           type="radio"
           class="form-check-input ng-untouched ng-pristine ng-valid"
-          ng-reflect-value="value1"
           id="formly_1_radio_rkey_0"
-          name="formly_0_formly-group__rkey"
+          ng-reflect-value="value1"
           data-testing-id="radio-radio-label"
+          name="formly_0_formly-group__rkey"
       /></ish-radio-field>
     `);
   });

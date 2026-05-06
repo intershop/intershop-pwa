@@ -4,8 +4,8 @@ const path = require('path');
 let files = process.argv.splice(2);
 
 if (files.length === 0) {
-  const glob = require('glob');
-  files = glob.sync('docs/**/*.md');
+  const { globSync } = require('glob');
+  files = globSync('docs/**/*.md');
 }
 
 // ignore documentation overview

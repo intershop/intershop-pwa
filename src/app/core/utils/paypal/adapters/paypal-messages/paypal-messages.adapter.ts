@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
 import { PAYPAL_MESSAGE_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
-import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 
 /**
  * Representation of the PayPal SDK Messages object, responsible for rendering PayPal messages.
@@ -12,7 +12,11 @@ import { PaypalComponent } from 'ish-core/utils/paypal/paypal-model/paypal.model
  **/
 @Injectable()
 export class PaypalMessagesAdapter {
-  constructor(@Inject(DOCUMENT) private document: Document, private ngZone: NgZone) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private paypalConfigService: PaypalConfigService,
+    private ngZone: NgZone
+  ) {}
 
   private destroyRef = inject(DestroyRef);
 
@@ -22,7 +26,7 @@ export class PaypalMessagesAdapter {
    * @returns
    */
   renderMessages(config: PaypalComponentsConfig): Promise<void> {
-    const paypalObject = (window as unknown as Record<string, PaypalComponent>)[config.scriptNamespace];
+    const paypalObject = this.paypalConfigService.getPaypalComponent();
     const containerId = config.containerId;
 
     // Verify element exists at initialization

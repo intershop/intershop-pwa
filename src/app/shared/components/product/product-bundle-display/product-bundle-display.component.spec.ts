@@ -57,16 +57,16 @@ describe('Product Bundle Display Component', () => {
           3 x
           <ish-product-name
             ishproductcontext=""
-            ng-reflect-sku="ABC"
             ng-reflect-link="false"
+            ng-reflect-sku="ABC"
           ></ish-product-name>
         </li>
         <li>
           2 x
           <ish-product-name
             ishproductcontext=""
-            ng-reflect-sku="DEF"
             ng-reflect-link="false"
+            ng-reflect-sku="DEF"
           ></ish-product-name>
         </li>
       </ul>

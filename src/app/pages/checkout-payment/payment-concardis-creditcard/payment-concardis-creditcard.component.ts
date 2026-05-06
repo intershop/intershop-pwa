@@ -17,11 +17,11 @@ declare let PayEngine: any;
  *
  * @example
  * <ish-payment-concardis-creditcard
- [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
+ [paymentMethod]="paymentMethod"
  (submitPayment)="createNewPaymentInstrument($event)"
  (cancelPayment)="cancelNewPaymentInstrument()"
-></ish-payment-concardis-creditcard>
+/>
  */
 @Component({
   selector: 'ish-payment-concardis-creditcard',
@@ -29,7 +29,10 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     super(scriptLoader, cd);
 
     this.monthOptions = range(1, 13)

@@ -65,11 +65,11 @@ export interface ModalOptions extends NgbModalOptions {
 export class ModalDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) options: ModalOptions;
 
-  @Output() confirmed = new EventEmitter<T>();
+  @Output() readonly confirmed = new EventEmitter<T>();
 
-  @Output() closed = new EventEmitter<T>();
+  @Output() readonly closed = new EventEmitter<T>();
 
-  @Output() shown = new EventEmitter<T>();
+  @Output() readonly shown = new EventEmitter<T>();
 
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
 
@@ -84,7 +84,10 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private ngbModal: NgbModal, @Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    private ngbModal: NgbModal,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   /**
    * Configure and show modal dialog.

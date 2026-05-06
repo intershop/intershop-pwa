@@ -29,11 +29,11 @@ export class AddressDoctorService {
       switchMap(({ url, body }) =>
         this.http.post(url, body).pipe(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          map<any, AddressDoctorVariants[]>((body: any) => {
-            if (body?.Status !== 'Ok') {
-              return throwError(() => body?.StatusDescription);
+          map<any, AddressDoctorVariants[]>((response: any) => {
+            if (response?.Status !== 'Ok') {
+              return throwError(() => response?.StatusDescription);
             }
-            return body.Response[0].Results;
+            return response.Response[0].Results;
           }),
           map(results => results.map(result => ({ ...address, ...AddressDoctorMapper.fromData(result.Variants[0]) }))),
           // should return empty suggestions in case an error occurs

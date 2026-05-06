@@ -9,12 +9,19 @@ kb_sync_latest_only
 
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
+  - [Version Dependency for PayPal](#version-dependency-for-paypal)
 - [Architecture](#architecture)
-  - [Key Components](#key-components)
+  - [Key Building Blocks](#key-building-blocks)
 - [Adapter Types](#adapter-types)
   - [Buttons](#buttons)
   - [Messages](#messages)
-  - [Card Fields](#card-fields)
+  - [CardFields](#cardfields)
+  - [GooglePay](#googlepay)
+    - [Google Pay Payment Flow](#google-pay-payment-flow)
+    - [Google Pay Production Checklist](#google-pay-production-checklist)
+  - [ApplePay](#applepay)
+    - [Apple Pay Payment Flow](#apple-pay-payment-flow)
+    - [Domain Verification](#domain-verification)
 - [Page Types](#page-types)
 - [Styling Customization](#styling-customization)
   - [Pay Later Message Styling](#pay-later-message-styling)
@@ -30,14 +37,26 @@ The component supports:
 - **Buttons**: PayPal checkout buttons for standard payments
 - **Messages**: Pay Later messaging for promotional content
 - **CardFields**: Hosted card input fields for credit card payments
+- **GooglePay**: Google Pay button and functionality
+- **ApplePay**: Apple Pay button and functionality
 
 ## Prerequisites
 
 To use PayPal payment methods in the Intershop PWA, ensure that the following prerequisites are met:
 
-1. The [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 3](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50477531143/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+3) is installed and configured in Intershop Commerce Management.
+1. The [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 3](https://knowledge.intershop.com/kb/index.php/Display/4815Z5) is installed and configured in Intershop Commerce Management.
 2. The PayPal Common Configuration Service is configured in Intershop Commerce Management, and the onboarding process has been successfully completed.
 3. The PayPal payment methods are activated and configured in Intershop Commerce Management.
+
+### Version Dependency for PayPal
+
+| Component                                                                | Version  |
+| ------------------------------------------------------------------------ | -------- |
+| Intershop (PPCP Connector) for Messages, PayPal Checkout and Credit Card | > 3.0.0  |
+| Intershop (PPCP Connector) to apply Google Pay and Apple Pay             | > 3.1.0  |
+| ICM                                                                      | > 14.2.2 |
+| Google Pay JS API                                                        | 2.0      |
+| Apple Pay JS API                                                         | 4        |
 
 ## Architecture
 
@@ -49,6 +68,8 @@ src/app/core/utils/paypal/
 │   ├── paypal-buttons/                 # PayPal Buttons adapter
 │   ├── paypal-card-fields/             # PayPal Card Fields adapter
 │   ├── paypal-messages/                # PayPal Pay Later Messages adapter
+│   ├── paypal-google-pay/              # PayPal Google Pay adapter
+│   ├── paypal-apple-pay/               # PayPal Apple Pay adapter
 │   ├── paypal-adapters.builder.ts      # Factory for creating adapters
 │   └── paypal-adapters.styling.ts      # Centralized styling configuration
 ├── paypal-config/
@@ -59,24 +80,28 @@ src/app/core/utils/paypal/
     └── paypal.model.ts                 # PayPal SDK interfaces
 ```
 
-### Key Components
+### Key Building Blocks
 
-| Component                 | Location                                                 | Purpose                                                                                                                                 |
-| ------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `PaymentPaypalComponent`  | `src/app/shared/components/payment/payment-paypal/`      | Main Angular component for rendering PayPal elements                                                                                    |
-| `PaypalAdaptersBuilder`   | `src/app/core/utils/paypal/adapters/`                    | Factory service that creates appropriate PayPal SDK adapters                                                                            |
-| `PaypalConfigService`     | `src/app/core/utils/paypal/paypal-config/`               | Handles SDK script loading and URL construction                                                                                         |
-| `PaypalCardFieldsAdapter` | `src/app/core/utils/paypal/adapters/paypal-card-fields/` | Representation of the PayPal SDK Card Fields object, responsible for rendering PayPal card fields and handling the associated callbacks |
-| `PaypalButtonsAdapter`    | `src/app/core/utils/paypal/adapters/paypal-buttons/`     | Representation of the PayPal SDK Buttons object, responsible for rendering PayPal buttons and handling the associated callbacks         |
-| `PaypalMessagesAdapter`   | `src/app/core/utils/paypal/adapters/paypal-messages/`    | Representation of the PayPal SDK Messages object, responsible for rendering PayPal Pay Later messages                                   |
+| Component                 | Purpose                                                                                                                                      |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PaymentPaypalComponent`  | Main Angular component for rendering PayPal elements                                                                                         |
+| `PaypalAdaptersBuilder`   | Factory service that creates appropriate PayPal SDK adapters                                                                                 |
+| `PaypalConfigService`     | Handles SDK script loading and URL construction                                                                                              |
+| `PaypalCardFieldsAdapter` | Representation of the PayPal SDK Card Fields object, responsible for rendering PayPal card fields and handling the associated callbacks      |
+| `PaypalButtonsAdapter`    | Representation of the PayPal SDK Buttons object, responsible for rendering PayPal buttons and handling the associated callbacks              |
+| `PaypalMessagesAdapter`   | Representation of the PayPal SDK Messages object, responsible for rendering PayPal Pay Later messages                                        |
+| `PaypalGooglePayAdapter`  | Representation of the PayPal SDK Google Pay object, responsible for rendering PayPal Google Pay button and handling the associated callbacks |
+| `PaypalApplePayAdapter`   | Representation of the PayPal SDK Apple Pay object, responsible for rendering PayPal Apple Pay button and handling the associated callbacks   |
 
 ## Adapter Types
 
-The [`ish-payment-paypal`][payment-paypal.component.ts] component supports three different adapter types:
+The [`ish-payment-paypal`][payment-paypal.component.ts] component supports different adapter types:
 
 - Buttons
 - Messages
-- Card Fields
+- CardFields
+- GooglePay
+- ApplePay
 
 ### Buttons
 
@@ -93,7 +118,7 @@ To use the `ish-payment-paypal` component with the Buttons adapter type:
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Buttons` into any component:
 
 ```html
-<ish-payment-paypal [selectedPaymentMethod]="paypalPaymentMethod" [adapterType]="'Buttons'" [pageType]="'cart'" />
+<ish-payment-paypal adapterType="Buttons" pageType="cart" [selectedPaymentMethod]="paypalPaymentMethod" />
 ```
 
 ### Messages
@@ -106,10 +131,10 @@ However, the `pageType` input is required to apply the appropriate SDK styling o
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `Messages` into any component:
 
 ```html
-<ish-payment-paypal [pageType]="'home'" />
+<ish-payment-paypal pageType="home" />
 ```
 
-### Card Fields
+### CardFields
 
 This adapter type is used to provide card input fields for direct credit/debit card payments (Advanced Card Payments).
 The rendering is performed by the [`PaypalCardFieldsAdapter`][paypal-card-fields.adapter.ts].
@@ -118,8 +143,89 @@ This component also provides input validation, error handling, and the callback 
 The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `CardFields` into any component:
 
 ```html
-<ish-payment-paypal [selectedPaymentMethod]="paymentMethod" [adapterType]="'CardFields'" [pageType]="'checkout'" />
+<ish-payment-paypal adapterType="CardFields" pageType="checkout" [selectedPaymentMethod]="paymentMethod" />
 ```
+
+### GooglePay
+
+This adapter type is used to provide the Google Pay button and the corresponding functionality.
+The rendering is performed by the [`PaypalGooglePayAdapter`][paypal-google-pay.adapter.ts].
+This component also provides the callback methods that are required by the [`PayPal JavaScript SDK Google Pay API`](https://developer.paypal.com/docs/checkout/apm/google-pay).
+
+#### Google Pay Payment Flow
+
+When the user authorizes a payment in the Google Pay sheet, the `onPaymentAuthorizedCallback` method handles the following flow:
+
+1. **ICM Order Creation**: Initiates order creation in Intershop Commerce Management
+2. **PayPal Order Confirmation**: Confirms the order with PayPal using the Google Pay payment data
+3. **3D Secure Handling**: If Strong Customer Authentication (SCA) is required (`PAYER_ACTION_REQUIRED`), the `initiatePayerAction()` method is called to display the 3DS authentication iframe.
+4. **Order Completion**: Continues with ICM order creation regardless of the PayPal confirmation result, as the Commerce Management handles the final payment state
+
+The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `GooglePay` into any component:
+
+```html
+<ish-payment-paypal adapterType="GooglePay" pageType="checkout" [selectedPaymentMethod]="paypalMethod" />
+```
+
+#### Google Pay Production Checklist
+
+Before going live with Google Pay, ensure the following requirements are met:
+
+| Requirement                         | Description                                                                                                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| HTTPS                               | SSL certificate must be configured on your domain                                                                                                                  |
+| PayPal Live Credentials             | Production Client ID and Merchant ID from PayPal                                                                                                                   |
+| Google Merchant ID                  | Obtained from [Google Pay & Wallet Console](https://pay.google.com/business/console) (free registration required)                                                  |
+| PayPal Production Onboarding        | Complete [PayPal Production Onboarding](https://www.paypal.com/bizsignup/add-product?product=payment_methods&capabilities=GOOGLE_PAY) (free registration required) |
+| Google Review                       | Integration approved by Google                                                                                                                                     |
+| Domain Verification                 | Domain must be verified with Google                                                                                                                                |
+| Intershop Commerce Management (ICM) | Commerce Management must be configured with production credentials                                                                                                 |
+
+> [!NOTE]
+> The `environment` parameter for the Google Pay `PaymentsClient` defaults to `'TEST'`.
+> For a live system, this must be explicitly set to `'PRODUCTION'`.
+> You can configure this via the PWA environment parameter `paypalClientConfig.googlePayEnvironment`.
+>
+> Example for the specification of the `paypalClientConfig` configuration via `environment` file:
+>
+> ```ts
+>  paypalClientConfig: {
+>    googlePayEnvironment: 'PRODUCTION',
+>  },
+> ```
+
+### ApplePay
+
+This adapter type is used to provide the Apple Pay button and the corresponding functionality.
+The rendering is performed by the [`PaypalApplePayAdapter`][paypal-apple-pay.adapter.ts].
+This component also provides the callback methods that are required by the [`PayPal JavaScript SDK Apple Pay API`](https://developer.paypal.com/docs/checkout/apm/apple-pay).
+
+#### Apple Pay Payment Flow
+
+When the user clicks the Apple Pay button, the `onApplePayButtonClicked` method initiates the following flow:
+
+1. **ICM Order Creation**: Initiates order creation in Intershop Commerce Management asynchronously
+2. **ApplePaySession Creation**: Creates the `ApplePaySession` synchronously from the user gesture (required by Apple Pay)
+3. **Merchant Validation**: The `onvalidatemerchant` callback validates the merchant with PayPal using the validation URL.
+4. **Payment Authorization**: The `onpaymentauthorized` callback confirms the order with PayPal using the Apple Pay token and billing contact data.
+5. **Order Completion**: Continues with ICM order creation and completes the Apple Pay session with success or failure status
+6. **Cancellation Handling**: If the user cancels the Apple Pay sheet, the `oncancel` callback triggers ICM order creation cleanup to remove the pending order.
+
+The following example shows how to integrate [`ish-payment-paypal`][payment-paypal.component.ts] for the corresponding adapter type `ApplePay` into any component:
+
+```html
+<ish-payment-paypal adapterType="ApplePay" pageType="checkout" [selectedPaymentMethod]="paypalMethod" />
+```
+
+#### Domain Verification
+
+Apple Pay requires domain verification to ensure that only authorized domains can process Apple Pay transactions.
+This is accomplished by serving an Apple domain association file at the _/.well-known/apple-developer-merchantid-domain-association_ path.
+The `/.well-known/` directory is a standardized location on web servers (defined by [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615)) used to host site-wide metadata files.
+
+The domain verification file is provided by PayPal during the merchant onboarding process and must be accessible from the PWA's root domain.
+
+For detailed instructions on how to configure the PWA to serve well-known files, see the [Well-Known Resources Guide](./well-known-resources.md).
 
 ## Page Types
 
@@ -151,7 +257,7 @@ export const PAYPAL_MESSAGE_STYLING = {
 
 Depending on the configured adapter type, the PayPal integration dynamically loads the appropriate SDK instance with the necessary parameters (e.g., `client-id`, `merchant-id`, `currency`, `locale`, `intent`) via the [`PaypalConfigService`][paypal-config.service.ts].
 Since the PayPal SDK URL parameters can differ for each payment method, the script URL is loaded with a unique namespace to avoid conflicts when multiple instances are required.
-The namespace format is `PPCP_<payment_method_id>` for Buttons and Card Fields, and `PPCP_MESSAGES` for Pay Later Messages.
+The namespace format is `PPCP_<payment_method_id>` for `Buttons` and `CardFields`, and `PPCP_MESSAGES` for Pay Later Messages.
 
 ```typescript
 // Namespace format: PPCP_<payment_method_id> or PPCP_MESSAGES
@@ -172,24 +278,24 @@ It provides the following features:
 
 The visibility of Pay Later messages or Pay Later buttons is controlled by the settings of the PayPal Common Configuration Service in Intershop Commerce Management.
 
-<a target="_blank" href="paypal-pay-later.png"><img src="paypal-pay-later.png" alt="PayPal Pay Later configuration in Intershop Commerce Management" width="50%"/></a>
+<a href="paypal-pay-later.png" target="_blank"><img alt="PayPal Pay Later configuration in Intershop Commerce Management" src="paypal-pay-later.png" width="50%"/></a>
 
 The PayPal configuration is retrieved from Intershop Commerce Management via the configurations endpoint.
 
 The following example shows how to integrate the PayPal component on the product detail page to display Pay Later messages if Intershop Commerce Management settings are to be taken into account:
 
 ```html
-<ng-container *ngIf="'payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting">
-  <ish-payment-paypal [pageType]="'product-details'" />
-</ng-container>
+@if ('payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting) {
+<ish-payment-paypal [pageType]="'product-details'" />
+}
 ```
 
 ## Further References
 
 - [PayPal JavaScript SDK Reference](https://developer.paypal.com/sdk/js/)
-- [PayPal Pay Later Messaging](https://developer.paypal.com/docs/checkout/pay-later/us/integrate/)
-- [PayPal Advanced Card Payments](https://developer.paypal.com/docs/checkout/advanced/)
-- [Intershop PayPal Complete Payments Service Connector (PPCP Connector) version 3](https://knowledge.intershop.com/kb/go.php/a/ENFDEVDOC/pages/50477531143/Public+Release+Note+-+PayPal+Complete+Payments+Service+Connector+3)
+- [PayPal Pay Later Messaging](https://developer.paypal.com/docs/checkout/pay-later/integrate/)
+- [PayPal Advanced Card Payments](https://developer.paypal.com/docs/multiparty/checkout/advanced/integrate/)
+- [Public Release Note - PayPal Complete Payments Service Connector 3](https://knowledge.intershop.com/kb/index.php/Display/4815Z5)
 
 [payment-paypal.component.ts]: ../../src/app/shared/components/payment/payment-paypal/payment-paypal.component.ts
 [paypal-adapters.styling.ts]: ../../src/app/core/utils/paypal/adapters/paypal-adapters.styling.ts
@@ -199,3 +305,5 @@ The following example shows how to integrate the PayPal component on the product
 [paypal-messages.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter.ts
 [paypal-card-fields.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter.ts
 [PayPal JavaScript SDK Reference]: https://developer.paypal.com/sdk/js/reference
+[paypal-google-pay.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter.ts
+[paypal-apple-pay.adapter.ts]: ../../src/app/core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter.ts

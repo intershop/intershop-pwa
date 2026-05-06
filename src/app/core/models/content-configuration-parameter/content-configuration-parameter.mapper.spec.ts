@@ -31,7 +31,7 @@ describe('Content Configuration Parameter Mapper', () => {
   });
 
   it('should map to simple dictionary', () => {
-    const input: { [name: string]: ContentConfigurationParameterData } = {
+    const input: Record<string, ContentConfigurationParameterData> = {
       key1: {
         definitionQualifiedName: 'name1',
         value: '1',
@@ -64,7 +64,7 @@ describe('Content Configuration Parameter Mapper', () => {
   });
 
   it('should handle bc_pmc:types.pagelet2-ImageFileRef', () => {
-    const input: { [name: string]: ContentConfigurationParameterData } = {
+    const input: Record<string, ContentConfigurationParameterData> = {
       key1: {
         definitionQualifiedName: 'name1',
         value: 'assets/pwa/pwa_home_teaser_1.jpg',
@@ -115,7 +115,7 @@ describe('Content Configuration Parameter Mapper', () => {
   });
 
   it('should handle bc_pmc:types.pagelet2-FileRef', () => {
-    const input: { [name: string]: ContentConfigurationParameterData } = {
+    const input: Record<string, ContentConfigurationParameterData> = {
       key1: {
         definitionQualifiedName: 'name1',
         value: 'assets/pwa/pwa_home_teaser_1.jpg',

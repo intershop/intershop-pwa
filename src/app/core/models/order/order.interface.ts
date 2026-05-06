@@ -11,15 +11,29 @@ import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-me
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 
+export type OrderCreationStatus = 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+
+export type OrderStopActionReason =
+  | 'waiting_for_pending_payments'
+  | 'redirect_urls_required'
+  | 'recurring.order'
+  | 'paypal_wallet_initialized';
+
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;
   creationDate: string;
   orderCreation: {
-    status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+    status: OrderCreationStatus;
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
+      exitReason?: OrderStopActionReason;
       redirectUrl?: string;
+    };
+    redirect?: {
+      parameters: {
+        name: string;
+        value: string;
+      }[];
     };
   };
   statusCode: string;
@@ -34,16 +48,16 @@ export interface OrderBaseData extends BasketBaseData {
 export interface OrderData {
   data: OrderBaseData | OrderBaseData[];
   included?: {
-    invoiceToAddress?: { [urn: string]: AddressData };
-    lineItems?: { [id: string]: OrderItemData };
-    discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts?: { [id: string]: BasketRebateData };
-    lineItems_warranty?: { [id: string]: BasketWarrantyData };
-    commonShipToAddress?: { [urn: string]: AddressData };
-    commonShippingMethod?: { [id: string]: ShippingMethodData };
-    payments?: { [id: string]: PaymentData };
-    payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
-    payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    invoiceToAddress?: Record<string, AddressData>;
+    lineItems?: Record<string, OrderItemData>;
+    discounts?: Record<string, BasketRebateData>;
+    lineItems_discounts?: Record<string, BasketRebateData>;
+    lineItems_warranty?: Record<string, BasketWarrantyData>;
+    commonShipToAddress?: Record<string, AddressData>;
+    commonShippingMethod?: Record<string, ShippingMethodData>;
+    payments?: Record<string, PaymentData>;
+    payments_paymentMethod?: Record<string, PaymentMethodBaseData>;
+    payments_paymentInstrument?: Record<string, PaymentInstrument>;
   };
   infos?: BasketInfo[];
   info?: PagingInfo;

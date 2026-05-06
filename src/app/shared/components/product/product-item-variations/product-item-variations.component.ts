@@ -18,7 +18,10 @@ export class ProductItemVariationsComponent implements OnInit {
   isMasterProduct$: Observable<boolean>;
   isVariationProduct$: Observable<boolean>;
 
-  constructor(private context: ProductContextFacade, private appFacade: AppFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'variations');

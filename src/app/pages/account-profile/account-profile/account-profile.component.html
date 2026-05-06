@@ -16,10 +16,10 @@
   <div class="col-2 col-lg-4">
     <a
       *ishIdentityProviderCapability="'editEmail'"
-      routerLink="/account/profile/email"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.email.heading' | translate }"
       data-testing-id="edit-email"
+      routerLink="/account/profile/email"
+      [title]="'account.profile.update.link' | translate: { '0': 'account.profile.email.heading' | translate }"
     >
       <i class="bi bi-pencil-fill"></i>
     </a>
@@ -27,7 +27,7 @@
 </div>
 
 <!-- Password -->
-<div class="row section" *ishIdentityProviderCapability="'editPassword'">
+<div *ishIdentityProviderCapability="'editPassword'" class="row section">
   <div class="col-10 col-lg-8">
     <h2 class="h3">{{ 'account.profile.password.heading' | translate }}</h2>
     <div class="row">
@@ -41,10 +41,10 @@
   </div>
   <div class="col-2 col-lg-4">
     <a
-      routerLink="/account/profile/password"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.password.heading' | translate }"
       data-testing-id="edit-password"
+      routerLink="/account/profile/password"
+      [title]="'account.profile.update.link' | translate: { '0': 'account.profile.password.heading' | translate }"
     >
       <i class="bi bi-pencil-fill"></i>
     </a>
@@ -68,12 +68,12 @@
           <dd class="col-md-8" data-testing-id="phone-field">{{ user.phoneHome }}</dd>
           <!-- Newsletter -->
           @if ('marketing.newsletterSubscriptionEnabled' | ishServerSetting) {
-          <dt class="col-md-4">{{ 'account.profile.newsletter.label' | translate }}</dt>
-          <dd class="col-md-8" data-testing-id="newsletter-info">
-            @if (subscribedToNewsletter !== undefined) {
-            {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
-            }
-          </dd>
+            <dt class="col-md-4">{{ 'account.profile.newsletter.label' | translate }}</dt>
+            <dd class="col-md-8" data-testing-id="newsletter-info">
+              @if (subscribedToNewsletter !== undefined) {
+                {{ (subscribedToNewsletter ? 'subscriptions.subscribed' : 'subscriptions.not_subscribed') | translate }}
+              }
+            </dd>
           }
           <!-- Birthday
           <dt class="col-md-4">{{ 'account.profile.birthday.label' | translate }}</dt>
@@ -88,10 +88,10 @@
   <div class="col-2 col-lg-4">
     <a
       *ishIdentityProviderCapability="'editProfile'"
-      routerLink="/account/profile/user"
       class="btn-tool"
-      [title]="'account.profile.update.link' | translate : { '0': 'account.profile.detail.heading' | translate }"
       data-testing-id="edit-user"
+      routerLink="/account/profile/user"
+      [title]="'account.profile.update.link' | translate: { '0': 'account.profile.detail.heading' | translate }"
     >
       <i class="bi bi-pencil-fill"></i>
     </a>
@@ -102,6 +102,6 @@
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span
-    [ishServerHtml]="'account.overview.note.text' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
+    [ishServerHtml]="'account.overview.note.text' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
   ></span>
 </p>

@@ -9,7 +9,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
  * Displays basket info messages, e.g. if a basket operation has only partly been executed
  *
  * @example
- * <ish-basket-info></ish-basket-info>
+ * <ish-basket-info />
  */
 @Component({
   selector: 'ish-basket-info',

@@ -36,6 +36,7 @@ export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges
     this.userEmail$ = this.accountFacade.userEmail$;
   }
 
+  // eslint-disable-next-line complexity
   ngOnChanges() {
     this.costCenter = this.requisition?.approval?.costCenterApproval?.costCenter;
 

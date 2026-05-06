@@ -44,7 +44,7 @@ Insert it into your template and pass the following inputs:
 Your template should look like this:
 
 ```html
-<formly-form [form]="form" [fields]="fields" [model]="model"> </formly-form>
+<formly-form [fields]="fields" [form]="form" [model]="model" />
 ```
 
 ### FormlyFieldConfig
@@ -97,7 +97,7 @@ export class ExampleInputFieldComponent extends FieldType {
 
 ```html
 <!--  example-input-field.component.html -->
-<input [type]="props.type" [formControl]="formControl" [formlyAttributes]="field" />
+<input [formControl]="formControl" [formlyAttributes]="field" [type]="props.type" />
 ```
 
 Register the custom type in the `formly.module.ts` `forChild()` function:
@@ -112,7 +112,7 @@ FormlyModule.forChild({
 ### Custom Wrappers
 
 Formly allows fields to be wrapped in any number of wrapper components.
-These wrappers are components that extend `FieldWrapper` and contain a `<ng-template #fieldComponent></ng-template>` tag where the field (or further, nested wrappers) will be inserted.
+These wrappers are components that extend `FieldWrapper` and contain a `<ng-template #fieldComponent />` tag where the field (or further, nested wrappers) will be inserted.
 A simple example wrapper that adds a label to the field could look like this:
 
 ```typescript
@@ -122,7 +122,7 @@ A simple example wrapper that adds a label to the field could look like this:
     <label [attr.for]="id">
       {{ props.label | translate }}
     </label>
-    <ng-template #fieldComponent></ng-template>
+    <ng-template #fieldComponent />
   `,
   changeDetection: ChangeDetectionStrategy.Default,
 })

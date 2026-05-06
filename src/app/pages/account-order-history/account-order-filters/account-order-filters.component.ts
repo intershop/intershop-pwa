@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -134,13 +135,17 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   model$: Observable<FormModel>;
   private isAdmin$: Observable<boolean>;
 
-  @Output() modelChange = new EventEmitter<Partial<OrderListQuery>>();
+  @Output() readonly modelChange = new EventEmitter<Partial<OrderListQuery>>();
 
   private destroyRef = inject(DestroyRef);
 
   formIsCollapsed = true;
 
-  constructor(private route: ActivatedRoute, private router: Router, private accountFacade: AccountFacade) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountFacade: AccountFacade
+  ) {}
 
   ngOnInit() {
     this.isAdmin$ = this.accountFacade.isOrderManager$.pipe(
@@ -254,20 +259,22 @@ export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
 
   private getModel(params?: UrlModel): Observable<FormModel> {
     this.modelChange.emit(urlToQuery(params));
+    const p = params ?? {};
+
     return this.isAdmin$.pipe(
       distinctUntilChanged(),
       map(isAdmin => ({
         date:
-          params?.from || params?.to
+          p.from || p.to
             ? {
-                fromDate: params?.from ? selectFirst(params.from) : '',
-                toDate: params?.to ? selectFirst(params.to) : '',
+                fromDate: p.from ? selectFirst(p.from) : '',
+                toDate: p.to ? selectFirst(p.to) : '',
               }
             : undefined,
-        orderNo: params?.orderNo ? selectAll(params.orderNo) : '',
-        sku: params?.sku ? selectAll(params.sku) : '',
-        state: params?.from ? selectFirst(params.state) : '',
-        buyer: params?.buyer ? selectFirst(params.buyer) : isAdmin ? 'all' : '',
+        orderNo: p.orderNo ? selectAll(p.orderNo) : '',
+        sku: p.sku ? selectAll(p.sku) : '',
+        state: p.from ? selectFirst(p.state) : '',
+        buyer: p.buyer ? selectFirst(p.buyer) : isAdmin ? 'all' : '',
       })),
       shareReplay(1)
     );

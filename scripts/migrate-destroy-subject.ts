@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /**
  * ATTENTION: This script will refactor only the typescript files, when the implementation contains the recommended technique to complete open subscriptions within components, directives or pipes with a destroy$ subject.
  * Other implementations will not be effected by this script.
@@ -23,7 +24,7 @@ const project = new Project();
 const sourceFiles = project.addSourceFilesAtPaths('{src,projects}/**/!(*.spec).ts');
 
 /**
- * Checks if a declarated class is of a certain type
+ * Checks if a declared class is of a certain type
  */
 const isType = (node: ClassDeclaration, types: string[]): boolean => {
   if (!node.getModifiers()?.length) {

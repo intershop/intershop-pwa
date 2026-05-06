@@ -31,7 +31,7 @@ export class CheckoutPaymentPage {
 
   paymentInstrument(method: string) {
     return {
-      fillForm(params: { [key: string]: string }) {
+      fillForm(params: Record<string, string>) {
         Object.keys(params).forEach(key =>
           fillFormField(`[data-testing-id=payment-parameter-form-${method}]`, key, params[key])
         );

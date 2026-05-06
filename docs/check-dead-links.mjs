@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { spawnSync } from 'child_process';
 import * as fs from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import * as path from 'path';
 
 async function mapSeries(iterable, action) {
@@ -10,31 +9,21 @@ async function mapSeries(iterable, action) {
   }
 }
 
-const linkCheck = axios.create({
-  headers: {
-    'User-Agent':
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
-  },
-});
-
-linkCheck.interceptors.response.use(
-  response => response,
-  error => {
-    // ignore 403 (authentication required)
-    if (error.response?.status === 403) {
-      return null;
-    }
-    return Promise.reject({ message: `Request failed with status code ${error.response?.status}` });
-  }
-);
-
 async function checkExternalLinkError(link) {
   console.log('check', link);
 
-  return linkCheck.head(link).catch(() =>
-    // retry with get
-    linkCheck.get(link)
-  );
+  let response = await fetch(link, { method: 'HEAD' }).catch(() => null);
+  // retry with GET if HEAD failed or returned non-ok
+  if (!response?.ok) {
+    response = await fetch(link, { method: 'GET' }).catch(() => null);
+  }
+  // ignore 403 (authentication required)
+  if (response?.status === 403) {
+    return;
+  }
+  if (!response?.ok) {
+    throw { message: `Request failed with status code ${response?.status}` };
+  }
 }
 
 function getLineInfoOfString(data, str) {
@@ -59,7 +48,7 @@ let gitChanged =
     .split('\n')
     .filter(path => path.endsWith('.md'));
 
-const files = glob.sync('**/*.md', {
+const files = globSync('**/*.md', {
   ignore: ['**/node_modules/**', '**/dist/**'],
 });
 
@@ -103,15 +92,7 @@ if (fastCheck) {
 
 const filtered = externalLinks
   .filter((val, idx, arr) => arr.indexOf(val) === idx)
-  .filter(
-    link =>
-      !link.includes('repository.intershop.de') &&
-      !link.includes('support.intershop.') &&
-      !link.includes('docs.intershop.') &&
-      !link.includes('azurewebsites.net') &&
-      !link.includes('github.com') &&
-      !link.includes('gnu.org')
-  );
+  .filter(link => !link.includes('intershop.de') && !link.includes('intershop.com') && !link.includes('github.com'));
 
 mapSeries(filtered, checkExternalLinkError).catch(error => {
   console.error(error.message);

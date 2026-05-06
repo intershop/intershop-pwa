@@ -38,9 +38,9 @@ const noStarImportsInStoreRule: TSESLint.RuleModule<keyof typeof messages> = {
         );
 
       const getUsageFixes = (fixer: TSESLint.RuleFixer) => [
-        ...starImportUsageMap[importSpecifier]?.map(usage =>
+        ...(starImportUsageMap[importSpecifier]?.map(usage =>
           fixer.replaceText(usage, context.sourceCode.getText(usage.property))
-        ),
+        ) ?? []),
       ];
 
       const importSpecifier = starImport.specifiers[0].local.name;

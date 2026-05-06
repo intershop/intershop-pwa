@@ -29,8 +29,8 @@ export class CaptchaFacade {
       services.ReCaptchaV3ServiceDefinition?.runnable
         ? 3
         : services.ReCaptchaV2ServiceDefinition?.runnable
-        ? 2
-        : undefined
+          ? 2
+          : undefined
     )
   );
 

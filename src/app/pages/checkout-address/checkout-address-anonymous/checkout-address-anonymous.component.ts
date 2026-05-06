@@ -15,7 +15,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  *  [basket]="basket$ | async"
  *  [error]="(basketError$ | async) || (addressesError$ | async)"
  *  (createBasketAddress)="createBasketAddress($event)"
- * ></ish-checkout-address-anonymous>
+ * />
  */
 @Component({
   selector: 'ish-checkout-address-anonymous',
@@ -26,7 +26,7 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
 
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() readonly nextStep = new EventEmitter<void>();
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
@@ -113,6 +113,6 @@ export class CheckoutAddressAnonymousComponent implements OnChanges {
   }
 
   get isShippingAddressFormExpanded() {
-    return this.form && this.form.get('shipOptions').value.shipOption === 'shipToDifferentAddress';
+    return this.form?.get('shipOptions').value.shipOption === 'shipToDifferentAddress';
   }
 }

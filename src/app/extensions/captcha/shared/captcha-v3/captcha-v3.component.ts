@@ -1,8 +1,9 @@
+// eslint-disable-next-line max-classes-per-file
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
@@ -30,7 +31,10 @@ export class CaptchaV3Component implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private recaptchaV3Service: ReCaptchaV3Service, private appFacade: AppFacade) {}
+  constructor(
+    private recaptchaV3Service: ReCaptchaV3Service,
+    private appFacade: AppFacade
+  ) {}
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);

@@ -11,6 +11,7 @@ import { Requisition, RequisitionUserBudget } from './requisition.model';
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionMapper {
+  // eslint-disable-next-line complexity
   fromData(payload: RequisitionData, orderPayload?: OrderData): Requisition {
     if (!Array.isArray(payload.data)) {
       const { data } = payload;

@@ -21,9 +21,9 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
  * @example
  * <ish-formly-address-form
       [businessCustomer]="isBusinessCustomer$ | async"
-      [shortForm]="true"
       [parentForm]="formGroup"
-   ></ish-formly-address-form>
+      [shortForm]="true"
+   />
  */
 @Component({
   selector: 'ish-formly-address-form',
@@ -47,7 +47,10 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     formState: {},
   };
 
-  constructor(private appFacade: AppFacade, private afcProvider: AddressFormConfigurationProvider) {}
+  constructor(
+    private appFacade: AppFacade,
+    private afcProvider: AddressFormConfigurationProvider
+  ) {}
 
   ngOnInit(): void {
     this.countries$ = this.appFacade.countries$()?.pipe(

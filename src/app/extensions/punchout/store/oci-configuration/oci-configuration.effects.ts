@@ -11,7 +11,10 @@ import { ociConfigurationActions, ociConfigurationApiActions } from './oci-confi
 
 @Injectable()
 export class OciConfigurationEffects {
-  constructor(private actions$: Actions, private punchoutService: PunchoutService) {}
+  constructor(
+    private actions$: Actions,
+    private punchoutService: PunchoutService
+  ) {}
 
   loadOciOptionsAndConfiguration$ = createEffect(() =>
     this.actions$.pipe(
@@ -53,8 +56,8 @@ export class OciConfigurationEffects {
       mapToPayloadProperty('configuration'),
       concatMap(configuration =>
         this.punchoutService.updateOciConfiguration(configuration).pipe(
-          mergeMap(configuration => [
-            ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration }),
+          mergeMap(conf => [
+            ociConfigurationApiActions.updateOCIConfigurationSuccess({ configuration: conf }),
             displaySuccessMessage({
               message: 'account.punchout.configuration.save_success.message',
             }),

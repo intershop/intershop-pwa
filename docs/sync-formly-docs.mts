@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
-import { kebabCase } from 'lodash';
+import { kebabCase } from 'lodash-es';
 
 const folder = 'src/app/shared/formly/field-library';
 
@@ -63,7 +63,7 @@ if (!(process.argv[2] === '--ci')) {
 
 function getTableContentsConfigurations(): string {
   // get information from files
-  const [ids, types, descriptions] = extractFileInformation(files);
+  const [ids, types, descriptions] = extractFileInformation();
 
   const tableRows = configs.map((_, idx) => [ids[idx], types[idx], descriptions[idx]]);
 
@@ -75,7 +75,7 @@ function getTableContentsConfigurations(): string {
 `;
 }
 
-function extractFileInformation(files: string[]): string[][] {
+function extractFileInformation(): string[][] {
   const ids: string[] = [];
   const types: string[] = [];
   const descriptions: string[] = [];

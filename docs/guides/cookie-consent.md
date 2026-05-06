@@ -123,7 +123,7 @@ This route can be linked to from anywhere within the application.
 To disable the integrated cookie consent handling implementation, remove the following line from [`app.component.html`](../../src/app/app.component.html):
 
 ```
-<ish-cookies-banner></ish-cookies-banner>
+<ish-cookies-banner />
 ```
 
 With this change, the integrated cookie consent handling will no longer check whether the banner should be displayed or not, and the `cookieConsent` cookie will no longer be written.

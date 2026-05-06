@@ -1,5 +1,10 @@
-module.exports = {
-  ...require('./jest.config'),
+/* eslint-disable ish-custom-rules/ordered-imports */
+import type { Config } from 'jest';
+// @ts-expect-error TS5097: Jest resolves .ts config imports natively
+import baseConfig from './jest.config.ts';
+
+export default {
+  ...baseConfig,
   collectCoverage: true,
   coverageDirectory: 'reports/coverage',
   coverageReporters: ['html'],
@@ -23,4 +28,4 @@ module.exports = {
       },
     ],
   ],
-};
+} satisfies Config;

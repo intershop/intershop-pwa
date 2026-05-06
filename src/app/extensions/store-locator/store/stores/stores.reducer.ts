@@ -30,7 +30,7 @@ export const storesReducer = createReducer(
     const { storeId } = action.payload;
     return { ...state, highlighted: storeId };
   }),
-  on(loadStoresSuccess, (state, action) => {
+  on(loadStoresSuccess, (state, action): StoresState => {
     const { stores } = action.payload;
     return storesAdapter.setAll(stores, { ...state, loading: false, error: undefined });
   })

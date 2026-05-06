@@ -20,7 +20,6 @@ class SimpleParamMap {
   }
 }
 
-// eslint-disable-next-line complexity
 function extractConfigurationParameters(state: ConfigurationState, paramMap: SimpleParamMap) {
   const keys: (keyof ConfigurationState)[] = [
     'channel',
@@ -68,11 +67,12 @@ function extractConfigurationParameters(state: ConfigurationState, paramMap: Sim
 }
 
 function mapSparqueConfig(sparque: string): SparqueConfig {
-  return sparque.split(',').reduce((acc, item) => {
+  const result = sparque.split(',').reduce<Record<string, string | string[]>>((acc, item) => {
     const [key, value] = item.split('=');
     acc[key] = key === 'features' ? decodeURIComponent(value).split(/,/g) : decodeURIComponent(value);
     return acc;
-  }, <SparqueConfig>{});
+  }, {});
+  return result as SparqueConfig;
 }
 
 /**

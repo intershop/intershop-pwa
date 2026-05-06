@@ -31,7 +31,11 @@ export class QuickorderCsvFormComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef<HTMLInputElement>;
 
-  constructor(private shoppingFacade: ShoppingFacade, private cdRef: ChangeDetectorRef, private fb: FormBuilder) {}
+  constructor(
+    private shoppingFacade: ShoppingFacade,
+    private cdRef: ChangeDetectorRef,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.productsFromCsv = [];
@@ -72,7 +76,7 @@ export class QuickorderCsvFormComponent implements OnInit {
         }))
         .filter(record => record.sku && !isNaN(record.quantity));
       this.status = 'Valid';
-    } catch (error) {
+    } catch {
       this.status = 'InvalidData';
       this.productsFromCsv = [];
     }

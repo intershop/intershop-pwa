@@ -7,11 +7,11 @@
   <div class="row">
     <fieldset class="col-sm-8">
       <legend class="visually-hidden">{{ 'store_locator.title' | translate }}</legend>
-      <formly-form [form]="form" [fields]="fields" [model]="model" />
+      <formly-form [fields]="fields" [form]="form" [model]="model" />
       <div class="form-group row align-items-baseline">
         <div class="col-sm-4"></div>
         <div class="col-sm-offset-4 col-sm-8">
-          <button class="btn btn-primary" type="submit" name="search">
+          <button class="btn btn-primary" name="search" type="submit">
             {{ 'store_locator.form.submit.label' | translate }}
           </button>
         </div>
@@ -20,66 +20,69 @@
   </div>
 </form>
 
-@if ((loading$ | async) === false && submitted) { @if (empty(stores$ | async)) {
-<div [ishServerHtml]="'store_locator.notFound' | translate : { '0': '/home' }"></div>
-} @else {
-<p>
-  {{
-    ((stores$ | async).length > 1 ? 'store_locator.results.multiple' : 'store_locator.results.single')
-      | translate : { '0': (stores$ | async).length }
-  }}
-</p>
-<ng-container *ishNotFeature="'maps'">
-  <div class="row">
-    @for (store of stores$ | async; track store.id) {
-    <div class="col-md-4 col-xs-12 col-sm-6">
-      <ish-store-address [store]="store" />
-    </div>
-    }
-  </div>
-</ng-container>
-<div *ishFeature="'maps'">
-  <div class="row">
-    <div class="col-3 pe-0 overflow-auto d-none d-lg-block map-height">
-      <ish-skip-content-link skipToElementId="store-locator-map" />
-      @for (store of stores$ | async; track store.id) {
-      <div
-        class="store-entry"
-        (click)="highlight(store)"
-        (keydown.enter)="highlight(store)"
-        tabindex="0"
-        [class.highlight-store]="highlighted$(store) | async"
-        [ishScroll]="highlighted$(store) | async"
-        scrollContainer="parent"
-        [scrollDuration]="500"
-      >
-        <ish-store-address [store]="store" />
-      </div>
-      }
-    </div>
-    <div class="col-12 col-lg-9 ps-lg-0 map-height">
-      <ish-stores-map #map />
-    </div>
-    <!-- Tablet/Mobile -->
-    <div class="col-12 d-lg-none">
-      <div class="row container p-0">
+@if ((loading$ | async) === false && submitted) {
+  @if (empty(stores$ | async)) {
+    <div [ishServerHtml]="'store_locator.notFound' | translate: { '0': '/home' }"></div>
+  } @else {
+    <p>
+      {{
+        ((stores$ | async).length > 1 ? 'store_locator.results.multiple' : 'store_locator.results.single')
+          | translate: { '0': (stores$ | async).length }
+      }}
+    </p>
+    <ng-container *ishNotFeature="'maps'">
+      <div class="row">
         @for (store of stores$ | async; track store.id) {
-        <div
-          class="col-md-4 col-sm-6 col-xs-12 store-entry"
-          (click)="highlight(store)"
-          (keydown.enter)="highlight(store)"
-          tabindex="0"
-          [class.highlight-store]="highlighted$(store) | async"
-        >
-          <ish-store-address [store]="store" />
-        </div>
+          <div class="col-md-4 col-xs-12 col-sm-6">
+            <ish-store-address [store]="store" />
+          </div>
         }
       </div>
+    </ng-container>
+    <div *ishFeature="'maps'">
+      <div class="row">
+        <div class="col-3 pe-0 overflow-auto d-none d-lg-block map-height">
+          <ish-skip-content-link skipToElementId="store-locator-map" />
+          @for (store of stores$ | async; track store.id) {
+            <div
+              class="store-entry"
+              scrollContainer="parent"
+              tabindex="0"
+              [class.highlight-store]="highlighted$(store) | async"
+              [ishScroll]="highlighted$(store) | async"
+              [scrollDuration]="500"
+              (click)="highlight(store)"
+              (keydown.enter)="highlight(store)"
+            >
+              <ish-store-address [store]="store" />
+            </div>
+          }
+        </div>
+        <div class="col-12 col-lg-9 ps-lg-0 map-height">
+          <ish-stores-map #map />
+        </div>
+        <!-- Tablet/Mobile -->
+        <div class="col-12 d-lg-none">
+          <div class="row container p-0">
+            @for (store of stores$ | async; track store.id) {
+              <div
+                class="col-md-4 col-sm-6 col-xs-12 store-entry"
+                tabindex="0"
+                [class.highlight-store]="highlighted$(store) | async"
+                (click)="highlight(store)"
+                (keydown.enter)="highlight(store)"
+              >
+                <ish-store-address [store]="store" />
+              </div>
+            }
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-} } @if (loading$ | async) {
-<ish-loading />
+  }
+}
+@if (loading$ | async) {
+  <ish-loading />
 }
 
 <ish-error-message [error]="error$ | async" />

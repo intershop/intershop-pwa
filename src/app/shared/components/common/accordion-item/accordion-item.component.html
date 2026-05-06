@@ -1,23 +1,23 @@
 <button
-  [id]="'toggle-' + accordionId"
-  type="button"
-  (click)="toggleCollapse()"
   class="panel-heading btn btn-link btn-content-toggle"
-  [attr.aria-expanded]="!isCollapsed"
+  type="button"
   [attr.aria-controls]="'panel-' + accordionId"
+  [attr.aria-expanded]="!isCollapsed"
   [attr.data-testing-id]="dataTestingId"
+  [id]="'toggle-' + accordionId"
+  (click)="toggleCollapse()"
 >
   {{ heading }}
   <i class="fs-2" [class]="isCollapsed ? 'bi bi-plus' : 'bi bi-dash'"></i>
 </button>
 
 <div
-  [ngbCollapse]="isCollapsed"
   class="panel-collapse collapse"
   role="region"
   [attr.aria-labelledby]="'toggle-' + accordionId"
+  [ngbCollapse]="isCollapsed"
 >
-  <div [id]="'panel-' + accordionId" class="panel-body">
+  <div class="panel-body" [id]="'panel-' + accordionId">
     <ng-content />
   </div>
 </div>

@@ -3,30 +3,30 @@
     <div class="dp-hidden position-absolute">
       <div class="col-6">
         <input
-          [formlyAttributes]="field"
-          [minDate]="minDate$ | async"
-          [maxDate]="maxDate$ | async"
-          navigation="select"
-          class="form-control"
-          [ngClass]="props.inputClass"
-          name="dp"
-          ngbDatepicker
           #d="ngbDatepicker"
+          class="form-control"
           data-testing-id="date-range-picker"
-          [autoClose]="'outside'"
-          (dateSelect)="onDateSelection($event)"
-          [displayMonths]="2"
-          [dayTemplate]="t"
+          name="dp"
+          navigation="select"
+          ngbDatepicker
           outsideDays="collapsed"
-          [startDate]="startDate$ | async"
           tabindex="-1"
+          [autoClose]="'outside'"
+          [dayTemplate]="t"
+          [displayMonths]="2"
+          [formlyAttributes]="field"
+          [maxDate]="maxDate$ | async"
+          [minDate]="minDate$ | async"
+          [ngClass]="props.inputClass"
+          [startDate]="startDate$ | async"
+          (dateSelect)="onDateSelection($event)"
         />
         <ng-template #t let-date let-disabled="disabled">
           <span
             class="custom-day"
             [class.disabled]="disabled"
-            [class.range]="isRange(date)"
             [class.faded]="isHovered(date) || isInside(date)"
+            [class.range]="isRange(date)"
             (mouseenter)="hoveredDate = date"
             (mouseleave)="hoveredDate = null"
           >
@@ -39,23 +39,23 @@
       <input
         #dpFromDate
         class="form-control"
-        [placeholder]="props.placeholder | translate"
         name="dpFromDate"
-        [value]="formatter.format(fromDate)"
-        (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+        [attr.aria-describedby]="props.ariaDescribedByIds"
+        [attr.aria-invalid]="showError ? 'true' : undefined"
         [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
         [attr.aria-required]="props.required ? 'true' : undefined"
-        [attr.aria-invalid]="showError ? 'true' : undefined"
-        [attr.aria-describedby]="props.ariaDescribedByIds"
+        [placeholder]="props.placeholder | translate"
+        [value]="formatter.format(fromDate)"
+        (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
       />
       <button
-        type="button"
-        class="btn btn-secondary input-group-text mb-0 me-0"
-        (click)="d.toggle()"
-        title="{{ 'account.date.title' | translate }}"
-        data-testing-id="btn-date-picker"
-        aria-haspopup="dialog"
         aria-expanded="false"
+        aria-haspopup="dialog"
+        class="btn btn-secondary input-group-text mb-0 me-0"
+        data-testing-id="btn-date-picker"
+        type="button"
+        title="{{ 'account.date.title' | translate }}"
+        (click)="d.toggle()"
       >
         <i class="bi bi-calendar-event-fill text-secondary"></i>
       </button>
@@ -65,22 +65,22 @@
     <input
       #dpToDate
       class="form-control"
-      [placeholder]="props.placeholder | translate"
       name="dpToDate"
-      [value]="formatter.format(toDate)"
-      (input)="toDate = validateInput(toDate, dpToDate.value)"
+      [attr.aria-describedby]="props.ariaDescribedByIds"
+      [attr.aria-invalid]="showError ? 'true' : undefined"
       [attr.aria-label]="'account.order_history.filter.label.date.aria_label' | translate"
       [attr.aria-required]="props.required ? 'true' : undefined"
-      [attr.aria-invalid]="showError ? 'true' : undefined"
-      [attr.aria-describedby]="props.ariaDescribedByIds"
+      [placeholder]="props.placeholder | translate"
+      [value]="formatter.format(toDate)"
+      (input)="toDate = validateInput(toDate, dpToDate.value)"
     />
     <button
-      type="button"
-      class="btn btn-secondary input-group-text mb-0 me-0"
-      (click)="d.toggle()"
-      title="{{ 'account.date.title' | translate }}"
-      aria-haspopup="dialog"
       aria-expanded="false"
+      aria-haspopup="dialog"
+      class="btn btn-secondary input-group-text mb-0 me-0"
+      type="button"
+      title="{{ 'account.date.title' | translate }}"
+      (click)="d.toggle()"
     >
       <i class="bi bi-calendar-event-fill text-secondary"></i>
     </button>

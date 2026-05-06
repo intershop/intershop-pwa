@@ -1,8 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 
-export interface URLFormParams {
-  [facet: string]: string[];
-}
+export type URLFormParams = Record<string, string[]>;
 
 export function formParamsToString(object: URLFormParams, separator = ','): string {
   return object

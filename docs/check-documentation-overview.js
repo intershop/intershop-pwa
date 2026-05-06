@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const glob = require('glob');
+const { globSync } = require('glob');
 
 const overviewContent = fs.readFileSync('docs/README.md', { encoding: 'utf-8' });
 const match = overviewContent.match(/\[.*?\](\(|:\s+)[^\s]*\)?/g);
@@ -20,7 +20,7 @@ if (match) {
   });
 }
 
-const files = glob.sync('docs/*/*.md');
+const files = globSync('docs/*/*.md');
 let isError = false;
 
 files.forEach(file => {

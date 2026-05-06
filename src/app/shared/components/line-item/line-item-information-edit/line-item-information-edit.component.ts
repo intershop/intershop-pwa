@@ -32,12 +32,15 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
   }
   @Input() editable = false;
 
-  @Output() updateItem = new EventEmitter<LineItemUpdate>();
+  @Output() readonly updateItem = new EventEmitter<LineItemUpdate>();
 
   customFieldsForm = new FormGroup({});
   collapsed = true;
 
-  constructor(@Self() private context: ProductContextFacade, private checkoutFacade: CheckoutFacade) {
+  constructor(
+    @Self() private context: ProductContextFacade,
+    private checkoutFacade: CheckoutFacade
+  ) {
     super();
   }
 

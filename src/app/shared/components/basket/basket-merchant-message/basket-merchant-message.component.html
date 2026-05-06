@@ -4,17 +4,17 @@
   <form [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="row">
       @if (showSuccessMessage) {
-      <div class="col-md-12">
-        <ish-success-message message="checkout.basket_merchant_message.success.message" [toast]="false" />
-      </div>
+        <div class="col-md-12">
+          <ish-success-message message="checkout.basket_merchant_message.success.message" [toast]="false" />
+        </div>
       }
 
       <div class="col-md-9">
-        <formly-form [form]="form" [fields]="fields" [model]="model" />
+        <formly-form [fields]="fields" [form]="form" [model]="model" />
       </div>
 
       <div class="col-md-2 ps-md-0">
-        <button type="submit" class="btn btn-secondary" [disabled]="disabled">
+        <button class="btn btn-secondary" type="submit" [disabled]="disabled">
           {{ 'checkout.basket_merchant_message.apply.button.label' | translate }}
         </button>
       </div>

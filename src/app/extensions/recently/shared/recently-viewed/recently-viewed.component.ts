@@ -15,7 +15,10 @@ import { RecentlyFacade } from '../../facades/recently.facade';
 export class RecentlyViewedComponent implements OnInit {
   recentlyProducts$: Observable<string[]>;
 
-  constructor(private recentlyFacade: RecentlyFacade, private shoppingFacade: ShoppingFacade) {}
+  constructor(
+    private recentlyFacade: RecentlyFacade,
+    private shoppingFacade: ShoppingFacade
+  ) {}
 
   ngOnInit() {
     this.recentlyProducts$ = this.shoppingFacade.excludeFailedProducts$(

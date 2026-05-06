@@ -1,35 +1,35 @@
 <ng-template #modal let-addModal>
   <div class="modal-header">
-    <h2 id="wishlist-sharing-modal-title" class="modal-title">{{ modalHeader | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <h2 class="modal-title" id="wishlist-sharing-modal-title">{{ modalHeader | translate }}</h2>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <form [formGroup]="wishListForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitWishlistForm()" novalidate>
+  <form #form="ngForm" ishFormSubmit novalidate [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
     <div class="modal-body">
-      <p class="indicates-required" aria-hidden="true">
+      <p aria-hidden="true" class="indicates-required">
         <span class="required">*</span> {{ 'account.required_field.message' | translate }}
       </p>
 
-      <formly-form [form]="wishListForm" [fields]="fields" />
+      <formly-form [fields]="fields" [form]="wishListForm" />
 
       <p
         [ishServerHtml]="
           'account.wishlists.wishlist_sharing_form.privacy_policy.text'
-            | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+            | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
         "
       ></p>
     </div>
 
     <div class="modal-footer">
       <button
-        type="submit"
         class="btn btn-primary"
-        [disabled]="form.submitted && wishListForm.invalid"
         data-testing-id="wishlist-share-dialog-submit"
+        type="submit"
+        [disabled]="form.submitted && wishListForm.invalid"
       >
         {{ primaryButton | translate }}
       </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="hide()">
         {{ 'account.wishlists.wishlist_sharing_form.cancel_button.text' | translate }}
       </button>
     </div>

@@ -25,7 +25,7 @@ export class BasketInvoiceAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
   @Input() showErrors = true;
 
-  @Output() collapseChange = new BehaviorSubject(true);
+  @Output() readonly collapseChange = new BehaviorSubject(true);
 
   @Input()
   set collapse(value: boolean) {

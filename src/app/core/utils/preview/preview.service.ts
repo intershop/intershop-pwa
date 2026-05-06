@@ -97,7 +97,7 @@ export class PreviewService {
         filter(
           ([e, icmBaseUrl]) =>
             e.origin === icmBaseUrl &&
-            e.data.hasOwnProperty('type') &&
+            Object.hasOwn(e.data, 'type') &&
             this.allowedHostMessageTypes.includes(e.data.type)
         ),
         map(([message]) => message.data)

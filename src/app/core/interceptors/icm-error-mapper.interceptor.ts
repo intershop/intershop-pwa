@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-restricted-types */
 
 export interface SpecialHttpErrorHandler {
   test(error: HttpErrorResponse, request: HttpRequest<unknown>): boolean;
@@ -17,7 +17,10 @@ export const SPECIAL_HTTP_ERROR_HANDLER = new InjectionToken<SpecialHttpErrorHan
 
 @Injectable()
 export class ICMErrorMapperInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector, private errorHandler: ErrorHandler) {}
+  constructor(
+    private injector: Injector,
+    private errorHandler: ErrorHandler
+  ) {}
 
   // eslint-disable-next-line complexity
   private mapError(httpError: HttpErrorResponse, request: HttpRequest<unknown>): HttpError {

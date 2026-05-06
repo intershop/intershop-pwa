@@ -1,52 +1,53 @@
 @if (product$ | async) {
-<div class="row">
-  <div class="col-lg-3 d-none d-lg-block">
-    <div class="product-img-thumbs">
-      @for (imageView of getImageViewIDs$('S') | async; track imageView; let i = $index) {
-      <div
-        class="product-thumb-set"
-        [ngClass]="{ active: isActiveSlide(i) }"
-        (click)="setActiveSlide(i)"
-        (keydown.enter)="setActiveSlide(i)"
-        tabindex="0"
-      >
-        <ish-product-image imageType="S" [imageView]="imageView" />
-      </div>
-      }
-    </div>
-  </div>
-  @if (getImageViewIDs$('L') | async; as largeImages) {
-  <div class="col-12 col-lg-9 product-detail-img clearfix">
-    <div class="product-image-container">
-      <swiper #carousel [navigation]="true">
-        @for (imageView of largeImages; track imageView; let i = $index) {
-        <ng-template swiperSlide>
-          <div (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)" tabindex="0">
-            <ish-product-image
-              [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
-              imageType="L"
-              [imageView]="imageView"
-              [loading]="i === 0 ? 'eager' : 'lazy'"
-            />
+  <div class="row">
+    <div class="col-lg-3 d-none d-lg-block">
+      <div class="product-img-thumbs">
+        @for (imageView of getImageViewIDs$('S') | async; track imageView; let i = $index) {
+          <div
+            class="product-thumb-set"
+            tabindex="0"
+            [ngClass]="{ active: isActiveSlide(i) }"
+            (click)="setActiveSlide(i)"
+            (keydown.enter)="setActiveSlide(i)"
+          >
+            <ish-product-image imageType="S" [imageView]="imageView" />
           </div>
-        </ng-template>
         }
-      </swiper>
-      <ish-product-label />
+      </div>
     </div>
+    @if (getImageViewIDs$('L') | async; as largeImages) {
+      <div class="col-12 col-lg-9 product-detail-img clearfix">
+        <div class="product-image-container">
+          <swiper #carousel [navigation]="true">
+            @for (imageView of largeImages; track imageView; let i = $index) {
+              <ng-template swiperSlide>
+                <div tabindex="0" (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)">
+                  <ish-product-image
+                    imageType="L"
+                    [imageView]="imageView"
+                    [loading]="i === 0 ? 'eager' : 'lazy'"
+                    [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
+                  />
+                </div>
+              </ng-template>
+            }
+          </swiper>
+          <ish-product-label />
+        </div>
+      </div>
+    }
   </div>
-  }
-</div>
-} @if (zoomImageIds$ | async; as zoomImages) {
-<ish-modal-dialog
-  #zoomDialog
-  [options]="{
-    scrollable: true,
-    modalDialogClass: 'modal-fullscreen'
-  }"
->
-  @for (imageView of zoomImages; track imageView; let i = $index) {
-  <ish-product-image [id]="getZoomImageAnchorId(i)" imageType="ZOOM" [imageView]="imageView" />
-  }
-</ish-modal-dialog>
+}
+@if (zoomImageIds$ | async; as zoomImages) {
+  <ish-modal-dialog
+    #zoomDialog
+    [options]="{
+      scrollable: true,
+      modalDialogClass: 'modal-fullscreen',
+    }"
+  >
+    @for (imageView of zoomImages; track imageView; let i = $index) {
+      <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
+    }
+  </ish-modal-dialog>
 }

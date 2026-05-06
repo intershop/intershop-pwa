@@ -31,7 +31,7 @@ export class LocalizedParserFormatter extends NgbDateParserFormatter {
         month: date.getMonth() + 1,
         day: date.getDate(),
       };
-    } catch (err) {
+    } catch {
       return;
     }
   }

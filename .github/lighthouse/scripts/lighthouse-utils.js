@@ -72,7 +72,7 @@ function collectUrlScores(dir) {
       for (const [url, reportUrl] of Object.entries(links)) {
         perUrlReportLinks.set(url, reportUrl);
       }
-    } catch (e) {
+    } catch {
       // links.json not found or invalid, continue without report URLs
     }
   }
@@ -151,7 +151,7 @@ function loadPagesConfiguration(configPath) {
     const content = fs.readFileSync(configPath, 'utf8');
     const pagesConfig = JSON.parse(content).pages || {};
     return pagesConfig;
-  } catch (error) {
+  } catch {
     console.warn(`Warning: Could not load pages config from ${configPath}, using empty config`);
     return {};
   }

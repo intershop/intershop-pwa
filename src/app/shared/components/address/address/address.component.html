@@ -1,43 +1,68 @@
 @if (address) {
-<address>
-  <!-- b2b Customer only -->
-  @if (address.companyName1) {
-  {{ address.companyName1 }}<br />
-  } @if (address.companyName2) {
-  {{ address.companyName2 }}<br />
-  }
-  <!-- all customers -->
-  @if (address.firstName || address.lastName) { @if (address.title) {
-  {{ address.title }}
-  }
-  {{ address.firstName }} {{ address.lastName }}<br />
-  } @if (address.addressLine1) {
-  {{ address.addressLine1 }}<br />
-  } @if (address.addressLine2) {
-  {{ address.addressLine2 }}<br />
-  } @if (address.addressLine3) {
-  {{ address.addressLine3 }}<br />
-  } @if (address.countryCode === 'DE' || address.countryCode === 'FR') { @if (address.postalCode) {
-  {{ address.postalCode }}&nbsp; } @if (address.city) {
-  {{ address.city }}
-  }
-  <br />
-  } @else { @if (address.city) {
-  {{ address.city }}&nbsp; } @if (address.countryCode === 'GB') {
-  <br />
-  } @if (address.countryCode === 'US') { , @if (address.mainDivisionCode) {
-  {{ address.mainDivisionCode }}&nbsp; } } @if (address.postalCode) {
-  {{ address.postalCode }}
-  }
-  <br />
-  } @if (address.countryCode !== 'US' && address.mainDivision) {
-  {{ address.mainDivision }}&nbsp; } @if (address.country) { {{ address.country }}<br />
-  } @if (!address.country && address.countryCode) {
-  {{ address.countryCode }}<br />
-  } @if (address.phoneHome) {
-  {{ address.phoneHome }}<br />
-  } @if (displayEmail && address.email) {
-  {{ address.email }}<br />
-  }
-</address>
+  <address>
+    <!-- b2b Customer only -->
+    @if (address.companyName1) {
+      {{ address.companyName1 }}<br />
+    }
+    @if (address.companyName2) {
+      {{ address.companyName2 }}<br />
+    }
+    <!-- all customers -->
+    @if (address.firstName || address.lastName) {
+      @if (address.title) {
+        {{ address.title }}
+      }
+      {{ address.firstName }} {{ address.lastName }}<br />
+    }
+    @if (address.addressLine1) {
+      {{ address.addressLine1 }}<br />
+    }
+    @if (address.addressLine2) {
+      {{ address.addressLine2 }}<br />
+    }
+    @if (address.addressLine3) {
+      {{ address.addressLine3 }}<br />
+    }
+    @if (address.countryCode === 'DE' || address.countryCode === 'FR') {
+      @if (address.postalCode) {
+        {{ address.postalCode }}&nbsp;
+      }
+      @if (address.city) {
+        {{ address.city }}
+      }
+      <br />
+    } @else {
+      @if (address.city) {
+        {{ address.city }}&nbsp;
+      }
+      @if (address.countryCode === 'GB') {
+        <br />
+      }
+      @if (address.countryCode === 'US') {
+        ,
+        @if (address.mainDivisionCode) {
+          {{ address.mainDivisionCode }}&nbsp;
+        }
+      }
+      @if (address.postalCode) {
+        {{ address.postalCode }}
+      }
+      <br />
+    }
+    @if (address.countryCode !== 'US' && address.mainDivision) {
+      {{ address.mainDivision }}&nbsp;
+    }
+    @if (address.country) {
+      {{ address.country }}<br />
+    }
+    @if (!address.country && address.countryCode) {
+      {{ address.countryCode }}<br />
+    }
+    @if (address.phoneHome) {
+      {{ address.phoneHome }}<br />
+    }
+    @if (displayEmail && address.email) {
+      {{ address.email }}<br />
+    }
+  </address>
 }

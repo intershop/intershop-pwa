@@ -20,9 +20,7 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
  * The Product Add To Wishlist Component adds a product to a wishlist.
  *
  * @example
- * <ish-product-add-to-wishlist
- *               displayType="icon"
- * ></ish-product-add-to-wishlist>
+ * <ish-product-add-to-wishlist displayType="icon" />
  */
 @GenerateLazyComponent()
 export class ProductAddToWishlistComponent implements OnInit {

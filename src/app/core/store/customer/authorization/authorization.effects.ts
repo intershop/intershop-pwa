@@ -16,7 +16,11 @@ import {
 
 @Injectable()
 export class AuthorizationEffects {
-  constructor(private actions$: Actions, private store: Store, private authorizationService: AuthorizationService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private authorizationService: AuthorizationService
+  ) {}
 
   triggerLoading$ = createEffect(() =>
     this.actions$.pipe(

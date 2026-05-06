@@ -79,26 +79,15 @@ cache:
 ```
 
 > [!IMPORTANT]
-> Be aware that the `OVERRIDE_IDENTITY_PROVIDERS` configuration has to match a potentially used `multiChannel` configuration.
+> The `OVERRIDE_IDENTITY_PROVIDERS` matching pattern (in the example `.+`) must exactly match a `MULTI_CHANNEL` matching pattern, or it can be configured as a RegEx that matches several `MULTI_CHANNEL` matching patterns.
 
 ```yaml
-environment:
-  - name: IDENTITY_PROVIDERS
-    value: |
-      {
-        "Punchout": {"type": "PUNCHOUT"}
-      }
-
 cache:
   extraEnvVars:
     - name: OVERRIDE_IDENTITY_PROVIDERS
       value: |
         .+:
-          - path: /en/punchout
-            type: Punchout
-          - path: /de/punchout
-            type: Punchout
-          - path: /fr/punchout
+          - path: /punchout
             type: Punchout
 
   multiChannel: |

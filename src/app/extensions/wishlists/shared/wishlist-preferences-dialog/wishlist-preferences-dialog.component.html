@@ -1,24 +1,24 @@
 <ng-template #modal let-addModal>
   <div class="modal-header">
-    <h2 id="wishlist-preferences-modal-title" class="modal-title">{{ modalHeader | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <h2 class="modal-title" id="wishlist-preferences-modal-title">{{ modalHeader | translate }}</h2>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <form [formGroup]="wishListForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitWishlistForm()" novalidate>
+  <form #form="ngForm" ishFormSubmit novalidate [formGroup]="wishListForm" (ngSubmit)="submitWishlistForm()">
     <div class="modal-body">
-      <formly-form [form]="wishListForm" [fields]="fields" [model]="model" />
+      <formly-form [fields]="fields" [form]="wishListForm" [model]="model" />
     </div>
 
     <div class="modal-footer">
       <button
-        type="submit"
         class="btn btn-primary"
-        [disabled]="form.submitted && wishListForm.invalid"
         data-testing-id="wishlist-dialog-submit"
+        type="submit"
+        [disabled]="form.submitted && wishListForm.invalid"
       >
         {{ primaryButton | translate }}
       </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="hide()">
         {{ 'account.wishlists.wishlist_form.cancel_button.text' | translate }}
       </button>
     </div>

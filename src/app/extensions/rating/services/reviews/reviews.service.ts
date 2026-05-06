@@ -54,7 +54,7 @@ export class ReviewsService {
       .post(`products/${this.apiService.encodeResourceId(sku)}/reviews`, { ...review, showAuthorNameFlag: true })
       .pipe(
         this.apiService.resolveLink<ProductReview>(),
-        map(review => ProductReviewsMapper.fromData(sku, [{ ...review, own: true }]))
+        map(data => ProductReviewsMapper.fromData(sku, [{ ...data, own: true }]))
       );
   }
 

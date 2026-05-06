@@ -1,17 +1,18 @@
-@for (item of lineItems$ | async; track item[0]) { @if (item[0] !== 'undefined') {
-<div class="d-flex align-items-center justify-content-between flex-wrap">
-  <h2>
-    {{ 'quote.basket_items.label' | translate : { '0': getName(item[0]) | async } }}
-  </h2>
-  <button
-    type="button"
-    class="float-md-end px-2 mx-1 d-block d-md-inline btn btn-link btn-link-action"
-    title="{{ 'quote.basket_items.remove.button.label' | translate }}"
-    (click)="onDeleteQuote(item[0])"
-  >
-    {{ 'quote.basket_items.remove.button.label' | translate }}
-  </button>
-</div>
-}
-<ish-line-item-list [lineItems]="item[1]" />
+@for (item of lineItems$ | async; track item[0]) {
+  @if (item[0] !== 'undefined') {
+    <div class="d-flex align-items-center justify-content-between flex-wrap">
+      <h2>
+        {{ 'quote.basket_items.label' | translate: { '0': getName(item[0]) | async } }}
+      </h2>
+      <button
+        class="float-md-end px-2 mx-1 d-block d-md-inline btn btn-link btn-link-action"
+        type="button"
+        title="{{ 'quote.basket_items.remove.button.label' | translate }}"
+        (click)="onDeleteQuote(item[0])"
+      >
+        {{ 'quote.basket_items.remove.button.label' | translate }}
+      </button>
+    </div>
+  }
+  <ish-line-item-list [lineItems]="item[1]" />
 }

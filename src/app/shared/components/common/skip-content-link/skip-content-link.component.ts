@@ -60,7 +60,10 @@ export class SkipContentLinkComponent implements AfterContentInit, AfterViewInit
 
   generatedElementAfterListingId: string;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2
+  ) {}
 
   // cannot set the ID in `ngAfterViewInit()` because the ID in the HTML would be undefined
   ngAfterContentInit() {

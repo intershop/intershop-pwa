@@ -12,7 +12,7 @@ export class FocusOutsideDirective {
   /**
    * Event to tell the listener, when focus moves outside the target element
    */
-  @Output() isFocusedOutside = new EventEmitter<boolean>();
+  @Output() readonly isFocusedOutside = new EventEmitter<boolean>();
 
   /**
    * Method to check if focus is outside of the targetElement. Emits true when focus moves outside.

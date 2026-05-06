@@ -20,7 +20,10 @@ import { CostCenterQuery } from '../../models/cost-center-query/cost-center-quer
 
 @Injectable({ providedIn: 'root' })
 export class CostCentersService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 

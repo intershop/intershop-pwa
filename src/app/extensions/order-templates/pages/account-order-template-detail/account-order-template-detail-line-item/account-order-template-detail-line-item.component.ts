@@ -18,7 +18,10 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
 
   checkBox = new FormControl();
 
-  constructor(private context: ProductContextFacade, private orderTemplatesFacade: OrderTemplatesFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private orderTemplatesFacade: OrderTemplatesFacade
+  ) {}
 
   ngOnInit() {
     this.context.hold(this.context.validDebouncedQuantityUpdate$(), quantity => {

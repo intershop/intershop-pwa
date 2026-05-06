@@ -20,7 +20,6 @@ export class BasketValidationMapper {
     }
   }
 
-  // eslint-disable-next-line complexity
   private static transform(basketValidationData: BasketValidationData): BasketData {
     return {
       data: basketValidationData.included

@@ -10,9 +10,7 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
  * The Request Reminder Form Component displays a Forgot Password Request Reminder form and triggers the submit.
  *
  * @example
- * <ish-request-reminder-form
- *               (submitPasswordReminder)="requestPasswordReminder($event)"
- * ></ish-request-reminder-form>
+ * <ish-request-reminder-form (submitPasswordReminder)="requestPasswordReminder($event)"/>
  */
 @Component({
   selector: 'ish-request-reminder-form',
@@ -23,7 +21,7 @@ export class RequestReminderFormComponent implements OnInit {
   /**
    * Submit the form data to trigger the request for a password reminder.
    */
-  @Output() submitPasswordReminder = new EventEmitter<PasswordReminder>();
+  @Output() readonly submitPasswordReminder = new EventEmitter<PasswordReminder>();
   requestReminderForm = new UntypedFormGroup({});
   fields$: Observable<FormlyFieldConfig[]>;
 

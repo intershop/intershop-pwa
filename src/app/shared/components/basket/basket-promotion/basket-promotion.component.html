@@ -1,10 +1,13 @@
-@if (promotion$ | async; as promotion) { @if (promotion && !promotion.disableMessages) { @if (promotion.title) {
-<div class="promotion-title" [ishServerHtml]="promotion.title"></div>
+@if (promotion$ | async; as promotion) {
+  @if (promotion && !promotion.disableMessages) {
+    @if (promotion.title) {
+      <div class="promotion-title" [ishServerHtml]="promotion.title"></div>
+    }
+    <div class="promotion-details-and-remove-links">
+      <ish-promotion-details [promotion]="promotion" />
+      <ish-promotion-remove [code]="rebate.code" />
+    </div>
+  } @else {
+    {{ 'checkout.widget.promotion.discount' | translate }}
+  }
 }
-<div class="promotion-details-and-remove-links">
-  <ish-promotion-details [promotion]="promotion" />
-  <ish-promotion-remove [code]="rebate.code" />
-</div>
-} @else {
-{{ 'checkout.widget.promotion.discount' | translate }}
-} }

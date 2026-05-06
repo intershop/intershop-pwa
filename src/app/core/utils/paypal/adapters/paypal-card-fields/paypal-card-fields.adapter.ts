@@ -7,6 +7,7 @@ import { map, take } from 'rxjs/operators';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PAYPAL_CART_FIELDS_STYLING } from 'ish-core/utils/paypal/adapters/paypal-adapters.styling';
+import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
 import { PaypalDataTransferService } from 'ish-core/utils/paypal/paypal-data-transfer/paypal-data-transfer.service';
 import {
   PaypalCardFieldError,
@@ -55,6 +56,7 @@ export class PaypalCardFieldsAdapter {
   constructor(
     private ngZone: NgZone,
     private checkoutFacade: CheckoutFacade,
+    private paypalConfigService: PaypalConfigService,
     private paypalDataTransferService: PaypalDataTransferService,
     private translateService: TranslateService,
     @Inject(DOCUMENT) private document: Document
@@ -69,13 +71,17 @@ export class PaypalCardFieldsAdapter {
    * @param paymentMethod - PayPal payment method configuration
    * @returns Promise that resolves when all fields are rendered
    */
-  async renderCardFields(scriptNamespace: string, paymentMethod: PaymentMethod): Promise<void> {
-    // Access PayPal SDK from window object
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const paypalObject = (window as any)[scriptNamespace];
+  async renderCardFields(paymentMethod: PaymentMethod): Promise<void> {
+    const paypalObject = this.paypalConfigService.getPaypalComponent(paymentMethod);
 
     if (!paypalObject?.CardFields) {
-      return Promise.reject(new Error(`PayPal CardFields not available on namespace '${scriptNamespace}'`));
+      return Promise.reject(
+        new Error(
+          `PayPal CardFields not available on namespace '${this.paypalConfigService.getPaypalScriptNameSpace(
+            paymentMethod
+          )}'`
+        )
+      );
     }
 
     // Reset state for reinitialization
@@ -224,7 +230,7 @@ export class PaypalCardFieldsAdapter {
       if (!container.hasChildNodes() && attempt === maxRetries) {
         this.renderError$.next('checkout.payment.paypal.script.render.error.message');
       }
-    } catch (error) {
+    } catch {
       // On error, retry if possible
       if (attempt < maxRetries) {
         delete this.fields[config.key];
@@ -318,7 +324,7 @@ export class PaypalCardFieldsAdapter {
       take(1),
       map(data => {
         this.creditCardPaymentInstrumentId = data.paymentInstrumentId;
-        return data.orderId;
+        return data.paypalOrderId;
       })
     );
 

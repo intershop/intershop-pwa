@@ -78,18 +78,18 @@ describe('Products List Component', () => {
       NodeList [
         <ish-product-item
         ishproductcontext=""
+        ng-reflect-display-type="row"
         ng-reflect-sku="1"
-        ng-reflect-display-type="row"
       ></ish-product-item>,
         <ish-product-item
         ishproductcontext=""
+        ng-reflect-display-type="row"
         ng-reflect-sku="2"
-        ng-reflect-display-type="row"
       ></ish-product-item>,
         <ish-product-item
         ishproductcontext=""
-        ng-reflect-sku="3"
         ng-reflect-display-type="row"
+        ng-reflect-sku="3"
       ></ish-product-item>,
       ]
     `);

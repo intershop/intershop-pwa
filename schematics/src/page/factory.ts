@@ -13,13 +13,13 @@ import {
 } from '@angular-devkit/schematics';
 import { buildDefaultPath, getWorkspace } from '@schematics/angular/utility/workspace';
 import { PWAPageOptionsSchema as Options } from 'schemas/page/schema';
-import { forEachToken, getChildOfKind } from 'tsutils';
 import * as ts from 'typescript';
 
 import { applyNameAndPath, detectExtension, determineArtifactName } from '../utils/common';
 import { readIntoSourceFile } from '../utils/filesystem';
 import { applyLintFix } from '../utils/lint-fix';
 import { addImportToFile } from '../utils/registration';
+import { forEachToken, getChildOfKind } from '../utils/ts-helpers';
 
 function addRouteToArray(
   options: { name?: string; routingModule?: string; child?: string; lazy?: boolean; extension?: string },
@@ -55,7 +55,6 @@ function addRouteToArray(
   }
 }
 
-// eslint-disable-next-line complexity
 async function determineRoutingModule(
   host: Tree,
   options: { name?: string; project?: string; extension?: string; lazy?: boolean }
@@ -67,7 +66,7 @@ async function determineRoutingModule(
   let child: string;
   let subPaging: boolean;
 
-  const match = options.name.match(/(.*)\-([a-z0-9]+)/);
+  const match = options.name.match(/(.*)-([a-z0-9]+)/);
   if (options.lazy && match?.[1] && match[2]) {
     const parent = match[1];
     const possibleChild = match[2];
@@ -168,7 +167,7 @@ export function createPage(options: Options): Rule {
     );
 
     operations.push(addRouteToRoutingModule(options));
-    if (options.extension && !new String(host.read(options.routingModule)).includes('ish-core/feature-toggle.module')) {
+    if (options.extension && !host.read(options.routingModule)?.toString().includes('ish-core/feature-toggle.module')) {
       operations.push(
         addImportToFile({
           module: options.routingModule,

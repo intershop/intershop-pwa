@@ -17,7 +17,10 @@ export class HeaderComponent implements OnInit {
   isSticky$: Observable<boolean>;
   reset$: Observable<Event>;
 
-  constructor(private appFacade: AppFacade, private router: Router) {}
+  constructor(
+    private appFacade: AppFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.headerType$ = this.appFacade.headerType$.pipe(

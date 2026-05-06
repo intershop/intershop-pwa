@@ -32,7 +32,10 @@ export interface BasketItemUpdateType {
  */
 @Injectable({ providedIn: 'root' })
 export class BasketItemsService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   /**
    * http header for Basket API v1

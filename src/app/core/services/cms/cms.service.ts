@@ -25,6 +25,9 @@ export class CMSService {
     private contentPageTreeMapper: ContentPageTreeMapper
   ) {}
 
+  /** Configure the default `resource set id` - the cartridge id - for view context requests */
+  private defaultResourceSetId = 'app_sf_base_cm';
+
   /**
    * Get the content for the given Content Include ID.
    *
@@ -100,11 +103,13 @@ export class CMSService {
    *
    * @param viewContextId  The view context ID.
    * @param callParameters The call parameters to give the current context.
+   * @param resourceSetId  The resource set ID (cartridge) of the view context model. If not given, the `defaultResourceSetId` is used.
    * @returns              The view contexts entrypoint content data.
    */
   getViewContextContent(
     viewContextId: string,
-    callParameters: CallParameters
+    callParameters: CallParameters,
+    resourceSetId?: string
   ): Observable<{ entrypoint: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {
     if (!viewContextId) {
       return throwError(() => new Error('getViewContextContent() called without a viewContextId'));
@@ -117,7 +122,9 @@ export class CMSService {
 
     return this.apiService
       .get<ContentPageletEntryPointData>(
-        `cms/viewcontexts/${this.apiService.encodeResourceId(viewContextId)}/entrypoint`,
+        `cms/viewcontexts/${this.apiService.encodeResourceId(viewContextId)}@${
+          resourceSetId || this.defaultResourceSetId
+        }/entrypoint`,
         {
           sendPGID: true,
           params,

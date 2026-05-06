@@ -1,25 +1,27 @@
 <div data-testing-id="checkout-address-page">
-  @if (basket$ | async; as basket) { @if ( (currentUser$ | async) || (validBasketAddresses$ | async) ||
-  nextStepRequested) {
-  <h1>
-    <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading' | translate }}</span>
-  </h1>
-  <ish-checkout-address
-    [basket]="basket"
-    [error]="(basketError$ | async) || (addressesError$ | async)"
-    (nextStep)="nextStep()"
-  />
-  } @else {
-  <h1>
-    <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading.anonymous' | translate }}</span>
-  </h1>
-  <!-- empty h1 to provide space -->
-  <ish-checkout-address-anonymous
-    [basket]="basket"
-    [error]="(basketError$ | async) || (addressesError$ | async)"
-    (nextStep)="nextStep()"
-  />
-  } } @if ((basketLoading$ | async) || (addressesLoading$ | async)) {
-  <ish-loading />
+  @if (basket$ | async; as basket) {
+    @if ((currentUser$ | async) || (validBasketAddresses$ | async) || nextStepRequested) {
+      <h1>
+        <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading' | translate }}</span>
+      </h1>
+      <ish-checkout-address
+        [basket]="basket"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (nextStep)="nextStep()"
+      />
+    } @else {
+      <h1>
+        <span id="page-main-content" tabindex="-1">{{ 'checkout.addresses.heading.anonymous' | translate }}</span>
+      </h1>
+      <!-- empty h1 to provide space -->
+      <ish-checkout-address-anonymous
+        [basket]="basket"
+        [error]="(basketError$ | async) || (addressesError$ | async)"
+        (nextStep)="nextStep()"
+      />
+    }
+  }
+  @if ((basketLoading$ | async) || (addressesLoading$ | async)) {
+    <ish-loading />
   }
 </div>

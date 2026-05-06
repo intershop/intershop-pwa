@@ -71,8 +71,8 @@ describe('Budget Bar Component', () => {
         <div
           aria-hidden="true"
           class="budget-bar-used bg-danger"
-          title="$700.00"
           ng-reflect-ng-class="bg-danger"
+          title="$700.00"
           style="width: 140%"
         >
           $700.00
@@ -92,11 +92,11 @@ describe('Budget Bar Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('.budget-bar-used-additional')).toMatchInlineSnapshot(`
       <div
-        role="progressbar"
         aria-hidden="true"
+        role="progressbar"
         class="budget-bar-used budget-bar-used-additional border-start bg-danger"
-        title="$300.00"
         ng-reflect-ng-class="bg-danger"
+        title="$300.00"
         style="width: 30%"
       >
         <span>$300.00</span>

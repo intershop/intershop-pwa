@@ -4,8 +4,8 @@
 export type FetchTokenOptions<T extends GrantType> = T extends 'password'
   ? FetchTokenPasswordOptions
   : T extends 'client_credentials'
-  ? FetchTokenClientCredentialsOptions
-  : FetchTokenRefreshTokenOptions;
+    ? FetchTokenClientCredentialsOptions
+    : FetchTokenRefreshTokenOptions;
 
 interface FetchTokenPasswordOptions {
   username: string;

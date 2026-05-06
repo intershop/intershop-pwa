@@ -11,10 +11,10 @@ import { InsertChange } from '@schematics/angular/utility/change';
 import { buildRelativePath, findModule } from '@schematics/angular/utility/find-module';
 import * as path from 'path';
 import { ObjectLiteralExpression, SyntaxKind } from 'ts-morph';
-import { ImportKind, findImports, forEachToken } from 'tsutils';
 import * as ts from 'typescript';
 
-import { readIntoSourceFile } from './filesystem';
+import { asSchematicsSourceFile, readIntoSourceFile } from './filesystem';
+import { ImportKind, findImports, forEachToken } from './ts-helpers';
 import { createTsMorphProject } from './ts-morph';
 
 export function addExportToNgModule(options: {
@@ -23,14 +23,14 @@ export function addExportToNgModule(options: {
   moduleImportPath?: string;
 }): Rule {
   return host => {
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const source = readIntoSourceFile(host, options.module);
+    const relativePath = buildRelativePath(options.module!, options.moduleImportPath!);
+    const source = readIntoSourceFile(host, options.module!);
 
     const exportRecorder = host.beginUpdate(options.module);
     const exportChanges = addExportToModule(
-      source,
-      options.module,
-      strings.classify(options.artifactName),
+      asSchematicsSourceFile(source),
+      options.module!,
+      strings.classify(options.artifactName!),
       relativePath
     );
 
@@ -49,14 +49,14 @@ export function addImportToNgModule(options: {
   moduleImportPath?: string;
 }): Rule {
   return host => {
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const source = readIntoSourceFile(host, options.module);
+    const relativePath = buildRelativePath(options.module!, options.moduleImportPath!);
+    const source = readIntoSourceFile(host, options.module!);
 
-    const importRecorder = host.beginUpdate(options.module);
+    const importRecorder = host.beginUpdate(options.module!);
     const importChanges = addImportToModule(
-      source,
-      options.module,
-      strings.classify(options.artifactName),
+      asSchematicsSourceFile(source),
+      options.module!,
+      strings.classify(options.artifactName!),
       relativePath
     );
 
@@ -75,10 +75,15 @@ export function addDeclarationToNgModule(options: {
   moduleImportPath?: string;
 }): Rule {
   return host => {
-    const source = readIntoSourceFile(host, options.module);
+    const source = readIntoSourceFile(host, options.module!);
 
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const declarationChanges = addDeclarationToModule(source, options.module, options.artifactName, relativePath);
+    const relativePath = buildRelativePath(options.module!, options.moduleImportPath!);
+    const declarationChanges = addDeclarationToModule(
+      asSchematicsSourceFile(source),
+      options.module!,
+      options.artifactName!,
+      relativePath
+    );
 
     const declarationRecorder = host.beginUpdate(options.module);
     for (const change of declarationChanges) {
@@ -98,12 +103,17 @@ export function addProviderToNgModule(options: {
   moduleImportPath?: string;
 }): Rule {
   return host => {
-    const source = readIntoSourceFile(host, options.module);
+    const source = readIntoSourceFile(host, options.module!);
 
     const relativePath = options.moduleImportPath
-      ? buildRelativePath(options.module, options.moduleImportPath)
+      ? buildRelativePath(options.module!, options.moduleImportPath)
       : undefined;
-    const declarationChanges = addProviderToModule(source, options.module, options.artifactName, relativePath);
+    const declarationChanges = addProviderToModule(
+      asSchematicsSourceFile(source),
+      options.module!,
+      options.artifactName!,
+      relativePath
+    );
 
     const declarationRecorder = host.beginUpdate(options.module);
     for (const change of declarationChanges) {
@@ -126,20 +136,20 @@ export function addTokenProviderToNgModule(options: {
 }): Rule {
   return host => {
     const tsMorphProject = createTsMorphProject(host);
-    tsMorphProject.addSourceFileAtPath(options.module);
-    const sourceFile = tsMorphProject.getSourceFile(options.module);
+    tsMorphProject.addSourceFileAtPath(options.module!);
+    const sourceFile = tsMorphProject.getSourceFile(options.module!);
 
     (sourceFile.getClasses()[0].getDecorator('NgModule').getArguments()[0] as ObjectLiteralExpression)
       .getChildrenOfKind(SyntaxKind.PropertyAssignment)
       .find(child => child.getName() === 'providers')
       .getInitializerIfKindOrThrow(SyntaxKind.ArrayLiteralExpression)
-      .addElement(`{ provide: ${options.token}, useClass: ${options.class}, multi: ${options.multi} }`);
+      .addElement(`{ provide: ${options.token!}, useClass: ${options.class!}, multi: ${options.multi} }`);
 
     sourceFile
       .addImportDeclaration({
-        moduleSpecifier: buildRelativePath(options.module, options.artifactPath),
+        moduleSpecifier: buildRelativePath(options.module!, options.artifactPath!),
       })
-      .addNamedImport({ name: options.class });
+      .addNamedImport({ name: options.class! });
 
     host.overwrite(options.module, sourceFile.getText());
     return host;
@@ -180,11 +190,11 @@ export function addImportToNgModuleBefore(
   beforeToken: string
 ): Rule {
   return host => {
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const source = readIntoSourceFile(host, options.module);
-    const importRecorder = host.beginUpdate(options.module);
+    const relativePath = buildRelativePath(options.module!, options.moduleImportPath!);
+    const source = readIntoSourceFile(host, options.module!);
+    const importRecorder = host.beginUpdate(options.module!);
 
-    insertImport(source, importRecorder, options.artifactName, relativePath);
+    insertImport(source, importRecorder, options.artifactName!, relativePath);
 
     let edited = false;
     forEachToken(source, node => {
@@ -193,7 +203,7 @@ export function addImportToNgModuleBefore(
         node.getText() === beforeToken &&
         node.parent.kind === ts.SyntaxKind.ArrayLiteralExpression
       ) {
-        importRecorder.insertLeft(node.getStart(), `${options.artifactName}, `);
+        importRecorder.insertLeft(node.getStart(), `${options.artifactName!}, `);
         edited = true;
       }
     });
@@ -207,11 +217,11 @@ export function addImportToNgModuleBefore(
 
 export function addImportToFile(options: { module?: string; artifactName?: string; moduleImportPath?: string }): Rule {
   return host => {
-    const relativePath = buildRelativePath(options.module, options.moduleImportPath);
-    const source = readIntoSourceFile(host, options.module);
-    const importRecorder = host.beginUpdate(options.module);
+    const relativePath = buildRelativePath(options.module!, options.moduleImportPath!);
+    const source = readIntoSourceFile(host, options.module!);
+    const importRecorder = host.beginUpdate(options.module!);
 
-    insertImport(source, importRecorder, options.artifactName, relativePath);
+    insertImport(source, importRecorder, options.artifactName!, relativePath);
 
     host.commitUpdate(importRecorder);
   };
@@ -222,12 +232,12 @@ export function addExportToBarrelFile(options: {
   artifactName?: string;
   moduleImportPath?: string;
 }): Rule {
-  const barrelFile = `/${options.path}/index.ts`;
+  const barrelFile = `/${options.path!}/index.ts`;
   return host => {
-    if (!tsquery(readIntoSourceFile(host, barrelFile), `Identifier[name=${options.artifactName}]`).length) {
-      const relativePath = buildRelativePath(barrelFile, options.moduleImportPath);
+    if (!tsquery(readIntoSourceFile(host, barrelFile), `Identifier[name=${options.artifactName!}]`).length) {
+      const relativePath = buildRelativePath(barrelFile, options.moduleImportPath!);
       const exportRecorder = host.beginUpdate(barrelFile);
-      insertExport(exportRecorder, options.artifactName, relativePath);
+      insertExport(exportRecorder, options.artifactName!, relativePath);
       host.commitUpdate(exportRecorder);
     }
   };

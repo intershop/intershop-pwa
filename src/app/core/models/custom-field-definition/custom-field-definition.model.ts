@@ -1,24 +1,20 @@
 export type CustomFieldDefinitionScopes = 'Basket' | 'BasketLineItem' | 'Order' | 'OrderLineItem';
 
-export type CustomFieldDefinitionScopeType = {
+export interface CustomFieldDefinitionScopeType {
   name: string;
   editable?: boolean;
-};
-
-interface Scopes {
-  [key: CustomFieldDefinitionScopes | string]: CustomFieldDefinitionScopeType[];
 }
 
-export type CustomFieldDefinition = {
+type Scopes = Record<CustomFieldDefinitionScopes | string, CustomFieldDefinitionScopeType[]>;
+
+export interface CustomFieldDefinition {
   description: string;
   displayName: string;
   name: string;
   type: 'String';
-};
-
-export interface CustomFieldDefinitionEntities {
-  [key: string]: CustomFieldDefinition;
 }
+
+export type CustomFieldDefinitionEntities = Record<string, CustomFieldDefinition>;
 
 export interface CustomFieldDefinitions {
   scopes: Scopes;

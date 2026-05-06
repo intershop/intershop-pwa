@@ -82,7 +82,7 @@ Make sure to use them as written in the table below.
 |                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                             |
 |                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with login, password, maxResultCount and url                         |
 |                     | COPILOT               | JSON                 | Configuration of Intershop Copilot for Buyers                                                        |
-| **Experimental**    | ALLOW_H2              | switch               | Enables HTTP/2 support via Fetch API for REST requests done by the SSR, e.g., to ICM or SPARQUE      |
+|                     | ALLOW_H2              | switch               | Enables HTTP/2 support via Fetch API for REST requests done by the SSR, e.g., to ICM or SPARQUE      |
 
 ## Development
 
@@ -136,10 +136,10 @@ environment:
       }
 ```
 
-This example will cache `/configurations` for 20 minutes and product `/variations` for 2 hours.
+In this example, `/configurations` is cached for 20 minutes and product `/variations` is cached for 2 hours.
 
 > [!NOTE]
-> This feature can also be used to benchmark the SSR render performance locally by caching all ICM calls e.g. with `".*": "10m"`.
+> You can also use this feature to benchmark the SSR rendering performance locally by caching all ICM calls, for example, with `".*": "10m"`.
 > This setting of caching everything for 10 minutes is not recommended for production deployments but can be useful for local performance testing to exclude the ICM call times from the measurements.
 
 ## Heap Dumps

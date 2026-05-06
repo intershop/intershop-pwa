@@ -15,7 +15,10 @@ import {
 
 @Injectable()
 export class PunchoutFunctionsEffects {
-  constructor(private punchoutService: PunchoutService, private actions$: Actions) {}
+  constructor(
+    private punchoutService: PunchoutService,
+    private actions$: Actions
+  ) {}
 
   transferPunchoutBasket$ = createEffect(() =>
     this.actions$.pipe(

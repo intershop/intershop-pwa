@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import {
@@ -51,5 +51,24 @@ describe('Content Viewcontext Component', () => {
     expect(element).toBeTruthy();
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
+  });
+
+  it('should pass resourceSetId to cmsFacade when provided', () => {
+    when(cmsFacade.viewContext$(anything(), anything(), anything())).thenReturn(of(entrypoint));
+    component.resourceSetId = 'custom_cartridge';
+    component.ngOnChanges();
+
+    verify(cmsFacade.viewContext$(anything(), anything(), anything())).once();
+    const [, , resourceSetId] = capture(cmsFacade.viewContext$).last();
+    expect(resourceSetId).toEqual('custom_cartridge');
+  });
+
+  it('should pass undefined resourceSetId to cmsFacade when not provided', () => {
+    when(cmsFacade.viewContext$(anything(), anything(), anything())).thenReturn(of(entrypoint));
+    component.ngOnChanges();
+
+    verify(cmsFacade.viewContext$(anything(), anything(), anything())).once();
+    const [, , resourceSetId] = capture(cmsFacade.viewContext$).last();
+    expect(resourceSetId).toBeUndefined();
   });
 });

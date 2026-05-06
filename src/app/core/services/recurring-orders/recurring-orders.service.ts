@@ -14,7 +14,10 @@ import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/us
  */
 @Injectable({ providedIn: 'root' })
 export class RecurringOrdersService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   private recurringOrderHeaderV2 = new HttpHeaders({ Accept: 'application/vnd.intershop.recurringorder.v2+json' });
 

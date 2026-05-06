@@ -1,38 +1,42 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 @if (pagelet?.hasParam('Link')) {
-<li
-  #subMenu
-  [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
-  [ngClass]="{ open: opened }"
-  (mouseenter)="subMenuShow(subMenu)"
-  (mouseleave)="subMenuHide(subMenu)"
-  (click)="subMenuHide(subMenu)"
->
-  @if (isRouterLink(pagelet, 'Link')) {
-  <a
-    [routerLink]="routerLink(pagelet, 'Link')"
-    [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+  <li
+    #subMenu
+    [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
+    [ngClass]="{ open: opened }"
+    (click)="subMenuHide(subMenu)"
+    (mouseenter)="subMenuShow(subMenu)"
+    (mouseleave)="subMenuHide(subMenu)"
   >
-    {{ pagelet.stringParam('LinkText') }}
-  </a>
-  } @else {
-  <a [href]="pagelet.stringParam('Link')" [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }">
-    {{ pagelet.stringParam('LinkText') }}
-  </a>
-  } @if (pagelet.hasParam('SubNavigationHTML')) {
-  <a class="dropdown-toggle" (click)="toggleOpen()">
-    @if (opened) {
-    <i class="bi bi-dash"></i>
+    @if (isRouterLink(pagelet, 'Link')) {
+      <a
+        [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+        [routerLink]="routerLink(pagelet, 'Link')"
+      >
+        {{ pagelet.stringParam('LinkText') }}
+      </a>
     } @else {
-    <i class="bi bi-plus"></i>
+      <a
+        [href]="pagelet.stringParam('Link')"
+        [ngStyle]="{ width: !pagelet.hasParam('SubNavigationHTML') ? '100%' : '' }"
+      >
+        {{ pagelet.stringParam('LinkText') }}
+      </a>
     }
-  </a>
-  <ul class="category-level1 dropdown-menu">
-    <li class="sub-navigation-content">
-      <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
-    </li>
-  </ul>
-  }
-</li>
+    @if (pagelet.hasParam('SubNavigationHTML')) {
+      <a class="dropdown-toggle" (click)="toggleOpen()">
+        @if (opened) {
+          <i class="bi bi-dash"></i>
+        } @else {
+          <i class="bi bi-plus"></i>
+        }
+      </a>
+      <ul class="category-level1 dropdown-menu">
+        <li class="sub-navigation-content">
+          <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
+        </li>
+      </ul>
+    }
+  </li>
 }

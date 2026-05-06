@@ -3,6 +3,4 @@ export interface ProductLinks {
   categories: string[];
 }
 
-export interface ProductLinksDictionary {
-  [id: string]: ProductLinks;
-}
+export type ProductLinksDictionary = Record<string, ProductLinks>;

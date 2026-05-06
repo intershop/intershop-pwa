@@ -44,7 +44,7 @@ describe('Cms Image Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <a class="teaser-link" href="http://example.com" title="bar"
         ><div ng-reflect-ng-class="foo" class="foo">
-          <img loading="lazy" src="http://example.com/foo/bar.png" alt="foo" /></div
+          <img loading="lazy" alt="foo" src="http://example.com/foo/bar.png" /></div
       ></a>
     `);
   });

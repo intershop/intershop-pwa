@@ -1,34 +1,34 @@
 <div class="login-modal">
   <div class="modal-header">
-    <h2 id="login-modal-title" class="modal-title">{{ 'account.login.signin.heading' | translate }}</h2>
+    <h2 class="modal-title" id="login-modal-title">{{ 'account.login.signin.heading' | translate }}</h2>
     <button
-      type="button"
       class="btn-close"
+      ngbAutofocus
+      type="button"
       [title]="'dialog.close.text' | translate"
       (click)="hide()"
-      ngbAutofocus
     ></button>
   </div>
 
   <div class="modal-body">
     <div data-testing-id="account-login-page">
       @if (loginMessageKey) {
-      <p class="alert alert-info">
-        <!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
-        {{ 'account.login.' + loginMessageKey + '.message' | translate }}
-      </p>
+        <p class="alert alert-info">
+          <!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
+          {{ 'account.login.' + loginMessageKey + '.message' | translate }}
+        </p>
       }
 
       <ish-identity-provider-login
-        labelClass="col-12"
-        inputClass="col-12"
-        signInClass="col-12 btn-group pb-3"
         forgotPasswordClass="col-12 pb-3 text-center"
+        inputClass="col-12"
+        labelClass="col-12"
+        signInClass="col-12 btn-group pb-3"
       />
 
       <p
         class="text-center"
-        [ishServerHtml]="'account.login.register_now' | translate : { '0': 'route://register?returnUrl=/account' }"
+        [ishServerHtml]="'account.login.register_now' | translate: { '0': 'route://register?returnUrl=/account' }"
       ></p>
     </div>
   </div>

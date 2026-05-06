@@ -29,7 +29,10 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
 
   showSuccessMessage = false;
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.fields = [

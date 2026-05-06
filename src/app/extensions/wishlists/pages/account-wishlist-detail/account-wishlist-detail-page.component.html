@@ -2,94 +2,94 @@
 <ish-error-message [error]="wishlistError$ | async" />
 
 @if (wishlist$ | async; as wishlist) {
-<ng-template #WishlistDescription>
-  <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
-</ng-template>
-<div class="float-end pt-3">
-  <button
-    type="button"
-    class="btn-tool btn-link"
-    title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
-    (click)="shareWishlistDialog.show()"
-    data-testing-id="wishlist-sharing"
-  >
-    <i class="bi bi-share-fill"></i>
-  </button>
-  @if (wishlist.shared) {
-  <button
-    type="button"
-    class="btn-tool btn-link ms-3"
-    title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
-    (click)="unshareWishlist(wishlist.id)"
-    data-testing-id="wishlist-stop-sharing"
-  >
-    <i class="bi bi-pause-fill"></i>
-  </button>
-  }
-  <button
-    type="button"
-    (click)="editWishlistDialog.show()"
-    class="btn-tool btn-link ms-3"
-    [title]="'account.wishlist.header.edit_wishlist.label' | translate"
-    data-testing-id="wishlist-details-edit"
-  >
-    <i class="bi bi-pencil-fill"></i>
-  </button>
-</div>
-<h1>
-  <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
-  <button
-    type="button"
-    [ngbPopover]="WishlistDescription"
-    placement="bottom-start"
-    class="btn btn-link details-tooltip header-note mt-1"
-    popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
-  >
-    {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
-  </button>
-</h1>
-@if (wishlist?.preferred) {
-<p data-testing-id="preferred-wishlist-text">
-  {{ 'account.wishlist.header.preferred_wishlist' | translate }}
-</p>
-}
-<div class="container">
-  @if (wishlist.itemsCount && wishlist.itemsCount > 0) {
-  <div class="list-header row">
-    <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
-    <div class="col-sm-9 col-9 list-header-item column-price">
-      {{ 'wishlist.table.header.price' | translate }}
-    </div>
+  <ng-template #WishlistDescription>
+    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+  </ng-template>
+  <div class="float-end pt-3">
+    <button
+      class="btn-tool btn-link"
+      data-testing-id="wishlist-sharing"
+      type="button"
+      title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
+      (click)="shareWishlistDialog.show()"
+    >
+      <i class="bi bi-share-fill"></i>
+    </button>
+    @if (wishlist.shared) {
+      <button
+        class="btn-tool btn-link ms-3"
+        data-testing-id="wishlist-stop-sharing"
+        type="button"
+        title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
+        (click)="unshareWishlist(wishlist.id)"
+      >
+        <i class="bi bi-pause-fill"></i>
+      </button>
+    }
+    <button
+      class="btn-tool btn-link ms-3"
+      data-testing-id="wishlist-details-edit"
+      type="button"
+      [title]="'account.wishlist.header.edit_wishlist.label' | translate"
+      (click)="editWishlistDialog.show()"
+    >
+      <i class="bi bi-pencil-fill"></i>
+    </button>
   </div>
-  <div class="list-body">
-    @for (item of wishlist.items; track item.id) {
-    <div class="list-item-row">
-      <ish-wishlist-line-item
-        ishProductContext
-        [sku]="item.sku"
-        [wishlistItemData]="item"
-        [currentWishlist]="wishlist"
-      />
-    </div>
+  <h1>
+    <span data-testing-id="wishlist-title">{{ wishlist?.title }}</span>
+    <button
+      class="btn btn-link details-tooltip header-note mt-1"
+      placement="bottom-start"
+      type="button"
+      [ngbPopover]="WishlistDescription"
+      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
+    >
+      {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
+    </button>
+  </h1>
+  @if (wishlist?.preferred) {
+    <p data-testing-id="preferred-wishlist-text">
+      {{ 'account.wishlist.header.preferred_wishlist' | translate }}
+    </p>
+  }
+  <div class="container">
+    @if (wishlist.itemsCount && wishlist.itemsCount > 0) {
+      <div class="list-header row">
+        <div class="col-3 col-sm-3 list-header-item">{{ 'wishlist.table.header.item' | translate }}</div>
+        <div class="col-sm-9 col-9 list-header-item column-price">
+          {{ 'wishlist.table.header.price' | translate }}
+        </div>
+      </div>
+      <div class="list-body">
+        @for (item of wishlist.items; track item.id) {
+          <div class="list-item-row">
+            <ish-wishlist-line-item
+              ishProductContext
+              [currentWishlist]="wishlist"
+              [sku]="item.sku"
+              [wishlistItemData]="item"
+            />
+          </div>
+        }
+      </div>
+    } @else {
+      <p>{{ 'account.wishlist.no_entries' | translate }}</p>
     }
   </div>
-  } @else {
-  <p>{{ 'account.wishlist.no_entries' | translate }}</p>
-  }
-</div>
-<ish-wishlist-preferences-dialog
-  #editWishlistDialog
-  [wishlist]="wishlist"
-  (submitWishlist)="editPreferences($event, wishlist.id)"
-/>
-<ish-wishlist-sharing-dialog
-  #shareWishlistDialog
-  [wishlist]="wishlist"
-  (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
-/>
+  <ish-wishlist-preferences-dialog
+    #editWishlistDialog
+    [wishlist]="wishlist"
+    (submitWishlist)="editPreferences($event, wishlist.id)"
+  />
+  <ish-wishlist-sharing-dialog
+    #shareWishlistDialog
+    [wishlist]="wishlist"
+    (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
+  />
 }
 
 <a routerLink="/account/wishlists">{{ 'account.wishlist.searchform.return.link' | translate }}</a>
 @if (wishlistLoading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

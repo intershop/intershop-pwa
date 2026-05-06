@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Navigation Components](#navigation-components)
 - [Account Content Pages](#account-content-pages)
 - [View Contexts](#view-contexts)
+  - [View Context Requests with Resource Set ID](#view-context-requests-with-resource-set-id)
 - [Design View](#design-view)
 - [Integration with an External CMS](#integration-with-an-external-cms)
 
@@ -180,6 +181,39 @@ Be aware that enabling view contexts requires adapting some Jest component tests
 > [!NOTE]
 > The default view contexts are examples for demonstration purposes that could be used in the same way in a customer project.
 > It is advised, however, to evaluate which view contexts are indeed needed in the project and to activate those accordingly, or to create the ones that meet the project requirements even better.
+
+### View Context Requests with Resource Set ID
+
+The REST requests to ICM to get CMS view context data are more performant if a resource set ID is provided.
+
+Without resource set ID, the request is less performant due to expensive cartridge lookups:
+
+```
+/cms/viewcontexts/viewcontext.include.product.base.top/entrypoint?Product=201807181
+```
+
+With resource set ID, the request is more performant when the view context model cartridge is provided:
+
+```
+/cms/viewcontexts/viewcontext.include.product.base.top@app_sf_base_cm/entrypoint?Product=201807181
+```
+
+With PWA 11.0.0, the Intershop PWA automatically adds the resource set ID to view context REST requests via configured `defaultResourceSetId` defined at the [`CMSService`](../../src/app/core/services/cms/cms.service.ts).
+The default resource set ID is configured to match the name of the standard ICM cartridge that contains the view context model definitions: `app_sf_base_cm`.
+The resource set ID can be overridden at the individual view context inclusion by providing the `resourceSetId` input parameter at the `ish-content-viewcontext` component.
+
+```html
+<ish-content-viewcontext
+  resourceSetId="custom_cartridge_name"
+  viewContextId="viewcontext.include.product.base.top"
+  [callParameters]="{ Product: product.sku }"
+/>
+```
+
+If `app_sf_base_cm` is not the correct resource set ID for the view contexts used in the project, you can also change the `defaultResourceSetId` at the `CMSService` to avoid adding the `resourceSetId` input parameter to every `ish-content-viewcontext` usage.
+
+> [!NOTE]
+> Using view context REST requests with the added resource set ID requires ICM 12.1.0 or later.
 
 ## Design View
 

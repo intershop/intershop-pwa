@@ -1,66 +1,67 @@
 @if (basket) {
-<div class="row checkout-address-book">
-  <!-- Error Message -->
-  @if (error) {
-  <div class="col-md-12">
-    <ish-basket-error-message [error]="error" />
-  </div>
-  } @if (nextDisabled && !error) {
-  <div class="col-md-12">
-    <div class="alert alert-danger">{{ 'checkout.addresses.no_Selection.error' | translate }}</div>
-  </div>
-  }
-  <!-- Validation messages-->
-  <div class="col-md-12">
-    <ish-basket-validation-results (continueCheckout)="goToNextStep()" />
-  </div>
-  <!-- ------------------------------- invoice address ---------------------------------- -->
-  <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
-    <ish-basket-invoice-address-widget
-      [eligibleAddresses$]="eligibleAddresses$"
-      [showErrors]="nextDisabled"
-      [collapse]="active === 'shipping'"
-      (collapseChange)="invoiceCollapsed($event)"
-    />
-  </div>
-  <!-- ------------------------------ shipping address ----------------------------------------- -->
-  <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
-    <ish-basket-shipping-address-widget
-      [eligibleAddresses$]="eligibleAddresses$"
-      [showErrors]="nextDisabled"
-      [collapse]="active === 'invoice'"
-      (collapseChange)="shippingCollapsed($event)"
-    />
-  </div>
-  <!-- Cart Summary -->
-  <div class="col-md-12 col-lg-4">
-    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-    <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
-    <ish-basket-items-summary [basket]="basket" />
-    <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals" />
-      <div class="d-grid">
-        @if (nextDisabled) {
-        <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
-          {{ 'checkout.continue.validation.message' | translate }}
-        </div>
-        }
-        <button
-          class="btn btn-lg btn-block btn-primary"
-          type="button"
-          [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
-          (click)="goToNextStep()"
-        >
-          {{ 'checkout.button.label' | translate }}
-        </button>
+  <div class="row checkout-address-book">
+    <!-- Error Message -->
+    @if (error) {
+      <div class="col-md-12">
+        <ish-basket-error-message [error]="error" />
       </div>
+    }
+    @if (nextDisabled && !error) {
+      <div class="col-md-12">
+        <div class="alert alert-danger">{{ 'checkout.addresses.no_Selection.error' | translate }}</div>
+      </div>
+    }
+    <!-- Validation messages-->
+    <div class="col-md-12">
+      <ish-basket-validation-results (continueCheckout)="goToNextStep()" />
     </div>
-    <!-- Privacy policy link -->
-    <span
-      [ishServerHtml]="
-        'checkout.widget.security_privacy_policy.link' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
-      "
-    ></span>
+    <!-- ------------------------------- invoice address ---------------------------------- -->
+    <div class="col-md-6 col-lg-4" data-testing-id="invoiceToAddress">
+      <ish-basket-invoice-address-widget
+        [collapse]="active === 'shipping'"
+        [eligibleAddresses$]="eligibleAddresses$"
+        [showErrors]="nextDisabled"
+        (collapseChange)="invoiceCollapsed($event)"
+      />
+    </div>
+    <!-- ------------------------------ shipping address ----------------------------------------- -->
+    <div class="col-md-6 col-lg-4" data-testing-id="shipToAddress">
+      <ish-basket-shipping-address-widget
+        [collapse]="active === 'invoice'"
+        [eligibleAddresses$]="eligibleAddresses$"
+        [showErrors]="nextDisabled"
+        (collapseChange)="shippingCollapsed($event)"
+      />
+    </div>
+    <!-- Cart Summary -->
+    <div class="col-md-12 col-lg-4">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+      <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
+      <ish-basket-items-summary [basket]="basket" />
+      <div class="cost-summary">
+        <ish-basket-cost-summary [totals]="basket.totals" />
+        <div class="d-grid">
+          @if (nextDisabled) {
+            <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
+              {{ 'checkout.continue.validation.message' | translate }}
+            </div>
+          }
+          <button
+            class="btn btn-lg btn-block btn-primary"
+            type="button"
+            [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
+            (click)="goToNextStep()"
+          >
+            {{ 'checkout.button.label' | translate }}
+          </button>
+        </div>
+      </div>
+      <!-- Privacy policy link -->
+      <span
+        [ishServerHtml]="
+          'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+        "
+      ></span>
+    </div>
   </div>
-</div>
 }

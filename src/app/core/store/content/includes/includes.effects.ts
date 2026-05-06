@@ -10,7 +10,10 @@ import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess }
 
 @Injectable()
 export class IncludesEffects {
-  constructor(private actions$: Actions, private cmsService: CMSService) {}
+  constructor(
+    private actions$: Actions,
+    private cmsService: CMSService
+  ) {}
 
   loadContentInclude$ = createEffect(() =>
     this.actions$.pipe(

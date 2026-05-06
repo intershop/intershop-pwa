@@ -11,7 +11,10 @@ import { getCompareProductsSKUs } from './compare.selectors';
 
 @Injectable()
 export class CompareEffects {
-  constructor(private actions$: Actions, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store
+  ) {}
 
   toggleCompare$ = createEffect(() =>
     this.actions$.pipe(

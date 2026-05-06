@@ -1,128 +1,142 @@
 @if (requisition) {
-<div class="section">
-  <div class="row pb-3">
-    <div class="col-12 col-sm-6">
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-6">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-        <dd class="col-6">{{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}</dd>
+  <div class="section">
+    <div class="row pb-3">
+      <div class="col-12 col-sm-6">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-6">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
+          <dd class="col-6">{{ requisition.requisitionNo || requisition.recurringOrderDocumentNo }}</dd>
 
-        @if (requisition.approval?.statusCode === 'APPROVED') {
-        <dt class="col-6">
-          <span aria-hidden="true">{{
-            'approval.detailspage.order_reference_id.label' | translate : { recurring: !requisition.requisitionNo }
-          }}</span>
-          <span class="visually-hidden">{{
-            'approval.detailspage.order_reference_id.title' | translate : { recurring: !requisition.requisitionNo }
-          }}</span>
-        </dt>
-        <dd class="col-6">
+          @if (requisition.approval?.statusCode === 'APPROVED') {
+            <dt class="col-6">
+              <span aria-hidden="true">{{
+                'approval.detailspage.order_reference_id.label' | translate: { recurring: !requisition.requisitionNo }
+              }}</span>
+              <span class="visually-hidden">{{
+                'approval.detailspage.order_reference_id.title' | translate: { recurring: !requisition.requisitionNo }
+              }}</span>
+            </dt>
+            <dd class="col-6">
+              @if (view === 'buyer') {
+                <a
+                  [routerLink]="[
+                    requisition.orderNo ? '/account/orders/' : '/account/recurring-orders/',
+                    requisition.id,
+                  ]"
+                >
+                  {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+                </a>
+              } @else {
+                {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
+              }
+            </dd>
+          }
+
+          <dt class="col-6">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
+          <dd class="col-6">{{ requisition.creationDate | ishDate }}</dd>
+
+          @if (requisition.costCenter) {
+            <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
+            <dd class="col-6">{{ requisition.costCenter }} {{ costCenterName }}</dd>
+          }
           @if (view === 'buyer') {
-          <a [routerLink]="[requisition.orderNo ? '/account/orders/' : '/account/recurring-orders/', requisition.id]">
-            {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
-          </a>
-          } @else {
-          {{ requisition.orderNo || requisition.recurringOrderDocumentNo }}
-          }
-        </dd>
-        }
-
-        <dt class="col-6">{{ 'approval.detailspage.order_date.label' | translate }}</dt>
-        <dd class="col-6">{{ requisition.creationDate | ishDate }}</dd>
-
-        @if (requisition.costCenter) {
-        <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
-        <dd class="col-6">{{ requisition.costCenter }} {{ costCenterName }}</dd>
-        } @if (view === 'buyer') { @if (requisition.approval?.statusCode !== 'PENDING') {
-        <dt class="col-6">{{ 'approval.detailspage.approver.label' | translate : { '0': customerApproverCount } }}</dt>
-        <dd class="col-6">
-          @for (approver of uniqueApprovers; track approver.email; let i = $index) { @if (i > 0) {, }{{
-            approver.firstName
-          }}
-          {{ approver.lastName }}
-          }
-        </dd>
-
-        } @else {
-        <!-- prettier-ignore -->
-        <dt class="col-6">{{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}</dt>
-        <dd class="col-6">
-          @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index) {
-          @if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}} @if
-          (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
-          <i class="bi bi-check-lg text-success ps-3"></i>
-          }
-        </dd>
-        } @if ( requisition.approval?.costCenterApproval?.approvers?.length && requisition.approval?.statusCode ===
-        'PENDING' ) {
-        <dt class="col-6">{{ 'approval.detailspage.costcenter.approver.label' | translate }}</dt>
-        <dd class="col-6">
-          {{ requisition.approval?.costCenterApproval?.approvers[0].firstName }}
-          {{ requisition.approval?.costCenterApproval?.approvers[0].lastName }}
-          @if (requisition.approval?.costCenterApproval?.statusCode === 'APPROVED') {
-          <i class="bi bi-check-lg text-success ps-2"></i>
-          }
-        </dd>
-        } } @if (view === 'approver') {
-        <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
-        <dd class="col-6">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
-        } @if (requisition.approval?.statusCode !== 'PENDING') { @if (requisition.approval?.statusCode === 'APPROVED') {
-        <dt class="col-6">{{ 'approval.detailspage.approval_date.label' | translate }}</dt>
-        } @else {
-        <dt class="col-6">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
-        }
-        <dd class="col-6">{{ requisition.approval.approvalDate | ishDate }}</dd>
-        }
-
-        <dt class="col-6">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
-        <dd class="col-6">{{ requisition.totals?.total | ishPrice : 'gross' }}</dd>
-
-        <dt class="col-6">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
-        <dd class="col-6">
-          <span
-            class="border border-secondary badge bg-secondary text-capitalize"
-            [ngClass]="{
-              'border-warning bg-warning text-dark': requisition.approval.statusCode === 'PENDING',
-              'border-success bg-success': requisition.approval.statusCode === 'APPROVED',
-              'border-danger bg-danger': requisition.approval.statusCode === 'REJECTED'
-            }"
-          >
-            @if (!requisition.systemRejected) {
-            {{ requisition.approval.status }}
+            @if (requisition.approval?.statusCode !== 'PENDING') {
+              <dt class="col-6">
+                {{ 'approval.detailspage.approver.label' | translate: { '0': customerApproverCount } }}
+              </dt>
+              <dd class="col-6">
+                <!-- prettier-ignore -->
+                @for (approver of uniqueApprovers; track approver.email; let i = $index) {@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
+              </dd>
             } @else {
-            {{ 'approval.detailspage.approval_status.system_rejected.status' | translate }}
+              <dt class="col-6">
+                {{ 'approval.detailspage.buyer.approver.label' | translate: { '0': customerApproverCount } }}
+              </dt>
+              <dd class="col-6">
+                <!-- prettier-ignore -->
+                @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index){@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
+                @if (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
+                  <i class="bi bi-check-lg text-success ps-3"></i>
+                }
+              </dd>
             }
-          </span>
-        </dd>
+            @if (
+              requisition.approval?.costCenterApproval?.approvers?.length &&
+              requisition.approval?.statusCode === 'PENDING'
+            ) {
+              <dt class="col-6">{{ 'approval.detailspage.costcenter.approver.label' | translate }}</dt>
+              <dd class="col-6">
+                {{ requisition.approval?.costCenterApproval?.approvers[0].firstName }}
+                {{ requisition.approval?.costCenterApproval?.approvers[0].lastName }}
+                @if (requisition.approval?.costCenterApproval?.statusCode === 'APPROVED') {
+                  <i class="bi bi-check-lg text-success ps-2"></i>
+                }
+              </dd>
+            }
+          }
+          @if (view === 'approver') {
+            <dt class="col-6">{{ 'approval.detailspage.buyer.label' | translate }}</dt>
+            <dd class="col-6">{{ requisition.user?.firstName }} {{ requisition.user?.lastName }}</dd>
+          }
+          @if (requisition.approval?.statusCode !== 'PENDING') {
+            @if (requisition.approval?.statusCode === 'APPROVED') {
+              <dt class="col-6">{{ 'approval.detailspage.approval_date.label' | translate }}</dt>
+            } @else {
+              <dt class="col-6">{{ 'approval.detailspage.rejection_date.label' | translate }}</dt>
+            }
+            <dd class="col-6">{{ requisition.approval.approvalDate | ishDate }}</dd>
+          }
 
-        @if (requisition.approval.approvalComment || requisition.systemRejected) {
-        <dt class="col-6 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
-        <dd class="col-6 mt-3">
-          @if (requisition.systemRejected) {
-          <p>
-            {{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}
-            @if (requisition.systemRejectErrors?.length) {
-            {{
-              'approval.detailspage.approval_status.system_rejected.reasons.comment'
-                | translate : { '0': requisition.systemRejectErrors.length }
-            }}
-            }
-          </p>
-          @if (requisition.systemRejectErrors?.length) {
-          <ul>
-            @for (err of requisition.systemRejectErrors; track err) {
-            <li>{{ err }}</li>
-            }
-          </ul>
-          } }
-          {{ requisition.approval.approvalComment }}
-        </dd>
-        }
-      </dl>
-    </div>
+          <dt class="col-6">{{ 'approval.detailspage.order_total.label' | translate }}</dt>
+          <dd class="col-6">{{ requisition.totals?.total | ishPrice: 'gross' }}</dd>
 
-    <div class="col-12 col-sm-6">
-      <ish-basket-custom-fields-view [data]="requisition" />
+          <dt class="col-6">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
+          <dd class="col-6">
+            <span
+              class="border border-secondary badge bg-secondary text-capitalize"
+              [ngClass]="{
+                'border-warning bg-warning text-dark': requisition.approval.statusCode === 'PENDING',
+                'border-success bg-success': requisition.approval.statusCode === 'APPROVED',
+                'border-danger bg-danger': requisition.approval.statusCode === 'REJECTED',
+              }"
+            >
+              @if (!requisition.systemRejected) {
+                {{ requisition.approval.status }}
+              } @else {
+                {{ 'approval.detailspage.approval_status.system_rejected.status' | translate }}
+              }
+            </span>
+          </dd>
+
+          @if (requisition.approval.approvalComment || requisition.systemRejected) {
+            <dt class="col-6 mt-3">{{ 'approval.detailspage.comment.label' | translate }}</dt>
+            <dd class="col-6 mt-3">
+              @if (requisition.systemRejected) {
+                <p>
+                  {{ 'approval.detailspage.approval_status.system_rejected.comment' | translate }}
+                  @if (requisition.systemRejectErrors?.length) {
+                    {{
+                      'approval.detailspage.approval_status.system_rejected.reasons.comment'
+                        | translate: { '0': requisition.systemRejectErrors.length }
+                    }}
+                  }
+                </p>
+                @if (requisition.systemRejectErrors?.length) {
+                  <ul>
+                    @for (err of requisition.systemRejectErrors; track err) {
+                      <li>{{ err }}</li>
+                    }
+                  </ul>
+                }
+              }
+              {{ requisition.approval.approvalComment }}
+            </dd>
+          }
+        </dl>
+      </div>
+
+      <div class="col-12 col-sm-6">
+        <ish-basket-custom-fields-view [data]="requisition" />
+      </div>
     </div>
   </div>
-</div>
 }

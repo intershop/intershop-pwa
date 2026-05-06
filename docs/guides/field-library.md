@@ -135,7 +135,7 @@ type ConfigurationGroup = { id: string; shortcutFor: string[] };
 
 Use the `id` property to define the id through which developers will access the configuration group. <br/>
 The `shortcutFor` property defines which configurations the group will be mapped to.
-You can introduce dynamic behavior by using [factory providers](https://angular.io/guide/dependency-injection-providers#using-factory-providers) to generate `ConfigurationGroup` objects.
+You can introduce dynamic behavior by using [factory providers](https://v18.angular.dev/guide/di/dependency-injection-providers) to generate `ConfigurationGroup` objects.
 
 ## Automatic Field Replacement Using the '#' Pseudo-Type
 
@@ -231,7 +231,7 @@ export class AddressFormEXConfiguration extends AddressFormConfiguration {
 The following is a list of reusable field configurations available in the PWA.
 
 <!-- Don't edit the following tables manually.
-They are automatically updated using sync-formly-docs.ts -->
+They are automatically updated using sync-formly-docs.mts -->
 <!-- sync-start -->
 
 | Configuration ID | Type                 | Description                                                                                 |

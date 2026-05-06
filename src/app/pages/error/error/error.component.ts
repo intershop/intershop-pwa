@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
  * It uses the {@link SearchBoxComponent}.
  *
  * @example
- * <ish-error-page></ish-error-page>
+ * <ish-error-page />
  */
 @Component({
   selector: 'ish-error',

@@ -1,8 +1,8 @@
-const glob = require('glob');
+const { globSync } = require('glob');
 const { ESLint } = require('eslint');
 
 (async function main() {
-  const files = process.argv.length > 2 ? process.argv.splice(2) : glob.sync('src/**/*.ts');
+  const files = process.argv.length > 2 ? process.argv.splice(2) : globSync('src/**/*.ts');
 
   const eslint = new ESLint({
     fix: true,

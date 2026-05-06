@@ -1,13 +1,14 @@
-@if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track
-opt.value) {
-<input
-  type="radio"
-  [formControl]="formControl"
-  [value]="opt.value"
-  [id]="id + '_' + opt.value"
-  class="form-check-input float-none"
-  [ngClass]="props.inputClass"
-  [attr.data-testing-id]="'radio-' + opt.label"
-/>
-<label class="form-check-label pe-3" [attr.for]="id + '_' + opt.value">{{ opt.label }}</label>
-} }
+@if (props.options && props.options | formlySelectOptions: field | async; as opts) {
+  @for (opt of opts; track opt.value) {
+    <input
+      class="form-check-input float-none"
+      type="radio"
+      [attr.data-testing-id]="'radio-' + opt.label"
+      [formControl]="formControl"
+      [id]="id + '_' + opt.value"
+      [ngClass]="props.inputClass"
+      [value]="opt.value"
+    />
+    <label class="form-check-label pe-3" [attr.for]="id + '_' + opt.value">{{ opt.label }}</label>
+  }
+}

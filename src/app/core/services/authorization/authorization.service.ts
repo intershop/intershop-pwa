@@ -10,7 +10,10 @@ import { ApiService } from 'ish-core/services/api/api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorizationService {
-  constructor(private apiService: ApiService, private authorizationMapper: AuthorizationMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private authorizationMapper: AuthorizationMapper
+  ) {}
 
   getRolesAndPermissions(customer: Customer, user: User) {
     if (!customer?.customerNo) {

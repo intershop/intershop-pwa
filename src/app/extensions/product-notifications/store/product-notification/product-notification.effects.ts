@@ -11,7 +11,10 @@ import { productNotificationsActions, productNotificationsApiActions } from './p
 
 @Injectable()
 export class ProductNotificationEffects {
-  constructor(private actions$: Actions, private productNotificationsService: ProductNotificationsService) {}
+  constructor(
+    private actions$: Actions,
+    private productNotificationsService: ProductNotificationsService
+  ) {}
 
   loadProductNotifications$ = createEffect(() =>
     this.actions$.pipe(

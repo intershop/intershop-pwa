@@ -5,9 +5,7 @@ import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configura
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
-export interface ContentConfigurationParameters {
-  [key: string]: string | object | number;
-}
+export type ContentConfigurationParameters = Record<string, string | object | number>;
 
 @Injectable({ providedIn: 'root' })
 export class ContentConfigurationParameterMapper {
@@ -19,7 +17,7 @@ export class ContentConfigurationParameterMapper {
     store.pipe(select(getCurrentLocale)).subscribe(lang => (this.lang = lang || '-'));
   }
 
-  fromData(data: { [name: string]: ContentConfigurationParameterData }): ContentConfigurationParameters {
+  fromData(data: Record<string, ContentConfigurationParameterData>): ContentConfigurationParameters {
     let configurationParameters = {};
 
     if (data) {

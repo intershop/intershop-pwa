@@ -10,8 +10,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 })
 export class FilterNavigationBadgesComponent implements OnChanges {
   @Input({ required: true }) filterNavigation: FilterNavigation;
-  @Output() applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
-  @Output() clearFilters = new EventEmitter<void>();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
+  @Output() readonly clearFilters = new EventEmitter<void>();
   selected: { searchParameter: URLFormParams; displayName: string; filterName: string }[];
 
   ngOnChanges() {

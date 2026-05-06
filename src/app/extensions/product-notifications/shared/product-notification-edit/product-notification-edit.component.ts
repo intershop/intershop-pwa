@@ -19,7 +19,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
  * <ish-product-notification-edit
  *   cssClass="btn-link btn-tool"
  *   [productNotification]="productNotification"
- *   displayType="icon"></ish-product-notification-edit>
+ *   displayType="icon" />
  */
 @Component({
   selector: 'ish-product-notification-edit',
@@ -36,7 +36,11 @@ export class ProductNotificationEditComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private context: ProductContextFacade, private accountFacade: AccountFacade, private router: Router) {}
+  constructor(
+    private context: ProductContextFacade,
+    private accountFacade: AccountFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'addToNotification');

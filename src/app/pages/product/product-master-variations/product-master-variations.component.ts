@@ -18,7 +18,11 @@ export class ProductMasterVariationsComponent implements OnInit {
   categoryId$: Observable<string>;
   hasVariations$: Observable<boolean>;
 
-  constructor(private router: Router, private scroller: ViewportScroller, private context: ProductContextFacade) {}
+  constructor(
+    private router: Router,
+    private scroller: ViewportScroller,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.sku$ = this.context.select('product', 'sku');

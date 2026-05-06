@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import sort from 'sort-json';
 
 /** @type string[] */
@@ -8,7 +8,7 @@ let files;
 if (process.argv.length > 2) {
   files = process.argv.slice(2);
 } else {
-  files = glob.sync('src/assets/i18n/*.json');
+  files = globSync('src/assets/i18n/*.json');
 }
 
 files.forEach(file => {

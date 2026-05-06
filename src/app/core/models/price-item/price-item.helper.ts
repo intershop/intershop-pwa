@@ -25,6 +25,7 @@ export class PriceItemHelper {
     }
   }
 
+  // eslint-disable-next-line complexity
   static selectPricing(priceDetails: ProductPriceDetails, type: PriceType): Pricing {
     return {
       salePrice: PriceItemHelper.selectType(priceDetails?.prices?.salePrice, type),

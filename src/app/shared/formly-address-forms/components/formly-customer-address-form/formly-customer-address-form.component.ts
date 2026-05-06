@@ -27,7 +27,7 @@ import { Address } from 'ish-core/models/address/address.model';
       [resetForm]="resetForm"
       (save)="createCustomerInvoiceAddress($event)"
       (cancel)="cancelCreateCustomerInvoiceAddress()"
-   ></ish-checkout-address-form>
+   />
  */
 @Component({
   selector: 'ish-formly-customer-address-form',
@@ -41,8 +41,8 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   // display address extension form fields
   @Input() extension = false;
 
-  @Output() save = new EventEmitter<Address>();
-  @Output() cancel = new EventEmitter();
+  @Output() readonly save = new EventEmitter<Address>();
+  @Output() readonly cancelForm = new EventEmitter();
 
   form: FormGroup;
   extensionForm: FormGroup = new FormGroup({});
@@ -53,7 +53,10 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
 
   @ViewChild('addressForm') addressForm: FormGroupDirective;
 
-  constructor(private accountFacade: AccountFacade, private featureToggleService: FeatureToggleService) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private featureToggleService: FeatureToggleService
+  ) {}
 
   get buttonLabel() {
     return Object.keys(this.address ?? {}).length > 0
@@ -109,7 +112,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
     }
   }
 
-  cancelForm() {
-    this.cancel.emit();
+  emitCancelForm() {
+    this.cancelForm.emit();
   }
 }

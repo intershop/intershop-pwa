@@ -1,31 +1,36 @@
 @if (filterNavigation) {
-<div class="filter-panel">
-  @for (element of filterNavigation.filter; track element) {
-  <ish-filter-collapsible [filterElement]="element" [(collapsed)]="collapsedElements[element.name]">
-    @switch (element.displayType) { @case ('checkbox') {
-    <ish-filter-checkbox
-      [filterElement]="element"
-      (applyFilter)="applyFilter.emit($event)"
-      [(showAll)]="showAllElements[element.name]"
-    />
-    } @case ('swatch') {
-    <ish-filter-swatch-images [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
-    } @case ('dropdown') {
-    <div class="filter-dropdown">
-      <ish-filter-dropdown
-        [filterElement]="element"
-        [placeholderType]="'selectedFacets'"
-        (applyFilter)="applyFilter.emit($event)"
-      />
-    </div>
-    } @default {
-    <ish-filter-text
-      [filterElement]="element"
-      (applyFilter)="applyFilter.emit($event)"
-      [(showAll)]="showAllElements[element.name]"
-    />
-    } }
-  </ish-filter-collapsible>
-  }
-</div>
+  <div class="filter-panel">
+    @for (element of filterNavigation.filter; track element) {
+      <ish-filter-collapsible [filterElement]="element" [(collapsed)]="collapsedElements[element.name]">
+        @switch (element.displayType) {
+          @case ('checkbox') {
+            <ish-filter-checkbox
+              [filterElement]="element"
+              [(showAll)]="showAllElements[element.name]"
+              (applyFilter)="applyFilter.emit($event)"
+            />
+          }
+          @case ('swatch') {
+            <ish-filter-swatch-images [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
+          }
+          @case ('dropdown') {
+            <div class="filter-dropdown">
+              <ish-filter-dropdown
+                [filterElement]="element"
+                [placeholderType]="'selectedFacets'"
+                (applyFilter)="applyFilter.emit($event)"
+              />
+            </div>
+          }
+          @default {
+            <ish-filter-text
+              [filterElement]="element"
+              [(showAll)]="showAllElements[element.name]"
+              (applyFilter)="applyFilter.emit($event)"
+            />
+          }
+        }
+      </ish-filter-collapsible>
+    }
+  </div>
 }

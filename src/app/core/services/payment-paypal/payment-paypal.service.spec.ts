@@ -73,7 +73,7 @@ describe('Payment Paypal Service', () => {
             },
           }
         `);
-        expect(result).toEqual({ orderId: 'PAYPAL_ORDER_123', paymentInstrumentId: 'paypal-instrument-id' });
+        expect(result).toEqual({ paypalOrderId: 'PAYPAL_ORDER_123', paymentInstrumentId: 'paypal-instrument-id' });
         done();
       });
     });

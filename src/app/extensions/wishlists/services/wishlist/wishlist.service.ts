@@ -12,7 +12,11 @@ import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
 @Injectable({ providedIn: 'root' })
 export class WishlistService {
-  constructor(private apiService: ApiService, private wishlistMapper: WishlistMapper, private appFacade: AppFacade) {}
+  constructor(
+    private apiService: ApiService,
+    private wishlistMapper: WishlistMapper,
+    private appFacade: AppFacade
+  ) {}
 
   /**
    * Gets a list of wishlists for the current user.

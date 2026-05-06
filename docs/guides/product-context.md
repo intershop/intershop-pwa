@@ -40,7 +40,7 @@ Product Contexts can also be linked to their parent contexts.
 
 ## How to Introduce Product Context?
 
-Unlike regular facades, which are available globally and have only one instance available at runtime, context facades are provided using [`ElementInjector`](https://angular.io/guide/hierarchical-dependency-injection#elementinjector) and are therefore only available for elements enclosed in the document subtree for which the element introduced the context.
+Unlike regular facades, which are available globally and have only one instance available at runtime, context facades are provided using [`ElementInjector`](https://angular.dev/guide/di/hierarchical-dependency-injection#elementinjector) and are therefore only available for elements enclosed in the document subtree for which the element introduced the context.
 
 ### By Using [`ProductContextDirective`][src-product-context-directive]
 
@@ -49,7 +49,7 @@ The easiest way to start a product context is by using the [`ProductContextDirec
 ```html
 @for (item of lineItems$ | async; track item.sku) {
 <div class="..." ishProductContext [sku]="item.sku">
-  <ish-product-name></ish-product-name>
+  <ish-product-name />
 </div>
 }
 ```
@@ -68,7 +68,7 @@ Note: [`ProductDetailComponent`](../../src/app/pages/product/product-detail/prod
 ### By Providing [`ProductContextFacade`][src-product-context-facade]
 
 There are cases for which it is not possible to use the directive: For example, when the parent component does not have access to all required information or when the component has to introduce another context by itself.
-In this case the [`ProductContextFacade`][src-product-context-facade] has to be added to the `providers` array of the [`@Component`](https://angular.io/api/core/Component) decorator.
+In this case the [`ProductContextFacade`][src-product-context-facade] has to be added to the `providers` array of the [`@Component`](https://angular.dev/api/core/Component) decorator.
 Afterwards, the SKU for the context has to be initialized:
 
 ```typescript
@@ -143,7 +143,7 @@ This feature should only be used for edge cases, as it is very verbose and most 
 ## Linking Embedded Contexts
 
 There are cases where product contexts are used as meta contexts for handling add-to-cart functionality and validations thereof.
-For [product retail sets](https://intershoppwa.azurewebsites.net/prdM4548736000919) the surrounding product context is used as a meta context with two add-to-cart buttons (one at the detail on top, one at the button after the listing for contained items).
+For [product retail sets](https://intershoppwa.azurewebsites.net/prd201807198) the surrounding product context is used as a meta context with two add-to-cart buttons (one at the detail on top, one at the button after the listing for contained items).
 If those buttons are pressed, the correct amount for quantities is used to perform the add-to-cart action.
 Those buttons also disable themselves if the quantity of one individual retail set part exceeds the maximum allowed order quantity.
 

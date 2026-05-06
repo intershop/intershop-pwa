@@ -74,7 +74,7 @@ export const usersReducer = createReducer(
     setUserRolesFail,
     setUserBudgetFail
   ),
-  on(loadUsersSuccess, (state, action) => {
+  on(loadUsersSuccess, (state, action): UsersState => {
     const { users } = action.payload;
 
     return {
@@ -83,28 +83,28 @@ export const usersReducer = createReducer(
       ids: users.map(u => u.login),
     };
   }),
-  on(loadUserSuccess, (state, action) => {
+  on(loadUserSuccess, (state, action): UsersState => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.upsertOne(user, state),
     };
   }),
-  on(addUserSuccess, (state, action) => {
+  on(addUserSuccess, (state, action): UsersState => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.addOne(user, state),
     };
   }),
-  on(updateUserSuccess, (state, action) => {
+  on(updateUserSuccess, (state, action): UsersState => {
     const { user } = action.payload;
 
     return {
       ...usersAdapter.upsertOne(user, state),
     };
   }),
-  on(deleteUserSuccess, (state, action) => {
+  on(deleteUserSuccess, (state, action): UsersState => {
     const { login } = action.payload;
 
     return {
@@ -157,10 +157,15 @@ export const usersReducer = createReducer(
       roles: action.payload.roles,
     })
   ),
-  on(setUserRolesSuccess, (state, action) =>
-    usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
+  on(
+    setUserRolesSuccess,
+    (state, action): UsersState =>
+      usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
   ),
-  on(setUserBudgetSuccess, (state, action) => ({
-    ...usersAdapter.updateOne({ id: action.payload.login, changes: { userBudget: action.payload.budget } }, state),
-  }))
+  on(
+    setUserBudgetSuccess,
+    (state, action): UsersState => ({
+      ...usersAdapter.updateOne({ id: action.payload.login, changes: { userBudget: action.payload.budget } }, state),
+    })
+  )
 );

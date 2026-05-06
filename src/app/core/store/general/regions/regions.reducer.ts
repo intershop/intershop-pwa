@@ -22,7 +22,7 @@ export const regionsReducer = createReducer(
   initialState,
   setLoadingOn(loadRegions),
   unsetLoadingOn(loadRegionsFail, loadRegionsSuccess),
-  on(loadRegionsSuccess, (state, action) => {
+  on(loadRegionsSuccess, (state, action): RegionsState => {
     const { regions } = action.payload;
 
     return {

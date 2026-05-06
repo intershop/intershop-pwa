@@ -89,7 +89,11 @@ export class ApiTokenService {
    */
   private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
 
-  constructor(private cookiesService: CookiesService, private store: Store, private appRef: ApplicationRef) {
+  constructor(
+    private cookiesService: CookiesService,
+    private store: Store,
+    private appRef: ApplicationRef
+  ) {
     // setup initial values
     const initialCookie = this.parseCookie();
     this.initialCookie$ = new BehaviorSubject<ApiTokenCookie>(!SSR ? initialCookie : undefined);
@@ -433,7 +437,7 @@ export class ApiTokenService {
     if (cookieContent) {
       try {
         return JSON.parse(cookieContent);
-      } catch (err) {
+      } catch {
         // ignore
       }
     }

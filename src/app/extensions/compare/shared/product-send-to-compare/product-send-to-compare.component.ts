@@ -12,7 +12,10 @@ import { CompareFacade } from '../../facades/compare.facade';
 })
 @GenerateLazyComponent()
 export class ProductSendToCompareComponent {
-  constructor(private context: ProductContextFacade, private compareFacade: CompareFacade) {}
+  constructor(
+    private context: ProductContextFacade,
+    private compareFacade: CompareFacade
+  ) {}
 
   addToCompare() {
     this.compareFacade.addProductToCompare(this.context.get('sku'));

@@ -91,11 +91,11 @@ The following table shows the mapping between existing PWA CAPTCHA topic names a
 
 As you can see in the high-level overview, there are components that represent the actual CAPTCHA functionality.
 Depending on the version used, these components implement either widgets provided by Google or the reCAPTCHA token functionality.
-The [ng-recaptcha](https://github.com/DethAriel/ng-recaptcha) library was used for the implementation.
+The [ng-recaptcha-2](https://github.com/LakhveerChahal/ng-recaptcha-2) library was used for the implementation.
 
 ### CAPTCHA V2 (captcha-v2.component.ts)
 
-To add the widgets provided by Google, you need to import the **ReCAPTCHAModule** of the _ng-recaptcha_ library.
+To add the widgets provided by Google, you need to import the **ReCAPTCHAModule** of the _ng-recaptcha-2_ library.
 Furthermore, _captcha site key_ must be set to initialize the widget.
 This site key is a required option on the reCAPTCHA HTML element.
 It is also necessary to store the token determined by the CAPTCHA event as a form control parameter.
@@ -104,7 +104,7 @@ In case of an error, an error message is displayed; in case of success, the enti
 
 ### CAPTCHA V3 (captcha-v3.component.ts)
 
-To implement a callback function to handle the token, you need to import the **RecaptchaV3Module** of the _ng-recaptcha_ library.
+To implement a callback function to handle the token, you need to import the **RecaptchaV3Module** of the _ng-recaptcha-2_ library.
 This component will trigger a callback every two minutes to retrieve a current reCAPTCHA token.
 This token is then appended to the request triggered by the submitted form.
 The ICM backend will then validate the token.
@@ -114,5 +114,5 @@ The ICM backend will then validate the token.
 - [Intershop Knowledge Base | Concept - ReCaptcha v3](https://support.intershop.com/kb/index.php/Display/29X281)
 - [Intershop Knowledge Base | Concept - ReCaptcha v2](https://support.intershop.com/kb/index.php/Display/2794B3)
 - [Getting Started | Formly](https://formly.dev/docs/guide/getting-started)
-- [GitHub - DethAriel/ng-recaptcha: Angular component for Google reCAPTCHA](https://github.com/DethAriel/ng-recaptcha)
+- [GitHub - DethAriel/ng-recaptcha: Angular component for Google reCAPTCHA](https://github.com/LakhveerChahal/ng-recaptcha-2)
 - [Developer's Guide | reCAPTCHA | Google for Developers](https://developers.google.com/recaptcha/intro)

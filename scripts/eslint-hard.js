@@ -1,46 +1,44 @@
 const fs = require('fs');
-const { parse, stringify } = require('comment-json');
 const { execSync } = require('child_process');
-const glob = require('glob');
 
-const savedConfigs = {};
+const eslintConfigPath = 'eslint.config.mjs';
+let savedConfig = null;
 
-function restoreConfigs() {
-  Object.entries(savedConfigs).forEach(([key, config]) => {
-    console.log('restoring', key);
-    fs.writeFileSync(key, config);
-  });
+function restoreConfig() {
+  if (savedConfig) {
+    console.log('restoring', eslintConfigPath);
+    fs.writeFileSync(eslintConfigPath, savedConfig);
+  }
 }
 
 process.on('SIGINT', () => {
-  restoreConfigs();
+  restoreConfig();
   process.exit(1);
 });
 
-glob.sync('**/.eslintrc.json', { ignore: ['node_modules/**'] }).forEach(eslintConfigPath => {
-  const eslintConfig = fs.readFileSync(eslintConfigPath, { encoding: 'UTF-8' });
+const eslintConfig = fs.readFileSync(eslintConfigPath, { encoding: 'UTF-8' });
+savedConfig = eslintConfig;
 
-  const eslintJson = parse(eslintConfig);
-  if (eslintJson.overrides) {
-    console.log('modifying', eslintConfigPath);
-    savedConfigs[eslintConfigPath] = eslintConfig;
+console.log('modifying', eslintConfigPath);
 
-    eslintJson.overrides.forEach((overrideObject, index) => {
-      Object.keys(overrideObject.rules)
-        .filter(k => k !== 'jest/no-disabled-tests')
-        .forEach(key => {
-          let ruleInfo = eslintJson.overrides[index].rules[key];
-          if (typeof ruleInfo === 'string' && ruleInfo === 'warn') {
-            eslintJson.overrides[index].rules[key] = 'error';
-          } else if (ruleInfo?.[0] === 'warn') {
-            eslintJson.overrides[index].rules[key][0] = 'error';
-          }
-        });
-    });
+// Replace all 'warn' with 'error' in rules, except for jest/no-disabled-tests
+const modifiedConfig = eslintConfig
+  // Replace standalone 'warn' values (but not the string itself in other contexts)
+  .replace(/^(\s*'[^']+':)\s*'warn'\s*,?\s*$/gm, (match, ruleKey) => {
+    if (ruleKey.includes('jest/no-disabled-tests')) {
+      return match;
+    }
+    return match.replace("'warn'", "'error'");
+  })
+  // Replace 'warn' in array configs like ['warn', ...]
+  .replace(/^(\s*'[^']+':)\s*\[\s*'warn'/gm, (match, ruleKey) => {
+    if (ruleKey.includes('jest/no-disabled-tests')) {
+      return match;
+    }
+    return match.replace("'warn'", "'error'");
+  });
 
-    fs.writeFileSync(eslintConfigPath, stringify(eslintJson, null, 2));
-  }
-});
+fs.writeFileSync(eslintConfigPath, modifiedConfig);
 
 let command = 'npm run lint';
 
@@ -52,10 +50,10 @@ let foundError = false;
 
 try {
   execSync(command, { stdio: 'inherit' });
-} catch (error) {
+} catch {
   foundError = true;
 } finally {
-  restoreConfigs();
+  restoreConfig();
 }
 
 if (foundError) {

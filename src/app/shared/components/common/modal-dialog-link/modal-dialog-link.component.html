@@ -1,12 +1,14 @@
-<button type="button" class="btn btn-link btn-link-action" (click)="modalDialog.show()" aria-haspopup="dialog">
+<button aria-haspopup="dialog" class="btn btn-link btn-link-action" type="button" (click)="modalDialog.show()">
   {{ linkText | translate }}
 </button>
-<ish-modal-dialog #modalDialog [options]="options" (shown)="shown()" (closed)="closed()">
-  @if (lazyContent) { @if (shown$ | async) {
-  <div>
-    <ng-container *ngTemplateOutlet="lazyContent.templateRef" />
-  </div>
-  } } @else {
-  <ng-content />
+<ish-modal-dialog #modalDialog [options]="options" (closed)="closed()" (shown)="shown()">
+  @if (lazyContent) {
+    @if (shown$ | async) {
+      <div>
+        <ng-container *ngTemplateOutlet="lazyContent.templateRef" />
+      </div>
+    }
+  } @else {
+    <ng-content />
   }
 </ish-modal-dialog>

@@ -13,7 +13,7 @@ import { Image, ImageLoading } from 'ish-core/models/image/image.model';
  * for the given imageType and imageView or the according defaults.
  *
  * @example
- * <ish-product-image imageType="M" [link]="true"></ish-product-image>
+ * <ish-product-image imageType="M" [link]="true" />
  */
 @Component({
   selector: 'ish-product-image',

@@ -16,7 +16,10 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ProductNotificationsService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), whenTruthy(), take(1));
 

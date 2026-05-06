@@ -1,5 +1,6 @@
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
+import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType, ViewType } from 'ish-core/models/viewtype/viewtype.types';
 import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
@@ -109,7 +110,7 @@ export interface Environment {
   fallbackLocales?: string[];
 
   // configuration filtering available locales and their active currencies
-  localeCurrencyOverride?: { [locale: string]: string | string[] };
+  localeCurrencyOverride?: Record<string, string | string[]>;
 
   // multi-site URLs to locales mapping ('undefined' if mapping should not be used)
   multiSiteLocaleMap: MultiSiteLocaleMap;
@@ -123,14 +124,14 @@ export interface Environment {
   cookieConsentVersion?: number;
 
   // client-side configuration for identity providers
-  identityProviders?: {
-    [name: string]:
-      | {
-          type: string;
-          [key: string]: unknown;
-        }
-      | Auth0Config;
-  };
+  identityProviders?: Record<
+    string,
+    | {
+        type: string;
+        [key: string]: unknown;
+      }
+    | Auth0Config
+  >;
 
   // enable and configure data persistence for specific stores (compare, recently)
   dataRetention: DataRetentionPolicy;
@@ -143,6 +144,9 @@ export interface Environment {
 
   // sparque integration
   sparque?: SparqueConfig;
+
+  // paypal client configuration
+  paypalClientConfig?: PaypalClientConfig;
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -210,4 +214,6 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     recently: 60 * 24 * 7, // 1 week
   },
   priceUpdate: 'always',
+
+  paypalClientConfig: { googlePayEnvironment: 'TEST' },
 };

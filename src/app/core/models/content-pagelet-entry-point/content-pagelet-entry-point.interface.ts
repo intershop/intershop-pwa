@@ -9,6 +9,6 @@ export interface ContentPageletEntryPointData {
   domain: string;
   resourceSetId: string;
   pagelets: ContentPageletData[];
-  configurationParameters?: { [name: string]: ContentConfigurationParameterData };
+  configurationParameters?: Record<string, ContentConfigurationParameterData>;
   link: Link;
 }

@@ -22,7 +22,10 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
   editable$: Observable<boolean>;
 
-  constructor(private quoteContext: QuoteContextFacade, private productContext: ProductContextFacade) {}
+  constructor(
+    private quoteContext: QuoteContextFacade,
+    private productContext: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.editable$ = this.quoteContext.select('editable');

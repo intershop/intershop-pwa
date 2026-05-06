@@ -16,7 +16,10 @@ export class ProductDetailActionsComponent implements OnInit {
 
   product$: Observable<ProductView>;
 
-  constructor(@Inject(DOCUMENT) public document: Document, private context: ProductContextFacade) {}
+  constructor(
+    @Inject(DOCUMENT) public document: Document,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.product$ = this.context.select('product');

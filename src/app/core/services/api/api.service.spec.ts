@@ -1,5 +1,11 @@
-import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -36,10 +42,10 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        // https://angular.io/guide/http#testing-http-requests
-        imports: [HttpClientTestingModule],
         providers: [
           { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -187,8 +193,9 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -392,8 +399,9 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },
@@ -547,8 +555,8 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        // https://angular.io/guide/http#testing-http-requests
-        imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), HttpClientTestingModule],
+        imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig'])],
+        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -670,8 +678,9 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
         providers: [
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
           provideMockStore({
             selectors: [
               { selector: isServerConfigurationLoaded, value: true },

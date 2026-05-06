@@ -1,4 +1,4 @@
-import { NumberSymbol, formatNumber, getLocaleNumberSymbol } from '@angular/common';
+import { formatNumber } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -47,13 +47,12 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
       if (this.props?.mask === 'separator.2' && this.formControl?.value) {
         this.formControl.setValue(formatNumber(this.formControl?.value, 'en_US', '1.2-2').replace(',', ''));
       }
-      this.thousandSeparator = getLocaleNumberSymbol(
-        this.translateService.currentLang,
-        NumberSymbol.CurrencyGroup
-      ).trim();
-      this.decimalMarker = getLocaleNumberSymbol(this.translateService.currentLang, NumberSymbol.CurrencyDecimal) as
-        | '.'
-        | ',';
+      // Convert underscore locale format (en_US) to hyphen format (en-US) for Intl API
+      const locale = this.translateService.currentLang?.replace(/_/g, '-');
+      const numberFormat = new Intl.NumberFormat(locale);
+      const parts = numberFormat.formatToParts(1234567.89);
+      this.thousandSeparator = parts.find(part => part.type === 'group')?.value || '';
+      this.decimalMarker = (parts.find(part => part.type === 'decimal')?.value as ',' | '.') || '.';
     }
   }
 }

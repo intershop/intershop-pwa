@@ -52,8 +52,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
    */
   @Input() activated = false;
 
-  @Output() cancelPayment = new EventEmitter<void>();
-  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() readonly cancelPayment = new EventEmitter<void>();
+  @Output() readonly submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   private destroyRef = inject(DestroyRef);
 

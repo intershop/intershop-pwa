@@ -17,7 +17,10 @@ export class CheckoutReviewPageComponent implements OnInit {
   orderLoading$: Observable<boolean>;
   error$: Observable<HttpError>;
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;

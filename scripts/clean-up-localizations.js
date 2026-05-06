@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const fs = require('fs');
-const glob = require('glob');
+const { globSync } = require('glob');
 const { execSync } = require('child_process');
 
 const localizationFile_default = 'src/assets/i18n/en_US.json';
@@ -19,14 +19,14 @@ if (doBuild) {
   execSync('npm run build:multi client -- --source-map', { stdio: 'inherit' });
 
   filesToBeSearched = _.flatten(
-    glob.sync('dist/**/active-files.json').map(activeFilesPath => {
+    globSync('dist/**/active-files.json').map(activeFilesPath => {
       console.log('loading', activeFilesPath);
       return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
     })
   ).filter((v, i, a) => a.indexOf(v) === i);
 } else {
   // go through directory recursively and find files to be searched
-  filesToBeSearched = glob.sync('{src,projects}/**/!(*.spec).{ts,html}');
+  filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
 }
 
 console.log('\nKeep-patterns:');
@@ -92,9 +92,9 @@ Object.keys(localizationsFound)
 fs.writeFileSync(localizationFile_default, JSON.stringify(localizationsFoundOrdered, null, 2));
 
 // find localization files for other languages
-const localizationFiles_lang = glob
-  .sync('src/assets/i18n/*.json')
-  .filter(filePath => filePath !== localizationFile_default);
+const localizationFiles_lang = globSync('src/assets/i18n/*.json').filter(
+  filePath => filePath !== localizationFile_default
+);
 
 // create cleaned localization files for other languages
 localizationFiles_lang.forEach(file => {

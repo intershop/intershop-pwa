@@ -63,9 +63,9 @@ describe('Pages Effects', () => {
 
       actions$ = of(personalizationStatusDetermined, action);
 
-      effects.loadContentPage$.subscribe(action => {
+      effects.loadContentPage$.subscribe(mappedAction => {
         verify(cmsServiceMock.getContentPage('dummy')).once();
-        expect(action).toMatchInlineSnapshot(`
+        expect(mappedAction).toMatchInlineSnapshot(`
           [Content Page API] Load Content Page Fail:
             error: {"name":"HttpErrorResponse","message":"ERROR"}
         `);

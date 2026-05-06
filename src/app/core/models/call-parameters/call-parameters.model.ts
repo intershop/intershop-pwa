@@ -1,3 +1,1 @@
-export interface CallParameters {
-  [key: string]: string;
-}
+export type CallParameters = Record<string, string>;

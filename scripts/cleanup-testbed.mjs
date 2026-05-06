@@ -1,14 +1,12 @@
 import { execSync, spawnSync } from 'child_process';
 import { copyFileSync, existsSync, statSync } from 'fs';
-import glob from 'glob';
+import { globSync } from 'glob';
 import { minimatch } from 'minimatch';
-import runAll from 'npm-run-all';
+import runAll from 'npm-run-all2';
 import { cpus } from 'os';
 import { basename, dirname, join, normalize, sep } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
-
-/* eslint-disable no-console */
 
 const args = process.argv.splice(2).filter(a => !a.startsWith('--'));
 
@@ -90,13 +88,13 @@ let files;
 
 if (args.length === 0) {
   console.log('searching for tests in project');
-  files = glob.sync(jestPathPattern, { ignore: ['node_modules/**'] });
+  files = globSync(jestPathPattern, { ignore: ['node_modules/**'] });
 } else if (args.length === 1) {
   const normalizedPath = normalize(args[0]);
   let statRes;
   try {
     statRes = statSync(normalizedPath);
-  } catch (err) {
+  } catch {
     console.warn(`File "${normalizedPath}" doesn't exist.`);
   }
   if (!minimatch(normalizedPath, jestProjects)) {
@@ -104,7 +102,7 @@ if (args.length === 0) {
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
   } else if (statRes?.isDirectory()) {
     console.log('using', args[0], 'as folder');
-    files = glob.sync(join(args[0], jestPattern));
+    files = globSync(join(args[0], jestPattern));
   } else if (statRes?.isFile()) {
     files = findTests(args);
   } else {
@@ -224,7 +222,7 @@ if (!files.length) {
                     foundSomething = true;
 
                     break;
-                  } catch (err) {
+                  } catch {
                     continue next;
                   }
                 }

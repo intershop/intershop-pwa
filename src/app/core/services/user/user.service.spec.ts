@@ -383,7 +383,6 @@ describe('User Service', () => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
       const customer = { customerNo: '4711', isBusinessCustomer: false } as Customer;
-      const user = { email: 'foo@foo.bar' } as User;
 
       userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
         verify(apiServiceMock.put('customers/-/credentials/password', anything())).once();
@@ -395,7 +394,6 @@ describe('User Service', () => {
       when(apiServiceMock.put(anyString(), anything())).thenReturn(of({}));
 
       const customer = { customerNo: '4711', isBusinessCustomer: true } as Customer;
-      const user = { email: 'foo@foo.bar' } as User;
 
       userService.updateUserPassword(customer, user, '123', '1234').subscribe(() => {
         verify(apiServiceMock.put('customers/-/users/-/credentials/password', anything())).once();
@@ -479,12 +477,6 @@ describe('User Service', () => {
 
   describe('Cost Centers', () => {
     const customer: Customer = { customerNo: '123' };
-    const user: User = {
-      email: 'patricia@test.intershop.de',
-      firstName: 'Patricia',
-      lastName: 'Miller',
-      login: 'patricia',
-    };
 
     beforeEach(() => {
       store$.overrideSelector(getLoggedInUser, user);

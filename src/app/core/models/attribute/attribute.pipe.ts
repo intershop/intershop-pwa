@@ -24,7 +24,6 @@ export class AttributeToStringPipe implements PipeTransform {
     return formatPrice(price, this.translateService.currentLang);
   }
 
-  // eslint-disable-next-line complexity
   transform(data: Attribute, valuesSeparator: string = ', '): string {
     if (!this.translateService.currentLang) {
       return 'undefined';
@@ -52,17 +51,19 @@ export class AttributeToStringPipe implements PipeTransform {
         return Array.isArray(data.value) && data.value.join(valuesSeparator);
       case 'MultipleDate':
         return Array.isArray(data.value) && data.value.map(v => this.toDate(v)).join(valuesSeparator);
-      case 'ResourceAttribute':
+      case 'ResourceAttribute': {
         const resourceAttribute = data as Attribute<{ type: string }>;
         switch (resourceAttribute.value.type) {
-          case 'Quantity':
+          case 'Quantity': {
             const quantityAttribute = data as Attribute<{ value: unknown; unit: string }>;
             return `${this.toDecimal(quantityAttribute.value.value as number)}\xA0${quantityAttribute.value.unit}`;
+          }
           case 'Money':
             return this.toCurrency(data.value as Price);
           default:
             return data.value.toString();
         }
+      }
       default:
         return data.value.toString();
     }

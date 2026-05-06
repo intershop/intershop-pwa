@@ -2,27 +2,27 @@
   <!-- This element is used by Payone scripts for error handling. -->
   <p class="text-danger col-sm-offset-4" id="error"></p>
   @if (generalErrorMessage) {
-  <p class="text-danger col-sm-offset-4">
-    {{ generalErrorMessage | translate }}
-  </p>
+    <p class="text-danger col-sm-offset-4">
+      {{ generalErrorMessage | translate }}
+    </p>
   }
   <!-- card number -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardpanInput"
-      >{{ 'checkout.credit_card.number.label' | translate }}<span class="required" aria-hidden="true">*</span></label
+      >{{ 'checkout.credit_card.number.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
-      <span id="cardpan" class="inputIframe"></span>
+      <span class="inputIframe" id="cardpan"></span>
     </div>
   </div>
 
   <!-- card type -->
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="cardtype"
-      >{{ 'checkout.credit_card.type.label' | translate }}<span class="required" aria-hidden="true">*</span></label
+      >{{ 'checkout.credit_card.type.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
-      <span id="cardtype" class="inputIframe"></span>
+      <span class="inputIframe" id="cardtype"></span>
     </div>
   </div>
 
@@ -30,10 +30,10 @@
   <div class="row form-group">
     <label class="col-form-label col-md-4" for="expireInput"
       >{{ 'checkout.credit_card.expiration_date.label' | translate
-      }}<span class="required" aria-hidden="true">*</span></label
+      }}<span aria-hidden="true" class="required">*</span></label
     >
     <div class="col-sm-6">
-      <span id="expireInput" class="inputIframe">
+      <span class="inputIframe" id="expireInput">
         <span id="cardexpiremonth"></span>&nbsp;<span id="cardexpireyear"></span>
       </span>
     </div>
@@ -41,27 +41,27 @@
 
   <!-- security code CVC -->
   @if (isSecurityCodeCheckRequired()) {
-  <div class="row form-group">
-    <label class="col-form-label col-md-4" for="cvcInput"
-      >{{ 'checkout.credit_card.cvc.label' | translate }}<span class="required" aria-hidden="true">*</span></label
-    >
-    <div class="col-sm-6">
-      <span id="cardcvc2" class="inputIframe"></span>
+    <div class="row form-group">
+      <label class="col-form-label col-md-4" for="cvcInput"
+        >{{ 'checkout.credit_card.cvc.label' | translate }}<span aria-hidden="true" class="required">*</span></label
+      >
+      <div class="col-sm-6">
+        <span class="inputIframe" id="cardcvc2"></span>
+      </div>
     </div>
-  </div>
   }
 </div>
 
 @if (paymentMethod) {
-<ish-payment-save-checkbox [paymentMethod]="paymentMethod" [form]="payoneCreditCardForm" />
+  <ish-payment-save-checkbox [form]="payoneCreditCardForm" [paymentMethod]="paymentMethod" />
 }
 
 <div class="row">
   <div class="offset-md-4 col-md-8">
-    <button type="button" (click)="submitNewPaymentInstrument()" class="btn btn-primary">
+    <button class="btn btn-primary" type="button" (click)="submitNewPaymentInstrument()">
       {{ 'checkout.account.submit.button.label' | translate }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="cancelNewPaymentInstrument()">
+    <button class="btn btn-secondary" type="button" (click)="cancelNewPaymentInstrument()">
       {{ 'checkout.cancel.button.label' | translate }}
     </button>
   </div>

@@ -13,14 +13,17 @@ import {
 
 @Injectable()
 export class ViewcontextsEffects {
-  constructor(private actions$: Actions, private cmsService: CMSService) {}
+  constructor(
+    private actions$: Actions,
+    private cmsService: CMSService
+  ) {}
 
   loadViewContextEntrypoint$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadViewContextEntrypoint),
       mapToPayload(),
-      mergeMap(({ viewContextId, callParameters }) =>
-        this.cmsService.getViewContextContent(viewContextId, callParameters).pipe(
+      mergeMap(({ viewContextId, callParameters, resourceSetId }) =>
+        this.cmsService.getViewContextContent(viewContextId, callParameters, resourceSetId).pipe(
           map(({ entrypoint, pagelets }) =>
             loadViewContextEntrypointSuccess({ entrypoint, pagelets, viewContextId, callParameters })
           ),

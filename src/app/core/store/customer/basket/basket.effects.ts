@@ -167,8 +167,9 @@ export class BasketEffects {
   loadBasketEligibleShippingMethods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadBasketEligibleShippingMethods),
-      concatMap(() =>
-        this.basketService.getBasketEligibleShippingMethods().pipe(
+      concatLatestFrom(() => this.store.pipe(select(getCurrentBasket))),
+      concatMap(([, basket]) =>
+        this.basketService.getBasketEligibleShippingMethods(basket.bucketId).pipe(
           map(result => loadBasketEligibleShippingMethodsSuccess({ shippingMethods: result })),
           mapErrorToAction(loadBasketEligibleShippingMethodsFail)
         )

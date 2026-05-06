@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { EMPTY, Observable, shareReplay, switchMap, take } from 'rxjs';
+import { EMPTY, Observable, shareReplay, switchMap, take, tap } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -17,8 +17,10 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { PaypalConfig } from 'ish-core/models/paypal-config/paypal-config.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { PaypalAdaptersBuilder, PaypalComponentsConfig } from 'ish-core/utils/paypal/adapters/paypal-adapters.builder';
+import { PaypalApplePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-apple-pay/paypal-apple-pay.adapter';
 import { PaypalButtonsAdapter } from 'ish-core/utils/paypal/adapters/paypal-buttons/paypal-buttons.adapter';
 import { PaypalCardFieldsAdapter } from 'ish-core/utils/paypal/adapters/paypal-card-fields/paypal-card-fields.adapter';
+import { PaypalGooglePayAdapter } from 'ish-core/utils/paypal/adapters/paypal-google-pay/paypal-google-pay.adapter';
 import { PaypalMessagesAdapter } from 'ish-core/utils/paypal/adapters/paypal-messages/paypal-messages.adapter';
 import {
   PaypalAdapterTypes,
@@ -37,7 +39,14 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PaypalAdaptersBuilder, PaypalButtonsAdapter, PaypalCardFieldsAdapter, PaypalMessagesAdapter],
+  providers: [
+    PaypalAdaptersBuilder,
+    PaypalButtonsAdapter,
+    PaypalCardFieldsAdapter,
+    PaypalMessagesAdapter,
+    PaypalGooglePayAdapter,
+    PaypalApplePayAdapter,
+  ],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Type of PayPal adapter to render. Defaults to Messages. */
@@ -50,7 +59,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   @Input() selectedPaymentMethod: PaymentMethod;
 
   /** Emits when the card fields form should be closed. */
-  @Output() closeForm = new EventEmitter<void>();
+  @Output() readonly closeForm = new EventEmitter<void>();
 
   /** Unique container ID for the PayPal component DOM element. */
   paypalComponentContainerId = 'paypal-container-'.concat(uuid());
@@ -63,6 +72,9 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   /** Observable indicating whether the PayPal iframe is loading. */
   renderError$: Observable<string>;
+
+  /** Merchant ID for PayPal transactions. */
+  private merchantId: string;
 
   /** Error state observables for card fields */
   nameFieldError$: Observable<boolean>;
@@ -80,11 +92,15 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.selectedPaymentMethod?.id) {
-      this.paypalComponentContainerId = `paypal-component-container-${this.selectedPaymentMethod.id}`; // Generate unique container ID for each component instance
+      this.paypalComponentContainerId = `paypal-component-container-${this.selectedPaymentMethod.id.replace(
+        /\s/g,
+        ''
+      )}`; // Generate unique container ID for each component instance
     }
     this.loadingScript$ = this.appFacade.serverSetting$<PaypalConfig>('payment.paypal').pipe(
       whenTruthy(),
       take(1),
+      tap(paypalConfig => (this.merchantId = paypalConfig.merchantId)),
       switchMap(paypalConfig => this.loadPaypalScript(paypalConfig)),
       shareReplay(1)
     );
@@ -131,12 +147,14 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
     this.loadingScript$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(loadingResult => {
       if (loadingResult.loaded) {
         const config: PaypalComponentsConfig = {
-          scriptNamespace: this.selectedPaymentMethod
-            ? 'PPCP_'.concat(`${this.selectedPaymentMethod.id}`)
-            : 'PPCP_MESSAGES',
+          scriptNamespace:
+            this.adapterType === 'Messages'
+              ? this.paypalConfigService.getPaypalScriptNameSpace()
+              : this.paypalConfigService.getPaypalScriptNameSpace(this.selectedPaymentMethod),
           adapterType: this.adapterType,
           pageType: this.pageType,
           paypalPaymentMethod: this.selectedPaymentMethod,
+          merchantId: this.merchantId,
         };
 
         this.paypalAdaptersBuilder.build(

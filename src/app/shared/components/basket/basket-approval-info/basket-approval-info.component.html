@@ -1,68 +1,71 @@
 @if (approval?.approvalRequired) {
-<div class="text-end pb-2">
-  <i class="bi bi-person-check-fill fs-3"></i>
-  <span class="ps-2" data-testing-id="approval-required">{{ 'approval.cart.approval_required' | translate }}</span>
-  <!-- details link and dialog -->
-  <ish-modal-dialog-link
-    linkText="approval.cart.link.details"
-    [options]="{ titleText: 'approval.details.heading' | translate }"
-    [ngClass]="'details-link'"
-  >
-    <p>
-      {{ 'approval.details.conditions' | translate }}
-    </p>
-    <ul>
-      <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
-      <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
-      @if (approval.costCenterApproval) {
-      <li>{{ 'approval.details.conditions.cost_center' | translate }}</li>
+  <div class="text-end pb-2">
+    <i class="bi bi-person-check-fill fs-3"></i>
+    <span class="ps-2" data-testing-id="approval-required">{{ 'approval.cart.approval_required' | translate }}</span>
+    <!-- details link and dialog -->
+    <ish-modal-dialog-link
+      linkText="approval.cart.link.details"
+      [ngClass]="'details-link'"
+      [options]="{ titleText: 'approval.details.heading' | translate }"
+    >
+      <p>
+        {{ 'approval.details.conditions' | translate }}
+      </p>
+      <ul>
+        <li>{{ 'approval.details.conditions.order_spend_limit' | translate }}</li>
+        <li>{{ 'approval.details.conditions.budget_limit' | translate }}</li>
+        @if (approval.costCenterApproval) {
+          <li>{{ 'approval.details.conditions.cost_center' | translate }}</li>
+        }
+        <li>{{ 'approval.details.conditions.recurring_order' | translate }}</li>
+      </ul>
+      <p>
+        {{ 'approval.details.place_order' | translate }}
+      </p>
+      <p
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+        [ishServerHtml]="
+          'approval.details.after' | translate: { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
+        "
+      ></p>
+      <!-- display approvers -->
+      @if (approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length) {
+        <h3>
+          {{ 'approval.details.contacts.heading' | translate }}
+        </h3>
       }
-      <li>{{ 'approval.details.conditions.recurring_order' | translate }}</li>
-    </ul>
-    <p>
-      {{ 'approval.details.place_order' | translate }}
-    </p>
-    <p
-      [ishServerHtml]="
-        'approval.details.after' | translate : { '0': 'route://account/requisitions/buyer', '1': 'route://account' }
-      "
-      [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-    ></p>
-    <!-- display approvers -->
-    @if (approval.customerApproval?.approvers?.length || approval.costCenterApproval?.approvers?.length) {
-    <h3>
-      {{ 'approval.details.contacts.heading' | translate }}
-    </h3>
-    } @if (approval.customerApproval?.approvers?.length) {
-    <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
-    <table class="table table-sm">
-      @for (approver of approval.customerApproval.approvers; track approver.email) {
-      <tr>
-        <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-        <td>
-          <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
-        </td>
-      </tr>
+      @if (approval.customerApproval?.approvers?.length) {
+        <p>{{ 'approval.details.customer_approvers.people_allowed' | translate }}</p>
+        <table class="table table-sm">
+          @for (approver of approval.customerApproval.approvers; track approver.email) {
+            <tr>
+              <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+              <td>
+                <a class="link-primary" href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+              </td>
+            </tr>
+          }
+        </table>
       }
-    </table>
-    } @if (approval.costCenterApproval?.approvers?.length) {
-    <p>
-      {{
-        'approval.details.cost_center_approvers.people_allowed'
-          | translate : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
-      }}
-    </p>
-    <table class="table table-sm">
-      @for (approver of approval.costCenterApproval.approvers; track approver.email) {
-      <tr>
-        <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
-        <td>
-          <a href="mailto:{{ approver.email }}" class="link-primary">{{ approver.email }}</a>
-        </td>
-      </tr>
+      @if (approval.costCenterApproval?.approvers?.length) {
+        <p>
+          {{
+            'approval.details.cost_center_approvers.people_allowed'
+              | translate
+                : { '0': approval.costCenterApproval.costCenterName || approval.costCenterApproval.costCenterID }
+          }}
+        </p>
+        <table class="table table-sm">
+          @for (approver of approval.costCenterApproval.approvers; track approver.email) {
+            <tr>
+              <td class="w-50">{{ approver.firstName }} {{ approver.lastName }}</td>
+              <td>
+                <a class="link-primary" href="mailto:{{ approver.email }}">{{ approver.email }}</a>
+              </td>
+            </tr>
+          }
+        </table>
       }
-    </table>
-    }
-  </ish-modal-dialog-link>
-</div>
+    </ish-modal-dialog-link>
+  </div>
 }

@@ -46,7 +46,6 @@ Performing any of the following checks on a web page will give you a basic under
 
   Some people need to enlarge content in order to read it.
   When content is zoomed using the browser's zoom functionality, it must still be legible and usable:
-
   - All text is enlarged.
   - Text does not disappear or become truncated.
   - There is no overlap.
@@ -56,13 +55,12 @@ Performing any of the following checks on a web page will give you a basic under
 
   Page titles are the first thing screen readers read and help people know where they are.
   They describe the content of a website in a concise and appropriate way, and are composed of the individual title of a page, e.g., "About Us" or "News," and a general description of the website, e.g., the company name.
-  They can be set in the [Angular Routing Modules](https://v17.angular.io/guide/router#setting-the-page-title).
+  They can be set in the [Angular Routing Modules](https://v18.angular.dev/guide/routing/common-router-tasks#setting-the-page-title).
 
 - [ ] **3. [Headings](https://www.w3.org/WAI/test-evaluate/easy-checks/headings/)**
 
   Headings communicate the organization of the content on the page.
   Screen reader users often use page headings as a way to navigate a web page.
-
   - All pages should have at least one `<h1>` level heading giving the title of the page.
   - Levels should not be skipped when creating subheadings, similar to the structure of a table of contents in a book.
   - Do not select heading levels based on their appearance, use CSS classes for the proper styling.
@@ -70,7 +68,6 @@ Performing any of the following checks on a web page will give you a basic under
 - [ ] **4. [Correct Messaging and Feedback](https://www.w3.org/WAI/perspective-videos/notifications/)**
 
   Users need to know what is going on and receive appropriate feedback as they interact.
-
   - Use appropriate messaging types (success, error, alert, info, hints, status, instructions) where messages and additional information should be clearly visible, specific, related to the current context, and provide actionable or additional information.
   - Ensure that dynamically added messages are announced to screen readers.
   - Ensure that focus management is handled properly if the update requires immediate attention, whereby all notifications that require user action should be dismissed using the keyboard. Ensure that toast messages remain visible long enough to be read by all users.
@@ -81,7 +78,6 @@ Performing any of the following checks on a web page will give you a basic under
 
   Many users with motor disabilities rely on a keyboard.
   Ensure that all interactive elements and controls are keyboard accessible and the user can navigate the entire page without being "trapped".
-
   - You may need to use `tabindex="0"` to ensure an element can receive keyboard focus.
   - All click events must also have key events.
   - Verify that hover and important interactions, as well as element toggles, are accessible by both keyboard and touch, so that interactions are not dependent on hovering alone.
@@ -92,7 +88,6 @@ Performing any of the following checks on a web page will give you a basic under
   The keyboard navigation order must be logical and intuitive, with the focus moving consistently across the page.
   This generally means that it follows the visual flow of the page, left to right, top to bottom.
   For best results:
-
   - Structure your underlying source code so that the reading/navigation order is correct.
   - If necessary, use CSS to control the visual presentation of elements on your page.
 
@@ -108,7 +103,7 @@ Performing any of the following checks on a web page will give you a basic under
   Color contrast refers to the difference between adjacent colors.
   Typically, this is the text and background color.
   Some people cannot read text or find elements if there is insufficient contrast between colors.
-  The contrast between text and background should be above 4.5:1.  
+  The contrast between text and background should be above 4.5:1.
   The [Color Contrast Analyzer](https://developer.paciellogroup.com/color-contrast-checker/) is a tool that allows you to measure the contrasts.
 
 - [ ] **9. [Use of Color](https://www.w3.org/WAI/WCAG21/Understanding/use-of-color.html) ([WCAG 1.4.1](https://w3.org/TR/WCAG21#use-of-color))**
@@ -120,7 +115,6 @@ Performing any of the following checks on a web page will give you a basic under
 - [ ] **10. [Touch Target Size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) ([WCAG 2.5.8](https://www.w3.org/TR/WCAG22/#target-size-minimum))**
 
   Using larger target sizes (e.g., for links or buttons) will help many people use targets more easily, especially if they use special input devices.
-
   - Touch targets must be at least 24 by 24 CSS pixels in size, or
   - a virtual circle centered on the target with a diameter of 24 pixels that does not overlap with any other targets.
 
@@ -154,7 +148,6 @@ Performing any of the following checks on a web page will give you a basic under
 
   A decorative image is a visual element that adds no additional context or information that allows the user to better understand the context.
   It must be programmatically hidden from assistive technologies by:
-
   - Applying aria-hidden attribute, or
   - Using an empty or null text alternative, or
   - Adding the image as a CSS background

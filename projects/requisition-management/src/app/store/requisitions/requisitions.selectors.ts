@@ -16,7 +16,7 @@ const getRequisitionsFilters = createSelector(getRequisitionsState, state => sta
 export const { selectEntities } = requisitionsAdapter.getSelectors(getRequisitionsState);
 
 export const getRequisitions = (view: RequisitionViewer, status: RequisitionStatus) =>
-  createSelector(selectEntities, getRequisitionsFilters, (requisitions, filters: { [k: string]: string[] }) =>
+  createSelector(selectEntities, getRequisitionsFilters, (requisitions, filters: Record<string, string[]>) =>
     filters[view + status].map(id => requisitions[id])
   );
 

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Content Pagelet Mapper should convert pagelet with slots and additional pagelets to multi array instance 1`] = `
 [

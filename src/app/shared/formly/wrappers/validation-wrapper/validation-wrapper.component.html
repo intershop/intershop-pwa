@@ -1,18 +1,19 @@
-<div [class.has-error]="showError" class="position-relative">
+<div class="position-relative" [class.has-error]="showError">
   <ng-template #fieldComponent />
   @if (showValidationIcons()) {
-  <ish-validation-icons
-    [field]="field"
-    [showError]="showError"
-    [ngClass]="{
-      'validation-offset': field.type === 'ish-select-field' || field.type === 'ish-search-select-field',
-      'd-none': field.type === 'ish-captcha-field' || field.type === 'ish-number-field',
-      'validation-offset-date-picker': field.type === 'ish-date-picker-field'
-    }"
-  />
-  } @if (showError) {
-  <ng-container class="invalid-feedback d-block">
-    <ish-validation-message [field]="field" class="validation-message" />
-  </ng-container>
+    <ish-validation-icons
+      [field]="field"
+      [ngClass]="{
+        'validation-offset': field.type === 'ish-select-field' || field.type === 'ish-search-select-field',
+        'd-none': field.type === 'ish-captcha-field' || field.type === 'ish-number-field',
+        'validation-offset-date-picker': field.type === 'ish-date-picker-field',
+      }"
+      [showError]="showError"
+    />
+  }
+  @if (showError) {
+    <ng-container class="invalid-feedback d-block">
+      <ish-validation-message class="validation-message" [field]="field" />
+    </ng-container>
   }
 </div>

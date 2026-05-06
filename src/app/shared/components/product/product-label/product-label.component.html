@@ -1,13 +1,16 @@
 @if (productLabel$ | async; as productLabel) {
-<span class="product-label" [ngClass]="'product-label-' + productLabel">
-  @switch (productLabel) {
-  <!-- check for the value and show the according localized text in the ribbon -->
-  @case ('new') {
-  {{ 'product.label.new.text' | translate }}
-  } @case ('sale') {
-  {{ 'product.label.sale.text' | translate }}
-  } @case ('topseller') {
-  {{ 'product.label.topseller.text' | translate }}
-  } }
-</span>
+  <span class="product-label" [ngClass]="'product-label-' + productLabel">
+    @switch (productLabel) {
+      <!-- check for the value and show the according localized text in the ribbon -->
+      @case ('new') {
+        {{ 'product.label.new.text' | translate }}
+      }
+      @case ('sale') {
+        {{ 'product.label.sale.text' | translate }}
+      }
+      @case ('topseller') {
+        {{ 'product.label.topseller.text' | translate }}
+      }
+    }
+  </span>
 }

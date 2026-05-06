@@ -1,10 +1,11 @@
 @if (visible$ | async) {
-<div class="product-variation-container">
-  @if ('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting) {
-  <ish-product-variation-display />
-  <ish-product-master-link />
-  } @if (('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting) === false) {
-  <ish-product-variation-select />
-  }
-</div>
+  <div class="product-variation-container">
+    @if ('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting) {
+      <ish-product-variation-display />
+      <ish-product-master-link />
+    }
+    @if (('preferences.ChannelPreferences.EnableAdvancedVariationHandling' | ishServerSetting) === false) {
+      <ish-product-variation-select />
+    }
+  </div>
 }

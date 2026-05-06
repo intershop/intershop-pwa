@@ -15,7 +15,7 @@ Customizations should fit into that REST based pattern as well.
 
 ## Overview
 
-Please refer to [Angular - Architecture Overview](https://angular.io/guide/architecture) for an in-depth overview of how an Angular application is structured and composed.
+Please refer to [Angular - Overview](https://angular.dev/overview) for an in-depth overview of how an Angular application is structured and composed.
 In short, an Angular application consists of templates, components and services.
 Templates contain the HTML that is rendered for the browser and displays the UI.
 Services implement business functionality using [TypeScript](https://en.wikipedia.org/wiki/TypeScript).

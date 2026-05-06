@@ -91,9 +91,9 @@ function checkAction(node: Node) {
       .map(l => l.getLastChild()?.getFirstChild())
       .flat()
       .filter(Boolean)
-      .map(node => {
-        if (Node.isVariableDeclaration(node)) {
-          const actionInitNode = node
+      .map(decl => {
+        if (Node.isVariableDeclaration(decl)) {
+          const actionInitNode = decl
             .getChildrenOfKind(SyntaxKind.CallExpression)
             .map(ce => ce.getArguments()[0])
             .flat()[0];
@@ -110,7 +110,7 @@ function checkAction(node: Node) {
             return;
           }
 
-          return { node, name: node.getName(), type };
+          return { node: decl, name: decl.getName(), type };
         }
       })
       .filter(Boolean);
@@ -451,7 +451,7 @@ function checkNode(node: Node) {
     node
       .getMembers()
       .filter(m => !Node.isConstructorDeclaration(m))
-      /* eslint-disable-next-line no-bitwise */
+
       .filter(m => !(m.getCombinedModifierFlags() & ts.ModifierFlags.Private))
       .forEach(checkNode);
   } else if (Node.isInterfaceDeclaration(node) && Node.hasName(node) && classMethodCheckRegex.test(node.getName())) {

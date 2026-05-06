@@ -9,28 +9,28 @@
     </div>
   </div>
 
-  <form [formGroup]="form" ishFormSubmit #configForm="ngForm" (ngSubmit)="submitForm()" class="pt-1" novalidate>
+  <form #configForm="ngForm" class="pt-1" ishFormSubmit novalidate [formGroup]="form" (ngSubmit)="submitForm()">
     <div class="list-body">
-      <formly-form [form]="form" [fields]="fields" [model]="model" class="pt-1" />
+      <formly-form class="pt-1" [fields]="fields" [form]="form" [model]="model" />
     </div>
 
     <div class="row">
       <div class="button-group w-100 clearfix">
         <div class="float-md-end">
           <button
-            type="submit"
             class="btn btn-primary"
-            [disabled]="form.invalid && configForm.submitted"
             data-testing-id="update-cxml-configuration"
+            type="submit"
+            [disabled]="form.invalid && configForm.submitted"
           >
             {{ 'account.update.button.label' | translate }}
           </button>
-          <a [routerLink]="['/account/punchout']" [queryParams]="{ format: 'cxml' }" class="btn btn-secondary">
+          <a class="btn btn-secondary" [queryParams]="{ format: 'cxml' }" [routerLink]="['/account/punchout']">
             {{ 'account.cancel.link' | translate }}
           </a>
         </div>
         <div class="float-md-start">
-          <a class="btn btn-link ps-md-0" [routerLink]="['/account/punchout']" [queryParams]="{ format: 'cxml' }">{{
+          <a class="btn btn-link ps-md-0" [queryParams]="{ format: 'cxml' }" [routerLink]="['/account/punchout']">{{
             'account.punchout.configuration.back_to_list' | translate
           }}</a>
         </div>

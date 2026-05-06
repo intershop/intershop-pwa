@@ -20,10 +20,10 @@ export const productAdapter = createEntityAdapter<AllProductTypes>({
 
 export interface ProductsState extends EntityState<AllProductTypes> {
   failed: string[];
-  links: { [sku: string]: ProductLinksDictionary };
-  parts: { [sku: string]: SkuQuantityType[] };
-  variations: { [sku: string]: string[] };
-  defaultVariation: { [sku: string]: string };
+  links: Record<string, ProductLinksDictionary>;
+  parts: Record<string, SkuQuantityType[]>;
+  variations: Record<string, string[]>;
+  defaultVariation: Record<string, string>;
 }
 
 const initialState: ProductsState = productAdapter.getInitialState({
@@ -44,11 +44,15 @@ function removeFailed(failed: string[], sku: string): string[] {
 
 export const productsReducer = createReducer(
   initialState,
-  on(loadProductFail, loadProductVariationsFail, (state, action) => ({
-    ...state,
-    failed: addFailed(state.failed, action.payload.sku),
-  })),
-  on(loadProductSuccess, (state, action) => {
+  on(
+    loadProductFail,
+    loadProductVariationsFail,
+    (state, action): ProductsState => ({
+      ...state,
+      failed: addFailed(state.failed, action.payload.sku),
+    })
+  ),
+  on(loadProductSuccess, (state, action): ProductsState => {
     const product = action.payload.product;
     return productAdapter.upsertOne(ProductHelper.updateProductInformation(state.entities[product.sku], product), {
       ...state,
@@ -77,7 +81,9 @@ export const productsReducer = createReducer(
       links: { ...state.links, [action.payload.sku]: action.payload.links },
     })
   ),
-  on(productSpecialUpdate, (state, action) =>
-    productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
+  on(
+    productSpecialUpdate,
+    (state, action): ProductsState =>
+      productAdapter.updateOne({ id: action.payload.sku, changes: action.payload.update }, state)
   )
 );

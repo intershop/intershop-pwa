@@ -12,7 +12,7 @@ export class ProductVariationSelectDefaultComponent {
   @Input() uuid: string;
   @Input() multipleOptions: boolean;
 
-  @Output() changeOption = new EventEmitter<{ group: string; value: string }>();
+  @Output() readonly changeOption = new EventEmitter<{ group: string; value: string }>();
 
   optionChange(group: string, target: EventTarget) {
     this.changeOption.emit({ group, value: (target as HTMLDataElement).value });

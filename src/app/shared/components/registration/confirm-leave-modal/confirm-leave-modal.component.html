@@ -1,10 +1,10 @@
 <div class="modal-header">
-  <h2 id="confirm-leave-modal-title" class="modal-title">
+  <h2 class="modal-title" id="confirm-leave-modal-title">
     {{ 'account.register.confirm_leave_modal.title' | translate }}
   </h2>
   <button
-    type="button"
     class="btn-close"
+    type="button"
     [title]="'dialog.close.text' | translate"
     (click)="activeModal.dismiss(false)"
   ></button>
@@ -13,10 +13,10 @@
   {{ 'account.register.confirm_leave_modal.body' | translate }}
 </div>
 <div class="modal-footer">
-  <button type="button" ngbAutofocus class="btn btn-primary" (click)="activeModal.close(true)">
+  <button class="btn btn-primary" ngbAutofocus type="button" (click)="activeModal.close(true)">
     {{ 'account.register.confirm_leave_modal.confirm_button' | translate }}
   </button>
-  <button type="button" class="btn btn-secondary" (click)="activeModal.close(false)">
+  <button class="btn btn-secondary" type="button" (click)="activeModal.close(false)">
     {{ 'account.register.confirm_leave_modal.cancel_button' | translate }}
   </button>
 </div>

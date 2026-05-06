@@ -74,6 +74,7 @@ const run = (
 ): Promise<CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult> => {
   /* eslint-disable-next-line no-param-reassign  */
   num += 1;
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   let config = _.cloneDeep(DEFAULT_CONFIG);
   config = { ...config, expose: { ...config.expose, numRuns: num } };
 

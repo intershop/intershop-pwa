@@ -1,34 +1,34 @@
 <form
-  [formGroup]="quickOrderForm"
-  ishFormSubmit
   #quickOrderIDForm="ngForm"
-  (ngSubmit)="onAddProducts()"
+  ishFormSubmit
   [attr.aria-label]="'quickorder.page.form.label' | translate"
+  [formGroup]="quickOrderForm"
+  (ngSubmit)="onAddProducts()"
 >
   <div class="list-header d-sm-flex">
     <div class="col-md-8 list-header-item no-seperator">{{ 'quickorder.page.product.id' | translate }}</div>
     <div class="col-md-3 list-header-item no-seperator">{{ 'quickorder.page.product.quantity' | translate }}</div>
   </div>
 
-  <formly-form [model]="model" [fields]="fields" [options]="options" [form]="quickOrderForm" class="pt-1" />
+  <formly-form class="pt-1" [fields]="fields" [form]="quickOrderForm" [model]="model" [options]="options" />
   @if ((quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted) {
-  <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-    {{ 'form.submit.validation.message' | translate }}
-  </div>
+    <div aria-live="polite" class="visually-hidden" id="submit-button-help">
+      {{ 'form.submit.validation.message' | translate }}
+    </div>
   }
   <div class="pb-2">
     <button
-      type="submit"
       class="btn btn-primary"
+      data-testing-id="add-form-to-cart"
+      type="submit"
       [attr.aria-describedby]="
         (quickOrderForm.pristine || quickOrderForm.invalid) && quickOrderIDForm.submitted ? 'submit-button-help' : null
       "
-      data-testing-id="add-form-to-cart"
     >
       {{ 'quickorder.page.add.cart' | translate }}
     </button>
 
-    <button type="button" class="btn btn-link" (click)="reset()">
+    <button class="btn btn-link" type="button" (click)="reset()">
       {{ 'quickorder.page.reset.form' | translate }}
     </button>
   </div>

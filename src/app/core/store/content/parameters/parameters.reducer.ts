@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { loadParametersProductListFilterSuccess } from './parameters.actions';
 
 export interface ParametersState {
-  productLists: { [id: string]: string[] };
+  productLists: Record<string, string[]>;
 }
 
 const initialState: ParametersState = {

@@ -1,11 +1,12 @@
 <div class="d-flex">
   @if (showPrevious) {
-  <button type="button" class="btn btn-link control-previous" (click)="changeToPage(currentPage - 1)">
-    {{ 'product.compare.previous.button.label' | translate }}
-  </button>
-  } @if (showNext) {
-  <button type="button" class="btn btn-link control-next ms-auto" (click)="changeToPage(currentPage + 1)">
-    {{ 'product.compare.next.button.label' | translate }}
-  </button>
+    <button class="btn btn-link control-previous" type="button" (click)="changeToPage(currentPage - 1)">
+      {{ 'product.compare.previous.button.label' | translate }}
+    </button>
+  }
+  @if (showNext) {
+    <button class="btn btn-link control-next ms-auto" type="button" (click)="changeToPage(currentPage + 1)">
+      {{ 'product.compare.next.button.label' | translate }}
+    </button>
   }
 </div>

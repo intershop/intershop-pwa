@@ -37,7 +37,7 @@ export class ProductComparePagingComponent implements OnChanges {
   /**
    * Trigger an event to change the page to the given page number
    */
-  @Output() changePage = new EventEmitter<number>();
+  @Output() readonly changePage = new EventEmitter<number>();
 
   showNext = false;
   showPrevious = false;

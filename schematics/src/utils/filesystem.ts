@@ -1,8 +1,18 @@
 import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
+import type { SourceFile as SchematicsSourceFile } from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 import { existsSync } from 'fs';
 import { once } from 'lodash';
 import { dirname, join, normalize } from 'path';
 import * as ts from 'typescript';
+
+/**
+ * Type adapter that converts a ts.SourceFile to the Angular schematics SourceFile type.
+ * Both types are structurally identical but come from different TypeScript bundlings.
+ * This allows seamless use with @schematics/angular utility functions.
+ */
+export function asSchematicsSourceFile(source: ts.SourceFile): SchematicsSourceFile {
+  return source as unknown as SchematicsSourceFile;
+}
 
 export function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
   const text = host.read(modulePath);

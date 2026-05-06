@@ -14,7 +14,6 @@ const noOptionalInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
     docs: {
       description: 'Disallow optional inputs',
-      recommended: 'recommended',
     },
   },
   create: context => ({

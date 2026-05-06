@@ -54,7 +54,7 @@ export const ordersReducer = createReducer(
     })
   ),
 
-  on(createOrderSuccess, loadOrderSuccess, (state, action) => {
+  on(createOrderSuccess, loadOrderSuccess, (state, action): OrdersState => {
     const { order } = action.payload;
 
     return order.id
@@ -64,7 +64,7 @@ export const ordersReducer = createReducer(
         }
       : state;
   }),
-  on(loadOrdersSuccess, (state, action) => {
+  on(loadOrdersSuccess, (state, action): OrdersState => {
     const { orders, query } = action.payload;
     const newState = { ...state, query };
 

@@ -28,7 +28,6 @@ export interface RegistrationConfigType {
 }
 
 @Injectable()
-// eslint-disable-next-line ish-custom-rules/project-structure
 export class RegistrationFormConfigurationService {
   private isApprovalServiceRunning = true;
   private isCaptchaRequired = true;

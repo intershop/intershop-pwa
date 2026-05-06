@@ -73,7 +73,6 @@ export class DesignViewService {
    * (2) application does not run on top level window (i.e. it runs in the Design View iframe)
    */
   private shouldInit() {
-    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     return typeof window !== 'undefined' && window.parent && window.parent !== window;
   }
 
@@ -85,7 +84,7 @@ export class DesignViewService {
   private listenToHostMessages() {
     fromEvent<MessageEvent>(window, 'message')
       .pipe(
-        filter(e => e.data.hasOwnProperty('type') && e.data.type.startsWith('dv-client')),
+        filter(e => Object.hasOwn(e.data, 'type') && e.data.type.startsWith('dv-client')),
         map(message => message.data)
       )
       .subscribe(message => this.handleHostMessage(message));
@@ -160,7 +159,6 @@ export class DesignViewService {
         break;
       }
       default: {
-        // eslint-disable-next-line no-console
         console.warn(`Design View Service received unknown message type: ${message.type}`, message);
       }
     }

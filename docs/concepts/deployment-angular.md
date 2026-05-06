@@ -15,7 +15,7 @@ kb_sync_latest_only
 ## Simple Browser-Side Rendering
 
 Angular applications are built for a [static deployment][angular-deployment] by default.
-When running `npm run build` in any shape or form, the build output is aggregated in the `dist` folder and the resulting files can be statically served using any HTTP server that is capable of doing that (only a [fallback](https://angular.io/guide/deployment#routed-apps-must-fallback-to-indexhtml) for `index.html` must be configured).
+When running `npm run build` in any shape or form, the build output is aggregated in the `dist` folder and the resulting files can be statically served using any HTTP server that is capable of doing that (only a [fallback](https://angular.dev/tools/cli/deployment#routed-apps-must-fall-back-to-indexhtml) for `index.html` must be configured).
 
 When the application is served this way, the initial page response for the browser is minimal (`index.html` with scripts inserted).
 The application gets composed and rendered on the client side.
@@ -41,7 +41,7 @@ In a second step in the build process, a server-side application can be built by
 The resulting distribution must be executed in a node environment.
 The _server.js_ executable handles client requests on the server and pre-renders the content of the page, basically executing everything in a _Node.js_ environment.
 The resulting initial page response to the browser is mainly prepared and can be displayed quickly on the client side while the client-side application is booting up.
-With the introduction of the non-destructive [Client Hydration](https://angular.io/guide/hydration) in Angular v17, the server-side rendered application is restored on the client reusing the server-rendered DOM structures, preserving the application state, transferring application data already retrieved by the server, and other processes.
+With the introduction of the non-destructive [Client Hydration](https://angular.dev/guide/hydration), the server-side rendered application is restored on the client reusing the server-rendered DOM structures, preserving the application state, transferring application data already retrieved by the server, and other processes.
 This leads to significant performance improvements.
 
 ![Angular-ServerSideRendering-Sequence](deployment-angular-serversiderendering-sequence.jpg 'Angular-ServerSideRendering-Sequence')
@@ -63,7 +63,7 @@ However, browsers and crawlers that do not support JavaScript will still receive
 - [Angular - Deployment][angular-deployment]
 - [Angular - SSR][angular-ssr]
 
-[angular-deployment]: https://angular.io/guide/deployment
-[angular-ssr]: https://angular.io/guide/ssr
+[angular-deployment]: https://angular.dev/tools/cli/deployment
+[angular-ssr]: https://v18.angular.dev/guide/ssr
 [concept-building-blocks]: ./pwa-building-blocks.md
 [concept-progressive-web-app]: ./progressive-web-app.md#service-worker

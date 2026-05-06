@@ -83,7 +83,7 @@ export const orderTemplateReducer = createReducer(
       selected: undefined as string,
     })
   ),
-  on(loadOrderTemplatesSuccess, (state, action) => {
+  on(loadOrderTemplatesSuccess, (state, action): OrderTemplateState => {
     const { orderTemplates } = action.payload;
     return orderTemplateAdapter.setAll(orderTemplates, state);
   }),
@@ -93,13 +93,13 @@ export const orderTemplateReducer = createReducer(
     removeItemFromOrderTemplateSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     updateOrderTemplateSuccess,
-    (state, action) => {
+    (state, action): OrderTemplateState => {
       const { orderTemplate } = action.payload;
 
       return orderTemplateAdapter.upsertOne(orderTemplate, state);
     }
   ),
-  on(deleteOrderTemplateSuccess, (state, action) => {
+  on(deleteOrderTemplateSuccess, (state, action): OrderTemplateState => {
     const { orderTemplateId } = action.payload;
     return orderTemplateAdapter.removeOne(orderTemplateId, state);
   }),

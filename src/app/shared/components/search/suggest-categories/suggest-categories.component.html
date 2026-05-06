@@ -1,13 +1,13 @@
 <div class="search-suggest-categories">
   <div class="d-flex justify-content-start headline">{{ 'suggest.categories.headline' | translate }}</div>
   <ul>
-    @for (categoryId of categories | slice : 0 : maxAutoSuggests; track categoryId) {
-    <ish-suggest-categories-tile
-      [categoryUniqueId]="categoryId"
-      [inputTerms$]="inputTerms$"
-      (routeChange)="routeChange.emit($event)"
-      (click)="handleInputFocus()"
-    />
+    @for (categoryId of categories | slice: 0 : maxAutoSuggests; track categoryId) {
+      <ish-suggest-categories-tile
+        [categoryUniqueId]="categoryId"
+        [inputTerms$]="inputTerms$"
+        (click)="handleInputFocus()"
+        (routeChange)="routeChange.emit($event)"
+      />
     }
   </ul>
 </div>

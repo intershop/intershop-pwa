@@ -4,49 +4,50 @@
     <div class="col-md-4 col-form-label">{{ 'account.user.details.profile.role_permissions.heading' | translate }}</div>
     <div class="col-md-8">
       @if (form$ | async; as form) {
-      <div class="row" [formGroup]="form">
-        @for (item of form.controls | keyvalue : unsorted; track item.key; let i = $index) { @if (role$(item.key) |
-        async; as role) {
-        <div [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }" class="col-12">
-          <div class="form-control-checkbox">
-            <div class="form-check form-control">
-              <label [for]="item.key" class="mb-2">
-                <input type="checkbox" [id]="item.key" [formControlName]="item.key" class="form-check-input" />
-                <span>{{ role.displayName }}</span
-                ><br />
-                @if (role.description) {
-                <span class="input-help">{{ role.description }}</span>
+        <div class="row" [formGroup]="form">
+          @for (item of form.controls | keyvalue: unsorted; track item.key; let i = $index) {
+            @if (role$(item.key) | async; as role) {
+              <div class="col-12" [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }">
+                <div class="form-control-checkbox">
+                  <div class="form-check form-control">
+                    <label class="mb-2" [for]="item.key">
+                      <input class="form-check-input" type="checkbox" [formControlName]="item.key" [id]="item.key" />
+                      <span>{{ role.displayName }}</span
+                      ><br />
+                      @if (role.description) {
+                        <span class="input-help">{{ role.description }}</span>
+                      }
+                    </label>
+                  </div>
+                </div>
+
+                @if (isExpanded[i]) {
+                  <ul data-testing-id="user_permissions">
+                    @for (p of role.permissionDisplayNames; track p) {
+                      <li>{{ p }}</li>
+                    }
+                  </ul>
                 }
-              </label>
-            </div>
-          </div>
-
-          @if (isExpanded[i]) {
-          <ul data-testing-id="user_permissions">
-            @for (p of role.permissionDisplayNames; track p) {
-            <li>{{ p }}</li>
+                <p>
+                  <!-- Expand/Collapse user permissions -->
+                  <button
+                    class="btn btn-link btn-link-with-icon btn-link-action"
+                    type="button"
+                    (click)="toggleExpanded(i)"
+                  >
+                    @if (isExpanded[i]) {
+                      {{ 'account.user.details.profile.role.hide_permissions.link' | translate
+                      }}<i class="bi bi-chevron-up"></i>
+                    } @else {
+                      {{ 'account.user.details.profile.role.show_permissions.link' | translate
+                      }}<i class="bi bi-chevron-down"></i>
+                    }
+                  </button>
+                </p>
+              </div>
             }
-          </ul>
           }
-          <p>
-            <!-- Expand/Collapse user permissions -->
-            <button type="button" (click)="toggleExpanded(i)" class="btn btn-link btn-link-with-icon btn-link-action">
-              @if (isExpanded[i]) {
-
-              {{ 'account.user.details.profile.role.hide_permissions.link' | translate
-              }}<i class="bi bi-chevron-up"></i>
-
-              } @else {
-
-              {{ 'account.user.details.profile.role.show_permissions.link' | translate
-              }}<i class="bi bi-chevron-down"></i>
-
-              }
-            </button>
-          </p>
         </div>
-        } }
-      </div>
       }
     </div>
   </div>

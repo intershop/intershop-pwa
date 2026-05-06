@@ -1,70 +1,80 @@
 @if (totals) {
-<div class="clearfix">
-  <dl class="row dl-horizontal">
-    <!-- SubTotal -->
-    <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
-    <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
-    <!-- list all applied order level promotions -->
-    @if (totals.valueRebates?.length > 0) { @for (rebate of totals.valueRebates; track rebate.id) { @if
-    (rebate?.promotionId) {
-    <dt class="col-6">
-      <ish-basket-promotion [rebate]="rebate" />
-    </dt>
-    }
-    <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
-    } }
-    <!-- Shipping -->
-    <dt class="col-6">
-      @if (totals.isEstimated) {
-      <span>{{ 'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
-      } @if (!totals.isEstimated) {
-      <span>{{ 'checkout.order.shipping.label' | translate }}</span>
+  <div class="clearfix">
+    <dl class="row dl-horizontal">
+      <!-- SubTotal -->
+      <dt class="col-6">{{ 'checkout.cart.subtotal.heading' | translate }}</dt>
+      <dd class="col-6" data-testing-id="basket-subtotal">{{ totals.itemTotal | ishPrice }}</dd>
+      <!-- list all applied order level promotions -->
+      @if (totals.valueRebates?.length > 0) {
+        @for (rebate of totals.valueRebates; track rebate.id) {
+          @if (rebate?.promotionId) {
+            <dt class="col-6">
+              <ish-basket-promotion [rebate]="rebate" />
+            </dt>
+          }
+          <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
+        }
       }
-    </dt>
-    <dd class="col-6">{{ totals.undiscountedShippingTotal | ishPrice }}</dd>
-    <!-- Shipping promotions -->
-    @if (totals.shippingRebates?.length > 0) { @for (rebate of totals.shippingRebates; track rebate.id) {
-    <dt class="col-6">
-      <ish-basket-promotion [rebate]="rebate" />
-    </dt>
-    <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
-    } }
-    <!-- Item Surcharges -->
-    @for (surcharge of totals.itemSurchargeTotalsByType; track surcharge.displayName) {
-    <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
-    }
-    <!-- Bucket Surcharges -->
-    @for (surcharge of totals.bucketSurchargeTotalsByType; track surcharge.displayName) {
-    <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
-    }
-    <!-- Payment costs -->
-    @if (hasPaymentCostsTotal) {
-    <dt class="col-6">{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
-    <dd class="col-6">{{ totals.paymentCostsTotal | ishPrice }}</dd>
-    }
-    <!-- Tax -->
-    @if (totals.taxTotal?.value) {
-    <dt class="col-6">{{ taxTranslation$ | async | translate }}</dt>
-    <dd class="col-6" data-testing-id="basket-tax">{{ totals.taxTotal | ishPrice }}</dd>
-    }
-    <!-- Cart total -->
-    <dt class="col-6 total-price">
-      @if (totals.isEstimated) {
-      <span>{{ 'checkout.cart.estimated_total.label' | translate }}</span>
-      } @if (!totals.isEstimated) {
-      <span>{{ 'checkout.order.total_cost.label' | translate }}</span>
+      <!-- Shipping -->
+      <dt class="col-6">
+        @if (totals.isEstimated) {
+          <span>{{ 'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
+        }
+        @if (!totals.isEstimated) {
+          <span>{{ 'checkout.order.shipping.label' | translate }}</span>
+        }
+      </dt>
+      <dd class="col-6">{{ totals.undiscountedShippingTotal | ishPrice }}</dd>
+      <!-- Shipping promotions -->
+      @if (totals.shippingRebates?.length > 0) {
+        @for (rebate of totals.shippingRebates; track rebate.id) {
+          <dt class="col-6">
+            <ish-basket-promotion [rebate]="rebate" />
+          </dt>
+          <dd class="col-6">{{ invert(rebate.amount) | ishPrice }}</dd>
+        }
       }
-    </dt>
-    <dd class="col-6 total-price">{{ totals.total | ishPrice : 'gross' }}</dd>
+      <!-- Item Surcharges -->
+      @for (surcharge of totals.itemSurchargeTotalsByType; track surcharge.displayName) {
+        <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
+      }
+      <!-- Bucket Surcharges -->
+      @for (surcharge of totals.bucketSurchargeTotalsByType; track surcharge.displayName) {
+        <ng-container *ngTemplateOutlet="surchargeItemTemplate; context: { surcharge: surcharge }" />
+      }
+      <!-- Payment costs -->
+      @if (hasPaymentCostsTotal) {
+        <dt class="col-6">{{ 'checkout.cart.payment_cost.label' | translate }}</dt>
+        <dd class="col-6">{{ totals.paymentCostsTotal | ishPrice }}</dd>
+      }
+      <!-- Tax -->
+      @if (totals.taxTotal?.value) {
+        <dt class="col-6">{{ taxTranslation$ | async | translate }}</dt>
+        <dd class="col-6" data-testing-id="basket-tax">{{ totals.taxTotal | ishPrice }}</dd>
+      }
+      <!-- Cart total -->
+      <dt class="col-6 total-price">
+        @if (totals.isEstimated) {
+          <span>{{ 'checkout.cart.estimated_total.label' | translate }}</span>
+        }
+        @if (!totals.isEstimated) {
+          <span>{{ 'checkout.order.total_cost.label' | translate }}</span>
+        }
+      </dt>
+      <dd class="col-6 total-price">{{ totals.total | ishPrice: 'gross' }}</dd>
 
-    @if (getPaypalPageType() === 'cart' ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled' :
-    'payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled' | ishServerSetting) {
-    <dd class="col-12">
-      <ish-payment-paypal [pageType]="getPaypalPageType()" />
-    </dd>
-    }
-  </dl>
-</div>
+      @if (
+        (getPaypalPageType() === 'cart'
+          ? 'payment.paypal.payLaterPreferences.PayLaterMessagingCartEnabled'
+          : 'payment.paypal.payLaterPreferences.PayLaterMessagingPaymentEnabled'
+        ) | ishServerSetting
+      ) {
+        <dd class="col-12">
+          <ish-payment-paypal [pageType]="getPaypalPageType()" />
+        </dd>
+      }
+    </dl>
+  </div>
 }
 
 <!-- surcharge outlet template -->
@@ -73,11 +83,11 @@
   <dt class="col-6">
     {{ surcharge.displayName }}
     <button
-      type="button"
       class="btn btn-link details-tooltip"
+      placement="top"
+      type="button"
       [ngbPopover]="SurchargeDescription"
       [popoverTitle]="surcharge.displayName"
-      placement="top"
     >
       {{ 'shopping_cart.detail.text' | translate }}<i class="bi bi-info-circle-fill"></i>
     </button>

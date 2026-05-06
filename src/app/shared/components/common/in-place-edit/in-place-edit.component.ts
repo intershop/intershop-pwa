@@ -27,8 +27,8 @@ export class InPlaceEditComponent implements AfterViewInit {
   @Input() ariaLabelName = '';
   @Input() buttonClass: string;
   @Input() confirmDisabled = false;
-  @Output() edited = new EventEmitter<void>();
-  @Output() aborted = new EventEmitter<void>();
+  @Output() readonly edited = new EventEmitter<void>();
+  @Output() readonly aborted = new EventEmitter<void>();
 
   private mode: 'view' | 'edit' = 'view';
   private destroyRef = inject(DestroyRef);

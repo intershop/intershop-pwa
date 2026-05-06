@@ -4,7 +4,7 @@
     <a
       class="float-end btn-tool"
       routerLink="/checkout/address"
-      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
+      [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }"
     >
       <i class="bi bi-pencil-fill"></i>
     </a>
@@ -19,7 +19,7 @@
     <a
       class="float-end btn-tool"
       routerLink="/checkout/address"
-      [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.shipping.label' | translate }"
+      [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }"
     >
       <i class="bi bi-pencil-fill"></i>
     </a>
@@ -27,11 +27,11 @@
   </div>
   <div data-testing-id="address-summary-ship-to-address">
     @if (basket.invoiceToAddress.id === basket.commonShipToAddress?.id) {
-    <address>
-      {{ 'checkout.same_as_billing_address.text' | translate }}
-    </address>
+      <address>
+        {{ 'checkout.same_as_billing_address.text' | translate }}
+      </address>
     } @else {
-    <ish-address [address]="basket.commonShipToAddress" />
+      <ish-address [address]="basket.commonShipToAddress" />
     }
   </div>
 </div>

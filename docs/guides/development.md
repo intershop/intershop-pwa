@@ -34,8 +34,8 @@ git clone https://github.com/intershop/intershop-pwa.git
 
 After having cloned the project from the Git repository, open a command line in the project folder and run `npm install` to download all required dependencies into your development environment.
 
-The project uses [Angular CLI](https://angular.io/cli) - a command line interface for Angular - that has to be installed globally.
-Run `npm install -g @angular/cli@17` once to globally install Angular CLI on your development machine.
+The project uses [Angular CLI](https://angular.dev/tools/cli) - a command line interface for Angular - that has to be installed globally.
+Run `npm install -g @angular/cli@18` once to globally install Angular CLI on your development machine.
 Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 Use `ng serve --open` to start the development server and open the Progressive Web app in your browser.
@@ -163,7 +163,7 @@ As Angular runs in the browser, all the development tool functionality provided 
 ### Browser Extensions
 
 - [Redux DevTools](https://github.com/reduxjs/redux-devtools) for debugging application state changes
-- [Angular DevTools](https://angular.io/guide/devtools) for debugging and profiling Angular applications in Chrome
+- [Angular DevTools](https://angular.dev/tools/devtools) for debugging and profiling Angular applications in Chrome
 
 ### Tackling Memory Problems
 
@@ -197,4 +197,4 @@ The parallelism of `npm run test` and `npm run build:multi` can be customized wi
 
 The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
 
-The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/mysticatea/npm-run-all/blob/master/docs/npm-run-all.md#npm-run-all-command) of `npm-run-all`.
+The environment variable `PWA_BUILD_MAX_WORKERS` is deferred to [`--max-parallel`](https://github.com/bcomnes/npm-run-all2/blob/master/docs/npm-run-all.md) of `npm-run-all2`.

@@ -6,7 +6,7 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
  * The Info Message Component displays an info message as inline message or as toast.
  *
  * @example
- * <ish-info-message message="quote.error.not_started" [toast]="false"></ish-info-message>
+ * <ish-info-message message="quote.error.not_started" [toast]="false" />
  */
 @Component({
   selector: 'ish-info-message',

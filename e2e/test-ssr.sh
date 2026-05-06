@@ -10,7 +10,7 @@ ssrTest() {
   echo "\n\nTEST $NUM: searching '$GREP' in '$URL'"
   timeout 5m sh -c "[ ! -z \"\$(wget -O - -q -t 0 --waitretry 5 $URL | grep \"$GREP\")\" ]"
   res=$?
-  [ "$res" -ne "0" ] && curl -v "$URL"
+  [ "$res" -ne "0" ] && { output=$(curl -v --no-progress-meter "$URL" 2>&1 || curl -v -sS "$URL" 2>&1); printf "%s\n\n" "$output"; }
   [ "$res" -eq "0" ] && echo "TEST $NUM: SUCCESS" || echo "\n\nTEST $NUM: searching '$GREP' in '$URL': FAILURE\n"
   [ "$res" -ne "0" ] && exit 1
 }

@@ -64,7 +64,6 @@ services:
       # LOGLEVEL: 'info' # info (all), warn (4xx+5xx), error (5xx) - default: error
       # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
       # SSL: 1
-      # SSL_MKCERT_OFF: 1
       # SSR: 0
       # DEBUG: 1
       # PROMETHEUS: 1
@@ -74,17 +73,9 @@ services:
       #   params:
       OVERRIDE_IDENTITY_PROVIDERS: |
         .+:
-          - path: /en/punchout
+          - path: /punchout
             type: Punchout
-          - path: /de/punchout
-            type: Punchout
-          - path: /fr/punchout
-            type: Punchout
-          - path: /en/cobrowse
-            type: CoBrowse
-          - path: /de/cobrowse
-            type: CoBrowse
-          - path: /fr/cobrowse
+          - path: /cobrowse
             type: CoBrowse
       # MULTI_CHANNEL_SOURCE: env:///ASDF?type=application/yaml
       MULTI_CHANNEL: |
@@ -107,22 +98,10 @@ services:
       #     - X-Frame-Options: 'SAMEORIGIN'
       # REDIS_URI: redis://redis:6379
 
-    # Provide own SSL certificate files with SSL and SSL_MKCERT_OFF (see nginx-startup.md)
+    # Provide own SSL certificate files with SSL enabled (see nginx-startup.md)
     # volumes:
     #   - <LOCAL_PATH>/fullchain.pem:/var/nginx/certs/cert.pem
     #   - <LOCAL_PATH>/privkey.pem:/var/nginx/certs/key.pem
-
-    # Uncomment this if you want the containers CA to be available on your local machine
-    # 1.) provide below adjusted volume mapping
-    # 2.) download and install mkcert -> https://github.com/FiloSottile/mkcert
-    # 3.) `export CAROOT=/home/your-user/ca-dir`
-    # 4.) `mkcert -install`
-    #
-    # For more details have a look at https://github.com/FiloSottile/mkcert#installing-the-ca-on-other-systems
-    #
-    # hostname: 'your-local-host-name-with-fqdn'
-    # volumes:
-    #  - /home/your-user/ca-dir:/root/.local/share/mkcert
 
   # <CDN-Example>
   # - add 127.0.0.1 mypwa.net to your hosts file and

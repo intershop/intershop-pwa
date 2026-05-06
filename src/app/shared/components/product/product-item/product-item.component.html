@@ -1,7 +1,11 @@
-@if (product$ | async) { @if (isTile) {
-<ish-product-tile [loading]="loading" />
-} @if (isRow) {
-<ish-product-row [loading]="loading" />
-} } @if (loading$ | async) {
-<ish-loading />
+@if (product$ | async) {
+  @if (isTile) {
+    <ish-product-tile [loading]="loading" />
+  }
+  @if (isRow) {
+    <ish-product-row [loading]="loading" />
+  }
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

@@ -2,6 +2,8 @@ import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 
+import { OrderCreationStatus, OrderStopActionReason } from './order.interface';
+
 export interface OrderLineItem extends LineItem {
   name: string;
   description: string;
@@ -14,11 +16,17 @@ export interface Order extends OrderBasket {
   documentNo: string;
   creationDate: string;
   orderCreation: {
-    status: 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+    status: OrderCreationStatus;
     stopAction?: {
       type: 'Redirect' | 'Workflow';
-      exitReason?: 'waiting_for_pending_payments' | 'redirect_urls_required' | 'recurring.order';
+      exitReason?: OrderStopActionReason;
       redirectUrl?: string;
+    };
+    redirect?: {
+      parameters: {
+        name: string;
+        value: string;
+      }[];
     };
   };
   statusCode: string;

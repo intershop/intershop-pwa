@@ -1,14 +1,15 @@
 <div class="infobox" [ngClass]="cssClass">
   @if (editRouterLink) {
-  <a
-    class="float-end btn-tool"
-    [routerLink]="editRouterLink"
-    [title]="'infobox.update.title' | translate : { '0': heading | translate }"
-  >
-    <i class="bi bi-pencil-fill"></i>
-  </a>
-  } @if (heading) {
-  <h2 class="h3">{{ heading | translate }}</h2>
+    <a
+      class="float-end btn-tool"
+      [routerLink]="editRouterLink"
+      [title]="'infobox.update.title' | translate: { '0': heading | translate }"
+    >
+      <i class="bi bi-pencil-fill"></i>
+    </a>
+  }
+  @if (heading) {
+    <h2 class="h3">{{ heading | translate }}</h2>
   }
   <ng-content />
 </div>

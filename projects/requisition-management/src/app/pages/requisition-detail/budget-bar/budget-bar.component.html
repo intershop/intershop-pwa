@@ -1,31 +1,36 @@
 @if (budget && overflowPercentage > 0) {
-<div class="budget-bar-overflow">
-  <div class="overflow-indicator" [ngStyle]="{ width: overflowPercentage / 100 | percent }" [title]="budget | ishPrice">
-    <span class="overflow-display">{{ overflowPercentage / 100 | percent }}</span>
+  <div class="budget-bar-overflow">
+    <div
+      class="overflow-indicator"
+      [ngStyle]="{ width: overflowPercentage / 100 | percent }"
+      [title]="budget | ishPrice"
+    >
+      <span class="overflow-display">{{ overflowPercentage / 100 | percent }}</span>
+    </div>
   </div>
-</div>
-} @if (budget) {
-<div class="budget-bar">
-  <div
-    class="budget-bar-used"
-    [title]="spentBudget | ishPrice"
-    [ngClass]="displayClass"
-    aria-hidden="true"
-    [ngStyle]="{ width: budgetPercentage / 100 | percent }"
-  >
-    {{ spentBudget | ishPrice }}
+}
+@if (budget) {
+  <div class="budget-bar">
+    <div
+      aria-hidden="true"
+      class="budget-bar-used"
+      [ngClass]="displayClass"
+      [ngStyle]="{ width: budgetPercentage / 100 | percent }"
+      [title]="spentBudget | ishPrice"
+    >
+      {{ spentBudget | ishPrice }}
+    </div>
+    @if (additionalAmount?.value) {
+      <div
+        aria-hidden="true"
+        class="budget-bar-used budget-bar-used-additional border-start"
+        role="progressbar"
+        [ngClass]="addDisplayClass"
+        [ngStyle]="{ width: additionalPercentage / 100 | percent }"
+        [title]="additionalAmount | ishPrice"
+      >
+        <span>{{ additionalAmount | ishPrice }}</span>
+      </div>
+    }
   </div>
-  @if (additionalAmount?.value) {
-  <div
-    [title]="additionalAmount | ishPrice"
-    class="budget-bar-used budget-bar-used-additional border-start"
-    [ngClass]="addDisplayClass"
-    role="progressbar"
-    [ngStyle]="{ width: additionalPercentage / 100 | percent }"
-    aria-hidden="true"
-  >
-    <span>{{ additionalAmount | ishPrice }}</span>
-  </div>
-  }
-</div>
 }

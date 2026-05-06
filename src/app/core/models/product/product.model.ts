@@ -14,7 +14,7 @@ export interface Product {
   maxOrderQuantity: number;
   stepQuantity: number;
   attributes: Attribute[];
-  attributeGroups?: { [id: string]: AttributeGroup };
+  attributeGroups?: Record<string, AttributeGroup>;
   attachments?: Attachment[];
   images: Image[];
   manufacturer: string;

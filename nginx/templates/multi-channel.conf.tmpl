@@ -137,9 +137,9 @@ server {
     include /etc/nginx/conf.d/cache-locations.conf;
 
   {{- if getenv "OVERRIDE_IDENTITY_PROVIDERS" }}
-    {{- range $domainOverride, $identyProviderOverride := (ds "overrideIdentityProviders") }}
-      {{ if eq $domain $domainOverride }}
-        {{- range $identyProviderOverride }}
+    {{- range $domainOverride, $identityProviderOverride := (ds "overrideIdentityProviders") }}
+      {{ if or (eq $domain $domainOverride) ($domain | regexp.Match $domainOverride) }}
+        {{- range $identityProviderOverride }}
           {{- tmpl.Exec "OVERRIDE_IDENTITY_PROVIDER_TEMPLATE" . }}
         {{- end }}
       {{- end }}

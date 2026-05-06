@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Injectable, InjectionToken, Injector, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
@@ -450,7 +451,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     k2: K2
   ): Observable<ProductContext[K1][K2]>;
 
-  // eslint-disable-next-line complexity
   select<K1 extends keyof ProductContext, K2 extends keyof ProductContext[K1]>(k1?: K1, k2?: K2) {
     const wrap = <K extends keyof ProductContext>(key: K, obs: Observable<ProductContext[K]>) => {
       if (!this.lazyFieldsInitialized.includes(key)) {
@@ -473,6 +473,7 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
             .product$(this.masterProductSKU$, ProductCompletenessLevel.List)
             .pipe(filter(ProductHelper.isMasterProduct))
         );
+        break;
       case 'links':
         wrap('links', this.shoppingFacade.productLinks$(this.validProductSKU$));
         break;

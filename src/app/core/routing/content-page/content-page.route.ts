@@ -28,7 +28,7 @@ const contentRouteFormat = /^\/(?!page\/.*$)(.*-)?pg(.*)$/;
  */
 export function matchContentRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
-  if (segments && segments.length === 2 && segments[0].path === 'page') {
+  if (segments?.length === 2 && segments[0].path === 'page') {
     return {
       consumed: [],
     };
@@ -37,7 +37,7 @@ export function matchContentRoute(segments: UrlSegment[]): UrlMatchResult {
   const url = `/${segments.map(s => s.path).join('/')}`;
   if (contentRouteFormat.test(url)) {
     const match = contentRouteFormat.exec(url);
-    const posParams: { [id: string]: UrlSegment } = {};
+    const posParams: Record<string, UrlSegment> = {};
     if (match[2]) {
       posParams.contentPageId = new UrlSegment(match[2], {});
     }

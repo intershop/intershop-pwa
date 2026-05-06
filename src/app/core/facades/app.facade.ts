@@ -1,22 +1,27 @@
-import { getCurrencySymbol } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
 import { filter, map, sample, shareReplay, startWith, take, withLatestFrom } from 'rxjs/operators';
 
+import { PriceHelper } from 'ish-core/models/price/price.helper';
 import {
   getAvailableLocales,
   getCurrentCurrency,
   getCurrentLocale,
   getDeviceType,
   getICMBaseURL,
+  getPaypalClientConfig,
   getPipelineEndpoint,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
 import { businessError, getGeneralError, getGeneralErrorType } from 'ish-core/store/core/error';
 import { selectPath } from 'ish-core/store/core/router';
-import { getExtraConfigParameter, getServerConfigParameter } from 'ish-core/store/core/server-config';
+import {
+  getExtraConfigParameter,
+  getServerConfigParameter,
+  isServerConfigurationLoaded,
+} from 'ish-core/store/core/server-config';
 import { getBreadcrumbData, getHeaderType, getWrapperClass, isStickyHeader } from 'ish-core/store/core/viewconf';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { getAllCountries, loadCountries } from 'ish-core/store/general/countries';
@@ -25,7 +30,11 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AppFacade {
-  constructor(private store: Store, private router: Router, private appRef: ApplicationRef) {
+  constructor(
+    private store: Store,
+    private router: Router,
+    private appRef: ApplicationRef
+  ) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
@@ -41,6 +50,7 @@ export class AppFacade {
   currentLocale$ = this.store.pipe(select(getCurrentLocale));
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
   currentCurrency$ = this.store.pipe(select(getCurrentCurrency));
+  serverConfigurationLoaded$ = this.store.pipe(select(isServerConfigurationLoaded));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));
@@ -48,6 +58,8 @@ export class AppFacade {
 
   getRestEndpoint$ = this.store.pipe(select(getRestEndpoint));
   getPipelineEndpoint$ = this.store.pipe(select(getPipelineEndpoint));
+
+  paypalClientConfig$ = this.store.pipe(select(getPaypalClientConfig));
 
   getRestEndpointWithContext$ = combineLatest([
     this.store.pipe(select(getRestEndpoint)),
@@ -137,7 +149,7 @@ export class AppFacade {
     return this.currentLocale$.pipe(
       whenTruthy(),
       withLatestFrom(this.currentCurrency$),
-      map(([locale, defaultCurrency]) => getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
+      map(([locale, defaultCurrency]) => PriceHelper.getCurrencySymbol(currency || defaultCurrency, 'narrow', locale))
     );
   }
 

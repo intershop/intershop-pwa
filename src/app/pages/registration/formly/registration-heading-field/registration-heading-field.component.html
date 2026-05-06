@@ -1,15 +1,17 @@
 @if (size === 'h1') {
-<h1>{{ props.heading | translate }}</h1>
-<p>{{ props.subheading | translate }}</p>
-@if (showRequiredInfo) {
-<p class="indicates-required" aria-hidden="true">
-  <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-</p>
-} } @else {
-<h2>{{ props.heading | translate }}</h2>
-<p>{{ props.subheading | translate }}</p>
-@if (showRequiredInfo) {
-<p class="indicates-required" aria-hidden="true">
-  <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-</p>
-} }
+  <h1>{{ props.heading | translate }}</h1>
+  <p>{{ props.subheading | translate }}</p>
+  @if (showRequiredInfo) {
+    <p aria-hidden="true" class="indicates-required">
+      <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+    </p>
+  }
+} @else {
+  <h2>{{ props.heading | translate }}</h2>
+  <p>{{ props.subheading | translate }}</p>
+  @if (showRequiredInfo) {
+    <p aria-hidden="true" class="indicates-required">
+      <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+    </p>
+  }
+}

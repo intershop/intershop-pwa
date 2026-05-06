@@ -1,39 +1,39 @@
 <div class="counter-input">
   <button
-    type="button"
     class="btn btn-link decrease-button"
-    (click)="decrease()"
-    [disabled]="cannotDecrease"
-    translate
     tabindex="-1"
+    translate
+    type="button"
+    [disabled]="cannotDecrease"
     [title]="'number.decrease.title' | translate"
+    (click)="decrease()"
   >
     <span aria-hidden="true">{{ 'number.decrease.text' | translate }}</span>
   </button>
   <button
-    type="button"
     class="btn btn-link increase-button"
-    (click)="increase()"
-    [disabled]="cannotIncrease"
-    translate
     tabindex="-1"
+    translate
+    type="button"
+    [disabled]="cannotIncrease"
     [title]="'number.increase.title' | translate"
+    (click)="increase()"
   >
     <span aria-hidden="true">{{ 'number.increase.text' | translate }}</span>
   </button>
   <input
-    type="number"
-    [formControl]="formControl"
-    [formlyAttributes]="field"
     class="form-control text-center"
-    [ngClass]="props.inputClass"
-    [attr.data-testing-id]="field.key"
     pattern="[0-9]*"
-    [min]="props.min"
-    [max]="props.max"
-    [step]="props.step"
+    type="number"
+    [attr.aria-describedby]="props.ariaDescribedByIds"
     [attr.aria-label]="props.ariaLabel | translate"
     [attr.aria-required]="props.required ? 'true' : undefined"
-    [attr.aria-describedby]="props.ariaDescribedByIds"
+    [attr.data-testing-id]="field.key"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [max]="props.max"
+    [min]="props.min"
+    [ngClass]="props.inputClass"
+    [step]="props.step"
   />
 </div>

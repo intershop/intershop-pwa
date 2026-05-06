@@ -21,7 +21,6 @@ export class OrganizationManagementBreadcrumbService {
     return this.appFacade.routingInProgress$.pipe(
       whenFalsy(),
       withLatestFrom(this.appFacade.path$.pipe(whenTruthy())),
-      // eslint-disable-next-line complexity
       switchMap(([, path]) => {
         if (path.endsWith('users')) {
           return of([{ key: 'account.organization.user_management' }]);

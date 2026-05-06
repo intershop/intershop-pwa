@@ -23,8 +23,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  * @example
  * <ish-account-wishlist-preferences-dialog
     [wishlist]="wishlist"
-    (submitWishlist)="createWishlist($event)">
-   </ish-account-wishlist-preferences-dialog>
+    (submitWishlist)="createWishlist($event)" />
  */
 @Component({
   selector: 'ish-wishlist-preferences-dialog',
@@ -40,7 +39,7 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   /**
    * Emits the data of the new wishlist to create.
    */
-  @Output() submitWishlist = new EventEmitter<Wishlist>();
+  @Output() readonly submitWishlist = new EventEmitter<Wishlist>();
 
   wishListForm = new FormGroup({});
   model: Partial<Wishlist> = { preferred: false };

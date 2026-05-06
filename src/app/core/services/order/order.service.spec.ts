@@ -144,4 +144,37 @@ describe('Order Service', () => {
       });
     });
   });
+
+  describe('continueOrderCreation', () => {
+    it('should throw error when called without orderId', done => {
+      orderService.continueOrderCreation(undefined).subscribe({
+        error: err => {
+          expect(err.message).toEqual('continueOrderCreation() called without orderId');
+          done();
+        },
+      });
+    });
+
+    it('should call the API with correct parameters', done => {
+      when(apiService.patch(anything(), anything(), anything())).thenReturn(of(orderMockData));
+
+      const orderId = '123454';
+
+      orderService.continueOrderCreation(orderId).subscribe(() => {
+        verify(apiService.patch(`orders/${orderId}`, anything(), anything())).once();
+        const [, body] = capture(apiService.patch).first();
+        expect(body).toEqual({ orderCreation: { status: 'CONTINUE' } });
+        done();
+      });
+    });
+
+    it('should return an order when it is called', done => {
+      when(apiService.patch(anything(), anything(), anything())).thenReturn(of(orderMockData));
+
+      orderService.continueOrderCreation('123454').subscribe(data => {
+        expect(data).toHaveProperty('id', 'test');
+        done();
+      });
+    });
+  });
 });

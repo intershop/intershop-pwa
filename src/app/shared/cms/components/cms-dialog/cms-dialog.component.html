@@ -1,6 +1,6 @@
 <!-- dialog content can either be in the content parameter or in the slot -->
 @if (pagelet?.stringParam('Content')) {
-<div [ishServerHtml]="pagelet.stringParam('Content')" data-testing-id="dialog-content"></div>
+  <div data-testing-id="dialog-content" [ishServerHtml]="pagelet.stringParam('Content')"></div>
 }
 
-<ish-content-slot [slot]="'app_sf_base_cm:slot.dialog.content.pagelet2-Slot'" [pagelet]="pagelet" />
+<ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.dialog.content.pagelet2-Slot'" />

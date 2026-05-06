@@ -41,7 +41,10 @@ export class ScriptLoaderService {
   /** Cache of scripts currently being loaded */
   private loadingScripts = new Map<string, Observable<ScriptType>>();
 
-  constructor(private rendererFactory: RendererFactory2, @Inject(DOCUMENT) private document: Document) {
+  constructor(
+    private rendererFactory: RendererFactory2,
+    @Inject(DOCUMENT) private document: Document
+  ) {
     this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
   }
 

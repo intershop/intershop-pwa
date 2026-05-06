@@ -9,27 +9,28 @@ kb_sync_latest_only
 
 - [Configuring ESLint](#configuring-eslint)
 - [Custom ESLint Rules](#custom-eslint-rules)
+- [Further Reading](#further-reading)
 
 The PWA uses [ESLint](https://eslint.org) for static code analysis and to enforce best practices.
 In order to use ESLint with Angular, we use the [`typescript-eslint`](https://typescript-eslint.io) and [`angular-eslint`](https://github.com/angular-eslint/angular-eslint) packages extensively.
 
-The PWA's ruleset is configured in [`.eslintrc.json`](../../.eslintrc.json) and includes base rulesets to extend from, plugins with additional rules as well as a configuration for our custom rules.
+The PWA's ruleset is configured in [`eslint.config.mjs`](../../eslint.config.mjs) and includes base rulesets to extend from, plugins with additional rules as well as a configuration for our custom rules.
 
 To read more about the Intershop PWA's custom rules, see [Custom ESLint rules](#custom-eslint-rules).
 
 ## Configuring ESLint
 
-An ESLint rule configuration is a key-value-pair of a `rules` object in `.eslintrc.json`.
+An ESLint rule configuration is a key-value-pair of a `rules` object in `eslint.config.mjs`.
 There are separate rulesets for `typescript` and `html` files.
 Consider the following example:
 
 ```json
-"@angular-eslint/component-selector": [
-          "error",
+'@angular-eslint/component-selector': [
+          'error',
           {
-            "type": "element",
-            "prefix": ["ish"],
-            "style": "kebab-case"
+            type: 'element',
+            prefix: ['ish],
+            style: 'kebab-case',
           }
         ],
 ```
@@ -54,8 +55,12 @@ The custom rules are developed separately from the main source code, which uses 
 To work with and develop new custom ESLint rules, follow these steps:
 
 1. Generate a new rule using our schematic: `ng g eslint-rule` (alias `er`). This generates a new rule file at `eslint-rules/src/rules` and a test file at `eslint-rules/tests`.
-2. Write the rule code. Refer to [Working with Rules](https://eslint.org/docs/developer-guide/working-with-rules) as well as examples from available rules to understand how. Add reusable helper functions to `helpers.ts` to reduce repetition.
+2. Write the rule code. Refer to [Working with Rules](https://eslint.org/docs/latest/extend/custom-rules) as well as examples from available rules to understand how. Add reusable helper functions to `helpers.ts` to reduce repetition.
 3. Write rule tests. Refer to [Testing](https://typescript-eslint.io/developers/custom-rules/#testing) for documentation on the `RuleTester` API that is used in tests. Use `npm run test:eslint-rules` to execute your tests.
-4. Build the `eslint-rules` project with your changes using `npm run build:eslint-rules`. The resulting JavaScript files will be located in the `eslint-rules/dist` folder. A generated `index.ts` exports the rules to be consumed in the `.eslintrc.json` configuration file.
-5. Add the new rule to the ESLint configuration in [`.eslintrc.json`](../../.eslintrc.json).
+4. Build the `eslint-rules` project with your changes using `npm run build:eslint-rules`. The resulting JavaScript files will be located in the `eslint-rules/dist` folder. A generated `index.ts` exports the rules to be consumed in the `eslint.config.mjs` configuration file.
+5. Add the new rule to the ESLint configuration in [`eslint.config.mjs`](../../eslint.config.mjs).
 6. _Optional_: Restart the ESLint server using the `ESLint: Restart ESLint server` command to see your new configuration applied in VSCode. You can access the command via the editor commands (default keybinding: `ctrl + shift + p`).
+
+## Further Reading
+
+- [Best Practices: Prettier & ESLint](https://www.angulararchitects.io/blog/best-practices-prettier-eslint/) - Angular Architects article on ESLint and Prettier best practices

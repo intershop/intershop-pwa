@@ -13,9 +13,9 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
 export interface RecurringOrderData {
   data: RecurringOrderDetailData;
   included?: {
-    discounts?: { [id: string]: BasketRebateData };
-    lineItems_discounts?: { [id: string]: BasketRebateData };
-    lineItems_warranty?: { [id: string]: BasketWarrantyData };
+    discounts?: Record<string, BasketRebateData>;
+    lineItems_discounts?: Record<string, BasketRebateData>;
+    lineItems_warranty?: Record<string, BasketWarrantyData>;
   };
 }
 

@@ -17,11 +17,11 @@ declare let PayEngine: any;
  *
  * @example
  * <ish-payment-concardis-directdebit
- [paymentMethod]="paymentMethod"
  [activated]="i === openFormIndex"
+ [paymentMethod]="paymentMethod"
  (submitPayment)="createNewPaymentInstrument($event)"
  (cancelPayment)="cancelNewPaymentInstrument()"
-></ish-payment-concardis-directdebit>
+/>
  */
 @Component({
   selector: 'ish-payment-concardis-directdebit',
@@ -29,7 +29,10 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     super(scriptLoader, cd);
   }
 
@@ -61,7 +64,8 @@ export class PaymentConcardisDirectdebitComponent extends PaymentConcardisCompon
         Object.keys(currentValues).forEach(key => {
           if (
             currentValues[key] !== prevValues[key] &&
-            this.options.formState.changedSinceErrors?.hasOwnProperty(key)
+            this.options.formState.changedSinceErrors &&
+            Object.hasOwn(this.options.formState.changedSinceErrors, key)
           ) {
             this.options.formState.changedSinceErrors[key] = true;
             this.parameterForm.get(key).updateValueAndValidity();

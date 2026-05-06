@@ -9,10 +9,9 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  *
  * @example
  * <ish-filter-dropdown
+ *   placeholderType="selectedFacets"
  *   [filterElement]="element"
- *   [placeholderType]="'selectedFacets'"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-dropdown>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-dropdown',
@@ -23,7 +22,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 export class FilterDropdownComponent implements OnInit {
   @Input({ required: true }) filterElement: Filter;
   @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
-  @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   placeholder = '';
 
