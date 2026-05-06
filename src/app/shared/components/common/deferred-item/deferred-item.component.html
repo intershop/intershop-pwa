@@ -1,0 +1,7 @@
+<div ishIntersectionObserver [ngClass]="cssClass" (visibilityChange)="onVisibilityChange($any($event))">
+  @if (visible$ | async; as visible) {
+    @if (visible && lazyContent) {
+      <ng-template [ngTemplateOutlet]="lazyContent.templateRef" />
+    }
+  }
+</div>

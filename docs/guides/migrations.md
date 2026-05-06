@@ -19,6 +19,13 @@ This upgrade spans multiple major versions and includes several breaking changes
 
 For further details, see the official Swiper migration guides for [v9](https://swiperjs.com/migration-guide-v9), [v10](https://swiperjs.com/migration-guide-v10), and [v11](https://swiperjs.com/migration-guide-v11).
 
+**Lazy loading with `DeferredItemComponent`**
+
+The new `DeferredItemComponent` supports `IntersectionObserver`-based lazy loading.
+It defers the rendering of projected content until the element becomes visible in the viewport.
+It is used for Swiper carousel slides but also applies to any other lazy loading scenario.
+Use `ish-deferred-item` with `ishLazyLoadingContent` for lazy loading.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

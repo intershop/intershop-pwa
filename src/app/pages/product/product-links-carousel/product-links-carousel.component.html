@@ -8,9 +8,13 @@
           <div class="swiper-wrapper">
             @for (sku$ of productSKUs; track sku$) {
               <div class="swiper-slide">
-                @if (sku$ | async; as sku) {
-                  <ish-product-item ishProductContext [sku]="sku" />
-                }
+                <ish-deferred-item>
+                  <ng-template ishLazyLoadingContent>
+                    @if (sku$ | async; as sku) {
+                      <ish-product-item ishProductContext [sku]="sku" />
+                    }
+                  </ng-template>
+                </ish-deferred-item>
               </div>
             }
           </div>
