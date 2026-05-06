@@ -7,6 +7,54 @@ kb_everyone
 
 # Changelog
 
+## [11.0.0](https://github.com/intershop/intershop-pwa/releases/tag/11.0.0) (2026-05-06)
+
+> [!NOTE]
+> Intershop PWA 11.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.0.1.
+> It will work with all versions from ICM 14.0.1 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 11.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.12.0 for PWA 11.0.0 deployments.
+
+### Features
+
+- hide language switch for single locale configurations (#2072) ([c00ed01](https://github.com/intershop/intershop-pwa/commit/c00ed01))
+- update Bootstrap theme colors for danger, warning, info and success (#2074) ([4915596](https://github.com/intershop/intershop-pwa/commit/4915596))
+- PayPal alternative payment methods integration (Google Pay, Apple Pay) (#2059) ([2a5a774](https://github.com/intershop/intershop-pwa/commit/2a5a774))
+- support RegEx configurations for `OVERRIDE_IDENTITY_PROVIDERS` (#2062) ([02e2acc](https://github.com/intershop/intershop-pwa/commit/02e2acc))
+- **NGINX:** stabilize nginx Docker build against Ubuntu `apt-get` failures (#2071) ([0fc3a45](https://github.com/intershop/intershop-pwa/commit/0fc3a45))
+- **SSR:** upgrade SSR HTTP/2 communication to undici 8 (#2069) ([dc7936d](https://github.com/intershop/intershop-pwa/commit/dc7936d))
+
+### Bug Fixes
+
+- add token refresh error handling ([8b5b194](https://github.com/intershop/intershop-pwa/commit/8b5b194))
+- shipping method information display on checkout shipping page (#2066) ([a9b6773](https://github.com/intershop/intershop-pwa/commit/a9b6773))
+
+### Performance Improvements
+
+- add Resource Set ID to CMS View Context REST calls (#2060) ([095b2c8](https://github.com/intershop/intershop-pwa/commit/095b2c8))
+
+### Updates
+
+- update Formly to version 7 (#2019) ([274a2e7](https://github.com/intershop/intershop-pwa/commit/274a2e7))
+- update Angular 18 dependencies (#2019) ([14d3086](https://github.com/intershop/intershop-pwa/commit/14d3086))
+
+### Documentation
+
+- adapt code examples to the current formatting (#2053) ([127b79c](https://github.com/intershop/intershop-pwa/commit/127b79c))
+- update documentation to Angular 18 (#2019) ([a9b12e0](https://github.com/intershop/intershop-pwa/commit/a9b12e0))
+- link to Intershop Academy migration to PWA 10.0.0 video (#2076) ([0a2bded](https://github.com/intershop/intershop-pwa/commit/0a2bded))
+- add CSR mode related docu enhancements (#2067) ([af30fc1](https://github.com/intershop/intershop-pwa/commit/af30fc1))
+
+### BREAKING CHANGES
+
+- Formly was updated to version 7. For more information see the [Formly migration guide](https://formly.dev/docs/guide/migration).
+- Angular 18 upgrade including necessary migrations (see [Migrations / From 10.1.0 to 11.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1010-to-1100) for more details).
+
 ## [10.1.0](https://github.com/intershop/intershop-pwa/releases/tag/10.1.0) (2026-04-02)
 
 > [!NOTE]
