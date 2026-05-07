@@ -5,9 +5,13 @@ exports[`Header Default Component should render normal header adequately for des
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
-        data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      <a
+        routerlink="/compare"
+        rel="nofollow"
+        data-testing-id="compare-status-desktop-fallback"
+        class="compare-status item-count-container"
+        ><i class="bi bi-arrow-left-right header-icon"></i><span>product.compare.link</span></a
+      >
     </li>
   </ul>
   <div class="header-utility">
@@ -82,9 +86,13 @@ exports[`Header Default Component should render normal header adequately for mob
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <ul class="user-links">
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
-        data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      <a
+        routerlink="/compare"
+        rel="nofollow"
+        data-testing-id="compare-status-desktop-fallback"
+        class="compare-status item-count-container"
+        ><i class="bi bi-arrow-left-right header-icon"></i><span>product.compare.link</span></a
+      >
     </li>
   </ul>
   <div class="header-utility">
@@ -160,9 +168,13 @@ exports[`Header Default Component should render normal header adequately for tab
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
-        data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      <a
+        routerlink="/compare"
+        rel="nofollow"
+        data-testing-id="compare-status-desktop-fallback"
+        class="compare-status item-count-container"
+        ><i class="bi bi-arrow-left-right header-icon"></i><span>product.compare.link</span></a
+      >
     </li>
   </ul>
   <div class="header-utility">

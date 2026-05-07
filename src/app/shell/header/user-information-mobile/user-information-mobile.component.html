@@ -1,11 +1,25 @@
-<div class="container user-info-box">
+<div class="container user-info-box" (mouseenter)="showFeatureLinks()" (focusin)="showFeatureLinks()">
   <div class="user-info-box-item">{{ 'header.welcome.text' | translate }}</div>
   <div class="user-info-box-item"><ish-login-status view="full" /></div>
   <div *ishFeature="'compare'" class="user-info-box-item">
+    @if (featureLinksVisible) {
     <ish-lazy-product-compare-status view="full" />
+    } @else {
+    <a routerLink="/compare" rel="nofollow" class="compare-status item-count-container">
+      <i class="bi bi-arrow-left-right header-icon"></i>
+      <span>{{ 'product.compare.link' | translate }}</span>
+    </a>
+    }
   </div>
   <div *ishFeature="'quickorder'" class="user-info-box-item">
+    @if (featureLinksVisible) {
     <ish-lazy-quickorder-link />
+    } @else {
+    <a routerLink="/quick-order" rel="quick-order" class="quickorder-link">
+      <i class="bi bi-fast-forward-fill header-icon"></i>
+      <span>{{ 'quickorder.page.link' | translate }}</span>
+    </a>
+    }
   </div>
   <div *ishFeature="'wishlists'" class="user-info-box-item">
     <ish-lazy-wishlists-link view="full" />

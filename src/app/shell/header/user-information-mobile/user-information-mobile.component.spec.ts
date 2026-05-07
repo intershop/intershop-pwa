@@ -49,6 +49,20 @@ describe('User Information Mobile Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-login-status",
+        "ish-lazy-wishlists-link",
+      ]
+    `);
+  });
+
+  it('should render compare and quickorder lazy links after interaction', () => {
+    fixture.detectChanges();
+
+    element.querySelector('.user-info-box').dispatchEvent(new Event('mouseenter'));
+    fixture.detectChanges();
+
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      [
+        "ish-login-status",
         "ish-lazy-product-compare-status",
         "ish-lazy-quickorder-link",
         "ish-lazy-wishlists-link",

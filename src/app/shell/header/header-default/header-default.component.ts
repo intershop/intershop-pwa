@@ -30,6 +30,8 @@ export class HeaderDefaultComponent implements OnChanges {
   // not-dead-code
   @Input() reset: unknown;
 
+  featureLinksVisible = false;
+
   private activeComponent: CollapsibleComponent = 'search';
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
@@ -89,6 +91,10 @@ export class HeaderDefaultComponent implements OnChanges {
         this.focusSearch();
       }
     }
+  }
+
+  showFeatureLinks() {
+    this.featureLinksVisible = true;
   }
 
   // scroll to the top and set focus to search input

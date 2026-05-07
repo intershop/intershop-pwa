@@ -57,7 +57,19 @@ describe('Header Default Component', () => {
 
   it('should render User Links on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-lazy-product-compare-status']);
+    expect(findAllCustomElements(element)).toContain('ish-login-status');
+    expect(findAllCustomElements(element)).not.toContain('ish-lazy-product-compare-status');
+    expect(element.querySelector('[data-testing-id="compare-status-desktop-fallback"]')).toBeTruthy();
+  });
+
+  it('should render lazy user links after interaction', () => {
+    fixture.detectChanges();
+
+    element.querySelector('.user-links').dispatchEvent(new Event('mouseenter'));
+    fixture.detectChanges();
+
+    expect(findAllCustomElements(element)).toContain('ish-lazy-product-compare-status');
+    expect(element.querySelector('[data-testing-id="compare-status-desktop-fallback"]')).toBeFalsy();
   });
 
   it('should render Language Switch on template', () => {

@@ -13,17 +13,41 @@
 
 <div class="header container" [ngClass]="deviceType">
   @if (!isSticky) {
-    <ul class="user-links">
+    <ul class="user-links" (focusin)="showFeatureLinks()" (mouseenter)="showFeatureLinks()">
       @if (!isSticky && deviceType !== 'mobile') {
         <li>
           <ish-login-status data-testing-id="user-status-desktop" />
         </li>
       }
       <li *ishFeature="'compare'" class="d-none d-md-block">
-        <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
+        @if (featureLinksVisible) {
+          <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
+        } @else {
+          <a
+            class="compare-status item-count-container"
+            data-testing-id="compare-status-desktop-fallback"
+            rel="nofollow"
+            routerLink="/compare"
+          >
+            <i class="bi bi-arrow-left-right header-icon"></i>
+            <span>{{ 'product.compare.link' | translate }}</span>
+          </a>
+        }
       </li>
       <li *ishFeature="'quickorder'" class="d-none d-md-block">
-        <ish-lazy-quickorder-link />
+        @if (featureLinksVisible) {
+          <ish-lazy-quickorder-link />
+        } @else {
+          <a
+            class="quickorder-link"
+            data-testing-id="quickorder-link-fallback"
+            rel="quick-order"
+            routerLink="/quick-order"
+          >
+            <i class="bi bi-fast-forward-fill header-icon"></i>
+            <span>{{ 'quickorder.page.link' | translate }}</span>
+          </a>
+        }
       </li>
       <li *ishFeature="'wishlists'" class="d-none d-md-block">
         <ish-lazy-wishlists-link />

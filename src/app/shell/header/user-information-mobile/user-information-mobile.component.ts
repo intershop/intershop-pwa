@@ -5,4 +5,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './user-information-mobile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserInformationMobileComponent {}
+export class UserInformationMobileComponent {
+  featureLinksVisible = false;
+
+  showFeatureLinks() {
+    this.featureLinksVisible = true;
+  }
+}
