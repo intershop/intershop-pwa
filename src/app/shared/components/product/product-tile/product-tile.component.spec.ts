@@ -73,15 +73,34 @@ describe('Product Tile Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
+        "ish-product-promotion",
+        "ish-product-price",
+        "ish-product-item-variations",
+        "ish-product-add-to-basket",
+      ]
+    `);
+  });
+
+  it('should render feature actions after interaction', () => {
+    fixture.detectChanges();
+
+    element.querySelector('.product-tile').dispatchEvent(new Event('mouseenter'));
+    fixture.detectChanges();
+
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      [
+        "ish-product-image",
+        "ish-product-label",
+        "ish-product-name",
         "ish-lazy-product-rating",
         "ish-product-promotion",
         "ish-product-price",
         "ish-product-item-variations",
+        "ish-product-add-to-basket",
         "ish-lazy-product-add-to-quote",
         "ish-lazy-product-add-to-compare",
         "ish-lazy-product-add-to-order-template",
         "ish-lazy-product-add-to-wishlist",
-        "ish-product-add-to-basket",
       ]
     `);
   });

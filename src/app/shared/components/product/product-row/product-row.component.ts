@@ -14,6 +14,7 @@ export class ProductRowComponent implements OnInit {
   @Input() loading: ImageLoading;
   product$: Observable<ProductView>;
   quantity$: Observable<number>;
+  featureActionsVisible = false;
 
   constructor(private context: ProductContextFacade) {}
 
@@ -24,5 +25,9 @@ export class ProductRowComponent implements OnInit {
 
   configuration$(key: keyof ProductContextDisplayProperties) {
     return this.context.select('displayProperties', key);
+  }
+
+  showFeatureActions() {
+    this.featureActionsVisible = true;
   }
 }

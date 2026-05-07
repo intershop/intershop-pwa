@@ -1,12 +1,19 @@
 @if (product$ | async; as product) {
   @if (!product.failed) {
-    <div class="product-tile" [attr.data-testing-sku]="product.sku">
+    <div
+      class="product-tile"
+      [attr.data-testing-sku]="product.sku"
+      (focusin)="showFeatureActions()"
+      (mouseenter)="showFeatureActions()"
+    >
       <div class="product-image-container">
         <ish-product-image imageType="M" [link]="true" [loading]="loading" />
         <ish-product-label />
       </div>
       <ish-product-name />
-      <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+      @if (featureActionsVisible) {
+        <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+      }
       <ish-product-promotion displayType="simple" />
       @if (configuration$('price') | async) {
         <div class="price-container">
@@ -15,11 +22,18 @@
       }
       <ish-product-item-variations />
       <div class="product-tile-actions btn-group">
-        <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-order-template cssClass="btn btn-link me-0" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
         <ish-product-add-to-basket cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+        @if (!featureActionsVisible) {
+          <button aria-label="More product actions" class="btn btn-link" type="button" (click)="showFeatureActions()">
+            ...
+          </button>
+        }
+        @if (featureActionsVisible) {
+          <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+          <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+          <ish-lazy-product-add-to-order-template cssClass="btn btn-link me-0" displayType="icon" [ariaHidden]="true" />
+          <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+        }
       </div>
     </div>
   }

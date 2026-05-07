@@ -85,6 +85,30 @@ describe('Product Row Component', () => {
         "ish-product-image",
         "ish-product-label",
         "ish-product-name",
+        "ish-product-id",
+        "ish-product-promotion",
+        "ish-product-price",
+        "ish-product-inventory",
+        "ish-product-shipment",
+        "ish-product-item-variations",
+        "ish-product-quantity",
+        "ish-product-add-to-basket",
+        "ish-product-choose-variation",
+      ]
+    `);
+  });
+
+  it('should render feature actions after interaction', () => {
+    fixture.detectChanges();
+
+    element.querySelector('.product-tile-list').dispatchEvent(new Event('mouseenter'));
+    fixture.detectChanges();
+
+    expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
+      [
+        "ish-product-image",
+        "ish-product-label",
+        "ish-product-name",
         "ish-lazy-product-rating",
         "ish-product-id",
         "ish-product-promotion",

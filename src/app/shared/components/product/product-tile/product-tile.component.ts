@@ -13,6 +13,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 export class ProductTileComponent implements OnInit {
   @Input() loading: ImageLoading;
   product$: Observable<ProductView>;
+  featureActionsVisible = false;
 
   constructor(private context: ProductContextFacade) {}
 
@@ -22,5 +23,9 @@ export class ProductTileComponent implements OnInit {
 
   configuration$(key: keyof ProductContextDisplayProperties) {
     return this.context.select('displayProperties', key);
+  }
+
+  showFeatureActions() {
+    this.featureActionsVisible = true;
   }
 }

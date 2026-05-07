@@ -1,6 +1,11 @@
 @if (product$ | async; as product) {
   @if (!product.failed) {
-    <div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
+    <div
+      class="product-tile-list row"
+      [attr.data-testing-sku]="product.sku"
+      (focusin)="showFeatureActions()"
+      (mouseenter)="showFeatureActions()"
+    >
       <div class="col-3 col-md-2">
         <div class="product-image-container">
           <ish-product-image imageType="S" [link]="true" [loading]="loading" />
@@ -11,17 +16,31 @@
         <div class="row">
           <div class="col-md-7">
             <ish-product-name />
-            <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+            @if (featureActionsVisible) {
+              <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+            }
             <ish-product-id />
             @if (configuration$('description') | async) {
               <div class="product-description" [ishServerHtml]="product.shortDescription"></div>
             }
             <ish-product-promotion displayType="simpleWithDetail" />
             <div class="product-tile-actions btn-group">
-              <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" />
-              <ish-lazy-product-add-to-order-template cssClass="btn-link" displayType="icon" />
+              @if (!featureActionsVisible) {
+                <button
+                  aria-label="More product actions"
+                  class="btn btn-link"
+                  type="button"
+                  (click)="showFeatureActions()"
+                >
+                  ...
+                </button>
+              }
+              @if (featureActionsVisible) {
+                <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" />
+                <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" />
+                <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" />
+                <ish-lazy-product-add-to-order-template cssClass="btn-link" displayType="icon" />
+              }
             </div>
           </div>
           <div class="col-12 col-md-5 text-md-end">
