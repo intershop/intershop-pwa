@@ -2,9 +2,9 @@ import { createSelector } from '@ngrx/store';
 
 import { getQuotingState } from '../quoting-store';
 
-import { quotingAdapter } from './quoting.reducer';
+import { initialState, quotingAdapter } from './quoting.reducer';
 
-const getQuotingInternalState = createSelector(getQuotingState, state => state.quoting);
+const getQuotingInternalState = createSelector(getQuotingState, state => state?.quoting || initialState);
 
 export const getQuotingLoading = createSelector(getQuotingInternalState, state => !!state.loading);
 

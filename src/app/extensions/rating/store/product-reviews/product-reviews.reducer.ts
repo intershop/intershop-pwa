@@ -28,7 +28,7 @@ export interface ProductReviewsState extends EntityState<ProductReviewsModel> {
   error: HttpError;
 }
 
-const initialState: ProductReviewsState = productReviewsAdapter.getInitialState({
+export const initialState: ProductReviewsState = productReviewsAdapter.getInitialState({
   loading: false,
   error: undefined,
 });

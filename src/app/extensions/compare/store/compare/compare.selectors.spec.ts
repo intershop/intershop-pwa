@@ -21,6 +21,10 @@ describe('Compare Selectors', () => {
   });
 
   describe('getCompareList', () => {
+    it('should return an empty SKU list if compare state is not registered yet', () => {
+      expect(getCompareProductsSKUs({})).toBeEmpty();
+    });
+
     it('should return the SKU list when queried', () => {
       store$.dispatch(addToCompare({ sku: '123' }));
       store$.dispatch(addToCompare({ sku: '456' }));

@@ -2,9 +2,9 @@ import { createSelector } from '@ngrx/store';
 
 import { getProductReviewState } from '../product-review-store';
 
-import { productReviewsAdapter } from './product-reviews.reducer';
+import { initialState, productReviewsAdapter } from './product-reviews.reducer';
 
-const getProductReviewsState = createSelector(getProductReviewState, state => state.productReviews);
+const getProductReviewsState = createSelector(getProductReviewState, state => state?.productReviews || initialState);
 
 const { selectEntities } = productReviewsAdapter.getSelectors(getProductReviewsState);
 

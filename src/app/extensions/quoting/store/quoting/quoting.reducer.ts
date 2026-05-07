@@ -45,7 +45,7 @@ export interface QuotingInternalState extends EntityState<QuotingEntity> {
   initialized: boolean;
 }
 
-const initialState: QuotingInternalState = quotingAdapter.getInitialState({
+export const initialState: QuotingInternalState = quotingAdapter.getInitialState({
   loading: 0,
   error: undefined,
   activeQuoteRequest: undefined,
