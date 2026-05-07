@@ -104,6 +104,11 @@ describe('Lazy Component Schematic', () => {
       expect(componentContent).toContain(".enabled$('ext')");
     });
 
+    it('should load the feature module before rendering the component', async () => {
+      expect(componentContent).toContain("private moduleLoader: ModuleLoaderService");
+      expect(componentContent).toContain("await this.moduleLoader.loadFeature('ext', this.injector)");
+    });
+
     it('should generate right component selector', async () => {
       expect(componentContent).toContain("selector: 'foo-lazy-dummy'");
     });

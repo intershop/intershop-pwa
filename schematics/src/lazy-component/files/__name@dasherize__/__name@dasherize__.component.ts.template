@@ -9,6 +9,7 @@ import {
 
 <% if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+  import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
   import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 <% } %>
 
@@ -41,7 +42,8 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
   constructor(
     <% if(guardDisplay) { %>private featureToggleService: FeatureToggleService,<% } %>
-    private injector: Injector
+    private injector: Injector<% if(guardDisplay) { %>,
+    private moduleLoader: ModuleLoaderService<% } %>
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
@@ -60,6 +62,8 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   }
 
   private async renderComponent() {
+    <% if(guardDisplay) { %> await this.moduleLoader.loadFeature('<%= camelize(guardDisplay) %>', this.injector);<% } %>
+
     const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
