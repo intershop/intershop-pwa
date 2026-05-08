@@ -13,6 +13,7 @@
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "workbench.iconTheme": "vscode-icons",
 
   // stylelint
