@@ -8,9 +8,9 @@
         <div class="row form-group">
           <div class="offset-md-4 col-md-8">
             @if (form.invalid && registrationForm.submitted) {
-            <div aria-live="polite" class="visually-hidden" id="submit-button-help">
-              {{ 'form.submit.validation.message' | translate }}
-            </div>
+              <div aria-live="polite" class="visually-hidden" id="submit-button-help">
+                {{ 'form.submit.validation.message' | translate }}
+              </div>
             }
             <input
               class="btn btn-primary"
@@ -32,7 +32,8 @@
 </div>
 
 @defer {
-<ish-address-doctor />
-} @if (loading$ | async) {
-<ish-loading />
+  <ish-address-doctor />
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

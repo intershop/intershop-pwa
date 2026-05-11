@@ -1,48 +1,51 @@
 <h2>{{ 'checkout.address.billing.label' | translate }}</h2>
 @if (invoiceAddress$ | async; as address) {
-<div class="address-box">
-  <!-- edit invoice address -->
-  @if (collapseChange | async) {
-  <button
-    class="btn-tool btn-link float-end"
-    data-testing-id="edit-invoice-address-link"
-    type="button"
-    [title]="'checkout.address.update.title' | translate : { '0': 'checkout.address.billing.label' | translate }"
-    (click)="showAddressForm(address)"
-  >
-    <i class="bi bi-pencil-fill"></i>
-  </button>
+  <div class="address-box">
+    <!-- edit invoice address -->
+    @if (collapseChange | async) {
+      <button
+        class="btn-tool btn-link float-end"
+        data-testing-id="edit-invoice-address-link"
+        type="button"
+        [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }"
+        (click)="showAddressForm(address)"
+      >
+        <i class="bi bi-pencil-fill"></i>
+      </button>
+    }
+    <!-- display invoice address -->
+    <ish-address [address]="address" [displayEmail]="true" />
+  </div>
+  @if (!address && showErrors) {
+    <p class="text-danger">
+      {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
+    </p>
   }
-  <!-- display invoice address -->
-  <ish-address [address]="address" [displayEmail]="true" />
-</div>
-@if (!address && showErrors) {
-<p class="text-danger">
-  {{ 'checkout.addresses.no_Selection.invoice.error' | translate }}
-</p>
-} }
+}
 
 <!-- invoice address selection -->
-@if (addresses$ | async; as addresses) { @if (addresses.length) {
-<form [formGroup]="form">
-  <formly-form [fields]="fields" [form]="form" />
-</form>
-} }
+@if (addresses$ | async; as addresses) {
+  @if (addresses.length) {
+    <form [formGroup]="form">
+      <formly-form [fields]="fields" [form]="form" />
+    </form>
+  }
+}
 
 <!-- Add a new Invoice to address -->
 @if ((collapseChange | async) && (isLoggedIn$ | async)) {
-<div class="row">
-  <button
-    aria-controls="invoice-address-panel"
-    class="btn btn-link w-auto"
-    data-testing-id="create-invoice-address-link"
-    type="button"
-    [attr.aria-expanded]="(collapseChange | async) === false"
-    (click)="showAddressForm()"
-  >
-    {{ 'checkout.create_invoice_address.link' | translate }}
-  </button>
-</div>
+  <div class="row">
+    <button
+      aria-controls="invoice-address-panel"
+      class="btn btn-link w-auto"
+      data-testing-id="create-invoice-address-link"
+      type="button"
+      [attr.aria-expanded]="(collapseChange | async) === false"
+      (click)="showAddressForm()"
+    >
+      {{ 'checkout.create_invoice_address.link' | translate }}
+    </button>
+  </div>
 }
 
 <!-- invoice address form -->
@@ -56,6 +59,8 @@
   />
 </div>
 
-@if ((collapseChange | async) === false) { @defer {
-<ish-address-doctor />
-} }
+@if ((collapseChange | async) === false) {
+  @defer {
+    <ish-address-doctor />
+  }
+}

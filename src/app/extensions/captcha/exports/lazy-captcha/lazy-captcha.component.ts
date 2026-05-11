@@ -78,9 +78,8 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
         if (version === 3) {
           this.actionFormControl.setValue(this.topic);
 
-          const { CaptchaV3Component: captchaV3Component } = await import(
-            '../../shared/captcha-v3/captcha-v3.component'
-          );
+          const { CaptchaV3Component: captchaV3Component } =
+            await import('../../shared/captcha-v3/captcha-v3.component');
 
           const componentRef = this.anchor.createComponent(captchaV3Component, {
             injector: this.injector,
@@ -93,9 +92,8 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
           this.formControl.setValidators([Validators.required]);
           this.formControl.updateValueAndValidity();
 
-          const { CaptchaV2Component: captchaV2Component } = await import(
-            '../../shared/captcha-v2/captcha-v2.component'
-          );
+          const { CaptchaV2Component: captchaV2Component } =
+            await import('../../shared/captcha-v2/captcha-v2.component');
 
           const componentRef = this.anchor.createComponent(captchaV2Component, {
             injector: this.injector,

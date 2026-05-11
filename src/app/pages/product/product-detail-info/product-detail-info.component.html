@@ -1,51 +1,51 @@
 @if (product$ | async; as product) {
-<div class="section">
-  <nav
-    #nav="ngbNav"
-    class="nav-tabs w-100"
-    ngbNav
-    [attr.aria-label]="'product.detail.information.tabs.aria_label' | translate"
-    [(activeId)]="active"
-  >
-    <!-- Description -->
-    <ng-container [ngbNavItem]="'DESCRIPTION'">
-      <a data-testing-id="product-description-tab" ngbNavLink>{{ 'product.description.heading' | translate }}</a>
-      <ng-template ngbNavContent>
-        <div [ishServerHtml]="product.longDescription"></div>
-      </ng-template>
-    </ng-container>
-    <!-- Details -->
-    @if (product.attributes?.length) {
-    <ng-container [ngbNavItem]="'DETAILS'">
-      <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
-      <ng-template ngbNavContent>
-        <ish-product-attributes [product]="product" />
-      </ng-template>
-    </ng-container>
-    }
-    <!-- Documents -->
-    @if (product.attachments?.length) {
-    <ng-container [ngbNavItem]="'ATTACHMENTS'">
-      <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
-      <ng-template ngbNavContent>
-        <ish-product-attachments />
-      </ng-template>
-    </ng-container>
-    }
-    <!-- Reviews -->
-    @if ((isVariationMaster$ | async) === false) {
-    <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
-      <a data-testing-id="product-reviews-tab" ngbNavLink
-        >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
-      >
-      <ng-template ngbNavContent>
-        @defer {
-        <ish-product-reviews />
-        }
-      </ng-template>
-    </ng-container>
-    }
-  </nav>
-  <div [ngbNavOutlet]="nav"></div>
-</div>
+  <div class="section">
+    <nav
+      #nav="ngbNav"
+      class="nav-tabs w-100"
+      ngbNav
+      [attr.aria-label]="'product.detail.information.tabs.aria_label' | translate"
+      [(activeId)]="active"
+    >
+      <!-- Description -->
+      <ng-container [ngbNavItem]="'DESCRIPTION'">
+        <a data-testing-id="product-description-tab" ngbNavLink>{{ 'product.description.heading' | translate }}</a>
+        <ng-template ngbNavContent>
+          <div [ishServerHtml]="product.longDescription"></div>
+        </ng-template>
+      </ng-container>
+      <!-- Details -->
+      @if (product.attributes?.length) {
+        <ng-container [ngbNavItem]="'DETAILS'">
+          <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-attributes [product]="product" />
+          </ng-template>
+        </ng-container>
+      }
+      <!-- Documents -->
+      @if (product.attachments?.length) {
+        <ng-container [ngbNavItem]="'ATTACHMENTS'">
+          <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-attachments />
+          </ng-template>
+        </ng-container>
+      }
+      <!-- Reviews -->
+      @if ((isVariationMaster$ | async) === false) {
+        <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
+          <a data-testing-id="product-reviews-tab" ngbNavLink
+            >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
+          >
+          <ng-template ngbNavContent>
+            @defer {
+              <ish-product-reviews />
+            }
+          </ng-template>
+        </ng-container>
+      }
+    </nav>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
 }

@@ -3,13 +3,17 @@
   <div class="user-info-box-item"><ish-login-status view="full" /></div>
   <div *ishFeature="'compare'" class="user-info-box-item">
     @defer {
-    <ish-product-compare-status view="full" />
+      <ish-product-compare-status view="full" />
     }
   </div>
   <div *ishFeature="'quickorder'" class="user-info-box-item">
     @defer {
-    <ish-quickorder-link />
+      <ish-quickorder-link />
     }
   </div>
-  <div *ishFeature="'wishlists'" class="user-info-box-item">@defer { <ish-wishlists-link view="full" /> }</div>
+  <div *ishFeature="'wishlists'" class="user-info-box-item">
+    @defer {
+      <ish-wishlists-link view="full" />
+    }
+  </div>
 </div>

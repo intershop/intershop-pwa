@@ -1,114 +1,123 @@
-@if (costCenter) { @if (costCenter?.costCenterOwner.email === (userEmail$ | async)) {
-<ish-info-box class="infobox-wrapper col-12">
-  <div class="d-flex align-items-start">
-    <h2 class="h3 pe-2">
-      {{ 'approval.detailspage.costcenter.approval.heading' | translate }}
-    </h2>
-    @defer {
-    <ish-budget-info />
-    }
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
-        <dd class="col-6">{{ costCenter.costCenterId }} {{ costCenter.name }}</dd>
-      </dl>
-    </div>
-  </div>
+@if (costCenter) {
+  @if (costCenter?.costCenterOwner.email === (userEmail$ | async)) {
+    <ish-info-box class="infobox-wrapper col-12">
+      <div class="d-flex align-items-start">
+        <h2 class="h3 pe-2">
+          {{ 'approval.detailspage.costcenter.approval.heading' | translate }}
+        </h2>
+        @defer {
+          <ish-budget-info />
+        }
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="row dl-horizontal dl-separator">
+            <dt class="col-6">{{ 'approval.detailspage.cost_center.label' | translate }}</dt>
+            <dd class="col-6">{{ costCenter.costCenterId }} {{ costCenter.name }}</dd>
+          </dl>
+        </div>
+      </div>
 
-  <div class="row section">
-    <div class="col-md-6 pt-1">
-      <dl class="row dl-horizontal dl-separator">
-        <!-- prettier-ignore -->
-        <dt class="col-6">{{ 'approval.detailspage.costcenter.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
-        <dd class="col-6">
-          <strong>
-            @if (costCenter?.budget) {
-            {{ costCenter.budget | ishPrice }}
-            } @else {
-            {{ 'account.budget.unlimited' | translate }}
-            }
-          </strong>
-        </dd>
-      </dl>
-      @if (costCenter.spentBudget && ccVal) {
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-        <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentage > 1 }">
-          {{ costCenter.spentBudget | ishPrice }} ({{ ccVal.spentPercentage | percent }})
-        </dd>
-      </dl>
-      } @if (requisition.approval.statusCode !== 'APPROVED' && ccVal) {
-      <dl class="row dl-horizontal dl-separator">
-        <!-- prettier-ignore -->
-        <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-        <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentageIncludingThisRequisition > 1 }">
-          {{ ccVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
-            ccVal.spentPercentageIncludingThisRequisition | percent
-          }})
-        </dd>
-      </dl>
-      }
-    </div>
-    @if (costCenter.budget) {
-    <div class="col-md-6 mb-2">
-      <ish-budget-bar
-        [additionalAmount]="orderTotal"
-        [budget]="costCenter.budget"
-        [spentBudget]="costCenter.spentBudget"
-      />
-    </div>
-    }
-  </div>
+      <div class="row section">
+        <div class="col-md-6 pt-1">
+          <dl class="row dl-horizontal dl-separator">
+            <!-- prettier-ignore -->
+            <dt class="col-6">{{ 'approval.detailspage.costcenter.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
+            <dd class="col-6">
+              <strong>
+                @if (costCenter?.budget) {
+                  {{ costCenter.budget | ishPrice }}
+                } @else {
+                  {{ 'account.budget.unlimited' | translate }}
+                }
+              </strong>
+            </dd>
+          </dl>
+          @if (costCenter.spentBudget && ccVal) {
+            <dl class="row dl-horizontal dl-separator">
+              <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+              <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentage > 1 }">
+                {{ costCenter.spentBudget | ishPrice }} ({{ ccVal.spentPercentage | percent }})
+              </dd>
+            </dl>
+          }
+          @if (requisition.approval.statusCode !== 'APPROVED' && ccVal) {
+            <dl class="row dl-horizontal dl-separator">
+              <!-- prettier-ignore -->
+              <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
+              <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentageIncludingThisRequisition > 1 }">
+                {{ ccVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+                  ccVal.spentPercentageIncludingThisRequisition | percent
+                }})
+              </dd>
+            </dl>
+          }
+        </div>
+        @if (costCenter.budget) {
+          <div class="col-md-6 mb-2">
+            <ish-budget-bar
+              [additionalAmount]="orderTotal"
+              [budget]="costCenter.budget"
+              [spentBudget]="costCenter.spentBudget"
+            />
+          </div>
+        }
+      </div>
 
-  @if (buyer) {
-  <div class="row" data-testing-id="cost-center-buyer-budget">
-    <div class="col-md-6">
-      <dl class="row dl-horizontal dl-separator">
-        <!-- prettier-ignore -->
-        <dt class="col-6">{{ 'approval.detailspage.buyer.budget.label' | translate: { '0': buyer.budgetPeriod } }}</dt>
-        <dd class="col-6">
-          <strong>
-            @if (buyer?.budget) {
-            {{ buyer.budget | ishPrice }}
-            } @else {
-            {{ 'account.budget.unlimited' | translate }}
+      @if (buyer) {
+        <div class="row" data-testing-id="cost-center-buyer-budget">
+          <div class="col-md-6">
+            <dl class="row dl-horizontal dl-separator">
+              <!-- prettier-ignore -->
+              <dt class="col-6">{{ 'approval.detailspage.buyer.budget.label' | translate: { '0': buyer.budgetPeriod } }}</dt>
+              <dd class="col-6">
+                <strong>
+                  @if (buyer?.budget) {
+                    {{ buyer.budget | ishPrice }}
+                  } @else {
+                    {{ 'account.budget.unlimited' | translate }}
+                  }
+                </strong>
+              </dd>
+            </dl>
+            @if (buyer.spentBudget) {
+              <dl class="row dl-horizontal dl-separator">
+                <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
+                <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentage > 1 }">
+                  {{ buyer.spentBudget | ishPrice }} ({{ bVal.spentPercentage | percent }})
+                </dd>
+              </dl>
             }
-          </strong>
-        </dd>
-      </dl>
-      @if (buyer.spentBudget) {
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-        <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentage > 1 }">
-          {{ buyer.spentBudget | ishPrice }} ({{ bVal.spentPercentage | percent }})
-        </dd>
-      </dl>
-      } @if (requisition.approval.statusCode !== 'APPROVED') {
-      <dl class="row dl-horizontal dl-separator">
-        <!-- prettier-ignore -->
-        <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-        <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentageIncludingThisRequisition > 1 }">
-          {{ bVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
-            bVal.spentPercentageIncludingThisRequisition | percent
-          }})
-        </dd>
-      </dl>
+            @if (requisition.approval.statusCode !== 'APPROVED') {
+              <dl class="row dl-horizontal dl-separator">
+                <!-- prettier-ignore -->
+                <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
+                <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentageIncludingThisRequisition > 1 }">
+                  {{ bVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
+                    bVal.spentPercentageIncludingThisRequisition | percent
+                  }})
+                </dd>
+              </dl>
+            }
+          </div>
+          @if (buyer.budget) {
+            <div class="col-md-6 mb-2">
+              <ish-budget-bar
+                [additionalAmount]="orderTotal"
+                [budget]="buyer.budget"
+                [spentBudget]="buyer.spentBudget"
+              />
+            </div>
+          }
+        </div>
       }
-    </div>
-    @if (buyer.budget) {
-    <div class="col-md-6 mb-2">
-      <ish-budget-bar [additionalAmount]="orderTotal" [budget]="buyer.budget" [spentBudget]="buyer.spentBudget" />
-    </div>
-    }
-  </div>
-  } @if (requisition.recurrence) {
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <ish-order-recurrence labelCssClass="col-6" valueCssClass="col-6" [recurrence]="requisition.recurrence" />
-    </div>
-  </div>
+      @if (requisition.recurrence) {
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <ish-order-recurrence labelCssClass="col-6" valueCssClass="col-6" [recurrence]="requisition.recurrence" />
+          </div>
+        </div>
+      }
+    </ish-info-box>
   }
-</ish-info-box>
-} }
+}

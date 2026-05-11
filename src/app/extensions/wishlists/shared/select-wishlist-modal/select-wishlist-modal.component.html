@@ -5,39 +5,39 @@
   </div>
 
   @if (showForm) {
-  <form ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
-    <div class="modal-body">
-      <ish-select-wishlist-form [addMoveProduct]="addMoveProduct" [formGroup]="formGroup" />
+    <form ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
+      <div class="modal-body">
+        <ish-select-wishlist-form [addMoveProduct]="addMoveProduct" [formGroup]="formGroup" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">
+          {{ submitButtonTranslationKey | translate }}
+        </button>
+        <button class="btn btn-secondary" type="button" (click)="hide()">
+          {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
+        </button>
+      </div>
+    </form>
+  } @else {
+    <div *ishProductContextAccess="let product = product" class="modal-body">
+      <span
+        data-testing-id="wishlist-success-link"
+        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+        [ishServerHtml]="
+          successTranslationKey
+            | translate
+              : {
+                  '0': product.name,
+                  '1': (successWishlistRoute$ | async),
+                  '2': (successWishlistTitle | ishHtmlEncode),
+                }
+        "
+      ></span>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-primary" type="submit">
-        {{ submitButtonTranslationKey | translate }}
-      </button>
       <button class="btn btn-secondary" type="button" (click)="hide()">
-        {{ 'account.wishlists.add_to_wishlist.cancel_button.text' | translate }}
+        {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
       </button>
     </div>
-  </form>
-  } @else {
-  <div *ishProductContextAccess="let product = product" class="modal-body">
-    <span
-      data-testing-id="wishlist-success-link"
-      [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-      [ishServerHtml]="
-        successTranslationKey
-          | translate
-            : {
-                '0': product.name,
-                '1': (successWishlistRoute$ | async),
-                '2': (successWishlistTitle | ishHtmlEncode)
-              }
-      "
-    ></span>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-secondary" type="button" (click)="hide()">
-      {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
-    </button>
-  </div>
   }
 </ng-template>

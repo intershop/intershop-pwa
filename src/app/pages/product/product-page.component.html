@@ -1,9 +1,10 @@
 <div class="product-page clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
   @if (productLoading$ | async) {
-  <ish-loading />
-  } @if (product$ | async; as product) {
-  <div>
-    <!-- DISABLED VIEW CONTEXT --
+    <ish-loading />
+  }
+  @if (product$ | async; as product) {
+    <div>
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           viewContextId="viewcontext.include.product.base.top"
@@ -11,9 +12,9 @@
           />
       </div>
       -- DISABLED VIEW CONTEXT -->
-    <ish-breadcrumb />
-    <ish-product-detail />
-    <!-- DISABLED VIEW CONTEXT --
+      <ish-breadcrumb />
+      <ish-product-detail />
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           viewContextId="viewcontext.include.product.content.top"
@@ -21,12 +22,12 @@
           />
       </div>
       -- DISABLED VIEW CONTEXT -->
-    <ish-product-bundle-parts />
-    <ish-retail-set-parts />
-    <ish-product-detail-info />
-    <ish-product-master-variations />
-    <ish-product-links />
-    <!-- DISABLED VIEW CONTEXT --
+      <ish-product-bundle-parts />
+      <ish-retail-set-parts />
+      <ish-product-detail-info />
+      <ish-product-master-variations />
+      <ish-product-links />
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           viewContextId="viewcontext.include.product.content.bottom"
@@ -34,11 +35,13 @@
           />
       </div>
       -- DISABLED VIEW CONTEXT -->
-    @if ((productLoading$ | async) !== true) { @defer (when ('recently' | ishFeature) && ((productLoading$ | async) !==
+      @if ((productLoading$ | async) !== true) {
+        @defer (when ('recently' | ishFeature) && ((productLoading$ | async) !==
     true)) {
-    <ish-recently-viewed />
-    } }
-    <!-- DISABLED VIEW CONTEXT --
+          <ish-recently-viewed />
+        }
+      }
+      <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">
         <ish-content-viewcontext
           viewContextId="viewcontext.include.product.base.bottom"
@@ -46,6 +49,6 @@
           />
       </div>
       -- DISABLED VIEW CONTEXT -->
-  </div>
+    </div>
   }
 </div>

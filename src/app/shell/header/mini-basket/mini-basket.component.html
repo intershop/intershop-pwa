@@ -12,51 +12,53 @@
     class="btn btn-link"
     ngbDropdownToggle
     type="button"
-    [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
   >
     <i class="bi bi-cart-fill header-icon"></i>
-    <span>{{ 'shopping_cart.ministatus.items.text' | translate : { '0': itemCount$ | async } }}</span>
+    <span>{{ 'shopping_cart.ministatus.items.text' | translate: { '0': itemCount$ | async } }}</span>
     @if (itemTotal$ | async; as itemTotal) {
-    <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
+      <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
     }
   </button>
 
   <div class="mini-cart" ngbDropdownMenu>
     @defer {
-    <ish-mini-basket-content />
+      <ish-mini-basket-content />
     }
   </div>
 </div>
 
 <!-- Mobile -->
-@if (view === 'small') { @if (itemCount$ | async; as itemCount) {
-<a
-  class="item-count-container position-relative sticky-header-icon"
-  routerLink="/basket"
-  [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
->
-  <i class="bi bi-cart-fill header-icon"></i>
-  <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
-</a>
-} @else {
-<a
-  #p="ngbPopover"
-  class="item-count-container position-relative sticky-header-icon"
-  placement="bottom-end"
-  tabindex="0"
-  triggers="manual"
-  [attr.aria-label]="'shopping_cart.ministatus.label' | translate : { '0': itemCount$ | async }"
-  [autoClose]="'outside'"
-  [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
-  (click)="p.open()"
-  (keyup.enter)="p.open()"
->
-  <i class="bi bi-cart-fill header-icon"></i>
-  <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">0</span>
-</a>
-} }
+@if (view === 'small') {
+  @if (itemCount$ | async; as itemCount) {
+    <a
+      class="item-count-container position-relative sticky-header-icon"
+      routerLink="/basket"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
+    >
+      <i class="bi bi-cart-fill header-icon"></i>
+      <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
+    </a>
+  } @else {
+    <a
+      #p="ngbPopover"
+      class="item-count-container position-relative sticky-header-icon"
+      placement="bottom-end"
+      tabindex="0"
+      triggers="manual"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
+      [autoClose]="'outside'"
+      [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
+      (click)="p.open()"
+      (keyup.enter)="p.open()"
+    >
+      <i class="bi bi-cart-fill header-icon"></i>
+      <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">0</span>
+    </a>
+  }
+}
 
 <!-- dummy element tracking basket loading for cypress tests -->
 @if (basketLoading$ | async) {
-<span class="loading" style="display: none"></span>
+  <span class="loading" style="display: none"></span>
 }

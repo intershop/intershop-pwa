@@ -34,7 +34,10 @@ export class ModuleLoaderService {
   private destroyRef = inject(DestroyRef);
   private environmentInjector = inject(EnvironmentInjector);
 
-  constructor(private featureToggleService: FeatureToggleService, private store: Store) {}
+  constructor(
+    private featureToggleService: FeatureToggleService,
+    private store: Store
+  ) {}
 
   init() {
     this.store.pipe(select(getFeatures), whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef)).subscribe(() => {

@@ -28,7 +28,11 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   private numberOfRows = 5;
 
-  constructor(private translate: TranslateService, private shoppingFacade: ShoppingFacade, formlyConfig: FormlyConfig) {
+  constructor(
+    private translate: TranslateService,
+    private shoppingFacade: ShoppingFacade,
+    formlyConfig: FormlyConfig
+  ) {
     if (!formlyConfig.getType('repeat')) {
       formlyConfig.setType({ name: 'repeat', component: QuickorderRepeatFieldComponent });
     }

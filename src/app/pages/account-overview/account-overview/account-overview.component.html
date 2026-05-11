@@ -1,81 +1,85 @@
 @if (customer?.isBusinessCustomer) {
-<h1
-  data-testing-id="personal-message-b2b"
-  [innerHTML]="
-    'account.overview.personal_message_b2b.text'
-      | translate : { '0': user.firstName + '&nbsp;' + user.lastName, '1': customer.companyName | ishHtmlEncode }
-  "
-></h1>
-<p *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
-  {{ 'account.overview.message_b2b.text' | translate }}
-</p>
-<div class="marketing-area">
-  <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
-</div>
+  <h1
+    data-testing-id="personal-message-b2b"
+    [innerHTML]="
+      'account.overview.personal_message_b2b.text'
+        | translate: { '0': user.firstName + '&nbsp;' + user.lastName, '1': customer.companyName | ishHtmlEncode }
+    "
+  ></h1>
+  <p *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
+    {{ 'account.overview.message_b2b.text' | translate }}
+  </p>
+  <div class="marketing-area">
+    <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
+  </div>
 } @else {
-<h1
-  data-testing-id="personal-message-default"
-  [innerHTML]="'account.overview.personal_message.text' | translate : { '0': user.firstName }"
-></h1>
-<p>{{ 'account.overview.message.text' | translate }}</p>
-<div class="marketing-area">
-  <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
-</div>
-<div class="row account-dashboard">
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/orders">
-      <div class="circle-icon"><i class="bi bi-card-list"></i></div>
-      {{ 'account.order_history.link' | translate }}
-    </a>
+  <h1
+    data-testing-id="personal-message-default"
+    [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
+  ></h1>
+  <p>{{ 'account.overview.message.text' | translate }}</p>
+  <div class="marketing-area">
+    <ish-content-include includeId="include.account.overview.content.top.pagelet2-Include" />
   </div>
-  <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/wishlists">
-      <div class="circle-icon"><i class="bi bi-heart"></i></div>
-      {{ 'account.wishlists.link' | translate }}
-    </a>
+  <div class="row account-dashboard">
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/orders">
+        <div class="circle-icon"><i class="bi bi-card-list"></i></div>
+        {{ 'account.order_history.link' | translate }}
+      </a>
+    </div>
+    <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/wishlists">
+        <div class="circle-icon"><i class="bi bi-heart"></i></div>
+        {{ 'account.wishlists.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/addresses">
+        <div class="circle-icon"><i class="bi bi-journal"></i></div>
+        {{ 'account.saved_addresses.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/profile">
+        <div class="circle-icon"><i class="bi bi-gear"></i></div>
+        {{ 'account.profile.link' | translate }}
+      </a>
+    </div>
   </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/addresses">
-      <div class="circle-icon"><i class="bi bi-journal"></i></div>
-      {{ 'account.saved_addresses.link' | translate }}
-    </a>
-  </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/profile">
-      <div class="circle-icon"><i class="bi bi-gear"></i></div>
-      {{ 'account.profile.link' | translate }}
-    </a>
-  </div>
-</div>
 }
 
 <!-- Budget, Requisition, Approval & Quoting Widgets -->
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
   <div class="row">
-    @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) { @defer {
-    <ish-budget-widget class="col-12 col-md-8" />
-    } @defer { <ish-requisition-widget class="col-12 col-md-4" />
-    }
-    <ng-container *ishFeature="'costCenters'">
+    @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
       @defer {
-      <ish-cost-center-widget *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'" class="col-12 col-md-8" />
+        <ish-budget-widget class="col-12 col-md-8" />
       }
-    </ng-container>
-    <ng-container>
       @defer {
-      <ish-approval-widget
-        *ishIsAuthorizedTo="['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER']"
-        class="col-12 col-md-4"
-      />
+        <ish-requisition-widget class="col-12 col-md-4" />
       }
-    </ng-container>
+      <ng-container *ishFeature="'costCenters'">
+        @defer {
+          <ish-cost-center-widget *ishIsAuthorizedTo="'APP_B2B_MANAGE_COSTCENTER'" class="col-12 col-md-8" />
+        }
+      </ng-container>
+      <ng-container>
+        @defer {
+          <ish-approval-widget
+            *ishIsAuthorizedTo="['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER']"
+            class="col-12 col-md-4"
+          />
+        }
+      </ng-container>
     }
 
     <!-- ishFeature directives are needed for styling purposes here -->
     @defer {
-    <ish-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4" />
-    } @defer {
-    <ish-order-template-widget *ishFeature="'orderTemplates'" class="col-12 col-md-4" />
+      <ish-quote-widget *ishFeature="'quoting'" class="col-12 col-md-4" />
+    }
+    @defer {
+      <ish-order-template-widget *ishFeature="'orderTemplates'" class="col-12 col-md-4" />
     }
   </div>
 
@@ -83,14 +87,16 @@
   <ish-order-widget />
 
   <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
-  @defer { <ish-wishlist-widget *ishFeature="'wishlists'" /> }
+  @defer {
+    <ish-wishlist-widget *ishFeature="'wishlists'" />
+  }
 </ng-container>
 
 <!-- Order Template Widget for punchout users -->
 <ng-container *ishIsAuthorizedTo="['APP_B2B_SEND_PUNCHOUT_BASKET']">
   <div *ishFeature="'orderTemplates'" class="row">
     @defer {
-    <ish-order-template-widget class="col-12 col-md-4" />
+      <ish-order-template-widget class="col-12 col-md-4" />
     }
   </div>
 </ng-container>
@@ -102,6 +108,6 @@
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:
   <span
-    [ishServerHtml]="'account.overview.note.text' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
+    [ishServerHtml]="'account.overview.note.text' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }"
   ></span>
 </p>

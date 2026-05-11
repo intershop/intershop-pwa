@@ -34,7 +34,10 @@ export class CheckoutShippingComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private checkoutFacade: CheckoutFacade, private formlyConfig: FormlyConfig) {
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private formlyConfig: FormlyConfig
+  ) {
     const hasWrapper = !!this.formlyConfig.wrappers?.['shipping-radio-wrapper'];
     if (!hasWrapper) {
       this.formlyConfig.addConfig(ShippingWrapperConfig);

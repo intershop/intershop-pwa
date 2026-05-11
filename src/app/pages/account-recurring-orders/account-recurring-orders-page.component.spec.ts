@@ -26,7 +26,10 @@ class MockAuthorizationToggleDirective {
     this.viewContainerRef.createEmbeddedView(this.templateRef);
   }
 
-  constructor(private templateRef: TemplateRef<unknown>, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 }
 
 describe('Account Recurring Orders Page Component', () => {

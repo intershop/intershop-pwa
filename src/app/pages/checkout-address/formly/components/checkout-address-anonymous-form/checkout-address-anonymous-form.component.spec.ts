@@ -20,7 +20,11 @@ describe('Checkout Address Anonymous Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutAddressAnonymousFormComponent, FormlyTestingModule.withPresetMocks(['taxationID']), TranslateModule.forRoot()],
+      imports: [
+        CheckoutAddressAnonymousFormComponent,
+        FormlyTestingModule.withPresetMocks(['taxationID']),
+        TranslateModule.forRoot(),
+      ],
       providers: [...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? [])],
     })
       .overrideComponent(CheckoutAddressAnonymousFormComponent, {

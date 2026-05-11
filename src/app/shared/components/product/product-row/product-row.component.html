@@ -1,60 +1,70 @@
-@if (product$ | async; as product) { @if (!product.failed) {
-<div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
-  <div class="col-3 col-md-2">
-    <div class="product-image-container">
-      <ish-product-image imageType="S" [link]="true" [loading]="loading" />
-      <ish-product-label />
-    </div>
-  </div>
-  <div class="col-9 col-md-10">
-    <div class="row">
-      <div class="col-md-7">
-        <ish-product-name />
-        @defer {
-        <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
-        }
-        <ish-product-id />
-        @if (configuration$('description') | async) {
-        <div class="product-description" [ishServerHtml]="product.shortDescription"></div>
-        }
-        <ish-product-promotion displayType="simpleWithDetail" />
-        <div class="product-tile-actions btn-group">
-          @defer {
-          <ish-product-add-to-quote *ishFeature="'quoting'" cssClass="btn-link" displayType="icon" />
-          } @defer {
-          <ish-product-add-to-compare cssClass="btn-link" displayType="icon" />
-          } @defer {
-          <ish-product-add-to-wishlist *ishFeature="'wishlists'" cssClass="btn-link" displayType="icon" /> } @defer {
-          <ish-product-add-to-order-template *ishFeature="'orderTemplates'" cssClass="btn-link" displayType="icon" />
-          }
+@if (product$ | async; as product) {
+  @if (!product.failed) {
+    <div class="product-tile-list row" [attr.data-testing-sku]="product.sku">
+      <div class="col-3 col-md-2">
+        <div class="product-image-container">
+          <ish-product-image imageType="S" [link]="true" [loading]="loading" />
+          <ish-product-label />
         </div>
       </div>
-      <div class="col-12 col-md-5 text-md-end">
-        <ish-product-price [showInformationalPrice]="true" />
-        <ish-product-inventory />
-        <ish-product-shipment />
-        <ish-product-item-variations />
-        <div class="product-list-actions-container">
-          <div class="product-form form-horizontal row">
-            @if (configuration$('readOnly') | async) {
-            <div class="action-container col-12 col-xl-7">
-              @if (configuration$('quantity') | async) {
-              <span>{{ 'product.quantity.label' | translate }}: {{ quantity$ | async }}</span>
+      <div class="col-9 col-md-10">
+        <div class="row">
+          <div class="col-md-7">
+            <ish-product-name />
+            @defer {
+              <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
+            }
+            <ish-product-id />
+            @if (configuration$('description') | async) {
+              <div class="product-description" [ishServerHtml]="product.shortDescription"></div>
+            }
+            <ish-product-promotion displayType="simpleWithDetail" />
+            <div class="product-tile-actions btn-group">
+              @defer {
+                <ish-product-add-to-quote *ishFeature="'quoting'" cssClass="btn-link" displayType="icon" />
+              }
+              @defer {
+                <ish-product-add-to-compare cssClass="btn-link" displayType="icon" />
+              }
+              @defer {
+                <ish-product-add-to-wishlist *ishFeature="'wishlists'" cssClass="btn-link" displayType="icon" />
+              }
+              @defer {
+                <ish-product-add-to-order-template
+                  *ishFeature="'orderTemplates'"
+                  cssClass="btn-link"
+                  displayType="icon"
+                />
               }
             </div>
-            } @else {
-            <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
-              <ish-product-quantity />
-            </div>
-            }
-            <div class="action-container addtocart-container col-12 col-lg-7">
-              <ish-product-add-to-basket />
-              <ish-product-choose-variation />
+          </div>
+          <div class="col-12 col-md-5 text-md-end">
+            <ish-product-price [showInformationalPrice]="true" />
+            <ish-product-inventory />
+            <ish-product-shipment />
+            <ish-product-item-variations />
+            <div class="product-list-actions-container">
+              <div class="product-form form-horizontal row">
+                @if (configuration$('readOnly') | async) {
+                  <div class="action-container col-12 col-xl-7">
+                    @if (configuration$('quantity') | async) {
+                      <span>{{ 'product.quantity.label' | translate }}: {{ quantity$ | async }}</span>
+                    }
+                  </div>
+                } @else {
+                  <div class="action-container col-6 offset-md-6 col-lg-5 offset-lg-0">
+                    <ish-product-quantity />
+                  </div>
+                }
+                <div class="action-container addtocart-container col-12 col-lg-7">
+                  <ish-product-add-to-basket />
+                  <ish-product-choose-variation />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-} }
+  }
+}

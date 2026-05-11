@@ -74,7 +74,7 @@ describe('Product Review Create Dialog Component', () => {
     accountFacade = mock(AccountFacade);
     reviewsFacade = mock(ProductReviewsFacade);
     modalService = {
-      open: jest.fn(() => ({ close: jest.fn() } as never)),
+      open: jest.fn(() => ({ close: jest.fn() }) as never),
     };
     when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
 
