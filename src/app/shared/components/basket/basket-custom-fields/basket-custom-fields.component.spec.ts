@@ -83,7 +83,8 @@ describe('Basket Custom Fields Component', () => {
         class="btn btn-link btn-link-with-icon"
         aria-expanded="false"
       >
-        checkout.custom-fields.basket.add.link.label <i class="bi bi-chevron-down"></i>
+        checkout.custom-fields.basket.add.link.label
+        <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
       </button>
     `);
   });

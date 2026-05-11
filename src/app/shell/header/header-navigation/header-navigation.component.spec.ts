@@ -97,6 +97,11 @@ describe('Header Navigation Component', () => {
             CAT_C
           </a>
         </li>
+        <ish-content-include
+          includeid="include.header.navigation.pagelet2-Include"
+          role="listitem"
+          ng-reflect-include-id="include.header.navigation.page"
+        ></ish-content-include>
       </ul>
     `);
   });

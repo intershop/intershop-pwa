@@ -96,13 +96,14 @@ describe('Line Item Information Edit Component', () => {
 
     expect(toggleButton).toMatchInlineSnapshot(`
       <button
-        type="button"
         data-testing-id="line-item-custom-fields-toggle-link"
+        type="button"
         class="btn btn-link btn-link-with-icon"
-        aria-expanded="false"
         aria-controls="line-item-information-input_123"
+        aria-expanded="false"
       >
-        checkout.custom-fields.edit.link.label <i class="bi bi-chevron-down"></i>
+        checkout.custom-fields.edit.link.label
+        <i class="bi bi-chevron-down" ng-reflect-ng-class="bi-chevron-down"></i>
       </button>
     `);
   });
