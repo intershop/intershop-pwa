@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { FormlyForm } from '@ngx-formly/core';
-import { FormControl, Validators } from '@angular/forms';
 import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 

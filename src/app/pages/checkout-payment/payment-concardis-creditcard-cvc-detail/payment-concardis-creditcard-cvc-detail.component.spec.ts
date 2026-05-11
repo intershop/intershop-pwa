@@ -18,7 +18,7 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaymentConcardisCreditcardCvcDetailComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, PaymentConcardisCreditcardCvcDetailComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
         { provide: ScriptLoaderService, useValue: { load: jest.fn(() => of(undefined)) } },

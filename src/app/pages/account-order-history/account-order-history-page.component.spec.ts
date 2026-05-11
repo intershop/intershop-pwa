@@ -12,8 +12,8 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
-import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 import { AccountOrderFiltersComponent } from './account-order-filters/account-order-filters.component';
+import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
 describe('Account Order History Page Component', () => {
   let component: AccountOrderHistoryPageComponent;

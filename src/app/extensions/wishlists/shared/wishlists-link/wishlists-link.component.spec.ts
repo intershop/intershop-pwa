@@ -19,7 +19,7 @@ describe('Wishlists Link Component', () => {
     when(wishlistFacadeMock.preferredWishlist$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [WishlistsLinkComponent, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), WishlistsLinkComponent],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }, provideRouter([])],
     })
       .overrideComponent(WishlistsLinkComponent, {

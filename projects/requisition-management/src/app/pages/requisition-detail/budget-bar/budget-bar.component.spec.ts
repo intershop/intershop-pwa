@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { BudgetBarComponent } from './budget-bar.component';
 

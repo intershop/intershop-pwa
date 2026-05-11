@@ -45,7 +45,6 @@ class MockProductContextAccessDirective {
   standalone: true,
 })
 class MockNgFormDirective {
-  // eslint-disable-next-line ish-custom-rules/newline-before-root-members
   submitted = false;
 }
 

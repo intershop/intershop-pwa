@@ -1,6 +1,6 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { RouterLink, provideRouter } from '@angular/router';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';

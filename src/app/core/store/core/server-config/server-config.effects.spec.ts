@@ -6,7 +6,6 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.imports';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';

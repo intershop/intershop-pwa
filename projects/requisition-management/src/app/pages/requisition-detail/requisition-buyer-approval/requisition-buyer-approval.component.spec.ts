@@ -1,7 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgClass, PercentPipe } from '@angular/common';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { BudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -10,7 +11,6 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
-import { BudgetInfoComponent } from 'organization-management';
 
 import { Requisition } from '../../../models/requisition/requisition.model';
 import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
