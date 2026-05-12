@@ -16,7 +16,6 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
-import { StoreLocatorExportsModule } from '../extensions/store-locator/exports/store-locator-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
 import { WishlistsExportsModule } from '../extensions/wishlists/exports/wishlists-exports.module';
 
@@ -55,7 +54,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     RouterModule,
     SearchBoxComponent,
     SeoExportsModule,
-    StoreLocatorExportsModule,
     TrackingExportsModule,
     TranslateModule,
     WishlistsExportsModule,
