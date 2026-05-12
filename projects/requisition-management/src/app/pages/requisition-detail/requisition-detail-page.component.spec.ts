@@ -1,5 +1,4 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -43,7 +42,6 @@ describe('Requisition Detail Page Component', () => {
     await TestBed.configureTestingModule({
       imports: [RequisitionDetailPageComponent, TranslateModule.forRoot()],
       providers: [provideRouter([])],
-      schemas: [NO_ERRORS_SCHEMA],
     })
       .overrideComponent(RequisitionDetailPageComponent, {
         set: {

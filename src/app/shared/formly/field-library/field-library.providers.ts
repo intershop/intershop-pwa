@@ -52,5 +52,3 @@ export function provideIshFormlyFieldLibrary(): Provider[] {
 }
 
 export const FORMLY_FIELD_LIBRARY_IMPORTS = [CommonModule, ...FORMS_SHARED_IMPORTS] as const;
-
-export class FieldLibraryModule {}

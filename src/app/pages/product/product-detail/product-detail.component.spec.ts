@@ -185,7 +185,7 @@ function mockWarrantyComponentFactory() {
     standalone: true,
   })
   class MockProductWarrantyComponent {
-    @Output() submitWarranty = new EventEmitter<string>();
+    @Output() readonly submitWarranty = new EventEmitter<string>();
   }
 
   return MockProductWarrantyComponent;

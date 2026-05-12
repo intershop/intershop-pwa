@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -26,7 +26,6 @@ import { ProductReview } from '../../models/product-reviews/product-review.model
     AsyncPipe,
     FormSubmitDirective,
     FormlyForm,
-    FormsModule,
     NgbModalModule,
     ProductContextAccessDirective,
     ProductIdComponent,

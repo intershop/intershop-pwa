@@ -229,5 +229,3 @@ export const FORMLY_TYPES_IMPORTS = [
 ] as const;
 
 export const FORMLY_TYPES_EXPORTS = [...fieldComponents, SearchSelectFieldComponent] as const;
-
-export class TypesModule {}

@@ -39,5 +39,3 @@ export function provideAppearance(): EnvironmentProviders {
     },
   ]);
 }
-
-export class AppearanceModule {}

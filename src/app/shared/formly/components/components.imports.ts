@@ -16,5 +16,3 @@ export const FORMLY_COMPONENTS_IMPORTS = [
 ] as const;
 
 export const FORMLY_COMPONENTS_EXPORTS = [...components] as const;
-
-export class ComponentsModule {}

@@ -32,5 +32,3 @@ export function provideIshFormlyExtensions(): Provider[] {
     },
   ];
 }
-
-export class ExtensionsModule {}

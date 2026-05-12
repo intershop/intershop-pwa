@@ -83,5 +83,3 @@ export function provideInternationalization(): EnvironmentProviders {
     },
   ]);
 }
-
-export class InternationalizationModule {}

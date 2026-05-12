@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormGroup } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';

@@ -52,5 +52,3 @@ export const FORMLY_WRAPPERS_IMPORTS = [
 ] as const;
 
 export const FORMLY_WRAPPERS_EXPORTS = [...wrapperComponents] as const;
-
-export class WrappersModule {}

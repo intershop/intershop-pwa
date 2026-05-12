@@ -17,5 +17,3 @@ export function providePunchoutIdentityProvider(): Provider[] {
     },
   ];
 }
-
-export class PunchoutIdentityProviderModule {}

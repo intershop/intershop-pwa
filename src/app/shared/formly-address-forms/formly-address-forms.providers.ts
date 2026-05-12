@@ -45,7 +45,5 @@ export const FORMLY_ADDRESS_FORMS_IMPORTS = [
   ReactiveFormsModule,
 ] as const;
 
-export class FormlyAddressFormsModule {}
-
 export { FormlyAddressExtensionFormComponent } from './components/formly-address-extension-form/formly-address-extension-form.component';
 export { FormlyAddressFormComponent } from './components/formly-address-form/formly-address-form.component';

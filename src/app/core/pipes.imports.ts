@@ -31,5 +31,3 @@ const standalonePipes = [
 ];
 
 export const PIPES_IMPORTS = [...standalonePipes] as const;
-
-export class PipesModule {}

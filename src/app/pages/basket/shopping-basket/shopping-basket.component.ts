@@ -1,5 +1,3 @@
-/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 

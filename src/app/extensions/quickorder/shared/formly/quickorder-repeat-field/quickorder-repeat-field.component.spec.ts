@@ -18,7 +18,7 @@ import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.compon
 class MockProductContextDirective {
   @Input() configuration: unknown;
   @Input() quantity: number;
-  @Output() quantityChange = new EventEmitter<number>();
+  @Output() readonly quantityChange = new EventEmitter<number>();
 
   context = {
     connect: jest.fn(),

@@ -22,5 +22,3 @@ const configurationProviders: Provider[] = [
 export function provideConfiguration(): EnvironmentProviders {
   return makeEnvironmentProviders(configurationProviders);
 }
-
-export class ConfigurationModule {}
