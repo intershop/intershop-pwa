@@ -1,96 +1,26 @@
 @if (orderTemplates?.length > 0) {
-<div class="section">
-  <table
-    cdk-table
-    [dataSource]="orderTemplates"
-    class="table table-lg mobile-optimized"
-    data-testing-id="order-template-list"
-  >
-    <!-- Order template name -->
-    <ng-container cdkColumnDef="title">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-title">
-        {{ 'account.order_template.list.table.template' | translate }}
-      </th>
-      <td
-        cdk-cell
-        *cdkCellDef="let orderTemplate"
-        [attr.data-label]="'account.order_template.list.table.template' | translate"
-      >
-        <a
-          [routerLink]="'/account/order-templates/' + orderTemplate.id"
-          data-testing-id="order-template-list-title"
-          (click)="loadOrderTemplateDetails(orderTemplate.id)"
+  <div class="section">
+    <table
+      cdk-table
+      class="table table-lg mobile-optimized"
+      data-testing-id="order-template-list"
+      [dataSource]="orderTemplates"
+    >
+      <!-- Order template name -->
+      <ng-container cdkColumnDef="title">
+        <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-title" scope="col">
+          {{ 'account.order_template.list.table.template' | translate }}
+        </th>
+        <td
+          *cdkCellDef="let orderTemplate"
+          cdk-cell
+          [attr.data-label]="'account.order_template.list.table.template' | translate"
         >
-          {{ orderTemplate.title }}
-        </a>
-      </td>
-    </ng-container>
-    <!-- Creation date -->
-    <ng-container cdkColumnDef="creationDate">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-creation-date">
-        {{ 'account.order_template.list.table.created' | translate }}
-      </th>
-      <td
-        cdk-cell
-        *cdkCellDef="let orderTemplate"
-        [attr.data-label]="'account.order_template.list.table.created' | translate"
-      >
-        {{ orderTemplate.creationDate | ishDate : 'shortDate' }}
-      </td>
-    </ng-container>
-    <!-- Number of line items -->
-    <ng-container cdkColumnDef="lineItems">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-line-items">
-        {{ 'account.order_template.list.table.item' | translate }}
-      </th>
-      <td
-        cdk-cell
-        *cdkCellDef="let orderTemplate"
-        [attr.data-label]="'account.order_template.list.table.item' | translate"
-      >
-        {{ 'account.order_template.items' | translate : { '0': orderTemplate.itemsCount } }}
-      </td>
-    </ng-container>
-    <!-- Actions -->
-    <ng-container cdkColumnDef="actions">
-      <th scope="col" cdk-header-cell *cdkHeaderCellDef data-testing-id="th-order-template-actions"></th>
-      <td cdk-cell *cdkCellDef="let orderTemplate" class="column-price">
-        @if (orderTemplate.itemsCount > 0) {
-        <div class="btn-tool d-inline-flex align-top">
-          <button
-            type="submit"
-            name="addProduct"
-            class="btn btn-link p-0"
-            [title]="'product.add_to_cart.link' | translate"
-            [tabindex]="0"
-            (click)="addToBasket(orderTemplate.id)"
-            [attr.aria-hidden]="false"
-            data-testing-id="addToCartButton"
+          <a
+            data-testing-id="order-template-list-title"
+            [routerLink]="'/account/order-templates/' + orderTemplate.id"
+            (click)="loadOrderTemplateDetails(orderTemplate.id)"
           >
-            @if ((displaySpinner$ | async) !== true) {
-            <!-- Add to Cart button -->
-            <i class="bi bi-cart-fill"></i>
-            } @else {
-            <!-- button with spinning animation after Add to Cart -->
-            <i class="bi bi-arrow-clockwise spin-icon"></i>}
-          </button>
-        </div>
-        }
-        <a
-          class="btn-tool"
-          [title]="'account.order_template.edit.heading' | translate"
-          [routerLink]="'/account/order-templates/' + orderTemplate.id"
-          data-testing-id="order-template-details-edit"
-          ><i class="bi bi-pencil-fill"></i
-        ></a>
-        <button
-          type="button"
-          class="btn-tool btn-link"
-          title="{{ 'account.order_template.list.link.remove' | translate }}"
-          (click)="openDeleteConfirmationDialog(orderTemplate, deleteDialog)"
-          data-testing-id="delete-order-template"
-        >
-          <a data-testing-id="order-template-list-title" [routerLink]="'/account/order-templates/' + orderTemplate.id">
             {{ orderTemplate.title }}
           </a>
         </td>
@@ -125,15 +55,27 @@
       <ng-container cdkColumnDef="actions">
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-actions" scope="col"></th>
         <td *cdkCellDef="let orderTemplate" cdk-cell class="column-price">
-          @if (orderTemplate.items?.length) {
-            <a class="btn-tool d-inline-flex align-top">
-              <ish-product-add-to-basket
-                cssClass="btn-link p-0"
-                displayType="icon"
-                ishProductContext
-                [parts]="getParts(orderTemplate)"
-              />
-            </a>
+          @if (orderTemplate.itemsCount > 0) {
+            <div class="btn-tool d-inline-flex align-top">
+              <button
+                class="btn btn-link p-0"
+                data-testing-id="addToCartButton"
+                name="addProduct"
+                type="submit"
+                [attr.aria-hidden]="false"
+                [tabindex]="0"
+                [title]="'product.add_to_cart.link' | translate"
+                (click)="addToBasket(orderTemplate.id)"
+              >
+                @if ((displaySpinner$ | async) !== true) {
+                  <!-- Add to Cart button -->
+                  <i class="bi bi-cart-fill"></i>
+                } @else {
+                  <!-- button with spinning animation after Add to Cart -->
+                  <i class="bi bi-arrow-clockwise spin-icon"></i>
+                }
+              </button>
+            </div>
           }
           <a
             class="btn-tool"

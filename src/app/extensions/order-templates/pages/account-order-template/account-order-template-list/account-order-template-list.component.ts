@@ -24,10 +24,6 @@ export class AccountOrderTemplateListComponent {
   @Input() orderTemplates: OrderTemplate[];
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
-  constructor(
-    private orderTemplatesFacade: OrderTemplatesFacade,
-    private translate: TranslateService
-  ) {}
   /**
    * fires 'true' after add To Cart is clicked and basket is loading
    */
@@ -68,7 +64,7 @@ export class AccountOrderTemplateListComponent {
           }
           return template;
         }),
-        filter(orderTemplate => orderTemplate && orderTemplate.itemsCount === orderTemplate.items?.length),
+        filter(orderTemplate => orderTemplate?.itemsCount === orderTemplate.items?.length),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(orderTemplate => {
