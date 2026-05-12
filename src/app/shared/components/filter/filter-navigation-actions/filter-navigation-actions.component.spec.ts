@@ -4,22 +4,22 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 
-import { FilterNavigationBadgesComponent } from './filter-navigation-badges.component';
+import { FilterNavigationActionsComponent } from './filter-navigation-actions.component';
 
-describe('Filter Navigation Badges Component', () => {
-  let component: FilterNavigationBadgesComponent;
-  let fixture: ComponentFixture<FilterNavigationBadgesComponent>;
+describe('Filter Navigation Actions Component', () => {
+  let component: FilterNavigationActionsComponent;
+  let fixture: ComponentFixture<FilterNavigationActionsComponent>;
   let element: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [FilterNavigationBadgesComponent],
+      declarations: [FilterNavigationActionsComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FilterNavigationBadgesComponent);
+    fixture = TestBed.createComponent(FilterNavigationActionsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
@@ -57,24 +57,7 @@ describe('Filter Navigation Badges Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="row">
-        <div class="col-md-10">
-          <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              Color: blue<i class="bi bi-x form-control-feedback"></i>
-            </button>
-          </div>
-          <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              Color: black<i class="bi bi-x form-control-feedback"></i>
-            </button>
-          </div>
-          <div class="filter-navigation-badges">
-            <button type="button" class="btn btn-link btn-link-action btn-link-with-icon">
-              HDD: 456<i class="bi bi-x form-control-feedback"></i>
-            </button>
-          </div>
-        </div>
-        <div class="col-md-2 text-end">
+        <div class="col-md-12">
           <button type="button" class="btn btn-link btn-link-action">
             product.remove_all_product_filters.text
           </button>

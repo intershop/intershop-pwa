@@ -26,6 +26,11 @@ It defers the rendering of projected content until the element becomes visible i
 It is used for Swiper carousel slides but also applies to any other lazy loading scenario.
 Use `ish-deferred-item` with `ishLazyLoadingContent` for lazy loading.
 
+**Filter component changes**
+
+With the rework of the `FilterDropdownComponent` to use `ng-select` instead of `ngbDropdown` and to support multi-selection, the `FilterNavigationBadgesComponent` has been renamed to `FilterNavigationActionsComponent` (selector changed from `ish-filter-navigation-badges` to `ish-filter-navigation-actions`).
+The component now only provides a "Remove all filters" action.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

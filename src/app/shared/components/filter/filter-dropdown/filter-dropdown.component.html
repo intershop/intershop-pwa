@@ -1,33 +1,26 @@
-<div autoClose="outside" ngbDropdown [id]="filterElement.id">
-  <button
-    class="form-control"
-    data-bs-toggle="dropdown"
-    ngbDropdownToggle
-    type="button"
-    [id]="'dropdownMenuLink-' + filterElement.id"
-    [title]="placeholder !== filterElement.name ? placeholder : ''"
-  >
-    <span>{{ placeholder }}</span>
-  </button>
-
-  <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownMenuLink-' + filterElement.id">
-    @for (facet of filterElement.facets; track facet.name) {
-      <button
-        class="dropdown-item btn btn-link btn-link-action"
-        ngbDropdownItem
-        type="button"
-        [attr.aria-current]="facet.selected ? 'true' : undefined"
-        [ngClass]="{ selected: facet.selected }"
-        (click)="apply(facet)"
-      >
-        {{ facet.displayName }}
-        @if (facet.count) {
-          ({{ facet.count }})
-        }
-        @if (facet.selected) {
-          <i class="bi bi-check-lg icon-checked ps-1"></i>
-        }
-      </button>
+<ng-select
+  bindLabel="displayName"
+  [attr.aria-label]="filterElement.name"
+  [clearable]="!isMultiSelect"
+  [closeOnSelect]="!isMultiSelect"
+  [formControl]="selectedFacetsControl"
+  [items]="filterElement.facets"
+  [multiple]="isMultiSelect"
+  [placeholder]="'filter.dropdown.select.text' | translate"
+  [searchable]="false"
+  [title]="filterElement.name"
+  (add)="apply($event)"
+  (change)="onSingleChange($event)"
+  (remove)="apply($event)"
+>
+  <ng-template let-facet="item" ng-option-tmp>
+    {{ facet.displayName }}
+    @if (facet.count) {
+      ({{ facet.count }})
     }
-  </div>
-</div>
+  </ng-template>
+  <ng-template let-clear="clear" let-facet="item" ng-label-tmp>
+    <span class="ng-value-label">{{ facet.displayName }}</span>
+    <span aria-hidden="true" class="ng-value-icon right" (click)="clear(facet)">×</span>
+  </ng-template>
+</ng-select>

@@ -3,10 +3,6 @@
     <ish-filter-navigation-sidebar [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
   } @else {
     <ish-filter-navigation-horizontal [filterNavigation]="filterNavigation" (applyFilter)="applyFilter($event)" />
-    <ish-filter-navigation-badges
-      [filterNavigation]="filterNavigation"
-      (applyFilter)="applyFilter($event)"
-      (clearFilters)="clearFilters()"
-    />
+    <ish-filter-navigation-actions [filterNavigation]="filterNavigation" (clearFilters)="clearFilters()" />
   }
 }

@@ -1,4 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -9,7 +21,6 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  *
  * @example
  * <ish-filter-dropdown
- *   placeholderType="selectedFacets"
  *   [filterElement]="element"
  *   (applyFilter)="applyFilter($event)" />
  */
@@ -17,34 +28,45 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   selector: 'ish-filter-dropdown',
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./filter-dropdown.component.scss'],
 })
-export class FilterDropdownComponent implements OnInit {
-  @Input({ required: true }) filterElement: Filter;
-  @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
+export class FilterDropdownComponent implements OnChanges, AfterViewInit {
+  @Input({ required: true }) filterElement!: Filter;
   @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
+  @ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
+  selectedFacetsControl = new FormControl<Facet | Facet[]>([], { nonNullable: true });
   placeholder = '';
+  isMultiSelect = true;
+
+  constructor(private renderer: Renderer2) {}
+
+  ngOnChanges() {
+    this.isMultiSelect = this.filterElement.selectionType !== 'single';
+    this.placeholder = this.filterElement.name;
+
+    const selectedFacets = this.filterElement.facets.filter(x => x.selected);
+    this.selectedFacetsControl.setValue(this.isMultiSelect ? selectedFacets : (selectedFacets[0] ?? undefined), {
+      emitEvent: false,
+    });
+  }
 
   apply(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 
-  ngOnInit() {
-    this.initPlaceHolder();
-  }
-
-  private initPlaceHolder() {
-    this.placeholder = this.filterElement.name;
-
-    const selectedFacets = this.filterElement.facets.filter(x => x.selected);
-
-    if (this.placeholderType === 'selectedFacets') {
-      const placeholder = selectedFacets.map(x => x.displayName).join(', ');
-
-      if (placeholder) {
-        this.placeholder = placeholder;
+  onSingleChange(facet: Facet) {
+    if (!this.isMultiSelect) {
+      const target = facet ?? this.filterElement.facets.find(f => f.selected);
+      if (target) {
+        this.apply(target);
       }
+    }
+  }
+  // set the id on the search input for accessibility reasons
+  ngAfterViewInit() {
+    const inputElement = this.ngSelect?.searchInput?.nativeElement;
+    if (inputElement) {
+      this.renderer.setAttribute(inputElement, 'id', this.filterElement.id);
     }
   }
 }

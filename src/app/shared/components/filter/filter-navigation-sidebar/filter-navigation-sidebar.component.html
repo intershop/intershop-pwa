@@ -15,11 +15,7 @@
           }
           @case ('dropdown') {
             <div class="filter-dropdown">
-              <ish-filter-dropdown
-                [filterElement]="element"
-                [placeholderType]="'selectedFacets'"
-                (applyFilter)="applyFilter.emit($event)"
-              />
+              <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
             </div>
           }
           @default {

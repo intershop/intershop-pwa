@@ -1,11 +1,14 @@
-<h2 class="h3">{{ 'product.product_filters.heading' | translate }}</h2>
+<section aria-labelledby="filter-heading">
+  <h2 class="h3 mt-5" id="filter-heading">{{ 'product.product_filters.heading' | translate }}</h2>
 
-@if (filterNavigation) {
-  <div class="row justify-content-start">
-    @for (element of filterNavigation.filter; track element.id) {
-      <div class="filter-dropdown col-sm-6 col-md-3">
-        <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
-      </div>
-    }
-  </div>
-}
+  @if (filterNavigation) {
+    <div class="row justify-content-start">
+      @for (element of filterNavigation.filter; track element.id) {
+        <div class="filter-dropdown col-sm-6 col-md-3">
+          <label class="col-form-label w-100" for="{{ element.id }}">{{ element.name }} </label>
+          <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
+        </div>
+      }
+    </div>
+  }
+</section>

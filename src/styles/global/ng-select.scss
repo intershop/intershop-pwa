@@ -1,4 +1,20 @@
 .ng-select {
+  .ng-select-container {
+    color: $gray-700;
+
+    .ng-value-container .ng-placeholder {
+      color: $gray-700;
+    }
+  }
+
+  &.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    background-color: color-mix(in srgb, var(--corporate-primary) 15%, $color-inverse);
+
+    .ng-value-icon.right {
+      border-left-color: $gray-400;
+    }
+  }
+
   &.ng-select-opened {
     > .ng-select-container {
       border: 2px solid $color-dark;
