@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { LoginFormComponent } from './login-form.component';
@@ -30,12 +28,7 @@ describe('Login Form Component', () => {
         provideMockStore(),
         provideRouter([]),
       ],
-    })
-      .overrideComponent(LoginFormComponent, {
-        remove: { imports: [ErrorMessageComponent] },
-        add: { imports: [MockComponent(ErrorMessageComponent)] },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
