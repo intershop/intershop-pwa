@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { from, of } from 'rxjs';
-import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -85,7 +85,7 @@ export class WishlistEffects {
       mapToPayloadProperty('wishlistIds'),
       mergeMap(wishlistIds =>
         from(wishlistIds).pipe(
-          mergeMap((wishlistId: string) =>
+          concatMap((wishlistId: string) =>
             this.wishlistService.getWishlist(wishlistId).pipe(
               map(wishlist => loadWishlistDetailsSuccess({ wishlist })),
               mapErrorToAction(loadWishlistDetailsFail)
@@ -164,7 +164,7 @@ export class WishlistEffects {
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
       filter(wishlist => wishlist?.preferred),
-      map(wishlist => loadWishlistDetails({ wishlistIds: [wishlist.id] }))
+      concatMap(wishlist => [loadWishlists(), loadWishlistDetails({ wishlistIds: [wishlist.id] })])
     )
   );
 

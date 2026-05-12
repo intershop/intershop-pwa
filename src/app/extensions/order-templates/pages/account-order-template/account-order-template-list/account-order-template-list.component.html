@@ -62,12 +62,12 @@
                 data-testing-id="addToCartButton"
                 name="addProduct"
                 type="submit"
-                [attr.aria-hidden]="false"
+                [attr.aria-label]="'product.add_to_cart.link' | translate"
                 [tabindex]="0"
                 [title]="'product.add_to_cart.link' | translate"
                 (click)="addToBasket(orderTemplate.id)"
               >
-                @if ((displaySpinner$ | async) !== true) {
+                @if ((loadingOrderTemplateId$ | async) !== orderTemplate.id) {
                   <!-- Add to Cart button -->
                   <i class="bi bi-cart-fill"></i>
                 } @else {

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, filter, map } from 'rxjs';
+import { BehaviorSubject, filter, finalize, map, take } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -25,9 +25,9 @@ export class AccountOrderTemplateListComponent {
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
   /**
-   * fires 'true' after add To Cart is clicked and basket is loading
+   * Holds the ID of the order template currently being added to cart
    */
-  displaySpinner$ = new BehaviorSubject(false);
+  loadingOrderTemplateId$ = new BehaviorSubject<string | undefined>(undefined);
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
@@ -54,7 +54,7 @@ export class AccountOrderTemplateListComponent {
   }
 
   addToBasket(orderTemplateId: string) {
-    this.displaySpinner$.next(true);
+    this.loadingOrderTemplateId$.next(orderTemplateId);
     this.orderTemplatesFacade.orderTemplates$
       .pipe(
         map(orderTemplates => {
@@ -65,13 +65,14 @@ export class AccountOrderTemplateListComponent {
           return template;
         }),
         filter(orderTemplate => orderTemplate?.itemsCount === orderTemplate.items?.length),
+        take(1),
+        finalize(() => this.loadingOrderTemplateId$.next(undefined)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(orderTemplate => {
         this.shoppingFacade.addProductsToBasket(
           orderTemplate.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))
         );
-        this.displaySpinner$.next(false);
       });
   }
 }

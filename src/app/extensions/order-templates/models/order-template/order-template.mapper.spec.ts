@@ -62,8 +62,8 @@ describe('Order Template Mapper', () => {
   });
 
   describe('fromListData', () => {
-    it('should return undefined when input is falsy', () => {
-      expect(orderTemplateMapper.fromListData(undefined)).toBeUndefined();
+    it('should return empty array when input is falsy', () => {
+      expect(orderTemplateMapper.fromListData(undefined)).toBeEmpty();
     });
 
     it('should return empty array when input is empty', () => {

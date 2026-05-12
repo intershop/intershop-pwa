@@ -52,20 +52,21 @@ export class OrderTemplateMapper {
   }
 
   fromListData(orderTemplateListElementsData: OrderTemplateListElementData[]): OrderTemplate[] {
-    if (orderTemplateListElementsData) {
-      return orderTemplateListElementsData.map(orderTemplateListElementData => ({
-        id: OrderTemplateMapper.parseIdFromURI(orderTemplateListElementData.uri),
-        title: orderTemplateListElementData.title,
-        itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(
-          orderTemplateListElementData.attributes,
-          'itemsCount'
-        ),
-        creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(
-          orderTemplateListElementData.attributes,
-          'creationDate'
-        ),
-      }));
+    if (!orderTemplateListElementsData) {
+      return [];
     }
+    return orderTemplateListElementsData.map(orderTemplateListElementData => ({
+      id: OrderTemplateMapper.parseIdFromURI(orderTemplateListElementData.uri),
+      title: orderTemplateListElementData.title,
+      itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(
+        orderTemplateListElementData.attributes,
+        'itemsCount'
+      ),
+      creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(
+        orderTemplateListElementData.attributes,
+        'creationDate'
+      ),
+    }));
   }
 
   fromUpdate(orderTemplate: OrderTemplate, id: string): OrderTemplate {

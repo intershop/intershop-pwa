@@ -23,6 +23,7 @@ export class OrderTemplateWidgetComponent implements OnInit {
   constructor(private facade: OrderTemplatesFacade) {}
 
   ngOnInit() {
+    this.facade.loadOrderTemplates();
     this.loading$ = this.facade.orderTemplateLoading$;
     this.orderTemplates$ = this.facade.orderTemplates$.pipe(
       whenTruthy(),

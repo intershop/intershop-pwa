@@ -244,9 +244,10 @@ describe('Wishlist Effects', () => {
         public: false,
       };
       const action = createWishlistSuccess({ wishlist: createdWishlist });
-      const completion = loadWishlistDetails({ wishlistIds: [createdWishlist.id] });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const loadAll = loadWishlists();
+      const loadDetails = loadWishlistDetails({ wishlistIds: [createdWishlist.id] });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
       expect(effects.reloadWishlists$).toBeObservable(expected$);
     });
@@ -354,9 +355,10 @@ describe('Wishlist Effects', () => {
         public: false,
       };
       const action = updateWishlistSuccess({ wishlist: updatedWishlist });
-      const completion = loadWishlistDetails({ wishlistIds: [updatedWishlist.id] });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const loadAll = loadWishlists();
+      const loadDetails = loadWishlistDetails({ wishlistIds: [updatedWishlist.id] });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
       expect(effects.reloadWishlists$).toBeObservable(expected$);
     });

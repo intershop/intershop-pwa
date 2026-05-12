@@ -111,12 +111,12 @@ describe('Account Order Template List Component', () => {
   });
 
   describe('addToBasket', () => {
-    it('should set displaySpinner$ to true when called', done => {
+    it('should set loadingOrderTemplateId$ to the template id when called', done => {
       when(orderTemplatesFacade.orderTemplates$).thenReturn(of([]));
 
-      component.displaySpinner$.subscribe(value => {
+      component.loadingOrderTemplateId$.subscribe(value => {
         if (value) {
-          expect(value).toBeTrue();
+          expect(value).toBe('.SKsEQAE4FIAAAFuNiUBWx0d');
           done();
         }
       });
@@ -151,15 +151,15 @@ describe('Account Order Template List Component', () => {
       verify(shoppingFacade.addProductsToBasket(anything())).once();
     });
 
-    it('should set displaySpinner$ to false after adding products to basket', done => {
+    it('should set loadingOrderTemplateId$ to undefined after adding products to basket', done => {
       when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplateDetails));
       when(shoppingFacade.addProductsToBasket(anything())).thenReturn();
 
-      const values: boolean[] = [];
-      component.displaySpinner$.subscribe(value => {
+      const values: (string | undefined)[] = [];
+      component.loadingOrderTemplateId$.subscribe(value => {
         values.push(value);
         if (values.length === 3) {
-          expect(values).toEqual([false, true, false]);
+          expect(values).toEqual([undefined, '.SKsEQAE4FIAAAFuNiUBWx0d', undefined]);
           done();
         }
       });

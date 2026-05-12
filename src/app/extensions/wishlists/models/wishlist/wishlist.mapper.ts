@@ -30,6 +30,7 @@ export class WishlistMapper {
         creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(wishlistData.attributes, 'creationDate'),
       }));
     }
+    return [];
   }
 
   fromData(wishlistData: WishlistData, wishlistId: string): Wishlist {
