@@ -13,6 +13,8 @@ const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
 let transferredState: object;
 
+const hydratedFeatures = new Set<string>();
+
 /**
  * meta reducer for overriding client side state if supplied by server
  */
@@ -23,8 +25,13 @@ export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): Action
       return mergeDeep(state, transferredState);
     }
     if (action.type === UPDATE && transferredState) {
-      // re-apply transferred state as it could be overwritten by uninitialized reducers
-      return reducer({ ...state, ...pick(transferredState, ...action.features) }, action);
+      // only re-apply transferred state for features being registered for the first time
+      // subsequent re-registrations must not overwrite state that was updated client-side after hydration
+      const newFeatures = action.features?.filter(f => !hydratedFeatures.has(f)) ?? [];
+      action.features?.forEach(f => hydratedFeatures.add(f));
+      if (newFeatures.length) {
+        return reducer({ ...state, ...pick(transferredState, ...newFeatures) }, action);
+      }
     }
     return reducer(state, action);
   };
