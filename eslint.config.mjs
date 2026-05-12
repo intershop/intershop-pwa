@@ -31,7 +31,6 @@ export default defineConfig([
     '**/node_modules',
     'src/polyfills.ts',
     'src/environments/environment.development.ts',
-    '**/index.html',
     'dist/**/*',
     'e2e/cypress/**/*.js',
     'eslint-rules/dist/**/*',
@@ -394,6 +393,7 @@ export default defineConfig([
             message: 'The "DomService" should only be used in injectable classes. Use the Angular "Renderer2" instead.',
           },
           {
+            // eslint-disable-next-line @cspell/spellchecker
             importNamePattern: '^(F|f)eatureToggle',
             name: 'ish-core/utils/feature-toggle/feature-toggle.service',
             filePattern: '^.*\\.ts*$',
@@ -846,7 +846,7 @@ export default defineConfig([
             {
               name: 'rxjs/operators',
               importNames: ['pluck'],
-              message: "This operator is not typesafe. Use 'mapToProperty' instead.",
+              message: "This operator is not type safe. Use 'mapToProperty' instead.",
             },
             {
               name: '(?!.*environments/environment.model)(.*environments/environment).+',
@@ -1062,6 +1062,36 @@ export default defineConfig([
 
       ecmaVersion: 'latest',
       sourceType: 'module',
+    },
+
+    rules: {
+      'arrow-body-style': ['warn', 'as-needed'],
+      'ish-custom-rules/ordered-imports': 'warn',
+      'prefer-arrow-callback': 'warn',
+      'prefer-template': 'warn',
+      'prettier/prettier': 'warn',
+    },
+  },
+  {
+    files: ['**/*.mts'],
+    extends: [...tseslint.configs.recommended, compat.extends('plugin:prettier/recommended')].flat(),
+
+    plugins: {
+      'ish-custom-rules': ishCustomRules,
+    },
+
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
+      },
     },
 
     rules: {
