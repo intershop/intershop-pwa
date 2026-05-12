@@ -7,6 +7,24 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 11.0.0 to 11.1.0
+
+**New footer styling**
+
+The footer component has been restructured and simplified.
+The `StoreLocatorFooterComponent` has been removed from the PWA footer.
+The store locator link is now managed via ICM as part of the CMS footer content include (`include.footer.content.pagelet2-Include`).
+If your project extended or customized the `StoreLocatorFooterComponent`, remove all references to it and configure the store locator link in ICM instead.
+
+**Withdrawal functionality**
+
+The Intershop PWA now supports the EU right of withdrawal feature.
+Customers can submit withdrawal requests for their orders directly through the storefront.
+The feature is controlled by the ICM server configuration parameter `preferences.WithdrawalPreferences.WithdrawalEnabled`.
+When enabled, a withdrawal link appears in the footer, and the `/withdrawal` route becomes accessible.
+The footer link and route are automatically hidden when the preference is disabled.
+This feature requires ICM version 14.3.0 or higher.
+
 ## From 10.1.0 to 11.0.0
 
 **Angular 18 update**

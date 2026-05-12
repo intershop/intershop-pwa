@@ -11,9 +11,22 @@
         [formControl]="formControl"
         [formlyAttributes]="field"
       />
-      <span
-        [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
-      ></span>
+      @if ('preferences.WithdrawalPreferences.WithdrawalEnabled' | ishServerSetting) {
+        <span
+          [ishServerHtml]="
+            'checkout.tac.full_text'
+              | translate
+                : {
+                    '0': 'page://page.termsAndConditions.pagelet2-Page',
+                    '1': 'page://page.privacyPolicy.pagelet2-Page',
+                  }
+          "
+        ></span>
+      } @else {
+        <span
+          [ishServerHtml]="'checkout.tac.text' | translate: { '0': 'page://page.termsAndConditions.pagelet2-Page' }"
+        ></span>
+      }
     </label>
   </div>
   @if (showError) {

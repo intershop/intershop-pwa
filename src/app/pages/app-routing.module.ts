@@ -7,6 +7,7 @@ import { identityProviderInviteGuard } from 'ish-core/guards/identity-provider-i
 import { identityProviderLoginGuard } from 'ish-core/guards/identity-provider-login.guard';
 import { identityProviderLogoutGuard } from 'ish-core/guards/identity-provider-logout.guard';
 import { identityProviderRegisterGuard } from 'ish-core/guards/identity-provider-register.guard';
+import { serverSettingGuard } from 'ish-core/guards/server-setting.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -121,6 +122,19 @@ const routes: Routes = [
     data: {
       meta: {
         title: 'personal.data.request.title',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+  {
+    path: 'withdrawal',
+    loadChildren: () =>
+      import('./withdrawal-request/withdrawal-request-page.module').then(m => m.WithdrawalRequestPageModule),
+    canActivate: [serverSettingGuard],
+    data: {
+      serverSetting: 'preferences.WithdrawalPreferences.WithdrawalEnabled',
+      meta: {
+        title: 'account.withdrawal.heading',
         robots: 'noindex, nofollow',
       },
     },

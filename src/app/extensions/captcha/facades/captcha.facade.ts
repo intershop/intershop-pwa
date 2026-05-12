@@ -11,7 +11,8 @@ export type CaptchaTopic =
   | 'emailShoppingCart'
   | 'forgotPassword'
   | 'redemptionOfGiftCardsAndCertificates'
-  | 'register';
+  | 'register'
+  | 'withdrawal';
 
 @Injectable({ providedIn: 'root' })
 export class CaptchaFacade {
