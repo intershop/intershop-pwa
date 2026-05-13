@@ -1,3 +1,5 @@
+/* eslint-disable rxjs/no-ignored-subscribe */
+/* eslint-disable ish-custom-rules/use-async-synchronization-in-tests */
 import { Route } from '@angular/router';
 import { of } from 'rxjs';
 

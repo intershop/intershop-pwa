@@ -13,6 +13,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ShippingRadioWrapperComponent } from '../formly/shipping-radio-wrapper/shipping-radio-wrapper.component';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const ShippingWrapperConfig: ConfigOption = {
   wrappers: [{ name: 'shipping-radio-wrapper', component: ShippingRadioWrapperComponent }],
 };

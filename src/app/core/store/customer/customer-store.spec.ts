@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { APP_BASE_HREF } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';

@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';

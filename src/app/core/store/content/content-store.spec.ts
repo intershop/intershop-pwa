@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
