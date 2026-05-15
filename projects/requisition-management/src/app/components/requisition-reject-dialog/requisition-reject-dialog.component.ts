@@ -1,15 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 /**
  * The Wishlist Reject Approval Dialog shows the modal to reject a requisition.
@@ -33,14 +26,7 @@ export class RequisitionRejectDialogComponent implements OnInit {
   rejectForm = new FormGroup({});
   fields: FormlyFieldConfig[];
 
-  /**
-   *  A reference to the current modal.
-   */
-  modal: NgbModalRef;
-
-  @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
-
-  constructor(private ngbModal: NgbModal) {}
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   ngOnInit() {
     this.initForm();
@@ -73,20 +59,13 @@ export class RequisitionRejectDialogComponent implements OnInit {
   submitForm() {
     if (this.rejectForm.valid) {
       this.submitRejectRequisition.emit(this.rejectForm.get('comment').value);
-      this.hide();
+      this.modalDialog.hide();
     }
   }
 
   /** Opens the modal. */
   show() {
     this.rejectForm.reset();
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'requisition-reject-modal-title' });
-  }
-
-  /** Close the modal. */
-  hide() {
-    if (this.modal) {
-      this.modal.close();
-    }
+    this.modalDialog.show();
   }
 }

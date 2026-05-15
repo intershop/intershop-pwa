@@ -1,9 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 
@@ -33,6 +39,12 @@ describe('Product Review Create Dialog Component', () => {
     when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
 
     await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockDirective(FormSubmitDirective),
+        ProductReviewCreateDialogComponent,
+      ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductReviewsFacade, useFactory: () => instance(reviewsFacade) },

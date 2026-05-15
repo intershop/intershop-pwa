@@ -1,18 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { Wishlist } from '../../models/wishlist/wishlist.model';
@@ -48,17 +39,13 @@ export class WishlistPreferencesDialogComponent implements OnInit {
   /**
    *  A reference to the current modal.
    */
-  modal: NgbModalRef;
-
   // localization keys, default = for new
 
   primaryButton = 'account.wishlists.new_wishlist_form.create_button.text';
   private wishlistTitle = 'account.wishlists.choose_wishlist.new_wishlist_name.initial_value';
   modalHeader = 'account.wishlists.new_wishlist_dialog.header';
 
-  @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
-
-  constructor(private ngbModal: NgbModal) {}
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   ngOnInit() {
     this.fields = [
@@ -113,7 +100,9 @@ export class WishlistPreferencesDialogComponent implements OnInit {
         title: this.model.title,
         public: false,
       });
-      this.hide();
+      if (this.modalDialog) {
+        this.modalDialog.hide();
+      }
     }
   }
 
@@ -125,13 +114,6 @@ export class WishlistPreferencesDialogComponent implements OnInit {
     } else {
       this.model = pick(this.wishlist, 'title', 'preferred');
     }
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'wishlist-preferences-modal-title' });
-  }
-
-  /** Close the modal. */
-  hide() {
-    if (this.modal) {
-      this.modal.close();
-    }
+    this.modalDialog.show();
   }
 }

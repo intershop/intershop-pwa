@@ -1,44 +1,42 @@
-<ng-template #modal let-reviewModal>
+<ish-modal-dialog
+  #modal
+  [options]="{
+    titleText: 'product.reviews.create.dialog.heading' | translate,
+    ariaLabelledBy: 'product-review-create-modal-title',
+  }"
+>
   <ng-container *ishProductContextAccess="let product = product">
     <form
       #reviewForm="ngForm"
+      body
       class="form-horizontal"
       data-testing-id="create-product-review-form"
       ishFormSubmit
       [formGroup]="form"
       (ngSubmit)="submitForm(product.sku)"
     >
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="product-review-create-modal-title">
-            {{ 'product.reviews.create.dialog.heading' | translate }}
-          </h2>
-          <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-        </div>
-
-        <div class="modal-body">
-          <div class="d-flex">
-            <ish-product-image imageType="S" [link]="true" />
-            <div>
-              <ish-product-name [link]="false" />
-              <ish-product-id />
-              <ish-product-variation-display />
-            </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <ish-product-image imageType="S" [link]="true" />
+          <div>
+            <ish-product-name [link]="false" />
+            <ish-product-id />
+            <ish-product-variation-display />
           </div>
-
-          <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
-
-          <formly-form [fields]="fields" [form]="form" [model]="model$ | async" />
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit" [disabled]="form.invalid && reviewForm.submitted">
-            {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
-          </button>
-          <button class="btn btn-secondary" type="button" (click)="hide()">
-            {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
-          </button>
-        </div>
+
+        <p>{{ 'product.reviews.create.dialog.description.text' | translate }}</p>
+
+        <formly-form [fields]="fields" [form]="form" [model]="model$ | async" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" [disabled]="form.invalid && reviewForm.submitted">
+          {{ 'product.reviews.create.dialog.confirm.button.label' | translate }}
+        </button>
+        <button class="btn btn-secondary" type="button" (click)="modal.hide()">
+          {{ 'product.reviews.create.dialog.cancel.button.label' | translate }}
+        </button>
       </div>
     </form>
   </ng-container>
-</ng-template>
+</ish-modal-dialog>

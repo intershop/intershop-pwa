@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -51,8 +54,12 @@ describe('Select Wishlist Modal Component', () => {
     wishlistFacadeMock = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [SelectWishlistFormComponent, SelectWishlistModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockComponent(SelectWishlistFormComponent),
+        SelectWishlistModalComponent,
+      ],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
     }).compileComponents();
   });
