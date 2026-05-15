@@ -1,36 +1,40 @@
 <ng-template #template>
-  <div class="modal-header">
-    @if (options.titleText) {
-      <h2 class="modal-title" [id]="'modal-title-' + uuid">
-        @if (options.icon) {
-          <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
-        }
-        {{ options.titleText }}
-      </h2>
-    }
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
-  <div class="modal-body"><ng-content /></div>
-
-  @if (options.confirmText || options.rejectText) {
-    <div class="modal-footer">
-      @if (options.confirmText) {
-        <button
-          class="btn btn-primary"
-          data-testing-id="confirm"
-          type="button"
-          [disabled]="options.confirmDisabled"
-          (click)="confirm()"
-        >
-          {{ options.confirmText }}
-        </button>
+  <ng-content select="[header]">
+    <div class="modal-header">
+      @if (options.titleText) {
+        <h2 class="modal-title" [id]="'modal-title-' + uuid">
+          @if (options.icon) {
+            <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
+          }
+          {{ options.titleText }}
+        </h2>
       }
-      @if (options.rejectText) {
-        <button class="btn btn-secondary" data-testing-id="reject" type="button" (click)="hide()">
-          {{ options.rejectText }}
-        </button>
-      }
+      <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
     </div>
-  }
+  </ng-content>
+
+  <ng-content select="[body]">
+    <div class="modal-body"><ng-content /></div>
+
+    @if (options.confirmText || options.rejectText) {
+      <div class="modal-footer">
+        @if (options.confirmText) {
+          <button
+            class="btn btn-primary"
+            data-testing-id="confirm"
+            type="button"
+            [disabled]="options.confirmDisabled"
+            (click)="confirm()"
+          >
+            {{ options.confirmText }}
+          </button>
+        }
+        @if (options.rejectText) {
+          <button class="btn btn-secondary" data-testing-id="reject" type="button" (click)="hide()">
+            {{ options.rejectText }}
+          </button>
+        }
+      </div>
+    }
+  </ng-content>
 </ng-template>
