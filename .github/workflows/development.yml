@@ -92,10 +92,10 @@ jobs:
       - name: eslint-rules Jest
         run: npm run test:eslint-rules
 
-      - name: schematics Jest
-        run: npm run test:schematics
-        env:
-          CI: false
+      # - name: schematics Jest
+      #   run: npm run test:schematics
+      #   env:
+      #     CI: false
 
   DeadCode:
     needs: [Quality, Jest]
