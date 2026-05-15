@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
@@ -47,8 +50,12 @@ describe('Select Order Template Modal Component', () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [SelectOrderTemplateFormComponent, SelectOrderTemplateModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockComponent(SelectOrderTemplateFormComponent),
+        SelectOrderTemplateModalComponent,
+      ],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
     }).compileComponents();
   });

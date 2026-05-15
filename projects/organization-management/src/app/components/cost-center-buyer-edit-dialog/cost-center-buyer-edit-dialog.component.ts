@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PriceHelper } from 'ish-core/models/price/price.helper';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -17,7 +17,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 })
 export class CostCenterBuyerEditDialogComponent implements OnInit {
   model: { buyerName: string; budgetValue: number; budgetPeriod: string };
-  modal: NgbModalRef;
   modalHeader = 'account.costcenter.details.buyers.action.editbudget.title';
 
   costCenterBuyerForm = new FormGroup({});
@@ -25,10 +24,9 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
 
   buyer: CostCenterBuyer;
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal', { static: false }) modalDialog: ModalDialogComponent<unknown>;
 
   constructor(
-    private ngbModal: NgbModal,
     private appFacade: AppFacade,
     private organizationManagementFacade: OrganizationManagementFacade
   ) {}
@@ -93,7 +91,9 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
       };
 
       this.organizationManagementFacade.updateCostCenterBuyer(changedBuyer);
-      this.hide();
+      if (this.modalDialog) {
+        this.modalDialog.hide();
+      }
     }
   }
 
@@ -106,13 +106,6 @@ export class CostCenterBuyerEditDialogComponent implements OnInit {
       budgetPeriod: buyer.budgetPeriod,
     };
 
-    this.modal = this.ngbModal.open(this.modalTemplate, { size: 'lg', ariaLabelledBy: 'cc-buyer-edit-modal-title' });
-  }
-
-  /** Close the modal. */
-  hide() {
-    if (this.modal) {
-      this.modal.close();
-    }
+    this.modalDialog.show();
   }
 }

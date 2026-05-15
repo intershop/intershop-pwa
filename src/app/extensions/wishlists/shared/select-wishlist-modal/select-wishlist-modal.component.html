@@ -1,11 +1,12 @@
-<ng-template #modal let-selectModal>
-  <div class="modal-header">
-    <h2 class="modal-title" id="select-wishlist-modal-title">{{ headerTranslationKey | translate }}</h2>
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
+<ish-modal-dialog
+  #modal
+  [options]="{
+    titleText: headerTranslationKey | translate,
+    ariaLabelledBy: 'select-wishlist-modal-title',
+  }"
+>
   @if (showForm) {
-    <form ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
+    <form body ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
       <div class="modal-body">
         <ish-select-wishlist-form [addMoveProduct]="addMoveProduct" [formGroup]="formGroup" />
       </div>
@@ -19,25 +20,27 @@
       </div>
     </form>
   } @else {
-    <div *ishProductContextAccess="let product = product" class="modal-body">
-      <span
-        data-testing-id="wishlist-success-link"
-        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-        [ishServerHtml]="
-          successTranslationKey
-            | translate
-              : {
-                  '0': product.name,
-                  '1': (selectedWishlistRoute$ | async),
-                  '2': (selectedWishlistTitle$ | async | ishHtmlEncode),
-                }
-        "
-      ></span>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" type="button" (click)="hide()">
-        {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
-      </button>
+    <div body>
+      <div *ishProductContextAccess="let product = product" class="modal-body">
+        <span
+          data-testing-id="wishlist-success-link"
+          [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+          [ishServerHtml]="
+            successTranslationKey
+              | translate
+                : {
+                    '0': product.name,
+                    '1': (selectedWishlistRoute$ | async),
+                    '2': (selectedWishlistTitle$ | async | ishHtmlEncode),
+                  }
+          "
+        ></span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="hide()">
+          {{ 'account.wishlists.add_to_wishlist.confirmation.ok_button.text' | translate }}
+        </button>
+      </div>
     </div>
   }
-</ng-template>
+</ish-modal-dialog>

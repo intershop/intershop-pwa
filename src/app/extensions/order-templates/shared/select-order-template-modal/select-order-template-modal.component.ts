@@ -6,18 +6,17 @@ import {
   Input,
   OnInit,
   Output,
-  TemplateRef,
   ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -48,14 +47,12 @@ export class SelectOrderTemplateModalComponent implements OnInit {
   });
 
   showForm: boolean;
-  modal: NgbModalRef;
 
   private destroyRef = inject(DestroyRef);
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   constructor(
-    private ngbModal: NgbModal,
     private orderTemplatesFacade: OrderTemplatesFacade,
     private translate: TranslateService
   ) {}
@@ -102,14 +99,14 @@ export class SelectOrderTemplateModalComponent implements OnInit {
 
   /** close modal */
   hide() {
-    this.modal.close();
+    this.modalDialog.hide();
     this.formGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-order-template-modal-title' });
+    this.modalDialog.show();
 
     // set default values after init (for example after closing and reopening the modal)
     this.orderTemplateOptions$

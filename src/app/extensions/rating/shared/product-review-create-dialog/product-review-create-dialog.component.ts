@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, map, tap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
@@ -15,19 +15,13 @@ import { ProductReview } from '../../models/product-reviews/product-review.model
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductReviewCreateDialogComponent implements OnInit {
-  /**
-   *  A reference to the current modal.
-   */
-  modal: NgbModalRef;
-
-  @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
   model$: Observable<Partial<ProductReview>>;
 
   constructor(
-    private ngbModal: NgbModal,
     private accountFacade: AccountFacade,
     private reviewFacade: ProductReviewsFacade
   ) {}
@@ -35,8 +29,8 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   ngOnInit() {
     this.model$ = this.accountFacade.user$.pipe(
       tap(user => {
-        if (!user) {
-          this.hide();
+        if (!user && this.modalDialog) {
+          this.modalDialog.hide();
         }
       }),
       map(user => ({ authorFirstName: `${user.firstName} ${user.lastName.charAt(0)}.` }))
@@ -107,21 +101,14 @@ export class ProductReviewCreateDialogComponent implements OnInit {
   /** Opens the modal. */
   show() {
     this.form.reset();
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'product-review-create-modal-title' });
-  }
-
-  /** Close the modal. */
-  hide() {
-    if (this.modal) {
-      this.modal.close();
-    }
+    this.modalDialog.show();
   }
 
   /** Send the review to the server */
   submitForm(sku: string) {
     if (this.form.valid) {
       this.reviewFacade.createProductReview(sku, this.form.value);
-      this.hide();
+      this.modalDialog.hide();
     }
   }
 }

@@ -1,11 +1,12 @@
-<ng-template #modal let-selectModal>
-  <div class="modal-header">
-    <h2 class="modal-title" id="select-order-template-modal-title">{{ headerTranslationKey | translate }}</h2>
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
+<ish-modal-dialog
+  #modal
+  [options]="{
+    titleText: headerTranslationKey | translate,
+    ariaLabelledBy: 'select-order-template-modal-title',
+  }"
+>
   @if (showForm) {
-    <form #form="ngForm" ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
+    <form #form="ngForm" body ishFormSubmit novalidate [formGroup]="formGroup" (ngSubmit)="submitForm()">
       <div class="modal-body">
         <ish-select-order-template-form [addMoveProduct]="addMoveProduct" [formGroup]="formGroup" />
       </div>
@@ -19,25 +20,27 @@
       </div>
     </form>
   } @else {
-    <div *ishProductContextAccess="let product = product" class="modal-body">
-      <span
-        data-testing-id="order-template-success-link"
-        [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
-        [ishServerHtml]="
-          successTranslationKey
-            | translate
-              : {
-                  '0': product.name,
-                  '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
-                  '2': selectedOrderTemplateRoute$ | async,
-                }
-        "
-      ></span>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" type="button" (click)="hide()">
-        {{ 'store.dialog.button.ok' | translate }}
-      </button>
+    <div body>
+      <div *ishProductContextAccess="let product = product" class="modal-body">
+        <span
+          data-testing-id="order-template-success-link"
+          [callbacks]="{ callbackHideDialogModal: callbackHideDialogModal }"
+          [ishServerHtml]="
+            successTranslationKey
+              | translate
+                : {
+                    '0': product.name,
+                    '1': selectedOrderTemplateTitle$ | async | ishHtmlEncode,
+                    '2': selectedOrderTemplateRoute$ | async,
+                  }
+          "
+        ></span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="hide()">
+          {{ 'store.dialog.button.ok' | translate }}
+        </button>
+      </div>
     </div>
   }
-</ng-template>
+</ish-modal-dialog>
