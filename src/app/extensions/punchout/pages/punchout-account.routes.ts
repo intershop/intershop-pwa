@@ -46,6 +46,12 @@ export const punchoutAccountRoutes: Routes = [
       },
       {
         path: 'create',
+        data: {
+          breadcrumbData: [
+            { key: 'account.punchout.link', link: '/account/punchout' },
+            { key: 'account.punchout.create.link' },
+          ],
+        },
         loadComponent: () =>
           import('./account-punchout-create/account-punchout-create-page.component').then(
             m => m.AccountPunchoutCreatePageComponent
