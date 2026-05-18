@@ -12,10 +12,11 @@ export class PreviewInterceptor implements HttpInterceptor {
   constructor(private previewService: PreviewService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.previewService.previewContextId && !this.previewService.isDesignViewMode) {
+    const prectx = this.previewService.getPreviewContextId();
+    if (prectx) {
       return next.handle(
         req.clone({
-          url: `${req.url};prectx=${this.previewService.previewContextId}`,
+          url: `${req.url};prectx=${prectx}`,
         })
       );
     }
