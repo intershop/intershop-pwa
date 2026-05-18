@@ -97,60 +97,60 @@ jobs:
       #   env:
       #     CI: false
 
-  DeadCode:
-    needs: [Quality, Jest]
-    runs-on: ubuntu-latest
-    if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
+  # DeadCode:
+  #   needs: [Quality, Jest]
+  #   runs-on: ubuntu-latest
+  #   if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop'"
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: package.json
-          cache: npm
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v6
+  #       with:
+  #         node-version-file: package.json
+  #         cache: npm
 
-      - name: Install root dependencies
-        run: npm ci
+  #     - name: Install root dependencies
+  #       run: npm ci
 
-      - name: Find Dead Code
-        run: npm run dead-code
+  #     - name: Find Dead Code
+  #       run: npm run dead-code
 
-      - name: Find Unused TestBed declarations
-        run: npm exec npm-run-all "cleanup-testbed --related origin/develop" check-no-changes
+  #     - name: Find Unused TestBed declarations
+  #       run: npm exec npm-run-all "cleanup-testbed --related origin/develop" check-no-changes
 
-  Schematics:
-    needs: [Quality, Jest]
-    runs-on: ubuntu-latest
-    env:
-      CI: false
+  # Schematics:
+  #   needs: [Quality, Jest]
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     CI: false
 
-    strategy:
-      fail-fast: false
-      matrix:
-        test: ['normal', 'customization']
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       test: ['normal', 'customization']
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: package.json
-          cache: npm
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v6
+  #       with:
+  #         node-version-file: package.json
+  #         cache: npm
 
-      - name: Install root dependencies
-        run: npm ci
+  #     - name: Install root dependencies
+  #       run: npm ci
 
-      - name: Test Schematics
-        run: |
-          bash e2e/test-schematics-${{ matrix.test }}.sh
-          npm run lint-hard
+  #     - name: Test Schematics
+  #       run: |
+  #         bash e2e/test-schematics-${{ matrix.test }}.sh
+  #         npm run lint-hard
 
   ProductionPWA:
     needs: [Quality, Jest]

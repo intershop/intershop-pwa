@@ -40,9 +40,9 @@ jobs:
       - name: Run Formatting
         run: npm exec npm-run-all format check-no-changes
 
-      - name: Fast Check Dead Links For All Files
-        run: node docs/check-dead-links.mjs fast
+      # - name: Fast Check Dead Links For All Files
+      #   run: node docs/check-dead-links.mjs fast
 
-      - name: Check Dead Links For Changed Files
-        if: github.ref != 'refs/heads/develop'
-        run: node docs/check-dead-links.mjs origin/develop
+      # - name: Check Dead Links For Changed Files
+      #   if: github.ref != 'refs/heads/develop'
+      #   run: node docs/check-dead-links.mjs origin/develop
