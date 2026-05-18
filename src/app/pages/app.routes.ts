@@ -59,6 +59,8 @@ export const appRoutes: Routes = [
     path: 'error',
     loadComponent: () => import('./error/error-page.component').then(c => c.ErrorPageComponent),
     data: {
+      wrapperClass: 'errorpage',
+      headerType: 'error',
       meta: {
         title: 'seo.title.error',
         robots: 'noindex, nofollow',
