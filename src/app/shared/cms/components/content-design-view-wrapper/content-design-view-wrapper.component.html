@@ -41,12 +41,12 @@
         }
         <!-- slot -->
         @case ('slot') {
-          <div class="name">{{ pagelet.slot(this.slotId).displayName }}</div>
+          <div class="name">{{ pagelet.slot(slotId).displayName }}</div>
           <button
             class="btn"
             type="button"
             title="{{ 'designview.add.link.title' | translate }}"
-            (click)="triggerAction(this.slotId, 'slotAdd')"
+            (click)="triggerAction(slotId, 'slotAdd')"
           >
             <i class="bi bi-plus"></i>
           </button>
