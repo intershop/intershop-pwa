@@ -14,12 +14,12 @@ var parserOpts = {
 
 var writerOpts = {
   transform: function (commit) {
-    var discard = true;
+    var noBreakingChanges = true;
     var issues = [];
 
     commit.notes.forEach(note => {
       note.title = 'BREAKING CHANGES';
-      discard = false;
+      noBreakingChanges = false;
     });
 
     if (commit.type === 'feat') {
@@ -30,7 +30,9 @@ var writerOpts = {
       commit.type = 'Performance Improvements';
     } else if (commit.type === 'docs') {
       commit.type = 'Documentation';
-    } else if (discard) {
+    } else if (commit.type === 'deps') {
+      commit.type = 'Dependencies';
+    } else if (noBreakingChanges) {
       return;
     } else if (commit.type === 'style') {
       commit.type = 'Styles';
@@ -65,7 +67,14 @@ var writerOpts = {
   },
   groupBy: 'type',
   commitGroupsSort: function (arg1, arg2) {
-    var order = ['Features', 'Bug Fixes', 'Performance Improvements', 'Documentation', 'Code Refactoring'];
+    var order = [
+      'Features',
+      'Bug Fixes',
+      'Performance Improvements',
+      'Documentation',
+      'Dependencies',
+      'Code Refactoring',
+    ];
     if (order.indexOf(arg1.title) < order.indexOf(arg2.title)) {
       return -1;
     }
