@@ -53,6 +53,7 @@ describe('Paypal Card Fields Adapter', () => {
   let mockExpiryField: any;
 
   beforeEach(() => {
+    jest.useFakeTimers();
     checkoutFacade = mock(CheckoutFacade);
     paypalConfigServiceMock = {
       getPaypalComponent: jest.fn().mockImplementation(() => (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD),
@@ -159,11 +160,27 @@ describe('Paypal Card Fields Adapter', () => {
   });
 
   afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
     // Cleanup window mock
     delete (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD;
     // Cleanup DOM elements
     document.body.innerHTML = '';
   });
+
+  /** Flush all pending fake timers and microtasks to resolve async timer chains in the adapter */
+  async function flushPendingTimers(): Promise<void> {
+    for (let i = 0; i < 50; i++) {
+      jest.advanceTimersByTime(100);
+      await Promise.resolve();
+    }
+  }
+
+  async function renderAndFlush(pm: PaymentMethod): Promise<void> {
+    const p = paypalCardFields.renderCardFields(pm);
+    await flushPendingTimers();
+    return p;
+  }
 
   it('should be created', () => {
     expect(paypalCardFields).toBeTruthy();
@@ -182,7 +199,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should successfully render all card fields', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       expect((window as any).PPCP_ISH_PAYPAL_CREDIT_CARD.CardFields).toHaveBeenCalled();
       expect(mockCardField.isEligible).toHaveBeenCalled();
@@ -193,7 +210,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should store payment method after rendering', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       expect(paypalCardFields.paymentMethod).toEqual(mockPaymentMethod);
     });
@@ -217,7 +234,7 @@ describe('Paypal Card Fields Adapter', () => {
     it('should not render fields when card fields are not eligible', async () => {
       mockCardField.isEligible.mockReturnValue(false);
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       expect(mockNameField.render).not.toHaveBeenCalled();
       expect(mockNumberField.render).not.toHaveBeenCalled();
@@ -229,7 +246,7 @@ describe('Paypal Card Fields Adapter', () => {
 
       const errorPromise = firstValueFrom(paypalCardFields.renderError$.pipe(take(1)));
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       const emittedError = await errorPromise;
       expect(emittedError).toBe('checkout.payment.paypal.script.render.error.message');
@@ -244,7 +261,7 @@ describe('Paypal Card Fields Adapter', () => {
       const clickSpy = jest.fn();
       submitButton.addEventListener('click', clickSpy);
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       submitButton.click();
       expect(clickSpy).toHaveBeenCalled();
@@ -274,12 +291,8 @@ describe('Paypal Card Fields Adapter', () => {
 
       paypalCardFields.paymentMethod = mockPaymentMethod;
 
-      // Start the promise
-
       const orderPromise = paypalCardFields.testCreateOrderCallback();
-
-      // Wait a bit for the async call to happen
-      await new Promise(resolve => setTimeout(resolve, 10));
+      jest.advanceTimersByTime(5);
 
       const orderId = await orderPromise;
 
@@ -295,7 +308,9 @@ describe('Paypal Card Fields Adapter', () => {
       }, 5);
 
       paypalCardFields.paymentMethod = mockPaymentMethod;
-      await paypalCardFields.testCreateOrderCallback();
+      const orderPromise = paypalCardFields.testCreateOrderCallback();
+      jest.advanceTimersByTime(5);
+      await orderPromise;
 
       // onApproveCallback should complete without errors
       await paypalCardFields.testOnApproveCallback();
@@ -306,9 +321,9 @@ describe('Paypal Card Fields Adapter', () => {
     it('should reject after timeout when order ID is not received', async () => {
       paypalCardFields.paymentMethod = mockPaymentMethod;
 
-      await expect(paypalCardFields.testCreateOrderCallback()).rejects.toThrow(
-        'PayPal order ID not received within 3 seconds'
-      );
+      const promise = paypalCardFields.testCreateOrderCallback();
+      jest.advanceTimersByTime(3000);
+      await expect(promise).rejects.toThrow('PayPal order ID not received within 3 seconds');
     });
   });
 
@@ -322,7 +337,7 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
     });
 
     it('should set loadingIframe$ to false', async () => {
@@ -345,12 +360,7 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
-    });
-
-    afterEach(async () => {
-      // Wait for resetFieldValues setTimeout callbacks to complete (300ms max delay)
-      await new Promise(resolve => setTimeout(resolve, 350));
+      await renderAndFlush(mockPaymentMethod);
     });
 
     it('should set loadingIframe$ to false', async () => {
@@ -389,7 +399,7 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
     });
 
     it('should set loadingIframe$ to false', async () => {
@@ -441,7 +451,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should hide error on name field focus', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       // Simulate showing error first by setting observable to true
       paypalCardFields.nameFieldError$.next(true);
@@ -460,7 +470,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should show error on invalid name field blur', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       // Trigger blur event with invalid state
       const cardFieldsConfig = (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD.CardFields.mock.calls[0][0];
@@ -476,7 +486,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should not show error on valid name field blur', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       // Trigger blur event with valid state
       const cardFieldsConfig = (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD.CardFields.mock.calls[0][0];
@@ -491,7 +501,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should handle all field types on focus', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       const cardFieldsConfig = (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD.CardFields.mock.calls[0][0];
 
@@ -517,7 +527,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should handle all field types on blur with errors', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       const cardFieldsConfig = (window as any).PPCP_ISH_PAYPAL_CREDIT_CARD.CardFields.mock.calls[0][0];
 
@@ -575,7 +585,7 @@ describe('Paypal Card Fields Adapter', () => {
         <button id="card-field-submit-button">Submit</button>
       `;
 
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
     });
 
     it('should handle submit with validation errors', async () => {
@@ -602,8 +612,8 @@ describe('Paypal Card Fields Adapter', () => {
       const submitButton = document.getElementById('card-field-submit-button') as HTMLButtonElement;
       submitButton.click();
 
-      // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Flush async operations
+      await flushPendingTimers();
 
       // Verify submit was called and rejected with validation error
       expect(mockCardField.submit).toHaveBeenCalled();
@@ -633,8 +643,8 @@ describe('Paypal Card Fields Adapter', () => {
       const submitButton = document.getElementById('card-field-submit-button') as HTMLButtonElement;
       submitButton.click();
 
-      // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Flush async operations
+      await flushPendingTimers();
 
       // Verify submit was attempted
       expect(mockCardField.submit).toHaveBeenCalled();
@@ -670,8 +680,8 @@ describe('Paypal Card Fields Adapter', () => {
       const submitButton = document.getElementById('card-field-submit-button') as HTMLButtonElement;
       submitButton.click();
 
-      // Wait for async operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Flush async operations
+      await flushPendingTimers();
 
       expect(mockNameField.addClass).toHaveBeenCalledWith('invalid');
       expect(mockNumberField.addClass).toHaveBeenCalledWith('invalid');
@@ -703,7 +713,7 @@ describe('Paypal Card Fields Adapter', () => {
     });
 
     it('should emit closeForm$ when cancel button is clicked', async () => {
-      await paypalCardFields.renderCardFields(mockPaymentMethod);
+      await renderAndFlush(mockPaymentMethod);
 
       const closeFormPromise = firstValueFrom(paypalCardFields.closeForm$.pipe(take(1)));
 
