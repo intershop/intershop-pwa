@@ -11,6 +11,7 @@ import { User } from 'ish-core/models/user/user.model';
  */
 @Component({
   selector: 'ish-account-payment-page',
+  standalone: false,
   templateUrl: './account-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

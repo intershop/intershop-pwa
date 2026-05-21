@@ -9,6 +9,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-profile-form',
+  standalone: false,
   templateUrl: './user-profile-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

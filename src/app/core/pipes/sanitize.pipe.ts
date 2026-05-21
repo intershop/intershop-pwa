@@ -1,6 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'ishSanitize', pure: true })
+@Pipe({
+  name: 'ishSanitize',
+  pure: true,
+  standalone: false,
+})
 export class SanitizePipe implements PipeTransform {
   transform(value: string): string {
     return value !== undefined

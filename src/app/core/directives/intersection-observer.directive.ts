@@ -10,6 +10,7 @@ import { IntersectionStatus, fromIntersectionObserver } from './intersection-obs
  */
 @Directive({
   selector: '[ishIntersectionObserver]',
+  standalone: false,
 })
 export class IntersectionObserverDirective implements OnInit {
   @Input() intersectionDebounce = 0;

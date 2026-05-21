@@ -10,6 +10,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-cms-standard-page',
+  standalone: false,
   templateUrl: './cms-standard-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

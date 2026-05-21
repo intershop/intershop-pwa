@@ -10,6 +10,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-product-master-variations',
+  standalone: false,
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

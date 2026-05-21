@@ -11,6 +11,7 @@ import { User } from 'ish-core/models/user/user.model';
  */
 @Component({
   selector: 'ish-account-profile-email-page',
+  standalone: false,
   templateUrl: './account-profile-email-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

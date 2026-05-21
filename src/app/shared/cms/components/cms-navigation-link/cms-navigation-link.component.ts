@@ -6,6 +6,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-navigation-link',
+  standalone: false,
   templateUrl: './cms-navigation-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

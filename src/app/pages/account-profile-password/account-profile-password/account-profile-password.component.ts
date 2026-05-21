@@ -20,6 +20,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  */
 @Component({
   selector: 'ish-account-profile-password',
+  standalone: false,
   templateUrl: './account-profile-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

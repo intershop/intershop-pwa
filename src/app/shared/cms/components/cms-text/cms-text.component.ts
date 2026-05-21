@@ -5,6 +5,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-text',
+  standalone: false,
   templateUrl: './cms-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

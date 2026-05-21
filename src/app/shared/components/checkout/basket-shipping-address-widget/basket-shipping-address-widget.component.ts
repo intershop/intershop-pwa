@@ -18,6 +18,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-basket-shipping-address-widget',
+  standalone: false,
   templateUrl: './basket-shipping-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

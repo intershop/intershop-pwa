@@ -12,6 +12,7 @@ import {
 
 @Component({
   selector: 'ish-account-product-notifications-page',
+  standalone: false,
   templateUrl: './account-product-notifications-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

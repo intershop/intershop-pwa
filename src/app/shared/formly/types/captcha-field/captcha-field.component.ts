@@ -13,6 +13,7 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-captcha-field',
+  standalone: false,
   templateUrl: './captcha-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

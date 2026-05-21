@@ -13,6 +13,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  */
 @Component({
   selector: 'ish-account-profile-email',
+  standalone: false,
   templateUrl: './account-profile-email.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

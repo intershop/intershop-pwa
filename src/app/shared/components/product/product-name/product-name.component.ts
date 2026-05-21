@@ -6,6 +6,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-name',
+  standalone: false,
   templateUrl: './product-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

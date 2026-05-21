@@ -7,6 +7,7 @@ import { CompareFacade } from '../../facades/compare.facade';
 
 @Component({
   selector: 'ish-product-compare-status',
+  standalone: false,
   templateUrl: './product-compare-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

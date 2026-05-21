@@ -76,6 +76,7 @@ export interface ModalOptions extends NgbModalOptions {
  */
 @Component({
   selector: 'ish-modal-dialog',
+  standalone: false,
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

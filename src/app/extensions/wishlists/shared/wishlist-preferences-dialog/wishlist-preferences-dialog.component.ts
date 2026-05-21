@@ -18,6 +18,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-preferences-dialog',
+  standalone: false,
   templateUrl: './wishlist-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -8,6 +8,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisition-detail-page',
+  standalone: false,
   templateUrl: './requisition-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RequisitionContextFacade],

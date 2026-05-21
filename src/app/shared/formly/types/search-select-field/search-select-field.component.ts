@@ -9,6 +9,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 
 @Component({
   selector: 'ish-search-select-field',
+  standalone: false,
   templateUrl: './search-select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

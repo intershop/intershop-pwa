@@ -7,6 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-formly-address-extension-form',
+  standalone: false,
   templateUrl: './formly-address-extension-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

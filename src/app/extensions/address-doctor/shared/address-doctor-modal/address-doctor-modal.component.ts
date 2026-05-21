@@ -20,6 +20,7 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
 
 @Component({
   selector: 'ish-address-doctor-modal',
+  standalone: false,
   templateUrl: './address-doctor-modal.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

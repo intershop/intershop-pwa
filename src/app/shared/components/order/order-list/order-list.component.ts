@@ -25,6 +25,7 @@ export type OrderColumnsType =
  */
 @Component({
   selector: 'ish-order-list',
+  standalone: false,
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -10,6 +10,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
  */
 @Component({
   selector: 'ish-payment-save-checkbox',
+  standalone: false,
   templateUrl: './payment-save-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -11,6 +11,7 @@ import { of } from 'rxjs';
  */
 @Component({
   selector: 'ish-input-addon-wrapper',
+  standalone: false,
   templateUrl: './input-addon-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

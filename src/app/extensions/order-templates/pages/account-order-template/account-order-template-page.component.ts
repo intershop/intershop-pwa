@@ -8,6 +8,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
 
 @Component({
   selector: 'ish-account-order-template-page',
+  standalone: false,
   templateUrl: './account-order-template-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

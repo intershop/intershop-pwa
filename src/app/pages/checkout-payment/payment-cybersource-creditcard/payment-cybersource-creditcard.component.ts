@@ -25,6 +25,7 @@ declare let Flex: any;
 
 @Component({
   selector: 'ish-payment-cybersource-creditcard',
+  standalone: false,
   templateUrl: './payment-cybersource-creditcard.component.html',
   styleUrls: ['./payment-cybersource-creditcard.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,

@@ -12,6 +12,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-buyer-edit-dialog',
+  standalone: false,
   templateUrl: './cost-center-buyer-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

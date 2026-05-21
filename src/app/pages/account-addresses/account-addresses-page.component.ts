@@ -9,6 +9,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  *
  */
 @Component({
+  standalone: false,
   templateUrl: './account-addresses-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

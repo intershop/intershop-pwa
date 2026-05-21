@@ -5,6 +5,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-dialog',
+  standalone: false,
   templateUrl: './cms-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

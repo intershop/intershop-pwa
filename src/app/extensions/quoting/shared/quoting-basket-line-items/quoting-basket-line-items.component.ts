@@ -10,6 +10,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
 
 @Component({
   selector: 'ish-quoting-basket-line-items',
+  standalone: false,
   templateUrl: './quoting-basket-line-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

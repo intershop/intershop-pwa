@@ -10,6 +10,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-cookies-modal',
+  standalone: false,
   templateUrl: './cookies-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

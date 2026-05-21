@@ -18,6 +18,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
  */
 @Component({
   selector: 'ish-basket-validation-results',
+  standalone: false,
   templateUrl: './basket-validation-results.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

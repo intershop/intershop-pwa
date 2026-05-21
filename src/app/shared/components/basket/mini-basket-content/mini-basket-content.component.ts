@@ -8,6 +8,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 
 @Component({
   selector: 'ish-mini-basket-content',
+  standalone: false,
   templateUrl: './mini-basket-content.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

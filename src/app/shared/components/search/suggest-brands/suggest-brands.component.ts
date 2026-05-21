@@ -9,9 +9,8 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 @Component({
   selector: 'ish-suggest-brands',
-  templateUrl: './suggest-brands.component.html',
-  standalone: true,
   imports: [AsyncPipe, HighlightPipe, RouterLink, SlicePipe, TranslatePipe],
+  templateUrl: './suggest-brands.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestBrandsComponent {

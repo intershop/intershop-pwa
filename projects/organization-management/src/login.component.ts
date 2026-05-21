@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
+  standalone: false,
   template: `
     <div class="container">
       <h1>Organization Management</h1>

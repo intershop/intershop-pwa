@@ -7,6 +7,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
 
 @Component({
   selector: 'ish-requisition-summary',
+  standalone: false,
   templateUrl: './requisition-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

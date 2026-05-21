@@ -8,6 +8,7 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-tooltip-wrapper',
+  standalone: false,
   templateUrl: './tooltip-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

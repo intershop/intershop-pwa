@@ -6,6 +6,7 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
 @Component({
   selector: 'ish-product-promotion',
+  standalone: false,
   templateUrl: './product-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

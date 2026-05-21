@@ -5,6 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 @Component({
   selector: 'ish-formly-testing-container',
+  standalone: false,
   templateUrl: './formly-testing-container.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

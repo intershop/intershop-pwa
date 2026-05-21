@@ -61,6 +61,7 @@ describe('Captcha V3 Component', () => {
 });
 
 @Component({
+  standalone: false,
   template: `<form [formGroup]="form">
     <ish-captcha-v3 [parentForm]="form" /><button type="submit">Submit</button>
   </form>`,

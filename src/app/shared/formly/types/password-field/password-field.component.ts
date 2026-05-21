@@ -15,6 +15,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-password-field',
+  standalone: false,
   templateUrl: './password-field.component.html',
   styleUrls: ['./password-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -10,6 +10,7 @@ import { User } from 'ish-core/models/user/user.model';
  */
 @Component({
   selector: 'ish-account-profile-user-page',
+  standalone: false,
   templateUrl: './account-profile-user-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,6 +4,7 @@ import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
 
 @Component({
   selector: 'ish-order-recurrence',
+  standalone: false,
   templateUrl: './order-recurrence.component.html',
   styleUrls: ['./order-recurrence.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

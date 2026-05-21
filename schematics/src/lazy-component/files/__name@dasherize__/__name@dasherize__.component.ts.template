@@ -16,6 +16,7 @@ import type { <%= classify(originalName) %>Component as OriginalComponent } from
 
 @Component({
   selector: '<%= selector %>',
+  standalone: false,
   templateUrl: './<%= dasherize(name) %>.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

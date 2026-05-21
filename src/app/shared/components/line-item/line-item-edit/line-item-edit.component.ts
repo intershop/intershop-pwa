@@ -11,6 +11,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
  */
 @Component({
   selector: 'ish-line-item-edit',
+  standalone: false,
   templateUrl: './line-item-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

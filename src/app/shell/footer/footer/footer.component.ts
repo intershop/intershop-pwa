@@ -7,6 +7,7 @@ import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
  */
 @Component({
   selector: 'ish-footer',
+  standalone: false,
   templateUrl: './footer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

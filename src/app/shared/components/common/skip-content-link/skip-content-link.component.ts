@@ -42,6 +42,7 @@ import { v4 as uuid } from 'uuid';
  */
 @Component({
   selector: 'ish-skip-content-link',
+  standalone: false,
   templateUrl: './skip-content-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

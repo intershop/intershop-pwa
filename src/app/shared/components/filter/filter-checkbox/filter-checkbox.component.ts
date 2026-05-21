@@ -14,6 +14,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-checkbox',
+  standalone: false,
   templateUrl: './filter-checkbox.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

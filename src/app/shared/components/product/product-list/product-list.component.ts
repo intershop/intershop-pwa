@@ -16,6 +16,7 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
  */
 @Component({
   selector: 'ish-product-list',
+  standalone: false,
   templateUrl: './product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

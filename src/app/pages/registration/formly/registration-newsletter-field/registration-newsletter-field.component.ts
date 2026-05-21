@@ -6,6 +6,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-registration-newsletter-field',
+  standalone: false,
   templateUrl: './registration-newsletter-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

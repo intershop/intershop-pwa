@@ -15,6 +15,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-form',
+  standalone: false,
   templateUrl: './cost-center-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

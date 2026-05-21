@@ -8,6 +8,7 @@ import { DeviceType, HeaderType, headerTypes } from 'ish-core/models/viewtype/vi
 
 @Component({
   selector: 'ish-header',
+  standalone: false,
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

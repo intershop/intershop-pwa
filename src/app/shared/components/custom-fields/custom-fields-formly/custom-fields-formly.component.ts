@@ -20,6 +20,7 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-custom-fields-formly',
+  standalone: false,
   templateUrl: './custom-fields-formly.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

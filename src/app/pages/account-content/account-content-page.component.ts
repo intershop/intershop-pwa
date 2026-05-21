@@ -8,6 +8,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-account-content-page',
+  standalone: false,
   templateUrl: './account-content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

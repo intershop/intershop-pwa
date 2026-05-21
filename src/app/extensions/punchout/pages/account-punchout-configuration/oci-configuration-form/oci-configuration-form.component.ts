@@ -13,6 +13,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
 
 @Component({
   selector: 'ish-oci-configuration-form',
+  standalone: false,
   templateUrl: './oci-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

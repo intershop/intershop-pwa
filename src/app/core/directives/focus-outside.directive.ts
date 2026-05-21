@@ -5,6 +5,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
  */
 @Directive({
   selector: '[ishFocusOutside]',
+  standalone: false,
 })
 export class FocusOutsideDirective {
   constructor(private elementRef: ElementRef) {}

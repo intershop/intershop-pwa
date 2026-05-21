@@ -20,6 +20,7 @@ import { RoleToggleService } from 'ish-core/utils/role-toggle/role-toggle.servic
  */
 @Directive({
   selector: '[ishHasNotRole]',
+  standalone: false,
 })
 export class NotRoleToggleDirective {
   private roleId$ = new BehaviorSubject<string | string[]>(undefined);

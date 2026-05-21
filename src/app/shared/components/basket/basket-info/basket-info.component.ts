@@ -13,6 +13,7 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
  */
 @Component({
   selector: 'ish-basket-info',
+  standalone: false,
   templateUrl: './basket-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

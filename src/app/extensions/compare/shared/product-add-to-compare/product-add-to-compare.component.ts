@@ -11,6 +11,7 @@ import { CompareFacade } from '../../facades/compare.facade';
  */
 @Component({
   selector: 'ish-product-add-to-compare',
+  standalone: false,
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
