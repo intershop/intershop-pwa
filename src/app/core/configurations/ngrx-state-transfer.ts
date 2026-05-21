@@ -11,26 +11,30 @@ export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
 const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
 
-let transferredState: object;
-
-const hydratedFeatures = new Set<string>();
+let transferredState: Record<string, unknown>;
 
 /**
- * meta reducer for overriding client side state if supplied by server
+ * Meta reducer for hydrating server side state on the client side if supplied by SSR.
+ * Initially (STATE_ACTION_TYPE) all already registered slices are hydrated, then removed from the transferred state.
+ * On subsequent updates (UPDATE), only features that are still in the transferred state are applied, then removed from the transferred state.
+ * This allows to apply the transferred state in parts and only once, e.g. as features are loaded, and prevents transferred state from being lost if the store is updated before a feature is loaded.
  */
 export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
-  return (state: CoreState, action: Action & { payload: object; features: string[] }) => {
+  return (state: CoreState, action: Action & { payload: Record<string, unknown>; features: string[] }) => {
     if (action.type === STATE_ACTION_TYPE) {
-      transferredState = action.payload;
-      return mergeDeep(state, transferredState);
+      // keep a mutable copy — slices are removed as they're applied
+      transferredState = { ...action.payload };
+      const registered = Object.keys(state ?? {});
+      const applicable = pick(transferredState, ...registered);
+      registered.forEach(k => delete transferredState[k]);
+      return mergeDeep(state, applicable);
     }
-    if (action.type === UPDATE && transferredState) {
-      // only re-apply transferred state for features being registered for the first time
-      // subsequent re-registrations must not overwrite state that was updated client-side after hydration
-      const newFeatures = action.features?.filter(f => !hydratedFeatures.has(f)) ?? [];
-      action.features?.forEach(f => hydratedFeatures.add(f));
-      if (newFeatures.length) {
-        return reducer({ ...state, ...pick(transferredState, ...newFeatures) }, action);
+    if (action.type === UPDATE && transferredState && Object.keys(transferredState).length) {
+      const newFeatures = action.features ?? [];
+      const applicable = pick(transferredState, ...newFeatures);
+      if (Object.keys(applicable).length) {
+        newFeatures.forEach(k => delete transferredState[k]);
+        return reducer({ ...state, ...applicable }, action);
       }
     }
     return reducer(state, action);
