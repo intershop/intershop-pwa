@@ -19,7 +19,7 @@ const searchPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(searchPageRoutes), SearchBoxComponent, SharedModule],
   declarations: [SearchNoResultComponent, SearchPageComponent, SearchResultComponent],
+  imports: [RouterModule.forChild(searchPageRoutes), SearchBoxComponent, SharedModule],
 })
 export class SearchPageModule {}

@@ -89,6 +89,7 @@ const checkoutPageRoutes: Routes = [
 ];
 
 @NgModule({
+  declarations: [CheckoutPageComponent, CheckoutProgressBarComponent],
   imports: [
     CheckoutAddressPageModule,
     CheckoutPaymentPageModule,
@@ -98,6 +99,5 @@ const checkoutPageRoutes: Routes = [
     RouterModule.forChild(checkoutPageRoutes),
     SharedModule,
   ],
-  declarations: [CheckoutPageComponent, CheckoutProgressBarComponent],
 })
 export class CheckoutPageModule {}

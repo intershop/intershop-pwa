@@ -27,6 +27,7 @@ const wrapperComponents = [
 ];
 
 @NgModule({
+  declarations: [...wrapperComponents],
   imports: [
     CommonModule,
     ComponentsModule,
@@ -45,7 +46,6 @@ const wrapperComponents = [
       ],
     }),
   ],
-  declarations: [...wrapperComponents],
   exports: [...wrapperComponents],
 })
 export class WrappersModule {}

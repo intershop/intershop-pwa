@@ -16,12 +16,6 @@ import { PaymentParameterFormComponent } from './payment-parameter-form/payment-
 import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/payment-payone-creditcard.component';
 
 @NgModule({
-  imports: [
-    FormlyModule.forChild({
-      extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
-    }),
-    SharedModule,
-  ],
   declarations: [
     CheckoutPaymentComponent,
     CheckoutPaymentPageComponent,
@@ -33,6 +27,12 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
     PaymentParameterFormComponent,
     PaymentPayoneCreditcardComponent,
     PaymentSaveCheckboxComponent,
+  ],
+  imports: [
+    FormlyModule.forChild({
+      extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
+    }),
+    SharedModule,
   ],
 })
 export class CheckoutPaymentPageModule {

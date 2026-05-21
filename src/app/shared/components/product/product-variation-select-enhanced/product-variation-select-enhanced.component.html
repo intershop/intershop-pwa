@@ -47,7 +47,7 @@
     ></span>
   }
   @if (group.attributeType === 'defaultAndSwatchImage') {
-    <img class="image-swatch" alt="{{ option.label }}" [src]="option.metaData" />
+    <img alt="{{ option.label }}" class="image-swatch" [src]="option.metaData" />
   }
   <span class="label" [ngClass]="{ selected: option.active }"
     >{{ option.label }}

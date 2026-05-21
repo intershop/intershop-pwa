@@ -31,12 +31,12 @@ const orderHistoryFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
+  declarations: [AccountOrderFiltersComponent, AccountOrderHistoryPageComponent, AccountOrderSelectBuyerFieldComponent],
   imports: [
     OrganizationManagementExportsModule,
     FormlyModule.forChild(orderHistoryFormlyConfig),
     RouterModule.forChild(routes),
     SharedModule,
   ],
-  declarations: [AccountOrderFiltersComponent, AccountOrderHistoryPageComponent, AccountOrderSelectBuyerFieldComponent],
 })
 export class AccountOrderHistoryPageModule {}

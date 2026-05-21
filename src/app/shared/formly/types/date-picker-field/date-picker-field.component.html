@@ -24,9 +24,9 @@
     aria-haspopup="dialog"
     class="input-group-text btn btn-secondary mb-0 me-0"
     data-testing-id="btn-date-picker"
+    title="{{ 'checkout.shipping.calendar.title' | translate }}"
     type="button"
     [disabled]="props.disabled"
-    title="{{ 'checkout.shipping.calendar.title' | translate }}"
     (click)="d.toggle()"
   >
     <i class="bi bi-calendar-event-fill text-primary"></i>

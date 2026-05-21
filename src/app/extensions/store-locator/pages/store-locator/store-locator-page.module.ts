@@ -9,7 +9,7 @@ import { StoreLocatorPageComponent } from './store-locator-page.component';
 const storeLocatorPageRoutes: Routes = [{ path: '', component: StoreLocatorPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(storeLocatorPageRoutes), StoreLocatorModule, StoreLocatorStoreModule],
   declarations: [StoreLocatorPageComponent],
+  imports: [RouterModule.forChild(storeLocatorPageRoutes), StoreLocatorModule, StoreLocatorStoreModule],
 })
 export class StoreLocatorPageModule {}

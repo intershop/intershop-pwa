@@ -9,7 +9,7 @@ import { AccountRecurringOrderPageComponent } from './account-recurring-order-pa
 const accountRecurringOrderPageRoutes: Routes = [{ path: '', component: AccountRecurringOrderPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(accountRecurringOrderPageRoutes), SharedModule, SwitchComponent],
   declarations: [AccountRecurringOrderPageComponent],
+  imports: [RouterModule.forChild(accountRecurringOrderPageRoutes), SharedModule, SwitchComponent],
 })
 export class AccountRecurringOrderPageModule {}

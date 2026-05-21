@@ -21,7 +21,7 @@ const loginPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(loginPageRoutes), SharedModule],
   declarations: [LoginPageComponent],
+  imports: [RouterModule.forChild(loginPageRoutes), SharedModule],
 })
 export class LoginPageModule {}

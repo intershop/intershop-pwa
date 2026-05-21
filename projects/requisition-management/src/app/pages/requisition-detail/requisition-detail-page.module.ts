@@ -15,18 +15,18 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
 const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionDetailPageComponent }];
 
 @NgModule({
-  imports: [
-    OrganizationManagementExportsModule,
-    RequisitionManagementModule,
-    RouterModule.forChild(requisitionDetailPageRoutes),
-    SharedModule,
-  ],
   declarations: [
     BudgetBarComponent,
     RequisitionBuyerApprovalComponent,
     RequisitionCostCenterApprovalComponent,
     RequisitionDetailPageComponent,
     RequisitionSummaryComponent,
+  ],
+  imports: [
+    OrganizationManagementExportsModule,
+    RequisitionManagementModule,
+    RouterModule.forChild(requisitionDetailPageRoutes),
+    SharedModule,
   ],
 })
 export class RequisitionDetailPageModule {}

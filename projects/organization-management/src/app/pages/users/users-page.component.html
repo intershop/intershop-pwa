@@ -43,10 +43,10 @@
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="remove-user"
-                  type="button"
                   title="{{
                     'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
                   }}"
+                  type="button"
                   (click)="modalDialog.show(user)"
                 >
                   <i class="bi bi-trash-fill"></i>

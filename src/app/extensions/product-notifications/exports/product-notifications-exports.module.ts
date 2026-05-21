@@ -6,7 +6,9 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 import { LazyProductNotificationEditComponent } from './lazy-product-notification-edit/lazy-product-notification-edit.component';
 
 @NgModule({
+  declarations: [LazyProductNotificationEditComponent],
   imports: [FeatureToggleModule],
+  exports: [LazyProductNotificationEditComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -18,7 +20,5 @@ import { LazyProductNotificationEditComponent } from './lazy-product-notificatio
       multi: true,
     },
   ],
-  declarations: [LazyProductNotificationEditComponent],
-  exports: [LazyProductNotificationEditComponent],
 })
 export class ProductNotificationsExportsModule {}

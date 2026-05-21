@@ -8,13 +8,13 @@ import { FormlyTestingExampleComponent } from './formly-testing-example/formly-t
 import { FormlyTestingFieldgroupExampleComponent } from './formly-testing-fieldgroup-example/formly-testing-fieldgroup-example.component';
 
 @NgModule({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  imports: [CommonModule, FormlyModule.forRoot({ formlyForm: FormlyForm } as any), ReactiveFormsModule],
   declarations: [
     FormlyTestingContainerComponent,
     FormlyTestingExampleComponent,
     FormlyTestingFieldgroupExampleComponent,
   ],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  imports: [CommonModule, FormlyModule.forRoot({ formlyForm: FormlyForm } as any), ReactiveFormsModule],
   exports: [FormlyModule, FormlyTestingContainerComponent, FormlyTestingExampleComponent],
 })
 // eslint-disable-next-line ish-custom-rules/project-structure

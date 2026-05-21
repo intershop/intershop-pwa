@@ -11,7 +11,7 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
 const costCenterCreatePageRoutes: Routes = [{ path: '', component: CostCenterCreatePageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(costCenterCreatePageRoutes), SharedModule],
   declarations: [CostCenterCreatePageComponent, CostCenterCsvImportComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(costCenterCreatePageRoutes), SharedModule],
 })
 export class CostCenterCreatePageModule {}

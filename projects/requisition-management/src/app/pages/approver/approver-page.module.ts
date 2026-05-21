@@ -10,7 +10,7 @@ import { ApproverPageComponent } from './approver-page.component';
 const approverPageRoutes: Routes = [{ path: '', component: ApproverPageComponent }];
 
 @NgModule({
-  imports: [RequisitionManagementModule, RouterModule.forChild(approverPageRoutes), SharedModule],
   declarations: [ApproverPageComponent],
+  imports: [RequisitionManagementModule, RouterModule.forChild(approverPageRoutes), SharedModule],
 })
 export class ApproverPageModule {}

@@ -11,7 +11,7 @@ import { UserDetailPageComponent } from './user-detail-page.component';
 const userDetailPageRoutes: Routes = [{ path: '', component: UserDetailPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(userDetailPageRoutes), SharedModule],
   declarations: [UserDetailBudgetComponent, UserDetailPageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(userDetailPageRoutes), SharedModule],
 })
 export class UserDetailPageModule {}

@@ -10,7 +10,7 @@ import { ProductComparePagingComponent } from './product-compare-paging/product-
 const comparePageRoutes: Routes = [{ path: '', component: ComparePageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(comparePageRoutes), SharedModule],
   declarations: [ComparePageComponent, ProductCompareListComponent, ProductComparePagingComponent],
+  imports: [RouterModule.forChild(comparePageRoutes), SharedModule],
 })
 export class ComparePageModule {}
