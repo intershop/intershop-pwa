@@ -58,9 +58,7 @@
           <h2 class="h3 mb-0">{{ 'shopping_cart.items.heading' | translate }}</h2>
           <ish-skip-content-link>
             <ng-container *ishFeature="'quoting'; else elseTemplate">
-              @defer {
-                <ish-quoting-basket-line-items />
-              }
+              <ish-quoting-basket-line-items />
             </ng-container>
             <ng-template #elseTemplate>
               @if (basket) {
@@ -76,24 +74,18 @@
           <div class="button-group clearfix">
             <div class="float-md-start">
               <ng-container *ishFeature="'quoting'">
-                @defer {
-                  <ish-basket-add-to-quote />
-                }
+                <ish-basket-add-to-quote />
               </ng-container>
               <ng-container *ishFeature="'orderTemplates'" />
               @if (basket) {
-                @defer {
-                  <ish-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
-                }
+                <ish-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
               }
             </div>
             <ish-clear-basket cssClass="float-md-end" />
           </div>
         </div>
         <ng-container *ishFeature="'quickorder'">
-          @defer {
-            <ish-direct-order />
-          }
+          <ish-direct-order />
         </ng-container>
 
         <p>
@@ -135,9 +127,7 @@
               {{ 'shopping_cart.proceed_to_checkout.button.label' | translate }}
             </button>
           </div>
-          @defer {
-            <ish-punchout-transfer-basket *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'" />
-          }
+          <ish-punchout-transfer-basket *ishIsAuthorizedTo="'APP_B2B_SEND_PUNCHOUT_BASKET'" />
           <ish-shopping-basket-payment *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']" [basket]="basket" />
         </div>
 
