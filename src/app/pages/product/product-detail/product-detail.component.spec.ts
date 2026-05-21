@@ -414,6 +414,7 @@ describe('Product Detail Component', () => {
     expect(findAllCustomElements(element)).toEqual([
       'ish-product-detail-actions',
       'ish-product-images',
+      'ish-product-rating',
       'ish-product-name',
       'ish-product-brand',
       'ish-product-id',
@@ -426,6 +427,9 @@ describe('Product Detail Component', () => {
       'ish-product-quantity-label',
       'ish-product-quantity',
       'ish-product-add-to-basket',
+      'ish-product-add-to-order-template',
+      'ish-product-add-to-quote',
+      'ish-product-notification-edit',
       'ish-product-warranty',
     ]);
   });

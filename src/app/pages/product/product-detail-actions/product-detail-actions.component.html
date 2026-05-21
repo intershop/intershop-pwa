@@ -5,18 +5,14 @@
         <ng-container *ishFeature="'wishlists'">
           @if (configuration$('addToWishlist') | async) {
             <li [attr.data-testing-id]="'wishlist-' + product.sku">
-              @defer {
-                <ish-product-add-to-wishlist [displayType]="'icon'" />
-              }
+              <ish-product-add-to-wishlist [displayType]="'icon'" />
             </li>
           }
         </ng-container>
         <ng-container *ishFeature="'compare'">
           @if (configuration$('addToCompare') | async) {
             <li [attr.data-testing-id]="'compare-' + product.sku">
-              @defer {
-                <ish-product-send-to-compare />
-              }
+              <ish-product-send-to-compare />
             </li>
           }
         </ng-container>
