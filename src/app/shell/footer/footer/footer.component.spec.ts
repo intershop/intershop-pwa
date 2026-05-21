@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -19,13 +20,17 @@ describe('Footer Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, TranslateModule.forRoot()],
-      providers: [...(RoleToggleModule.forTesting().providers ?? [])],
+      providers: [
+        ...(FeatureToggleModule.forTesting('storeLocator').providers ?? []),
+        ...(RoleToggleModule.forTesting().providers ?? []),
+      ],
     })
       .overrideComponent(FooterComponent, {
         remove: {
           imports: [
             ContentIncludeComponent,
             CopilotComponent,
+            FeatureToggleDirective,
             FeatureTogglePipe,
             ServerHtmlDirective,
             StoreLocatorFooterComponent,
@@ -35,6 +40,7 @@ describe('Footer Component', () => {
           imports: [
             MockComponent(ContentIncludeComponent),
             MockComponent(CopilotComponent),
+            FeatureToggleDirective,
             MockPipe(FeatureTogglePipe, () => false),
             MockDirective(ServerHtmlDirective),
             MockComponent(StoreLocatorFooterComponent),

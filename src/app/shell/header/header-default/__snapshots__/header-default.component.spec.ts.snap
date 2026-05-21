@@ -4,7 +4,11 @@ exports[`Header Default Component should render normal header adequately for des
 <div class="header container desktop" ng-reflect-ng-class="desktop">
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
-    <li class="d-none d-md-block"></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
   </ul>
   <div class="header-utility">
     <a
@@ -79,7 +83,11 @@ exports[`Header Default Component should render normal header adequately for des
 exports[`Header Default Component should render normal header adequately for mobile devices 1`] = `
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <ul class="user-links">
-    <li class="d-none d-md-block"></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
   </ul>
   <div class="header-utility">
     <a
@@ -158,7 +166,11 @@ exports[`Header Default Component should render normal header adequately for tab
 <div class="header container tablet" ng-reflect-ng-class="tablet">
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
-    <li class="d-none d-md-block"></li>
+    <li class="d-none d-md-block">
+      <ish-product-compare-status
+        data-testing-id="compare-status-desktop"
+      ></ish-product-compare-status>
+    </li>
   </ul>
   <div class="header-utility">
     <a

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angu
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ROLE_TOGGLE_IMPORTS } from 'ish-core/role-toggle';
@@ -20,6 +21,7 @@ import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/s
   standalone: true,
   imports: [
     ContentIncludeComponent,
+    FeatureToggleDirective,
     ...ROLE_TOGGLE_IMPORTS,
     ServerHtmlDirective,
     FeatureTogglePipe,

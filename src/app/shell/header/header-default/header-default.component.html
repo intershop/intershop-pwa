@@ -20,19 +20,13 @@
         </li>
       }
       <li *ishFeature="'compare'" class="d-none d-md-block">
-        @defer {
-          <ish-product-compare-status data-testing-id="compare-status-desktop" />
-        }
+        <ish-product-compare-status data-testing-id="compare-status-desktop" />
       </li>
       <li *ishFeature="'quickorder'" class="d-none d-md-block">
-        @defer {
-          <ish-quickorder-link />
-        }
+        <ish-quickorder-link />
       </li>
       <li *ishFeature="'wishlists'" class="d-none d-md-block">
-        @defer {
-          <ish-wishlists-link />
-        }
+        <ish-wishlists-link />
       </li>
     </ul>
   }

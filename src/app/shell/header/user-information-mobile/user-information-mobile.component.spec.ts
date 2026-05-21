@@ -56,52 +56,6 @@ describe('User Information Mobile Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-login-status",
-      ]
-    `);
-  });
-
-  it('should create all deferred feature elements in the component', async () => {
-    TestBed.resetTestingModule();
-
-    await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), UserInformationMobileComponent],
-      providers: [...(FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists').providers ?? [])],
-    })
-      .overrideComponent(UserInformationMobileComponent, {
-        set: {
-          template: `
-            <div class="container user-info-box">
-              <div class="user-info-box-item">{{ 'header.welcome.text' | translate }}</div>
-              <div class="user-info-box-item"><ish-login-status view="full" /></div>
-              <div *ishFeature="'compare'" class="user-info-box-item">
-                <ish-product-compare-status view="full" />
-              </div>
-              <div *ishFeature="'quickorder'" class="user-info-box-item">
-                <ish-quickorder-link />
-              </div>
-              <div *ishFeature="'wishlists'" class="user-info-box-item">
-                <ish-wishlists-link view="full" />
-              </div>
-            </div>
-          `,
-          imports: [
-            FeatureToggleDirective,
-            MockComponent(LoginStatusComponent),
-            MockComponent(ProductCompareStatusComponent),
-            MockComponent(QuickorderLinkComponent),
-            MockComponent(WishlistsLinkComponent),
-            TranslatePipe,
-          ],
-        },
-      })
-      .compileComponents();
-
-    const deferredFixture = TestBed.createComponent(UserInformationMobileComponent);
-    deferredFixture.detectChanges();
-
-    expect(findAllCustomElements(deferredFixture.nativeElement)).toMatchInlineSnapshot(`
-      [
-        "ish-login-status",
         "ish-product-compare-status",
         "ish-quickorder-link",
         "ish-wishlists-link",
