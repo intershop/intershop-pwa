@@ -29,7 +29,15 @@ describe('Products List Component', () => {
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     })
       .overrideComponent(ProductsListComponent, {
-        remove: { imports: [ProductContextDirective, ProductItemComponent, SwiperModule] },
+        remove: {
+          imports: [
+            ProductContextDirective,
+            ProductItemComponent,
+            SwiperModule,
+            DeferredItemComponent,
+            LazyLoadingContentDirective,
+          ],
+        },
         add: {
           imports: [
             MockDirective(ProductContextDirective),
@@ -65,6 +73,17 @@ describe('Products List Component', () => {
 
     expect(element.querySelector('.swiper')).toBeTruthy();
     expect(element.querySelectorAll('.swiper-slide')).toHaveLength(2);
+  });
+
+  it('should render product items directly for server-side rendering', () => {
+    component.productSKUs = ['1', '2'];
+    component.listStyle = 'carousel';
+    component.isServerSideRendering = true;
+    component.ngOnChanges();
+    fixture.detectChanges();
+
+    expect(element.querySelector('swiper')).toBeFalsy();
+    expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {

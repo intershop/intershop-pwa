@@ -1,6 +1,6 @@
 @if (productSKUs$ | async; as products) {
   @if (products.length) {
-    @if (listStyle === 'carousel') {
+    @if (listStyle === 'carousel' && !isServerSideRendering) {
       <div class="product-list">
         <div #swiper class="swiper">
           <div class="swiper-button-prev"></div>

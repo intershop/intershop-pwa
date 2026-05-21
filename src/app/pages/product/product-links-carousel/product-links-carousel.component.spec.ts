@@ -33,7 +33,13 @@ describe('Product Links Carousel Component', () => {
     })
       .overrideComponent(ProductLinksCarouselComponent, {
         remove: {
-          imports: [ProductContextDirective, ProductItemComponent, SwiperModule],
+          imports: [
+            ProductContextDirective,
+            ProductItemComponent,
+            SwiperModule,
+            DeferredItemComponent,
+            LazyLoadingContentDirective,
+          ],
         },
         add: {
           imports: [
@@ -62,6 +68,16 @@ describe('Product Links Carousel Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('.swiper')).toBeTruthy();
+  });
+
+  it('should render product items directly for server-side rendering', () => {
+    component.isServerSideRendering = true;
+
+    fixture.detectChanges();
+
+    expect(element.querySelector('swiper')).toBeFalsy();
+    expect(element.querySelectorAll('ish-product-item')).toHaveLength(3);
+    expect(element.querySelector('.product-list-item').classList.contains('col-lg-3')).toBeTrue();
   });
 
   it('should render all product slides if stocks filtering is off', done => {
