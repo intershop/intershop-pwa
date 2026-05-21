@@ -18,7 +18,7 @@ const contentPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(contentPageRoutes), SharedModule],
   declarations: [ContentPageComponent],
+  imports: [RouterModule.forChild(contentPageRoutes), SharedModule],
 })
 export class ContentPageModule {}

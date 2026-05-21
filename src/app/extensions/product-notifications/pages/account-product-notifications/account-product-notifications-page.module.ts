@@ -17,12 +17,12 @@ const accountProductNotificationsPageRoutes: Routes = [
 ];
 
 @NgModule({
+  declarations: [AccountProductNotificationsListComponent, AccountProductNotificationsPageComponent],
   imports: [
     RouterModule.forChild(accountProductNotificationsPageRoutes),
     NgbNavModule,
     ProductNotificationsModule,
     SharedModule,
   ],
-  declarations: [AccountProductNotificationsListComponent, AccountProductNotificationsPageComponent],
 })
 export class AccountProductNotificationsPageModule {}

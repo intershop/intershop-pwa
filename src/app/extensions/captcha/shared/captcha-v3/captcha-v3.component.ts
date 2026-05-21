@@ -107,8 +107,8 @@ export class CaptchaV3Component implements OnInit, AfterViewInit {
 }
 
 @NgModule({
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
   declarations: [CaptchaV3Component],
+  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,

@@ -8,7 +8,9 @@ import { LazyPunchoutTransferBasketComponent } from './lazy-punchout-transfer-ba
 import { PunchoutProductContextDisplayPropertiesService } from './punchout-product-context-display-properties/punchout-product-context-display-properties.service';
 
 @NgModule({
+  declarations: [LazyPunchoutTransferBasketComponent],
   imports: [FeatureToggleModule],
+  exports: [LazyPunchoutTransferBasketComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -24,7 +26,5 @@ import { PunchoutProductContextDisplayPropertiesService } from './punchout-produ
       multi: true,
     },
   ],
-  declarations: [LazyPunchoutTransferBasketComponent],
-  exports: [LazyPunchoutTransferBasketComponent],
 })
 export class PunchoutExportsModule {}

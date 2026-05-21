@@ -24,6 +24,7 @@ const accountPunchoutCxmlConfigurationPageRoutes: Routes = [
 const wrapperComponents = [CxmlHelpTextWrapperComponent];
 
 @NgModule({
+  declarations: [AccountPunchoutCxmlConfigurationPageComponent, CxmlConfigurationFormComponent, ...wrapperComponents],
   imports: [
     RouterModule.forChild(accountPunchoutCxmlConfigurationPageRoutes),
     PunchoutModule,
@@ -31,6 +32,5 @@ const wrapperComponents = [CxmlHelpTextWrapperComponent];
       wrappers: [{ name: 'cxml-help-text', component: CxmlHelpTextWrapperComponent }],
     }),
   ],
-  declarations: [AccountPunchoutCxmlConfigurationPageComponent, CxmlConfigurationFormComponent, ...wrapperComponents],
 })
 export class AccountPunchoutCxmlConfigurationPageModule {}

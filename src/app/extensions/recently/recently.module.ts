@@ -5,8 +5,8 @@ import { SharedModule } from 'ish-shared/shared.module';
 import { RecentlyViewedComponent } from './shared/recently-viewed/recently-viewed.component';
 
 @NgModule({
-  imports: [SharedModule],
   declarations: [RecentlyViewedComponent],
+  imports: [SharedModule],
   exports: [SharedModule],
 })
 export class RecentlyModule {}

@@ -19,8 +19,6 @@ import { StateManagementModule } from './state-management.module';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
 @NgModule({
-  // exports needed to use the cookie banner in the AppComponent
-  exports: [TranslateModule],
   imports: [
     AppearanceModule,
     ConfigurationModule,
@@ -30,6 +28,8 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
     StateManagementModule,
   ],
+  // exports needed to use the cookie banner in the AppComponent
+  exports: [TranslateModule],
   providers: [
     // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
     // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },

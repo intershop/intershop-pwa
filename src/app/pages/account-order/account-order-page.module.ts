@@ -21,7 +21,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
   declarations: [AccountOrderComponent, AccountOrderPageComponent, AccountOrderToBasketComponent],
+  imports: [RouterModule.forChild(routes), SharedModule],
 })
 export class AccountOrderPageModule {}

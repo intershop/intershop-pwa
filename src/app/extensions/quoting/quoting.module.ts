@@ -17,7 +17,6 @@ import { QuotingBasketLineItemsComponent } from './shared/quoting-basket-line-it
 import { SelectQuoteRequestModalComponent } from './shared/select-quote-request-modal/select-quote-request-modal.component';
 
 @NgModule({
-  imports: [SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,
@@ -33,6 +32,7 @@ import { SelectQuoteRequestModalComponent } from './shared/select-quote-request-
     QuotingBasketLineItemsComponent,
     SelectQuoteRequestModalComponent,
   ],
+  imports: [SharedModule],
   exports: [
     ProductAddToQuoteComponent,
     QuoteEditComponent,

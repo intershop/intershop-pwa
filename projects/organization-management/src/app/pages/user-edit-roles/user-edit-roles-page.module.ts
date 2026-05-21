@@ -10,7 +10,7 @@ import { UserEditRolesPageComponent } from './user-edit-roles-page.component';
 const userEditRolesPageRoutes: Routes = [{ path: '', component: UserEditRolesPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(userEditRolesPageRoutes), SharedModule],
   declarations: [UserEditRolesPageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(userEditRolesPageRoutes), SharedModule],
 })
 export class UserEditRolesPageModule {}

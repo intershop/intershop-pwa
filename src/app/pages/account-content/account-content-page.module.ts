@@ -13,7 +13,7 @@ const accountContentPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(accountContentPageRoutes), SharedModule],
   declarations: [AccountContentPageComponent],
+  imports: [RouterModule.forChild(accountContentPageRoutes), SharedModule],
 })
 export class AccountContentPageModule {}

@@ -99,8 +99,8 @@
               <span>{{ 'account.recurring_order.details.expired.text' | translate }}</span>
             } @else {
               <ish-switch
-                [active]="recurringOrder.active"
                 ariaLabel="{{ 'account.recurring_order.details.switch.aria_label' | translate }}"
+                [active]="recurringOrder.active"
                 [labelActive]="'account.recurring_order.details.active.text' | translate"
                 [labelInactive]="'account.recurring_order.details.inactive.text' | translate"
                 (toggleSwitch)="switchActiveStatus($event)"

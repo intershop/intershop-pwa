@@ -10,7 +10,7 @@ import { UsersPageComponent } from './users-page.component';
 const usersPageRoutes: Routes = [{ path: '', component: UsersPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(usersPageRoutes), SharedModule],
   declarations: [UsersPageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(usersPageRoutes), SharedModule],
 })
 export class UsersPageModule {}

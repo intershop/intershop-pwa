@@ -10,7 +10,7 @@ import { OrganizationSettingsPageComponent } from './organization-settings-page.
 const organizationSettingsPageRoutes: Routes = [{ path: '', component: OrganizationSettingsPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(organizationSettingsPageRoutes), SharedModule],
   declarations: [OrganizationSettingsPageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(organizationSettingsPageRoutes), SharedModule],
 })
 export class OrganizationSettingsPageModule {}

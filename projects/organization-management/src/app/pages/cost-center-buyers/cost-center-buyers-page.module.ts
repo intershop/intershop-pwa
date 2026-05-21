@@ -21,12 +21,12 @@ const formlyConfig: ConfigOption = {
 };
 
 @NgModule({
+  declarations: [CostCenterBuyersPageComponent, CostCenterBuyersRepeatFieldComponent],
   imports: [
     FormlyModule.forChild(formlyConfig),
     OrganizationManagementModule,
     RouterModule.forChild(costCenterBuyersPageRoutes),
     SharedModule,
   ],
-  declarations: [CostCenterBuyersPageComponent, CostCenterBuyersRepeatFieldComponent],
 })
 export class CostCenterBuyersPageModule {}

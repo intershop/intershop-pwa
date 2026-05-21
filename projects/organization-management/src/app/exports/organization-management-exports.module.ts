@@ -6,13 +6,13 @@ import { LazyBuyersSelectComponent } from './lazy-buyers-select/lazy-buyers-sele
 import { LazyCostCenterWidgetComponent } from './lazy-cost-center-widget/lazy-cost-center-widget.component';
 
 @NgModule({
-  imports: [],
   declarations: [
     LazyBudgetInfoComponent,
     LazyBudgetWidgetComponent,
     LazyBuyersSelectComponent,
     LazyCostCenterWidgetComponent,
   ],
+  imports: [],
   exports: [
     LazyBudgetInfoComponent,
     LazyBudgetWidgetComponent,

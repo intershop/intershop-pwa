@@ -10,8 +10,8 @@ import { ValidationMessageComponent } from './validation-message/validation-mess
 const components = [FieldTooltipComponent, ValidationIconsComponent, ValidationMessageComponent];
 
 @NgModule({
-  imports: [CommonModule, NgbPopoverModule, TranslateModule],
   declarations: [...components],
+  imports: [CommonModule, NgbPopoverModule, TranslateModule],
   exports: [...components],
 })
 export class ComponentsModule {}

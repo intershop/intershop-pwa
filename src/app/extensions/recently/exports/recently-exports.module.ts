@@ -6,7 +6,9 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 import { LazyRecentlyViewedComponent } from './lazy-recently-viewed/lazy-recently-viewed.component';
 
 @NgModule({
+  declarations: [LazyRecentlyViewedComponent],
   imports: [FeatureToggleModule],
+  exports: [LazyRecentlyViewedComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -17,7 +19,5 @@ import { LazyRecentlyViewedComponent } from './lazy-recently-viewed/lazy-recentl
       multi: true,
     },
   ],
-  declarations: [LazyRecentlyViewedComponent],
-  exports: [LazyRecentlyViewedComponent],
 })
 export class RecentlyExportsModule {}

@@ -717,7 +717,7 @@ describe('Api Service', () => {
       verify(store.dispatch(anything())).once();
       expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
         [Error Internal] Communication Timeout Error:
-          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+          error: {"headers":{"headers":{},"normalizedNames":{},"lazyUpdate":n...
       `);
     });
 
@@ -734,7 +734,7 @@ describe('Api Service', () => {
       verify(store.dispatch(anything())).once();
       expect(capture(store.dispatch).last()?.[0]).toMatchInlineSnapshot(`
         [Error Internal] Server Error (5xx):
-          error: {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers"...
+          error: {"headers":{"headers":{},"normalizedNames":{},"lazyUpdate":n...
       `);
     });
 

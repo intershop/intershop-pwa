@@ -12,7 +12,6 @@ import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.compo
 const basketPageRoutes: Routes = [{ path: '', component: BasketPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(basketPageRoutes), SharedModule],
   declarations: [
     BasketOrderRecurrenceEditComponent,
     BasketPageComponent,
@@ -20,5 +19,6 @@ const basketPageRoutes: Routes = [{ path: '', component: BasketPageComponent }];
     ShoppingBasketEmptyComponent,
     ShoppingBasketPaymentComponent,
   ],
+  imports: [RouterModule.forChild(basketPageRoutes), SharedModule],
 })
 export class BasketPageModule {}

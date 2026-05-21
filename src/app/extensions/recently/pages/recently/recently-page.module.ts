@@ -21,7 +21,7 @@ const recentlyPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RecentlyModule, RouterModule.forChild(recentlyPageRoutes), RecentlyStoreModule],
   declarations: [RecentlyPageComponent],
+  imports: [RecentlyModule, RouterModule.forChild(recentlyPageRoutes), RecentlyStoreModule],
 })
 export class RecentlyPageModule {}
