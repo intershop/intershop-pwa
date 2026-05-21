@@ -64,6 +64,6 @@ However, browsers and crawlers that do not support JavaScript will still receive
 - [Angular - SSR][angular-ssr]
 
 [angular-deployment]: https://angular.dev/tools/cli/deployment
-[angular-ssr]: https://v18.angular.dev/guide/ssr
+[angular-ssr]: https://v19.angular.dev/guide/ssr
 [concept-building-blocks]: ./pwa-building-blocks.md
 [concept-progressive-web-app]: ./progressive-web-app.md#service-worker

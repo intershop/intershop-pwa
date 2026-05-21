@@ -585,6 +585,5 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     if (this.get('propagateActive')) {
       this.set('propagateActive', () => false);
     }
-    super.ngOnDestroy();
   }
 }

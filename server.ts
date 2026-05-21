@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports, max-lines */
-import { CommonEngine } from '@angular/ssr';
+import { CommonEngine } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';

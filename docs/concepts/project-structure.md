@@ -91,7 +91,7 @@ Optionally additional sub folders for module-scoped artifacts are allowed:
 
 ## Modules
 
-As [Angular Modules](https://v18.angular.dev/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
+As [Angular Modules](https://v19.angular.dev/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
 The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates.
 It has little to do with the bundling of lazy-loaded modules when a production-ready ahead-of-time build is executed.
 

@@ -25,7 +25,7 @@ See [Using State Transfer in Angular 17 SSR](https://medium.com/@saikiranmadduku
 
 Follow the steps in [Guide - Getting Started](../guides/getting-started.md) to build and run the application in SSR mode.
 
-Official documentation for Angular SSR can be found at [Angular SSR Guide](https://v18.angular.dev/guide/ssr).
+Official documentation for Angular SSR can be found at [Angular SSR Guide](https://v19.angular.dev/guide/ssr).
 
 ## robots.txt
 

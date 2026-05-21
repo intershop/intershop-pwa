@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule, TransferState } from '@angular/core';
+import { NgModule, TransferState, inject, provideAppInitializer } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
@@ -21,8 +21,6 @@ import { storeDevtoolsModule } from './store/store-devtools.module';
     ShoppingStoreModule,
     storeDevtoolsModule, // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
   ],
-  providers: [
-    { provide: APP_INITIALIZER, useFactory: ngrxStateTransfer, deps: [TransferState, Store, Actions], multi: true },
-  ],
+  providers: [provideAppInitializer(() => ngrxStateTransfer(inject(TransferState), inject(Store), inject(Actions))())],
 })
 export class StateManagementModule {}
