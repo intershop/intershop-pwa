@@ -6,6 +6,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 
 @Component({
   selector: 'ish-payment-parameter-form',
+  standalone: false,
   templateUrl: './payment-parameter-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

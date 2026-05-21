@@ -11,6 +11,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  */
 @Component({
   selector: 'ish-product-add-to-quote',
+  standalone: false,
   templateUrl: './product-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

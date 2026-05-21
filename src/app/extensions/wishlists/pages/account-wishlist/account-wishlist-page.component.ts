@@ -8,6 +8,7 @@ import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-account-wishlist-page',
+  standalone: false,
   templateUrl: './account-wishlist-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

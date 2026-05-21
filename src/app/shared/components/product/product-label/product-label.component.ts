@@ -8,6 +8,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  */
 @Component({
   selector: 'ish-product-label',
+  standalone: false,
   templateUrl: './product-label.component.html',
   styleUrls: ['./product-label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

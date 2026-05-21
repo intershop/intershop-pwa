@@ -17,9 +17,8 @@ import { Image, ImageLoading } from 'ish-core/models/image/image.model';
  */
 @Component({
   selector: 'ish-product-image',
-  templateUrl: './product-image.component.html',
-  standalone: true,
   imports: [CommonModule, RouterLink, TranslatePipe],
+  templateUrl: './product-image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductImageComponent implements OnInit {

@@ -14,6 +14,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  */
 @Component({
   selector: 'ish-direct-order',
+  standalone: false,
   templateUrl: './direct-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],

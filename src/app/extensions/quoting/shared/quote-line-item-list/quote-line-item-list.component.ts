@@ -9,6 +9,7 @@ import { QuoteRequestItem } from '../../models/quoting/quoting.model';
 
 @Component({
   selector: 'ish-quote-line-item-list',
+  standalone: false,
   templateUrl: './quote-line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

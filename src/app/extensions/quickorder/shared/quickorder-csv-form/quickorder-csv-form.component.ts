@@ -17,6 +17,7 @@ import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils
 
 @Component({
   selector: 'ish-quickorder-csv-form',
+  standalone: false,
   templateUrl: './quickorder-csv-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -17,6 +17,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-radio-field',
+  standalone: false,
   templateUrl: './radio-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

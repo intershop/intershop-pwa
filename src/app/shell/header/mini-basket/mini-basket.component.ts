@@ -22,6 +22,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-mini-basket',
+  standalone: false,
   templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

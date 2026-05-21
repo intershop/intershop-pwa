@@ -9,9 +9,8 @@ import { SuggestProductsTileComponent } from 'ish-shared/components/search/sugge
 
 @Component({
   selector: 'ish-suggest-products',
-  templateUrl: './suggest-products.component.html',
-  standalone: true,
   imports: [DirectivesModule, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
+  templateUrl: './suggest-products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsComponent {

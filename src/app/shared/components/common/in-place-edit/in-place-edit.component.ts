@@ -18,9 +18,10 @@ import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'ish-in-place-edit',
+  standalone: false,
   templateUrl: './in-place-edit.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./in-place-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InPlaceEditComponent implements AfterViewInit {
   // localization key, can be used to give the edit-pen icon a more descriptive aria label that describes what will be edited when clicking it

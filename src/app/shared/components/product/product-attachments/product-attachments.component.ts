@@ -6,6 +6,7 @@ import { Attachment } from 'ish-core/models/attachment/attachment.model';
 
 @Component({
   selector: 'ish-product-attachments',
+  standalone: false,
   templateUrl: './product-attachments.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

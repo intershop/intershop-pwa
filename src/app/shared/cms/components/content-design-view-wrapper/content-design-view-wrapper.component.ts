@@ -7,6 +7,7 @@ import { DesignViewService } from 'ish-core/utils/design-view/design-view.servic
 
 @Component({
   selector: 'ish-content-design-view-wrapper',
+  standalone: false,
   templateUrl: './content-design-view-wrapper.component.html',
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

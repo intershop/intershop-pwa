@@ -8,6 +8,7 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-plain-text-field',
+  standalone: false,
   templateUrl: './plain-text-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

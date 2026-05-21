@@ -10,6 +10,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-detail-page',
+  standalone: false,
   templateUrl: './cost-center-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

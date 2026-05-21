@@ -21,6 +21,7 @@ type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
  */
 @Component({
   selector: 'ish-header-default',
+  standalone: false,
   templateUrl: './header-default.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

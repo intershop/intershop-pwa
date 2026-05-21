@@ -21,6 +21,7 @@ import { ProductAddToQuoteDialogComponent } from '../product-add-to-quote-dialog
  */
 @Component({
   selector: 'ish-select-quote-request-modal',
+  standalone: false,
   templateUrl: './select-quote-request-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

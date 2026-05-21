@@ -13,6 +13,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-product-list-paging',
+  standalone: false,
   templateUrl: './product-list-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

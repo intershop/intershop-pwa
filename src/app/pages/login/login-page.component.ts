@@ -10,6 +10,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  * The Login Page Container displays the login page component {@link LoginPageComponent} as wrapper for the login form
  */
 @Component({
+  standalone: false,
   templateUrl: './login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

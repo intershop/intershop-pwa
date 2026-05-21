@@ -15,6 +15,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-dropdown',
+  standalone: false,
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

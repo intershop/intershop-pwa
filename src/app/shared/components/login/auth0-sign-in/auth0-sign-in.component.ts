@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ish-auth0-sign-in',
+  standalone: false,
   templateUrl: './auth0-sign-in.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

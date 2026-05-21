@@ -13,6 +13,7 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
  */
 @Component({
   selector: 'ish-breadcrumb',
+  standalone: false,
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

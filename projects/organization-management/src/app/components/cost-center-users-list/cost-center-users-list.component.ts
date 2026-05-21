@@ -16,6 +16,7 @@ type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' 
  */
 @Component({
   selector: 'ish-cost-center-users-list',
+  standalone: false,
   templateUrl: './cost-center-users-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

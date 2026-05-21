@@ -9,6 +9,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-edit-profile-page',
+  standalone: false,
   templateUrl: './user-edit-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

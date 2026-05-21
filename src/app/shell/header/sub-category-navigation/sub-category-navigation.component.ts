@@ -11,6 +11,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-sub-category-navigation',
+  standalone: false,
   templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

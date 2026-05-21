@@ -26,6 +26,7 @@ import { AbstractControl } from '@angular/forms';
  */
 @Directive({
   selector: '[ishShowFormFeedback]',
+  standalone: false,
 })
 export class ShowFormFeedbackDirective {
   /**

@@ -21,6 +21,7 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
  */
 @Component({
   selector: 'ish-content-slot',
+  standalone: false,
   templateUrl: './content-slot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

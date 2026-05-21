@@ -14,6 +14,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
  */
 @Component({
   selector: 'ish-requisition-reject-dialog',
+  standalone: false,
   templateUrl: './requisition-reject-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

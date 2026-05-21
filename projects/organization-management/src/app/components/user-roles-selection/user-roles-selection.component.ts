@@ -15,6 +15,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-user-roles-selection',
+  standalone: false,
   templateUrl: './user-roles-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

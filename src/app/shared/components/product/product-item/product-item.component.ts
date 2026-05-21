@@ -13,6 +13,7 @@ export type ProductItemDisplayType = 'tile' | 'row';
  */
 @Component({
   selector: 'ish-product-item',
+  standalone: false,
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

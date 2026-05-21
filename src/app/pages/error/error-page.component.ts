@@ -6,6 +6,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-error-page',
+  standalone: false,
   templateUrl: './error-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

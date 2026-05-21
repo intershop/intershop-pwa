@@ -13,6 +13,7 @@ import { SelectOrderTemplateModalComponent } from '../../shared/select-order-tem
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
+  standalone: false,
   templateUrl: './account-order-template-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

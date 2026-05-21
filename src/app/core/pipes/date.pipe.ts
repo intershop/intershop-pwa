@@ -30,7 +30,11 @@ export function formatISHDate(
  * as string: '01 Jan 1970 00:00:00 GMT'
  * other parameters see also angular date pipe
  */
-@Pipe({ name: 'ishDate', pure: true })
+@Pipe({
+  name: 'ishDate',
+  pure: true,
+  standalone: false,
+})
 export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 

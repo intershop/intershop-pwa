@@ -31,6 +31,7 @@ import {
  */
 @Component({
   selector: 'ish-captcha-v3',
+  standalone: false,
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,6 +4,7 @@ import { Filter } from 'ish-core/models/filter/filter.model';
 
 @Component({
   selector: 'ish-filter-collapsible',
+  standalone: false,
   templateUrl: './filter-collapsible.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
