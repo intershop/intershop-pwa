@@ -9,6 +9,18 @@ kb_sync_latest_only
 
 ## From 11.1.0 to 12.0.0
 
+**Angular 19 upgrade**
+
+With Intershop PWA 12.0.0, the project was updated to Angular 19 (including the Angular CLI, CDK, and SSR).
+Companion libraries have been updated to their Angular 19 compatible versions as well.
+
+In Angular 19, components, directives, and pipes are standalone by default.
+Since the PWA still relies on NgModule-based declarations, the `standalone: false` attribute had to be added to all components, directives, and pipes that are not standalone yet.
+The declaration as `standalone: true` is now the default and therefore removed from the existing standalone components.
+This additional configuration will be required for any custom or overridden components, directives, and pipes in projects too.
+
+For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3)
+
 **Swiper 12 upgrade**
 
 Swiper has been upgraded from version 8 to 12.

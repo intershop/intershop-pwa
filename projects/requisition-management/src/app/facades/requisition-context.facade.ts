@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { RxState } from '@rx-angular/state';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
@@ -17,16 +17,13 @@ import {
 } from '../store/requisitions';
 
 @Injectable()
-export class RequisitionContextFacade
-  extends RxState<{
-    id: string;
-    loading: boolean;
-    error: HttpError;
-    entity: Requisition;
-    view: 'buyer' | 'approver';
-  }>
-  implements OnDestroy
-{
+export class RequisitionContextFacade extends RxState<{
+  id: string;
+  loading: boolean;
+  error: HttpError;
+  entity: Requisition;
+  view: 'buyer' | 'approver';
+}> {
   constructor(private store: Store) {
     super();
 

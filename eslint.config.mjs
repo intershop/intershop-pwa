@@ -112,7 +112,8 @@ export default defineConfig([
         },
       ],
       '@angular-eslint/prefer-output-readonly': 'warn',
-      '@angular-eslint/sort-ngmodule-metadata-arrays': 'warn',
+      '@angular-eslint/sort-keys-in-type-decorator': 'warn',
+      '@angular-eslint/prefer-standalone': 'off',
 
       // NgRx best practices
       ...ngrx.configs.store.rules,
@@ -121,6 +122,7 @@ export default defineConfig([
       ...ngrx.configs.operators.rules,
       '@ngrx/avoid-combining-selectors': 'off',
       '@ngrx/avoid-mapping-selectors': 'off',
+      '@ngrx/avoid-cyclic-effects': 'warn',
       '@ngrx/no-multiple-actions-in-effects': 'off',
       '@ngrx/no-store-subscription': 'off',
       '@ngrx/prefer-effect-callback-in-block-statement': 'off',
@@ -1114,7 +1116,7 @@ export default defineConfig([
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
       '@angular-eslint/template/button-has-type': 'warn',
-      '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 10 }],
+      '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
