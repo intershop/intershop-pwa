@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { RxState } from '@rx-angular/state';
 import { Observable } from 'rxjs';
@@ -34,20 +34,17 @@ export const isQuoteValid = (state$: Observable<{ entityAsQuote: Quote }>) =>
   );
 
 @Injectable()
-export abstract class QuoteContextFacade
-  extends RxState<{
-    id: string;
-    loading: boolean;
-    error: HttpError;
-    entity: Quote | QuoteRequest;
-    entityAsQuoteRequest: QuoteRequest;
-    entityAsQuote: Quote;
-    state: QuoteStatus;
-    editable: boolean;
-    justSubmitted: boolean;
-  }>
-  implements OnDestroy
-{
+export abstract class QuoteContextFacade extends RxState<{
+  id: string;
+  loading: boolean;
+  error: HttpError;
+  entity: Quote | QuoteRequest;
+  entityAsQuoteRequest: QuoteRequest;
+  entityAsQuote: Quote;
+  state: QuoteStatus;
+  editable: boolean;
+  justSubmitted: boolean;
+}> {
   constructor(private store: Store) {
     super();
     store.pipe(first()).subscribe(state => {
