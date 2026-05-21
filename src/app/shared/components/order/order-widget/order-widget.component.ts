@@ -12,6 +12,7 @@ import { Order } from 'ish-core/models/order/order.model';
  */
 @Component({
   selector: 'ish-order-widget',
+  standalone: false,
   templateUrl: './order-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -17,6 +17,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',
+  standalone: false,
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

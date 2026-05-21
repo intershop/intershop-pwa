@@ -12,6 +12,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  */
 @Component({
   selector: 'ish-product-rating',
+  standalone: false,
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

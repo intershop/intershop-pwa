@@ -5,6 +5,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation-horizontal',
+  standalone: false,
   templateUrl: './filter-navigation-horizontal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

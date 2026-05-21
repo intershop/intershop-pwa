@@ -18,6 +18,7 @@ export type RequisitionColumnsType =
   | 'actions';
 @Component({
   selector: 'ish-requisitions-list',
+  standalone: false,
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

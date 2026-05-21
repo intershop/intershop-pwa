@@ -20,6 +20,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  */
 @Component({
   selector: 'ish-quickorder-repeat-field',
+  standalone: false,
   templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -13,6 +13,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
  */
 @Component({
   selector: 'ish-language-switch',
+  standalone: false,
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

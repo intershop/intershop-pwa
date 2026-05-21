@@ -32,6 +32,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-content-pagelet',
+  standalone: false,
   templateUrl: './content-pagelet.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -18,18 +18,21 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 
 @Component({
   selector: 'ish-captcha-test-field',
+  standalone: false,
   template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class CaptchaFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-checkbox-test-field',
+  standalone: false,
   template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-fieldset-test-field',
+  standalone: false,
   template: `FieldsetFieldComponent:
     @for (f of field.fieldGroup; track f) {
       <div>
@@ -51,102 +54,119 @@ class FieldsetFieldComponent extends FieldType {
 
 @Component({
   selector: 'ish-radio-test-field',
+  standalone: false,
   template: `RadioFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
 })
 class RadioFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-radio-group-test-field',
+  standalone: false,
   template: 'RadioGroupFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class RadioGroupFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-input-test-field',
+  standalone: false,
   template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class TextInputFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-plain-text-test-field',
+  standalone: false,
   template: 'PlainTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PlainTextFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-html-test-field',
+  standalone: false,
   template: 'HtmlTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class HtmlTextFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-email-test-field',
+  standalone: false,
   template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class EmailFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-phone-test-field',
+  standalone: false,
   template: 'PhoneFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PhoneFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-password-test-field',
+  standalone: false,
   template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PasswordFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-select-test-field',
+  standalone: false,
   template: 'SelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class SelectFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-search-select-test-field',
+  standalone: false,
   template: 'SearchSelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class SearchSelectFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-textarea-test-field',
+  standalone: false,
   template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class TextareaFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-library-test-field',
+  standalone: false,
   template: 'DummyLibraryFieldComponent: {{ field.key }}',
 })
 class DummyLibraryFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-default-field-test-field',
+  standalone: false,
   template: `<ng-template #fieldComponent />`,
 })
 class DummyWrapperComponent extends FieldWrapper {}
 
 @Component({
   selector: 'ish-date-picker-test-field',
+  standalone: false,
   template: 'DatePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class DatePickerFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-date-range-picker-test-field',
+  standalone: false,
   template: 'DateRangePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class DateRangePickerFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-repeat-test-field',
+  standalone: false,
   template: 'RepeatFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class RepeatFieldComponent extends FieldArrayType {}
 
 @Component({
   selector: 'ish-number-test-field',
+  standalone: false,
   template: 'NumberFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class NumberFieldComponent extends FieldType {}

@@ -8,6 +8,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-checkout-review-page',
+  standalone: false,
   templateUrl: './checkout-review-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

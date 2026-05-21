@@ -19,6 +19,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-carousel',
+  standalone: false,
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

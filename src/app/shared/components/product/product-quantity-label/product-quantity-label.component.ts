@@ -5,6 +5,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-quantity-label',
+  standalone: false,
   templateUrl: './product-quantity-label.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

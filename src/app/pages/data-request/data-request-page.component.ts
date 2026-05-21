@@ -9,6 +9,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  */
 @Component({
   selector: 'ish-data-request-page',
+  standalone: false,
   templateUrl: './data-request-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

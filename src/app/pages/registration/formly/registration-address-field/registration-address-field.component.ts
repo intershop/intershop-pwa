@@ -10,6 +10,7 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-registration-address-field',
+  standalone: false,
   templateUrl: './registration-address-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

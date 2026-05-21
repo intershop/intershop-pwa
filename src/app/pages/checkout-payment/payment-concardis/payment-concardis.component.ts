@@ -23,6 +23,7 @@ export type ConcardisErrorMessageType =
 
 @Component({
   selector: 'ish-payment-concardis',
+  standalone: false,
   template: ' ',
   changeDetection: ChangeDetectionStrategy.Default,
 })

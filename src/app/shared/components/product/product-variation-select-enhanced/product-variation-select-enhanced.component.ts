@@ -7,6 +7,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-product-variation-select-enhanced',
+  standalone: false,
   templateUrl: './product-variation-select-enhanced.component.html',
   styleUrls: ['./product-variation-select-enhanced.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

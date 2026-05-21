@@ -10,6 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-swatch-images',
+  standalone: false,
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

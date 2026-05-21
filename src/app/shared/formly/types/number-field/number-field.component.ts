@@ -8,6 +8,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-number-field',
+  standalone: false,
   templateUrl: './number-field.component.html',
   styleUrls: ['./number-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

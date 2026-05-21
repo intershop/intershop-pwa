@@ -15,6 +15,7 @@ declare let PayEngine: any;
 
 @Component({
   selector: 'ish-payment-concardis-creditcard-cvc-detail',
+  standalone: false,
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

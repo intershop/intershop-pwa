@@ -15,6 +15,7 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
  */
 @Component({
   selector: 'ish-captcha-v2',
+  standalone: false,
   templateUrl: './captcha-v2.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

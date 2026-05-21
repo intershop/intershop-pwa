@@ -8,6 +8,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-buyers-select',
+  standalone: false,
   templateUrl: './buyers-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

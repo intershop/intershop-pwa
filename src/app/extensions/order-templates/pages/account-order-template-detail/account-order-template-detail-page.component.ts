@@ -12,6 +12,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
+  standalone: false,
   templateUrl: './account-order-template-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

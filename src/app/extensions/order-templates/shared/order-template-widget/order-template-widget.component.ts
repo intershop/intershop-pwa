@@ -11,6 +11,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
 
 @Component({
   selector: 'ish-order-template-widget',
+  standalone: false,
   templateUrl: './order-template-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

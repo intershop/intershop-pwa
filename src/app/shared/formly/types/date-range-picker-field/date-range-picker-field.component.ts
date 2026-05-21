@@ -39,6 +39,7 @@ function toObservableNumber(days: number | Observable<number>) {
  */
 @Component({
   selector: 'ish-date-range-picker-field',
+  standalone: false,
   templateUrl: './date-range-picker-field.component.html',
   styleUrls: ['./date-range-picker-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

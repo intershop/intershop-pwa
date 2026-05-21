@@ -18,6 +18,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
  */
 @Component({
   selector: 'ish-contact-form',
+  standalone: false,
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

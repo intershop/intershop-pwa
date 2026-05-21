@@ -10,6 +10,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 
 @Component({
   selector: 'ish-order-create-order-template',
+  standalone: false,
   templateUrl: './order-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

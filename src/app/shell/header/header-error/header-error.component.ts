@@ -6,6 +6,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
  */
 @Component({
   selector: 'ish-header-error',
+  standalone: false,
   templateUrl: './header-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

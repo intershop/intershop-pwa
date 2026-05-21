@@ -17,6 +17,7 @@ export type RecurringOrderColumnsType =
 
 @Component({
   selector: 'ish-recurring-order-list',
+  standalone: false,
   templateUrl: './recurring-order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

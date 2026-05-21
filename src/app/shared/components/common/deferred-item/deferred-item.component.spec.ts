@@ -8,6 +8,7 @@ import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-co
 import { DeferredItemComponent } from './deferred-item.component';
 
 @Component({
+  standalone: false,
   template: `
     <ish-deferred-item [cssClass]="cssClass">
       <ng-template ishLazyLoadingContent>

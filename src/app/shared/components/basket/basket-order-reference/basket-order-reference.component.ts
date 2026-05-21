@@ -17,6 +17,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 @Component({
   selector: 'ish-basket-order-reference',
+  standalone: false,
   templateUrl: './basket-order-reference.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

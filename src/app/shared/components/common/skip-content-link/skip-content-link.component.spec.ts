@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SkipContentLinkComponent } from './skip-content-link.component';
 
 @Component({
+  standalone: false,
   template: `
     <ish-skip-content-link [skipToElementId]="skipToElementId">
       <ul></ul>

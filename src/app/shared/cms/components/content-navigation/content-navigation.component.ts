@@ -10,6 +10,7 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
  */
 @Component({
   selector: 'ish-content-navigation',
+  standalone: false,
   templateUrl: './content-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -58,14 +58,14 @@ describe('override Schematic', () => {
   it('should create a dummy component without style file', () => {
     const dummyComponent = appTree.readContent('/src/app/foo/dummy/dummy.component.ts');
     expect(componentDecorator(dummyComponent)).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-dummy', templateUrl: './dummy.component.html', })"`
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', })"`
     );
   });
 
   it('should create a foobar component with style file', () => {
     const foobarComponent = appTree.readContent('/src/app/foo/foobar/foobar.component.ts');
     expect(componentDecorator(foobarComponent)).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-foobar', templateUrl: './foobar.component.html', styleUrls: ['./foobar.component.scss'], })"`
+      `"@Component({ selector: 'ish-foobar', standalone: false, templateUrl: './foobar.component.html', styleUrls: ['./foobar.component.scss'], })"`
     );
   });
 
@@ -109,7 +109,7 @@ describe('override Schematic', () => {
     `);
 
     expect(componentDecorator(appTree.readContent('/src/app/foo/dummy/dummy.component.ts'))).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-dummy', templateUrl: './dummy.component.html', })"`
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', })"`
     );
   });
 
@@ -175,7 +175,7 @@ describe('override Schematic', () => {
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeTrue();
     const dummyComponent = appTree.readContent('/src/app/foo/dummy/dummy.component.ts');
     expect(componentDecorator(dummyComponent)).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-dummy', templateUrl: './dummy.component.html', styleUrls: ['./dummy.component.scss'], })"`
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', styleUrls: ['./dummy.component.scss'], })"`
     );
   });
 

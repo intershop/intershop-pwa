@@ -27,6 +27,7 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
  */
 @Component({
   selector: 'ish-formly-address-form',
+  standalone: false,
   templateUrl: './formly-address-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

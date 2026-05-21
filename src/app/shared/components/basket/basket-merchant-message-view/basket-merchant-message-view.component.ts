@@ -11,6 +11,7 @@ import { Order } from 'ish-core/models/order/order.model';
  */
 @Component({
   selector: 'ish-basket-merchant-message-view',
+  standalone: false,
   templateUrl: './basket-merchant-message-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

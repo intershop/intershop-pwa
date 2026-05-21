@@ -10,6 +10,7 @@ import { CustomFields, CustomFieldsComponentInput } from 'ish-core/models/custom
  */
 @Component({
   selector: 'ish-line-item-custom-fields',
+  standalone: false,
   templateUrl: './line-item-custom-fields.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 
 @Component({
+  standalone: false,
   template: `
     <div>unrelated</div>
     <div *ishIsAuthorizedTo="'DO_THIS'">content1</div>

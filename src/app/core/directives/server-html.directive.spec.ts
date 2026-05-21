@@ -18,6 +18,7 @@ describe('Server Html Directive', () => {
       when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -60,6 +61,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -109,6 +111,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -140,6 +143,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -186,6 +190,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })

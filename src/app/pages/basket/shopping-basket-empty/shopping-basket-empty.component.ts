@@ -4,6 +4,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-shopping-basket-empty',
+  standalone: false,
   templateUrl: './shopping-basket-empty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

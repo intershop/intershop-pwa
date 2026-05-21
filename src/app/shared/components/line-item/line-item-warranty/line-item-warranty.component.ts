@@ -15,6 +15,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-line-item-warranty',
+  standalone: false,
   templateUrl: './line-item-warranty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

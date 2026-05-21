@@ -15,6 +15,7 @@ import { provideNgxMask } from 'ngx-mask';
  */
 @Component({
   selector: 'ish-text-input-field',
+  standalone: false,
   templateUrl: './text-input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNgxMask()],

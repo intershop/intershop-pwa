@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 @Component({
+  standalone: false,
   template: `
     <div>unrelated</div>
     <div *ishFeature="'feature1'; else feature1Else">content1</div>

@@ -10,6 +10,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
  */
 @Component({
   selector: 'ish-line-item-edit-dialog',
+  standalone: false,
   templateUrl: './line-item-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

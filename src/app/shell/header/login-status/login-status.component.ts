@@ -6,6 +6,7 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-login-status',
+  standalone: false,
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

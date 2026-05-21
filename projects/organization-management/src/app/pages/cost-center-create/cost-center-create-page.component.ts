@@ -8,6 +8,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-create-page',
+  standalone: false,
   templateUrl: './cost-center-create-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -6,6 +6,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-checkout-review-tac-field',
+  standalone: false,
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

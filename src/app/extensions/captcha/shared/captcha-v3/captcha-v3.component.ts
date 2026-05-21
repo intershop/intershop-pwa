@@ -23,6 +23,7 @@ import {
  */
 @Component({
   selector: 'ish-captcha-v3',
+  standalone: false,
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -75,8 +76,8 @@ export class CaptchaV3Component implements OnInit {
 }
 
 @NgModule({
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
   declarations: [CaptchaV3Component],
+  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,

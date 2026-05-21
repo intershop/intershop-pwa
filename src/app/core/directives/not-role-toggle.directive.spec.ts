@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
 
 @Component({
+  standalone: false,
   template: `
     <div>unrelated</div>
     <div *ishHasNotRole="'ROLE1'">content1</div>

@@ -22,6 +22,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  */
 @Directive({
   selector: '[ishFeature]',
+  standalone: false,
 })
 export class FeatureToggleDirective {
   private otherTemplateRef: TemplateRef<unknown>;

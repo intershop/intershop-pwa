@@ -7,6 +7,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 @Component({
   selector: 'ish-basket-page',
+  standalone: false,
   templateUrl: './basket-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

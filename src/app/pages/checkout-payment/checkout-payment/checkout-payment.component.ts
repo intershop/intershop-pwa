@@ -34,6 +34,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  */
 @Component({
   selector: 'ish-checkout-payment',
+  standalone: false,
   templateUrl: './checkout-payment.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

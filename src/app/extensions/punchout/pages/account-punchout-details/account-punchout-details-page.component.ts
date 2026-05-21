@@ -8,6 +8,7 @@ import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
 @Component({
   selector: 'ish-account-punchout-details-page',
+  standalone: false,
   templateUrl: './account-punchout-details-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
