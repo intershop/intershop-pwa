@@ -21,8 +21,8 @@
         @if ((basketShippingAddressDeletable$ | async) && (collapseChange | async)) {
           <button
             class="btn-tool btn-link"
-            type="button"
             title="{{ 'checkout.address.delete.button.label' | translate }}"
+            type="button"
             (click)="modalDialog.show(address)"
           >
             <i class="bi bi-trash-fill"></i>

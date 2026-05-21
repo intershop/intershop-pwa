@@ -8,13 +8,13 @@ import { ProductNotificationEditFormComponent } from './shared/product-notificat
 import { ProductNotificationEditComponent } from './shared/product-notification-edit/product-notification-edit.component';
 
 @NgModule({
-  imports: [SharedModule],
   declarations: [
     ProductNotificationDeleteComponent,
     ProductNotificationEditComponent,
     ProductNotificationEditDialogComponent,
     ProductNotificationEditFormComponent,
   ],
+  imports: [SharedModule],
   exports: [ProductNotificationDeleteComponent, ProductNotificationEditComponent],
 })
 export class ProductNotificationsModule {}

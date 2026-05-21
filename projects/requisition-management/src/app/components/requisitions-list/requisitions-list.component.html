@@ -170,22 +170,22 @@
         @if (status === 'PENDING') {
           <button
             class="btn-tool btn-link"
-            type="button"
             title="{{
               'account.requisitions.approvals.approve'
                 | translate: { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
             }}"
+            type="button"
             (click)="approveRequisition(requisition.id)"
           >
             <i class="bi bi-check-lg"></i>
           </button>
           <button
             class="btn-tool btn-link"
-            type="button"
             title="{{
               'account.requisitions.approvals.reject'
                 | translate: { requisitionNo: requisition.requisitionNo || requisition.recurringOrderDocumentNo }
             }}"
+            type="button"
             (click)="openRejectDialog(requisition.id)"
           >
             <i class="bi bi-x"></i>

@@ -6,7 +6,9 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 import { LazyCopilotComponent } from './lazy-copilot/lazy-copilot.component';
 
 @NgModule({
+  declarations: [LazyCopilotComponent],
   imports: [FeatureToggleModule],
+  exports: [LazyCopilotComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -17,7 +19,5 @@ import { LazyCopilotComponent } from './lazy-copilot/lazy-copilot.component';
       multi: true,
     },
   ],
-  declarations: [LazyCopilotComponent],
-  exports: [LazyCopilotComponent],
 })
 export class CopilotExportsModule {}

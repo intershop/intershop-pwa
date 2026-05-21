@@ -8,7 +8,9 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 import { LazyAddressDoctorComponent } from './lazy-address-doctor/lazy-address-doctor.component';
 
 @NgModule({
+  declarations: [LazyAddressDoctorComponent],
   imports: [CommonModule, FeatureToggleModule, TranslateModule],
+  exports: [LazyAddressDoctorComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -19,7 +21,5 @@ import { LazyAddressDoctorComponent } from './lazy-address-doctor/lazy-address-d
       multi: true,
     },
   ],
-  declarations: [LazyAddressDoctorComponent],
-  exports: [LazyAddressDoctorComponent],
 })
 export class AddressDoctorExportsModule {}

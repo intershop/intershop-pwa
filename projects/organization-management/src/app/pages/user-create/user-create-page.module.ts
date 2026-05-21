@@ -11,7 +11,7 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
 const userCreatePageRoutes: Routes = [{ path: '', component: UserCreatePageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(userCreatePageRoutes), SharedModule],
   declarations: [UserCreatePageComponent, UserCsvImportComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(userCreatePageRoutes), SharedModule],
 })
 export class UserCreatePageModule {}

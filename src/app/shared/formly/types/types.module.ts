@@ -55,6 +55,7 @@ const fieldComponents = [
 ];
 
 @NgModule({
+  declarations: [...fieldComponents],
   imports: [
     CaptchaExportsModule,
     CommonModule,
@@ -222,13 +223,12 @@ const fieldComponents = [
       ],
     }),
   ],
+  exports: [...fieldComponents],
   providers: [
     provideNgxMask(),
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
-  declarations: [...fieldComponents],
-  exports: [...fieldComponents],
 })
 export class TypesModule {}

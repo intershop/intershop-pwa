@@ -10,7 +10,7 @@ const maintenancePageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(maintenancePageRoutes), SharedModule],
   declarations: [MaintenancePageComponent],
+  imports: [RouterModule.forChild(maintenancePageRoutes), SharedModule],
 })
 export class MaintenancePageModule {}

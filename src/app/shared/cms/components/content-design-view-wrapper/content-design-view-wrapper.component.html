@@ -20,10 +20,10 @@
           @if (pagelet$ | async; as pagelet) {
             <button
               class="btn"
-              type="button"
               title="{{
                 ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
               }}"
+              type="button"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"
             >
               <i class="bi bi-pencil-fill"></i>
@@ -44,8 +44,8 @@
           <div class="name">{{ pagelet.slot(slotId).displayName }}</div>
           <button
             class="btn"
-            type="button"
             title="{{ 'designview.add.link.title' | translate }}"
+            type="button"
             (click)="triggerAction(slotId, 'slotAdd')"
           >
             <i class="bi bi-plus"></i>
@@ -56,8 +56,8 @@
           <div class="name">{{ include.displayName }}</div>
           <button
             class="btn"
-            type="button"
             title="{{ 'designview.add.link.title' | translate }}"
+            type="button"
             (click)="triggerAction(include.id, 'includeAdd')"
           >
             <i class="bi bi-plus"></i>

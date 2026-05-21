@@ -43,18 +43,17 @@ const ociConfigurationFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
-  imports: [
-    FormlyModule.forChild(ociConfigurationFormlyConfig),
-    RouterModule.forChild(accountPunchoutConfigurationPageRoutes),
-    PunchoutModule,
-  ],
-
   declarations: [
     AccountPunchoutConfigurationPageComponent,
     OciConfigurationFormComponent,
     OciConfigurationMappingRepeatFieldComponent,
     OciConfigurationMappingWrapperComponent,
     OciConfigurationRepeatFieldComponent,
+  ],
+  imports: [
+    FormlyModule.forChild(ociConfigurationFormlyConfig),
+    RouterModule.forChild(accountPunchoutConfigurationPageRoutes),
+    PunchoutModule,
   ],
 })
 export class AccountPunchoutConfigurationPageModule {}

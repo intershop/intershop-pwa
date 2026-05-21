@@ -10,7 +10,7 @@ import { CostCenterDetailPageComponent } from './cost-center-detail-page.compone
 const costCenterDetailPageRoutes: Routes = [{ path: '', component: CostCenterDetailPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(costCenterDetailPageRoutes), SharedModule],
   declarations: [CostCenterDetailPageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(costCenterDetailPageRoutes), SharedModule],
 })
 export class CostCenterDetailPageModule {}

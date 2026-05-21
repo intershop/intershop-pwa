@@ -10,7 +10,7 @@ import { BuyerPageComponent } from './buyer-page.component';
 const buyerPageRoutes: Routes = [{ path: '', component: BuyerPageComponent }];
 
 @NgModule({
-  imports: [RequisitionManagementModule, RouterModule.forChild(buyerPageRoutes), SharedModule],
   declarations: [BuyerPageComponent],
+  imports: [RequisitionManagementModule, RouterModule.forChild(buyerPageRoutes), SharedModule],
 })
 export class BuyerPageModule {}

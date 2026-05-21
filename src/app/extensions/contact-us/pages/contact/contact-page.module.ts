@@ -23,7 +23,7 @@ const contactPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule, ContactUsStoreModule],
   declarations: [ContactConfirmationComponent, ContactFormComponent, ContactPageComponent],
+  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule, ContactUsStoreModule],
 })
 export class ContactPageModule {}

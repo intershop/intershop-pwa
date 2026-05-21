@@ -21,7 +21,7 @@ const importExportModules = [NgbNavModule];
     CheckoutReceiptRequisitionComponent,
     RequisitionWidgetComponent,
   ],
-  exports: [...exportedComponents, ...importExportModules],
   imports: [...importExportModules, RequisitionManagementStoreModule, SharedModule],
+  exports: [...exportedComponents, ...importExportModules],
 })
 export class RequisitionManagementModule {}

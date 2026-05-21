@@ -13,8 +13,8 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
 const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirective];
 
 @NgModule({
-  imports: [CommonModule, DirectivesModule, FeatureToggleModule, ReactiveFormsModule, RouterModule, TranslateModule],
   declarations: [...exportedComponents],
+  imports: [CommonModule, DirectivesModule, FeatureToggleModule, ReactiveFormsModule, RouterModule, TranslateModule],
   exports: [...exportedComponents],
 })
 export class FormsSharedModule {}

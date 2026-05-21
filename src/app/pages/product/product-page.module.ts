@@ -34,7 +34,6 @@ const productPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [NgbNavModule, RouterModule.forChild(productPageRoutes), SharedModule],
   declarations: [
     ProductBrandComponent,
     ProductBundlePartsComponent,
@@ -51,5 +50,6 @@ const productPageRoutes: Routes = [
     ProductPageComponent,
     RetailSetPartsComponent,
   ],
+  imports: [NgbNavModule, RouterModule.forChild(productPageRoutes), SharedModule],
 })
 export class ProductPageModule {}

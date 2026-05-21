@@ -25,7 +25,7 @@ import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [AppComponent],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
+
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -43,13 +43,13 @@ import { ShellModule } from './shell/shell.module';
     WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
-  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
-  bootstrap: [AppComponent],
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
     provideClientHydration(withNoHttpTransferCache()),
   ],
+
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(transferState: TransferState) {

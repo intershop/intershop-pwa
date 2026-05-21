@@ -19,7 +19,7 @@ import { WrappersModule } from './wrappers/wrappers.module';
       },
     }),
     FieldLibraryModule,
-    // eslint-disable-next-line @angular-eslint/sort-ngmodule-metadata-arrays
+
     ExtensionsModule,
     TypesModule,
     WrappersModule,
