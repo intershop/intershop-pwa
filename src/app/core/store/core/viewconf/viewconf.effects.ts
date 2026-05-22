@@ -10,7 +10,7 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
 import { selectRouteData } from 'ish-core/store/core/router';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-import { setBreadcrumbData, setStickyHeader } from './viewconf.actions';
+import { setBreadcrumbData, setBreadcrumbDataFromRouting, setStickyHeader } from './viewconf.actions';
 
 @Injectable()
 export class ViewconfEffects {
@@ -52,7 +52,7 @@ export class ViewconfEffects {
           select(selectRouteData<BreadcrumbItem[]>('breadcrumbData')),
           first(),
           whenTruthy(),
-          map(breadcrumbData => setBreadcrumbData({ breadcrumbData }))
+          map(breadcrumbData => setBreadcrumbDataFromRouting({ breadcrumbData }))
         )
       )
     )
