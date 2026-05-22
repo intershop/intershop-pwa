@@ -21,6 +21,15 @@ This additional configuration will be required for any custom or overridden comp
 
 For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3).
 
+**`ALLOWED_HOSTS` configuration for SSR**
+
+The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
+By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
+For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
+Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
+
+> `URL with hostname "abc.xyz.com" is not allowed.`
+
 **Swiper 12 upgrade**
 
 Swiper has been upgraded from version 8 to 12.

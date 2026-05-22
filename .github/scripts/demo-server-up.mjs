@@ -34,6 +34,7 @@ function main(icm, ssrImage, nginxImage) {
 
   data.services.pwa.image = ssrImage;
   data.services.pwa.environment.ICM_BASE_URL = icm;
+  data.services.pwa.environment.ALLOWED_HOSTS = '*.azurewebsites.net';
 
   data.services.nginx.image = nginxImage;
   data.services.nginx.environment.ICM_BASE_URL = icm;

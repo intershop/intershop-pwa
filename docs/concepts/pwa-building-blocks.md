@@ -92,6 +92,13 @@ Read on for a step-by-step walkthrough of the initial connection request.
 
 7. Once booted up, additional REST calls are directed straight to the ICM, and the PWA acts as a single-page application. No further HTML pages are requested.
 
+> [!IMPORTANT]
+> For production deployments, set the `ALLOWED_HOSTS` environment variable on the [SSR container](../guides/ssr-startup.md) to your public hostname(s) (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
+> By default, only `localhost` is accepted, which will cause SSR to fail for requests with any other `Host` header.
+> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
+
 ## Deployment Without Nginx
 
 Deployment without using nginx is theoretically possible, even though many useful features of an nginx deployment are obviously not available.
