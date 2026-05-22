@@ -25,6 +25,9 @@ footer {
   }
 
   .footer-fix {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: $space-default;
     margin: ($space-default * 2) 0;
 
     .list-inline-item:not(:last-child) {
