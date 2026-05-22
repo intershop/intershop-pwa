@@ -130,6 +130,7 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
 // The Express app is exported so that it can be used by serverless Functions.
+// eslint-disable-next-line complexity
 export function app() {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
@@ -235,6 +236,7 @@ export function app() {
       { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
       { provide: METRICS_DETAIL_LEVEL, useValue: metricsDetailLevel },
     ],
+    allowedHosts: ['localhost', ...(process.env.ALLOWED_HOSTS?.split(',') ?? [])],
   });
 
   const onFinished = require('on-finished');
