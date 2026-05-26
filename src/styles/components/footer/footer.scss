@@ -9,14 +9,14 @@ footer {
   // h4 is obsolete, should use .link-group-heading instead
   h4,
   .link-group-heading {
-    @media (max-width: $screen-md-max) {
-      margin-top: divide($space-default * 2, 3);
-    }
-
     margin-bottom: $space-default;
     font-family: $font-family-condensedbold;
     font-size: 18px;
     text-transform: uppercase;
+
+    @media (max-width: $screen-md-max) {
+      margin-top: divide($space-default * 2, 3);
+    }
   }
 
   .footer-custom {

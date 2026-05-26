@@ -424,6 +424,38 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     }
   );
 
+  // silence Sass @import deprecation warnings (cannot migrate to @use while Bootstrap uses @import)
+  const patchSassLoader = (rules: unknown[]) => {
+    for (const rule of rules) {
+      if (!rule || typeof rule !== 'object') {
+        continue;
+      }
+      const r = rule as Record<string, unknown>;
+      if (Array.isArray(r.rules)) {
+        patchSassLoader(r.rules);
+      }
+      if (Array.isArray(r.use)) {
+        for (const entry of r.use) {
+          if (entry && typeof entry === 'object' && 'loader' in entry) {
+            const loaderEntry = entry as { loader: string; options?: { sassOptions?(...args: unknown[]): object } };
+            if (typeof loaderEntry.loader === 'string' && loaderEntry.loader.includes('sass-loader')) {
+              const origFn = loaderEntry.options?.sassOptions;
+              if (typeof origFn === 'function') {
+                loaderEntry.options.sassOptions = ctx => ({
+                  ...origFn(ctx),
+                  silenceDeprecations: ['import'],
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+  if (config.module?.rules) {
+    patchSassLoader(config.module.rules);
+  }
+
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
     logger.warn('using tsconfig without compile checks');
     if (production) {
