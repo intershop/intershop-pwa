@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { ApplicationRef, Injectable } from '@angular/core';
+import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
@@ -100,33 +101,41 @@ export class ApiTokenService {
     this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
 
     if (!SSR) {
+      const destroyRef = inject(DestroyRef);
+
       // multicast apiTokenCookieChange$ to avoid multiple listeners
       this.cookieChangeEvent$ = this.apiTokenCookieChange$().pipe(shareReplay(1));
 
       // save internal calculated apiToken as cookie whenever apiToken, basket, user or order information changes
-      this.calculateApiTokenCookieValueOnChanges$().subscribe(apiToken => {
-        const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
-        if (cookieContent) {
-          this.cookiesService.put('apiToken', cookieContent, {
-            expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
-            secure: this.cookieOptions?.secure,
-            path: '/',
-          });
-        }
-      });
+      this.calculateApiTokenCookieValueOnChanges$()
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe(apiToken => {
+          const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
+          if (cookieContent) {
+            this.cookiesService.put('apiToken', cookieContent, {
+              expires: this.cookieOptions?.expires ?? new Date(Date.now() + DEFAULT_EXPIRY_TIME),
+              secure: this.cookieOptions?.secure,
+              path: '/',
+            });
+          }
+        });
 
       // remove apiToken cookie on logout
       // path: '/' is added in order to remove cookie within a multi-site configuration (e.g. configured /en, /fr, /de routes)
-      this.logoutUser$().subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
+      this.logoutUser$()
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
 
       // unset apiToken when cookie vanishes/ has been removed unexpectedly and notify public event stream
-      this.tokenVanish$().subscribe(type => {
-        this.removeApiToken();
-        this.cookieVanishes$.next(type);
-      });
+      this.tokenVanish$()
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe(type => {
+          this.removeApiToken();
+          this.cookieVanishes$.next(type);
+        });
 
       // initialize restore$ mechanism when apiToken cookie is created outside of current PWA context (e.g. login in another tab)
-      this.tokenCreatedOnAnotherTab$().subscribe(noop);
+      this.tokenCreatedOnAnotherTab$().pipe(takeUntilDestroyed(destroyRef)).subscribe(noop);
     }
   }
 
