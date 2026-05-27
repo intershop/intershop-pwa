@@ -1310,7 +1310,6 @@ We upgraded from Angular 8 to version 9 and activated the new rendering engine I
 This was a major upgrade and comes with some changes:
 
 - The following changes are available for cherry-picking in one commit:
-
   - Angular no longer supports the previously deprecated string syntax for lazy loaded modules. Change it to the [dynamic import format](https://angular.io/guide/deprecations#loadchildren-string-syntax).
 
   - `server.ts` was partially rewritten to support SSR dev-server and serverless deployments. Building SSR is now supported by Angular CLI and explicit `webpack` builds were removed.
@@ -1322,13 +1321,11 @@ This was a major upgrade and comes with some changes:
   - `angular2-cookie-law` was replaced by `ngx-cookie-banner` for compatibility reasons. This comes with a styling overhaul.
 
 - Further commits contain necessary refactoring:
-
   - `TestBed.get` in tests was deprecated in favor of the new type-safe `TestBed.inject`.
 
   - The empty generic type for NgRx `Store` is now the default and does not have to be supplied. The TSLint rule `ngrx-use-empty-store-type` was adapted to apply this refactoring.
 
   - We removed lazy loading with `@wishtack/reactive-component-loader` and replaced it with the native Angular 9 approach. If you have customized or created extensions, you will have to adapt the following:
-
     - Extension export modules are no longer imported and exported in `SharedModule`, instead export them in `ShellModule`.
 
     - Instead of pointing to the extension module with `ReactiveComponentLoaderModule` in the extension exports module, use the new provider for `LAZY_FEATURE_MODULE` pointing to the _extension store module_, if available. All further lazy loading is done by lazy components and lazy loaded pages. With this, the extension module should no longer import the extension store module.
