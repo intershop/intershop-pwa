@@ -20,7 +20,7 @@ SwiperCore.use([Navigation, Pagination, A11y]);
  * It uses the {@link ProductItemComponent} for the rendering of products.
  *
  * @example
- * <ish-product-links-carousel [links]="links.crossselling" [productLinkTitle]="'product.product_links.crossselling.title' | translate"></ish-product-links-carousel>
+ * <ish-product-links-carousel [links]="links.crossselling" [productLinkTitle]="'product.product_links.crossselling.title' | translate" />
  */
 @Component({
   selector: 'ish-product-links-carousel',

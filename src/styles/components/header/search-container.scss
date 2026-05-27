@@ -299,7 +299,9 @@
     height: 0; // prevent overlaying any other elements
     background: $color-dark;
     opacity: 0;
-    transition: opacity 0.15s linear, visibility 0.15s linear; // similar to bootstrap modal
+    transition:
+      opacity 0.15s linear,
+      visibility 0.15s linear; // similar to bootstrap modal
 
     @media (min-width: $screen-sm) {
       top: 170px;

@@ -1,13 +1,16 @@
 @if (category$ | async; as category) {
-<!-- category with subcategories -->
-@if (category.hasChildren) {
-<ish-category-categories [category]="category" [deviceType]="deviceType$ | async" />
-} @else { @if (category.hasOnlineProducts) {
-<ish-category-products [category]="category" [deviceType]="deviceType$ | async" />
-} }
-<!-- category with products -->
-<!-- empty category without subcategories and without products -->
-@if (!category.hasChildren && !category.hasOnlineProducts) {
-<!-- TODO: decide how to handle empty categories -->
-<h1>{{ category.name }}</h1>
-} }
+  <!-- category with subcategories -->
+  @if (category.hasChildren) {
+    <ish-category-categories [category]="category" [deviceType]="deviceType$ | async" />
+  } @else {
+    @if (category.hasOnlineProducts) {
+      <ish-category-products [category]="category" [deviceType]="deviceType$ | async" />
+    }
+  }
+  <!-- category with products -->
+  <!-- empty category without subcategories and without products -->
+  @if (!category.hasChildren && !category.hasOnlineProducts) {
+    <!-- TODO: decide how to handle empty categories -->
+    <h1>{{ category.name }}</h1>
+  }
+}

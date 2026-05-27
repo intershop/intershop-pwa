@@ -16,7 +16,7 @@ export class ProductVariationSelectEnhancedComponent implements OnInit {
   @Input() uuid: string;
   @Input() multipleOptions: boolean;
 
-  @Output() changeOption = new EventEmitter<{ group: string; value: string }>();
+  @Output() readonly changeOption = new EventEmitter<{ group: string; value: string }>();
 
   deviceType$: Observable<DeviceType>;
 

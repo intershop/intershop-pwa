@@ -45,7 +45,7 @@ describe('Product Price Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      declarations: [MockPipe(PricePipe, (price: Price) => `\$${price.value?.toFixed(2)}`), ProductPriceComponent],
+      declarations: [MockPipe(PricePipe, (price: Price) => `$${price.value?.toFixed(2)}`), ProductPriceComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

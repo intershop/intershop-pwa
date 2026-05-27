@@ -1,43 +1,48 @@
 <div class="section">
   <h2 class="h3">{{ 'quote.items.table.heading' | translate }}</h2>
 </div>
-@if (lineItems$ | async; as lineItems) { @if (lineItems.length) {
-<div class="container">
-  <!-- Line Items Overview -->
-  <div class="row list-header d-none d-md-flex">
-    <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
-      {{ 'shopping_cart.product_description.heading' | translate }}
-    </div>
-    <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable$ | async }">
-      {{ 'shopping_cart.qty.heading' | translate }}
-    </div>
-    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
-    <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
-  </div>
-  <div class="list-body">
-    @for (pli of lineItems; track pli.productSKU) {
-    <ish-quote-line-item-list-element
-      [lineItem]="pli"
-      ishProductContext
-      [allowZeroQuantity]="true"
-      [sku]="pli.productSKU"
-      [quantity]="pli.quantity?.value"
-    />
-    }
-  </div>
-  @if (displayTotal$ | async) {
-  <div class="clearfix section">
-    <div class="row justify-content-end list-body">
-      <div class="col-sm-4 col-md-3 col-lg-2 text-end pe-0">{{ 'quote.items.total.label' | translate }}</div>
-      <div class="col-sm-4 col-md-2 pe-0">
-        <div class="total-price text-end">{{ total$ | async | ishPrice }}</div>
+@if (lineItems$ | async; as lineItems) {
+  @if (lineItems.length) {
+    <div class="container">
+      <!-- Line Items Overview -->
+      <div class="row list-header d-none d-md-flex">
+        <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
+          {{ 'shopping_cart.product_description.heading' | translate }}
+        </div>
+        <div
+          class="col-xl-2 d-none d-xl-flex list-header-item"
+          [ngClass]="{ 'justify-content-end': editable$ | async }"
+        >
+          {{ 'shopping_cart.qty.heading' | translate }}
+        </div>
+        <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>
+        <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
       </div>
+      <div class="list-body">
+        @for (pli of lineItems; track pli.productSKU) {
+          <ish-quote-line-item-list-element
+            ishProductContext
+            [allowZeroQuantity]="true"
+            [lineItem]="pli"
+            [quantity]="pli.quantity?.value"
+            [sku]="pli.productSKU"
+          />
+        }
+      </div>
+      @if (displayTotal$ | async) {
+        <div class="clearfix section">
+          <div class="row justify-content-end list-body">
+            <div class="col-sm-4 col-md-3 col-lg-2 text-end pe-0">{{ 'quote.items.total.label' | translate }}</div>
+            <div class="col-sm-4 col-md-2 pe-0">
+              <div class="total-price text-end">{{ total$ | async | ishPrice }}</div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  } @else {
+    <p class="section">{{ 'quote.items.no_items' | translate }}</p>
   }
-</div>
 } @else {
-<p class="section">{{ 'quote.items.no_items' | translate }}</p>
-} } @else {
-<p class="section">{{ 'quote.items.no_items' | translate }}</p>
+  <p class="section">{{ 'quote.items.no_items' | translate }}</p>
 }

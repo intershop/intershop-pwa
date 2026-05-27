@@ -25,8 +25,8 @@ kb_sync_latest_only
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
 Currently Node.js 22.22.0 LTS with the corresponding npm 10.9.4 is used for development.
 
-The project uses [Angular CLI](https://angular.io/cli) which has to be installed globally.
-Run `npm install -g @angular/cli@17` once to globally install Angular CLI on your development machine.
+The project uses [Angular CLI](https://angular.dev/tools/cli) which has to be installed globally.
+Run `npm install -g @angular/cli@18` once to globally install Angular CLI on your development machine.
 Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 ### Step 1 - Clone the Project
@@ -105,7 +105,7 @@ On the server the _dist/server.js_ script has to be executed with `node`.
 Alternatively, you can use `npm run build client` to get an application using browser rendering.
 All the files under `dist/browser` have to be served statically.
 The server has to be configured for fallback routing,
-see [Server Configuration in Angular Docs](https://angular.io/guide/deployment#server-configuration).
+see [Server Configuration in Angular Docs](https://angular.dev/tools/cli/deployment#server-configuration).
 
 ## Running Tests
 
@@ -127,7 +127,7 @@ Use `npm run format` to perform a formatting run on the code base with Prettier.
 
 ## Type Safety
 
-The Intershop PWA has both TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) and Angular's [`strictTemplates`](https://angular.io/guide/template-typecheck) compile options active to ensure everything is typed correctly.
+The Intershop PWA has both TypeScript's [`noImplicitAny`](https://www.typescriptlang.org/tsconfig#noImplicitAny) and Angular's [`strictTemplates`](https://angular.dev/tools/cli/template-typecheck) compile options active to ensure everything is typed correctly.
 
 Almost everything can be typed correctly without using `any`.
 If generic typing is not possible, you can use `unknown` or `object` for utility functions.
@@ -157,5 +157,7 @@ A list of the available Angular CLI schematics can be fetched with `ng generate 
 ## Further Help
 
 The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers video tutorials on various topics related to PWA.
+
+For the PWA FAQ, refer to [Support Article - PWA FAQ](https://knowledge.intershop.com/kb/index.php/Display/KB0013287) in the Intershop Knowledge Base.
 
 To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).

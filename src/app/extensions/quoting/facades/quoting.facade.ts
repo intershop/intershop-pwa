@@ -26,7 +26,10 @@ interface QuoteEntitiesOptions {
 export class QuotingFacade {
   private isStable$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private store: Store, appRef: ApplicationRef) {
+  constructor(
+    private store: Store,
+    appRef: ApplicationRef
+  ) {
     appRef.isStable.pipe(whenTruthy(), take(1)).subscribe(isStable => this.isStable$.next(isStable));
   }
   loading$ = this.store.pipe(select(getQuotingLoading));

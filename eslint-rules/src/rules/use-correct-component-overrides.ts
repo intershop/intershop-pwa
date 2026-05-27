@@ -19,7 +19,6 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
     docs: {
       description:
         'For component overrides to work correctly, every Component decorator has to point its URLs to the component base files for HTML and SCSS. This rule checks if this is the case. Additionally, if a test is composed for a component override, this rule checks if the correct component files are used (because the override mechanism does not work with jest).',
-      recommended: 'recommended',
       url: '',
     },
     messages,
@@ -67,9 +66,7 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
         },
       };
     } else if (/\.component\.[a-z]+\.spec\.ts$/.test(fileName)) {
-      function getText(node) {
-        return context.sourceCode.getText(node);
-      }
+      const getText = (node: TSESTree.Node) => context.sourceCode.getText(node);
 
       const expectTemplateOverride = fs.existsSync(context.filename.replace(/\.spec\.ts$/, '.html'));
       let hasCorrectTemplateOverride = false;
@@ -130,7 +127,9 @@ const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof message
           methods[`ImportDeclaration[source.value="./${expectedTS}"] > ImportSpecifier`] = (
             node: TSESTree.ImportSpecifier
           ) => {
-            hasCorrectTSOverride = node.imported.name === classifiedBaseName;
+            if (ASTUtils.isIdentifier(node.imported)) {
+              hasCorrectTSOverride = node.imported.name === classifiedBaseName;
+            }
           };
         }
 

@@ -26,10 +26,10 @@ export class ContentPageTreeHelper {
     }
 
     // set element as root if it has just one element in its path
-    const rootIds = element.path && element.path.length === 1 ? [element.contentPageId] : [];
+    const rootIds = element.path?.length === 1 ? [element.contentPageId] : [];
 
     // add edges from elementPath
-    const edges: { [id: string]: string[] } = {};
+    const edges: Record<string, string[]> = {};
     if (element.path && element.path.length >= 2) {
       const path = element.path;
       for (let i = 0; i < path.length - 1; i++) {
@@ -109,9 +109,9 @@ export class ContentPageTreeHelper {
   }
 
   private static mergeEdges(
-    current: { [id: string]: string[] },
-    incoming: { [id: string]: string[] }
-  ): { [id: string]: string[] } {
+    current: Record<string, string[]>,
+    incoming: Record<string, string[]>
+  ): Record<string, string[]> {
     const edges = { ...current };
     Object.keys(incoming).forEach(key => {
       if (current[key]) {
@@ -137,9 +137,9 @@ export class ContentPageTreeHelper {
   }
 
   private static mergeNodes(
-    current: { [id: string]: ContentPageTreeElement },
-    incoming: { [id: string]: ContentPageTreeElement }
-  ): { [id: string]: ContentPageTreeElement } {
+    current: Record<string, ContentPageTreeElement>,
+    incoming: Record<string, ContentPageTreeElement>
+  ): Record<string, ContentPageTreeElement> {
     const nodes = { ...current };
     Object.keys(incoming).forEach(key => {
       nodes[key] = { ...incoming[key] };
@@ -160,14 +160,11 @@ export class ContentPageTreeHelper {
     return t1.length === t2.length && t1.every(e => t2.includes(e));
   }
 
-  private static edgesEqual(t1: { [id: string]: string[] }, t2: { [id: string]: string[] }) {
+  private static edgesEqual(t1: Record<string, string[]>, t2: Record<string, string[]>) {
     return isEqual(t1, t2);
   }
 
-  private static contentEqual(
-    t1: { [id: string]: ContentPageTreeElement },
-    t2: { [id: string]: ContentPageTreeElement }
-  ) {
+  private static contentEqual(t1: Record<string, ContentPageTreeElement>, t2: Record<string, ContentPageTreeElement>) {
     const keys1 = Object.keys(t1);
     const keys2 = Object.keys(t2);
     return (

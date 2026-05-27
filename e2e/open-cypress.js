@@ -24,6 +24,6 @@ cypress.open({
   expose: {
     ICM_BASE_URL: icmBaseUrl,
   },
-  browser: 'chrome' || 'chromium' || 'firefox',
+  browser: 'chrome',
   e2e: true,
 });

@@ -164,9 +164,10 @@ export class PWATranslateCompiler implements TranslateCompiler {
     this.translate();
 
     // This implementation is mutable by intention
-    // eslint-disable-next-line guard-for-in
     for (const key in translations) {
-      translations[key] = this.compile(translations[key] as string);
+      if (Object.hasOwn(translations, key)) {
+        translations[key] = this.compile(translations[key] as string);
+      }
     }
     return translations;
   }

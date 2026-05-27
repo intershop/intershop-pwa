@@ -1,11 +1,11 @@
 <span class="has-feedback">
   @if (showError) {
-  <i class="form-control-feedback bi bi-exclamation-triangle-fill" data-testing-id="exclamation-triangle-icon"></i>
+    <i class="form-control-feedback bi bi-exclamation-triangle-fill" data-testing-id="exclamation-triangle-icon"></i>
   } @else {
-  <span class="has-success">
-    @if (field?.props?.showValidation ? field.props.showValidation(field) : defaultShowValidation()) {
-    <i class="form-control-feedback bi bi-check-lg" data-testing-id="check-icon"></i>
-    }
-  </span>
+    <span class="has-success">
+      @if (field?.props?.showValidation ? field.props.showValidation(field) : defaultShowValidation()) {
+        <i class="form-control-feedback bi bi-check-lg" data-testing-id="check-icon"></i>
+      }
+    </span>
   }
 </span>

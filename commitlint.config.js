@@ -9,7 +9,22 @@ module.exports = {
     'type-enum': [
       2,
       'always',
-      ['feat', 'fix', 'perf', 'docs', 'test', 'i18n', 'style', 'refactor', 'build', 'ci', 'chore', 'temp', 'revert'],
+      [
+        'feat',
+        'fix',
+        'perf',
+        'deps',
+        'docs',
+        'test',
+        'i18n',
+        'style',
+        'refactor',
+        'build',
+        'ci',
+        'chore',
+        'temp',
+        'revert',
+      ],
     ],
   },
   prompt: {
@@ -30,6 +45,11 @@ module.exports = {
             description: 'A code change that improves performance (results in changelog entry)',
             title: 'Performance Improvements',
             emoji: '🚀',
+          },
+          deps: {
+            description: 'Significant changes to dependencies (results in changelog entry)',
+            title: 'Dependencies',
+            emoji: '🧩',
           },
           docs: {
             description: 'Documentation only changes (results in changelog entry)',

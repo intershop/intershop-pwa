@@ -60,6 +60,7 @@ function findPropertyAndReplace(source: SourceFile, expression: Expression<ts.Ex
         } else {
           const identifier = access
             ?.getDescendantsOfKind(SyntaxKind.Identifier)
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             .find(identifier => identifier.getText() === propertyName);
           if (identifier) {
             overwriteProperty(access);
@@ -165,7 +166,6 @@ function overwriteInTemplate(host: Tree, tsFile: string, searchTerm: string) {
     return;
   }
 
-  // eslint-disable-next-line prettier/prettier
   const overwrite = [...PROPERTY_REPLACEMENTS, ...FIELD_TYPE_REPLACEMENTS].reduce(
     (prev, curr) =>
       prev.replace(new RegExp(searchTerm.replace('PLACEHOLDER', curr.search.join('\\.')), 'g'), curr.replace),
@@ -189,14 +189,13 @@ function getUsedImportName(source: SourceFile, importName: string, libraryName: 
       if (node.getModuleSpecifierValue() === libraryName) {
         return node
           .getNamedImports()
-          ?.map(i => (i.getName() === importName ? i.getAliasNode()?.getText() ?? importName : undefined))
+          ?.map(i => (i.getName() === importName ? (i.getAliasNode()?.getText() ?? importName) : undefined))
           .find(i => !!i);
       }
     })
     .find(i => !!i);
 }
 
-/* eslint-disable complexity */
 export function migrateFormly(options: Options): Rule {
   return async host => {
     if (!options.project) {

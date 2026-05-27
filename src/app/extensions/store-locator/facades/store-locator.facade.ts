@@ -7,7 +7,10 @@ import { getError, getHighlightedStore, getLoading, getStores, highlightStore, l
 
 @Injectable({ providedIn: 'root' })
 export class StoreLocatorFacade {
-  constructor(private mapService: StoresMapService, private store: Store) {}
+  constructor(
+    private mapService: StoresMapService,
+    private store: Store
+  ) {}
 
   loadStores(countryCode: string, postalCode: string, city: string) {
     this.store.dispatch(loadStores({ countryCode, postalCode, city }));

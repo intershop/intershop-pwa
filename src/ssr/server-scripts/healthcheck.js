@@ -1,7 +1,7 @@
 // https://docs.docker.com/engine/reference/builder/#healthcheck
 
 if (!process.env['ICM_BASE_URL']) {
-  console.log(`no explicit ICM_BASE_URL set -- skipping healthcheck`);
+  console.log(`no explicit ICM_BASE_URL set -- skipping health check`);
   process.exit(0);
 }
 

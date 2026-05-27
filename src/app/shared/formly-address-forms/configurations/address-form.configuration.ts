@@ -30,8 +30,8 @@ export function addressesFieldConfiguration(
             fieldGroup: addressesFieldConfiguration(key),
           }
         : typeof key === 'string'
-        ? { type: `#${key}` }
-        : key
+          ? { type: `#${key}` }
+          : key
     )
     .filter(x => !!x);
 }

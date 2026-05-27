@@ -14,7 +14,7 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
  *
  * @example
- * <ish-basket-validation-results></ish-basket-validation-results>
+ * <ish-basket-validation-results />
  */
 @Component({
   selector: 'ish-basket-validation-results',
@@ -40,7 +40,7 @@ export class BasketValidationResultsComponent implements OnInit {
 
   constructor(private checkoutFacade: CheckoutFacade) {}
 
-  @Output() continueCheckout = new EventEmitter<void>();
+  @Output() readonly continueCheckout = new EventEmitter<void>();
 
   ngOnInit() {
     // update emitted to display spinning animation

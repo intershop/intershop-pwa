@@ -14,10 +14,10 @@ import { v4 as uuid } from 'uuid';
  *
  * @example
  * <ish-switch
- *   [id]="recurringOrder.id"
- *   [active]="recurringOrder.active"
- *   (toggleSwitch)="switchActiveStatus($event)"
  *   ariaLabel="{{'account.recurring_orders.table.switch.aria_label' | translate : { '0': recurringOrder.documentNo } }}"
+ *   [active]="recurringOrder.active"
+ *   [id]="recurringOrder.id"
+ *   (toggleSwitch)="switchActiveStatus($event)"
  * />
  */
 export class SwitchComponent implements OnChanges {
@@ -30,7 +30,7 @@ export class SwitchComponent implements OnChanges {
   // ariaLabel can be used to provide a label for screen readers (translated text is accepted)
   @Input() ariaLabel = '';
 
-  @Output() toggleSwitch = new EventEmitter<{ active: boolean; id: string }>();
+  @Output() readonly toggleSwitch = new EventEmitter<{ active: boolean; id: string }>();
 
   activeState: boolean;
 

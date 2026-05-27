@@ -13,6 +13,7 @@
   "git.rebaseWhenSync": true,
   "git.autoStash": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "workbench.iconTheme": "vscode-icons",
 
   // stylelint
@@ -32,8 +33,9 @@
   },
 
   // eslint
+  "eslint.useFlatConfig": true,
   "eslint.options": {
-    "extensions": [".ts", ".html"]
+    "overrideConfigFile": "eslint.config.mjs"
   },
   "eslint.validate": ["javascript", "typescript", "html"],
 
@@ -52,5 +54,9 @@
   "prettier.requireConfig": true,
   "github.copilot.enable": {
     "*": true
+  },
+  "cSpell.enabledFileTypes": {
+    "typescript": false,
+    "javascript": false
   }
 }

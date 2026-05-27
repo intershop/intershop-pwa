@@ -1,24 +1,30 @@
-@if (visible$ | async) { @if ({ readyForShipmentMin: readyForShipmentMin$ | async, readyForShipmentMax:
-readyForShipmentMax$ | async }; as product) {
-<div class="ready-for-shipment" data-testing-id="section-productshipping-shortinfo">
-  @if (product.readyForShipmentMin === 0) {
-  {{
-    (product.readyForShipmentMax === 1 ? 'product.ready_for_shipment.within24' : 'product.ready_for_shipment.within')
-      | translate : { '0': product.readyForShipmentMax }
-  }}
-  } @else {
-  {{
-    'product.ready_for_shipment.minmax'
-      | translate : { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
-  }}
+@if (visible$ | async) {
+  @if (
+    { readyForShipmentMin: readyForShipmentMin$ | async, readyForShipmentMax: readyForShipmentMax$ | async };
+    as product
+  ) {
+    <div class="ready-for-shipment" data-testing-id="section-productshipping-shortinfo">
+      @if (product.readyForShipmentMin === 0) {
+        {{
+          (product.readyForShipmentMax === 1
+            ? 'product.ready_for_shipment.within24'
+            : 'product.ready_for_shipment.within'
+          ) | translate: { '0': product.readyForShipmentMax }
+        }}
+      } @else {
+        {{
+          'product.ready_for_shipment.minmax'
+            | translate: { '0': product.readyForShipmentMin, '1': product.readyForShipmentMax }
+        }}
+      }
+      <!-- details link and dialog -->
+      <ish-modal-dialog-link
+        linkText="product.ready_for_shipment.detail.text"
+        [ngClass]="'details-link'"
+        [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate, size: 'lg' }"
+      >
+        <ish-content-include *ishLazyLoadingContent includeId="include.dialog.readyForShipment.pagelet2-Include" />
+      </ish-modal-dialog-link>
+    </div>
   }
-  <!-- details link and dialog -->
-  <ish-modal-dialog-link
-    linkText="product.ready_for_shipment.detail.text"
-    [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate, size: 'lg' }"
-    [ngClass]="'details-link'"
-  >
-    <ish-content-include includeId="include.dialog.readyForShipment.pagelet2-Include" *ishLazyLoadingContent />
-  </ish-modal-dialog-link>
-</div>
-} }
+}

@@ -60,7 +60,7 @@ Scan the page using multiple partially automated accessibility testing tools and
 
 The `@angular-eslint` repository contains a set of linting rules that help to enforce accessibility best practices in Angular component templates.
 
-Most of the accessibility rules enabled in the Intershop PWA are part of the `@angular-eslint/template/accessibility` plugin, which is configured in the project's [.eslintrc.json](../../.eslintrc.json) file.
+Most of the accessibility rules enabled in the Intershop PWA are part of the `@angular-eslint/template/accessibility` plugin, which is configured in the project's [eslint.config.mjs](../../eslint.config.mjs) file.
 To verify whether your custom code adheres to these rules, run `npm run lint`.
 Only a few specific rules that are not included in this plugin are explicitly listed here.
 

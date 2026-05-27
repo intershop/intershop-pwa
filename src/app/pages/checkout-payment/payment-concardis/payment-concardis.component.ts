@@ -27,7 +27,10 @@ export type ConcardisErrorMessageType =
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisComponent implements OnInit, OnChanges {
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {}
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {}
   /**
    * concardis payment method, needed to get configuration parameters
    */
@@ -38,8 +41,8 @@ export class PaymentConcardisComponent implements OnInit, OnChanges {
    */
   @Input() activated = false;
 
-  @Output() cancelPayment = new EventEmitter<void>();
-  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() readonly cancelPayment = new EventEmitter<void>();
+  @Output() readonly submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   /**
    * flag to make sure that the init script is executed only once
@@ -120,7 +123,6 @@ export class PaymentConcardisComponent implements OnInit, OnChanges {
   /**
    * determine errorMessages on the basis of the error code
    */
-  // eslint-disable-next-line complexity
   getErrorMessage(code: number, paymentMethod: string, fieldType: string, defaultMessage: string): string {
     let messageKey: string;
 

@@ -1,29 +1,29 @@
 @if (object) {
-<div>
-  {{ companyName1 }} {{ companyName2 }}
-  @if (taxationID) {
-  <span data-testing-id="taxationID">
-    <br />{{ 'checkout.widget.buyer.TaxationID' | translate }} {{ taxationID }}
-  </span>
-  }
-  <p>
-    {{ userName }}<br />
-    {{ object.email || object.invoiceToAddress?.email }}
-  </p>
-  @if (object.externalOrderReference) {
-  <div data-testing-id="orderReferenceID">
-    @if (editRouterLink) {
-    <a
-      class="float-end btn-tool"
-      [routerLink]="editRouterLink"
-      [title]="'checkout.update.buyer.title' | translate : { '0': 'checkout.widget.buyer.heading' | translate }"
-    >
-      <i class="bi bi-pencil-fill"></i>
-    </a>
+  <div>
+    {{ companyName1 }} {{ companyName2 }}
+    @if (taxationID) {
+      <span data-testing-id="taxationID">
+        <br />{{ 'checkout.widget.buyer.TaxationID' | translate }} {{ taxationID }}
+      </span>
     }
-    <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>
-    <p>{{ object.externalOrderReference }}</p>
+    <p>
+      {{ userName }}<br />
+      {{ object.email || object.invoiceToAddress?.email }}
+    </p>
+    @if (object.externalOrderReference) {
+      <div data-testing-id="orderReferenceID">
+        @if (editRouterLink) {
+          <a
+            class="float-end btn-tool"
+            [routerLink]="editRouterLink"
+            [title]="'checkout.update.buyer.title' | translate: { '0': 'checkout.widget.buyer.heading' | translate }"
+          >
+            <i class="bi bi-pencil-fill"></i>
+          </a>
+        }
+        <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>
+        <p>{{ object.externalOrderReference }}</p>
+      </div>
+    }
   </div>
-  }
-</div>
 }

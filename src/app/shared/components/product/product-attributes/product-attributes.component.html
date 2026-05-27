@@ -1,8 +1,8 @@
 @if (product.attributes?.length) {
-<dl class="product-attributes">
-  @for (attribute of product.attributes | slice : 0 : 1000; track attribute.name) {
-  <dt class="attribute-type">{{ attribute.name }}:</dt>
-  <dd class="attribute-value" [innerHTML]="attribute | ishAttribute : multipleValuesSeparator"></dd>
-  }
-</dl>
+  <dl class="product-attributes">
+    @for (attribute of product.attributes | slice: 0 : 1000; track attribute.name) {
+      <dt class="attribute-type">{{ attribute.name }}:</dt>
+      <dd class="attribute-value" [innerHTML]="attribute | ishAttribute: multipleValuesSeparator"></dd>
+    }
+  </dl>
 }

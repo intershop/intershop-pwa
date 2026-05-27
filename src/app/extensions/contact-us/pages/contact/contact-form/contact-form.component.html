@@ -1,30 +1,30 @@
 <p>{{ 'helpdesk.contactus.prolog' | translate }}</p>
-<p class="indicates-required" aria-hidden="true">
+<p aria-hidden="true" class="indicates-required">
   <span class="required">*</span>{{ 'helpdesk.contactus.indicates' | translate }}
 </p>
 <form
-  [formGroup]="contactForm"
-  ishFormSubmit
   #form="ngForm"
-  (ngSubmit)="submitForm()"
   class="form-horizontal"
+  ishFormSubmit
   novalidate
+  [formGroup]="contactForm"
+  (ngSubmit)="submitForm()"
 >
-  <formly-form [form]="contactForm" [fields]="fields$ | async" [model]="model$ | async" />
+  <formly-form [fields]="fields$ | async" [form]="contactForm" [model]="model$ | async" />
 
   <div class="row form-group">
     <div class="offset-md-4 col-md-8">
       @if (form.submitted && form.invalid) {
-      <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-        {{ 'form.submit.validation.message' | translate }}
-      </div>
+        <div aria-live="polite" class="visually-hidden" id="submit-button-help">
+          {{ 'form.submit.validation.message' | translate }}
+        </div>
       }
       <input
-        type="submit"
         class="btn btn-primary"
+        data-testing-id="submitContact"
+        type="submit"
         [attr.aria-describedby]="form.submitted && form.invalid ? 'submit-button-help' : null"
         value="{{ 'helpdesk.contactus.submit' | translate }}"
-        data-testing-id="submitContact"
       />
     </div>
   </div>

@@ -2,34 +2,34 @@
   <div class="col-md-12">
     <h1>{{ 'account.user.new.heading' | translate }}</h1>
     <form
-      [formGroup]="form"
-      ishFormSubmit
       #userForm="ngForm"
       class="form-horizontal"
+      ishFormSubmit
       novalidate
+      [formGroup]="form"
       (ngSubmit)="submitForm()"
     >
-      <ish-user-profile-form [form]="profile" [error]="userError$ | async" />
+      <ish-user-profile-form [error]="userError$ | async" [form]="profile" />
       <ish-user-roles-selection formControlName="roleIDs" />
       @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-      <ish-user-budget-form [form]="budgetForm" />
+        <ish-user-budget-form [form]="budgetForm" />
       }
       <div class="row">
         <div class="offset-md-4 col-md-8">
           @if (form.invalid && userForm.submitted) {
-          <div id="submit-button-help" aria-live="polite" class="visually-hidden">
-            {{ 'form.submit.validation.message' | translate }}
-          </div>
+            <div aria-live="polite" class="visually-hidden" id="submit-button-help">
+              {{ 'form.submit.validation.message' | translate }}
+            </div>
           }
           <button
-            type="submit"
             class="btn btn-primary"
-            [attr.aria-describedby]="form.invalid && userForm.submitted ? 'submit-button-help' : null"
             data-testing-id="create-user-submit"
+            type="submit"
+            [attr.aria-describedby]="form.invalid && userForm.submitted ? 'submit-button-help' : null"
           >
             {{ 'account.user.new.button.create.label' | translate }}
           </button>
-          <a routerLink="../" class="btn btn-secondary" data-testing-id="create-user-cancel">{{
+          <a class="btn btn-secondary" data-testing-id="create-user-cancel" routerLink="../">{{
             'account.cancel.link' | translate
           }}</a>
         </div>
@@ -37,7 +37,7 @@
     </form>
   </div>
   @if (loading$ | async) {
-  <ish-loading />
+    <ish-loading />
   }
 </div>
 

@@ -14,7 +14,7 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
  * <ish-content-viewcontext
  *   viewContextId="vc_product_detail"
  *   [callParameters]="{ Product: product.sku, Category: category.categoryRef }"
- * ></ish-content-viewcontext>
+ * />
  */
 @Component({
   selector: 'ish-content-viewcontext',
@@ -33,7 +33,10 @@ export class ContentViewcontextComponent implements OnChanges {
 
   viewContextEntrypoint$: Observable<ContentPageletEntryPointView>;
 
-  constructor(private cmsFacade: CMSFacade, private hostElement: ElementRef) {}
+  constructor(
+    private cmsFacade: CMSFacade,
+    private hostElement: ElementRef
+  ) {}
 
   ngOnChanges() {
     this.viewContextEntrypoint$ = this.cmsFacade.viewContext$(

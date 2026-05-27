@@ -11,7 +11,7 @@ import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/
  * Refer to the [`FormlyFieldConfig.validators`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/fieldconfig.ts#L60) type definition for an explanation of the necessary validator format.
  *
  */
-export function formlyValidation<T extends (control: FormControl) => { [error: string]: { valid: boolean } }>(
+export function formlyValidation<T extends (control: FormControl) => Record<string, { valid: boolean }>>(
   name: string,
   validator: T
 ): (control: FormControl) => boolean {
@@ -28,7 +28,7 @@ export class SpecialValidators {
   /**
    * password validator: char + numbers, min length 7
    */
-  static password(control: FormControl): { [error: string]: { valid: boolean } } {
+  static password(control: FormControl): Record<string, { valid: boolean }> {
     const passwordPattern = /^(|(?=[^\s]*[a-zA-Z])(?=[^\s]*[\d])[^\s]*)$/;
     if (!control.value) {
       return;
@@ -36,30 +36,30 @@ export class SpecialValidators {
     return passwordPattern.test(control.value) && control.value.length > 6 ? undefined : { password: { valid: false } };
   }
 
-  static noSpecialChars(control: FormControl): { [error: string]: { valid: boolean } } {
-    const noSpecialCharsPattern = /^[^\<\>\&\@\;\%\*\#\|\_\[\]\!\?\~\+\{\}\(\)\:]*$/;
+  static noSpecialChars(control: FormControl): Record<string, { valid: boolean }> {
+    const noSpecialCharsPattern = /^[^<>&@;%*#|_[\]!?~+{}():]*$/;
     return noSpecialCharsPattern.test(control.value) ? undefined : { noSpecialChars: { valid: false } };
   }
 
   /**
    * Prevent "<" and ">" to avoid usage of HTML tags.
    */
-  static noHtmlTags(control: FormControl): { [error: string]: { valid: boolean } } {
-    const noHtmlTagsPattern = /^[^\<\>]*$/;
+  static noHtmlTags(control: FormControl): Record<string, { valid: boolean }> {
+    const noHtmlTagsPattern = /^[^<>]*$/;
     return noHtmlTagsPattern.test(control.value) ? undefined : { noHtmlTags: { valid: false } };
   }
 
-  static punchoutLogin(control: FormControl): { [error: string]: { valid: boolean } } {
+  static punchoutLogin(control: FormControl): Record<string, { valid: boolean }> {
     const punchoutLoginPattern = /^[a-zA-Z0-9_.@]*$/;
     return punchoutLoginPattern.test(control.value) ? undefined : { punchoutLogin: { valid: false } };
   }
 
-  static integer(control: FormControl): { [error: string]: { valid: boolean } } {
+  static integer(control: FormControl): Record<string, { valid: boolean }> {
     const integerPattern = /^(?:-?(?:0|[1-9][0-9]*)|)$/;
     return integerPattern.test(control.value) ? undefined : { integer: { valid: false } };
   }
 
-  static email(control: FormControl): { [error: string]: { valid: boolean } } {
+  static email(control: FormControl): Record<string, { valid: boolean }> {
     /*
      * very simplified email matching
      * - local part mustn't start or end with dot
@@ -67,24 +67,24 @@ export class SpecialValidators {
      * - no IPs allowed for login emails
      * - only some special characters allowed
      */
-    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
+    return /^([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,}$/.test(control.value)
       ? undefined
       : { email: { valid: false } };
   }
 
-  static emailList(control: FormControl): { [error: string]: { valid: boolean } } {
+  static emailList(control: FormControl): Record<string, { valid: boolean }> {
     /*
      * (see "email" validator)
      * - comma-separated list of email addresses
      */
-    return /^([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,}(,\s*([\w\-\~\+]+\.)*[\w\-\~\+]+@(([\w][\w\-]*)?[\w]\.)+[a-zA-Z]{2,})*$/.test(
+    return /^([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,}(,\s*([\w~+-]+\.)*[\w~+-]+@(([\w][\w-]*)?[\w]\.)+[a-zA-Z]{2,})*$/.test(
       control.value
     )
       ? undefined
       : { emailList: { valid: false } };
   }
 
-  static phone(control: FormControl): { [error: string]: { valid: boolean } } {
+  static phone(control: FormControl): Record<string, { valid: boolean }> {
     /*
      * simplified phone matching
      * - phone number must start with + or digit
@@ -143,7 +143,7 @@ export class SpecialValidators {
     };
   }
 
-  static moneyAmount(control: FormControl): { [error: string]: { valid: boolean } } {
+  static moneyAmount(control: FormControl): Record<string, { valid: boolean }> {
     const moneyAmountPattern = /^$|^\d{1,9}(\.\d{1,2})?$/;
     if (!control.value) {
       return;

@@ -57,8 +57,8 @@ describe('Filter Swatch Images Component', () => {
             type="button"
             class="filter-swatch btn btn-link btn-link-action"
             title="Red (5)"
-            data-testing-id="filter-link-Red"
             aria-current="true"
+            data-testing-id="filter-link-Red"
           >
             <span style="background-color: red"></span>
           </button>

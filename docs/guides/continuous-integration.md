@@ -115,7 +115,7 @@ Run the linting process on the CI with `"npm run lint"`
 
 If a rule seems too harsh for you, downgrade it to warning level by choosing:
 
-**.eslintrc.json**
+**eslint.config.mjs**
 
 ```json
 "rule-name": "warn"

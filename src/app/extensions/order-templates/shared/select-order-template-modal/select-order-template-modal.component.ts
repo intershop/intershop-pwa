@@ -38,7 +38,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
   /**
    * submit success event
    */
-  @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
+  @Output() readonly submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
   private orderTemplateOptions$: Observable<SelectOption[]>;
 

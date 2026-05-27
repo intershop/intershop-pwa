@@ -1,19 +1,19 @@
 <!-- Warranty -->
 @if ((productHasWarranties$ | async) && pli) {
-<div class="row">
-  <!-- check if warranty can be edited, else only display its name -->
-  <div class="offset-2 col-7 col-md-6 list-item pt-1">
-    <ish-product-warranty
-      (submitWarranty)="updateLineItemWarranty($event)"
-      [selectedWarrantySku]="pli.warranty?.sku"
-      [viewType]="editable ? 'select' : 'display'"
-    />
+  <div class="row">
+    <!-- check if warranty can be edited, else only display its name -->
+    <div class="offset-2 col-7 col-md-6 list-item pt-1">
+      <ish-product-warranty
+        [selectedWarrantySku]="pli.warranty?.sku"
+        [viewType]="editable ? 'select' : 'display'"
+        (submitWarranty)="updateLineItemWarranty($event)"
+      />
+    </div>
+    @if (pli.warranty) {
+      <!-- Warranty Single Price: TODO: is not yet available (#113013 - Warranty single price is missing in the basket REST interface) -->
+      <div class="col-md-2 d-none d-md-block list-item column-price single-price"></div>
+      <!-- Warranty Total Price -->
+      <div class="col-3 col-md-2 list-item column-price">{{ pli.warranty.price | ishPrice }}</div>
+    }
   </div>
-  @if (pli.warranty) {
-  <!-- Warranty Single Price: TODO: is not yet available (#113013 - Warranty single price is missing in the basket REST interface) -->
-  <div class="col-md-2 d-none d-md-block list-item column-price single-price"></div>
-  <!-- Warranty Total Price -->
-  <div class="col-3 col-md-2 list-item column-price">{{ pli.warranty.price | ishPrice }}</div>
-  }
-</div>
 }

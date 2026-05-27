@@ -305,7 +305,7 @@ In summary, this CSP header restricts the sources from which various types of co
 
 Built-in features can be enabled and disabled:
 
-- `SSR=off` effectively disables SSR rendering for browsers (default `on`)
+- `SSR=off` effectively disables SSR rendering for browsers (default `on`). For a short explanation of CSR mode with nginx and its trade-offs, see [Building Blocks of the Intershop PWA Public Deployment](../concepts/pwa-building-blocks.md#csr-mode-with-nginx).
 - `CACHE=off` disables caching (default `on`)
 - `COMPRESSION=off` disables compression (default `on`)
 - `DEVICE_DETECTION=off` disables user-agent detection (default `on`)

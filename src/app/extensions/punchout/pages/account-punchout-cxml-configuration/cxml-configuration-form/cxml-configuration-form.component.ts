@@ -18,7 +18,7 @@ export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
   @Input({ required: true }) cxmlConfiguration: CxmlConfiguration[];
 
   form: FormGroup = new FormGroup({});
-  model: { [key: string]: string };
+  model: Record<string, string>;
   fields: FormlyFieldConfig[];
 
   cxmlConfigurationError$: Observable<HttpError>;

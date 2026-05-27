@@ -23,7 +23,11 @@ function filterAndTransformKeys(translations: Record<string, string>, prefix = '
 export class LocalizationsService {
   private icmEndpoint$: Observable<string>;
 
-  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandler, store: Store) {
+  constructor(
+    private httpClient: HttpClient,
+    private errorHandler: ErrorHandler,
+    store: Store
+  ) {
     this.icmEndpoint$ = store.pipe(select(getRestEndpoint), whenTruthy(), take(1));
   }
 

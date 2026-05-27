@@ -17,7 +17,7 @@ type QuoteColumnsType =
  * The Quote List Component displays a list of quotes.
  *
  * @example
- * <ish-quote-list [quotes]="quotes$ | async" (deleteItem)="deleteItem($event)"></ish-quote-list>
+ * <ish-quote-list [quotes]="quotes$ | async" (deleteItem)="deleteItem($event)" />
  */
 @Component({
   selector: 'ish-quote-list',

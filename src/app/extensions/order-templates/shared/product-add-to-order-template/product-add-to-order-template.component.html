@@ -1,31 +1,37 @@
 <!-- display addToOrderTemplate Icon/animated Icon or link-->
 <div class="d-grid">
   @if (visible$ | async) {
-  <button
-    type="button"
-    name="addProduct"
-    class="btn"
-    [disabled]="disabled$ | async"
-    [ngClass]="cssClass"
-    [title]="
-      displayType === 'icon' ? ('account.order_template.add_to_template.button.add_to_template.label' | translate) : ''
-    "
-    [tabindex]="ariaHidden ? -1 : 0"
-    [attr.aria-hidden]="ariaHidden"
-    (click)="openModal(modal)"
-    data-testing-id="addToOrderTemplateButton"
-  >
-    @switch (displayType) { @case ('animated') {
-    <i class="bi bi-list-ul"></i>
-    <span class="share-label">{{
-      'account.order_template.add_to_template.button.add_to_template.label' | translate
-    }}</span>
-    } @case ('icon') {
-    <i class="bi bi-list-ul"></i>
-    } @default {
-    {{ 'account.order_template.add_to_template.button.add_to_template.label' | translate }}
-    } }
-  </button>
+    <button
+      class="btn"
+      data-testing-id="addToOrderTemplateButton"
+      name="addProduct"
+      type="button"
+      [attr.aria-hidden]="ariaHidden"
+      [disabled]="disabled$ | async"
+      [ngClass]="cssClass"
+      [tabindex]="ariaHidden ? -1 : 0"
+      [title]="
+        displayType === 'icon'
+          ? ('account.order_template.add_to_template.button.add_to_template.label' | translate)
+          : ''
+      "
+      (click)="openModal(modal)"
+    >
+      @switch (displayType) {
+        @case ('animated') {
+          <i class="bi bi-list-ul"></i>
+          <span class="share-label">{{
+            'account.order_template.add_to_template.button.add_to_template.label' | translate
+          }}</span>
+        }
+        @case ('icon') {
+          <i class="bi bi-list-ul"></i>
+        }
+        @default {
+          {{ 'account.order_template.add_to_template.button.add_to_template.label' | translate }}
+        }
+      }
+    </button>
   }
 </div>
 

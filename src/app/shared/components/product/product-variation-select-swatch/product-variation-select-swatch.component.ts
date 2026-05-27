@@ -11,7 +11,7 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
 export class ProductVariationSelectSwatchComponent {
   @Input({ required: true }) group: VariationOptionGroup;
 
-  @Output() changeOption = new EventEmitter<{ group: string; value: string }>();
+  @Output() readonly changeOption = new EventEmitter<{ group: string; value: string }>();
 
   optionChange(group: string, value: string) {
     this.changeOption.emit({ group, value });

@@ -30,7 +30,10 @@ export class CheckoutPaymentPageComponent implements OnInit {
 
   private basketPayment: Payment;
 
-  constructor(private checkoutFacade: CheckoutFacade, private paypalConfigService: PaypalConfigService) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private paypalConfigService: PaypalConfigService
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$.pipe(tap(basket => (this.basketPayment = basket?.payment)));

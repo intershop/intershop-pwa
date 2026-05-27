@@ -21,7 +21,6 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
     schema: [],
   },
   create: context => ({
-    // eslint-disable-next-line complexity
     'PropertyDefinition[value.type="NewExpression"]'(node: TSESTree.PropertyDefinition) {
       if (!isType(node.parent.parent as TSESTree.ClassDeclaration, ['Component', 'Directive', 'Pipe'])) {
         return;
@@ -58,8 +57,8 @@ const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
             messageId: usesVoidTypeParam()
               ? 'privateDestroyError'
               : usesPrivateAccessibility()
-              ? 'voidSubjectError'
-              : 'bothError',
+                ? 'voidSubjectError'
+                : 'bothError',
             fix: fixer => fixer.replaceText(node, replaceText),
           });
         } else {

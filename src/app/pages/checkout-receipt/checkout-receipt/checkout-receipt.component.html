@@ -1,99 +1,99 @@
 @if (order) {
-<div class="row">
-  <div class="col-md-12 col-lg-8">
-    <!-- header as content -->
-    <ng-content />
-    @if ('shipping.messageToMerchant' | ishServerSetting) {
-    <!-- MessageToMerchant-->
-    <ish-basket-merchant-message-view [data]="order" />
-    }
-    <div class="row">
-      <!-- Buyer-->
-      <ng-container *ishFeature="'businessCustomerRegistration'">
-        <ish-info-box heading="checkout.widget.buyer.heading" class="infobox-wrapper col-md-6">
-          <ish-basket-buyer [object]="order" />
-        </ish-info-box>
-      </ng-container>
-      <!-- Additional Information -->
-      @if (order.costCenter || hasCustomFields() || order.recurrence) {
-      <ish-info-box
-        heading="checkout.widget.additional-information.heading"
-        class="infobox-wrapper col-md-6"
-        cssClass="pb-3"
-      >
-        <ish-basket-cost-center-view [data]="order" />
-        <ish-basket-custom-fields-view [data]="order" />
-        @if (order.recurrence) {
-        <ish-order-recurrence [recurrence]="order.recurrence" labelCssClass="col-4" valueCssClass="col-8" />
-        }
-      </ish-info-box>
+  <div class="row">
+    <div class="col-md-12 col-lg-8">
+      <!-- header as content -->
+      <ng-content />
+      @if ('shipping.messageToMerchant' | ishServerSetting) {
+        <!-- MessageToMerchant-->
+        <ish-basket-merchant-message-view [data]="order" />
       }
-    </div>
-    <div class="row d-flex">
-      <!-- Invoice Address -->
-      <ish-info-box heading="checkout.widget.billing-address.heading" class="infobox-wrapper col-md-6">
-        <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
-      </ish-info-box>
-      <!-- Shipping Address -->
-      <ish-info-box heading="checkout.widget.shipping-address.heading" class="infobox-wrapper col-md-6">
-        <ish-address [address]="order.commonShipToAddress" />
-      </ish-info-box>
-    </div>
-    <div class="row d-flex">
-      <!-- Shipping Method -->
-      <ish-info-box heading="checkout.widget.shipping_method.heading" class="infobox-wrapper col-md-6">
-        <ish-basket-shipping-method [data]="order" />
-      </ish-info-box>
-      <!-- Payment Method -->
-      <ish-info-box heading="checkout.widget.payment_method.heading" class="infobox-wrapper col-md-6">
-        <p>
-          {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
-          @if (!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier) {
-          {{ order.payment.paymentInstrument }}
-          }
-        </p>
-      </ish-info-box>
-    </div>
-    <!-- Line Items -->
-    @if (order.lineItems?.length > 0) {
-    <ish-skip-content-link>
-      <ish-line-item-list [lineItems]="order.lineItems" [editable]="false" lineItemViewType="simple" />
-    </ish-skip-content-link>
-    }
-  </div>
-  <!-- order summary -->
-  <div class="col-md-12 col-lg-4">
-    <div class="text-end pt-3 pb-3">
-      <ul class="share-tools">
-        <li>
-          <a
-            href="javascript:window.print();"
-            class="link-print"
-            rel="nofollow"
-            [title]="'checkout.receipt.print.button.label' | translate"
+      <div class="row">
+        <!-- Buyer-->
+        <ng-container *ishFeature="'businessCustomerRegistration'">
+          <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.buyer.heading">
+            <ish-basket-buyer [object]="order" />
+          </ish-info-box>
+        </ng-container>
+        <!-- Additional Information -->
+        @if (order.costCenter || hasCustomFields() || order.recurrence) {
+          <ish-info-box
+            class="infobox-wrapper col-md-6"
+            cssClass="pb-3"
+            heading="checkout.widget.additional-information.heading"
           >
-            <i class="bi bi-printer-fill"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="order-summary">
-      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-      <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals" /></div>
-      @if (order.customerNo) {
-      <div class="cart-summary">
-        <h2 class="h3">{{ 'checkout.account.email.registered.heading' | translate }}</h2>
-        {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
-        <a routerLink="/account" data-testing-id="myaccount-link" class="text-nowrap">{{
-          'checkout.account.email.registered.link' | translate
-        }}</a
-        >.
+            <ish-basket-cost-center-view [data]="order" />
+            <ish-basket-custom-fields-view [data]="order" />
+            @if (order.recurrence) {
+              <ish-order-recurrence labelCssClass="col-4" valueCssClass="col-8" [recurrence]="order.recurrence" />
+            }
+          </ish-info-box>
+        }
       </div>
+      <div class="row d-flex">
+        <!-- Invoice Address -->
+        <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
+          <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
+        </ish-info-box>
+        <!-- Shipping Address -->
+        <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
+          <ish-address [address]="order.commonShipToAddress" />
+        </ish-info-box>
+      </div>
+      <div class="row d-flex">
+        <!-- Shipping Method -->
+        <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping_method.heading">
+          <ish-basket-shipping-method [data]="order" />
+        </ish-info-box>
+        <!-- Payment Method -->
+        <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.payment_method.heading">
+          <p>
+            {{ order.payment.displayName }}<br />{{ order.payment.paymentInstrument.accountIdentifier }}
+            @if (!order.payment.displayName && !order.payment.paymentInstrument.accountIdentifier) {
+              {{ order.payment.paymentInstrument }}
+            }
+          </p>
+        </ish-info-box>
+      </div>
+      <!-- Line Items -->
+      @if (order.lineItems?.length > 0) {
+        <ish-skip-content-link>
+          <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="order.lineItems" />
+        </ish-skip-content-link>
       }
-      <a routerLink="/home" class="no-print" data-testing-id="home-link">{{
-        'checkout.receipt.continue.shopping' | translate
-      }}</a>
+    </div>
+    <!-- order summary -->
+    <div class="col-md-12 col-lg-4">
+      <div class="text-end pt-3 pb-3">
+        <ul class="share-tools">
+          <li>
+            <a
+              class="link-print"
+              href="javascript:window.print();"
+              rel="nofollow"
+              [title]="'checkout.receipt.print.button.label' | translate"
+            >
+              <i class="bi bi-printer-fill"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="order-summary">
+        <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+        <div class="cost-summary"><ish-basket-cost-summary [totals]="order.totals" /></div>
+        @if (order.customerNo) {
+          <div class="cart-summary">
+            <h2 class="h3">{{ 'checkout.account.email.registered.heading' | translate }}</h2>
+            {{ 'checkout.account.email.registered.text' | translate }}&nbsp;
+            <a class="text-nowrap" data-testing-id="myaccount-link" routerLink="/account">{{
+              'checkout.account.email.registered.link' | translate
+            }}</a
+            >.
+          </div>
+        }
+        <a class="no-print" data-testing-id="home-link" routerLink="/home">{{
+          'checkout.receipt.continue.shopping' | translate
+        }}</a>
+      </div>
     </div>
   </div>
-</div>
 }

@@ -21,9 +21,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
   selector: '[ishServerHtml]',
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
-  @Input() callbacks: {
-    [key: string]: (event?: MouseEvent) => void;
-  };
+  @Input() callbacks: Record<string, (event?: MouseEvent) => void>;
 
   private renderer = inject(Renderer2);
 
@@ -85,8 +83,8 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     this.elementRef.nativeElement.removeAttribute('ng-reflect-ish-server-html');
   }
 
-  @HostListener('click', ['$event'])
   // eslint-disable-next-line complexity
+  @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     // go along path of click but not further up than self
     for (let el = event.target as HTMLElement; el && el !== this.elementRef.nativeElement; el = el.parentElement) {

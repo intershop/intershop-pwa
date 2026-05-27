@@ -12,9 +12,7 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  * If the user selects a warranty a submitWarranty event is emitted.
  *
  * @example
- * <ish-product-warranty
- *   [selectedWarrantySku]="pli.warranty?.sku"
- *   viewType="select" />
+ * <ish-product-warranty viewType="select" [selectedWarrantySku]="pli.warranty?.sku" />
  */
 
 @Component({
@@ -27,14 +25,17 @@ export class ProductWarrantyComponent implements OnInit {
   @Input() selectedWarrantySku: string;
   @Input() viewType: 'radio' | 'select' | 'display' = 'radio';
 
-  @Output() submitWarranty = new EventEmitter<string>();
+  @Output() readonly submitWarranty = new EventEmitter<string>();
 
   uuid: string = uuid();
 
   warranties$: Observable<Warranty[]>;
   private noWarranty: Warranty;
 
-  constructor(private productContext: ProductContextFacade, private translateService: TranslateService) {}
+  constructor(
+    private productContext: ProductContextFacade,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     this.noWarranty = {

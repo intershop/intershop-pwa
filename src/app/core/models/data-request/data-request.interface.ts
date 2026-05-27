@@ -5,7 +5,7 @@ export interface DataRequestData {
   data: [
     {
       hash: string;
-    }
+    },
   ];
   infos?: DataRequestInfo[];
 }
@@ -14,6 +14,6 @@ export interface DataRequestInfo {
   causes?: [
     {
       code: string;
-    }
+    },
   ];
 }

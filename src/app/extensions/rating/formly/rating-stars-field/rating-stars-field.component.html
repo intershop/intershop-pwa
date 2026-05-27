@@ -1,12 +1,12 @@
 <div class="pt-1" data-testing-id="rating-stars-field">
   @for (fill of stars; track i; let i = $index) {
-  <button
-    type="button"
-    class="text-body-secondary btn btn-link btn-link-action"
-    [title]="'product.review.rating.tooltip' | translate : { '0': i + 1 }"
-    (click)="setStars(i + 1)"
-  >
-    <ish-product-rating-star [filled]="fill" />
-  </button>
+    <button
+      class="text-body-secondary btn btn-link btn-link-action"
+      type="button"
+      [title]="'product.review.rating.tooltip' | translate: { '0': i + 1 }"
+      (click)="setStars(i + 1)"
+    >
+      <ish-product-rating-star [filled]="fill" />
+    </button>
   }
 </div>

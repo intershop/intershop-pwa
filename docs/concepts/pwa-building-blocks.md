@@ -10,6 +10,7 @@ kb_sync_latest_only
 - [Intershop Commerce Management (ICM)](#intershop-commerce-management-icm)
 - [PWA - Server-Side Rendering (SSR)](#pwa---server-side-rendering-ssr)
 - [PWA - Nginx](#pwa---nginx)
+  - [CSR Mode with nginx](#csr-mode-with-nginx)
 - [Browser](#browser)
 - [Default Production Deployment](#default-production-deployment)
 - [Deployment Without Nginx](#deployment-without-nginx)
@@ -26,7 +27,7 @@ Using another backend is also possible as long as it provides a [compatible REST
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://angular.io/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
+In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v18.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
 On a new request, Angular SSR pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR works in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
@@ -48,6 +49,18 @@ Nginx enables the following features to be used in an Intershop PWA deployment:
 - Customizable compression for downstream services.
 - Device type detection to ensure a correct pre-render, adapted to the incoming user agent.
 
+### CSR Mode with nginx
+
+It is also possible to run the nginx container without SSR for browser requests by disabling SSR in the nginx configuration (see [Building and Running nginx Docker Image](../guides/nginx-startup.md)).
+In this client-side rendering (CSR) mode, nginx still acts as reverse proxy, but the initial page is no longer pre-rendered by Angular SSR.
+
+**Pros**: Lower operational complexity and no SSR rendering overhead on the server side.
+
+**Cons**: No pre-rendered HTML, weaker SEO, slower first meaningful content for users, and some SSR-based configuration scenarios are not available.
+
+For a public production PWA deployment, CSR mode is generally not recommended.
+The default deployment with SSR should be preferred unless you have a very specific non-SEO or internal-only use case.
+
 For an overview of the ever-growing list of third party integrations relating to nginx and deployment in general, see [Third-party Integrations](../README.md#third-party-integrations).
 
 ## Browser
@@ -64,7 +77,6 @@ Read on for a step-by-step walkthrough of the initial connection request.
 ![Current Deployment](pwa-building-blocks-production-deployment.svg)
 
 1. The browser requests the page by URL from the nginx.
-
    1. If the cache is enabled and a cached response is found, the response is returned immediately, go to 6.
    2. If no cached response is available, the SSR process is triggered.
 

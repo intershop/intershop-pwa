@@ -1,22 +1,22 @@
 <div class="progress-bar-panel">
   <ul class="progress-steps">
     @for (checkoutStep of checkoutSteps; track $index) {
-    <li
-      [ngClass]="{
-        'progress-active': checkoutStep.step === step,
-        'progress-complete': checkoutStep.step < step
-      }"
-    >
-      @if (checkoutStepLink(checkoutStep.step)) {
-      <a [routerLink]="checkoutStep.link" class="link-decoration-hover">
-        <div class="progress-number"><i class="bi bi-check-lg"></i></div>
-        <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
-      </a>
-      } @else {
-      <div class="progress-number">{{ checkoutStep.stepKey | translate }}</div>
-      <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
-      }
-    </li>
+      <li
+        [ngClass]="{
+          'progress-active': checkoutStep.step === step,
+          'progress-complete': checkoutStep.step < step,
+        }"
+      >
+        @if (checkoutStepLink(checkoutStep.step)) {
+          <a class="link-decoration-hover" [routerLink]="checkoutStep.link">
+            <div class="progress-number"><i class="bi bi-check-lg"></i></div>
+            <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
+          </a>
+        } @else {
+          <div class="progress-number">{{ checkoutStep.stepKey | translate }}</div>
+          <span class="progress-label">{{ checkoutStep.labelKey | translate }} </span>
+        }
+      </li>
     }
   </ul>
 </div>

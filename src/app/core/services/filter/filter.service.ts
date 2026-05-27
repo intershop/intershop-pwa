@@ -13,7 +13,10 @@ import { URLFormParams, appendFormParamsToHttpParams } from 'ish-core/utils/url-
 
 @Injectable({ providedIn: 'root' })
 export class FilterService {
-  constructor(private apiService: ApiService, private filterNavigationMapper: FilterNavigationMapper) {}
+  constructor(
+    private apiService: ApiService,
+    private filterNavigationMapper: FilterNavigationMapper
+  ) {}
 
   getFilterForCategory(categoryUniqueId: string): Observable<FilterNavigation> {
     const category = CategoryHelper.getCategoryPath(categoryUniqueId);

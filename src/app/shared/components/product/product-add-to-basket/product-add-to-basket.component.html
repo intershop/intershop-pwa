@@ -1,28 +1,32 @@
 @if (visible$ | async) {
-<div class="add-to-cart">
-  <button
-    type="submit"
-    name="addProduct"
-    class="btn"
-    [ngClass]="cssClass"
-    [class.btn-primary]="!displayIcon"
-    [disabled]="buttonDisabled$ | async"
-    [title]="displayIcon ? (translationKey$ | async | translate) : ''"
-    [tabindex]="ariaHidden ? -1 : 0"
-    [attr.aria-hidden]="ariaHidden"
-    (click)="addToBasket()"
-    data-testing-id="addToCartButton"
-  >
-    @if ((displaySpinner$ | async) !== true) {
-    <!-- Add to Cart button -->
-    @if (displayIcon) {
-    <i class="bi bi-cart-fill"></i>
-    } @else {{{ translationKey$ | async | translate }}} } @else {
-    <!-- button with spinning animation after Add to Cart -->
-    <i class="bi bi-arrow-clockwise spin-icon"></i>
-    @if (!displayIcon) {
-    <span>{{ 'common.button.spinning.label' | translate }}</span>
-    } }
-  </button>
-</div>
+  <div class="add-to-cart">
+    <button
+      class="btn"
+      data-testing-id="addToCartButton"
+      name="addProduct"
+      type="submit"
+      [attr.aria-hidden]="ariaHidden"
+      [class.btn-primary]="!displayIcon"
+      [disabled]="buttonDisabled$ | async"
+      [ngClass]="cssClass"
+      [tabindex]="ariaHidden ? -1 : 0"
+      [title]="displayIcon ? (translationKey$ | async | translate) : ''"
+      (click)="addToBasket()"
+    >
+      <!-- prettier-ignore -->
+      @if ((displaySpinner$ | async) !== true) {
+        <!-- Add to Cart button -->
+        @if (displayIcon) {
+          <i class="bi bi-cart-fill"></i>
+        } @else {{{ translationKey$ | async | translate }}}
+      }
+      @else {
+        <!-- button with spinning animation after Add to Cart -->
+        <i class="bi bi-arrow-clockwise spin-icon"></i>
+        @if (!displayIcon) {
+          <span>{{ 'common.button.spinning.label' | translate }}</span>
+        }
+      }
+    </button>
+  </div>
 }

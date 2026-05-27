@@ -102,7 +102,9 @@ export class UserService {
           AppFacade.getCustomerRestResource(data.customerType !== 'PRIVATE') === 'privatecustomers'
             ? this.apiService.get<CustomerData>('privatecustomers/-', options)
             : of(data),
-          this.apiService.get<{ pgid: string }>('personalization', options).pipe(map(data => data.pgid)),
+          this.apiService
+            .get<{ pgid: string }>('personalization', options)
+            .pipe(map(customerData => customerData.pgid)),
         ])
       ),
       map(([data, pgid]) => ({ ...CustomerMapper.mapLoginData(data), pgid }))

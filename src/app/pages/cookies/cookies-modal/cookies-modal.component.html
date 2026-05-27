@@ -1,35 +1,35 @@
 <div class="cookies-modal">
   <div class="modal-header">
     <h2>{{ 'cookie.preferences.heading' | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
   <div class="modal-body">
-    @for (option of cookieConsentOptions?.options | keyvalue : unsorted; track $index) {
-    <div class="cookie-option">
-      <label class="mb-2">
-        <input
-          type="checkbox"
-          class="form-check-input mt-0"
-          [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
-          [disabled]="option.value.required"
-          (change)="selectedIds[option.key] = !selectedIds[option.key]"
-        />
-        <span>{{ option.value.name | translate }}</span>
-      </label>
-      <p>{{ option.value.description | translate }}</p>
-    </div>
+    @for (option of cookieConsentOptions?.options | keyvalue: unsorted; track $index) {
+      <div class="cookie-option">
+        <label class="mb-2">
+          <input
+            class="form-check-input mt-0"
+            type="checkbox"
+            [checked]="option.value.required || cookieConsentSettings?.enabledOptions.includes(option.key)"
+            [disabled]="option.value.required"
+            (change)="selectedIds[option.key] = !selectedIds[option.key]"
+          />
+          <span>{{ option.value.name | translate }}</span>
+        </label>
+        <p>{{ option.value.description | translate }}</p>
+      </div>
     }
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="acceptAll()">
+    <button class="btn btn-primary" type="button" (click)="acceptAll()">
       {{ 'cookies.modal.accept_all' | translate }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="submit()">
+    <button class="btn btn-secondary" type="button" (click)="submit()">
       {{ 'cookies.modal.save' | translate }}
     </button>
-    <button type="button" class="btn btn-secondary" (click)="hide()">
+    <button class="btn btn-secondary" type="button" (click)="hide()">
       {{ 'cookies.modal.cancel' | translate }}
     </button>
   </div>

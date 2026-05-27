@@ -32,7 +32,10 @@ declare let Flex: any;
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;
 
-  constructor(protected scriptLoader: ScriptLoaderService, protected cd: ChangeDetectorRef) {
+  constructor(
+    protected scriptLoader: ScriptLoaderService,
+    protected cd: ChangeDetectorRef
+  ) {
     this.monthOptions = range(1, 13)
       .map(n => n.toString().padStart(2, '0'))
       .map(n => ({ label: n, value: n }));
@@ -57,8 +60,8 @@ export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit 
    */
   @Input() activated = false;
 
-  @Output() cancelPayment = new EventEmitter<void>();
-  @Output() submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
+  @Output() readonly cancelPayment = new EventEmitter<void>();
+  @Output() readonly submitPayment = new EventEmitter<{ parameters: Attribute<string>[]; saveAllowed: boolean }>();
 
   private destroyRef = inject(DestroyRef);
 

@@ -16,8 +16,8 @@ function isJSON(value: string): boolean {
 function isYAML(value: string) {
   const lines = value.split('\n').filter(x => !!x?.trim());
   return (
-    (lines.length > 1 && value.split('\n').some(line => /:\s*$/.test(line))) ||
-    lines.every(line => line.includes(': ') || lines.every(line => line.trim().startsWith('- ')))
+    (lines.length > 1 && lines.some(line => /:\s*$/.test(line))) ||
+    lines.every(line => line.includes(': ') || line.trim().startsWith('- '))
   );
 }
 
@@ -52,7 +52,7 @@ export class StatePropertiesService {
                 return JSON.parse(value);
               } else if (isYAML(value)) {
                 // import js-yaml with require so it doesn't turn up in the client bundle
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
                 return require('js-yaml').load(value);
               }
             }

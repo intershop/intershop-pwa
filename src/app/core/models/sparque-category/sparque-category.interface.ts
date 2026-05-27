@@ -21,6 +21,4 @@ export interface SparqueParentCategory {
   root?: number;
 }
 
-interface SparqueLocalizedValue {
-  [localeId: string]: string;
-}
+type SparqueLocalizedValue = Record<string, string>;

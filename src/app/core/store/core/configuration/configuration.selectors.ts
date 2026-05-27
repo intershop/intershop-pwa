@@ -71,10 +71,10 @@ export const getCurrentLocale = createSelector(
   (available, requested, defaultLocale, configuredDefault) =>
     isDevMode() && defaultLocale
       ? defaultLocale
-      : available?.find(l => l === requested) ??
+      : (available?.find(l => l === requested) ??
         available?.find(l => l === configuredDefault) ??
         available?.find(l => l === defaultLocale) ??
-        available?.[0]
+        available?.[0])
 );
 
 export const getAvailableCurrencies = createSelector(
@@ -163,4 +163,11 @@ export const getStaticEndpoint = createSelector(
           state.channel.split('-')[0]
         }/${locale}`
       : undefined
+);
+
+const DEFAULT_PAYPAL_CLIENT_CONFIG = { googlePayEnvironment: 'TEST' };
+
+export const getPaypalClientConfig = createSelector(
+  getConfigurationState,
+  state => state.paypal || DEFAULT_PAYPAL_CLIENT_CONFIG
 );

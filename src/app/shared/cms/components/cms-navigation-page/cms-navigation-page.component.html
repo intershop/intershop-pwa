@@ -1,62 +1,66 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 @if (pageTree$ | async; as page) {
-<li
-  #subMenu
-  [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
-  [ngClass]="{ open: isOpened(page.contentPageId) }"
-  (mouseenter)="subMenuShow(subMenu)"
-  (mouseleave)="subMenuHide(subMenu)"
-  (click)="subMenuHide(subMenu)"
->
-  <a [routerLink]="page | ishContentPageRoute" [ngStyle]="{ width: !showSubMenu(page.children.length) ? '100%' : '' }">
-    @if (pagelet.hasParam('DisplayName')) {
-    {{ pagelet.stringParam('DisplayName') }}
-    } @else {
-    {{ page.name }}
-    }
-  </a>
-
-  @if (showSubMenu(page.children.length)) {
-  <a class="dropdown-toggle" (click)="toggleOpen(page.contentPageId)">
-    @if (isOpened(page.contentPageId)) {
-    <i class="bi bi-dash"></i>
-    } @else {
-    <i class="bi bi-plus"></i>
-    }
-  </a>
-
-  <ng-container [ngTemplateOutlet]="treeNodeTemplate" [ngTemplateOutletContext]="{ treeNode: page, depth: 1 }" />
-
-  <!-- the recursively used template to render the tree nodes -->
-  <ng-template #treeNodeTemplate let-treeNode="treeNode" let-depth="depth">
-    <ul class="category-level{{ depth }}" [ngClass]="{ 'dropdown-menu': depth === 1 }">
-      @for (node of treeNode.children; track node.contentPageId) {
-      <li class="main-navigation-level{{ depth }}-item" [ngClass]="{ open: isOpened(node.contentPageId) }">
-        <a [routerLink]="node | ishContentPageRoute" [ngStyle]="{ width: !node.children.length ? '100%' : '' }">
-          {{ node.name }}
-        </a>
-        @if (node.children.length) {
-        <a class="dropdown-toggle" (click)="toggleOpen(node.contentPageId)">
-          @if (isOpened(node.contentPageId)) {
-          <i class="bi bi-dash"></i>
-          } @else {
-          <i class="bi bi-plus"></i>
-          }
-        </a>
-        <ng-container
-          [ngTemplateOutlet]="treeNodeTemplate"
-          [ngTemplateOutletContext]="{ treeNode: node, depth: depth + 1 }"
-        />
-        }
-      </li>
-      } @if (pagelet.hasParam('SubNavigationHTML') && depth === 1) {
-      <li class="sub-navigation-content">
-        <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
-      </li>
+  <li
+    #subMenu
+    [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
+    [ngClass]="{ open: isOpened(page.contentPageId) }"
+    (click)="subMenuHide(subMenu)"
+    (mouseenter)="subMenuShow(subMenu)"
+    (mouseleave)="subMenuHide(subMenu)"
+  >
+    <a
+      [ngStyle]="{ width: !showSubMenu(page.children.length) ? '100%' : '' }"
+      [routerLink]="page | ishContentPageRoute"
+    >
+      @if (pagelet.hasParam('DisplayName')) {
+        {{ pagelet.stringParam('DisplayName') }}
+      } @else {
+        {{ page.name }}
       }
-    </ul>
-  </ng-template>
-  }
-</li>
+    </a>
+
+    @if (showSubMenu(page.children.length)) {
+      <a class="dropdown-toggle" (click)="toggleOpen(page.contentPageId)">
+        @if (isOpened(page.contentPageId)) {
+          <i class="bi bi-dash"></i>
+        } @else {
+          <i class="bi bi-plus"></i>
+        }
+      </a>
+
+      <ng-container [ngTemplateOutlet]="treeNodeTemplate" [ngTemplateOutletContext]="{ treeNode: page, depth: 1 }" />
+
+      <!-- the recursively used template to render the tree nodes -->
+      <ng-template #treeNodeTemplate let-depth="depth" let-treeNode="treeNode">
+        <ul class="category-level{{ depth }}" [ngClass]="{ 'dropdown-menu': depth === 1 }">
+          @for (node of treeNode.children; track node.contentPageId) {
+            <li class="main-navigation-level{{ depth }}-item" [ngClass]="{ open: isOpened(node.contentPageId) }">
+              <a [ngStyle]="{ width: !node.children.length ? '100%' : '' }" [routerLink]="node | ishContentPageRoute">
+                {{ node.name }}
+              </a>
+              @if (node.children.length) {
+                <a class="dropdown-toggle" (click)="toggleOpen(node.contentPageId)">
+                  @if (isOpened(node.contentPageId)) {
+                    <i class="bi bi-dash"></i>
+                  } @else {
+                    <i class="bi bi-plus"></i>
+                  }
+                </a>
+                <ng-container
+                  [ngTemplateOutlet]="treeNodeTemplate"
+                  [ngTemplateOutletContext]="{ treeNode: node, depth: depth + 1 }"
+                />
+              }
+            </li>
+          }
+          @if (pagelet.hasParam('SubNavigationHTML') && depth === 1) {
+            <li class="sub-navigation-content">
+              <div [ishServerHtml]="pagelet.stringParam('SubNavigationHTML')"></div>
+            </li>
+          }
+        </ul>
+      </ng-template>
+    }
+  </li>
 }

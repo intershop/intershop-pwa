@@ -1,5 +1,12 @@
-import { HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse, HttpRequest } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpErrorResponse,
+  HttpRequest,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -16,8 +23,11 @@ describe('Icm Error Mapper Interceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true }],
+      providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
 
     httpController = TestBed.inject(HttpTestingController);
@@ -349,7 +359,7 @@ describe('Icm Error Mapper Interceptor', () => {
     test(): boolean {
       return true;
     }
-    // eslint-disable-next-line @typescript-eslint/ban-types
+    // eslint-disable-next-line @typescript-eslint/no-restricted-types
     map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
       return {
         message: `${request.method}:${error.error}`,
@@ -359,10 +369,11 @@ describe('Icm Error Mapper Interceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
         { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: GrabAllErrorHandler, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

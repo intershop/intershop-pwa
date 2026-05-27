@@ -73,8 +73,8 @@ describe('User Detail Budget Component', () => {
 
     expect(element.querySelector('[data-testing-id=edit-budget]')).toMatchInlineSnapshot(`
       <a
-        routerlink="budget"
         data-testing-id="edit-budget"
+        routerlink="budget"
         class="btn-tool"
         title="account.profile.update.link"
         ><i class="bi bi-pencil-fill"></i

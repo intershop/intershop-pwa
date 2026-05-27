@@ -16,7 +16,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 export class SuggestSearchTermsComponent implements OnInit {
   @Input() maxRecentlySearchedWords: number;
   @Input() inputTerms$ = new ReplaySubject<string>(1);
-  @Output() submitSearch = new EventEmitter<string>();
+  @Output() readonly submitSearch = new EventEmitter<string>();
 
   searchTerms$: Observable<string[]>;
 

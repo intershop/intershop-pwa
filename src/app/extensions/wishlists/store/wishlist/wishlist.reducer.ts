@@ -86,7 +86,7 @@ export const wishlistReducer = createReducer(
       selected: undefined as string,
     })
   ),
-  on(loadWishlistsSuccess, (state: WishlistState, action) => {
+  on(loadWishlistsSuccess, (state: WishlistState, action): WishlistState => {
     const { wishlists } = action.payload;
     return wishlistsAdapter.setAll(wishlists, state);
   }),
@@ -96,13 +96,13 @@ export const wishlistReducer = createReducer(
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
-    (state, action) => {
+    (state, action): WishlistState => {
       const { wishlist } = action.payload;
 
       return wishlistsAdapter.upsertOne(wishlist, state);
     }
   ),
-  on(deleteWishlistSuccess, (state, action) => {
+  on(deleteWishlistSuccess, (state, action): WishlistState => {
     const { wishlistId } = action.payload;
     return wishlistsAdapter.removeOne(wishlistId, state);
   }),

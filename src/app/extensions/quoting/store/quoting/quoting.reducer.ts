@@ -85,20 +85,22 @@ export const quotingReducer = createReducer(
   // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
   on(loadQuotingSuccess, (state): QuotingInternalState => ({ ...state, initialized: true })),
   // entities
-  // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
-  on(loadQuotingSuccess, (state, action) =>
-    action.payload.quoting.reduce(
-      (acc, val) =>
-        !acc.entities[val.id]
-          ? // add if entity does not exist
-            quotingAdapter.addOne(val, acc)
-          : acc.entities[val.id].type !== val.type
-          ? // overwrite when type changes on server
-            quotingAdapter.setOne(val, acc)
-          : // no change by default
-            acc,
-      state
-    )
+  on(
+    // eslint-disable-next-line @ngrx/avoid-duplicate-actions-in-reducer
+    loadQuotingSuccess,
+    (state, action): QuotingInternalState =>
+      action.payload.quoting.reduce(
+        (acc, val) =>
+          !acc.entities[val.id]
+            ? // add if entity does not exist
+              quotingAdapter.addOne(val, acc)
+            : acc.entities[val.id].type !== val.type
+              ? // overwrite when type changes on server
+                quotingAdapter.setOne(val, acc)
+              : // no change by default
+                acc,
+        state
+      )
   ),
   on(
     loadQuotingDetailSuccess,
@@ -108,9 +110,12 @@ export const quotingReducer = createReducer(
     submitQuoteRequestSuccess,
     addProductToQuoteRequestSuccess,
     updateQuoteRequestSuccess,
-    (state, action) => quotingAdapter.upsertOne(action.payload.entity, state)
+    (state, action): QuotingInternalState => quotingAdapter.upsertOne(action.payload.entity, state)
   ),
-  on(deleteQuotingEntitySuccess, (state, action) => quotingAdapter.removeOne(action.payload.id, state)),
+  on(
+    deleteQuotingEntitySuccess,
+    (state, action): QuotingInternalState => quotingAdapter.removeOne(action.payload.id, state)
+  ),
   // active quote request
   on(addProductToQuoteRequest, (state): QuotingInternalState => ({ ...state, activeQuoteRequest: undefined })),
   on(

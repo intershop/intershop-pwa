@@ -43,9 +43,9 @@ export class ProductInventoryComponent implements OnInit {
     return count >= StockLevel.high
       ? 'high'
       : count >= StockLevel.medium
-      ? 'medium'
-      : count >= StockLevel.low
-      ? 'low'
-      : 'none';
+        ? 'medium'
+        : count >= StockLevel.low
+          ? 'low'
+          : 'none';
   }
 }

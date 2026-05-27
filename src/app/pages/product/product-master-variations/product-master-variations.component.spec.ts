@@ -51,16 +51,16 @@ describe('Product Master Variations Component', () => {
         linktext="common.skip_content.link.text.filter"
         ng-reflect-link-text="common.skip_content.link.text."
         ><ish-filter-navigation
-          orientation="horizontal"
           fragmentonrouting="variation-list-top"
-          ng-reflect-orientation="horizontal"
+          orientation="horizontal"
           ng-reflect-fragment-on-routing="variation-list-top"
+          ng-reflect-orientation="horizontal"
         ></ish-filter-navigation></ish-skip-content-link
       ><ish-product-listing
-        mode="paging"
         fragmentonrouting="variation-list-top"
-        ng-reflect-mode="paging"
+        mode="paging"
         ng-reflect-fragment-on-routing="variation-list-top"
+        ng-reflect-mode="paging"
       ></ish-product-listing>
     `);
   });

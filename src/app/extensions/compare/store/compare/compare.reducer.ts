@@ -6,7 +6,7 @@ export type CompareProducts = string[];
 
 export const compareReducer = createReducer(
   [],
-  on(addToCompare, (state, { payload: { sku } }) => (state.includes(sku) ? state : [...state, sku])),
-  on(removeFromCompare, (state, { payload: { sku } }) => state.filter(current => current !== sku)),
+  on(addToCompare, (state, { payload: { sku } }): CompareProducts => (state.includes(sku) ? state : [...state, sku])),
+  on(removeFromCompare, (state, { payload: { sku } }): CompareProducts => state.filter(current => current !== sku)),
   on(compareProducts, (_state, { payload: { skus } }): string[] => (skus ? skus : []))
 );

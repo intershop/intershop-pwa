@@ -11,15 +11,15 @@
   -- DISABLED VIEW CONTEXT -->
   <div class="row">
     <div class="col-md-3">
-      <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="category.navigation.skip_content.link.text" />
+      <ish-skip-content-link linkText="category.navigation.skip_content.link.text" skipToElementId="nav-breadcrumbs" />
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         </nav>
         @if ('payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting) {
-        <div class="mt-2">
-          <ish-payment-paypal pageType="product-listing" />
-        </div>
+          <div class="mt-2">
+            <ish-payment-paypal pageType="product-listing" />
+          </div>
         }
         <!-- DISABLED VIEW CONTEXT --
         <div class="marketing-area">
@@ -33,8 +33,8 @@
         -- DISABLED VIEW CONTEXT -->
       </div>
       <button
-        type="button"
         class="d-md-none mobile-filter-toggle btn btn-link btn-link-action link-decoration-hover"
+        type="button"
         (click)="toggle()"
       >
         {{ 'search.mobile.filter.trigger' | translate }}
@@ -48,10 +48,10 @@
 
       <div class="marketing-area">
         @if (category.categoryRef) {
-        <ish-content-viewcontext
-          viewContextId="viewcontext.include.category.content.top"
-          [callParameters]="{ Category: category.categoryRef }"
-        />
+          <ish-content-viewcontext
+            viewContextId="viewcontext.include.category.content.top"
+            [callParameters]="{ Category: category.categoryRef }"
+          />
         }
       </div>
 
@@ -59,10 +59,10 @@
 
       <div class="marketing-area">
         @if (category.categoryRef) {
-        <ish-content-viewcontext
-          viewContextId="viewcontext.include.category.content.bottom"
-          [callParameters]="{ Category: category.categoryRef }"
-        />
+          <ish-content-viewcontext
+            viewContextId="viewcontext.include.category.content.bottom"
+            [callParameters]="{ Category: category.categoryRef }"
+          />
         }
       </div>
     </div>

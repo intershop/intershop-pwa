@@ -10,7 +10,10 @@ export type MultiSiteLocaleMap = Record<string, unknown> | undefined;
 
 @Injectable({ providedIn: 'root' })
 export class MultiSiteService {
-  constructor(private store: Store, @Inject(APP_BASE_HREF) private baseHref: string) {}
+  constructor(
+    private store: Store,
+    @Inject(APP_BASE_HREF) private baseHref: string
+  ) {}
 
   /**
    * returns the current url, modified to fit the locale parameter if the environment parameter "multiSiteLocaleMap" is set

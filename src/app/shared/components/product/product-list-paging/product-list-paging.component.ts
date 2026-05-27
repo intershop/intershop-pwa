@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  *   <ish-product-list-paging
  *     [currentPage]="currentPage$ | async"
  *     [pageIndices]="pageIndices$ | async"
- *   ></ish-product-list-paging>
+ *   />
  * }
  */
 @Component({

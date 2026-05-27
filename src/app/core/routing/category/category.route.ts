@@ -29,7 +29,7 @@ const categoryRouteFormat = /^\/(?!category|categoryref\/.*$)(.*?)-?ctg(.*)$/;
  */
 export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
-  if (segments && segments.length === 2 && (segments[0].path === 'category' || segments[0].path === 'categoryref')) {
+  if (segments?.length === 2 && (segments[0].path === 'category' || segments[0].path === 'categoryref')) {
     return { consumed: [] };
   }
 
@@ -40,7 +40,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
   if (categoryRouteFormat.test(url)) {
     // select categoryUniqueId to render a category component
     const match = categoryRouteFormat.exec(url);
-    const posParams: { [id: string]: UrlSegment } = {};
+    const posParams: Record<string, UrlSegment> = {};
     if (match[2]) {
       posParams.categoryUniqueId = new UrlSegment(match[2], {});
     }

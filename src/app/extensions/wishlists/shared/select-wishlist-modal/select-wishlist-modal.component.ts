@@ -38,7 +38,7 @@ export class SelectWishlistModalComponent implements OnInit {
   /**
    * submit successful event
    */
-  @Output() submitEmitter = new EventEmitter<{ id: string; title: string }>();
+  @Output() readonly submitEmitter = new EventEmitter<{ id: string; title: string }>();
 
   private wishlistOptions$: Observable<SelectOption[]>;
 
@@ -55,7 +55,10 @@ export class SelectWishlistModalComponent implements OnInit {
 
   @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
 
-  constructor(private ngbModal: NgbModal, private wishlistsFacade: WishlistsFacade) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private wishlistsFacade: WishlistsFacade
+  ) {}
 
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistsFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');

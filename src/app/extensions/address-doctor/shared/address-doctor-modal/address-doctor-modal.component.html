@@ -1,15 +1,15 @@
 <ng-template #template>
   <div class="modal-header">
-    <h2 id="address-doctor-modal-title" class="modal-title">{{ 'address.doctor.suggestion.title' | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <h2 class="modal-title" id="address-doctor-modal-title">{{ 'address.doctor.suggestion.title' | translate }}</h2>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
   <div class="modal-body">
-    <formly-form [model]="model" [fields]="fields" [form]="form" />
+    <formly-form [fields]="fields" [form]="form" [model]="model" />
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="confirm()" data-testing-id="confirm">
+    <button class="btn btn-primary" data-testing-id="confirm" type="button" (click)="confirm()">
       {{ 'address.doctor.suggestion.confirm' | translate }}
     </button>
   </div>

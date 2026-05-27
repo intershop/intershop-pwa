@@ -11,7 +11,7 @@ export interface MessagesPayloadType {
   /**
    * optional message-parameters (i18n)
    */
-  messageParams?: { [id: string]: string };
+  messageParams?: Record<string, string>;
 
   /**
    * optional title (works with i18n)
@@ -21,7 +21,7 @@ export interface MessagesPayloadType {
   /**
    * optional title-parameters (i18n)
    */
-  titleParams?: { [id: string]: string };
+  titleParams?: Record<string, string>;
 
   /**
    * duration in ms

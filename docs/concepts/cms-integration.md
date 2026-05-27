@@ -204,9 +204,9 @@ The resource set ID can be overridden at the individual view context inclusion b
 
 ```html
 <ish-content-viewcontext
+  resourceSetId="custom_cartridge_name"
   viewContextId="viewcontext.include.product.base.top"
   [callParameters]="{ Product: product.sku }"
-  resourceSetId="custom_cartridge_name"
 />
 ```
 

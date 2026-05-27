@@ -28,7 +28,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  * for the DefinitionQualifiedName of the pagelet.
  *
  * @example
- * <ish-content-pagelet [pageletId]="pagelet"></ish-content-pagelet>
+ * <ish-content-pagelet [pageletId]="pagelet" />
  */
 @Component({
   selector: 'ish-content-pagelet',
@@ -46,7 +46,11 @@ export class ContentPageletComponent implements OnChanges, OnInit {
   private pageletId$ = new ReplaySubject<string>(1);
   private destroyRef = inject(DestroyRef);
 
-  constructor(private injector: Injector, private cmsFacade: CMSFacade, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private injector: Injector,
+    private cmsFacade: CMSFacade,
+    private cdRef: ChangeDetectorRef
+  ) {}
   ngOnInit() {
     this.pageletId$
       .pipe(

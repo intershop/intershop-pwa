@@ -7,27 +7,27 @@
 <div class="row">
   <div class="col-md-10 col-xl-8">
     <div class="section">
-      <p class="indicates-required" aria-hidden="true">
+      <p aria-hidden="true" class="indicates-required">
         <span class="required">*</span>{{ 'account.required_field.message' | translate }}
       </p>
       <form
-        [formGroup]="organizationSettingsCompanyForm"
-        ishFormSubmit
         #form="ngForm"
         class="form-horizontal"
+        ishFormSubmit
+        [formGroup]="organizationSettingsCompanyForm"
         (ngSubmit)="submit()"
       >
-        <formly-form [form]="organizationSettingsCompanyForm" [fields]="fields" [model]="model" />
+        <formly-form [fields]="fields" [form]="organizationSettingsCompanyForm" [model]="model" />
         <div class="row">
           <div class="offset-md-4 col-md-8">
             <button
-              type="submit"
               class="btn btn-primary"
+              type="submit"
               [disabled]="form.submitted && organizationSettingsCompanyForm.invalid"
             >
               {{ 'account.update.button.label' | translate }}
             </button>
-            <a routerLink="/account/organization/settings" class="btn btn-secondary">{{
+            <a class="btn btn-secondary" routerLink="/account/organization/settings">{{
               'account.cancel.link' | translate
             }}</a>
           </div>

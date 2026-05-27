@@ -1,52 +1,55 @@
 @if (basket?.lineItems) {
-<div class="cart-summary">
-  @for (pli of basket.lineItems; track pli.id; let i = $index) {
-  <div class="row cart-summary-checkout">
-    @if (isItemVisible(i)) {
-    <!-- product name and price -->
-    <div class="col-8">
-      <ish-product-name ishProductContext [sku]="pli.productSKU" />
-    </div>
-    <div class="col-4 text-end pt-1">{{ pli.totals.total | ishPrice }}</div>
-    <!-- quantity and undiscounted price -->
-    <div class="col-8 cart-pli-data">
-      <span> {{ 'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }} </span>
-    </div>
-    <div class="col-4 text-end">
-      @if (pli.totals.valueRebatesTotal) {
-      <div class="old-price">
-        <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
+  <div class="cart-summary">
+    @for (pli of basket.lineItems; track pli.id; let i = $index) {
+      <div class="row cart-summary-checkout">
+        @if (isItemVisible(i)) {
+          <!-- product name and price -->
+          <div class="col-8">
+            <ish-product-name ishProductContext [sku]="pli.productSKU" />
+          </div>
+          <div class="col-4 text-end pt-1">{{ pli.totals.total | ishPrice }}</div>
+          <!-- quantity and undiscounted price -->
+          <div class="col-8 cart-pli-data">
+            <span> {{ 'checkout.pli.qty.label' | translate }} {{ pli.quantity.value }} </span>
+          </div>
+          <div class="col-4 text-end">
+            @if (pli.totals.valueRebatesTotal) {
+              <div class="old-price">
+                <span class="price-value">{{ pli.totals.undiscountedTotal | ishPrice }}</span>
+              </div>
+            }
+            @if (pli.isFreeGift) {
+              <div class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
+            }
+          </div>
+          <!-- promotions -->
+          @if (pli.valueRebates?.length) {
+            <div class="col-12">
+              @for (rebate of pli.valueRebates; track rebate.id) {
+                <ish-basket-promotion [rebate]="rebate" />
+              }
+            </div>
+          }
+          <!-- warranty -->
+          @if (pli.warranty) {
+            <div class="col-8">{{ pli.warranty.sku }}</div>
+            <div class="col-4 text-end">{{ pli.warranty.price | ishPrice }}</div>
+          }
+        }
       </div>
-      } @if (pli.isFreeGift) {
-      <div class="list-item-promo">{{ 'checkout.pli.freegift.text' | translate }}</div>
-      }
-    </div>
-    <!-- promotions -->
-    @if (pli.valueRebates?.length) {
-    <div class="col-12">
-      @for (rebate of pli.valueRebates; track rebate.id) {
-      <ish-basket-promotion [rebate]="rebate" />
-      }
-    </div>
     }
-    <!-- warranty -->
-    @if (pli.warranty) {
-    <div class="col-8">{{ pli.warranty.sku }}</div>
-    <div class="col-4 text-end">{{ pli.warranty.price | ishPrice }}</div>
-    } }
+    <!-- 'Show All' and 'Hide All' links -->
+    @if (isShowAllLinkVisible()) {
+      <button class="btn btn-link btn-content-toggle mt-3" type="button" (click)="toggleCollapse()">
+        {{ 'checkout.show_all.link' | translate: { '0': basket.lineItems.length } }}
+        <i class="bi bi-chevron-down float-end"></i>
+      </button>
+    }
+    @if (isHideLinkVisible()) {
+      <button class="btn btn-link btn-content-toggle mt-3" type="button" (click)="toggleCollapse()">
+        {{ 'checkout.hide_all.link' | translate }}
+        <i class="bi bi-chevron-up float-end"></i>
+      </button>
+    }
   </div>
-  }
-  <!-- 'Show All' and 'Hide All' links -->
-  @if (isShowAllLinkVisible()) {
-  <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
-    {{ 'checkout.show_all.link' | translate : { '0': basket.lineItems.length } }}
-    <i class="bi bi-chevron-down float-end"></i>
-  </button>
-  } @if (isHideLinkVisible()) {
-  <button type="button" class="btn btn-link btn-content-toggle mt-3" (click)="toggleCollapse()">
-    {{ 'checkout.hide_all.link' | translate }}
-    <i class="bi bi-chevron-up float-end"></i>
-  </button>
-  }
-</div>
 }

@@ -25,7 +25,7 @@ export class VariationAttributePipe implements PipeTransform {
     return typeof attr?.value === 'object'
       ? `${this.toDecimal(attr.value.value)}\xA0${attr.value.unit}`
       : typeof attr?.value === 'number'
-      ? this.toDecimal(attr.value)
-      : attr?.value || 'undefined';
+        ? this.toDecimal(attr.value)
+        : attr?.value || 'undefined';
   }
 }

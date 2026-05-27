@@ -18,11 +18,11 @@ export class PaymentParameterFormComponent implements OnInit, OnChanges {
    */
   @Input() activated = false;
 
-  @Output() cancelPayment = new EventEmitter();
-  @Output() submitPayment = new EventEmitter();
+  @Output() readonly cancelPayment = new EventEmitter();
+  @Output() readonly submitPayment = new EventEmitter();
 
   fields: FormlyFieldConfig[];
-  model: { [key: string]: unknown } = {};
+  model: Record<string, unknown> = {};
   form = new FormGroup({});
 
   ngOnInit() {

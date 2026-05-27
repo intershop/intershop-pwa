@@ -1,39 +1,42 @@
 <ish-info-box
-  heading="account.ordertemplates.widget.heading"
   class="infobox-wrapper h-100"
   cssClass="infobox-color-widget d-flex flex-column"
+  heading="account.ordertemplates.widget.heading"
 >
   <div class="loading-container">
     @if ((loading$ | async) !== true) {
-    <div class="pb-2">
-      @if (orderTemplates$ | async; as orderTemplates) { @if (orderTemplates.length) { @for (orderTemplate of
-      orderTemplates; track orderTemplate.id) {
-      <div class="mb-2">
-        <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
-        @if (orderTemplate.items?.length) {
-        <a class="align-top float-end">
-          <ish-product-add-to-basket
-            ishProductContext
-            [parts]="getParts(orderTemplate)"
-            displayType="icon"
-            cssClass="p-0 mb-0"
-          />
-        </a>
+      <div class="pb-2">
+        @if (orderTemplates$ | async; as orderTemplates) {
+          @if (orderTemplates.length) {
+            @for (orderTemplate of orderTemplates; track orderTemplate.id) {
+              <div class="mb-2">
+                <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
+                @if (orderTemplate.items?.length) {
+                  <a class="align-top float-end">
+                    <ish-product-add-to-basket
+                      cssClass="p-0 mb-0"
+                      displayType="icon"
+                      ishProductContext
+                      [parts]="getParts(orderTemplate)"
+                    />
+                  </a>
+                }
+              </div>
+            }
+          } @else {
+            {{ 'account.order_template.list.no_templates.text' | translate }}
+          }
+        } @else {
+          {{ 'account.order_template.list.no_templates.text' | translate }}
         }
       </div>
-      } } @else {
-      {{ 'account.order_template.list.no_templates.text' | translate }}
-      } } @else {
-      {{ 'account.order_template.list.no_templates.text' | translate }}
-      }
-    </div>
     } @else {
-    <ish-loading />
+      <ish-loading />
     }
   </div>
 
   <div class="mt-auto">
-    <a routerLink="/account/order-templates" data-testing-id="order-templates-list-link">
+    <a data-testing-id="order-templates-list-link" routerLink="/account/order-templates">
       {{ 'account.ordertemplates.widget.view_all.link' | translate }}
     </a>
   </div>

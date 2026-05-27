@@ -26,7 +26,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 export class AccountProfilePasswordComponent implements OnInit, OnChanges {
   @Input() error: HttpError;
 
-  @Output() updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();
+  @Output() readonly updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();
 
   accountProfilePasswordForm = new FormGroup({});
   fields: FormlyFieldConfig[];

@@ -15,7 +15,7 @@ kb_sync_latest_only
 
 ## File Name Conventions
 
-In accordance with the [Angular Style Guide](https://angular.io/guide/styleguide) and the [Angular CLI](https://angular.io/guide/file-structure) convention of naming generated elements in the file system, all file and folder names should use a hyphenated, lowercase structure (kebab-case). camelCase should not be used, especially since it can lead to problems when working with different operating systems, where some systems are case indifferent regarding file and folder naming (Windows).
+In accordance with the [Angular Style Guide](https://angular.dev/style-guide) and the [Angular CLI](https://angular.dev/reference/configs/file-structure) convention of naming generated elements in the file system, all file and folder names should use a hyphenated, lowercase structure (kebab-case). camelCase should not be used, especially since it can lead to problems when working with different operating systems, where some systems are case indifferent regarding file and folder naming (Windows).
 
 ## General Folder Structure
 
@@ -60,7 +60,7 @@ The `src/app` folder contains all TypeScript code (sources and tests) and HTML t
 
 The `src/assets` folder contains files which are statically served (pictures, mock-data, fonts, localization, ...).
 
-The `src/environments` folder contains environment properties which are switched by Angular CLI, also see [Configuring application environments](https://angular.io/guide/build#configure-environment-specific-defaults).
+The `src/environments` folder contains environment properties which are switched by Angular CLI, also see [Configuring application environments](https://angular.dev/tools/cli/environments#configure-environment-specific-defaults).
 
 The `src/theme` contains styling files.
 
@@ -91,7 +91,7 @@ Optionally additional sub folders for module-scoped artifacts are allowed:
 
 ## Modules
 
-As [Angular Modules](https://angular.io/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
+As [Angular Modules](https://v18.angular.dev/guide/ngmodules) are a rather advanced topic, beginning with the restructured project folder format, we want to give certain guidelines for which modules exist and where components are declared.
 The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates.
 It has little to do with the bundling of lazy-loaded modules when a production-ready ahead-of-time build is executed.
 

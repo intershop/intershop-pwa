@@ -1,52 +1,59 @@
 <!-- desktop: display enhanced select boxes with color codes or swatch images with labels -->
 @if ((deviceType$ | async) === 'desktop') {
-<div ngbDropdown>
-  <button ngbDropdownToggle type="button" class="btn variation-select" [id]="uuid + group.id">
-    @for (option of group.options; track option.value) { @if (option.active) {
-    <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
-    } }
-  </button>
-  <div ngbDropdownMenu class="variation-options" [attr.aria-labelledby]="uuid + group.id + 'label'">
-    @for (option of group.options; track option.value) { @if (!option.alternativeCombination || multipleOptions) {
-    <button
-      ngbDropdownItem
-      type="button"
-      [value]="option.value"
-      (click)="optionChange(group.id, option.value)"
-      [attr.data-testing-id]="group.id + '-' + option.value"
-    >
-      <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
+  <div ngbDropdown>
+    <button class="btn variation-select" ngbDropdownToggle type="button" [id]="uuid + group.id">
+      @for (option of group.options; track option.value) {
+        @if (option.active) {
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
+        }
+      }
     </button>
-    } }
+    <div class="variation-options" ngbDropdownMenu [attr.aria-labelledby]="uuid + group.id + 'label'">
+      @for (option of group.options; track option.value) {
+        @if (!option.alternativeCombination || multipleOptions) {
+          <button
+            ngbDropdownItem
+            type="button"
+            [attr.data-testing-id]="group.id + '-' + option.value"
+            [value]="option.value"
+            (click)="optionChange(group.id, option.value)"
+          >
+            <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
+          </button>
+        }
+      }
+    </div>
   </div>
-</div>
 } @else {
-<!-- mobile/tablet: display a list of color codes or swatch images with labels -->
-<div class="mobile-variation-select">
-  @for (option of group.options; track option.value) {
-  <div class="mobile-variation-option">
-    <button type="button" class="btn btn-link btn-link-action" (click)="optionChange(group.id, option.value)">
-      <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
-    </button>
+  <!-- mobile/tablet: display a list of color codes or swatch images with labels -->
+  <div class="mobile-variation-select">
+    @for (option of group.options; track option.value) {
+      <div class="mobile-variation-option">
+        <button class="btn btn-link btn-link-action" type="button" (click)="optionChange(group.id, option.value)">
+          <ng-container *ngTemplateOutlet="optionTemplate; context: { group, option }" />
+        </button>
+      </div>
+    }
   </div>
-  }
-</div>
 }
 
 <!-- reusable template to render the individual options as color code or image swatch with label -->
 <ng-template #optionTemplate let-group="group" let-option="option">
   @if (group.attributeType === 'defaultAndColorCode') {
-  <span
-    class="color-code"
-    [ngStyle]="{ 'background-color': '#' + option.metaData }"
-    [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
-  ></span>
-  } @if (group.attributeType === 'defaultAndSwatchImage') {
-  <img class="image-swatch" [src]="option.metaData" alt="{{ option.label }}" />
+    <span
+      class="color-code"
+      [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
+      [ngStyle]="{ 'background-color': '#' + option.metaData }"
+    ></span>
+  }
+  @if (group.attributeType === 'defaultAndSwatchImage') {
+    <img class="image-swatch" alt="{{ option.label }}" [src]="option.metaData" />
   }
   <span class="label" [ngClass]="{ selected: option.active }"
-    >{{ option.label }} @if (option.alternativeCombination) { -
-    {{ 'product.available_in_different_configuration' | translate }}
+    >{{ option.label }}
+    @if (option.alternativeCombination) {
+      -
+      {{ 'product.available_in_different_configuration' | translate }}
     }
   </span>
 </ng-template>

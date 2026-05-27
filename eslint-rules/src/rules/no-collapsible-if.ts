@@ -72,8 +72,8 @@ function collapseIf({
 }): string {
   const firstIfCondition: string = sourceCode.getText(condition1);
   const secondIfCondition = sourceCode.getText(condition2);
-  let consequent = sourceCode.getText(node.consequent).replace(/(if( )*\([^\{]*\{)[\r\n]/, '');
-  const reg = new RegExp('[\r\n]( )*}', 'g');
+  let consequent = sourceCode.getText(node.consequent).replace(new RegExp('(if( )*\\([^{]*\\{)[\\r\\n]'), '');
+  const reg = new RegExp('[\\r\\n]( )*}', 'g');
   reg.exec(consequent);
   consequent = consequent.replace(consequent.substring(reg.lastIndex, consequent.lastIndexOf('}') + 1), '');
   return `if((${firstIfCondition}) && (${secondIfCondition}))${consequent}`;

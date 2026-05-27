@@ -1,14 +1,14 @@
 @if (productSKUs?.length) {
-<div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
-  @if (pagelet.stringParam('Title')) {
-  <h2>{{ pagelet.stringParam('Title') }}</h2>
-  }
-  <ish-products-list
-    [productSKUs]="productSKUs"
-    [listStyle]="pagelet.stringParam('ListStyle')"
-    [slideItems]="pagelet.numberParam('SlideItems')"
-    [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
-    [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
-  />
-</div>
+  <div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
+    @if (pagelet.stringParam('Title')) {
+      <h2>{{ pagelet.stringParam('Title') }}</h2>
+    }
+    <ish-products-list
+      [listItemCSSClass]="pagelet.stringParam('ListItemCSSClass')"
+      [listItemStyle]="$any(pagelet.stringParam('ListItemStyle'))"
+      [listStyle]="pagelet.stringParam('ListStyle')"
+      [productSKUs]="productSKUs"
+      [slideItems]="pagelet.numberParam('SlideItems')"
+    />
+  </div>
 }

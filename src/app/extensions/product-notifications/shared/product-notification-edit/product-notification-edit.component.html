@@ -1,31 +1,36 @@
 <!-- display notification button / icon -->
-@if (visible$ | async) { @switch (displayType) { @case ('icon') {
-<!-- edit icon -->
-<div class="d-grid">
-  <button
-    type="button"
-    class="btn"
-    [ngClass]="cssClass"
-    [title]="'product.notification.edit.link.title' | translate"
-    (click)="openModal(modal)"
-    data-testing-id="product-notification-edit"
-  >
-    <i class="bi bi-pencil-fill"></i>
-  </button>
-</div>
-} @case ('button') {
-<!-- button -->
-<div class="d-grid">
-  <button
-    type="button"
-    [ngClass]="cssClass"
-    [title]="buttonKey('title') | async | translate"
-    (click)="openModal(modal)"
-    data-testing-id="product-notification-edit"
-  >
-    {{ buttonKey('label') | async | translate }}
-  </button>
-</div>
-} } }
+@if (visible$ | async) {
+  @switch (displayType) {
+    @case ('icon') {
+      <!-- edit icon -->
+      <div class="d-grid">
+        <button
+          class="btn"
+          data-testing-id="product-notification-edit"
+          type="button"
+          [ngClass]="cssClass"
+          [title]="'product.notification.edit.link.title' | translate"
+          (click)="openModal(modal)"
+        >
+          <i class="bi bi-pencil-fill"></i>
+        </button>
+      </div>
+    }
+    @case ('button') {
+      <!-- button -->
+      <div class="d-grid">
+        <button
+          data-testing-id="product-notification-edit"
+          type="button"
+          [ngClass]="cssClass"
+          [title]="buttonKey('title') | async | translate"
+          (click)="openModal(modal)"
+        >
+          {{ buttonKey('label') | async | translate }}
+        </button>
+      </div>
+    }
+  }
+}
 
-<ish-product-notification-edit-dialog [productNotification]="productNotification" #modal />
+<ish-product-notification-edit-dialog #modal [productNotification]="productNotification" />

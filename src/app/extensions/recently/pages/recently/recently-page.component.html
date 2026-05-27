@@ -1,22 +1,22 @@
 @if (products$ | async; as products) {
-<div class="content-page row">
-  @if (products.length) {
-  <div class="col-md-3">
-    <button type="button" class="btn btn-link btn-link-action" (click)="clearAll()" data-testing-id="clear-all">
-      {{ 'application.recentlyViewed.clear' | translate }}
-    </button>
+  <div class="content-page row">
+    @if (products.length) {
+      <div class="col-md-3">
+        <button class="btn btn-link btn-link-action" data-testing-id="clear-all" type="button" (click)="clearAll()">
+          {{ 'application.recentlyViewed.clear' | translate }}
+        </button>
+      </div>
+      <div class="col-md-9">
+        <ish-breadcrumb />
+        <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
+        <ish-products-list listItemCSSClass="col-6 col-lg-4" listItemStyle="tile" [productSKUs]="products" />
+      </div>
+    } @else {
+      <div class="col-md-12">
+        <ish-breadcrumb />
+        <h1>{{ 'application.recentlyViewed.heading' | translate }}</h1>
+        <p>{{ 'application.recentlyViewed.empty' | translate }}</p>
+      </div>
+    }
   </div>
-  <div class="col-md-9">
-    <ish-breadcrumb />
-    <h1>{{ 'application.recentlyViewed.product.heading' | translate }}</h1>
-    <ish-products-list [productSKUs]="products" listItemCSSClass="col-6 col-lg-4" listItemStyle="tile" />
-  </div>
-  } @else {
-  <div class="col-md-12">
-    <ish-breadcrumb />
-    <h1>{{ 'application.recentlyViewed.heading' | translate }}</h1>
-    <p>{{ 'application.recentlyViewed.empty' | translate }}</p>
-  </div>
-  }
-</div>
 }

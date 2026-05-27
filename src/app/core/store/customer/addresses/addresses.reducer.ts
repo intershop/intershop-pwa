@@ -50,9 +50,14 @@ export const addressesReducer = createReducer(
     updateCustomerAddressSuccess,
     deleteCustomerAddressSuccess
   ),
-  on(loadAddressesSuccess, (state, action) => addressAdapter.setAll(action.payload.addresses, state)),
-  on(createCustomerAddressSuccess, updateCustomerAddressSuccess, (state, action) =>
-    addressAdapter.upsertOne(action.payload.address, state)
+  on(loadAddressesSuccess, (state, action): AddressesState => addressAdapter.setAll(action.payload.addresses, state)),
+  on(
+    createCustomerAddressSuccess,
+    updateCustomerAddressSuccess,
+    (state, action): AddressesState => addressAdapter.upsertOne(action.payload.address, state)
   ),
-  on(deleteCustomerAddressSuccess, (state, action) => addressAdapter.removeOne(action.payload.addressId, state))
+  on(
+    deleteCustomerAddressSuccess,
+    (state, action): AddressesState => addressAdapter.removeOne(action.payload.addressId, state)
+  )
 );

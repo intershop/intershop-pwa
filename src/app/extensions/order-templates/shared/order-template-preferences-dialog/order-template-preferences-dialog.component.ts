@@ -22,8 +22,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  *
  * @example
  * <ish-order-template-preferences-dialog
-    (submitOrderTemplate)="createOrderTemplate($event)">
-   </ish-order-template-preferences-dialog>
+    (submitOrderTemplate)="createOrderTemplate($event)" />
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',
@@ -40,7 +39,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   /**
    * Emits the data of the new order template to create.
    */
-  @Output() submitOrderTemplate = new EventEmitter<OrderTemplate>();
+  @Output() readonly submitOrderTemplate = new EventEmitter<OrderTemplate>();
 
   orderTemplateForm = new FormGroup({});
   model: Partial<OrderTemplate>;

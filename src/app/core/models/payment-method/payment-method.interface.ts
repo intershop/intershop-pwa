@@ -36,9 +36,7 @@ export interface PaymentMethodBaseData {
 export interface PaymentMethodData {
   data: PaymentMethodBaseData[];
   included: {
-    paymentInstruments: {
-      [id: string]: PaymentInstrument;
-    };
+    paymentInstruments: Record<string, PaymentInstrument>;
   };
 }
 

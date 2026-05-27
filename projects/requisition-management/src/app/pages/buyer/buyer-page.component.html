@@ -3,28 +3,28 @@
 <p>{{ 'account.requisitions.requisitions.text' | translate }}</p>
 
 <nav
-  ngbNav
   class="nav-tabs"
-  [(activeId)]="status"
+  ngbNav
   [attr.aria-label]="'account.requisitions.requisitions.tabs.aria_label' | translate"
+  [(activeId)]="status"
 >
   <!-- Pending Requisitions -->
   <ng-container ngbNavItem="PENDING">
-    <a ngbNavLink [routerLink]="['../buyer', { status: 'PENDING' }]" data-testing-id="tab-link-pending">{{
+    <a data-testing-id="tab-link-pending" ngbNavLink [routerLink]="['../buyer', { status: 'PENDING' }]">{{
       'account.requisitions.requisitions.navtab.pending' | translate
     }}</a>
   </ng-container>
 
   <!-- Approved Requisitions -->
   <ng-container ngbNavItem="APPROVED">
-    <a ngbNavLink [routerLink]="['../buyer', { status: 'APPROVED' }]" data-testing-id="tab-link-approved">{{
+    <a data-testing-id="tab-link-approved" ngbNavLink [routerLink]="['../buyer', { status: 'APPROVED' }]">{{
       'account.requisitions.requisitions.navtab.approved' | translate
     }}</a>
   </ng-container>
 
   <!-- Rejected Requisitions -->
   <ng-container ngbNavItem="REJECTED">
-    <a ngbNavLink [routerLink]="['../buyer', { status: 'REJECTED' }]" data-testing-id="tab-link-rejected">{{
+    <a data-testing-id="tab-link-rejected" ngbNavLink [routerLink]="['../buyer', { status: 'REJECTED' }]">{{
       'account.requisitions.requisitions.navtab.rejected' | translate
     }}</a>
   </ng-container>
@@ -34,12 +34,12 @@
   <ish-error-message [error]="error$ | async" />
 
   <ish-requisitions-list
+    [columnsToDisplay]="columnsToDisplay"
     [requisitions]="requisitions$ | async"
     [status]="status$ | async"
-    [columnsToDisplay]="columnsToDisplay"
   />
 
   @if (loading$ | async) {
-  <ish-loading />
+    <ish-loading />
   }
 </div>

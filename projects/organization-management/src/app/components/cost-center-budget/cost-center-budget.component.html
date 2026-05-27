@@ -1,50 +1,50 @@
 @if (costCenter) {
-<div>
-  <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="cost-center-budget-popover" triggers="hover">
-    <div class="progress" [ngClass]="progressBarClass">
-      <div
-        class="progress-bar"
-        [ngClass]="{ 'bg-danger': spentBudgetPercentage * 100 > 90 }"
-        [ngStyle]="{ width: progressBarWidth | percent }"
-        role="progressbar"
-        [attr.aria-label]="'account.budget.already_spent.costcenter.aria_label' | translate : { '0': costCenter.name }"
-        [attr.aria-valuetext]="spentBudgetPercentage | percent"
-      >
-        <span class="progress-display">{{ spentBudgetPercentage | percent }}</span>
-        <ng-template #BudgetPopover>
-          <div class="row">
-            <div class="col-md-6 mb-2">
-              {{ 'account.budget.label' | translate : { '0': costCenter.budgetPeriod } }}:
+  <div>
+    <div data-testing-id="cost-center-budget-popover" placement="top" triggers="hover" [ngbPopover]="BudgetPopover">
+      <div class="progress" [ngClass]="progressBarClass">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [attr.aria-label]="'account.budget.already_spent.costcenter.aria_label' | translate: { '0': costCenter.name }"
+          [attr.aria-valuetext]="spentBudgetPercentage | percent"
+          [ngClass]="{ 'bg-danger': spentBudgetPercentage * 100 > 90 }"
+          [ngStyle]="{ width: progressBarWidth | percent }"
+        >
+          <span class="progress-display">{{ spentBudgetPercentage | percent }}</span>
+          <ng-template #BudgetPopover>
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                {{ 'account.budget.label' | translate: { '0': costCenter.budgetPeriod } }}:
+              </div>
+              <div class="col-md-6 text-end">{{ costCenter.budget | ishPrice }}</div>
             </div>
-            <div class="col-md-6 text-end">{{ costCenter.budget | ishPrice }}</div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-2">{{ 'account.budget.already_spent.label' | translate }}:</div>
-            <div class="col-md-6 text-end">
-              {{ costCenter.spentBudget | ishPrice }} ({{ spentBudgetPercentage | percent }})
+            <div class="row">
+              <div class="col-md-6 mb-2">{{ 'account.budget.already_spent.label' | translate }}:</div>
+              <div class="col-md-6 text-end">
+                {{ costCenter.spentBudget | ishPrice }} ({{ spentBudgetPercentage | percent }})
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-2">{{ 'account.budget.left.label' | translate }}:</div>
-            <div class="col-md-6 text-end">
-              {{ costCenter.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
+            <div class="row">
+              <div class="col-md-6 mb-2">{{ 'account.budget.left.label' | translate }}:</div>
+              <div class="col-md-6 text-end">
+                {{ costCenter.remainingBudget | ishPrice }} ({{ remainingBudgetPercentage | percent }})
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-2">{{ 'account.budget.pending_orders.label' | translate }}:</div>
-            <div class="col-md-6 text-end">
-              {{ costCenter.pendingOrders }}
+            <div class="row">
+              <div class="col-md-6 mb-2">{{ 'account.budget.pending_orders.label' | translate }}:</div>
+              <div class="col-md-6 text-end">
+                {{ costCenter.pendingOrders }}
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-2">{{ 'account.budget.approved_orders.label' | translate }}:</div>
-            <div class="col-md-6 text-end">
-              {{ costCenter.approvedOrders }}
+            <div class="row">
+              <div class="col-md-6 mb-2">{{ 'account.budget.approved_orders.label' | translate }}:</div>
+              <div class="col-md-6 text-end">
+                {{ costCenter.approvedOrders }}
+              </div>
             </div>
-          </div>
-        </ng-template>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>
-</div>
 }

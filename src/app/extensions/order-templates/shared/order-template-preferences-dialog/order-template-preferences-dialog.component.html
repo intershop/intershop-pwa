@@ -1,24 +1,24 @@
 <ng-template #modal let-addModal>
   <div class="modal-header">
-    <h2 id="order-template-preferences-title" class="modal-title">{{ this.modalTitle || modalHeader | translate }}</h2>
-    <button type="button" class="btn-close" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+    <h2 class="modal-title" id="order-template-preferences-title">{{ modalTitle || modalHeader | translate }}</h2>
+    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <form [formGroup]="orderTemplateForm" ishFormSubmit #form="ngForm" (ngSubmit)="submitOrderTemplateForm()" novalidate>
+  <form #form="ngForm" ishFormSubmit novalidate [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm()">
     <div class="modal-body">
-      <formly-form [form]="orderTemplateForm" [fields]="fields" [model]="model" />
+      <formly-form [fields]="fields" [form]="orderTemplateForm" [model]="model" />
     </div>
 
     <div class="modal-footer">
       <button
-        type="submit"
         class="btn btn-primary"
-        [disabled]="orderTemplateForm.invalid && form.submitted"
         data-testing-id="order-template-dialog-submit"
+        type="submit"
+        [disabled]="orderTemplateForm.invalid && form.submitted"
       >
         {{ primaryButton | translate }}
       </button>
-      <button type="button" class="btn btn-secondary" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="hide()">
         {{ 'account.cancel.button.label' | translate }}
       </button>
     </div>

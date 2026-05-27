@@ -26,14 +26,15 @@ export class RequisitionBuyerApprovalComponent implements OnChanges {
   }
 
   /**  calculates all displayed prices and percentages */
+  // eslint-disable-next-line complexity
   private calculate() {
     if (this.requisition) {
       this.orderTotal = {
         type: 'Money',
         value:
-          this.requisition?.userBudget?.budgetPriceType === 'gross'
-            ? this.requisition?.totals?.total?.gross
-            : this.requisition?.totals?.total?.net,
+          this.requisition.userBudget?.budgetPriceType === 'gross'
+            ? this.requisition.totals?.total?.gross
+            : this.requisition.totals?.total?.net,
         currency: this.requisition.totals.total.currency,
       };
 

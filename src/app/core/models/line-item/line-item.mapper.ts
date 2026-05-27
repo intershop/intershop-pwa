@@ -12,11 +12,10 @@ import { LineItemData } from './line-item.interface';
 import { LineItem } from './line-item.model';
 
 export class LineItemMapper {
-  // eslint-disable-next-line complexity
   static fromData(
     data: LineItemData,
-    rebateData?: { [id: string]: BasketRebateData },
-    warrantyData?: { [id: string]: BasketWarrantyData }
+    rebateData?: Record<string, BasketRebateData>,
+    warrantyData?: Record<string, BasketWarrantyData>
   ): LineItem {
     if (data) {
       return {
@@ -68,8 +67,8 @@ export class LineItemMapper {
 
   static fromOrderItemData(
     data: OrderItemData,
-    rebateData?: { [id: string]: BasketRebateData },
-    warrantyData?: { [id: string]: BasketWarrantyData }
+    rebateData?: Record<string, BasketRebateData>,
+    warrantyData?: Record<string, BasketWarrantyData>
   ): OrderLineItem {
     if (data) {
       const orderItem = LineItemMapper.fromData(data, rebateData, warrantyData);

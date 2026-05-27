@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-
-import { LazyStoreLocatorFooterComponent } from '../../../extensions/store-locator/exports/lazy-store-locator-footer/lazy-store-locator-footer.component';
+import { LazyContentIncludeComponent } from 'ish-shell/shared/lazy-content-include/lazy-content-include.component';
 
 import { FooterComponent } from './footer.component';
 
@@ -15,7 +14,7 @@ describe('Footer Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RoleToggleModule.forTesting()],
-      declarations: [FooterComponent, MockComponent(LazyStoreLocatorFooterComponent)],
+      declarations: [FooterComponent, MockComponent(LazyContentIncludeComponent)],
     }).compileComponents();
   });
 

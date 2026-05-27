@@ -63,12 +63,12 @@ describe('Product Quantity Component', () => {
     expect(element.querySelector('input')).toMatchInlineSnapshot(`
       <input
         data-testing-id="quantity"
-        type="number"
         pattern="[0-9]*"
+        type="number"
         class="form-control text-center"
         id="ASDF"
-        min="2"
         max="6"
+        min="2"
         step="2"
         aria-label="product.quantity.aria_label"
       />

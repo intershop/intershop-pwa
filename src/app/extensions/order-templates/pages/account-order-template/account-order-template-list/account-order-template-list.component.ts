@@ -21,7 +21,10 @@ export class AccountOrderTemplateListComponent {
   @Input() orderTemplates: OrderTemplate[];
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
-  constructor(private orderTemplatesFacade: OrderTemplatesFacade, private translate: TranslateService) {}
+  constructor(
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private translate: TranslateService
+  ) {}
 
   /** Emits the id of the order template to delete. */
   delete(orderTemplateId: string) {

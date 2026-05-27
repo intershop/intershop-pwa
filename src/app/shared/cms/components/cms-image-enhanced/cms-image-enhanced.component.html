@@ -1,48 +1,55 @@
-@if (pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText')) { @if (isRouterLink(pagelet, 'Link')) {
-<a [routerLink]="routerLink(pagelet, 'Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
-  <ng-container *ngTemplateOutlet="imageEnhanced" />
-</a>
+@if (pagelet?.hasParam('Link') && !pagelet.hasParam('LinkText')) {
+  @if (isRouterLink(pagelet, 'Link')) {
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [routerLink]="routerLink(pagelet, 'Link')">
+      <ng-container *ngTemplateOutlet="imageEnhanced" />
+    </a>
+  } @else {
+    <a class="teaser-link" [attr.title]="pagelet.stringParam('LinkTitle')" [href]="pagelet.stringParam('Link')">
+      <ng-container *ngTemplateOutlet="imageEnhanced" />
+    </a>
+  }
 } @else {
-<a [href]="pagelet.stringParam('Link')" [attr.title]="pagelet.stringParam('LinkTitle')" class="teaser-link">
   <ng-container *ngTemplateOutlet="imageEnhanced" />
-</a>
-} } @else {
-<ng-container *ngTemplateOutlet="imageEnhanced" />
 }
 
 <ng-template #imageEnhanced>
   <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
       @if (pagelet.hasParam('ImageXS')) {
-      <source [srcset]="pagelet.stringParam('ImageXS')" media="(max-width: 767px)" />
-      } @if (pagelet.hasParam('ImageSM')) {
-      <source [srcset]="pagelet.stringParam('ImageSM')" media="(max-width: 991px)" />
-      } @if (pagelet.hasParam('ImageMD')) {
-      <source [srcset]="pagelet.stringParam('ImageMD')" media="(max-width: 1199px)" />
+        <source media="(max-width: 767px)" [srcset]="pagelet.stringParam('ImageXS')" />
+      }
+      @if (pagelet.hasParam('ImageSM')) {
+        <source media="(max-width: 991px)" [srcset]="pagelet.stringParam('ImageSM')" />
+      }
+      @if (pagelet.hasParam('ImageMD')) {
+        <source media="(max-width: 1199px)" [srcset]="pagelet.stringParam('ImageMD')" />
       }
       <img
-        [src]="pagelet.stringParam('Image')"
-        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
-        [attr.loading]="loading"
-        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
         class="enhanced-image"
+        [alt]="pagelet.stringParam('AlternateText') || ('image.alt_text.default' | translate)"
+        [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+        [attr.loading]="loading"
+        [src]="pagelet.stringParam('Image')"
       />
     </picture>
     <div class="enhanced-image-text">
       @if (pagelet.hasParam('Heading1')) {
-      <h1>{{ pagelet.stringParam('Heading1') }}</h1>
-      } @if (pagelet.hasParam('Heading2')) {
-      <h2>{{ pagelet.stringParam('Heading2') }}</h2>
-      } @if (pagelet.hasParam('Description')) {
-      <div class="d-none d-sm-inline" [ishServerHtml]="pagelet.stringParam('Description')"></div>
-      } @if (pagelet.hasParam('Link') && pagelet.hasParam('LinkText')) {
-      <a
-        [routerLink]="routerLink(pagelet, 'Link')"
-        [attr.title]="pagelet.stringParam('LinkTitle')"
-        class="btn btn-lg btn-primary"
-      >
-        {{ pagelet.stringParam('LinkText') }}
-      </a>
+        <h1>{{ pagelet.stringParam('Heading1') }}</h1>
+      }
+      @if (pagelet.hasParam('Heading2')) {
+        <h2>{{ pagelet.stringParam('Heading2') }}</h2>
+      }
+      @if (pagelet.hasParam('Description')) {
+        <div class="d-none d-sm-inline" [ishServerHtml]="pagelet.stringParam('Description')"></div>
+      }
+      @if (pagelet.hasParam('Link') && pagelet.hasParam('LinkText')) {
+        <a
+          class="btn btn-lg btn-primary"
+          [attr.title]="pagelet.stringParam('LinkTitle')"
+          [routerLink]="routerLink(pagelet, 'Link')"
+        >
+          {{ pagelet.stringParam('LinkText') }}
+        </a>
       }
     </div>
   </div>

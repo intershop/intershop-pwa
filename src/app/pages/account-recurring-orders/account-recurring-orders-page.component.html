@@ -4,18 +4,18 @@
 
 <ish-error-message [error]="recurringOrdersError$ | async" [toast]="false" />
 
-<ul *ishIsAuthorizedTo="'APP_B2B_MANAGE_ORDERS'" ngbNav class="nav-tabs" [(activeId)]="context">
+<ul *ishIsAuthorizedTo="'APP_B2B_MANAGE_ORDERS'" class="nav-tabs" ngbNav [(activeId)]="context">
   <li ngbNavItem="MY" role="presentation">
-    <a ngbNavLink [routerLink]="['../recurring-orders']" data-testing-id="tab-link-my">{{
+    <a data-testing-id="tab-link-my" ngbNavLink [routerLink]="['../recurring-orders']">{{
       'account.recurring_orders.tab_my' | translate
     }}</a>
   </li>
   <li ngbNavItem="ADMIN" role="presentation">
     <a
-      ngbNavLink
-      [routerLink]="['../recurring-orders']"
-      [queryParams]="{ context: 'ADMIN' }"
       data-testing-id="tab-link-admin"
+      ngbNavLink
+      [queryParams]="{ context: 'ADMIN' }"
+      [routerLink]="['../recurring-orders']"
       >{{ 'account.recurring_orders.tab_all' | translate }}</a
     >
   </li>
@@ -23,14 +23,14 @@
 
 <div class="recurring-orders">
   @if (recurringOrders$ | async; as recurringOrders) {
-  <ish-recurring-order-list
-    [recurringOrders]="recurringOrders"
-    [columnsToDisplay]="columnsToDisplay"
-    [context]="context"
-  />
+    <ish-recurring-order-list
+      [columnsToDisplay]="columnsToDisplay"
+      [context]="context"
+      [recurringOrders]="recurringOrders"
+    />
   }
 </div>
 
 @if (recurringOrdersLoading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

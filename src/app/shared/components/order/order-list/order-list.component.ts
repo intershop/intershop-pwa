@@ -18,10 +18,10 @@ export type OrderColumnsType =
  *
  * @example
  * <ish-order-list
- *   [orders]="orders$ | async"
+ *   [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'orderTotal']"
  *   [loading]="loading$ | async"
- *   [columnsToDisplay]="['creationDate', 'orderNoWithLink', 'lineItems', 'status', 'orderTotal']">
- * </ish-order-list>
+ *   [orders]="orders$ | async"
+ * />
  */
 @Component({
   selector: 'ish-order-list',

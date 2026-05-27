@@ -10,7 +10,10 @@ import { getNewsletterSubscriptionStatus } from 'ish-core/store/customer/user';
  */
 @Injectable({ providedIn: 'root' })
 export class NewsletterService {
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   private newsletterSubscriptionStatus$ = this.store.pipe(select(getNewsletterSubscriptionStatus), take(1));
 

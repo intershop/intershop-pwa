@@ -11,7 +11,10 @@ import { productInventoryApiActions, productInventoryInternalActions } from './p
 
 @Injectable()
 export class ProductInventoryEffects {
-  constructor(private actions$: Actions, private inventoryService: InventoryService) {}
+  constructor(
+    private actions$: Actions,
+    private inventoryService: InventoryService
+  ) {}
 
   loadProductInventories$ = createEffect(() =>
     this.actions$.pipe(

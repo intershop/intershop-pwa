@@ -32,11 +32,15 @@ export class AccountProfileUserComponent extends RxState<ComponentState> impleme
   }
   @Input() error: HttpError;
 
-  @Output() updateUserProfile = new EventEmitter<User>();
+  @Output() readonly updateUserProfile = new EventEmitter<User>();
 
   accountProfileUserForm = new FormGroup({});
 
-  constructor(private fieldLibrary: FieldLibrary, private accountFacade: AccountFacade, private appFacade: AppFacade) {
+  constructor(
+    private fieldLibrary: FieldLibrary,
+    private accountFacade: AccountFacade,
+    private appFacade: AppFacade
+  ) {
     super();
   }
 

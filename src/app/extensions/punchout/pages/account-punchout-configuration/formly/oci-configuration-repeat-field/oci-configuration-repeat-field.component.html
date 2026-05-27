@@ -1,5 +1,5 @@
 @for (field of field?.fieldGroup; track field.id; let i = $index) {
-<div [attr.data-testing-id]="'oci-config-line-' + i">
-  <formly-field [field]="field" />
-</div>
+  <div [attr.data-testing-id]="'oci-config-line-' + i">
+    <formly-field [field]="field" />
+  </div>
 }

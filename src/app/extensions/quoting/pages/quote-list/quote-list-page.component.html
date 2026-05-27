@@ -1,7 +1,8 @@
 <h1>{{ 'quote.list.heading' | translate }}</h1>
 
 @if (quotes) {
-<ish-quote-list [quotes]="quotes" />
-} @if (loading$ | async) {
-<ish-loading />
+  <ish-quote-list [quotes]="quotes" />
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

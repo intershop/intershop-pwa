@@ -1,9 +1,9 @@
-<a data-nosnippet class="skip-content-link skip-to-main-content" [routerLink]="[]" fragment="main-content">{{
+<a class="skip-content-link skip-to-main-content" data-nosnippet fragment="main-content" [routerLink]="[]">{{
   'common.skip_to_main.link' | translate
 }}</a>
 
-<div [ngClass]="wrapperClasses$ | async" class="d-flex flex-column min-vh-100">
-  <header data-testing-id="page-header" class="top"><ish-header /></header>
+<div class="d-flex flex-column min-vh-100" [ngClass]="wrapperClasses$ | async">
+  <header class="top" data-testing-id="page-header"><ish-header /></header>
 
   <div class="wrapper">
     <main class="container main-container" id="main-content" tabindex="-1">
@@ -11,7 +11,7 @@
     </main>
   </div>
 
-  <footer data-testing-id="section-footer" class="mt-auto">
+  <footer class="mt-auto" data-testing-id="section-footer">
     <ish-footer />
   </footer>
 </div>

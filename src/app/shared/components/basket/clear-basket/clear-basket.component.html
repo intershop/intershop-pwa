@@ -1,8 +1,8 @@
 <button
-  type="button"
   class="btn btn-link me-0"
-  [ngClass]="cssClass"
   data-testing-id="clearBasketButton"
+  type="button"
+  [ngClass]="cssClass"
   (click)="clearDialog.show()"
 >
   {{ 'shopping_cart.clear_cart.button' | translate }}
@@ -13,7 +13,7 @@
   [options]="{
     confirmText: 'shopping_cart.clear_cart.confirm_button' | translate,
     rejectText: 'shopping_cart.button.cancel' | translate,
-    titleText: 'shopping_cart.clear_cart.dialog_header' | translate
+    titleText: 'shopping_cart.clear_cart.dialog_header' | translate,
   }"
   (confirmed)="clearBasket()"
 >

@@ -1,11 +1,16 @@
-require('jest-preset-angular/setup-jest');
-
+/* eslint-disable ish-custom-rules/ordered-imports */
+// import zone.js before any @angular imports to avoid problems with fakeAsync in tests
+import 'zone.js';
+import 'zone.js/testing';
 import { CompilerOptions } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
 import '@angular/localize/init';
 import * as matchers from 'jest-extended';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 
 expect.extend(matchers);
+
+setupZoneTestEnv();
 
 beforeEach(() => {
   const compilerOptions: CompilerOptions = { preserveWhitespaces: false };

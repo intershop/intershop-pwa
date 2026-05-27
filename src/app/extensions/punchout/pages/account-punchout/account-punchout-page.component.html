@@ -1,100 +1,109 @@
 <ish-account-punchout-header
+  [error]="error$ | async"
   [punchoutTypes]="punchoutTypes$ | async"
   [selectedType]="selectedPunchoutType$ | async"
-  [error]="error$ | async"
 />
 
 @if (selectedPunchoutType$ | async; as selectedType) {
-<div class="section">
-  <h2 class="mt-1">
-    {{ 'account.punchout.user.list.heading' | translate : { '0': selectedType } }}
-    <a
-      [routerLink]="['/account/punchout/create']"
-      [queryParams]="{ format: selectedType }"
-      class="btn btn-secondary"
-      data-testing-id="add-user-button"
-    >
-      {{ 'account.punchout.user.add.button.label' | translate }}
-    </a>
-  </h2>
-  @if (punchoutUsers$ | async; as users) { @if (users.length) {
-  <div class="list-body" data-testing-id="user-list">
-    @for (user of users; track user.id) { @if (user) {
-    <div class="list-item-row row mx-0">
-      <div class="col-9 col-sm-10 list-item">
-        <p>
-          <span class="d-block">{{ user.login }}</span>
-          @if (user.active === false) {
-          <span class="input-help">{{ 'account.user.list.status.inactive' | translate }}</span>
+  <div class="section">
+    <h2 class="mt-1">
+      {{ 'account.punchout.user.list.heading' | translate: { '0': selectedType } }}
+      <a
+        class="btn btn-secondary"
+        data-testing-id="add-user-button"
+        [queryParams]="{ format: selectedType }"
+        [routerLink]="['/account/punchout/create']"
+      >
+        {{ 'account.punchout.user.add.button.label' | translate }}
+      </a>
+    </h2>
+    @if (punchoutUsers$ | async; as users) {
+      @if (users.length) {
+        <div class="list-body" data-testing-id="user-list">
+          @for (user of users; track user.id) {
+            @if (user) {
+              <div class="list-item-row row mx-0">
+                <div class="col-9 col-sm-10 list-item">
+                  <p>
+                    <span class="d-block">{{ user.login }}</span>
+                    @if (user.active === false) {
+                      <span class="input-help">{{ 'account.user.list.status.inactive' | translate }}</span>
+                    }
+                  </p>
+                </div>
+                <div class="col-3 col-sm-2 list-item text-end">
+                  <div class="float-end">
+                    @if (selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)) {
+                      <a
+                        class="btn-tool"
+                        [queryParams]="{ format: selectedType }"
+                        [routerLink]="['cxmlConfiguration', user.id]"
+                        [title]="'account.punchout.configure.link' | translate: { '0': user.login }"
+                      >
+                        <i class="bi bi-gear-fill"></i>
+                      </a>
+                    }
+                    <a
+                      class="btn-tool"
+                      data-testing-id="edit-user"
+                      [queryParams]="{ format: selectedType }"
+                      [routerLink]="[user.login]"
+                      [title]="'account.profile.update.link' | translate: { '0': user.login }"
+                    >
+                      <i class="bi bi-pencil-fill"></i>
+                    </a>
+                    <button
+                      class="btn-tool btn-link"
+                      data-testing-id="delete-user"
+                      type="button"
+                      [title]="'account.user.delete_user_dialog.header' | translate: { '0': user.login }"
+                      (click)="modalDialog.show(user)"
+                    >
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                    <ish-modal-dialog
+                      #modalDialog
+                      [options]="{
+                        titleText: 'account.user.delete_user_dialog.header' | translate: { '0': user.login },
+                        confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
+                        rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate,
+                      }"
+                      (confirmed)="deleteUser($event)"
+                    >
+                      <p>{{ 'account.punchout.user.delete.text' | translate }}</p>
+                    </ish-modal-dialog>
+                  </div>
+                </div>
+              </div>
+            }
           }
-        </p>
-      </div>
-      <div class="col-3 col-sm-2 list-item text-end">
-        <div class="float-end">
-          @if (selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)) {
-          <a
-            [routerLink]="['cxmlConfiguration', user.id]"
-            [queryParams]="{ format: selectedType }"
-            class="btn-tool"
-            [title]="'account.punchout.configure.link' | translate : { '0': user.login }"
-          >
-            <i class="bi bi-gear-fill"></i>
-          </a>
-          }
-          <a
-            [routerLink]="[user.login]"
-            [queryParams]="{ format: selectedType }"
-            class="btn-tool"
-            [title]="'account.profile.update.link' | translate : { '0': user.login }"
-            data-testing-id="edit-user"
-          >
-            <i class="bi bi-pencil-fill"></i>
-          </a>
-          <button
-            type="button"
-            class="btn-tool btn-link"
-            [title]="'account.user.delete_user_dialog.header' | translate : { '0': user.login }"
-            (click)="modalDialog.show(user)"
-            data-testing-id="delete-user"
-          >
-            <i class="bi bi-trash-fill"></i>
-          </button>
-          <ish-modal-dialog
-            #modalDialog
-            [options]="{
-              titleText: 'account.user.delete_user_dialog.header' | translate : { '0': user.login },
-              confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
-              rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate
-            }"
-            (confirmed)="deleteUser($event)"
-          >
-            <p>{{ 'account.punchout.user.delete.text' | translate }}</p>
-          </ish-modal-dialog>
         </div>
-      </div>
-    </div>
-    } }
+      } @else {
+        <p data-testing-id="empty-user-list">
+          {{ 'account.punchout.no_user.text' | translate: { '0': selectedType } }}
+        </p>
+      }
+      @switch (selectedType) {
+        @case ('oci') {
+          <p>
+            {{ 'account.punchout.oci.info.url.helptext' | translate }}
+          </p>
+          <p>{{ ociPunchoutUrl$ | async }}</p>
+        }
+        @case ('cxml') {
+          <p>
+            {{ 'account.punchout.cxml.info.url.helptext' | translate }}
+          </p>
+          <p>{{ cxmlPunchoutUrl$ | async }}</p>
+        }
+      }
+    } @else {
+      <p data-testing-id="empty-user-list">
+        {{ 'account.punchout.no_user.text' | translate: { '0': selectedType } }}
+      </p>
+    }
   </div>
-  } @else {
-  <p data-testing-id="empty-user-list">
-    {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
-  </p>
-  } @switch (selectedType) { @case ('oci') {
-  <p>
-    {{ 'account.punchout.oci.info.url.helptext' | translate }}
-  </p>
-  <p>{{ ociPunchoutUrl$ | async }}</p>
-  } @case ('cxml') {
-  <p>
-    {{ 'account.punchout.cxml.info.url.helptext' | translate }}
-  </p>
-  <p>{{ cxmlPunchoutUrl$ | async }}</p>
-  } } } @else {
-  <p data-testing-id="empty-user-list">
-    {{ 'account.punchout.no_user.text' | translate : { '0': selectedType } }}
-  </p>
-  }
-</div>
-} @if (loading$ | async) {
-<ish-loading />
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

@@ -84,3 +84,21 @@ export const PAYPAL_CART_FIELDS_STYLING = {
   },
   '.invalid': { color: '#dc3545', border: '1px solid #dc3545', 'box-shadow': 'none' },
 };
+
+// Styling configuration for Google Pay buttons.
+export const PAYPAL_GOOGLE_PAY_BUTTON_STYLING = {
+  buttonColor: 'white',
+  buttonType: 'order',
+  buttonSizeMode: 'fill',
+};
+
+/** Styling configuration for Apple Pay button.
+ * @see https://developer.apple.com/documentation/applepayontheweb/displaying-apple-pay-buttons-using-css
+ */
+export const PAYPAL_APPLE_PAY_BUTTON_STYLING = {
+  buttonStyle: 'black',
+  buttonType: 'order',
+  borderRadius: '4px',
+  width: '100%',
+  height: '40px',
+};

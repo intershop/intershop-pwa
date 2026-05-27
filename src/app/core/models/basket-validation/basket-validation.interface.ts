@@ -16,15 +16,15 @@ export interface BasketValidationData {
     scopes?: BasketValidationScopeType[];
   };
   included?: {
-    basket: { [id: string]: BasketBaseData };
-    basket_invoiceToAddress?: { [urn: string]: AddressData };
-    basket_lineItems?: { [id: string]: LineItemData };
-    basket_discounts?: { [id: string]: BasketRebateData };
-    basket_lineItems_discounts?: { [id: string]: BasketRebateData };
-    basket_commonShipToAddress?: { [urn: string]: AddressData };
-    basket_commonShippingMethod?: { [id: string]: ShippingMethodData };
-    basket_payments?: { [id: string]: PaymentData };
-    basket_payments_paymentMethod?: { [id: string]: PaymentMethodBaseData };
-    basket_payments_paymentInstrument?: { [id: string]: PaymentInstrument };
+    basket: Record<string, BasketBaseData>;
+    basket_invoiceToAddress?: Record<string, AddressData>;
+    basket_lineItems?: Record<string, LineItemData>;
+    basket_discounts?: Record<string, BasketRebateData>;
+    basket_lineItems_discounts?: Record<string, BasketRebateData>;
+    basket_commonShipToAddress?: Record<string, AddressData>;
+    basket_commonShippingMethod?: Record<string, ShippingMethodData>;
+    basket_payments?: Record<string, PaymentData>;
+    basket_payments_paymentMethod?: Record<string, PaymentMethodBaseData>;
+    basket_payments_paymentInstrument?: Record<string, PaymentInstrument>;
   };
 }

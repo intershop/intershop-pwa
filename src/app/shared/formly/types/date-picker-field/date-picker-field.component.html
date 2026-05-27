@@ -1,33 +1,33 @@
 <div class="input-group date-picker-custom-class">
   <input
-    [formControl]="formControl"
-    [formlyAttributes]="field"
-    [minDate]="minDate$ | async"
-    [maxDate]="maxDate$ | async"
-    [markDisabled]="markDateDisable$ | async"
-    outsideDays="collapsed"
-    navigation="arrows"
-    class="form-control"
-    [ngClass]="props.inputClass"
-    name="dp"
-    ngbDatepicker
     #d="ngbDatepicker"
+    class="form-control"
     data-testing-id="date-picker"
+    name="dp"
+    navigation="arrows"
+    ngbDatepicker
+    outsideDays="collapsed"
+    [attr.aria-describedby]="props.ariaDescribedByIds"
+    [attr.aria-invalid]="showError ? 'true' : undefined"
     [attr.aria-label]="props.ariaLabel | translate"
     [attr.aria-required]="props.required ? 'true' : undefined"
-    [attr.aria-invalid]="showError ? 'true' : undefined"
-    [attr.aria-describedby]="props.ariaDescribedByIds"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [markDisabled]="markDateDisable$ | async"
+    [maxDate]="maxDate$ | async"
+    [minDate]="minDate$ | async"
+    [ngClass]="props.inputClass"
   />
 
   <button
-    (click)="d.toggle()"
-    type="button"
-    class="input-group-text btn btn-secondary mb-0 me-0"
-    title="{{ 'checkout.shipping.calendar.title' | translate }}"
-    [disabled]="props.disabled"
-    aria-haspopup="dialog"
     aria-expanded="false"
+    aria-haspopup="dialog"
+    class="input-group-text btn btn-secondary mb-0 me-0"
     data-testing-id="btn-date-picker"
+    type="button"
+    [disabled]="props.disabled"
+    title="{{ 'checkout.shipping.calendar.title' | translate }}"
+    (click)="d.toggle()"
   >
     <i class="bi bi-calendar-event-fill text-primary"></i>
   </button>

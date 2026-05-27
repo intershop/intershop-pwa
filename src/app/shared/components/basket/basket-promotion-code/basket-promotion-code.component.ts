@@ -21,7 +21,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  * It provides the add promotion code functionality
  *
  * @example
- * <ish-basket-promotion-code></ish-basket-promotion-code>
+ * <ish-basket-promotion-code />
  */
 @Component({
   selector: 'ish-basket-promotion-code',
@@ -42,7 +42,10 @@ export class BasketPromotionCodeComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private checkoutFacade: CheckoutFacade, private cd: ChangeDetectorRef) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;

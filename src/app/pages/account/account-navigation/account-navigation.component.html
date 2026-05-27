@@ -1,99 +1,110 @@
 <!-- account navigation with hierarchy -->
 @if (!(deviceType === 'mobile' || deviceType === 'tablet')) {
-<ul class="account-navigation list-unstyled">
-  <ish-account-user-info role="listitem" />
-  @for (item of navItems; track item.id) {
-  <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
-    <ng-container *ishHasNotRole="item.notRole">
-      @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) { @if
-      (item.children) {
-      <li
-        (click)="toggleCollapse(item)"
-        (keydown.enter)="toggleCollapse(item)"
-        tabindex="0"
-        class="account-nav-header"
-        [attr.aria-expanded]="!item.isCollapsed"
-        [attr.data-testing-id]="item.id + '-nav-link'"
-      >
-        <span>
-          @if (item.icon) {
-          <i class="bi" [class]="item.icon"></i>
-          }
-          {{ item.localizationKey | translate }}
-        </span>
-      </li>
-      <li [ngbCollapse]="item.isCollapsed">
-        <ul class="account-navigation list-unstyled">
-          @for (subItem of item.children; track subItem.id) {
-          <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
-            <ng-container *ishHasNotRole="subItem.notRole">
-              @if ( (subItem.feature || 'always' | ishFeature) && (subItem.serverSetting || 'always' | ishServerSetting)
-              ) {
+  <ul class="account-navigation list-unstyled">
+    <ish-account-user-info role="listitem" />
+    @for (item of navItems; track item.id) {
+      <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
+        <ng-container *ishHasNotRole="item.notRole">
+          @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) {
+            @if (item.children) {
+              <li
+                class="account-nav-header"
+                tabindex="0"
+                [attr.aria-expanded]="!item.isCollapsed"
+                [attr.data-testing-id]="item.id + '-nav-link'"
+                (click)="toggleCollapse(item)"
+                (keydown.enter)="toggleCollapse(item)"
+              >
+                <span>
+                  @if (item.icon) {
+                    <i class="bi" [class]="item.icon"></i>
+                  }
+                  {{ item.localizationKey | translate }}
+                </span>
+              </li>
+              <li [ngbCollapse]="item.isCollapsed">
+                <ul class="account-navigation list-unstyled">
+                  @for (subItem of item.children; track subItem.id) {
+                    <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
+                      <ng-container *ishHasNotRole="subItem.notRole">
+                        @if (
+                          (subItem.feature || 'always' | ishFeature) &&
+                          (subItem.serverSetting || 'always' | ishServerSetting)
+                        ) {
+                          <li
+                            [routerLinkActive]="activeClass"
+                            [routerLinkActiveOptions]="{ exact: false }"
+                            (isActiveChange)="activeChanged($event, subItem)"
+                          >
+                            <a
+                              class="link-decoration-hover"
+                              [attr.data-testing-id]="subItem.id + '-nav-link'"
+                              [routerLink]="subItem.routerLink"
+                              >{{ subItem.localizationKey | translate }}</a
+                            >
+                          </li>
+                        }
+                      </ng-container>
+                    </ng-container>
+                  }
+                </ul>
+              </li>
+            } @else {
               <li
                 [routerLinkActive]="activeClass"
-                [routerLinkActiveOptions]="{ exact: false }"
-                (isActiveChange)="activeChanged($event, subItem)"
+                [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
               >
+                <!-- prettier-ignore-->
                 <a
-                  [routerLink]="subItem.routerLink"
                   class="link-decoration-hover"
-                  [attr.data-testing-id]="subItem.id + '-nav-link'"
-                  >{{ subItem.localizationKey | translate }}</a
+                  [attr.data-testing-id]="item.id + '-nav-link'"
+                  [routerLink]="item.routerLink"
                 >
+                  @if (item.icon) {<i class="bi" [class]="item.icon"></i>}{{ item.localizationKey | translate }}
+                </a>
               </li>
-              }
-            </ng-container>
-          </ng-container>
-          }
-        </ul>
-      </li>
-      } @else {
-      <li
-        [routerLinkActive]="activeClass"
-        [routerLinkActiveOptions]="{ exact: item.routerLink === '/account' ? true : false }"
-      >
-        <a [routerLink]="item.routerLink" class="link-decoration-hover" [attr.data-testing-id]="item.id + '-nav-link'">
-          @if (item.icon) {
-          <i class="bi" [class]="item.icon"></i>
-          }{{ item.localizationKey | translate }}
-        </a>
-      </li>
-      } }
-    </ng-container>
-  </ng-container>
-  }
-</ul>
-} @else {
-<select
-  (change)="navigateTo($event.target)"
-  class="form-control"
-  [attr.aria-label]="'account.menu.select.label' | translate"
->
-  @for (item of navItems; track item.id) {
-  <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
-    <ng-container *ishHasNotRole="item.notRole">
-      @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) { @if
-      (item.children) {
-      <optgroup [label]="item.localizationKey | translate"></optgroup>
-      @for (subItem of item.children; track subItem.id) {
-      <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
-        <ng-container *ishHasNotRole="subItem.notRole">
-          @if ( (subItem.feature || 'always' | ishFeature) && (subItem.serverSetting || 'always' | ishServerSetting) ) {
-          <option [value]="subItem.routerLink" [selected]="isSelected(subItem)">
-            {{ subItem.localizationKey | translate }}
-          </option>
+            }
           }
         </ng-container>
       </ng-container>
-      } } @else {
-      <option [value]="item.routerLink" [selected]="isSelected(item)">
-        {{ item.localizationKey | translate }}
-      </option>
-      } }
-    </ng-container>
-  </ng-container>
-  }
-</select>
+    }
+  </ul>
+} @else {
+  <select
+    class="form-control"
+    [attr.aria-label]="'account.menu.select.label' | translate"
+    (change)="navigateTo($event.target)"
+  >
+    @for (item of navItems; track item.id) {
+      <ng-container *ishIsAuthorizedTo="item.permission || 'always'">
+        <ng-container *ishHasNotRole="item.notRole">
+          @if ((item.feature || 'always' | ishFeature) && (item.serverSetting || 'always' | ishServerSetting)) {
+            @if (item.children) {
+              <optgroup [label]="item.localizationKey | translate"></optgroup>
+              @for (subItem of item.children; track subItem.id) {
+                <ng-container *ishIsAuthorizedTo="subItem.permission || 'always'">
+                  <ng-container *ishHasNotRole="subItem.notRole">
+                    @if (
+                      (subItem.feature || 'always' | ishFeature) &&
+                      (subItem.serverSetting || 'always' | ishServerSetting)
+                    ) {
+                      <option [selected]="isSelected(subItem)" [value]="subItem.routerLink">
+                        {{ subItem.localizationKey | translate }}
+                      </option>
+                    }
+                  </ng-container>
+                </ng-container>
+              }
+            } @else {
+              <option [selected]="isSelected(item)" [value]="item.routerLink">
+                {{ item.localizationKey | translate }}
+              </option>
+            }
+          }
+        </ng-container>
+      </ng-container>
+    }
+  </select>
 }
 
 <!-- mobile account navigation select box -->

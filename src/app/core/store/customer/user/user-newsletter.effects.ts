@@ -12,7 +12,11 @@ import { getLoggedInUser } from './user.selectors';
 
 @Injectable()
 export class UserNewsletterEffects {
-  constructor(private actions$: Actions, private store: Store, private newsletterService: NewsletterService) {}
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private newsletterService: NewsletterService
+  ) {}
 
   /**
    * The effect has to wait for the getLoggedInUser-selector because it is used in a page-guard that is called before

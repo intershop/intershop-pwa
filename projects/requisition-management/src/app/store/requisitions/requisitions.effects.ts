@@ -27,7 +27,11 @@ import {
 
 @Injectable()
 export class RequisitionsEffects {
-  constructor(private actions$: Actions, private requisitionsService: RequisitionsService, private router: Router) {}
+  constructor(
+    private actions$: Actions,
+    private requisitionsService: RequisitionsService,
+    private router: Router
+  ) {}
 
   loadRequisitions$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,10 +1,15 @@
-@switch (headerType$ | async) { @case ('error') {
-<ish-header-error />
-} @case ('simple') {
-<ish-header-simple />
-} @case ('checkout') {
-<ish-header-checkout />
-} @default {
-<ish-header-default [isSticky]="isSticky$ | async" [deviceType]="deviceType$ | async" [reset]="reset$ | async" />
-} }
+@switch (headerType$ | async) {
+  @case ('error') {
+    <ish-header-error />
+  }
+  @case ('simple') {
+    <ish-header-simple />
+  }
+  @case ('checkout') {
+    <ish-header-checkout />
+  }
+  @default {
+    <ish-header-default [deviceType]="deviceType$ | async" [isSticky]="isSticky$ | async" [reset]="reset$ | async" />
+  }
+}
 <ish-back-to-top />

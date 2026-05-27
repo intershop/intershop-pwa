@@ -17,7 +17,10 @@ export class PricesService {
     Accept: 'application/vnd.intershop.pricing.v1+json',
   });
 
-  constructor(private apiService: ApiService, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), take(1));
 

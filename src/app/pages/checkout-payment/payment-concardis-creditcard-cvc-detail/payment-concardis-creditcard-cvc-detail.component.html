@@ -1,12 +1,12 @@
 @if (isCvcExpired()) {
-<div [formGroup]="cvcDetailForm" class="row">
-  <div class="col-12 col-md-9 col-lg-7">
-    <formly-form [form]="cvcDetailForm" [fields]="fields" />
+  <div class="row" [formGroup]="cvcDetailForm">
+    <div class="col-12 col-md-9 col-lg-7">
+      <formly-form [fields]="fields" [form]="cvcDetailForm" />
+    </div>
+    <div class="col-md-3 col-lg-5">
+      <button class="btn btn-primary" type="submit" (click)="renewCVCDetails()">
+        {{ 'checkout.account.confirm.button.label' | translate }}
+      </button>
+    </div>
   </div>
-  <div class="col-md-3 col-lg-5">
-    <button type="submit" class="btn btn-primary" (click)="renewCVCDetails()">
-      {{ 'checkout.account.confirm.button.label' | translate }}
-    </button>
-  </div>
-</div>
 }

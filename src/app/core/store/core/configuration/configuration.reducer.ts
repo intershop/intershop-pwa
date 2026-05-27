@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { Translations } from 'ish-core/utils/translate/translations.type';
@@ -18,17 +19,18 @@ export interface ConfigurationState {
   application?: string;
   hybridApplication?: string;
   identityProvider?: string;
-  identityProviders?: { [id: string]: { type?: string; [key: string]: unknown } };
+  identityProviders?: Record<string, { type?: string; [key: string]: unknown }>;
   features?: FeatureToggleType[];
   addFeatures?: FeatureToggleType[];
   defaultLocale?: string;
   fallbackLocales?: string[];
-  localeCurrencyOverride?: { [locale: string]: string | string[] };
+  localeCurrencyOverride?: Record<string, string | string[]>;
   lang?: string;
   currency?: string;
-  serverTranslations?: { [lang: string]: Translations };
+  serverTranslations?: Record<string, Translations>;
   multiSiteLocaleMap?: Record<string, unknown>;
   sparque?: SparqueConfig;
+  paypal?: PaypalClientConfig;
   // not synced via state transfer
   _deviceType?: DeviceType;
 }
@@ -51,6 +53,7 @@ const initialState: ConfigurationState = {
   serverTranslations: {},
   multiSiteLocaleMap: undefined,
   sparque: undefined,
+  paypal: undefined,
   _deviceType: environment.defaultDeviceType,
 };
 
@@ -72,7 +75,9 @@ function addSingleTranslation(
 export const configurationReducer = createReducer(
   initialState,
   on(applyConfiguration, (state, action): ConfigurationState => ({ ...state, ...action.payload })),
-  on(loadSingleServerTranslationSuccess, (state, action) =>
-    addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
+  on(
+    loadSingleServerTranslationSuccess,
+    (state, action): ConfigurationState =>
+      addSingleTranslation(state, action.payload.lang, action.payload.key, action.payload.translation)
   )
 );

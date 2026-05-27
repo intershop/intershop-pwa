@@ -22,7 +22,10 @@ import {
 
 @Injectable()
 export class ProductReviewsEffects {
-  constructor(private actions$: Actions, private reviewService: ReviewsService) {}
+  constructor(
+    private actions$: Actions,
+    private reviewService: ReviewsService
+  ) {}
 
   loadProductReviews$ = createEffect(() =>
     this.actions$.pipe(

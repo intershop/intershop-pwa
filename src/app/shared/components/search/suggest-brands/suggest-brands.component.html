@@ -1,15 +1,15 @@
 <div class="search-suggest-brands">
   <div class="d-flex justify-content-start headline">{{ 'suggest.brands.headline' | translate }}</div>
   <ul>
-    @for (brand of brands | slice : 0 : maxAutoSuggests; track brand.brandName) {
-    <li>
-      <a
-        [routerLink]="['search', brand.brandName]"
-        [queryParams]="{ filters: 'brand=' + brand.brandName }"
-        [innerHTML]="brand.brandName | ishHighlight : (inputTerms$ | async)"
-        (click)="handleInputFocus(brand.brandName)"
-      ></a>
-    </li>
+    @for (brand of brands | slice: 0 : maxAutoSuggests; track brand.brandName) {
+      <li>
+        <a
+          [innerHTML]="brand.brandName | ishHighlight: (inputTerms$ | async)"
+          [queryParams]="{ filters: 'brand=' + brand.brandName }"
+          [routerLink]="['search', brand.brandName]"
+          (click)="handleInputFocus(brand.brandName)"
+        ></a>
+      </li>
     }
   </ul>
 </div>

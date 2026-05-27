@@ -72,9 +72,9 @@ describe('Basket Custom Fields Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('button')).toMatchInlineSnapshot(`
       <button
-        type="button"
         aria-controls="basket-custom-fields-input"
         data-testing-id="basket-custom-fields-toggle-link"
+        type="button"
         class="btn btn-link btn-link-with-icon"
         aria-expanded="false"
       >

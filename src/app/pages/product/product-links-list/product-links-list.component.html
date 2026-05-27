@@ -1,12 +1,14 @@
-@if (productSKUs$ | async; as productSKUs) { @if (productSKUs.length) {
-<div class="product-list-container">
-  <h2>{{ productLinkTitle }}</h2>
-  <div class="product-list">
-    @for (sku of productSKUs; track sku) {
-    <div class="product-list-item list-view">
-      <ish-product-item ishProductContext [sku]="sku" displayType="row" />
+@if (productSKUs$ | async; as productSKUs) {
+  @if (productSKUs.length) {
+    <div class="product-list-container">
+      <h2>{{ productLinkTitle }}</h2>
+      <div class="product-list">
+        @for (sku of productSKUs; track sku) {
+          <div class="product-list-item list-view">
+            <ish-product-item displayType="row" ishProductContext [sku]="sku" />
+          </div>
+        }
+      </div>
     </div>
-    }
-  </div>
-</div>
-} }
+  }
+}

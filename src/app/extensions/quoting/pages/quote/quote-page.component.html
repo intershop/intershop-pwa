@@ -1,22 +1,30 @@
-@if (selectedQuote$ | async; as quote) { @if (state$ | async; as state) {
-<!-- Title -->
-<h1>
-  @switch (true) { @case (state === 'Submitted' && (justSubmitted$ | async)) {
-  {{ 'quote.edit.submitted.heading' | translate }}
-  } @case (state === 'Responded') {
-  {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName || quote.number }}
-  } @default {
-  {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} - {{ quote.displayName || quote.number }}
-  } }
-</h1>
-<ish-error-message [error]="error$ | async" />
-@if (state === 'New') {
-<ish-quote-edit />
-} @else {
-<ish-quote-view />
+@if (selectedQuote$ | async; as quote) {
+  @if (state$ | async; as state) {
+    <!-- Title -->
+    <h1>
+      @switch (true) {
+        @case (state === 'Submitted' && (justSubmitted$ | async)) {
+          {{ 'quote.edit.submitted.heading' | translate }}
+        }
+        @case (state === 'Responded') {
+          {{ 'quote.edit.responded.quote_details.text' | translate }} - {{ quote.displayName || quote.number }}
+        }
+        @default {
+          {{ 'quote.edit.unsubmitted.quote_request_details.text' | translate }} -
+          {{ quote.displayName || quote.number }}
+        }
+      }
+    </h1>
+    <ish-error-message [error]="error$ | async" />
+    @if (state === 'New') {
+      <ish-quote-edit />
+    } @else {
+      <ish-quote-view />
+    }
+    <ish-quote-interactions />
+    <a class="d-block mt-3" [routerLink]="['/account/quotes']">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
+  }
 }
-<ish-quote-interactions />
-<a [routerLink]="['/account/quotes']" class="d-block mt-3">{{ 'quote.edit.back_to_quotes.link' | translate }}</a>
-} } @if (loading$ | async) {
-<ish-loading />
+@if (loading$ | async) {
+  <ish-loading />
 }

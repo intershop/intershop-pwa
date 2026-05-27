@@ -15,7 +15,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  * <ish-product-notification-delete
  *   cssClass="btn-link btn-tool"
  *   [productNotification]="productNotification"
- * ></ish-product-notification-delete>
+ * />
  */
 @Component({
   selector: 'ish-product-notification-delete',
@@ -28,7 +28,10 @@ export class ProductNotificationDeleteComponent implements OnInit {
 
   productName$: Observable<string>;
 
-  constructor(private productNotificationsFacade: ProductNotificationsFacade, private context: ProductContextFacade) {}
+  constructor(
+    private productNotificationsFacade: ProductNotificationsFacade,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnInit() {
     this.productName$ = this.context.select('product', 'name');

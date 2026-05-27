@@ -9,7 +9,10 @@ import { warrantyActions, warrantyApiActions } from './warranties.actions';
 
 @Injectable()
 export class WarrantiesEffects {
-  constructor(private actions$: Actions, private warrantyService: WarrantyService) {}
+  constructor(
+    private actions$: Actions,
+    private warrantyService: WarrantyService
+  ) {}
 
   loadWarranty$ = createEffect(() =>
     this.actions$.pipe(

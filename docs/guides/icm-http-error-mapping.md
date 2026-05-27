@@ -15,10 +15,10 @@ In version 0.23 of the PWA we refactored the error handling to provide a consist
 
 ## Implementation
 
-Most of the work is done by the [HttpInterceptor](https://angular.io/api/common/http/HttpInterceptor) [ICMErrorMapperInterceptor][icm-error-mapper-interceptor].
+Most of the work is done by the [HttpInterceptor](https://angular.dev/api/common/http/HttpInterceptor) [ICMErrorMapperInterceptor][icm-error-mapper-interceptor].
 It converts responses with `error-key` headers, responses with `errors` body and also provides a fallback mapping for errors not matching this format.
 
-> :bulb: Mapping the [HttpErrorResponse](https://angular.io/api/common/http/HttpErrorResponse) is mandatory as the object itself is not serializable and should therefore not be pushed into the [State Management](../concepts/state-management.md)!
+> :bulb: Mapping the [HttpErrorResponse](https://angular.dev/api/common/http/HttpErrorResponse) is mandatory as the object itself is not serializable and should therefore not be pushed into the [State Management](../concepts/state-management.md)!
 
 If necessary, you can provide a custom [SPECIAL_HTTP_ERROR_HANDLER][icm-error-mapper-interceptor] for a specific use case.
 All custom mappers should be provided in the [ConfigurationModule](../../src/app/core/configuration.module.ts).

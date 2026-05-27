@@ -63,7 +63,7 @@ class SSRErrorHandler implements ErrorHandler {
     } else if (typeof error === 'object') {
       try {
         logger.error({ ...baseData, error: { message: JSON.stringify(error) } }, 'ERROR');
-      } catch (_) {
+      } catch {
         // do not log the error if it can't be stringified, it floods the log with irrelevant information
         logger.error({ ...baseData }, 'ERROR (cannot stringify)');
       }

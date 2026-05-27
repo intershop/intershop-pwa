@@ -14,7 +14,11 @@ import { cxmlConfigurationActions, cxmlConfigurationApiActions } from './cxml-co
 
 @Injectable()
 export class CxmlConfigurationEffects {
-  constructor(private actions$: Actions, private punchoutService: PunchoutService, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private punchoutService: PunchoutService,
+    private store: Store
+  ) {}
 
   loadCxmlConfiguration$ = createEffect(() =>
     this.actions$.pipe(
@@ -36,8 +40,8 @@ export class CxmlConfigurationEffects {
       concatLatestFrom(() => this.store.pipe(select(getSelectedPunchoutUser))),
       concatMap(([configuration, user]) =>
         this.punchoutService.updateCxmlConfiguration(configuration, user.id).pipe(
-          mergeMap(configuration => [
-            cxmlConfigurationApiActions.updateCXMLConfigurationSuccess({ configuration }),
+          mergeMap(conf => [
+            cxmlConfigurationApiActions.updateCXMLConfigurationSuccess({ configuration: conf }),
             displaySuccessMessage({
               message: 'account.punchout.cxml.configuration.save_success.message',
             }),

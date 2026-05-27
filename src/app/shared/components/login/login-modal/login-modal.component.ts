@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 })
 export class LoginModalComponent {
   @Input() loginMessageKey: string;
-  @Output() closeModal = new EventEmitter<void>();
+  @Output() readonly closeModal = new EventEmitter<void>();
 
   constructor(private cdRef: ChangeDetectorRef) {}
 

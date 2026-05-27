@@ -1,49 +1,49 @@
 <ul class="filter-list" [id]="filterElement.id">
   @for (facet of getFacets(); track facet.name) {
-  <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
-    <!-- selected -->
-    @if (facet.selected) {
-    <button
-      type="button"
-      class="btn btn-link btn-link-action link-decoration-hover"
-      (click)="filter(facet)"
-      [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
-      aria-current="true"
-    >
-      <span class="filter-item-name"> {{ facet.displayName }} </span>
-      <span class="count"> ({{ facet.count }}) </span>
-      @if (filterElement.displayType === 'text_clear') {
-      <i class="bi bi-x-lg float-end filter-clear"></i>
+    <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
+      <!-- selected -->
+      @if (facet.selected) {
+        <button
+          aria-current="true"
+          class="btn btn-link btn-link-action link-decoration-hover"
+          type="button"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          (click)="filter(facet)"
+        >
+          <span class="filter-item-name"> {{ facet.displayName }} </span>
+          <span class="count"> ({{ facet.count }}) </span>
+          @if (filterElement.displayType === 'text_clear') {
+            <i class="bi bi-x-lg float-end filter-clear"></i>
+          }
+        </button>
+        <!-- not selected -->
+      } @else {
+        <button
+          class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
+          type="button"
+          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          (click)="filter(facet)"
+        >
+          {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
+        </button>
       }
-    </button>
-    <!-- not selected -->
-    } @else {
-    <button
-      type="button"
-      class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
-      (click)="filter(facet)"
-      [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
-    >
-      {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
-    </button>
-    }
-  </li>
+    </li>
   }
   <!-- show all/less -->
   @if (filterElement.limitCount !== -1 && facets.length > filterElement.limitCount) {
-  <li class="filter-item">
-    <button
-      type="button"
-      class="btn btn-link btn-link-action"
-      (click)="showAll = !showAll"
-      [attr.aria-label]="
-        showAll
-          ? ('search.filter.show_less.link.aria_label' | translate : { filterGroupName: filterElement.name })
-          : ('search.filter.show_all.link.aria_label' | translate : { filterGroupName: filterElement.name })
-      "
-    >
-      {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
-    </button>
-  </li>
+    <li class="filter-item">
+      <button
+        class="btn btn-link btn-link-action"
+        type="button"
+        [attr.aria-label]="
+          showAll
+            ? ('search.filter.show_less.link.aria_label' | translate: { filterGroupName: filterElement.name })
+            : ('search.filter.show_all.link.aria_label' | translate: { filterGroupName: filterElement.name })
+        "
+        (click)="showAll = !showAll"
+      >
+        {{ (showAll ? 'search.filter.show_less.link' : 'search.filter.show_all.link') | translate }}
+      </button>
+    </li>
   }
 </ul>

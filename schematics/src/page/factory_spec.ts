@@ -180,7 +180,7 @@ describe('Page Schematic', () => {
       expect(appRoutingModule).toContain('FooPageModule');
     });
 
-    it('should register route in page routing module when subpaging is detected', async () => {
+    it('should register route in page routing module when sub-paging is detected', async () => {
       appTree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
       const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
@@ -195,7 +195,7 @@ describe('Page Schematic', () => {
       expect(fooRoutingModule).toContain('FooBarPageModule');
     });
 
-    it('should not register route in not existing page routing module even when subpaging is detected', async () => {
+    it('should not register route in not existing page routing module even when sub-paging is detected', async () => {
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
       const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');
       expect(appRoutingModule).toContain(`path: 'foo-bar'`);
@@ -272,7 +272,7 @@ describe('Page Schematic', () => {
       expect(appRoutingModule).toContain("import { FooPageComponent } from './foo/foo-page.component'");
     });
 
-    it('should ignore subpaging and register page in same module', async () => {
+    it('should ignore sub-paging and register page in same module', async () => {
       appTree = await schematicRunner.runSchematic('page', defaultOptions, appTree);
       const tree = await schematicRunner.runSchematic('page', { ...defaultOptions, name: 'foo-bar' }, appTree);
       const appRoutingModule = tree.readContent('/src/app/pages/app-routing.module.ts');

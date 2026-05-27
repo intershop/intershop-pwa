@@ -7,6 +7,6 @@ export interface ChatbotMessage {
 
 export interface ChatbotToolCall {
   tool: string;
-  toolInput: { [key: string]: string };
+  toolInput: Record<string, string>;
   toolOutput?: string;
 }

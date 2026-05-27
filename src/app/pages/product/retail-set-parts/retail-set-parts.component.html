@@ -1,44 +1,47 @@
 @if (visible$ | async) {
-<div class="retail-product-list">
-  <h2 class="h3">{{ 'product.retailSet.products.heading' | translate }}</h2>
-  <div class="product-list row">
-    @for (part of parts$ | async; track part.sku; let i = $index) { @if (displayType === 'tile') {
-    <div class="col-6 col-lg-4 product-list-item grid-view">
-      <ish-product-item
-        displayType="tile"
-        ishProductContext
-        [sku]="part.sku"
-        [propagateIndex]="i"
-        [configuration]="{
-          addToCompare: false,
-          addToWishlist: false,
-          addToOrderTemplate: false,
-          addToQuote: false
-        }"
-      />
+  <div class="retail-product-list">
+    <h2 class="h3">{{ 'product.retailSet.products.heading' | translate }}</h2>
+    <div class="product-list row">
+      @for (part of parts$ | async; track part.sku; let i = $index) {
+        @if (displayType === 'tile') {
+          <div class="col-6 col-lg-4 product-list-item grid-view">
+            <ish-product-item
+              displayType="tile"
+              ishProductContext
+              [configuration]="{
+                addToCompare: false,
+                addToWishlist: false,
+                addToOrderTemplate: false,
+                addToQuote: false,
+              }"
+              [propagateIndex]="i"
+              [sku]="part.sku"
+            />
+          </div>
+        }
+        @if (displayType === 'row') {
+          <div class="col-lg-12 product-list-item list-view">
+            <ish-product-item
+              displayType="row"
+              ishProductContext
+              [allowZeroQuantity]="true"
+              [configuration]="{
+                addToCompare: false,
+                addToWishlist: false,
+                addToOrderTemplate: false,
+                addToQuote: false,
+              }"
+              [propagateIndex]="i"
+              [sku]="part.sku"
+            />
+          </div>
+        }
+      }
     </div>
-    } @if (displayType === 'row') {
-    <div class="col-lg-12 product-list-item list-view">
-      <ish-product-item
-        displayType="row"
-        ishProductContext
-        [sku]="part.sku"
-        [propagateIndex]="i"
-        [allowZeroQuantity]="true"
-        [configuration]="{
-          addToCompare: false,
-          addToWishlist: false,
-          addToOrderTemplate: false,
-          addToQuote: false
-        }"
-      />
+    <div class="product-info">
+      <div class="col align-self-start g-0">
+        <ish-product-add-to-basket />
+      </div>
     </div>
-    } }
   </div>
-  <div class="product-info">
-    <div class="col align-self-start g-0">
-      <ish-product-add-to-basket />
-    </div>
-  </div>
-</div>
 }

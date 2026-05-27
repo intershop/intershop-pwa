@@ -29,7 +29,7 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
  * The parent form supplied must have controls for 'captcha' and 'captchaAction'
  *
  * @example
- * <ish-lazy-captcha [form]="form" cssClass="offset-md-2 col-md-8" topic="contactUs"></ish-lazy-captcha>
+ * <ish-lazy-captcha cssClass="offset-md-2 col-md-8" topic="contactUs" [form]="form" />
  */
 @Component({
   selector: 'ish-lazy-captcha',
@@ -53,7 +53,10 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private captchaFacade: CaptchaFacade, private injector: Injector) {}
+  constructor(
+    private captchaFacade: CaptchaFacade,
+    private injector: Injector
+  ) {}
 
   ngOnInit() {
     this.sanityCheck();
@@ -74,9 +77,8 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
           this.actionFormControl.setValue(this.topic);
 
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV3Component, CaptchaV3ComponentModule } = await import(
-            '../../shared/captcha-v3/captcha-v3.component'
-          );
+          const { CaptchaV3Component, CaptchaV3ComponentModule } =
+            await import('../../shared/captcha-v3/captcha-v3.component');
 
           const moduleRef = createNgModule(CaptchaV3ComponentModule, this.injector);
           const componentRef = this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
@@ -88,9 +90,8 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
           this.formControl.updateValueAndValidity();
 
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV2Component, CaptchaV2ComponentModule } = await import(
-            '../../shared/captcha-v2/captcha-v2.component'
-          );
+          const { CaptchaV2Component, CaptchaV2ComponentModule } =
+            await import('../../shared/captcha-v2/captcha-v2.component');
 
           const moduleRef = createNgModule(CaptchaV2ComponentModule, this.injector);
           const componentRef = this.anchor.createComponent(CaptchaV2Component, { ngModuleRef: moduleRef });

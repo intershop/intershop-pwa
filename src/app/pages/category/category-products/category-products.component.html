@@ -1,7 +1,7 @@
 <div
   class="family-page product-search-result"
-  [attr.data-testing-id]="'family-page-' + category.uniqueId"
   id="family-page-top"
+  [attr.data-testing-id]="'family-page-' + category.uniqueId"
 >
   <!-- DISABLED VIEW CONTEXT --
   <div class="marketing-area">
@@ -16,7 +16,7 @@
 
   <div class="row">
     <div class="col-md-3">
-      <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="common.skip_content.link.text.filter" />
+      <ish-skip-content-link linkText="common.skip_content.link.text.filter" skipToElementId="nav-breadcrumbs" />
       <div class="navigation-panel" [ngbCollapse]="isCollapsed">
         <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
@@ -26,8 +26,8 @@
       </div>
 
       <button
-        type="button"
         class="d-md-none mobile-filter-toggle btn btn-link btn-link-action link-decoration-hover"
+        type="button"
         (click)="toggle()"
       >
         {{ 'search.mobile.filter.trigger' | translate }}
@@ -61,9 +61,9 @@
       -- DISABLED VIEW CONTEXT -->
 
       <ish-product-listing
+        fragmentOnRouting="family-page-top"
         [categoryId]="category.uniqueId"
         [productListingId]="{ type: 'category', value: category.uniqueId }"
-        fragmentOnRouting="family-page-top"
       />
 
       <!-- DISABLED VIEW CONTEXT --

@@ -2,44 +2,44 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
   @for (category of categories$ | async; track category.uniqueId; let isFirst = $first) {
-  <li
-    #subMenu
-    class="dropdown"
-    [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
-    (mouseenter)="subMenuShow(subMenu)"
-    (mouseleave)="subMenuHide(subMenu)"
-    (click)="subMenuHide(subMenu)"
-  >
-    <a
-      [routerLink]="category.url"
-      [attr.data-testing-id]="category.uniqueId + '-link'"
-      [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
-      class="main-navigation-link"
+    <li
+      #subMenu
+      class="dropdown"
+      [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
+      (click)="subMenuHide(subMenu)"
+      (mouseenter)="subMenuShow(subMenu)"
+      (mouseleave)="subMenuHide(subMenu)"
     >
-      {{ category.name }}
-    </a>
-    @if (isBrowser && mainNavigationMaxSubCategoriesDepth > 0 && category.hasChildren) {
-    <a
-      class="dropdown-toggle"
-      (click)="toggleOpen(category.uniqueId)"
-      (keydown.enter)="toggleOpen(category.uniqueId)"
-      role="button"
-      [attr.aria-label]="
-        isOpened(category.uniqueId)
-          ? ('header.navigation.collapse_category.aria_label' | translate : { '0': category.name })
-          : ('header.navigation.expand_category.aria_label' | translate : { '0': category.name })
-      "
-      tabindex="0"
-    >
-      @if (isOpened(category.uniqueId)) {
-      <i class="bi bi-dash"></i>
-      } @else {
-      <i class="bi bi-plus"></i>
+      <a
+        class="main-navigation-link"
+        [attr.data-testing-id]="category.uniqueId + '-link'"
+        [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
+        [routerLink]="category.url"
+      >
+        {{ category.name }}
+      </a>
+      @if (isBrowser && mainNavigationMaxSubCategoriesDepth > 0 && category.hasChildren) {
+        <a
+          class="dropdown-toggle"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="
+            isOpened(category.uniqueId)
+              ? ('header.navigation.collapse_category.aria_label' | translate: { '0': category.name })
+              : ('header.navigation.expand_category.aria_label' | translate: { '0': category.name })
+          "
+          (click)="toggleOpen(category.uniqueId)"
+          (keydown.enter)="toggleOpen(category.uniqueId)"
+        >
+          @if (isOpened(category.uniqueId)) {
+            <i class="bi bi-dash"></i>
+          } @else {
+            <i class="bi bi-plus"></i>
+          }
+        </a>
+        <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />
       }
-    </a>
-    <ish-sub-category-navigation [categoryUniqueId]="category.uniqueId" [subCategoriesDepth]="1" [view]="view" />
-    }
-  </li>
+    </li>
   }
   <ish-lazy-content-include includeId="include.header.navigation.pagelet2-Include" role="listitem" />
 </ul>

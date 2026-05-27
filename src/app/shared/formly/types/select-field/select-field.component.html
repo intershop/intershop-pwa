@@ -1,19 +1,20 @@
 <select
-  [formControl]="formControl"
-  [compareWith]="props.compareWith ? props.compareWith : defaultOptions.props.compareWith"
-  [formlyAttributes]="field"
   class="form-control"
-  [ngClass]="props.inputClass"
+  [attr.aria-describedby]="props.ariaDescribedByIds"
+  [attr.aria-invalid]="showError ? 'true' : undefined"
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
-  [attr.aria-invalid]="showError ? 'true' : undefined"
-  [attr.aria-describedby]="props.ariaDescribedByIds"
   [attr.data-testing-id]="field.key"
+  [compareWith]="props.compareWith ? props.compareWith : defaultOptions.props.compareWith"
+  [formControl]="formControl"
+  [formlyAttributes]="field"
+  [ngClass]="props.inputClass"
 >
-  @if (props.options && props.options | formlySelectOptions : field | async; as opts) { @for (opt of opts; track
-  opt.value) {
-  <option [value]="opt.value" [disabled]="opt.disabled">
-    {{ opt.label }}
-  </option>
-  } }
+  @if (props.options && props.options | formlySelectOptions: field | async; as opts) {
+    @for (opt of opts; track opt.value) {
+      <option [disabled]="opt.disabled" [value]="opt.value">
+        {{ opt.label }}
+      </option>
+    }
+  }
 </select>

@@ -1,9 +1,12 @@
-@if (currentCustomer$ | async; as customer) { @if (customer.isBusinessCustomer) {
-<ish-organization-settings-company
-  [currentCustomer]="customer"
-  [error]="userError$ | async"
-  (updateCompanyProfile)="updateCompanyProfile($event)"
-/>
-} @if (userLoading$ | async) {
-<ish-loading />
-} }
+@if (currentCustomer$ | async; as customer) {
+  @if (customer.isBusinessCustomer) {
+    <ish-organization-settings-company
+      [currentCustomer]="customer"
+      [error]="userError$ | async"
+      (updateCompanyProfile)="updateCompanyProfile($event)"
+    />
+  }
+  @if (userLoading$ | async) {
+    <ish-loading />
+  }
+}

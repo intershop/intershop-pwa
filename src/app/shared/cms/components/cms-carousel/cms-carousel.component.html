@@ -1,26 +1,26 @@
 @if (pagelet) {
-<div [ngClass]="pagelet.stringParam('CSSClass')">
-  <ish-content-slot [wrapper]="true" [slot]="'app_sf_base_cm:slot.carousel.items.pagelet2-Slot'" [pagelet]="pagelet">
-    <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
-      <ngb-carousel
-        #ngbCarousel
-        [interval]="0"
-        [showNavigationArrows]="pageletSlides?.length > 1"
-        [showNavigationIndicators]="pagelet.booleanParam('ShowIndicators')"
-      >
-        @for (slidePagelets of pageletSlides; track slidePagelets) {
-        <ng-template ngbSlide>
-          <div class="row">
-            @for (slidePageletId of slidePagelets; track slidePageletId) {
-            <div [ngClass]="'col-sm-' + itemGridSize">
-              <ish-content-pagelet [pageletId]="slidePageletId" />
-            </div>
-            }
-          </div>
-        </ng-template>
-        }
-      </ngb-carousel>
-    </div>
-  </ish-content-slot>
-</div>
+  <div [ngClass]="pagelet.stringParam('CSSClass')">
+    <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.carousel.items.pagelet2-Slot'" [wrapper]="true">
+      <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
+        <ngb-carousel
+          #ngbCarousel
+          [interval]="0"
+          [showNavigationArrows]="pageletSlides?.length > 1"
+          [showNavigationIndicators]="pagelet.booleanParam('ShowIndicators')"
+        >
+          @for (slidePagelets of pageletSlides; track slidePagelets) {
+            <ng-template ngbSlide>
+              <div class="row">
+                @for (slidePageletId of slidePagelets; track slidePageletId) {
+                  <div [ngClass]="'col-sm-' + itemGridSize">
+                    <ish-content-pagelet [pageletId]="slidePageletId" />
+                  </div>
+                }
+              </div>
+            </ng-template>
+          }
+        </ngb-carousel>
+      </div>
+    </ish-content-slot>
+  </div>
 }

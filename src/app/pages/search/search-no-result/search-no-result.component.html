@@ -13,7 +13,7 @@
 
   <p
     class="no-search-result-title"
-    [innerHTML]="'search.noResult.message' | translate : { '0': searchTerm | ishHtmlEncode }"
+    [innerHTML]="'search.noResult.message' | translate: { '0': searchTerm | ishHtmlEncode }"
   ></p>
 
   <div class="search-container main-search-container">
@@ -21,8 +21,8 @@
       <h2>{{ 'search.noresult.searchbox.heading' | translate }}</h2>
       <ish-search-box
         [configuration]="{
-        placeholder: 'search.searchbox.instructional_text' | translate,
-      }"
+          placeholder: 'search.searchbox.instructional_text' | translate,
+        }"
       />
     </div>
     <div class="search-guidelines" [innerHTML]="'search.noresult.guidelines' | translate"></div>

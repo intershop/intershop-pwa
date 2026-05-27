@@ -22,7 +22,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  *   [form]="productNotificationForm"
  *   [productNotification]="productNotification$ | async"
  *   [userEmail]="userEmail$ | async"
- * ></ish-product-notification-edit-form>
+ * />
  */
 @Component({
   selector: 'ish-product-notification-edit-form',
@@ -43,7 +43,10 @@ export class ProductNotificationEditFormComponent implements OnChanges {
 
   fields: FormlyFieldConfig[];
 
-  constructor(private appFacade: AppFacade, private context: ProductContextFacade) {}
+  constructor(
+    private appFacade: AppFacade,
+    private context: ProductContextFacade
+  ) {}
 
   ngOnChanges() {
     if (this.userEmail && this.form) {

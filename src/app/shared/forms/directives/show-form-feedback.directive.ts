@@ -7,21 +7,21 @@ import { AbstractControl } from '@angular/forms';
  * @example
  * <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="formControl">
  *               <input
- *                 [type]="type"
  *                 class="form-control"
- *                 [formControlName]="controlName">
+ *                 [formControlName]="controlName"
+ *                 [type]="type" />
  * </div>
  *
  * <div class="form-group has-feedback" [formGroup]="form" [ishShowFormFeedback]="[formControl, formControl2]">
  *               <input
- *                 [type]="type"
  *                 class="form-control"
- *                 [formControlName]="controlName">
+ *                 [formControlName]="controlName"
+ *                 [type]="type" />
  *
  *                <input
- *                 [type]="type"
  *                 class="form-control2"
- *                 [formControlName]="controlName2">
+ *                 [formControlName]="controlName2"
+ *                 [type]="type" />
  * </div>
  */
 @Directive({
@@ -31,7 +31,6 @@ export class ShowFormFeedbackDirective {
   /**
    * FormControl which validation status is considered
    */
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('ishShowFormFeedback') control: AbstractControl | AbstractControl[];
 
   /**

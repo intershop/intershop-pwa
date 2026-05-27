@@ -1,12 +1,12 @@
 <div class="cart-summary">
   <button
-    type="button"
-    id="promotion-code-button"
-    class="btn btn-link btn-content-toggle"
-    (click)="isCollapsed = !isCollapsed"
-    [attr.aria-expanded]="!isCollapsed"
     aria-controls="promo-code-input"
+    class="btn btn-link btn-content-toggle"
     data-testing-id="promo-collapse-link"
+    id="promotion-code-button"
+    type="button"
+    [attr.aria-expanded]="!isCollapsed"
+    (click)="isCollapsed = !isCollapsed"
   >
     {{ 'shopping_cart.promotional_code.heading' | translate
     }}<i class="bi float-end" [ngClass]="isCollapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
@@ -15,21 +15,21 @@
   <ish-error-message [error]="promotionError$ | async" [toast]="toast" />
 
   @if (displaySuccessMessage) {
-  <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
+    <ish-success-message message="shopping_cart.promotion.qualified_promo.text" [toast]="toast" />
   }
 
-  <div id="promo-code-input" class="promo-code-input" [ngbCollapse]="isCollapsed" data-testing-id="promo-code-form">
+  <div class="promo-code-input" data-testing-id="promo-code-form" id="promo-code-input" [ngbCollapse]="isCollapsed">
     <input
-      [formControl]="codeInput"
-      (keyup.enter)="submitPromotionCode()"
+      aria-labelledby="promotion-code-button"
       class="form-control w-auto"
       type="text"
-      [maxlength]="codeMaxLength"
       [attr.aria-label]="'shopping_cart.promotional_code.label' | translate"
+      [formControl]="codeInput"
+      [maxlength]="codeMaxLength"
       [placeholder]="'shopping_cart.promotional_code.label' | translate"
-      aria-labelledby="promotion-code-button"
+      (keyup.enter)="submitPromotionCode()"
     />
-    <button type="button" class="btn btn-secondary" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
+    <button class="btn btn-secondary" type="button" [disabled]="!codeInput.valid" (click)="submitPromotionCode()">
       {{ 'shopping_cart.promotion.apply.button.label' | translate }}
     </button>
   </div>

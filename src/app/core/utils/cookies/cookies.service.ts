@@ -92,8 +92,8 @@ export class CookiesService {
     }
   }
 
-  private cookiesReader(): { [key: string]: unknown } {
-    let lastCookies: { [key: string]: unknown } = {};
+  private cookiesReader(): Record<string, unknown> {
+    let lastCookies: Record<string, unknown> = {};
     let lastCookieString = '';
     let cookiesArray: string[];
     let cookie: string;
@@ -129,7 +129,6 @@ export class CookiesService {
     };
   }
 
-  // eslint-disable-next-line complexity
   private buildCookieString(name: string, value: string | undefined, opts: CookiesOptions = {}): string {
     let path = opts.path;
     if (!path) {
@@ -158,13 +157,13 @@ export class CookiesService {
     str += `;SameSite=${window.parent !== window ? 'None' : opts.sameSite || 'Strict'}`;
 
     // if in http mode (should only be in development) or if explicitly set to false do not set the cookie secure, default to secure
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+
     str += window.location.protocol === 'http:' || opts.secure === false ? '' : ';secure';
 
     const cookiesLength = str.length + 1;
     if (cookiesLength > 4096) {
       // eslint-disable-next-line no-console
-      console.log(`Cookie \'${name}\' possibly not set or overflowed because it was too
+      console.log(`Cookie '${name}' possibly not set or overflowed because it was too
       large (${cookiesLength} > 4096 bytes)!`);
     }
     return str;

@@ -7,7 +7,7 @@ import { User } from 'ish-core/models/user/user.model';
  * The Account Overview Page Component displays the account overview dashboard of the user's 'MyAccount' section.
  *
  * @example
- * <ish-account-overview [user]="user$ | async"></ish-account-overview>
+ * <ish-account-overview [user]="user$ | async" />
  */
 @Component({
   selector: 'ish-account-overview',

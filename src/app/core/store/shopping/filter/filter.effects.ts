@@ -19,7 +19,10 @@ import {
 
 @Injectable()
 export class FilterEffects {
-  constructor(private actions$: Actions, private filterService: FilterService) {}
+  constructor(
+    private actions$: Actions,
+    private filterService: FilterService
+  ) {}
 
   loadAvailableFilters$ = createEffect(() =>
     this.actions$.pipe(

@@ -1,78 +1,76 @@
 @if (costCenter$ | async; as costCenter) {
-<div>
-  <h1>{{ costCenter.name }}</h1>
+  <div>
+    <h1>{{ costCenter.name }}</h1>
 
-  <ish-error-message [error]="costCentersError$ | async" />
+    <ish-error-message [error]="costCentersError$ | async" />
 
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h2 class="h3">{{ 'account.costcenter.details.details.heading' | translate }}</h2>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row dl-horizontal dl-separator">
-            <dt class="col-md-4">{{ 'account.costcenter.id.label' | translate }}</dt>
-            <dd data-testing-id="id-field" class="col-md-8">
-              {{ costCenter.costCenterId }}
-              @if (costCenter.active === false) {
-              <span class="input-help">{{ 'account.costCenter.status.inactive' | translate }}</span>
-              }
-            </dd>
-            <dt class="col-md-4">{{ 'account.costcenter.name.label' | translate }}</dt>
-            <dd data-testing-id="name-field" class="col-md-8">{{ costCenter.name }}</dd>
-            <dt class="col-md-4">{{ 'account.costcenter.manager.label' | translate }}</dt>
-            <dd class="col-md-8" data-testing-id="owner-field">
-              {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
-            </dd>
-            <dt class="col-md-4">{{ 'account.budget.label' | translate : { '0': costCenter.budgetPeriod } }}</dt>
-            <dd class="col-md-8">{{ costCenter.budget | ishPrice }}</dd>
-            <dt class="col-md-4">{{ 'account.budget.already_spent.label' | translate }}</dt>
-            <dd class="col-md-8">{{ costCenter.spentBudget | ishPrice }}</dd>
-          </dl>
-        </div>
-        <div class="offset-md-4 col-md-8">
-          <ish-cost-center-budget [costCenter]="costCenter" />
+    <div class="row section">
+      <div class="col-10 col-lg-8">
+        <h2 class="h3">{{ 'account.costcenter.details.details.heading' | translate }}</h2>
+        <div class="row">
+          <div class="col-md-12">
+            <dl class="row dl-horizontal dl-separator">
+              <dt class="col-md-4">{{ 'account.costcenter.id.label' | translate }}</dt>
+              <dd class="col-md-8" data-testing-id="id-field">
+                {{ costCenter.costCenterId }}
+                @if (costCenter.active === false) {
+                  <span class="input-help">{{ 'account.costCenter.status.inactive' | translate }}</span>
+                }
+              </dd>
+              <dt class="col-md-4">{{ 'account.costcenter.name.label' | translate }}</dt>
+              <dd class="col-md-8" data-testing-id="name-field">{{ costCenter.name }}</dd>
+              <dt class="col-md-4">{{ 'account.costcenter.manager.label' | translate }}</dt>
+              <dd class="col-md-8" data-testing-id="owner-field">
+                {{ costCenter.costCenterOwner.firstName }} {{ costCenter.costCenterOwner.lastName }}
+              </dd>
+              <dt class="col-md-4">{{ 'account.budget.label' | translate: { '0': costCenter.budgetPeriod } }}</dt>
+              <dd class="col-md-8">{{ costCenter.budget | ishPrice }}</dd>
+              <dt class="col-md-4">{{ 'account.budget.already_spent.label' | translate }}</dt>
+              <dd class="col-md-8">{{ costCenter.spentBudget | ishPrice }}</dd>
+            </dl>
+          </div>
+          <div class="offset-md-4 col-md-8">
+            <ish-cost-center-budget [costCenter]="costCenter" />
+          </div>
         </div>
       </div>
+
+      @if (isEditable$ | async) {
+        <div class="col-2 col-lg-4 mt-2">
+          <a
+            class="btn-tool"
+            data-testing-id="edit-cost-center"
+            routerLink="edit"
+            [title]="'account.costcenter.update.link' | translate: { '0': costCenter.name }"
+          >
+            <i class="bi bi-pencil-fill"></i>
+          </a>
+        </div>
+      }
     </div>
 
-    @if (isEditable$ | async) {
-    <div class="col-2 col-lg-4 mt-2">
-      <a
-        routerLink="edit"
-        class="btn-tool"
-        [title]="'account.costcenter.update.link' | translate : { '0': costCenter.name }"
-        data-testing-id="edit-cost-center"
-      >
-        <i class="bi bi-pencil-fill"></i>
-      </a>
-    </div>
+    <!--- display the order list only if the current user is the manager of this cost center -->
+    @if ((user$ | async)?.login === costCenter.costCenterOwner?.login) {
+      <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
+      <ish-order-list
+        [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
+        [orders]="costCenter?.orders | slice: 0 : 10"
+      />
     }
+
+    <h2 class="h3">
+      {{ 'account.costcenter.details.buyers.list.title' | translate }}
+      @if (isEditable$ | async) {
+        <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers" routerLink="buyers">{{
+          'account.costcenter.details.buyers.action.add' | translate
+        }}</a>
+      }
+    </h2>
+
+    <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
   </div>
-
-  <!--- display the order list only if the current user is the manager of this cost center -->
-  @if ((user$ | async)?.login === costCenter.costCenterOwner?.login) {
-
-  <h2 class="h3">{{ 'account.costcenter.details.orders.list.title' | translate }}</h2>
-  <ish-order-list
-    [orders]="costCenter?.orders | slice : 0 : 10"
-    [columnsToDisplay]="['creationDate', 'orderNo', 'buyer', 'lineItems', 'status', 'orderTotal']"
-  />
-
-  }
-
-  <h2 class="h3">
-    {{ 'account.costcenter.details.buyers.list.title' | translate }}
-    @if (isEditable$ | async) {
-    <a routerLink="buyers" class="btn btn-secondary" data-testing-id="add-cost-center-buyers">{{
-      'account.costcenter.details.buyers.action.add' | translate
-    }}</a>
-    }
-  </h2>
-
-  <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
-</div>
 }
 
-<a routerLink=".." data-testing-id="back-to-cost-center-management">{{
+<a data-testing-id="back-to-cost-center-management" routerLink="..">{{
   'account.organization.cost_center_management.back_to_list' | translate
 }}</a>

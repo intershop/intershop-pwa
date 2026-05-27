@@ -30,7 +30,7 @@ describe('Api Token Service', () => {
     type: 'user',
   };
 
-  const injectServices = (cookieServiceMock: CookiesService) => {
+  const injectServices = () => {
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(),
@@ -51,14 +51,14 @@ describe('Api Token Service', () => {
   });
 
   it('should be created', () => {
-    injectServices(cookieServiceMock);
+    injectServices();
     expect(apiTokenService).toBeTruthy();
   });
 
   describe('getInternalApiTokenCookieValue$', () => {
     beforeEach(() => {
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123' } as ApiTokenCookie));
-      injectServices(cookieServiceMock);
+      injectServices();
     });
 
     it('should create user apiToken cookie when only user information changes in store', () => {
@@ -109,7 +109,7 @@ describe('Api Token Service', () => {
   describe('logout$', () => {
     beforeEach(() => {
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123' } as ApiTokenCookie));
-      injectServices(cookieServiceMock);
+      injectServices();
 
       store.dispatch(
         loginUserSuccess({ userId: 'user', user: { firstName: 'Test', lastName: 'User' } } as CustomerLoginType)
@@ -126,7 +126,7 @@ describe('Api Token Service', () => {
   describe('cookieVanish$', () => {
     beforeEach(() => {
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
-      injectServices(cookieServiceMock);
+      injectServices();
     });
 
     it('should vanish apiToken information when cookie is removed unexpectedly from the outside', done => {
@@ -145,7 +145,7 @@ describe('Api Token Service', () => {
 
   describe('tokenCreatedOnAnotherTab$', () => {
     beforeEach(() => {
-      injectServices(cookieServiceMock);
+      injectServices();
     });
 
     it('should set correct apiToken when new apiToken is set unexpectedly from the outside', done => {
@@ -166,7 +166,7 @@ describe('Api Token Service', () => {
     describe('user', () => {
       it('should react on a loaded user in state for a non anonymous user', done => {
         when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
-        injectServices(cookieServiceMock);
+        injectServices();
 
         store.dispatch(loginUserSuccess({ customer: { customerNo: '123' } } as CustomerLoginType));
 
@@ -184,7 +184,7 @@ describe('Api Token Service', () => {
             isAnonymous: true,
           } as ApiTokenCookie)
         );
-        injectServices(cookieServiceMock);
+        injectServices();
 
         store.dispatch(loadBasketSuccess({ basket: { id: '123', totals: {} } as Basket }));
 
@@ -197,7 +197,7 @@ describe('Api Token Service', () => {
 
       it('should react on no state state changes when types list is not available', done => {
         when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
-        injectServices(cookieServiceMock);
+        injectServices();
 
         apiTokenService.restore$([]).subscribe(restored => {
           expect(restored).toBeTrue();
@@ -216,7 +216,7 @@ describe('Api Token Service', () => {
             orderId: '123',
           } as ApiTokenCookie)
         );
-        injectServices(cookieServiceMock);
+        injectServices();
 
         store.dispatch(loadOrderSuccess({ order: { id: '123' } as Order }));
 

@@ -150,7 +150,7 @@ const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSett
 /**
  * replace in the pattern string, which is going to be checked reuse pattern like name or theme
  */
-function reusePattern(pattern: string, reusePatterns: { [name: string]: string }): string {
+function reusePattern(pattern: string, reusePatterns: Record<string, string>): string {
   return pattern.replace(/<(.*?)>/g, (original, reuse) => reusePatterns?.[reuse] ?? original);
 }
 
@@ -163,18 +163,14 @@ const camelCaseFromPascalCase = (input: string): string =>
 /**
  * return true the current file to check matches to the path pattern list
  */
-function matchPathPattern(
-  pathPatterns: string[],
-  reusePatterns: { [name: string]: string },
-  filePath: string
-): boolean {
+function matchPathPattern(pathPatterns: string[], reusePatterns: Record<string, string>, filePath: string): boolean {
   return pathPatterns.some(pattern => new RegExp(reusePattern(pattern, reusePatterns)).test(filePath));
 }
 
 /**
  * return true the current file to check matches to the ignored file list
  */
-function isIgnoredFile(ignoredFiles: string[], reusePatterns: { [name: string]: string }, filePath: string): boolean {
+function isIgnoredFile(ignoredFiles: string[], reusePatterns: Record<string, string>, filePath: string): boolean {
   if (ignoredFiles.length === 0) {
     return false;
   }
@@ -187,7 +183,7 @@ function isIgnoredFile(ignoredFiles: string[], reusePatterns: { [name: string]: 
 function matchPattern(
   patterns: { name: string; file: string }[],
   warnUnmatched: boolean,
-  reusePatterns: { [name: string]: string },
+  reusePatterns: Record<string, string>,
   className: string,
   filePath: string,
   kebabRegex: string,

@@ -4,7 +4,7 @@ function removeMatrixParametersFromGroup(group: UrlSegmentGroup): UrlSegmentGrou
   return new UrlSegmentGroup(
     group.segments.map(segment => new UrlSegment(segment.path, {})),
     Object.entries(group.children).reduce(
-      (acc, [key, group]) => ({ ...acc, [key]: removeMatrixParametersFromGroup(group) }),
+      (acc, [key, childGroup]) => ({ ...acc, [key]: removeMatrixParametersFromGroup(childGroup) }),
       {}
     )
   );

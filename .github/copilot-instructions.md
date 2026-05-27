@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-Angular 17-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
+Angular 18-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
 
 ## Technology Stack
 
-- Angular 17.3, TypeScript 5.4, NgRx, Node.js 22
+- Angular 18.2, TypeScript 5.5, NgRx, Node.js 22
 - Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
@@ -47,7 +47,7 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 
 ## Formatting & Linting
 
-- **Enforced by ESLint/Prettier** - see `.eslintrc.json` and `.prettierrc`
+- **Enforced by ESLint/Prettier** - see `eslint.config.mjs` and `.prettierrc`
 - **Key formatting:** single quotes, 2 spaces, semicolons
 - **Angular prefixes:** Components use `ish-`, directives use `ish`
 - **Format command:** `npm run format`

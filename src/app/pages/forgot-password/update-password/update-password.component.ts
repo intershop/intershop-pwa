@@ -27,7 +27,11 @@ export class UpdatePasswordComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private accountFacade: AccountFacade, private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.error$ = this.accountFacade.passwordReminderError$;

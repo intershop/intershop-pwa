@@ -23,8 +23,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  * @example
  * <ish-wishlist-sharing-dialog
     [wishlist]="wishlist"
-    (submitWishlistSharing)="shareWishlist(wishlist.id)">
-   </ish-wishlist-sharing-dialog>
+    (submitWishlistSharing)="shareWishlist(wishlist.id)" />
  */
 @Component({
   selector: 'ish-wishlist-sharing-dialog',
@@ -40,7 +39,7 @@ export class WishlistSharingDialogComponent implements OnInit {
   /**
    * Emits the data of the wishlist sharing.
    */
-  @Output() submitWishlistSharing = new EventEmitter<WishlistSharing>();
+  @Output() readonly submitWishlistSharing = new EventEmitter<WishlistSharing>();
 
   wishListForm = new FormGroup({});
   fields: FormlyFieldConfig[];

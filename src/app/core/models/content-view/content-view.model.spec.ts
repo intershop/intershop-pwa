@@ -13,7 +13,7 @@ import {
 describe('Content View Model', () => {
   let configurationParameters: ContentConfigurationParameters;
   let pageletEntryPoint: ContentPageletEntryPoint;
-  let pagelets: { [id: string]: ContentPagelet };
+  let pagelets: Record<string, ContentPagelet>;
 
   beforeEach(() => {
     configurationParameters = {

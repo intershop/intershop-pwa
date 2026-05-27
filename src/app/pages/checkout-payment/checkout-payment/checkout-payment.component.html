@@ -1,255 +1,278 @@
 @if (basket) {
-<div class="row">
-  <div class="col-md-12">
-    <!-- Messages -->
-    @if (error) {
-    <ish-basket-error-message [error]="error" />
-    }
-    <ish-basket-validation-results />
-    @if (redirectStatus$ | async; as redirectStatus) {
-    <div role="alert" class="alert alert-danger">
-      {{ 'checkout.payment.sorry_message.text' | translate }}
-      @switch (redirectStatus) { @case ('cancel') {
-      {{ 'checkout.payment.canceled.text' | translate }}
-      } @case ('failure') {
-      {{ 'checkout.payment.failed.text' | translate }}
-      } @case ('unavailable') {
-      {{ 'checkout.payment.service.unavailable.text' | translate }}
-      } }
-    </div>
-    }
-  </div>
-  <!-- Payment method selection -->
-  <div class="col-md-12 col-lg-8">
-    <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
-
-    <!-- display all payment methods -->
-    @if (basket.totals?.total?.net > 0 || !basket.payment) {
-    <form [formGroup]="paymentForm" class="form-horizontal" (ngSubmit)="submitParameterForm()">
-      @if (hasPaymentMethods) {
-      <ul id="payment-accordion" class="payment-methods list-unstyled">
-        @for (paymentMethod of filteredPaymentMethods; track paymentMethod; let i = $index) {
-        <li class="panel">
-          <div [ngClass]="{ 'form-check': !paymentMethod.parameters }">
-            <strong>
-              {{ paymentMethod.displayName }}
-              @if (!paymentMethod.displayName) {
-              {{ paymentMethod.id }}
-              }
-            </strong>
-            @if (paymentMethod.description) {
-            <p>{{ paymentMethod.description }}</p>
-            }
-            <ish-basket-payment-cost-info [basket]="basket" [paymentMethod]="paymentMethod" [priceType]="priceType" />
-            <!-- display radio buttons only for payment methods without parameters -->
-            @if (!paymentMethod.parameters && !paymentMethod.isRestricted) {
-            <input
-              type="radio"
-              formControlName="name"
-              class="form-check-input"
-              [id]="'paymentOption_' + paymentMethod.id"
-              [value]="paymentMethod.id"
-            />
-            <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
-              {{ 'checkout.payment.payWith.link' | translate : { '0': paymentMethod.displayName } }}
-            </label>
-            }
-          </div>
-          <!-- Paypal Credit Card Privacy Statement -->
-          @if (paymentMethod.serviceId === 'PAYPAL_CREDIT_CARD') {
-          <div class="row">
-            <p
-              [innerHTML]="
-                'checkout.payment.paypal.privacy_statement.message'
-                  | translate : { country: getCustomerInvoiceCountryCode() }
-              "
-            ></p>
-          </div>
-          }
-          <!-- Payment parameter form -->
-          @if (paymentMethod.parameters?.length) {
-          <div [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id">
-            @for (paymentInstrument of paymentMethod.paymentInstruments; track paymentInstrument.id) {
-            <div class="panel section">
-              <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6">
-                <!-- Payment method radio button -->
-                <input
-                  type="radio"
-                  formControlName="name"
-                  class="form-check-input"
-                  [id]="'paymentOption_' + paymentInstrument.id"
-                  [value]="paymentInstrument.id"
-                />
-                <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
-                  {{ paymentInstrument.accountIdentifier }}
-                </label>
-                <!-- Delete payment method button -->
-                <button
-                  type="button"
-                  class="btn btn-link btn-link-action float-end"
-                  (click)="deleteBasketPayment(paymentInstrument)"
-                  data-testing-id="delete-payment-link"
-                  [attr.aria-label]="
-                    'checkout.payment.method.delete.aria_label'
-                      | translate
-                        : {
-                            paymentMethodName: paymentMethod.displayName,
-                            accountIdentifier: paymentInstrument.accountIdentifier
-                          }
-                  "
-                >
-                  {{ 'checkout.payment.method.delete.link' | translate }}
-                </button>
-              </div>
-              <!-- Concardis -->
-              @if ( paymentMethod.serviceId === 'Concardis_CreditCard' && basket.payment && paymentInstrument.id ===
-              basket.payment.paymentInstrument.id ) {
-              <div>
-                <ish-payment-concardis-creditcard-cvc-detail
-                  [paymentInstrument]="basket.payment.paymentInstrument"
-                  [paymentMethod]="paymentMethod"
-                />
-              </div>
-              }
-            </div>
-            }
-            <!-- Add payment instrument button -->
-            <div class="panel">
-              @if (!formIsOpen(i)) {
-              <button
-                type="button"
-                class="btn btn-link btn-link-action"
-                (click)="openPaymentParameterForm(i)"
-                [attr.aria-expanded]="formIsOpen(i)"
-                [attr.aria-controls]="'payment-form-' + paymentMethod.id"
-                data-testing-id="add-payment-link"
-              >
-                {{ 'checkout.payment.addPayment.link' | translate }}
-              </button>
-              }
-            </div>
-
-            <!-- Screen reader announcement for form open/close -->
-            <div class="visually-hidden" aria-live="polite" role="text">
-              {{
-                (formIsOpen(i)
-                  ? 'checkout.payment.parameter_form.open.announcement'
-                  : 'checkout.payment.parameter_form.close.announcement'
-                ) | translate : { paymentMethodName: paymentMethod.displayName }
-              }}
-            </div>
-            <!-- Payment instrument form -->
-            <div [ngbCollapse]="!formIsOpen(i)" [id]="'payment-form-' + paymentMethod.id" [hidden]="!formIsOpen(i)">
-              <fieldset class="mb-0">
-                <legend class="visually-hidden">
-                  {{
-                    'checkout.payment.addPayment.form.legend'
-                      | translate : { paymentMethodName: paymentMethod.displayName }
-                  }}
-                </legend>
-                <p class="indicates-required" aria-hidden="true">
-                  <span class="required">*</span>{{ 'account.required_field.message' | translate }}
-                </p>
-                @switch (paymentMethod.serviceId) { @case ('PAYPAL_CREDIT_CARD') {
-                <ish-payment-paypal
-                  [selectedPaymentMethod]="paymentMethod"
-                  [adapterType]="getPaypalAdapterType(paymentMethod)"
-                  pageType="checkout"
-                  (closeForm)="closePaymentInstrumentForm()"
-                />
-                } @case ('Concardis_CreditCard') {
-                <ish-payment-concardis-creditcard
-                  [paymentMethod]="paymentMethod"
-                  [activated]="formIsOpen(i)"
-                  (submitPayment)="createNewPaymentInstrument($event)"
-                  (cancelPayment)="closePaymentInstrumentForm()"
-                />
-                } @case ('Concardis_DirectDebit') {
-                <ish-payment-concardis-directdebit
-                  [paymentMethod]="paymentMethod"
-                  [activated]="formIsOpen(i)"
-                  (submitPayment)="createNewPaymentInstrument($event)"
-                  (cancelPayment)="closePaymentInstrumentForm()"
-                />
-                } @case ('CyberSource_CreditCard') {
-                <ish-payment-cybersource-creditcard
-                  [paymentMethod]="paymentMethod"
-                  [activated]="formIsOpen(i)"
-                  (submitPayment)="createNewPaymentInstrument($event)"
-                  (cancelPayment)="closePaymentInstrumentForm()"
-                />
-                } @case ('Payone_CreditCard') {
-                <ish-payment-payone-creditcard
-                  [paymentMethod]="paymentMethod"
-                  [activated]="formIsOpen(i)"
-                  (submitPayment)="createNewPaymentInstrument($event)"
-                  (cancelPayment)="closePaymentInstrumentForm()"
-                />
-                } @default {
-                <ish-payment-parameter-form
-                  [paymentMethod]="paymentMethod"
-                  [parentForm]="paymentForm"
-                  [submitDisabled]="submitDisabled"
-                  [activated]="formIsOpen(i)"
-                  (cancelPayment)="closePaymentInstrumentForm()"
-                />
-                } }
-              </fieldset>
-            </div>
-          </div>
-          }
-        </li>
-        }
-      </ul>
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Messages -->
+      @if (error) {
+        <ish-basket-error-message [error]="error" />
       }
-    </form>
-    } @else {
-    <ish-info-message
-      message="{{
-        'checkout.payment.no_selection_required.info' | translate : { '0': basket.totals?.total | ishPrice }
-      }}"
-      [toast]="false"
-    />
-    }
-  </div>
-  <!-- Basket summary -->
-  <div class="col-md-12 col-lg-4 order-summary">
-    <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
-    <ish-basket-promotion-code [toast]="false" />
-    <ish-basket-address-summary [basket]="basket" />
-    <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
-    <ish-basket-items-summary [basket]="basket" />
-    <div class="cost-summary">
-      <ish-basket-cost-summary [totals]="basket.totals" />
-      <div class="d-grid">
-        @if (!selectedPayPalMethod()) { @if (nextDisabled) {
-        <div id="checkout-button-help" aria-live="polite" class="visually-hidden">
-          {{ 'checkout.continue.validation.message' | translate }}
+      <ish-basket-validation-results />
+      @if (redirectStatus$ | async; as redirectStatus) {
+        <div class="alert alert-danger" role="alert">
+          {{ 'checkout.payment.sorry_message.text' | translate }}
+          @switch (redirectStatus) {
+            @case ('cancel') {
+              {{ 'checkout.payment.canceled.text' | translate }}
+            }
+            @case ('failure') {
+              {{ 'checkout.payment.failed.text' | translate }}
+            }
+            @case ('unavailable') {
+              {{ 'checkout.payment.service.unavailable.text' | translate }}
+            }
+          }
         </div>
-        }
-        <button
-          class="btn btn-lg btn-block btn-primary"
-          type="button"
-          [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
-          (click)="goToNextStep()"
-        >
-          {{ 'checkout.button.label' | translate }}
-        </button>
-        } @else {
-        <ish-payment-paypal
-          [selectedPaymentMethod]="selectedPayPalMethod()"
-          [adapterType]="getPaypalAdapterType()"
-          pageType="checkout"
-        />
-        }
-      </div>
+      }
     </div>
-    <!-- Privacy policy link -->
-    <span
-      [ishServerHtml]="
-        'checkout.widget.security_privacy_policy.link' | translate : { '0': 'page://page.privacyPolicy.pagelet2-Page' }
-      "
-    ></span>
+    <!-- Payment method selection -->
+    <div class="col-md-12 col-lg-8">
+      <h2 class="h3">{{ 'checkout.payment.method.select.heading' | translate }}</h2>
+
+      <!-- display all payment methods -->
+      @if (basket.totals?.total?.net > 0 || !basket.payment) {
+        <form class="form-horizontal" [formGroup]="paymentForm" (ngSubmit)="submitParameterForm()">
+          @if (hasPaymentMethods) {
+            <ul class="payment-methods list-unstyled" id="payment-accordion">
+              @for (paymentMethod of filteredPaymentMethods; track paymentMethod; let i = $index) {
+                <li class="panel">
+                  <div [ngClass]="{ 'form-check': !paymentMethod.parameters }">
+                    <strong>
+                      {{ paymentMethod.displayName }}
+                      @if (!paymentMethod.displayName) {
+                        {{ paymentMethod.id }}
+                      }
+                    </strong>
+                    @if (paymentMethod.description) {
+                      <p>{{ paymentMethod.description }}</p>
+                    }
+                    <ish-basket-payment-cost-info
+                      [basket]="basket"
+                      [paymentMethod]="paymentMethod"
+                      [priceType]="priceType"
+                    />
+                    <!-- display radio buttons only for payment methods without parameters -->
+                    @if (!paymentMethod.parameters && !paymentMethod.isRestricted) {
+                      <input
+                        class="form-check-input"
+                        formControlName="name"
+                        type="radio"
+                        [id]="'paymentOption_' + paymentMethod.id"
+                        [value]="paymentMethod.id"
+                      />
+                      <label class="form-check-label" [for]="'paymentOption_' + paymentMethod.id">
+                        {{ 'checkout.payment.payWith.link' | translate: { '0': paymentMethod.displayName } }}
+                      </label>
+                    }
+                  </div>
+                  <!-- Paypal Credit Card Privacy Statement -->
+                  @if (paymentMethod.serviceId === 'PAYPAL_CREDIT_CARD') {
+                    <div class="row">
+                      <p
+                        [innerHTML]="
+                          'checkout.payment.paypal.privacy_statement.message'
+                            | translate: { country: getCustomerInvoiceCountryCode() }
+                        "
+                      ></p>
+                    </div>
+                  }
+                  <!-- Payment parameter form -->
+                  @if (paymentMethod.parameters?.length) {
+                    <div [attr.data-testing-id]="'payment-parameter-form-' + paymentMethod.id">
+                      @for (paymentInstrument of paymentMethod.paymentInstruments; track paymentInstrument.id) {
+                        <div class="panel section">
+                          <div class="form-check col-10 col-md-6 col-lg-8 col-xl-6">
+                            <!-- Payment method radio button -->
+                            <input
+                              class="form-check-input"
+                              formControlName="name"
+                              type="radio"
+                              [id]="'paymentOption_' + paymentInstrument.id"
+                              [value]="paymentInstrument.id"
+                            />
+                            <label class="form-check-label" [for]="'paymentOption_' + paymentInstrument.id">
+                              {{ paymentInstrument.accountIdentifier }}
+                            </label>
+                            <!-- Delete payment method button -->
+                            <button
+                              class="btn btn-link btn-link-action float-end"
+                              data-testing-id="delete-payment-link"
+                              type="button"
+                              [attr.aria-label]="
+                                'checkout.payment.method.delete.aria_label'
+                                  | translate
+                                    : {
+                                        paymentMethodName: paymentMethod.displayName,
+                                        accountIdentifier: paymentInstrument.accountIdentifier,
+                                      }
+                              "
+                              (click)="deleteBasketPayment(paymentInstrument)"
+                            >
+                              {{ 'checkout.payment.method.delete.link' | translate }}
+                            </button>
+                          </div>
+                          <!-- Concardis -->
+                          @if (
+                            paymentMethod.serviceId === 'Concardis_CreditCard' &&
+                            basket.payment &&
+                            paymentInstrument.id === basket.payment.paymentInstrument.id
+                          ) {
+                            <div>
+                              <ish-payment-concardis-creditcard-cvc-detail
+                                [paymentInstrument]="basket.payment.paymentInstrument"
+                                [paymentMethod]="paymentMethod"
+                              />
+                            </div>
+                          }
+                        </div>
+                      }
+                      <!-- Add payment instrument button -->
+                      <div class="panel">
+                        @if (!formIsOpen(i)) {
+                          <button
+                            class="btn btn-link btn-link-action"
+                            data-testing-id="add-payment-link"
+                            type="button"
+                            [attr.aria-controls]="'payment-form-' + paymentMethod.id"
+                            [attr.aria-expanded]="formIsOpen(i)"
+                            (click)="openPaymentParameterForm(i)"
+                          >
+                            {{ 'checkout.payment.addPayment.link' | translate }}
+                          </button>
+                        }
+                      </div>
+
+                      <!-- Screen reader announcement for form open/close -->
+                      <div aria-live="polite" class="visually-hidden" role="text">
+                        {{
+                          (formIsOpen(i)
+                            ? 'checkout.payment.parameter_form.open.announcement'
+                            : 'checkout.payment.parameter_form.close.announcement'
+                          ) | translate: { paymentMethodName: paymentMethod.displayName }
+                        }}
+                      </div>
+                      <!-- Payment instrument form -->
+                      <div
+                        [hidden]="!formIsOpen(i)"
+                        [id]="'payment-form-' + paymentMethod.id"
+                        [ngbCollapse]="!formIsOpen(i)"
+                      >
+                        <fieldset class="mb-0">
+                          <legend class="visually-hidden">
+                            {{
+                              'checkout.payment.addPayment.form.legend'
+                                | translate: { paymentMethodName: paymentMethod.displayName }
+                            }}
+                          </legend>
+                          <p aria-hidden="true" class="indicates-required">
+                            <span class="required">*</span>{{ 'account.required_field.message' | translate }}
+                          </p>
+                          @switch (paymentMethod.serviceId) {
+                            @case ('PAYPAL_CREDIT_CARD') {
+                              <ish-payment-paypal
+                                pageType="checkout"
+                                [adapterType]="getPaypalAdapterType(paymentMethod)"
+                                [selectedPaymentMethod]="paymentMethod"
+                                (closeForm)="closePaymentInstrumentForm()"
+                              />
+                            }
+                            @case ('Concardis_CreditCard') {
+                              <ish-payment-concardis-creditcard
+                                [activated]="formIsOpen(i)"
+                                [paymentMethod]="paymentMethod"
+                                (cancelPayment)="closePaymentInstrumentForm()"
+                                (submitPayment)="createNewPaymentInstrument($event)"
+                              />
+                            }
+                            @case ('Concardis_DirectDebit') {
+                              <ish-payment-concardis-directdebit
+                                [activated]="formIsOpen(i)"
+                                [paymentMethod]="paymentMethod"
+                                (cancelPayment)="closePaymentInstrumentForm()"
+                                (submitPayment)="createNewPaymentInstrument($event)"
+                              />
+                            }
+                            @case ('CyberSource_CreditCard') {
+                              <ish-payment-cybersource-creditcard
+                                [activated]="formIsOpen(i)"
+                                [paymentMethod]="paymentMethod"
+                                (cancelPayment)="closePaymentInstrumentForm()"
+                                (submitPayment)="createNewPaymentInstrument($event)"
+                              />
+                            }
+                            @case ('Payone_CreditCard') {
+                              <ish-payment-payone-creditcard
+                                [activated]="formIsOpen(i)"
+                                [paymentMethod]="paymentMethod"
+                                (cancelPayment)="closePaymentInstrumentForm()"
+                                (submitPayment)="createNewPaymentInstrument($event)"
+                              />
+                            }
+                            @default {
+                              <ish-payment-parameter-form
+                                [activated]="formIsOpen(i)"
+                                [parentForm]="paymentForm"
+                                [paymentMethod]="paymentMethod"
+                                [submitDisabled]="submitDisabled"
+                                (cancelPayment)="closePaymentInstrumentForm()"
+                              />
+                            }
+                          }
+                        </fieldset>
+                      </div>
+                    </div>
+                  }
+                </li>
+              }
+            </ul>
+          }
+        </form>
+      } @else {
+        <ish-info-message
+          message="{{
+            'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice }
+          }}"
+          [toast]="false"
+        />
+      }
+    </div>
+    <!-- Basket summary -->
+    <div class="col-md-12 col-lg-4 order-summary">
+      <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
+      <ish-basket-promotion-code [toast]="false" />
+      <ish-basket-address-summary [basket]="basket" />
+      <ish-basket-recurrence-summary [recurrence]="basket.recurrence" />
+      <ish-basket-items-summary [basket]="basket" />
+      <div class="cost-summary">
+        <ish-basket-cost-summary [totals]="basket.totals" />
+        <div class="d-grid">
+          @if (!selectedPayPalMethod()) {
+            @if (nextDisabled) {
+              <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
+                {{ 'checkout.continue.validation.message' | translate }}
+              </div>
+            }
+            <button
+              class="btn btn-lg btn-block btn-primary"
+              type="button"
+              [attr.aria-describedby]="nextDisabled ? 'checkout-button-help' : null"
+              (click)="goToNextStep()"
+            >
+              {{ 'checkout.button.label' | translate }}
+            </button>
+          } @else {
+            <ish-payment-paypal
+              pageType="checkout"
+              [adapterType]="getPaypalAdapterType()"
+              [selectedPaymentMethod]="selectedPayPalMethod()"
+            />
+          }
+        </div>
+      </div>
+      <!-- Privacy policy link -->
+      <span
+        [ishServerHtml]="
+          'checkout.widget.security_privacy_policy.link' | translate: { '0': 'page://page.privacyPolicy.pagelet2-Page' }
+        "
+      ></span>
+    </div>
   </div>
-</div>
 }

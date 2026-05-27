@@ -1,10 +1,14 @@
 @if (selectedUser$ | async; as user) {
-<h1>{{ 'account.punchout.configuration.heading' | translate }} - {{ user.login }}</h1>
-<p>{{ 'account.punchout.cxml.configuration.helptext' | translate }}</p>
-@if (cxmlConfiguration$ | async; as cxmlConfiguration) { @if (cxmlConfiguration.length > 0) {
-<ish-cxml-configuration-form [cxmlConfiguration]="cxmlConfiguration" />
-} } @else {
-<p>{{ 'account.punchout.cxml.configuration.no_configuration' | translate }}</p>
-} } @if (loading$ | async) {
-<ish-loading />
+  <h1>{{ 'account.punchout.configuration.heading' | translate }} - {{ user.login }}</h1>
+  <p>{{ 'account.punchout.cxml.configuration.helptext' | translate }}</p>
+  @if (cxmlConfiguration$ | async; as cxmlConfiguration) {
+    @if (cxmlConfiguration.length > 0) {
+      <ish-cxml-configuration-form [cxmlConfiguration]="cxmlConfiguration" />
+    }
+  } @else {
+    <p>{{ 'account.punchout.cxml.configuration.no_configuration' | translate }}</p>
+  }
+}
+@if (loading$ | async) {
+  <ish-loading />
 }

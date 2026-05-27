@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { parse, stringify } from 'yaml';
 
@@ -44,7 +44,7 @@ function main(icm, ssrImage, nginxImage) {
 
 const args = process.argv.slice(2);
 if (args.length !== 3) {
-  console.error('Usage: node demo-server-up.mjs <icm> <ssrimage> <nginximage>');
+  console.error('Usage: node demo-server-up.mjs <icm> <ssrImage> <nginxImage>');
   process.exit(1);
 }
 

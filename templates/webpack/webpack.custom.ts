@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';
@@ -6,14 +7,18 @@ import { basename, dirname, join, normalize, resolve } from 'path';
 import * as ts from 'typescript';
 import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
-/* eslint-disable no-console, @typescript-eslint/no-var-requires, @typescript-eslint/naming-convention */
+/* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention */
 
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 
 const { globSync } = require('glob');
 
 class Logger {
-  constructor(private target: string, private config: string, progressActive: boolean) {
+  constructor(
+    private target: string,
+    private config: string,
+    progressActive: boolean
+  ) {
     if (progressActive) {
       console.log('\n');
     }
@@ -33,7 +38,7 @@ let logger: Logger;
 type AngularPlugin = WebpackPluginInstance & {
   options: {
     directTemplateLoading: boolean;
-    fileReplacements: { [source: string]: string };
+    fileReplacements: Record<string, string>;
   };
 };
 
@@ -51,15 +56,15 @@ function crawlFiles(folder: string, callback: (files: string[]) => void) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function traverse(obj: object, ftest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
+function traverse(obj: object, filterTest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
   Object.entries(obj).forEach(([k, v]) => {
-    if (ftest(v)) {
+    if (filterTest(v)) {
       func(obj, k);
     }
   });
   Object.values(obj).forEach(v => {
     if (v && typeof v === 'object') {
-      traverse(v, ftest, func);
+      traverse(v, filterTest, func);
     }
   });
 }
@@ -419,17 +424,17 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     if (sourceMaps.length) {
       const traverseStyleFile = (file: string): string[] => {
         const fileWithExt = file.endsWith('.scss') ? file : `${file}.scss`;
-        const path = ['', 'src/styles/', `src/styles/themes/${theme}/`]
+        const scssPath = ['', 'src/styles/', `src/styles/themes/${theme}/`]
           .map(p => normalize(p + fileWithExt))
           .find(fs.existsSync);
-        if (!path) {
+        if (!scssPath) {
           return [];
         }
 
-        const paths = [path];
+        const paths = [scssPath];
 
         const regex = /@import '(.*?)'/g;
-        const content = fs.readFileSync(path, { encoding: 'utf-8' });
+        const content = fs.readFileSync(scssPath, { encoding: 'utf-8' });
         for (let match: RegExpExecArray; (match = regex.exec(content)); ) {
           paths.push(...traverseStyleFile(match[1]));
         }
@@ -450,29 +455,29 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             return (
               sourceMap.sources
                 // source map entries start with './
-                .map(path => path.substring(2))
-                .filter(path => path.startsWith('src') || path.startsWith('projects'))
-                .filter(path => {
+                .map(sourcePath => sourcePath.substring(2))
+                .filter(sourcePath => sourcePath.startsWith('src') || sourcePath.startsWith('projects'))
+                .filter(sourcePath => {
                   // TODO: handle lazy sources whenever this becomes a problem
-                  if (path.includes(' lazy ')) {
-                    logger.warn('cannot handle lazy source:', path);
+                  if (sourcePath.includes(' lazy ')) {
+                    logger.warn('cannot handle lazy source:', sourcePath);
                     return false;
                   }
                   return true;
                 })
-                .map(path => relativeReplacements[path] ?? path)
-                .map(path => {
-                  if (basename(path).includes('.component.') && path.endsWith('.ts')) {
+                .map(sourcePath => relativeReplacements[sourcePath] ?? sourcePath)
+                .map(sourcePath => {
+                  if (basename(sourcePath).includes('.component.') && sourcePath.endsWith('.ts')) {
                     return tsquery(
-                      tsquery.ast(fs.readFileSync(path, { encoding: 'utf-8' })),
+                      tsquery.ast(fs.readFileSync(sourcePath, { encoding: 'utf-8' })),
                       'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=styleUrls]) ArrayLiteralExpression > StringLiteral'
                     )
-                      .map((styleUrl: ts.StringLiteral) => `${dirname(path)}/${styleUrl.text.substring(2)}`)
-                      .map(path => relativeReplacements[path] ?? path)
+                      .map((styleUrl: ts.StringLiteral) => `${dirname(sourcePath)}/${styleUrl.text.substring(2)}`)
+                      .map(stylePath => relativeReplacements[stylePath] ?? stylePath)
                       .map(traverseStyleFile)
-                      .concat([path]);
+                      .concat([sourcePath]);
                   } else {
-                    return path;
+                    return sourcePath;
                   }
                 })
             );

@@ -5,7 +5,7 @@
 
   <div class="col-md-3">
     <div class="navigation-panel" [ngbCollapse]="isCollapsed">
-      <ish-skip-content-link skipToElementId="nav-breadcrumbs" linkText="common.skip_content.link.text.filter" />
+      <ish-skip-content-link linkText="common.skip_content.link.text.filter" skipToElementId="nav-breadcrumbs" />
       <ish-filter-navigation />
 
       <div class="marketing-area">
@@ -13,8 +13,8 @@
       </div>
     </div>
     <button
-      type="button"
       class="d-md-none mobile-filter-toggle btn btn-link btn-link-action link-decoration-hover"
+      type="button"
       (click)="toggle()"
     >
       {{ 'search.mobile.filter.trigger' | translate }}
@@ -26,16 +26,15 @@
     <ish-breadcrumb />
     <h1>
       {{
-        (totalItems ? 'search.title.text' : 'search.title.short.text')
-          | translate : { '1': searchTerm, '2': totalItems }
+        (totalItems ? 'search.title.text' : 'search.title.short.text') | translate: { '1': searchTerm, '2': totalItems }
       }}
     </h1>
     <div class="marketing-area">
       <ish-content-include includeId="include.searchresult.content.top.pagelet2-Include" />
     </div>
     <ish-product-listing
-      [productListingId]="{ type: 'search', value: searchTerm }"
       fragmentOnRouting="search-page-top"
+      [productListingId]="{ type: 'search', value: searchTerm }"
     />
     <div class="marketing-area">
       <ish-content-include includeId="include.searchresult.content.bottom.pagelet2-Include" />

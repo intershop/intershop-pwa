@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-interface PaypalOrderData {
-  orderId: string;
-  paymentInstrumentId: string;
+export interface PaypalOrderData {
+  paypalOrderId?: string;
+  orderId?: string;
+  paymentInstrumentId?: string;
+  orderStatus?: 'SUCCESS' | 'CANCELLED' | 'ERROR';
 }
 
 /**

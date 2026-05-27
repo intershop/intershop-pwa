@@ -92,7 +92,7 @@ const createView = (data: ProductListingType, itemsPerPage: number): ProductList
 
 function calculateLookUpID(
   id: ProductListingID,
-  settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+  settings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>
 ) {
   const currentSettings = settings[serializeProductListingID(id)] || {};
   return serializeProductListingID({ ...currentSettings, ...id });
@@ -106,6 +106,6 @@ export const getProductListingView = (id: ProductListingID) =>
     (
       entities: Dictionary<ProductListingType>,
       itemsPerPage: number,
-      settings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> }
+      settings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>
     ) => entities && createView(entities[calculateLookUpID(id, settings)], itemsPerPage)
   );

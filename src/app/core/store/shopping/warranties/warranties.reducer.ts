@@ -26,7 +26,8 @@ export const warrantiesReducer = createReducer(
   setLoadingOn(warrantyActions.loadWarranty),
   setErrorOn(warrantyApiActions.loadWarrantyFail),
   unsetLoadingAndErrorOn(warrantyApiActions.loadWarrantySuccess),
-  on(warrantyApiActions.loadWarrantySuccess, (state, action) =>
-    warrantiesAdapter.upsertOne(action.payload.warranty, state)
+  on(
+    warrantyApiActions.loadWarrantySuccess,
+    (state, action): WarrantiesState => warrantiesAdapter.upsertOne(action.payload.warranty, state)
   )
 );

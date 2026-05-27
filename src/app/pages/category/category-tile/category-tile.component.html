@@ -1,10 +1,10 @@
 @if (category$ | async; as category) {
-<div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
-  <a [routerLink]="category | ishCategoryRoute" tabindex="-1">
-    <ish-category-image [category]="category" [loading]="loading" />
-  </a>
-  <a [routerLink]="category | ishCategoryRoute" class="link-decoration-hover">
-    <h2 class="h3">{{ category.name }}</h2>
-  </a>
-</div>
+  <div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
+    <a tabindex="-1" [routerLink]="category | ishCategoryRoute">
+      <ish-category-image [category]="category" [loading]="loading" />
+    </a>
+    <a class="link-decoration-hover" [routerLink]="category | ishCategoryRoute">
+      <h2 class="h3">{{ category.name }}</h2>
+    </a>
+  </div>
 }

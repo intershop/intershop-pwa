@@ -40,9 +40,9 @@ export const adapter = createEntityAdapter<ProductListingType>({
  */
 export interface ProductListingState extends EntityState<ProductListingType> {
   loading: boolean;
-  itemsPerPage: number | { [id: string]: number };
+  itemsPerPage: number | Record<string, number>;
   viewType: ViewType;
-  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> };
+  currentSettings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>;
 }
 
 const initialState: ProductListingState = adapter.getInitialState({
@@ -67,7 +67,7 @@ function calculatePages(entry: ProductListingType) {
 }
 
 function mergeCurrentSettings(
-  currentSettings: { [id: string]: Pick<ProductListingID, 'filters' | 'sorting'> },
+  currentSettings: Record<string, Pick<ProductListingID, 'filters' | 'sorting'>>,
   id: ProductListingID,
   newSettings: Pick<ProductListingID, 'filters' | 'sorting'>
 ) {
@@ -89,7 +89,7 @@ export const productListingReducer = createReducer(
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
   unsetLoadingOn(setProductListingPages),
   unsetLoadingAndErrorOn(searchProductsFail, loadProductsForCategoryFail, loadProductsForMasterFail),
-  on(setProductListingPages, (state, action) => {
+  on(setProductListingPages, (state, action): ProductListingState => {
     const pages =
       action.payload.pages ||
       calculatePages({ ...state.entities[serializeProductListingID(action.payload.id)], ...action.payload });

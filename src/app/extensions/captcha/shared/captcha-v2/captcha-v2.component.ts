@@ -1,8 +1,9 @@
+// eslint-disable-next-line max-classes-per-file
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha-2';
 import { Observable } from 'rxjs';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';

@@ -7,9 +7,9 @@ import { Price } from 'ish-core/models/price/price.model';
  *
  * @example
  * <ish-budget-bar
+      [additionalAmount]="orderTotal"
       [budget]=requisition.userBudget?.budget
       [spentBudget]="requisition.userBudget?.spentBudget"
-      [additionalAmount]="orderTotal"
    ></ish-budget-bar>
  */
 

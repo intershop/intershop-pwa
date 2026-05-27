@@ -5,17 +5,17 @@
   <ish-error-message [error]="productNotificationsError$ | async" />
 
   <nav
-    ngbNav
     class="nav-tabs"
-    [(activeId)]="active"
+    ngbNav
     [attr.aria-label]="'account.notifications.tabs.aria_label' | translate"
+    [(activeId)]="active"
   >
     <!-- Price notifications -->
     <ng-container ngbNavItem="price">
       <a
+        data-testing-id="tab-link-notifications-price"
         ngbNavLink
         [routerLink]="['../notifications', { notificationType: 'price' }]"
-        data-testing-id="tab-link-notifications-price"
         >{{ 'account.notifications.price.heading' | translate }}</a
       >
     </ng-container>
@@ -23,9 +23,9 @@
     <!-- Stock notifications -->
     <ng-container ngbNavItem="stock">
       <a
+        data-testing-id="tab-link-notifications-instock"
         ngbNavLink
         [routerLink]="['../notifications', { notificationType: 'stock' }]"
-        data-testing-id="tab-link-notifications-instock"
         >{{ 'account.notifications.backinstock.heading' | translate }}</a
       >
     </ng-container>
@@ -37,5 +37,5 @@
 </div>
 
 @if (productNotificationsLoading$ | async) {
-<ish-loading />
+  <ish-loading />
 }

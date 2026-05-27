@@ -43,4 +43,4 @@ To detect routes in NgRx Effects, we recommend to also supply an operator, that 
 
 - [URLMatcher Angular Documentation][urlmatcher]
 
-[urlmatcher]: https://angular.io/api/router/UrlMatcher
+[urlmatcher]: https://angular.dev/api/router/UrlMatcher

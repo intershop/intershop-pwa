@@ -1,4 +1,4 @@
-import { formatCurrency, getCurrencySymbol } from '@angular/common';
+import { formatCurrency } from '@angular/common';
 import { ChangeDetectorRef, DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,10 +7,10 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
-import { Price, PriceType } from './price.model';
+import { Price, PriceHelper, PriceType } from './price.model';
 
 export function formatPrice(price: Price, lang: string): string {
-  const symbol = getCurrencySymbol(price.currency, 'narrow', lang);
+  const symbol = PriceHelper.getCurrencySymbol(price.currency, 'narrow', lang);
   return symbol ? formatCurrency(price.value, lang, symbol) : price.value?.toString();
 }
 

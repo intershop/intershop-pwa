@@ -38,7 +38,11 @@ export class CheckoutAddressPageComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private checkoutFacade: CheckoutFacade, private accountFacade: AccountFacade, private router: Router) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private accountFacade: AccountFacade,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.basket$ = this.checkoutFacade.basket$;

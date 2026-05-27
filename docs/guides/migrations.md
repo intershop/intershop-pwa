@@ -7,7 +7,117 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 11.0.0 to 11.1.0
+
+**New footer styling**
+
+The footer component has been restructured and simplified.
+The `StoreLocatorFooterComponent` has been removed from the PWA footer.
+The store locator link is now managed via ICM as part of the CMS footer content include (`include.footer.content.pagelet2-Include`).
+If your project extended or customized the `StoreLocatorFooterComponent`, remove all references to it and configure the store locator link in ICM instead.
+
+**Withdrawal functionality**
+
+The Intershop PWA now supports the EU right of withdrawal feature.
+Customers can submit withdrawal requests for their orders directly through the storefront.
+The feature is controlled by the ICM server configuration parameter `preferences.WithdrawalPreferences.WithdrawalEnabled`.
+When enabled, a withdrawal link appears in the footer, and the `/withdrawal` route becomes accessible.
+The footer link and route are automatically hidden when the preference is disabled.
+This feature requires ICM version 14.3.0 or higher.
+
 ## From 10.1.0 to 11.0.0
+
+**Angular 18 update**
+
+With Intershop PWA 11.0.0, the project was updated to Angular 18.
+In addition, several dependencies such as Formly, ESLint, Jest, Prettier and TypeScript have been updated.
+The Angular update replaces the deprecated i18n API—for example, `getCurrencySymbol`—with the new `Intl` API.
+For a list of all deprecations, see the [Angular page in GitHub](https://github.com/angular/angular/issues/54470).
+
+For more details about the Angular 18 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=17.0-18.0&l=3).
+
+**Formly 7 update**
+
+Formly was updated to version 7.
+For more information, see the [Formly migration guide](https://formly.dev/docs/guide/migration).
+
+**ESLint 9 update**
+
+With the update to ESLint 9, the configuration format changed from the legacy _.eslintrc.json_ to the new flat config format _eslint.config.mjs_.
+The separate _.eslintrc.json_ files previously located in the _e2e/_ and _schematics/_ folders have been consolidated into the root _eslint.config.mjs_ as file-specific override blocks.
+The new config also includes `eslint:recommended` and `eslint:stylistic` for TypeScript files.
+Some ESLint-related packages were renamed and updated to their latest versions, resulting in changes to the available rules and their default values.
+
+_Plugin changes:_
+
+| Old plugin                   | New plugin                       |
+| :--------------------------- | :------------------------------- |
+| `eslint-plugin-rxjs`         | `@smarttools/eslint-plugin-rxjs` |
+| `eslint-plugin-rxjs-angular` | `eslint-plugin-rxjs-angular-x`   |
+
+_Renamed rules:_
+
+| Old rule                              | New rule                                 |
+| :------------------------------------ | :--------------------------------------- |
+| `@typescript-eslint/ban-types`        | `@typescript-eslint/no-restricted-types` |
+| `@typescript-eslint/no-var-requires`  | `@typescript-eslint/no-require-imports`  |
+| `@typescript-eslint/no-throw-literal` | `no-throw-literal` (base ESLint rule)    |
+| `etc/no-deprecated`                   | `@typescript-eslint/no-deprecated`       |
+
+_New rules that might require code changes:_
+
+| Rule                                                  | Severity                                      |
+| :---------------------------------------------------- | :-------------------------------------------- |
+| `@typescript-eslint/no-shadow`                        | warn                                          |
+| `guard-for-in`                                        | error                                         |
+| `max-classes-per-file`                                | error (off for `*.module.ts` and `*.spec.ts`) |
+| `max-lines` (500)                                     | warn (off for `*.module.ts` and `*.spec.ts`)  |
+| `no-eval` / `no-implied-eval`                         | error                                         |
+| `@angular-eslint/template/cyclomatic-complexity` (10) | warn                                          |
+| `@angular-eslint/template/eqeqeq`                     | error                                         |
+
+_Changed rules:_
+
+| Rule         | Old value | New value                      |
+| :----------- | :-------- | :----------------------------- |
+| `complexity` | `max: 10` | `max: 15, variant: 'modified'` |
+
+**CSpell ESLint integration**
+
+Spell checking for TypeScript and JavaScript files is now performed by `@cspell/eslint-plugin` during ESLint linting instead of the standalone CSpell CLI.
+The VS Code CSpell extension is disabled for TypeScript and JavaScript files to avoid duplicate warnings.
+
+To migrate custom code:
+
+- Run `npm run lint` to check for spelling errors in TypeScript and JavaScript files.
+- Add project-specific words to _intershop.txt_.
+
+**Jest 30 update**
+
+Jest and related packages such as `jest-preset-angular` have been updated to their latest major versions.
+The update includes several breaking changes.
+
+Key changes:
+
+- The configuration format changed from _jest.config.js_ to _jest.config.ts_, using the new `createCjsPreset()` from `jest-preset-angular` instead of the previous `preset` string.
+- The test runner is explicitly set to `jest-jasmine2` to maintain backward compatibility, since Jest 30 defaults to `jest-circus`.
+- The `jest-environment-jsdom` package now uses JSDOM v26, which can introduce behavior changes in the DOM test environment. Mocking `window.location` is no longer possible with the current JSDOM version; affected tests must be refactored or temporarily disabled.
+
+For more details about the Jest 30 update, see the [Jest Upgrade Guide](https://jestjs.io/docs/upgrading-to-jest30).
+
+**Prettier 3 and Stylelint 17 update**
+
+With Intershop PWA 11.0.0, Prettier and Stylelint have been updated to the latest versions.
+
+The commits for the dependency updates and the required code style changes and adaptations are provided separately.
+This allows the dependency update commit to be integrated into a customer project while the automatic changes are skipped and executed directly on the custom code.
+
+Run the following commands after updating the formatting and linting dependencies:
+
+```
+npm run format
+ng lint --fix
+```
 
 **CMS view context REST requests with resource set ID**
 
@@ -16,9 +126,9 @@ A default resource set ID, `app_sf_base_cm`, is defined at the [`CMSService`](..
 
 ```html
 <ish-content-viewcontext
+  resourceSetId="custom_cartridge_name"
   viewContextId="viewcontext.include.product.base.top"
   [callParameters]="{ Product: product.sku }"
-  resourceSetId="custom_cartridge_name"
 />
 ```
 
@@ -40,8 +150,20 @@ See the updated [NGINX Startup Guide](./nginx-startup.md#https-or-ssl) for detai
 
 **NGINX Docker build uses Ubuntu mirror**
 
-The NGINX Docker build now defaults to `azure.archive.ubuntu.com` for apt packages to improve build reliability on Azure and GitHub Actions.
+The NGINX Docker build now defaults to _azure.archive.ubuntu.com_ for apt packages to improve build reliability on Azure and GitHub Actions.
 If this mirror is unreachable, pass `--build-arg UBUNTU_MIRROR=` to the pipeline to fall back to the default Ubuntu repositories.
+
+**PayPal Google Pay and Apple Pay functionality**
+
+The Intershop PWA now supports Google Pay and Apple Pay as additional payment methods via PayPal.
+Two new adapters have been added, `PaypalGooglePayAdapter` and `PaypalApplePayAdapter`, that integrate with the PayPal SDK to render the respective payment buttons and handle the associated payment flows.
+This functionality requires Intershop PPCP Connector version 3.1.0 or higher (ICM 14.2.2+, Google Pay JS API 2.0, Apple Pay JS API 4).
+For details, see the [PayPal Integration Guide](./paypal.md).
+
+**Language switch component**
+
+The behavior of the language switch component has changed.
+The component no longer renders when only one language is configured in ICM, and therefore no language switch options are available.
 
 ## From 9.1.0 to 10.0.0
 
@@ -1185,7 +1307,6 @@ We upgraded from Angular 8 to version 9 and activated the new rendering engine I
 This was a major upgrade and comes with some changes:
 
 - The following changes are available for cherry-picking in one commit:
-
   - Angular no longer supports the previously deprecated string syntax for lazy loaded modules. Change it to the [dynamic import format](https://angular.io/guide/deprecations#loadchildren-string-syntax).
 
   - `server.ts` was partially rewritten to support SSR dev-server and serverless deployments. Building SSR is now supported by Angular CLI and explicit `webpack` builds were removed.
@@ -1197,13 +1318,11 @@ This was a major upgrade and comes with some changes:
   - `angular2-cookie-law` was replaced by `ngx-cookie-banner` for compatibility reasons. This comes with a styling overhaul.
 
 - Further commits contain necessary refactoring:
-
   - `TestBed.get` in tests was deprecated in favor of the new type-safe `TestBed.inject`.
 
   - The empty generic type for NgRx `Store` is now the default and does not have to be supplied. The TSLint rule `ngrx-use-empty-store-type` was adapted to apply this refactoring.
 
   - We removed lazy loading with `@wishtack/reactive-component-loader` and replaced it with the native Angular 9 approach. If you have customized or created extensions, you will have to adapt the following:
-
     - Extension export modules are no longer imported and exported in `SharedModule`, instead export them in `ShellModule`.
 
     - Instead of pointing to the extension module with `ReactiveComponentLoaderModule` in the extension exports module, use the new provider for `LAZY_FEATURE_MODULE` pointing to the _extension store module_, if available. All further lazy loading is done by lazy components and lazy loaded pages. With this, the extension module should no longer import the extension store module.

@@ -8,7 +8,7 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
-import { createOrderSuccess } from 'ish-core/store/customer/orders';
+import { createOrderFail, createOrderSuccess, startPaypalOrderCreation } from 'ish-core/store/customer/orders';
 import { setErrorOn, setLoadingOn, unsetLoadingAndErrorOn, unsetLoadingOn } from 'ish-core/utils/ngrx-creators';
 
 import {
@@ -150,6 +150,7 @@ export const basketReducer = createReducer(
     loadBasketEligibleShippingMethods,
     loadBasketEligiblePaymentMethods,
     setBasketPayment,
+    startPaypalOrderCreation,
     startRedirectBeforeCheckout,
     createBasketPayment,
     updateBasketPayment,
@@ -164,7 +165,8 @@ export const basketReducer = createReducer(
     addPromotionCodeToBasketSuccess,
     addPromotionCodeToBasketFail,
     loadBasketSuccess,
-    loadBasketByAPITokenFail
+    loadBasketByAPITokenFail,
+    createOrderFail
   ),
   unsetLoadingAndErrorOn(
     mergeBasketSuccess,
@@ -224,31 +226,40 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemSuccess, (state, action) => ({
-    ...state,
-    basket: {
-      ...state.basket,
-      lineItems: state.basket.lineItems.map(item =>
-        item.id === action.payload.lineItem.id ? action.payload.lineItem : item
-      ),
-    },
-    info: action.payload.info,
-    validationResults: initialValidationResults,
-  })),
-  on(deleteBasketItemSuccess, (state, action) => ({
-    ...state,
-    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
-    info: action.payload.info,
-    validationResults: initialValidationResults,
-  })),
-  on(addItemsToBasketSuccess, (state, action) => ({
-    ...state,
-    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
-    info: action.payload.info,
-    error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
-    lastTimeProductAdded: new Date().getTime(),
-    submittedBasket: undefined,
-  })),
+  on(
+    updateBasketItemSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: {
+        ...state.basket,
+        lineItems: state.basket.lineItems.map(item =>
+          item.id === action.payload.lineItem.id ? action.payload.lineItem : item
+        ),
+      },
+      info: action.payload.info,
+      validationResults: initialValidationResults,
+    })
+  ),
+  on(
+    deleteBasketItemSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
+      info: action.payload.info,
+      validationResults: initialValidationResults,
+    })
+  ),
+  on(
+    addItemsToBasketSuccess,
+    (state, action): BasketState => ({
+      ...state,
+      basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
+      info: action.payload.info,
+      error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
+      lastTimeProductAdded: new Date().getTime(),
+      submittedBasket: undefined,
+    })
+  ),
   on(
     setBasketPaymentSuccess,
     createBasketPaymentSuccess,

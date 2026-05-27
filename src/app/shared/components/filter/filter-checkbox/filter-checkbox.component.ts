@@ -10,8 +10,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  * @example
  * <ish-filter-checkbox
  *   [filterElement]="element"
- *   (applyFilter)="applyFilter($event)">
- * </ish-filter-checkbox>
+ *   (applyFilter)="applyFilter($event)" />
  */
 @Component({
   selector: 'ish-filter-checkbox',
@@ -20,13 +19,12 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 })
 export class FilterCheckboxComponent {
   @Input({ required: true }) filterElement: Filter;
-  @Output() applyFilter: EventEmitter<{ searchParameter: URLFormParams }> = new EventEmitter();
+  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   /**
    * two-way-binding (banana in a box) [(showAll)]="showAllElements[element.name]"
    */
-  @Output()
-  showAllChange = new EventEmitter<boolean>();
+  @Output() readonly showAllChange = new EventEmitter<boolean>();
   private showAllValue = false;
   @Input()
   get showAll() {

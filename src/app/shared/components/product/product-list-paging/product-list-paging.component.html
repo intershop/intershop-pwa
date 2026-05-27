@@ -1,42 +1,42 @@
 @if (currentPage && pageIndices.length > 1) {
-<ul class="product-list-paging">
-  <li>
-    @if (currentPage > 1) {
-    <a
-      [routerLink]="[]"
-      queryParamsHandling="merge"
-      [queryParams]="{ page: currentPage - 1 }"
-      [fragment]="fragmentOnRouting"
-      >&laquo;</a
-    >
-    } @else {
-    <span>&laquo;</span>
+  <ul class="product-list-paging">
+    <li>
+      @if (currentPage > 1) {
+        <a
+          queryParamsHandling="merge"
+          [fragment]="fragmentOnRouting"
+          [queryParams]="{ page: currentPage - 1 }"
+          [routerLink]="[]"
+          >&laquo;</a
+        >
+      } @else {
+        <span>&laquo;</span>
+      }
+    </li>
+    @for (p of pageIndices; track p.value) {
+      <li>
+        <a
+          queryParamsHandling="merge"
+          [fragment]="fragmentOnRouting"
+          [ngClass]="{ active: p.value === currentPage }"
+          [queryParams]="{ page: p.value }"
+          [routerLink]="[]"
+          >{{ p.display }}</a
+        >
+      </li>
     }
-  </li>
-  @for (p of pageIndices; track p.value) {
-  <li>
-    <a
-      [routerLink]="[]"
-      queryParamsHandling="merge"
-      [queryParams]="{ page: p.value }"
-      [fragment]="fragmentOnRouting"
-      [ngClass]="{ active: p.value === currentPage }"
-      >{{ p.display }}</a
-    >
-  </li>
-  }
-  <li class="pagination-list-next">
-    @if (pageIndices[pageIndices.length - 1].value !== currentPage) {
-    <a
-      [routerLink]="[]"
-      queryParamsHandling="merge"
-      [queryParams]="{ page: currentPage + 1 }"
-      [fragment]="fragmentOnRouting"
-      >&raquo;</a
-    >
-    } @else {
-    <span>&raquo;</span>
-    }
-  </li>
-</ul>
+    <li class="pagination-list-next">
+      @if (pageIndices[pageIndices.length - 1].value !== currentPage) {
+        <a
+          queryParamsHandling="merge"
+          [fragment]="fragmentOnRouting"
+          [queryParams]="{ page: currentPage + 1 }"
+          [routerLink]="[]"
+          >&raquo;</a
+        >
+      } @else {
+        <span>&raquo;</span>
+      }
+    </li>
+  </ul>
 }

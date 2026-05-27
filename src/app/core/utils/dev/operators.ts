@@ -71,7 +71,6 @@ export function logDiff<T>(message?: unknown): OperatorFunction<T, T> {
 function keyChanges(a: any, b: any) {
   const changes: any = {};
 
-  // eslint-disable-next-line complexity
   function walkObject(base: any, object: any, path = '') {
     for (const key of Object.keys(base)) {
       const currentPath = path === '' ? key : `${path}.${key}`;

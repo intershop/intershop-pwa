@@ -25,7 +25,10 @@ export class AccountOrderToBasketComponent {
   displaySpinner: Signal<boolean>;
   private initialLoading = true;
 
-  constructor(private checkoutFacade: CheckoutFacade, private shoppingFacade: ShoppingFacade) {
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private shoppingFacade: ShoppingFacade
+  ) {
     this.displaySpinner = toSignal(
       this.checkoutFacade.basketLoading$.pipe(map(loading => loading && !this.initialLoading)),
       { initialValue: false }

@@ -9,7 +9,10 @@ import { StoreLocation } from '../../models/store-location/store-location.model'
 import { getGMAKey } from '../../store/store-locator-config';
 import { getHighlightedStore, getStores, highlightStore } from '../../store/stores';
 
-type IconConfiguration = { default: string; highlight: string };
+interface IconConfiguration {
+  default: string;
+  highlight: string;
+}
 
 export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration>('Store Map Icon Configuration');
 
@@ -17,7 +20,7 @@ export const STORE_MAP_ICON_CONFIGURATION = new InjectionToken<IconConfiguration
 export class StoresMapService {
   private map: google.maps.Map;
   private infoWindow: google.maps.InfoWindow;
-  // eslint-disable-next-line etc/no-deprecated
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   private entries: { store: StoreLocation; marker: google.maps.Marker }[] = [];
 
   constructor(
@@ -63,7 +66,7 @@ export class StoresMapService {
     this.entries = [];
     const bounds = new google.maps.LatLngBounds();
     stores.forEach(store => {
-      // eslint-disable-next-line etc/no-deprecated
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const marker = new google.maps.Marker({
         map: this.map,
         position: { lat: store.latitude, lng: store.longitude },

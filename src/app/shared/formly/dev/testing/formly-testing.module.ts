@@ -6,6 +6,7 @@ import {
   FieldArrayType,
   FieldType,
   FieldWrapper,
+  FormlyField,
   FormlyFieldConfig,
   FormlyForm,
   FormlyModule,
@@ -29,11 +30,12 @@ class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-fieldset-test-field',
-  template: `FieldsetFieldComponent: @for (f of field.fieldGroup; track f) {
-    <div>
-      {{ getFieldSummary(f) }}
-      {{ f.props | json }}
-    </div>
+  template: `FieldsetFieldComponent:
+    @for (f of field.fieldGroup; track f) {
+      <div>
+        {{ getFieldSummary(f) }}
+        {{ f.props | json }}
+      </div>
     }`,
 })
 class FieldsetFieldComponent extends FieldType {
@@ -172,7 +174,10 @@ class NumberFieldComponent extends FieldType {}
   ],
   imports: [
     CommonModule,
+    FormlyField,
+    FormlyForm,
     FormlyModule.forRoot({
+      formlyForm: FormlyForm,
       types: [
         {
           name: 'ish-text-input-field',
@@ -245,11 +250,12 @@ class NumberFieldComponent extends FieldType {}
         { name: 'description', component: DummyWrapperComponent },
         { name: 'form-field-radio-horizontal', component: DummyWrapperComponent },
       ],
-    }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any),
     FormlySelectModule,
     ReactiveFormsModule,
   ],
-  exports: [FormlyForm, ReactiveFormsModule],
+  exports: [FormlyField, FormlyForm, ReactiveFormsModule],
 })
 export class FormlyTestingModule {
   static withPresetMocks(libraryMockTypes: string[] = []): ModuleWithProviders<FormlyTestingModule> {

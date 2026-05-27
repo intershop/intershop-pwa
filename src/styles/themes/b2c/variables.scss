@@ -47,10 +47,10 @@ $color-quaternary: var(--color-quaternary);
 $color-dark: #000;
 $color-inverse: #fff;
 
-$color-special-error: #c00;
-$color-special-warning: #f39c12;
-$color-special-info: #006b99;
-$color-special-success: #3c7d3c;
+$color-special-error: #dc3545;
+$color-special-warning: #ffc107;
+$color-special-info: #0dcaf0;
+$color-special-success: #198754;
 
 // Product label colors
 $color-special-sale: #ea1919;
@@ -107,14 +107,17 @@ $table-bg: transparent;
 // Toasts
 $toastViewBox: '0 0 512 512';
 $toast-error-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M377,343c9.4,9.4,9.4,24.6,0,33.9c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7l-87-87l-87,87c-4.7,4.7-10.8,7-17,7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6,0-33.9l87-87l-87-87c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l87,87l87-87c9.4-9.4,24.6-9.4,33.9,0c9.4,9.4,9.4,24.6,0,33.9l-87,87L377,343z"/>';
-$toast-warning-icon: '<path d="M7.5,14.967A7.467,7.467,0,1,0,.033,7.5,7.476,7.476,0,0,0,7.5,14.967Zm0-14A6.533,6.533,0,1,1,.967,7.5,6.54,6.54,0,0,1,7.5.967Z"/><circle cx="7.5" cy="11.5" r="0.5"/><path d="M8,8V3.5a.5.5,0,0,0-1,0V10H8Z"/>';
+$toast-warning-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M280,296c0,13.3-10.7,24-24,24s-24-10.7-24-24V112c0-13.3,10.7-24,24-24s24,10.7,24,24V296z M256,416c-17.7,0-32-14.3-32-32s14.3-32,32-32c17.7,0,32,14.3,32,32S273.7,416,256,416z"/>';
 $toast-success-icon: '<path d="M437,75C388.7,26.6,324.4,0,256,0S123.3,26.6,75,75C26.6,123.3,0,187.6,0,256s26.6,132.7,75,181c48.4,48.4,112.6,75,181,75s132.7-26.6,181-75c48.4-48.4,75-112.6,75-181S485.4,123.3,437,75z M389,191L225,355c-4.5,4.5-10.6,7-17,7s-12.5-2.5-17-7l-68-68c-9.4-9.4-9.4-24.6,0-33.9c9.4-9.4,24.6-9.4,33.9,0l51,51l147-147c9.4-9.4,24.6-9.4,33.9,0C398.3,166.4,398.3,181.6,389,191z"/>';
 $toast-info-icon: '<path d="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M280,400c0,13.3-10.7,24-24,24s-24-10.7-24-24V216c0-13.3,10.7-24,24-24s24,10.7,24,24V400z M256,160c-17.7,0-32-14.3-32-32s14.3-32,32-32c17.7,0,32,14.3,32,32S273.7,160,256,160z"/>';
+// NOTE: Toast colors must use rgb() with alpha 0.999999 instead of hex values.
+// Hex colors contain '#' which is interpreted as a URL fragment in inline SVG data URIs, breaking the icon.
+// The 0.999999 alpha prevents SCSS from optimizing rgb() back to hex during compilation.
 /* stylelint-disable number-max-precision */
-$toast-error-color: rgb(114 28 36 / 0.999999);
-$toast-warning-color: rgb(133 100 4 / 0.999999);
-$toast-success-color: rgb(21 87 36 / 0.999999);
-$toast-info-color: rgb(12 84 96 / 0.999999);
+$toast-error-color: rgb(220 53 69 / 0.999999);
+$toast-warning-color: rgb(255 193 7 / 0.999999);
+$toast-success-color: rgb(25 135 84 / 0.999999);
+$toast-info-color: rgb(13 202 240 / 0.999999);
 /* stylelint-enable number-max-precision */
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,28 +1,40 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    /* Project */
     "baseUrl": ".",
-    "outDir": "dist",
     "rootDir": "src/",
-    "lib": ["es2017", "dom"],
-    "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "strict": false,
-    "strictFunctionTypes": false,
-    "noEmitOnError": false,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "sourceMap": false,
-    "types": ["jest", "jest-extended", "node"],
-    // @lint rules
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    // "noUnusedLocals": true,
+    "outDir": "dist",
     "paths": {
-      "schemas/*": ["dist/*"],
-      "tslib": ["node_modules/tslib/tslib.d.ts"]
-    }
+      "schemas/*": ["dist/*"]
+    },
+
+    /* Language & Environment */
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["jest", "jest-extended", "node"],
+
+    /* Modules */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    /* Type Checking */
+    "strict": true,
+    "strictNullChecks": false, // TODO: enable and fix ~196 null-safety issues
+    "strictFunctionTypes": false, // TODO: enable and fix tsquery Node[] callback typings
+    "useUnknownInCatchVariables": false, // TODO: enable and fix catch clause typings
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Emit */
+    "sourceMap": true,
+    "noEmitOnError": false,
+
+    /* Interop */
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/*/files/**/*", "src/*/other-files/**/*"]
