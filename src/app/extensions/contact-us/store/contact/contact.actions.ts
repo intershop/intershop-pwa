@@ -17,3 +17,5 @@ export const createContact = createAction('[Contact] Create Contact Us Request',
 export const createContactFail = createAction('[Contact API] Create Contact Us Request Fail', httpError());
 
 export const createContactSuccess = createAction('[Contact API] Create Contact Us Request Success');
+
+export const resetContact = createAction('[Contact] Reset Contact State');

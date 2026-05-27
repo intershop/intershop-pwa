@@ -9,6 +9,7 @@ import {
   loadContact,
   loadContactFail,
   loadContactSuccess,
+  resetContact,
 } from './contact.actions';
 
 export interface ContactState {
@@ -68,6 +69,13 @@ export const contactReducer = createReducer(
     (state): ContactState => ({
       ...state,
       success: true,
+    })
+  ),
+  on(
+    resetContact,
+    (state): ContactState => ({
+      ...state,
+      success: undefined,
     })
   )
 );

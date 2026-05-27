@@ -3,7 +3,14 @@ import { Store, select } from '@ngrx/store';
 
 import { Contact } from 'ish-core/models/contact/contact.model';
 
-import { createContact, getContactLoading, getContactSubjects, getContactSuccess, loadContact } from '../store/contact';
+import {
+  createContact,
+  getContactLoading,
+  getContactSubjects,
+  getContactSuccess,
+  loadContact,
+  resetContact,
+} from '../store/contact';
 
 @Injectable({ providedIn: 'root' })
 export class ContactUsFacade {
@@ -17,8 +24,9 @@ export class ContactUsFacade {
   contactSuccess$ = this.store.pipe(select(getContactSuccess));
 
   resetContactState() {
-    this.store.dispatch(loadContact());
+    this.store.dispatch(resetContact());
   }
+
   createContact(contact: Contact) {
     this.store.dispatch(createContact({ contact }));
   }
