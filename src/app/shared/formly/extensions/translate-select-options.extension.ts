@@ -1,7 +1,7 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { isObservable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 /**
  * Extension to translate the props.options and add a placeholder element.
@@ -24,24 +24,44 @@ class TranslateSelectOptionsExtension implements FormlyExtension {
       return;
     }
 
+    let placeholderInitialized = false;
+
     field.expressions = {
       ...(field.expressions || {}),
       'props.options': (isObservable(props.options) ? props.options : of(props.options)).pipe(
-        map(options =>
-          (props.placeholder ? [{ value: '', label: this.translate.instant(props.placeholder) }] : []).concat(
-            options ?? []
-          )
-        ),
-        tap(() => {
-          if (props.placeholder && !field.formControl.value && !field.model[field.key as string]) {
-            field.formControl.setValue('');
+        switchMap(options => {
+          const allOptions = (props.placeholder ? [{ value: '', label: props.placeholder }] : []).concat(options ?? []);
+          const translationKeys = (props.placeholder ? [props.placeholder] : []).concat(
+            props.optionsTranslateDisabled ? [] : (options ?? []).map(o => o.label)
+          );
+
+          if (translationKeys.length === 0) {
+            return of(allOptions);
           }
+
+          return this.translate
+            .get(translationKeys)
+            .pipe(
+              map(translations =>
+                allOptions.map(option =>
+                  props.optionsTranslateDisabled && option.value !== ''
+                    ? option
+                    : { ...option, label: translations[option.label] || option.label }
+                )
+              )
+            );
         }),
-        map(options =>
-          options?.map(option =>
-            props.optionsTranslateDisabled ? option : { ...option, label: this.translate.instant(option.label) }
-          )
-        )
+        tap(() => {
+          if (
+            !placeholderInitialized &&
+            props.placeholder &&
+            !field.formControl.value &&
+            !field.model[field.key as string]
+          ) {
+            field.formControl.setValue('');
+            placeholderInitialized = true;
+          }
+        })
       ),
     };
   }
