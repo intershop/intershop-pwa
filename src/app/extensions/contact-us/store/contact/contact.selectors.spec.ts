@@ -14,8 +14,9 @@ import {
   loadContact,
   loadContactFail,
   loadContactSuccess,
+  resetContact,
 } from './contact.actions';
-import { getContactLoading, getContactSubjects } from './contact.selectors';
+import { getContactLoading, getContactSubjects, getContactSuccess } from './contact.selectors';
 
 describe('Contact Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -110,6 +111,23 @@ describe('Contact Selectors', () => {
         expect(getContactLoading(store$.state)).toBeFalse();
         expect(getContactSubjects(store$.state)).toBeEmpty();
       });
+    });
+  });
+
+  describe('resetContact', () => {
+    beforeEach(() => {
+      store$.dispatch(loadContactSuccess({ subjects }));
+      store$.dispatch(createContactSuccess());
+    });
+
+    it('should reset success but keep subjects', () => {
+      expect(getContactSuccess(store$.state)).toBeTrue();
+      expect(getContactSubjects(store$.state)).toEqual(subjects);
+
+      store$.dispatch(resetContact());
+
+      expect(getContactSuccess(store$.state)).toBeUndefined();
+      expect(getContactSubjects(store$.state)).toEqual(subjects);
     });
   });
 });
