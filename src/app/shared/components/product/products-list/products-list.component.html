@@ -3,7 +3,7 @@
     @if (listStyle === 'carousel') {
       <div class="product-list">
         <swiper [config]="swiperConfig">
-          @for (sku of products; track sku) {
+          @for (sku of products; track $index) {
             <ng-template let-data swiperSlide>
               <div [ngClass]="listItemCSSClass">
                 @if (lazyFetch(data.isVisible, sku)) {
@@ -21,7 +21,7 @@
       </div>
     } @else {
       <div class="product-list row">
-        @for (sku of products; track sku) {
+        @for (sku of products; track $index) {
           <div class="product-list-item" [ngClass]="listItemCSSClass">
             <ish-product-item
               ishProductContext
