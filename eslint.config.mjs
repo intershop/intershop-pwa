@@ -681,6 +681,7 @@ export default defineConfig([
         },
       ],
       'ish-custom-rules/require-formly-code-documentation': 'warn',
+      'ish-custom-rules/sort-standalone-component-imports': 'warn',
       'ish-custom-rules/sort-testbed-metadata-arrays': 'warn',
       'ish-custom-rules/use-alias-imports': 'error',
       'ish-custom-rules/use-async-synchronization-in-tests': 'warn',
