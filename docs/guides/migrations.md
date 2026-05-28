@@ -25,6 +25,9 @@ When enabled, a withdrawal link appears in the footer, and the `/withdrawal` rou
 The footer link and route are automatically hidden when the preference is disabled.
 This feature requires ICM version 14.3.0 or higher.
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 9.0.0 to version 11.0.0](https://public.academy.intershop.com/plus/catalog/courses/488).
+
 ## From 10.1.0 to 11.0.0
 
 **Angular 18 update**
