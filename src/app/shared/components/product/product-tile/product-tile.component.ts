@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -27,21 +26,20 @@ import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ProductImageComponent,
-    ProductLabelComponent,
-    ProductPriceComponent,
-    ProductItemVariationsComponent,
-    ProductNameComponent,
-    ProductPromotionComponent,
     AsyncPipe,
-    TranslatePipe,
+    FeatureToggleDirective,
+    ProductAddToBasketComponent,
     ProductAddToCompareComponent,
     ProductAddToOrderTemplateComponent,
     ProductAddToQuoteComponent,
     ProductAddToWishlistComponent,
+    ProductImageComponent,
+    ProductItemVariationsComponent,
+    ProductLabelComponent,
+    ProductNameComponent,
+    ProductPriceComponent,
+    ProductPromotionComponent,
     ProductRatingComponent,
-    ProductAddToBasketComponent,
-    FeatureToggleDirective,
   ],
 })
 export class ProductTileComponent implements OnInit {
