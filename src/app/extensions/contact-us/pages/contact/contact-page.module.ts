@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ContactUsModule } from '../../contact-us.module';
+import { ContactUsStoreModule } from '../../store/contact-us-store.module';
 
 import { ContactConfirmationComponent } from './contact-confirmation/contact-confirmation.component';
 import { ContactFormComponent } from './contact-form/contact-form.component';
@@ -22,7 +23,7 @@ const contactPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule],
+  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule, ContactUsStoreModule],
   declarations: [ContactConfirmationComponent, ContactFormComponent, ContactPageComponent],
 })
 export class ContactPageModule {}

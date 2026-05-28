@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { RecentlyModule } from '../../recently.module';
+import { RecentlyStoreModule } from '../../store/recently-store.module';
 
 import { RecentlyPageComponent } from './recently-page.component';
 
@@ -20,7 +21,7 @@ const recentlyPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RecentlyModule, RouterModule.forChild(recentlyPageRoutes)],
+  imports: [RecentlyModule, RouterModule.forChild(recentlyPageRoutes), RecentlyStoreModule],
   declarations: [RecentlyPageComponent],
 })
 export class RecentlyPageModule {}
