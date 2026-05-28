@@ -165,6 +165,9 @@ For details, see the [PayPal Integration Guide](./paypal.md).
 The behavior of the language switch component has changed.
 The component no longer renders when only one language is configured in ICM, and therefore no language switch options are available.
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 9.0.0 to version 11.0.0](https://public.academy.intershop.com/plus/catalog/courses/488).
+
 ## From 9.1.0 to 10.0.0
 
 **Node.js update**
