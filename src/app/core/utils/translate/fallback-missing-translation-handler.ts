@@ -65,7 +65,8 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
   }
 
   handle(params: MissingTranslationHandlerParams) {
-    if (params.interpolateParams || /^\w+(\.[\w-]+)+$/.test(params.key)) {
+    // to consider localization keys being an actual key they need to have at least 10 characters and the tested dotted format without spaces
+    if (params.key.length >= 10 && /^\w+(\.[\w-]+)+$/.test(params.key)) {
       const currentLang = params.translateService.currentLang;
       /*
        * when changing languages 'currentLang' from the translate service
