@@ -9,12 +9,15 @@ import { provideQuotingStore } from '../store/quoting-store.providers';
 export const addToQuoteRoutes: Routes = [
   {
     path: '',
-    canActivate: [featureToggleGuard, authGuard, productAddToQuoteRequestGuard],
-    loadComponent: () =>
-      import('../shared/product-add-to-quote-dialog/product-add-to-quote-dialog.component').then(
-        c => c.ProductAddToQuoteDialogComponent
-      ),
+    canActivate: [featureToggleGuard, authGuard],
     providers: [provideQuotingStore()],
+    children: [
+      {
+        path: '',
+        canActivate: [productAddToQuoteRequestGuard],
+        children: [],
+      },
+    ],
     data: {
       feature: 'quoting',
       queryParams: {
