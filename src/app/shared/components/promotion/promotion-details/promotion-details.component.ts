@@ -18,7 +18,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './promotion-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ModalDialogLinkComponent, NgClass, ServerHtmlDirective],
+  imports: [ModalDialogLinkComponent, NgClass, ServerHtmlDirective, TranslatePipe],
 })
 export class PromotionDetailsComponent {
   @Input({ required: true }) promotion: Promotion;

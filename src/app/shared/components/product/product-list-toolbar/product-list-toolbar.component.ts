@@ -13,7 +13,7 @@ import { ProductListPagingComponent } from 'ish-shared/components/product/produc
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, RouterLink, TranslatePipe, ProductListPagingComponent],
+  imports: [NgClass, ProductListPagingComponent, RouterLink, TranslatePipe],
 })
 export class ProductListToolbarComponent implements OnChanges {
   @Input({ required: true }) sortableAttributes: SortableAttributesType[];

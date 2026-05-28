@@ -20,7 +20,7 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
   templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormSubmitDirective, ErrorMessageComponent, FormlyForm, ReactiveFormsModule, TranslatePipe, RouterLink],
+  imports: [ErrorMessageComponent, FormlyForm, FormSubmitDirective, ReactiveFormsModule, RouterLink, TranslatePipe],
 })
 export class OrganizationSettingsCompanyComponent implements OnInit {
   @Input({ required: true }) currentCustomer: Customer;

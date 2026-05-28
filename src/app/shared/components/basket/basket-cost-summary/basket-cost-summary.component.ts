@@ -28,14 +28,14 @@ import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-pa
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
-    PricePipe,
-    BasketPromotionComponent,
-    NgTemplateOutlet,
     AsyncPipe,
-    ServerSettingPipe,
+    BasketPromotionComponent,
     NgbPopover,
+    NgTemplateOutlet,
     PaymentPaypalComponent,
+    PricePipe,
+    ServerSettingPipe,
+    TranslatePipe,
   ],
 })
 export class BasketCostSummaryComponent implements OnInit {

@@ -38,7 +38,7 @@ interface RecurrenceFormData {
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ContentIncludeComponent, NgbCollapse, ReactiveFormsModule, FormlyForm, AsyncPipe],
+  imports: [AsyncPipe, ContentIncludeComponent, FormlyForm, NgbCollapse, ReactiveFormsModule, TranslatePipe],
 })
 export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
   @Input({ required: true }) recurrence: Recurrence;

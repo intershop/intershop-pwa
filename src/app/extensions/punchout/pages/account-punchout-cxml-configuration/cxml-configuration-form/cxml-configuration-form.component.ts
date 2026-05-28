@@ -22,8 +22,8 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
   imports: [
     AsyncPipe,
     ErrorMessageComponent,
-    FormSubmitDirective,
     FormlyForm,
+    FormSubmitDirective,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,

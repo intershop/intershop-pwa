@@ -35,7 +35,7 @@ export type OrderColumnsType =
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, RouterLink, PricePipe, LoadingComponent, AddressComponent, DatePipe, CdkTableModule],
+  imports: [AddressComponent, CdkTableModule, DatePipe, LoadingComponent, PricePipe, RouterLink, TranslatePipe],
 })
 export class OrderListComponent {
   /**

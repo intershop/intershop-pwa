@@ -20,7 +20,7 @@ export type ProductItemDisplayType = 'tile' | 'row';
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductTileComponent, ProductRowComponent, LoadingComponent, AsyncPipe],
+  imports: [AsyncPipe, LoadingComponent, ProductRowComponent, ProductTileComponent],
 })
 export class ProductItemComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'tile';

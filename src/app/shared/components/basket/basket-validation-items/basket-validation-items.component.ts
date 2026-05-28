@@ -21,11 +21,11 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   standalone: true,
   imports: [
     PricePipe,
-    ProductImageComponent,
-    TranslatePipe,
-    ProductNameComponent,
-    ProductInventoryComponent,
     ProductContextDirective,
+    ProductImageComponent,
+    ProductInventoryComponent,
+    ProductNameComponent,
+    TranslatePipe,
   ],
 })
 export class BasketValidationItemsComponent {

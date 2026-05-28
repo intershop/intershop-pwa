@@ -14,7 +14,7 @@ import { UserBudget } from '../../../models/user-budget/user-budget.model';
   templateUrl: './user-detail-budget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, PricePipe, RouterLink],
+  imports: [PricePipe, RouterLink, TranslatePipe],
 })
 export class UserDetailBudgetComponent {
   @Input({ required: true }) budget: UserBudget;

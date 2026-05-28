@@ -17,7 +17,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [forwardRef(() => SubCategoryNavigationComponent), TranslatePipe, AsyncPipe, NgClass, NgStyle, RouterLink],
+  imports: [AsyncPipe, forwardRef(() => SubCategoryNavigationComponent), NgClass, NgStyle, RouterLink, TranslatePipe],
 })
 export class SubCategoryNavigationComponent implements OnInit {
   @Input({ required: true }) categoryUniqueId: string;

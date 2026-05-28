@@ -18,12 +18,12 @@ import { HeaderSimpleComponent } from 'ish-shell/header/header-simple/header-sim
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    HeaderSimpleComponent,
-    HeaderErrorComponent,
+    AsyncPipe,
+    BackToTopComponent,
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
-    BackToTopComponent,
-    AsyncPipe,
+    HeaderErrorComponent,
+    HeaderSimpleComponent,
   ],
 })
 export class HeaderComponent implements OnInit {

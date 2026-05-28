@@ -9,7 +9,7 @@ import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
   templateUrl: './back-to-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, FeatureTogglePipe, TranslatePipe],
+  imports: [FeatureTogglePipe, NgClass, TranslatePipe],
 })
 export class BackToTopComponent {
   /**

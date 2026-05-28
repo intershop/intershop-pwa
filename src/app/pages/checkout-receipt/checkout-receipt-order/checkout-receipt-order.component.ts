@@ -13,7 +13,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './checkout-receipt-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ModalDialogLinkComponent, ContentIncludeComponent, RouterLink, LazyLoadingContentDirective],
+  imports: [ContentIncludeComponent, LazyLoadingContentDirective, ModalDialogLinkComponent, RouterLink, TranslatePipe],
 })
 export class CheckoutReceiptOrderComponent {
   @Input({ required: true }) order: Order | RecurringOrder;

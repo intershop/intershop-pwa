@@ -19,15 +19,15 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ProductNameComponent,
-    ProductImageComponent,
-    PricePipe,
-    TranslatePipe,
     AsyncPipe,
-    ProductContextDirective,
-    SlicePipe,
     BasketErrorMessageComponent,
+    PricePipe,
+    ProductContextDirective,
+    ProductImageComponent,
+    ProductNameComponent,
     RouterLink,
+    SlicePipe,
+    TranslatePipe,
   ],
 })
 export class MiniBasketContentComponent implements OnInit {

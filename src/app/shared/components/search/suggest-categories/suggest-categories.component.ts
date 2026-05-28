@@ -9,7 +9,7 @@ import { SuggestCategoriesTileComponent } from 'ish-shared/components/search/sug
   selector: 'ish-suggest-categories',
   templateUrl: './suggest-categories.component.html',
   standalone: true,
-  imports: [TranslatePipe, SlicePipe, SuggestCategoriesTileComponent],
+  imports: [SlicePipe, SuggestCategoriesTileComponent, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesComponent {

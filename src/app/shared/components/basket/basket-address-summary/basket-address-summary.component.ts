@@ -9,7 +9,7 @@ import { AddressComponent } from 'ish-shared/components/address/address/address.
   templateUrl: './basket-address-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, AddressComponent],
+  imports: [AddressComponent, TranslatePipe],
 })
 export class BasketAddressSummaryComponent {
   @Input({ required: true }) basket: Basket;

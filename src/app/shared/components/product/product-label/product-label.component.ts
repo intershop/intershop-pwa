@@ -14,7 +14,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   styleUrls: ['./product-label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgClass, NgSwitch, TranslatePipe, NgSwitchCase],
+  imports: [AsyncPipe, NgClass, NgSwitch, NgSwitchCase, TranslatePipe],
 })
 export class ProductLabelComponent implements OnInit {
   productLabel$: Observable<string>;

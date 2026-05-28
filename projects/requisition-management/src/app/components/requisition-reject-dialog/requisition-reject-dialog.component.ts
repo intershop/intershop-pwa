@@ -27,7 +27,7 @@ import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
   templateUrl: './requisition-reject-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class RequisitionRejectDialogComponent implements OnInit {
   /**

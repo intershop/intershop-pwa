@@ -11,7 +11,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-choose-variation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, RouterLink, TranslatePipe],
 })
 export class ProductChooseVariationComponent implements OnInit {
   visible$: Observable<number>;

@@ -12,7 +12,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   templateUrl: './basket-items-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, PricePipe, BasketPromotionComponent, ProductNameComponent, ProductContextDirective],
+  imports: [BasketPromotionComponent, PricePipe, ProductContextDirective, ProductNameComponent, TranslatePipe],
 })
 export class BasketItemsSummaryComponent {
   @Input({ required: true }) basket: BasketView;

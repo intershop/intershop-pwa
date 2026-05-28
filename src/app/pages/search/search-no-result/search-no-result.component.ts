@@ -20,12 +20,12 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ContentIncludeComponent,
     BreadcrumbComponent,
-    TranslatePipe,
+    ContentIncludeComponent,
+    HtmlEncodePipe,
     SearchBoxComponent,
     ServerHtmlDirective,
-    HtmlEncodePipe,
+    TranslatePipe,
   ],
 })
 export class SearchNoResultComponent {

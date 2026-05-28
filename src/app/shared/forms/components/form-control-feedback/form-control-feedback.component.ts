@@ -10,7 +10,7 @@ type FormErrorMessages = Record<string, string>;
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslatePipe, SlicePipe],
+  imports: [SlicePipe, TranslatePipe],
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input({ required: true }) control: AbstractControl;

@@ -24,13 +24,13 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    SelectOrderTemplateModalComponent,
     AsyncPipe,
-    TranslatePipe,
     NgClass,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
+    SelectOrderTemplateModalComponent,
+    TranslatePipe,
   ],
 })
 export class ProductAddToOrderTemplateComponent implements OnInit {

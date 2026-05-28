@@ -30,8 +30,8 @@ import {
     LoadingComponent,
     NgbNavModule,
     RecurringOrderListComponent,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class AccountRecurringOrdersPageComponent implements OnInit {

@@ -22,13 +22,13 @@ import { QuoteStateComponent } from '../quote-state/quote-state.component';
   standalone: true,
   imports: [
     AsyncPipe,
-    InfoMessageComponent,
     DatePipe,
+    InfoMessageComponent,
     QuoteLineItemListComponent,
     QuoteStateComponent,
     RouterLink,
-    TranslatePipe,
     ServerHtmlDirective,
+    TranslatePipe,
   ],
 })
 export class QuoteViewComponent implements OnInit {

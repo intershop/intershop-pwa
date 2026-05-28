@@ -30,13 +30,13 @@ interface ComponentState {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgClass,
     AsyncPipe,
-    TranslatePipe,
+    CustomFieldsFormlyComponent,
     LineItemCustomFieldsComponent,
     NgbCollapse,
+    NgClass,
     ReactiveFormsModule,
-    CustomFieldsFormlyComponent,
+    TranslatePipe,
   ],
   providers: [ProductContextFacade],
 })

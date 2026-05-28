@@ -20,7 +20,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './cost-center-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, ErrorMessageComponent],
+  imports: [AsyncPipe, ErrorMessageComponent, FormlyForm, ReactiveFormsModule],
 })
 export class CostCenterFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

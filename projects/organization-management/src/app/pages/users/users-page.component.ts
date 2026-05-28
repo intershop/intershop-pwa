@@ -30,11 +30,11 @@ import { UserRolesBadgesComponent } from './user-roles-badges/user-roles-badges.
     ErrorMessageComponent,
     LoadingComponent,
     ModalDialogComponent,
+    RouterLink,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetComponent,
     UserRolesBadgesComponent,
-    RouterLink,
   ],
 })
 export class UsersPageComponent implements OnInit {

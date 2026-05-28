@@ -20,13 +20,13 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgClass,
     AsyncPipe,
-    TranslatePipe,
+    CustomFieldsFormlyComponent,
     CustomFieldsViewComponent,
     NgbCollapse,
+    NgClass,
     ReactiveFormsModule,
-    CustomFieldsFormlyComponent,
+    TranslatePipe,
   ],
 })
 export class BasketCustomFieldsComponent implements OnInit {

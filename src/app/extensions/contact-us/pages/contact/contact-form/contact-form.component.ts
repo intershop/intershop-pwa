@@ -24,7 +24,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
   templateUrl: './contact-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */

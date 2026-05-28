@@ -13,7 +13,7 @@ import { ServerErrorComponent } from './server-error/server-error.component';
   templateUrl: './error-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ServerErrorComponent, AsyncPipe, ErrorComponent],
+  imports: [AsyncPipe, ErrorComponent, ServerErrorComponent],
 })
 export class ErrorPageComponent implements OnInit {
   error$: Observable<HttpError | string>;

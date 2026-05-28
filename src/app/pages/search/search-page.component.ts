@@ -17,7 +17,7 @@ import { SearchResultComponent } from './search-result/search-result.component';
   templateUrl: './search-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LoadingComponent, SearchResultComponent, SearchNoResultComponent],
+  imports: [AsyncPipe, LoadingComponent, SearchNoResultComponent, SearchResultComponent],
 })
 export class SearchPageComponent implements OnInit {
   searchTerm$: Observable<string>;

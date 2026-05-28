@@ -19,7 +19,7 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
   templateUrl: './request-reminder-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyForm, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class RequestReminderFormComponent implements OnInit {
   /**

@@ -15,7 +15,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './basket-approval-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslatePipe, ServerHtmlDirective, ModalDialogLinkComponent, NgClass],
+  imports: [ModalDialogLinkComponent, NgClass, ServerHtmlDirective, TranslatePipe],
 })
 export class BasketApprovalInfoComponent {
   @Input({ required: true }) approval: BasketApproval;

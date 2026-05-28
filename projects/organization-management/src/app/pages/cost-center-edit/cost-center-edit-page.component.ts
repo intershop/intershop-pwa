@@ -23,8 +23,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     FormSubmitDirective,
     LoadingComponent,
     ReactiveFormsModule,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class CostCenterEditPageComponent implements OnInit {

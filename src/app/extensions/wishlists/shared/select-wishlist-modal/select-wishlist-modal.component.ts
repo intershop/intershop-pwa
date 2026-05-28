@@ -37,14 +37,14 @@ import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wish
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
-    ProductContextAccessDirective,
-    ServerHtmlDirective,
     AsyncPipe,
-    ReactiveFormsModule,
-    HtmlEncodePipe,
     FormSubmitDirective,
+    HtmlEncodePipe,
+    ProductContextAccessDirective,
+    ReactiveFormsModule,
     SelectWishlistFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
   ],
 })
 export class SelectWishlistModalComponent implements OnInit {

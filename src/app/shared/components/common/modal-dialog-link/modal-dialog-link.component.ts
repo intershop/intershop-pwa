@@ -29,7 +29,7 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
   templateUrl: './modal-dialog-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, AsyncPipe, ModalDialogComponent, NgTemplateOutlet],
+  imports: [AsyncPipe, ModalDialogComponent, NgTemplateOutlet, TranslatePipe],
 })
 export class ModalDialogLinkComponent {
   /**

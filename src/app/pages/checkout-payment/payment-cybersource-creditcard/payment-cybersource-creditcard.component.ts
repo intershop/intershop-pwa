@@ -37,13 +37,13 @@ declare let Flex: any;
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
-    NgClass,
-    ShowFormFeedbackDirective,
     FormControlFeedbackComponent,
     NgbPopoverModule,
+    NgClass,
     PaymentSaveCheckboxComponent,
+    ReactiveFormsModule,
+    ShowFormFeedbackDirective,
+    TranslatePipe,
   ],
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {

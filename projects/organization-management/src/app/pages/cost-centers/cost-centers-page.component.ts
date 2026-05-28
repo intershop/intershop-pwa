@@ -37,8 +37,8 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
     ModalDialogComponent,
     NgClass,
     PagingComponent,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class CostCentersPageComponent implements OnInit {

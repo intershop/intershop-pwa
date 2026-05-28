@@ -12,7 +12,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   templateUrl: './shopping-basket-empty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, BasketInfoComponent, BasketValidationResultsComponent, TranslatePipe, RouterLink],
+  imports: [BasketInfoComponent, BasketValidationResultsComponent, ErrorMessageComponent, RouterLink, TranslatePipe],
 })
 export class ShoppingBasketEmptyComponent {
   @Input() error: HttpError;

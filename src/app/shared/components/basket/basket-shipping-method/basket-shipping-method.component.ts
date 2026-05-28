@@ -11,7 +11,7 @@ import { DatePipe } from 'ish-core/pipes/date.pipe';
   templateUrl: './basket-shipping-method.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, DatePipe],
+  imports: [DatePipe, TranslatePipe],
 })
 export class BasketShippingMethodComponent implements OnChanges {
   @Input({ required: true }) data: Basket | Order | Requisition;

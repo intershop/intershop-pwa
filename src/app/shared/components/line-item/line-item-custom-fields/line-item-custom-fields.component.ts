@@ -15,7 +15,7 @@ import { CustomFieldsViewComponent } from 'ish-shared/components/custom-fields/c
   templateUrl: './line-item-custom-fields.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CustomFieldsViewComponent, AsyncPipe],
+  imports: [AsyncPipe, CustomFieldsViewComponent],
 })
 export class LineItemCustomFieldsComponent
   extends RxState<{

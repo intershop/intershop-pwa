@@ -15,7 +15,7 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgSwitch, TranslatePipe, AsyncPipe, NgTemplateOutlet, NgSwitchCase, ScrollDirective],
+  imports: [AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, ScrollDirective, TranslatePipe],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter

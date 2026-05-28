@@ -15,7 +15,7 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
   templateUrl: './product-item-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe, ProductVariationDisplayComponent, ProductVariationSelectComponent],
+  imports: [AsyncPipe, ProductVariationDisplayComponent, ProductVariationSelectComponent, TranslatePipe],
 })
 export class ProductItemVariationsComponent implements OnInit {
   visible$: Observable<boolean>;

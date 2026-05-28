@@ -32,15 +32,15 @@ import { CheckoutAddressAnonymousFormComponent } from '../formly/components/chec
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ErrorMessageComponent,
-    TranslatePipe,
-    NgbCollapseModule,
-    ReactiveFormsModule,
-    IdentityProviderLoginComponent,
-    NgClass,
-    FeatureToggleDirective,
     CheckoutAddressAnonymousFormComponent,
+    ErrorMessageComponent,
+    FeatureToggleDirective,
+    IdentityProviderLoginComponent,
+    NgbCollapseModule,
+    NgClass,
+    ReactiveFormsModule,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {

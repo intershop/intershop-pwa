@@ -22,7 +22,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './basket-order-reference.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, FormlyForm, SuccessMessageComponent, ReactiveFormsModule],
+  imports: [FormlyForm, ReactiveFormsModule, SuccessMessageComponent, TranslatePipe],
 })
 export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

@@ -12,7 +12,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
   standalone: true,
-  imports: [RouterLink, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, RouterLink, TranslatePipe],
 })
 export class ProductMasterLinkComponent implements OnInit {
   masterProductURL$: Observable<string>;

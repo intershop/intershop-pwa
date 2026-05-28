@@ -17,7 +17,7 @@ import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-fiel
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, FormlyForm],
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
   providers: [...provideIshFormly()],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {

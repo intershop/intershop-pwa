@@ -31,15 +31,15 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    AsyncPipe,
-    TranslatePipe,
-    ModalDialogComponent,
-    ReactiveFormsModule,
-    FormlyForm,
-    FormlyCustomerAddressFormComponent,
-    AddressDoctorComponent,
-    NgbCollapseModule,
     AddressComponent,
+    AddressDoctorComponent,
+    AsyncPipe,
+    FormlyCustomerAddressFormComponent,
+    FormlyForm,
+    ModalDialogComponent,
+    NgbCollapseModule,
+    ReactiveFormsModule,
+    TranslatePipe,
   ],
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {

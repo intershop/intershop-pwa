@@ -11,7 +11,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
   templateUrl: './cost-center-budget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgStyle, NgbPopoverModule, PercentPipe, TranslatePipe, PricePipe],
+  imports: [NgbPopoverModule, NgClass, NgStyle, PercentPipe, PricePipe, TranslatePipe],
 })
 export class CostCenterBudgetComponent implements OnChanges {
   @Input({ required: true }) costCenter: CostCenter;

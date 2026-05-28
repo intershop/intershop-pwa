@@ -16,7 +16,7 @@ import { ProductListingComponent } from 'ish-shared/components/product/product-l
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ProductListingComponent, SkipContentLinkComponent, FilterNavigationComponent],
+  imports: [AsyncPipe, FilterNavigationComponent, ProductListingComponent, SkipContentLinkComponent],
 })
 export class ProductMasterVariationsComponent implements OnInit {
   sku$: Observable<string>;

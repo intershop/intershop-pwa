@@ -17,7 +17,7 @@ import {
   templateUrl: './retail-set-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductContextDirective, AsyncPipe, TranslatePipe, ProductAddToBasketComponent, ProductItemComponent],
+  imports: [AsyncPipe, ProductAddToBasketComponent, ProductContextDirective, ProductItemComponent, TranslatePipe],
 })
 export class RetailSetPartsComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'row';

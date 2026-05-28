@@ -17,7 +17,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
   styleUrls: ['./cxml-help-text-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgbCollapseModule, ServerHtmlDirective, NgClass, TranslatePipe],
+  imports: [NgbCollapseModule, NgClass, ServerHtmlDirective, TranslatePipe],
 })
 export class CxmlHelpTextWrapperComponent extends FieldWrapper {
   isCollapsed = false;

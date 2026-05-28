@@ -49,7 +49,7 @@ describe('Cms Navigation Link Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown nav-link">
-        <a ng-reflect-router-link="/home" href="/home" style="width: 100%"> Home </a>
+        <a ng-reflect-router-link="/home" style="width: 100%" href="/home"> Home </a>
       </li>
     `);
   });

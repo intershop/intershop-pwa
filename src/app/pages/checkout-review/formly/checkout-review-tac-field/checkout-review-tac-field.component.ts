@@ -14,6 +14,6 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, ServerHtmlDirective, TranslatePipe, FormlyAttributes, ValidationMessageComponent],
+  imports: [FormlyAttributes, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe, ValidationMessageComponent],
 })
 export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {}

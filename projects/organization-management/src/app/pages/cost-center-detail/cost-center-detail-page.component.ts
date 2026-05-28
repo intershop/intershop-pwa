@@ -28,9 +28,9 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
     ErrorMessageComponent,
     OrderListComponent,
     PricePipe,
+    RouterLink,
     SlicePipe,
     TranslatePipe,
-    RouterLink,
   ],
 })
 export class CostCenterDetailPageComponent implements OnInit {

@@ -13,6 +13,6 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   templateUrl: './registration-newsletter-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ServerSettingPipe, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyAttributes, ReactiveFormsModule, ServerSettingPipe, TranslatePipe],
 })
 export class RegistrationNewsletterFieldComponent extends FieldType<FieldTypeConfig> {}

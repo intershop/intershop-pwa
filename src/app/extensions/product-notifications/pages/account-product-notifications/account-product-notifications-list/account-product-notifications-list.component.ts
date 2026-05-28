@@ -24,14 +24,14 @@ type ProductNotificationsColumnsType = 'productImage' | 'product' | 'notificatio
   imports: [
     CdkTableModule,
     CommonModule,
+    PricePipe,
     ProductContextDirective,
     ProductImageComponent,
     ProductNameComponent,
-    ProductNotificationEditComponent,
     ProductNotificationDeleteComponent,
+    ProductNotificationEditComponent,
     ProductPriceComponent,
     TranslatePipe,
-    PricePipe,
   ],
 })
 export class AccountProductNotificationsListComponent {

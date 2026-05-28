@@ -16,7 +16,7 @@ import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-
   styleUrls: ['./custom-fields-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, AsyncPipe],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class CustomFieldsViewComponent implements OnInit {
   @Input({ required: true })

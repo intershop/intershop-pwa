@@ -30,7 +30,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyForm, TranslatePipe, PaymentSaveCheckboxComponent],
+  imports: [FormlyForm, PaymentSaveCheckboxComponent, TranslatePipe],
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(

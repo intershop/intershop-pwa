@@ -20,7 +20,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './account-profile-email.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, FormSubmitDirective, FormlyForm, ReactiveFormsModule, TranslatePipe, RouterLink],
+  imports: [ErrorMessageComponent, FormlyForm, FormSubmitDirective, ReactiveFormsModule, RouterLink, TranslatePipe],
 })
 export class AccountProfileEmailComponent implements OnInit {
   @Input({ required: true }) currentUser: User;

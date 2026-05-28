@@ -10,7 +10,7 @@ import { FilterDropdownComponent } from 'ish-shared/components/filter/filter-dro
   templateUrl: './filter-navigation-horizontal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, FilterDropdownComponent],
+  imports: [FilterDropdownComponent, TranslatePipe],
 })
 export class FilterNavigationHorizontalComponent {
   @Input({ required: true }) filterNavigation: FilterNavigation;

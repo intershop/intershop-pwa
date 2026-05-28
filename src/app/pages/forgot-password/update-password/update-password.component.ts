@@ -22,7 +22,7 @@ import { UpdatePasswordFormComponent } from '../update-password-form/update-pass
   templateUrl: './update-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ErrorMessageComponent, UpdatePasswordFormComponent, AsyncPipe, TranslatePipe, LoadingComponent],
+  imports: [AsyncPipe, ErrorMessageComponent, LoadingComponent, TranslatePipe, UpdatePasswordFormComponent],
 })
 export class UpdatePasswordComponent implements OnInit {
   error$: Observable<HttpError>;

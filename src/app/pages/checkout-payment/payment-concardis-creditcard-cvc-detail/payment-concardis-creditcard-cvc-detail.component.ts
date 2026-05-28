@@ -19,7 +19,7 @@ declare let PayEngine: any;
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ReactiveFormsModule, FormlyForm],
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class PaymentConcardisCreditcardCvcDetailComponent extends PaymentConcardisComponent implements OnInit {
   @Input({ required: true }) paymentInstrument: PaymentInstrument;

@@ -21,7 +21,7 @@ import { ProductWarrantyComponent } from 'ish-shared/components/product/product-
   templateUrl: './line-item-warranty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductWarrantyComponent, PricePipe, AsyncPipe],
+  imports: [AsyncPipe, PricePipe, ProductWarrantyComponent],
 })
 export class LineItemWarrantyComponent implements OnInit {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;

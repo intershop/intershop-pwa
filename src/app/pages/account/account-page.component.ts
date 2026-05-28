@@ -17,12 +17,12 @@ import { AccountNavigationComponent } from './account-navigation/account-navigat
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    ContentIncludeComponent,
-    SkipContentLinkComponent,
-    BreadcrumbComponent,
-    RouterOutlet,
     AccountNavigationComponent,
     AsyncPipe,
+    BreadcrumbComponent,
+    ContentIncludeComponent,
+    RouterOutlet,
+    SkipContentLinkComponent,
   ],
 })
 export class AccountPageComponent implements OnInit {

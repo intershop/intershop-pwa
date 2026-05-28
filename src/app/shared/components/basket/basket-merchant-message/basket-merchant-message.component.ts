@@ -26,7 +26,7 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, SuccessMessageComponent, TranslatePipe, FormlyForm],
+  imports: [FormlyForm, ReactiveFormsModule, SuccessMessageComponent, TranslatePipe],
 })
 export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

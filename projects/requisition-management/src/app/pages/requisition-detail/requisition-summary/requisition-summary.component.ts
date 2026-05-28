@@ -16,7 +16,7 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
   templateUrl: './requisition-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [DatePipe, TranslatePipe, BasketCustomFieldsViewComponent, PricePipe, NgClass, RouterLink],
+  imports: [BasketCustomFieldsViewComponent, DatePipe, NgClass, PricePipe, RouterLink, TranslatePipe],
 })
 export class RequisitionSummaryComponent implements OnInit {
   @Input({ required: true }) requisition: Requisition;

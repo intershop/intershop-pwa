@@ -23,14 +23,14 @@ import { ProductListingComponent } from 'ish-shared/components/product/product-l
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgClass,
+    BreadcrumbComponent,
     ContentIncludeComponent,
-    SkipContentLinkComponent,
     FilterNavigationComponent,
     NgbCollapse,
-    TranslatePipe,
-    BreadcrumbComponent,
+    NgClass,
     ProductListingComponent,
+    SkipContentLinkComponent,
+    TranslatePipe,
   ],
 })
 export class SearchResultComponent implements OnInit, OnChanges {

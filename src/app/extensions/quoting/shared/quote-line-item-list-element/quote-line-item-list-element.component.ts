@@ -27,11 +27,12 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
   standalone: true,
   imports: [
     AsyncPipe,
-    ProductAddToOrderTemplateComponent,
-    ProductAddToWishlistComponent,
+    DecimalPipe,
     FeatureToggleDirective,
     NgClass,
     PricePipe,
+    ProductAddToOrderTemplateComponent,
+    ProductAddToWishlistComponent,
     ProductBundleDisplayComponent,
     ProductIdComponent,
     ProductImageComponent,
@@ -41,7 +42,6 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
     ProductQuantityLabelComponent,
     ProductVariationDisplayComponent,
     TranslatePipe,
-    DecimalPipe,
   ],
 })
 export class QuoteLineItemListElementComponent implements OnInit {

@@ -34,7 +34,7 @@ declare let Payone: any;
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslatePipe, ReactiveFormsModule, PaymentSaveCheckboxComponent],
+  imports: [PaymentSaveCheckboxComponent, ReactiveFormsModule, TranslatePipe],
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});

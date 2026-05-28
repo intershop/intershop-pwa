@@ -19,10 +19,10 @@ import { SubCategoryNavigationComponent } from 'ish-shell/header/sub-category-na
   standalone: true,
   imports: [
     AsyncPipe,
+    ContentIncludeComponent,
     NgClass,
     NgStyle,
     RouterLink,
-    ContentIncludeComponent,
     SubCategoryNavigationComponent,
     TranslatePipe,
   ],

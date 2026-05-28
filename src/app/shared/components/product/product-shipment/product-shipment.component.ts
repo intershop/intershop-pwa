@@ -12,7 +12,7 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   templateUrl: './product-shipment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, AsyncPipe, ModalDialogLinkComponent, NgClass, ContentIncludeComponent],
+  imports: [AsyncPipe, ContentIncludeComponent, ModalDialogLinkComponent, NgClass, TranslatePipe],
 })
 export class ProductShipmentComponent implements OnInit {
   visible$: Observable<boolean>;

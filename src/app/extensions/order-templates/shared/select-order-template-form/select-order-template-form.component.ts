@@ -16,7 +16,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyForm, AsyncPipe],
+  imports: [AsyncPipe, FormlyForm],
 })
 export class SelectOrderTemplateFormComponent implements OnInit {
   @Input() formGroup: FormGroup;

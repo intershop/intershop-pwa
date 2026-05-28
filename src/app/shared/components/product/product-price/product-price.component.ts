@@ -14,7 +14,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   templateUrl: './product-price.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe, NgClass, PricePipe, DecimalPipe],
+  imports: [AsyncPipe, DecimalPipe, NgClass, PricePipe, TranslatePipe],
 })
 export class ProductPriceComponent implements OnInit {
   @Input() showInformationalPrice: boolean;

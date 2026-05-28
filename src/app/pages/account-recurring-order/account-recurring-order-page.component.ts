@@ -38,10 +38,10 @@ import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recu
     InfoBoxComponent,
     LineItemListComponent,
     OrderRecurrenceComponent,
+    RouterLink,
     ServerHtmlDirective,
     SwitchComponent,
     TranslatePipe,
-    RouterLink,
   ],
 })
 export class AccountRecurringOrderPageComponent implements OnInit {

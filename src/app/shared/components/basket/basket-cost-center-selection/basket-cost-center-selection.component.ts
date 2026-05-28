@@ -21,7 +21,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyForm, AsyncPipe, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class BasketCostCenterSelectionComponent implements OnInit {
   form = new UntypedFormGroup({});

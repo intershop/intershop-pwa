@@ -29,14 +29,14 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    AsyncPipe,
-    TranslatePipe,
+    AddressComponent,
     AddressDoctorComponent,
+    AsyncPipe,
+    FormlyCustomerAddressFormComponent,
     FormlyForm,
     NgbCollapseModule,
     ReactiveFormsModule,
-    FormlyCustomerAddressFormComponent,
-    AddressComponent,
+    TranslatePipe,
   ],
 })
 export class BasketInvoiceAddressWidgetComponent implements OnInit {

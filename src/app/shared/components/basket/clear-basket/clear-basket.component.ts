@@ -10,7 +10,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   templateUrl: './clear-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslatePipe, ModalDialogComponent],
+  imports: [ModalDialogComponent, NgClass, TranslatePipe],
 })
 export class ClearBasketComponent {
   @Input() cssClass: string;

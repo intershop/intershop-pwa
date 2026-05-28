@@ -21,13 +21,13 @@ import { CostCenterCsvImportComponent } from './cost-center-csv-import/cost-cent
   standalone: true,
   imports: [
     AsyncPipe,
-    CostCenterFormComponent,
     CostCenterCsvImportComponent,
+    CostCenterFormComponent,
     FormSubmitDirective,
     LoadingComponent,
     ReactiveFormsModule,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class CostCenterCreatePageComponent implements OnInit {

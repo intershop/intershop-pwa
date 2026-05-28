@@ -24,13 +24,13 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ServerHtmlDirective,
     FormlyForm,
     ModalDialogComponent,
     ReactiveFormsModule,
-    TranslatePipe,
-    ServerSettingPipe,
     RouterLink,
+    ServerHtmlDirective,
+    ServerSettingPipe,
+    TranslatePipe,
   ],
 })
 export class OrganizationSettingsPageComponent implements OnInit {

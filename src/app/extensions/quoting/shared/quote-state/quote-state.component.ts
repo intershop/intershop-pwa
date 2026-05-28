@@ -17,7 +17,7 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgSwitch, NgSwitchCase, NgSwitchDefault, TranslatePipe, AsyncPipe],
+  imports: [AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslatePipe],
 })
 export class QuoteStateComponent implements OnChanges {
   @Input({ required: true }) quoteId: string;

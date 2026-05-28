@@ -17,7 +17,7 @@ import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-cont
   templateUrl: './content-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgTemplateOutlet, AsyncPipe, NgClass, RouterLink, ContentPageRoutePipe, SkipContentLinkComponent],
+  imports: [AsyncPipe, ContentPageRoutePipe, NgClass, NgTemplateOutlet, RouterLink, SkipContentLinkComponent],
 })
 export class ContentNavigationComponent implements OnInit {
   /**

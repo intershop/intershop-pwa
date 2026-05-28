@@ -88,7 +88,7 @@ describe('Cms Navigation Category Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
-        <a ng-reflect-router-link="/cat/A" href="/cat/A" style="width: 100%"> Cat A </a>
+        <a ng-reflect-router-link="/cat/A" style="width: 100%" href="/cat/A"> Cat A </a>
       </li>
     `);
   });
@@ -106,7 +106,7 @@ describe('Cms Navigation Category Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown nav-cat">
-        <a ng-reflect-router-link="/cat/A" href="/cat/A" style="width: 100%"> Navigation Category </a>
+        <a ng-reflect-router-link="/cat/A" style="width: 100%" href="/cat/A"> Navigation Category </a>
       </li>
     `);
   });
@@ -152,7 +152,7 @@ describe('Cms Navigation Category Component', () => {
             ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
             <ul class="category-level2">
               <li class="main-navigation-level2-item">
-                <a ng-reflect-router-link="/cat/A.A_1.A_1_a" href="/cat/A.A_1.A_1_a" style="width: 100%">
+                <a ng-reflect-router-link="/cat/A.A_1.A_1_a" style="width: 100%" href="/cat/A.A_1.A_1_a">
                   Cat A1 a
                 </a>
               </li>
@@ -182,13 +182,13 @@ describe('Cms Navigation Category Component', () => {
         ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item">
-            <a ng-reflect-router-link="/cat/A.A_1" href="/cat/A.A_1" style="width: 100%"> Cat A1 </a>
+            <a ng-reflect-router-link="/cat/A.A_1" style="width: 100%" href="/cat/A.A_1"> Cat A1 </a>
           </li>
           <li class="main-navigation-level1-item">
-            <a ng-reflect-router-link="/cat/A.A_2" href="/cat/A.A_2" style="width: 100%"> Cat A2 </a>
+            <a ng-reflect-router-link="/cat/A.A_2" style="width: 100%" href="/cat/A.A_2"> Cat A2 </a>
           </li>
           <li class="main-navigation-level1-item">
-            <a ng-reflect-router-link="/cat/A.A_3" href="/cat/A.A_3" style="width: 100%"> Cat A3 </a>
+            <a ng-reflect-router-link="/cat/A.A_3" style="width: 100%" href="/cat/A.A_3"> Cat A3 </a>
           </li>
         </ul>
       </li>
@@ -215,7 +215,7 @@ describe('Cms Navigation Category Component', () => {
             ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
             <ul class="category-level2">
               <li class="main-navigation-level2-item">
-                <a ng-reflect-router-link="/cat/A.A_1.A_1_a" href="/cat/A.A_1.A_1_a" style="width: 100%">
+                <a ng-reflect-router-link="/cat/A.A_1.A_1_a" style="width: 100%" href="/cat/A.A_1.A_1_a">
                   Cat A1 a
                 </a>
               </li>
@@ -238,7 +238,7 @@ describe('Cms Navigation Category Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown">
-        <a ng-reflect-router-link="/cat/A" href="/cat/A" style="width: 100%"> Cat A </a>
+        <a ng-reflect-router-link="/cat/A" style="width: 100%" href="/cat/A"> Cat A </a>
       </li>
     `);
   });

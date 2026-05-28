@@ -21,12 +21,12 @@ import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-pa
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ErrorMessageComponent,
     AsyncPipe,
-    TranslatePipe,
     BasketPaymentCostInfoComponent,
+    ErrorMessageComponent,
     PaymentPaypalComponent,
     ServerSettingPipe,
+    TranslatePipe,
   ],
 })
 export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {

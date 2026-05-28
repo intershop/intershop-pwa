@@ -24,13 +24,13 @@ import { ProductWarrantyDetailsComponent } from 'ish-shared/components/product/p
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
     AsyncPipe,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    ProductWarrantyDetailsComponent,
     PricePipe,
+    ProductWarrantyDetailsComponent,
+    TranslatePipe,
   ],
 })
 export class ProductWarrantyComponent implements OnInit {

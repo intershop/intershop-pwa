@@ -10,6 +10,6 @@ import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-pa
   templateUrl: './home-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ContentIncludeComponent, TranslatePipe, ServerSettingPipe, PaymentPaypalComponent],
+  imports: [ContentIncludeComponent, PaymentPaypalComponent, ServerSettingPipe, TranslatePipe],
 })
 export class HomePageComponent {}

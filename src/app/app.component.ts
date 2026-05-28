@@ -21,13 +21,13 @@ import { HeaderComponent } from 'ish-shell/header/header/header.component';
   standalone: true,
   imports: [
     AsyncPipe,
+    CookiesBannerComponent,
+    FooterComponent,
+    HeaderComponent,
     NgClass,
     RouterLink,
     RouterOutlet,
     TranslatePipe,
-    CookiesBannerComponent,
-    FooterComponent,
-    HeaderComponent,
   ],
 })
 export class AppComponent implements OnInit {

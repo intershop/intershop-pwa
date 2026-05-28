@@ -22,7 +22,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
 })
 export class ProductAddToBasketComponent implements OnInit {
   /**

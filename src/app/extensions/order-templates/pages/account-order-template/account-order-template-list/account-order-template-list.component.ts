@@ -27,8 +27,8 @@ type OrderTemplateColumnsType = 'title' | 'creationDate' | 'lineItems' | 'action
     ModalDialogComponent,
     ProductAddToBasketComponent,
     ProductContextDirective,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class AccountOrderTemplateListComponent {

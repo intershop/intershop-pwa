@@ -12,7 +12,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
   selector: 'ish-suggest-products-tile',
   templateUrl: './suggest-products-tile.component.html',
   standalone: true,
-  imports: [AsyncPipe, HighlightPipe, RouterLink, ProductImageComponent],
+  imports: [AsyncPipe, HighlightPipe, ProductImageComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsTileComponent implements OnInit {

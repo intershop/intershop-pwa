@@ -17,7 +17,7 @@ import { LineItemEditDialogComponent } from 'ish-shared/components/line-item/lin
   templateUrl: './line-item-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ModalDialogComponent, LineItemEditDialogComponent, AsyncPipe],
+  imports: [AsyncPipe, LineItemEditDialogComponent, ModalDialogComponent, TranslatePipe],
 })
 export class LineItemEditComponent implements OnInit {
   @ViewChild('modalDialog') modalDialogRef: ModalDialogComponent<unknown>;

@@ -23,9 +23,9 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     FormSubmitDirective,
     LoadingComponent,
     ReactiveFormsModule,
+    RouterLink,
     TranslatePipe,
     UserProfileFormComponent,
-    RouterLink,
   ],
 })
 export class UserEditProfilePageComponent implements OnInit {

@@ -11,7 +11,7 @@ import { SuggestProductsTileComponent } from 'ish-shared/components/search/sugge
   selector: 'ish-suggest-products',
   templateUrl: './suggest-products.component.html',
   standalone: true,
-  imports: [ProductContextDirective, SlicePipe, TranslatePipe, SuggestProductsTileComponent],
+  imports: [ProductContextDirective, SlicePipe, SuggestProductsTileComponent, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestProductsComponent {

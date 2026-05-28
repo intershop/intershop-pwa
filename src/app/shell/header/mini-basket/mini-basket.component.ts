@@ -33,12 +33,12 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
   imports: [
     AsyncPipe,
     ClickOutsideDirective,
+    MiniBasketContentComponent,
     NgbDropdownModule,
     NgbPopoverModule,
     NgClass,
     PricePipe,
     RouterLink,
-    MiniBasketContentComponent,
     TranslatePipe,
   ],
 })

@@ -23,7 +23,7 @@ import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagel
   templateUrl: './content-viewcontext.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ContentPageletComponent, AsyncPipe, NgForOf],
+  imports: [AsyncPipe, ContentPageletComponent, NgForOf],
 })
 export class ContentViewcontextComponent implements OnChanges {
   /** The ID of the View Context whose content is to be rendered. */

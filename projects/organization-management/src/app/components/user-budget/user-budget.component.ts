@@ -16,7 +16,7 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   templateUrl: './user-budget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [TranslatePipe, PricePipe, NgbPopover, PercentPipe, NgClass, NgStyle],
+  imports: [NgbPopover, NgClass, NgStyle, PercentPipe, PricePipe, TranslatePipe],
 })
 export class UserBudgetComponent implements OnChanges {
   @Input() budget: UserBudget;

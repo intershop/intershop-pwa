@@ -20,7 +20,7 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslatePipe, SanitizePipe],
+  imports: [NgClass, SanitizePipe, TranslatePipe],
 })
 export class FilterSwatchImagesComponent {
   /**

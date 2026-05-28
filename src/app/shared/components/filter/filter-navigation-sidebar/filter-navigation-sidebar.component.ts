@@ -15,14 +15,14 @@ import { FilterTextComponent } from 'ish-shared/components/filter/filter-text/fi
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    FilterCheckboxComponent,
+    FilterCollapsibleComponent,
+    FilterDropdownComponent,
+    FilterSwatchImagesComponent,
+    FilterTextComponent,
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    FilterTextComponent,
-    FilterSwatchImagesComponent,
-    FilterCheckboxComponent,
-    FilterDropdownComponent,
-    FilterCollapsibleComponent,
   ],
 })
 export class FilterNavigationSidebarComponent {

@@ -19,7 +19,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   templateUrl: './approval-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, RouterLink, TranslatePipe],
 })
 export class ApprovalWidgetComponent implements OnInit {
   numPendingApprovals$: Observable<number>;

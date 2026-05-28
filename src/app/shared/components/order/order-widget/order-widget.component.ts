@@ -19,7 +19,7 @@ import { OrderListComponent } from 'ish-shared/components/order/order-list/order
   templateUrl: './order-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [InfoBoxComponent, OrderListComponent, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, InfoBoxComponent, OrderListComponent, TranslatePipe],
 })
 export class OrderWidgetComponent implements OnInit {
   orders$: Observable<Order[]>;

@@ -27,7 +27,7 @@ export type RequisitionColumnsType =
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [CdkTableModule, DatePipe, PricePipe, RequisitionRejectDialogComponent, TranslatePipe, RouterLink],
+  imports: [CdkTableModule, DatePipe, PricePipe, RequisitionRejectDialogComponent, RouterLink, TranslatePipe],
 })
 export class RequisitionsListComponent {
   /**

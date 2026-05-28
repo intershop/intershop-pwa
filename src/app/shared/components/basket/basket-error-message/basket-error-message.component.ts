@@ -16,7 +16,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ErrorMessageComponent, ScrollDirective, AsyncPipe],
+  imports: [AsyncPipe, ErrorMessageComponent, ScrollDirective, TranslatePipe],
 })
 export class BasketErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: HttpError;

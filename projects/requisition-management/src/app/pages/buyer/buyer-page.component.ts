@@ -28,8 +28,8 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     LoadingComponent,
     NgbNavModule,
     RequisitionsListComponent,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class BuyerPageComponent implements OnInit {

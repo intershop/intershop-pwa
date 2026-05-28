@@ -14,7 +14,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   templateUrl: './user-profile-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe, ErrorMessageComponent],
+  imports: [ErrorMessageComponent, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class UserProfileFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

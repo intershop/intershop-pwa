@@ -19,7 +19,7 @@ import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/bre
   templateUrl: './cms-static-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ContentSlotComponent, BreadcrumbComponent, ContentNavigationComponent],
+  imports: [AsyncPipe, BreadcrumbComponent, ContentNavigationComponent, ContentSlotComponent],
 })
 export class CMSStaticPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

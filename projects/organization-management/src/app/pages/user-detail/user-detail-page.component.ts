@@ -18,7 +18,7 @@ import { UserDetailBudgetComponent } from './user-detail-budget/user-detail-budg
   templateUrl: './user-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ServerSettingPipe, TranslatePipe, UserDetailBudgetComponent, RouterLink],
+  imports: [AsyncPipe, RouterLink, ServerSettingPipe, TranslatePipe, UserDetailBudgetComponent],
 })
 export class UserDetailPageComponent implements OnInit {
   user$: Observable<B2bUser>;

@@ -16,7 +16,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
   templateUrl: './error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ServerHtmlDirective],
+  imports: [ServerHtmlDirective, TranslatePipe],
 })
 export class ErrorMessageComponent implements OnChanges {
   @Input({ required: true }) error: Partial<HttpError>;

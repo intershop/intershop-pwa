@@ -19,7 +19,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   templateUrl: './requisition-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, RouterLink, TranslatePipe],
 })
 export class RequisitionWidgetComponent implements OnInit {
   numPendingRequisitions$: Observable<number>;

@@ -8,6 +8,6 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
   templateUrl: './maintenance-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ServerHtmlDirective],
+  imports: [ServerHtmlDirective, TranslatePipe],
 })
 export class MaintenancePageComponent {}

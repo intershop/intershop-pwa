@@ -22,9 +22,9 @@ import { ProductVariationSelectSwatchComponent } from 'ish-shared/components/pro
     NgSwitch,
     NgSwitchCase,
     NgSwitchDefault,
-    ProductVariationSelectSwatchComponent,
-    ProductVariationSelectEnhancedComponent,
     ProductVariationSelectDefaultComponent,
+    ProductVariationSelectEnhancedComponent,
+    ProductVariationSelectSwatchComponent,
   ],
 })
 export class ProductVariationSelectComponent implements OnInit {

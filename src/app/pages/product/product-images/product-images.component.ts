@@ -38,7 +38,7 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { ngSkipHydration: 'true' },
   standalone: true,
-  imports: [NgClass, ProductImageComponent_1, SwiperModule, AsyncPipe, ModalDialogComponent, ProductLabelComponent],
+  imports: [AsyncPipe, ModalDialogComponent, NgClass, ProductImageComponent_1, ProductLabelComponent, SwiperModule],
 })
 export class ProductImagesComponent implements OnInit, OnDestroy {
   private swiper: Swiper;

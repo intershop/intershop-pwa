@@ -16,7 +16,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   templateUrl: './select-wishlist-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyForm, AsyncPipe],
+  imports: [AsyncPipe, FormlyForm],
 })
 export class SelectWishlistFormComponent implements OnInit {
   @Input({ required: true }) formGroup: FormGroup;

@@ -18,7 +18,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   templateUrl: './wishlist-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ProductsListComponent, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, ProductsListComponent, RouterLink, TranslatePipe],
 })
 export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;

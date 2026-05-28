@@ -22,12 +22,12 @@ import { RequestReminderFormComponent } from '../request-reminder-form/request-r
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
     AsyncPipe,
-    ServerHtmlDirective,
     ErrorMessageComponent,
-    RequestReminderFormComponent,
     LoadingComponent,
+    RequestReminderFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
   ],
 })
 export class RequestReminderComponent implements OnInit {

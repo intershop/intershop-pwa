@@ -14,6 +14,6 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './registration-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ValidationMessageComponent, ServerHtmlDirective, TranslatePipe, ReactiveFormsModule, FormlyAttributes],
+  imports: [FormlyAttributes, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe, ValidationMessageComponent],
 })
 export class RegistrationTacFieldComponent extends FieldType<FieldTypeConfig> {}

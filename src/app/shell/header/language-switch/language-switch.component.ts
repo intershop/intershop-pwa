@@ -19,7 +19,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgbDropdownModule, AsyncPipe, TranslatePipe, MakeHrefPipe],
+  imports: [AsyncPipe, MakeHrefPipe, NgbDropdownModule, TranslatePipe],
 })
 export class LanguageSwitchComponent implements OnInit {
   @Input() deviceType: DeviceType = 'desktop';

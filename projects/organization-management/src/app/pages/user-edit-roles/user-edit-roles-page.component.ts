@@ -27,9 +27,9 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     ErrorMessageComponent,
     LoadingComponent,
     ReactiveFormsModule,
+    RouterLink,
     TranslatePipe,
     UserRolesSelectionComponent,
-    RouterLink,
   ],
 })
 export class UserEditRolesPageComponent implements OnInit {

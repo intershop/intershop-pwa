@@ -34,8 +34,8 @@ import { AccountOrderTemplateDetailLineItemComponent } from './account-order-tem
     LoadingComponent,
     ProductAddToBasketComponent,
     ProductContextDirective,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class AccountOrderTemplateDetailPageComponent implements OnInit {

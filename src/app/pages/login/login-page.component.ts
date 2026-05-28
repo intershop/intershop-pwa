@@ -17,7 +17,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   templateUrl: './login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [LoadingComponent, TranslatePipe, LoadingComponent, AsyncPipe, IdentityProviderLoginComponent, RouterLink],
+  imports: [AsyncPipe, IdentityProviderLoginComponent, LoadingComponent, LoadingComponent, RouterLink, TranslatePipe],
 })
 export class LoginPageComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;

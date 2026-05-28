@@ -29,13 +29,13 @@ import { UserCsvImportComponent } from './user-csv-import/user-csv-import.compon
     FormSubmitDirective,
     LoadingComponent,
     ReactiveFormsModule,
+    RouterLink,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
     UserCsvImportComponent,
     UserProfileFormComponent,
     UserRolesSelectionComponent,
-    RouterLink,
   ],
 })
 export class UserCreatePageComponent implements OnInit {

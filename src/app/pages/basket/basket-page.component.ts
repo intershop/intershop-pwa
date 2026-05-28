@@ -20,13 +20,13 @@ import { ShoppingBasketComponent } from './shopping-basket/shopping-basket.compo
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ContentIncludeComponent,
     AsyncPipe,
+    ContentIncludeComponent,
     FeatureTogglePipe,
-    ShoppingBasketComponent,
-    ShoppingBasketEmptyComponent,
     LoadingComponent,
     RecentlyViewedComponent,
+    ShoppingBasketComponent,
+    ShoppingBasketEmptyComponent,
   ],
 })
 export class BasketPageComponent implements OnInit {

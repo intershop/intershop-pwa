@@ -17,7 +17,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
   templateUrl: './basket-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslatePipe, OrderTemplatePreferencesDialogComponent],
+  imports: [NgClass, OrderTemplatePreferencesDialogComponent, TranslatePipe],
 })
 /**
  * The Basket Create Order Template displays a button which adds the current cart to to a new order template.

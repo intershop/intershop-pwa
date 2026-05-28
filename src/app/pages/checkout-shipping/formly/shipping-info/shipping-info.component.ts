@@ -12,7 +12,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
   templateUrl: './shipping-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, PricePipe, AsyncPipe],
+  imports: [AsyncPipe, PricePipe, TranslatePipe],
 })
 export class ShippingInfoComponent implements OnInit {
   @Input({ required: true }) shippingMethodId: string;

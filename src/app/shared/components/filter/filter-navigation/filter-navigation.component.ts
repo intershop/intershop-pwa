@@ -17,9 +17,9 @@ import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/f
   standalone: true,
   imports: [
     AsyncPipe,
-    FilterNavigationSidebarComponent,
-    FilterNavigationHorizontalComponent,
     FilterNavigationBadgesComponent,
+    FilterNavigationHorizontalComponent,
+    FilterNavigationSidebarComponent,
   ],
 })
 export class FilterNavigationComponent implements OnInit {

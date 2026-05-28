@@ -41,12 +41,12 @@ import { DeferredItemComponent } from '../../common/deferred-item/deferred-item.
   standalone: true,
   imports: [
     AsyncPipe,
-    ProductItemComponent,
-    NgClass,
-    ProductContextDirective,
-    SwiperModule,
     DeferredItemComponent,
     LazyLoadingContentDirective,
+    NgClass,
+    ProductContextDirective,
+    ProductItemComponent,
+    SwiperModule,
   ],
 })
 export class ProductsListComponent implements OnChanges, OnDestroy {

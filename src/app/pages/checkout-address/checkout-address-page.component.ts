@@ -27,7 +27,7 @@ import { CheckoutAddressComponent } from './checkout-address/checkout-address.co
   templateUrl: './checkout-address-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, CheckoutAddressComponent, CheckoutAddressAnonymousComponent, LoadingComponent, TranslatePipe],
+  imports: [AsyncPipe, CheckoutAddressAnonymousComponent, CheckoutAddressComponent, LoadingComponent, TranslatePipe],
 })
 export class CheckoutAddressPageComponent implements OnInit {
   basket$: Observable<BasketView>;

@@ -15,7 +15,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './cost-center-import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, RouterLink, TranslatePipe],
 })
 export class CostCenterImportPageComponent implements OnInit {
   importedCostCenters$: Observable<CostCenterImportResult[]> = of([]);

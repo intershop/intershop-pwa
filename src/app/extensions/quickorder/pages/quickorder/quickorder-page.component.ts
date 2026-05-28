@@ -17,13 +17,13 @@ import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/qui
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    QuickorderAddProductsFormComponent,
-    QuickorderCsvFormComponent,
     AsyncPipe,
-    TranslatePipe,
     BreadcrumbComponent,
     LoadingComponent,
+    QuickorderAddProductsFormComponent,
+    QuickorderCsvFormComponent,
     SkipContentLinkComponent,
+    TranslatePipe,
   ],
 })
 export class QuickorderPageComponent implements OnInit {

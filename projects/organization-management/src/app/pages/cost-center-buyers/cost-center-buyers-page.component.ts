@@ -34,8 +34,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
     FormlyForm,
     LoadingComponent,
     ReactiveFormsModule,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class CostCenterBuyersPageComponent implements OnInit {

@@ -36,12 +36,12 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   providers: [RxState],
   standalone: true,
   imports: [
-    SwiperModule,
     AsyncPipe,
-    ProductItemComponent,
-    ProductContextDirective,
     DeferredItemComponent,
     LazyLoadingContentDirective,
+    ProductContextDirective,
+    ProductItemComponent,
+    SwiperModule,
   ],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {

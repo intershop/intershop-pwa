@@ -15,7 +15,7 @@ import { CheckoutReviewComponent } from './checkout-review/checkout-review.compo
   templateUrl: './checkout-review-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, LoadingComponent, CheckoutReviewComponent],
+  imports: [AsyncPipe, CheckoutReviewComponent, LoadingComponent],
 })
 export class CheckoutReviewPageComponent implements OnInit {
   basket$: Observable<BasketView>;

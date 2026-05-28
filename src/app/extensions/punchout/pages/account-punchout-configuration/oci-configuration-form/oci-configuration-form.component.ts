@@ -26,13 +26,13 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
   imports: [
     AsyncPipe,
     ErrorMessageComponent,
-    FormSubmitDirective,
     FormlyForm,
+    FormSubmitDirective,
     LoadingComponent,
+    NgbPopoverModule,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
-    NgbPopoverModule,
   ],
 })
 export class OciConfigurationFormComponent implements OnInit {

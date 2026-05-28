@@ -20,9 +20,9 @@ import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.co
   imports: [
     AsyncPipe,
     CheckoutReceiptComponent,
-    LoadingComponent,
     CheckoutReceiptOrderComponent,
     CheckoutReceiptRequisitionComponent,
+    LoadingComponent,
   ],
 })
 export class CheckoutReceiptPageComponent implements OnInit {

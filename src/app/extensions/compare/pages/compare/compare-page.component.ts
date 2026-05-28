@@ -12,7 +12,7 @@ import { ProductCompareListComponent } from './product-compare-list/product-comp
   templateUrl: './compare-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductCompareListComponent, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, ProductCompareListComponent, TranslatePipe],
 })
 export class ComparePageComponent implements OnInit {
   compareProducts$: Observable<string[]>;

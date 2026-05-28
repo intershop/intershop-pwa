@@ -24,7 +24,7 @@ import { ProductLinksListComponent } from '../product-links-list/product-links-l
   templateUrl: './product-links.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ProductLinksListComponent, ProductLinksCarouselComponent_1, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, ProductLinksCarouselComponent_1, ProductLinksListComponent, TranslatePipe],
 })
 export class ProductLinksComponent implements OnInit {
   links$: Observable<ProductLinksDictionary>;

@@ -27,12 +27,12 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
   standalone: true,
   imports: [
     AsyncPipe,
-    TranslatePipe,
-    NgClass,
-    ModalDialogLinkComponent,
-    LoadingComponent,
     ErrorMessageComponent,
+    LoadingComponent,
+    ModalDialogLinkComponent,
+    NgClass,
     ServerHtmlDirective,
+    TranslatePipe,
   ],
 })
 export class ProductWarrantyDetailsComponent {

@@ -9,7 +9,7 @@ import { IdentityProviderLoginComponent } from 'ish-shared/components/login/iden
   templateUrl: './login-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ServerHtmlDirective, IdentityProviderLoginComponent],
+  imports: [IdentityProviderLoginComponent, ServerHtmlDirective, TranslatePipe],
 })
 export class LoginModalComponent {
   @Input() loginMessageKey: string;

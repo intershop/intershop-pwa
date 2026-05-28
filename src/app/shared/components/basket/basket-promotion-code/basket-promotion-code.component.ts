@@ -34,13 +34,13 @@ import { SuccessMessageComponent } from 'ish-shared/components/common/success-me
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgClass,
-    ErrorMessageComponent,
-    TranslatePipe,
     AsyncPipe,
-    SuccessMessageComponent,
+    ErrorMessageComponent,
     NgbCollapseModule,
+    NgClass,
     ReactiveFormsModule,
+    SuccessMessageComponent,
+    TranslatePipe,
   ],
 })
 export class BasketPromotionCodeComponent implements OnInit {

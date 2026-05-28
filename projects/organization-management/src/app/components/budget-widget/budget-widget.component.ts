@@ -22,14 +22,14 @@ import { UserBudgetComponent } from '../user-budget/user-budget.component';
   standalone: true,
   imports: [
     AsyncPipe,
+    AuthorizationToggleDirective,
     BudgetInfoComponent,
-    TranslatePipe,
-    UserBudgetComponent,
     ErrorMessageComponent,
     InfoBoxComponent,
     LoadingComponent,
-    AuthorizationToggleDirective,
     RouterLink,
+    TranslatePipe,
+    UserBudgetComponent,
   ],
 })
 export class BudgetWidgetComponent implements OnInit {

@@ -36,15 +36,15 @@ export interface NavigationItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
-    FeatureTogglePipe,
-    ServerSettingPipe,
-    NotRoleToggleDirective,
-    AuthorizationToggleDirective,
-    NgbCollapse,
-    RouterLinkActive,
-    RouterLink,
     AccountUserInfoComponent,
+    AuthorizationToggleDirective,
+    FeatureTogglePipe,
+    NgbCollapse,
+    NotRoleToggleDirective,
+    RouterLink,
+    RouterLinkActive,
+    ServerSettingPipe,
+    TranslatePipe,
   ],
 })
 export class AccountNavigationComponent {

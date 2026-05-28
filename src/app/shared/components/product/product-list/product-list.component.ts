@@ -24,7 +24,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   templateUrl: './product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe, LoadingComponent, ProductItemComponent, ProductContextDirective],
+  imports: [AsyncPipe, LoadingComponent, ProductContextDirective, ProductItemComponent, TranslatePipe],
 })
 export class ProductListComponent implements OnInit {
   @Input({ required: true }) products: string[];

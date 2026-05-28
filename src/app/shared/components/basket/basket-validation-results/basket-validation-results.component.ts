@@ -27,11 +27,11 @@ import { BasketValidationProductsComponent } from 'ish-shared/components/basket/
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    TranslatePipe,
+    AsyncPipe,
     BasketValidationItemsComponent,
     BasketValidationProductsComponent,
-    AsyncPipe,
     ScrollDirective,
+    TranslatePipe,
   ],
 })
 export class BasketValidationResultsComponent implements OnInit {

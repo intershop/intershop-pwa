@@ -24,8 +24,8 @@ import { ProductReview } from '../../models/product-reviews/product-review.model
   standalone: true,
   imports: [
     AsyncPipe,
-    FormSubmitDirective,
     FormlyForm,
+    FormSubmitDirective,
     NgbModalModule,
     ProductContextAccessDirective,
     ProductIdComponent,

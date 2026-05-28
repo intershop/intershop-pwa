@@ -16,7 +16,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, RouterLink, TranslatePipe],
 })
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;

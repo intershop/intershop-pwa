@@ -18,7 +18,7 @@ enum StockLevel {
   styleUrls: ['./product-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe, NgClass],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
 })
 export class ProductInventoryComponent implements OnInit {
   @Input() displayType: 'default' | 'extended' = 'default';

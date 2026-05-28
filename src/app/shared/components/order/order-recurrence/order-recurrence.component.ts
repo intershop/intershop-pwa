@@ -11,7 +11,7 @@ import { FrequencyPipe } from 'ish-core/pipes/frequency.pipe';
   styleUrls: ['./order-recurrence.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, DatePipe, FrequencyPipe],
+  imports: [DatePipe, FrequencyPipe, TranslatePipe],
 })
 export class OrderRecurrenceComponent {
   @Input({ required: true }) recurrence: Recurrence;

@@ -34,14 +34,14 @@ import { provideIshFormly } from 'ish-shared/formly/formly';
   standalone: true,
   providers: [...provideIshFormly()],
   imports: [
-    ErrorMessageComponent,
-    FormSubmitDirective,
-    FormlyForm,
     AsyncPipe,
+    ErrorMessageComponent,
+    FormlyForm,
+    FormSubmitDirective,
     NgClass,
-    TranslatePipe,
-    RouterLink,
     ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
   ],
 })
 export class LoginFormComponent implements OnInit {

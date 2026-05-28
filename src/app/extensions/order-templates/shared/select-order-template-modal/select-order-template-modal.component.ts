@@ -36,14 +36,14 @@ import { SelectOrderTemplateFormComponent } from '../select-order-template-form/
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    TranslatePipe,
-    ProductContextAccessDirective,
-    ServerHtmlDirective,
     AsyncPipe,
-    HtmlEncodePipe,
-    ReactiveFormsModule,
     FormSubmitDirective,
+    HtmlEncodePipe,
+    ProductContextAccessDirective,
+    ReactiveFormsModule,
     SelectOrderTemplateFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
   ],
 })
 export class SelectOrderTemplateModalComponent implements OnInit {

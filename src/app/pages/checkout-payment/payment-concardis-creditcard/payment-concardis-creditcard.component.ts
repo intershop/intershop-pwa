@@ -35,13 +35,13 @@ declare let PayEngine: any;
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
   imports: [
-    NgClass,
-    TranslatePipe,
     FormControlFeedbackComponent,
     NgbPopoverModule,
+    NgClass,
+    PaymentSaveCheckboxComponent,
     ReactiveFormsModule,
     ShowFormFeedbackDirective,
-    PaymentSaveCheckboxComponent,
+    TranslatePipe,
   ],
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {

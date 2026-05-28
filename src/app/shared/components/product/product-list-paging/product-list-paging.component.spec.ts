@@ -44,8 +44,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            href="/?page=1"
             class="active"
+            href="/?page=1"
             >1</a
           >
         </li>
@@ -109,8 +109,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            href="/?page=2"
             class="active"
+            href="/?page=2"
             >2</a
           >
         </li>
@@ -174,8 +174,8 @@ describe('Product List Paging Component', () => {
             queryparamshandling="merge"
             ng-reflect-query-params-handling="merge"
             ng-reflect-router-link=""
-            href="/?page=3"
             class="active"
+            href="/?page=3"
             >3</a
           >
         </li>

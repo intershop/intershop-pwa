@@ -22,13 +22,13 @@ import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
   standalone: true,
   imports: [
     BudgetBarComponent,
+    BudgetInfoComponent,
     InfoBoxComponent,
     NgClass,
     OrderRecurrenceComponent,
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent,
   ],
 })
 export class RequisitionBuyerApprovalComponent implements OnChanges {

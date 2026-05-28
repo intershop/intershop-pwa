@@ -29,8 +29,8 @@ import { QuoteViewComponent } from '../quote-view/quote-view.component';
     QuoteEditComponent,
     QuoteInteractionsComponent,
     QuoteViewComponent,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
 })

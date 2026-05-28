@@ -21,12 +21,12 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ProductContextDirective,
-    ProductImageComponent,
-    ProductIdComponent,
-    ProductNameComponent,
-    ProductInventoryComponent,
     PricePipe,
+    ProductContextDirective,
+    ProductIdComponent,
+    ProductImageComponent,
+    ProductInventoryComponent,
+    ProductNameComponent,
     TranslatePipe,
   ],
 })

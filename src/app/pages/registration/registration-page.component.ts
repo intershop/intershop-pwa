@@ -34,13 +34,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ErrorMessageComponent,
-    AsyncPipe,
-    TranslatePipe,
     AddressDoctorComponent,
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyForm,
     LoadingComponent,
     ReactiveFormsModule,
-    FormlyForm,
+    TranslatePipe,
   ],
 })
 export class RegistrationPageComponent implements OnInit {

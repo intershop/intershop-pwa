@@ -40,15 +40,15 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
     ErrorMessageComponent,
     InfoBoxComponent,
     LineItemListComponent,
+    LoadingComponent,
     NgTemplateOutlet,
     RequisitionBuyerApprovalComponent,
     RequisitionCostCenterApprovalComponent,
+    RequisitionRejectDialogComponent,
     RequisitionSummaryComponent,
+    RouterLink,
     ServerSettingPipe,
     TranslatePipe,
-    RequisitionRejectDialogComponent,
-    LoadingComponent,
-    RouterLink,
   ],
 })
 export class RequisitionDetailPageComponent implements OnInit {

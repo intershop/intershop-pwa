@@ -20,7 +20,7 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyForm, RouterLink, AsyncPipe, TranslatePipe, ProductQuantityComponent],
+  imports: [AsyncPipe, FormlyForm, ProductQuantityComponent, ReactiveFormsModule, RouterLink, TranslatePipe],
 })
 export class DirectOrderComponent implements OnInit, AfterViewInit {
   directOrderForm = new UntypedFormGroup({});

@@ -14,7 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './contact-confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, RouterLink],
+  imports: [RouterLink, TranslatePipe],
 })
 export class ContactConfirmationComponent {
   /**

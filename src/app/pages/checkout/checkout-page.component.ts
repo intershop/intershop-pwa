@@ -11,7 +11,7 @@ import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-p
   templateUrl: './checkout-page.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
-  imports: [CheckoutProgressBarComponent, RouterOutlet, AsyncPipe],
+  imports: [AsyncPipe, CheckoutProgressBarComponent, RouterOutlet],
 })
 export class CheckoutPageComponent implements OnInit {
   checkoutStep$: Observable<number>;

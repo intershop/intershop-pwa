@@ -12,7 +12,7 @@ import { ProductNameComponent } from 'ish-shared/components/product/product-name
   templateUrl: './product-bundle-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ProductNameComponent, ProductContextDirective],
+  imports: [AsyncPipe, ProductContextDirective, ProductNameComponent],
 })
 export class ProductBundleDisplayComponent implements OnInit {
   parts$: Observable<SkuQuantityType[]>;

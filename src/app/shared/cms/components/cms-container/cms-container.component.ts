@@ -11,7 +11,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, ContentSlotComponent, ContentPageletComponent, NgForOf],
+  imports: [ContentPageletComponent, ContentSlotComponent, NgClass, NgForOf],
 })
 export class CMSContainerComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

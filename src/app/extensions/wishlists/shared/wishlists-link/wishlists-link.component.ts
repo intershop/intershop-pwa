@@ -13,7 +13,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
   templateUrl: './wishlists-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgClass, TranslatePipe, RouterLink],
+  imports: [AsyncPipe, NgClass, RouterLink, TranslatePipe],
 })
 export class WishlistsLinkComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';

@@ -14,7 +14,7 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
   templateUrl: './order-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, TranslatePipe, OrderTemplatePreferencesDialogComponent],
+  imports: [NgClass, OrderTemplatePreferencesDialogComponent, TranslatePipe],
 })
 /**
  * The Create Order Template from Order displays a button which adds the current order to to a new order template.

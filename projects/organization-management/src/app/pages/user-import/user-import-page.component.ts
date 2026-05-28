@@ -22,10 +22,10 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
     CdkTableModule,
     LoadingComponent,
     NgClass,
-    TranslatePipe,
     PricePipe,
-    UserRolesBadgesComponent,
     RouterLink,
+    TranslatePipe,
+    UserRolesBadgesComponent,
   ],
 })
 export class UserImportPageComponent implements OnInit {

@@ -17,7 +17,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
   styleUrls: ['./budget-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgbPopoverModule, TranslatePipe, ServerSettingPipe, ServerHtmlDirective],
+  imports: [AsyncPipe, NgbPopoverModule, ServerHtmlDirective, ServerSettingPipe, TranslatePipe],
 })
 export class BudgetInfoComponent {
   /** translation key for a further message text after the main message */

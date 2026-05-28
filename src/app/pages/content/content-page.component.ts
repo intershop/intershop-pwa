@@ -14,7 +14,7 @@ import { LoadingComponent } from 'ish-shared/components/common/loading/loading.c
   templateUrl: './content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ContentPageletComponent, LoadingComponent, AsyncPipe],
+  imports: [AsyncPipe, ContentPageletComponent, LoadingComponent],
 })
 export class ContentPageComponent implements OnInit {
   contentPage$: Observable<ContentPageletEntryPointView>;

@@ -28,13 +28,13 @@ interface BudgetValues {
   imports: [
     AsyncPipe,
     BudgetBarComponent,
+    BudgetInfoComponent,
     InfoBoxComponent,
     NgClass,
     OrderRecurrenceComponent,
     PercentPipe,
     PricePipe,
     TranslatePipe,
-    BudgetInfoComponent,
   ],
 })
 export class RequisitionCostCenterApprovalComponent implements OnInit, OnChanges {

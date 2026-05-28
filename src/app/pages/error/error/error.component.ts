@@ -16,6 +16,6 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
   templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [TranslatePipe, ServerHtmlDirective, SearchBoxComponent, TranslatePipe],
+  imports: [SearchBoxComponent, ServerHtmlDirective, TranslatePipe, TranslatePipe],
 })
 export class ErrorComponent {}

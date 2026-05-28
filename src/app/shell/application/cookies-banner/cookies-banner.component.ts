@@ -18,7 +18,7 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [bottomOutAnimation()],
   standalone: true,
-  imports: [ServerHtmlDirective, RouterLink, TranslatePipe],
+  imports: [RouterLink, ServerHtmlDirective, TranslatePipe],
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;

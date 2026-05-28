@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './product-list-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, NgClass],
+  imports: [NgClass, RouterLink],
 })
 export class ProductListPagingComponent {
   @Input({ required: true }) currentPage: number;

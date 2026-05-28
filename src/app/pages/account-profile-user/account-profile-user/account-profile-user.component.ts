@@ -34,11 +34,11 @@ interface ComponentState {
   imports: [
     AsyncPipe,
     ErrorMessageComponent,
-    FormSubmitDirective,
     FormlyForm,
+    FormSubmitDirective,
     ReactiveFormsModule,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class AccountProfileUserComponent extends RxState<ComponentState> implements OnInit {

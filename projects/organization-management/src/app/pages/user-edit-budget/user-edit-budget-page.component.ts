@@ -23,14 +23,14 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   standalone: true,
   imports: [
     AsyncPipe,
-    FormSubmitDirective,
     ErrorMessageComponent,
+    FormSubmitDirective,
     LoadingComponent,
     ReactiveFormsModule,
+    RouterLink,
     ServerSettingPipe,
     TranslatePipe,
     UserBudgetFormComponent,
-    RouterLink,
   ],
 })
 export class UserEditBudgetPageComponent implements OnInit {

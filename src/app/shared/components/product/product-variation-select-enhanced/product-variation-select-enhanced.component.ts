@@ -13,7 +13,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   styleUrls: ['./product-variation-select-enhanced.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, NgTemplateOutlet, NgStyle, NgClass, TranslatePipe],
+  imports: [AsyncPipe, NgClass, NgStyle, NgTemplateOutlet, TranslatePipe],
 })
 export class ProductVariationSelectEnhancedComponent implements OnInit {
   @Input({ required: true }) group: VariationOptionGroup;

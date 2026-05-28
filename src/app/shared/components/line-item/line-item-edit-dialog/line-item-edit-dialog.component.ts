@@ -25,13 +25,13 @@ import { ProductVariationSelectComponent } from 'ish-shared/components/product/p
   imports: [
     AsyncPipe,
     LoadingComponent,
-    ProductImageComponent,
-    ProductIdComponent,
-    ProductInventoryComponent,
     PricePipe,
-    ProductVariationSelectComponent,
+    ProductIdComponent,
+    ProductImageComponent,
+    ProductInventoryComponent,
     ProductQuantityComponent,
     ProductQuantityLabelComponent,
+    ProductVariationSelectComponent,
   ],
 })
 export class LineItemEditDialogComponent implements OnInit {

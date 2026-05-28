@@ -32,9 +32,9 @@ export type RecurringOrderColumnsType =
     FrequencyPipe,
     ModalDialogComponent,
     PricePipe,
+    RouterLink,
     SwitchComponent,
     TranslatePipe,
-    RouterLink,
   ],
 })
 export class RecurringOrderListComponent {

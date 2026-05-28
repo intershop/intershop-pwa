@@ -16,7 +16,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-add-to-compare.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, AsyncPipe, TranslatePipe, FeatureTogglePipe],
+  imports: [AsyncPipe, FeatureTogglePipe, NgClass, TranslatePipe],
 })
 export class ProductAddToCompareComponent implements OnInit {
   @Input() displayType: 'button' | 'icon' = 'button';

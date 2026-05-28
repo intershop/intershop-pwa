@@ -23,14 +23,14 @@ import { ProductListComponent } from 'ish-shared/components/product/product-list
   providers: [{ provide: 'PRODUCT_QUERY_PARAMS_HANDLING', useValue: 'merge' }],
   standalone: true,
   imports: [
-    ProductListComponent,
     AsyncPipe,
-    NgTemplateOutlet,
-    LoadingComponent,
-    ProductListToolbarComponent,
-    ProductListPagingComponent,
-    ProductListComponent,
     InfiniteScrollDirective,
+    LoadingComponent,
+    NgTemplateOutlet,
+    ProductListComponent,
+    ProductListComponent,
+    ProductListPagingComponent,
+    ProductListToolbarComponent,
   ],
 })
 export class ProductListingComponent implements OnInit {

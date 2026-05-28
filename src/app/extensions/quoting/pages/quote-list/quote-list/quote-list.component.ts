@@ -38,8 +38,8 @@ type QuoteColumnsType =
     ModalDialogComponent,
     QuoteExpirationDateComponent,
     QuoteStateComponent,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class QuoteListComponent {

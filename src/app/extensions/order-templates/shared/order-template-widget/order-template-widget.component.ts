@@ -26,8 +26,8 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
     LoadingComponent,
     ProductAddToBasketComponent,
     ProductContextDirective,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class OrderTemplateWidgetComponent implements OnInit {

@@ -33,9 +33,9 @@ type CostCenterBuyersListColumnsType = 'buyerName' | 'orders' | 'pendingOrders' 
     ModalDialogComponent,
     NotRoleToggleDirective,
     PricePipe,
+    RouterLink,
     ServerHtmlDirective,
     TranslatePipe,
-    RouterLink,
   ],
 })
 export class CostCenterUsersListComponent implements OnInit {

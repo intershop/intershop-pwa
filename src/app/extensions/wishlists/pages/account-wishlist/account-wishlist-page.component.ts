@@ -22,11 +22,11 @@ import { AccountWishlistListComponent } from './account-wishlist-list/account-wi
   imports: [
     AccountWishlistListComponent,
     AsyncPipe,
-    WishlistPreferencesDialogComponent,
-    TranslatePipe,
     ErrorMessageComponent,
-    NgbPopover,
     LoadingComponent,
+    NgbPopover,
+    TranslatePipe,
+    WishlistPreferencesDialogComponent,
   ],
 })
 export class AccountWishlistPageComponent implements OnInit {

@@ -29,9 +29,9 @@ import { AccountPunchoutHeaderComponent } from './account-punchout-header/accoun
     ModalDialogComponent,
     NgSwitch,
     NgSwitchCase,
+    RouterLink,
     ServerSettingPipe,
     TranslatePipe,
-    RouterLink,
   ],
 })
 export class AccountPunchoutPageComponent implements OnInit {

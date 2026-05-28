@@ -16,7 +16,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './update-password-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyForm, TranslatePipe],
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class UpdatePasswordFormComponent implements OnInit {
   /**

@@ -15,11 +15,11 @@ import { ProductMasterLinkComponent } from '../product-master-link/product-maste
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    ProductMasterLinkComponent,
     AsyncPipe,
-    ServerSettingPipe,
+    ProductMasterLinkComponent,
     ProductVariationDisplayComponent,
     ProductVariationSelectComponent,
+    ServerSettingPipe,
   ],
 })
 export class ProductDetailVariationsComponent implements OnInit {

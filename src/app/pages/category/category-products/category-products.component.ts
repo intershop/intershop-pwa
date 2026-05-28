@@ -18,14 +18,14 @@ import { CategoryNavigationComponent } from '../category-navigation/category-nav
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    NgClass,
-    SkipContentLinkComponent,
-    CategoryNavigationComponent,
-    NgbCollapseModule,
-    TranslatePipe,
-    FilterNavigationComponent,
     BreadcrumbComponent,
+    CategoryNavigationComponent,
+    FilterNavigationComponent,
+    NgbCollapseModule,
+    NgClass,
     ProductListingComponent,
+    SkipContentLinkComponent,
+    TranslatePipe,
   ],
 })
 export class CategoryProductsComponent implements OnInit, OnChanges {

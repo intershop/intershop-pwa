@@ -18,7 +18,7 @@ import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-bud
   templateUrl: './cost-center-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, CostCenterBudgetComponent, TranslatePipe, InfoBoxComponent, LoadingComponent, RouterLink],
+  imports: [AsyncPipe, CostCenterBudgetComponent, InfoBoxComponent, LoadingComponent, RouterLink, TranslatePipe],
 })
 export class CostCenterWidgetComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

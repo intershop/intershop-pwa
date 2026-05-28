@@ -19,6 +19,6 @@ import { ShippingInfoComponent } from '../shipping-info/shipping-info.component'
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgClass, NgbPopoverModule, ShippingInfoComponent, TranslatePipe],
+  imports: [NgbPopoverModule, NgClass, ShippingInfoComponent, TranslatePipe],
 })
 export class ShippingRadioWrapperComponent extends FieldWrapper {}

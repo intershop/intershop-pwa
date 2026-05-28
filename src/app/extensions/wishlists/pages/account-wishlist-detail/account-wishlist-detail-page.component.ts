@@ -24,15 +24,15 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
   standalone: true,
   imports: [
     AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
     NgbPopoverModule,
     ProductContextDirective,
+    RouterLink,
     TranslatePipe,
-    LoadingComponent,
-    ErrorMessageComponent,
     WishlistLineItemComponent,
     WishlistPreferencesDialogComponent,
     WishlistSharingDialogComponent,
-    RouterLink,
   ],
 })
 export class AccountWishlistDetailPageComponent implements OnInit {

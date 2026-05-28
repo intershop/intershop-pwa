@@ -24,7 +24,7 @@ import { CheckoutPaymentComponent } from './checkout-payment/checkout-payment.co
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, TranslatePipe, LoadingComponent, CheckoutPaymentComponent],
+  imports: [AsyncPipe, CheckoutPaymentComponent, LoadingComponent, TranslatePipe],
 })
 export class CheckoutPaymentPageComponent implements OnInit {
   basket$: Observable<BasketView>;

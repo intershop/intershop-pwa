@@ -21,7 +21,7 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
   templateUrl: './category-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, RouterLink, CategoryRoutePipe, CategoryImageComponent],
+  imports: [AsyncPipe, CategoryImageComponent, CategoryRoutePipe, RouterLink],
 })
 export class CategoryTileComponent implements OnInit {
   /**

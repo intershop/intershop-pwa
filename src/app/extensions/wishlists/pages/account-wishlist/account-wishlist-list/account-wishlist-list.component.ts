@@ -29,7 +29,7 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NgTemplateOutlet, TranslatePipe, RouterLink, NgClass, ModalDialogComponent],
+  imports: [ModalDialogComponent, NgClass, NgTemplateOutlet, RouterLink, TranslatePipe],
 })
 export class AccountWishlistListComponent implements OnChanges {
   /**

@@ -11,7 +11,7 @@ import { CompareFacade } from '../../facades/compare.facade';
   templateUrl: './product-compare-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterLink, NgClass, AsyncPipe, TranslatePipe],
+  imports: [AsyncPipe, NgClass, RouterLink, TranslatePipe],
 })
 export class ProductCompareStatusComponent implements OnInit {
   @Input() view: 'auto' | 'small' | 'full' = 'auto';

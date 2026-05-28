@@ -16,7 +16,7 @@ import { Requisition } from '../../models/requisition/requisition.model';
   templateUrl: './checkout-receipt-requisition.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ServerHtmlDirective, TranslatePipe, BasketApprovalInfoComponent, RouterLink],
+  imports: [AsyncPipe, BasketApprovalInfoComponent, RouterLink, ServerHtmlDirective, TranslatePipe],
 })
 export class CheckoutReceiptRequisitionComponent implements OnInit {
   @Input({ required: true }) basket: Basket;

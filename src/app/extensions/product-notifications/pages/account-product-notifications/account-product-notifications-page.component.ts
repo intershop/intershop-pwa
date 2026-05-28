@@ -29,8 +29,8 @@ import { AccountProductNotificationsListComponent } from './account-product-noti
     ErrorMessageComponent,
     LoadingComponent,
     NgbNavModule,
-    TranslatePipe,
     RouterLink,
+    TranslatePipe,
   ],
 })
 export class AccountProductNotificationsPageComponent implements OnInit {

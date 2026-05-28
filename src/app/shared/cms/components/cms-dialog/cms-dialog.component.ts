@@ -10,7 +10,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   templateUrl: './cms-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ServerHtmlDirective, ContentSlotComponent],
+  imports: [ContentSlotComponent, ServerHtmlDirective],
 })
 export class CMSDialogComponent implements CMSComponent {
   @Input() pagelet: ContentPageletView;

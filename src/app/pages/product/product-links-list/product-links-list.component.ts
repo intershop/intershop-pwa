@@ -23,7 +23,7 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   templateUrl: './product-links-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [AsyncPipe, ProductItemComponent, ProductContextDirective],
+  imports: [AsyncPipe, ProductContextDirective, ProductItemComponent],
 })
 export class ProductLinksListComponent implements OnChanges {
   /**
