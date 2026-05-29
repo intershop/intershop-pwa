@@ -128,6 +128,9 @@ http {
 
     keepalive_timeout 65;
 
+    # Remove the specific version of openresty for security reasons
+    server_tokens off;
+
     include /etc/nginx/conf.d/features.conf;
     include /etc/nginx/conf.d/loglevel.conf;
 
