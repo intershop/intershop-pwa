@@ -19,16 +19,14 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterDropdownComponent implements OnChanges {
-  @Input({ required: true }) filterElement!: Filter;
+  @Input({ required: true }) filterElement: Filter;
   @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
   selectedFacetsControl = new FormControl<Facet | Facet[]>([], { nonNullable: true });
-  placeholder = '';
   isMultiSelect = true;
 
   ngOnChanges() {
     this.isMultiSelect = this.filterElement.selectionType !== 'single';
-    this.placeholder = this.filterElement.name;
 
     const selectedFacets = this.filterElement.facets.filter(x => x.selected);
     this.selectedFacetsControl.setValue(this.isMultiSelect ? selectedFacets : (selectedFacets[0] ?? undefined), {
@@ -42,9 +40,9 @@ export class FilterDropdownComponent implements OnChanges {
 
   onSingleChange(facet: Facet) {
     if (!this.isMultiSelect) {
-      const target = facet ?? this.filterElement.facets.find(f => f.selected);
-      if (target) {
-        this.apply(target);
+      const facetToApply = facet ?? this.filterElement.facets.find(f => f.selected);
+      if (facetToApply) {
+        this.apply(facetToApply);
       }
     }
   }

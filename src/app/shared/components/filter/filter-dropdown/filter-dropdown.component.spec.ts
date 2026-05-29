@@ -52,11 +52,6 @@ describe('Filter Dropdown Component', () => {
     expect(element.querySelector('ng-select').getAttribute('aria-label')).toEqual('Color');
   });
 
-  it('should set placeholder to the filter name', () => {
-    component.ngOnChanges();
-    expect(component.placeholder).toEqual('Color');
-  });
-
   it('should set isMultiSelect to false for single selection type', () => {
     component.filterElement = {
       ...component.filterElement,
