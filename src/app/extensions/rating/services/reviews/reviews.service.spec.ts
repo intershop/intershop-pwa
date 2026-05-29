@@ -40,14 +40,75 @@ describe('Reviews Service', () => {
     expect(reviewsService).toBeTruthy();
   });
 
-  it('should get product reviews when "getProductReviews" is called', done => {
+  it('should get product reviews when "getProductReviews" is called with isLoggedIn true', done => {
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of());
+    when(apiServiceMock.resolveLinks())
+      .thenReturn(() => of([]))
+      .thenReturn(() => of([review]));
+
+    reviewsService.getProductReviews(sku, true).subscribe(data => {
+      verify(apiServiceMock.get(`products/${sku}/reviews`, anything())).twice();
+      expect(data).toHaveProperty('reviews', [{ ...review, status: undefined }]);
+      done();
+    });
+  });
+
+  it('should get product reviews when "getProductReviews" is called with isLoggedIn false', done => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of());
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([review]));
 
-    reviewsService.getProductReviews(sku).subscribe(data => {
+    reviewsService.getProductReviews(sku, false).subscribe(data => {
       verify(apiServiceMock.get(`products/${sku}/reviews`, anything())).once();
       expect(data).toHaveProperty('reviews', [review]);
       done();
+    });
+  });
+
+  it('should add additional own reviews not present in all reviews', done => {
+    const ownReview: ProductReview = { ...review, id: '2', own: true };
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of());
+    when(apiServiceMock.resolveLinks())
+      .thenReturn(() => of([review]))
+      .thenReturn(() => of([ownReview]));
+
+    reviewsService.getProductReviews(sku, true).subscribe(data => {
+      expect(data.reviews).toHaveLength(2);
+      expect(data.reviews).toContainEqual(expect.objectContaining({ id: '1' }));
+      expect(data.reviews).toContainEqual(expect.objectContaining({ id: '2', own: true }));
+      done();
+    });
+  });
+
+  it('should return only all reviews when first call returns reviews and own call returns empty', done => {
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of());
+    when(apiServiceMock.resolveLinks())
+      .thenReturn(() => of([review]))
+      .thenReturn(() => of([]));
+
+    reviewsService.getProductReviews(sku, true).subscribe(data => {
+      expect(data).toHaveProperty('reviews', [{ ...review, status: undefined }]);
+      done();
+    });
+  });
+
+  it('should throw error when first call returns undefined', done => {
+    when(apiServiceMock.get(anything(), anything())).thenReturn(of());
+    when(apiServiceMock.resolveLinks()).thenReturn(() => of(undefined));
+
+    reviewsService.getProductReviews(sku, false).subscribe({
+      error: err => {
+        expect(err.message).toContain('productReviews data is required');
+        done();
+      },
+    });
+  });
+
+  it('should throw error when called without sku', done => {
+    reviewsService.getProductReviews('', false).subscribe({
+      error: err => {
+        expect(err.message).toContain('getProductReviews() called without sku');
+        done();
+      },
     });
   });
 

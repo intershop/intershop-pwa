@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
+import { Store, select } from '@ngrx/store';
 import { map, mergeMap } from 'rxjs/operators';
 
 import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -24,7 +27,8 @@ import {
 export class ProductReviewsEffects {
   constructor(
     private actions$: Actions,
-    private reviewService: ReviewsService
+    private reviewService: ReviewsService,
+    private store: Store
   ) {}
 
   loadProductReviews$ = createEffect(() =>
@@ -32,8 +36,9 @@ export class ProductReviewsEffects {
       ofType(loadProductReviews),
       mapToPayloadProperty('sku'),
       whenTruthy(),
-      mergeMap(sku =>
-        this.reviewService.getProductReviews(sku).pipe(
+      concatLatestFrom(() => this.store.pipe(select(getLoggedInCustomer))),
+      mergeMap(([sku, customer]) =>
+        this.reviewService.getProductReviews(sku, !!customer).pipe(
           map(reviews => loadProductReviewsSuccess({ reviews })),
           mapErrorToAction(loadProductReviewsFail)
         )

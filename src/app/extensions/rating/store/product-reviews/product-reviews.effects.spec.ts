@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -39,7 +41,9 @@ describe('Product Reviews Effects', () => {
 
   beforeEach(() => {
     reviewsServiceMock = mock(ReviewsService);
-    when(reviewsServiceMock.getProductReviews(anything())).thenCall((sku: string) => of({ sku, reviews: [] }));
+    when(reviewsServiceMock.getProductReviews(anything(), anything())).thenCall((sku: string) =>
+      of({ sku, reviews: [] })
+    );
     when(reviewsServiceMock.createProductReview(anything(), anything())).thenReturn(of(reviews));
     when(reviewsServiceMock.deleteProductReview(anything(), anything())).thenReturn(of(undefined));
 
@@ -48,6 +52,9 @@ describe('Product Reviews Effects', () => {
         { provide: ReviewsService, useFactory: () => instance(reviewsServiceMock) },
         ProductReviewsEffects,
         provideMockActions(() => actions$),
+        provideMockStore({
+          selectors: [{ selector: getLoggedInCustomer, value: { customerNo: 'customer123' } }],
+        }),
       ],
     });
 
@@ -55,19 +62,18 @@ describe('Product Reviews Effects', () => {
   });
 
   describe('loadProductReviews$', () => {
-    it('should not dispatch actions when encountering loadProductReviews', done => {
+    it('should call the service with sku and isLoggedIn when encountering loadProductReviews', done => {
       const action = loadProductReviews({ sku: '123' });
       actions$ = of(action);
 
       effects.loadProductReviews$.subscribe(() => {
-        const sku = capture(reviewsServiceMock.getProductReviews);
-        expect(sku).toEqual(sku);
+        verify(reviewsServiceMock.getProductReviews('123', true)).once();
         done();
       });
     });
 
     it('should map invalid request to action of type loadProductReviewsFail', () => {
-      when(reviewsServiceMock.getProductReviews(anything())).thenReturn(
+      when(reviewsServiceMock.getProductReviews(anything(), anything())).thenReturn(
         throwError(() => makeHttpError({ message: 'invalid' }))
       );
       const action = loadProductReviews({ sku: '123' });
