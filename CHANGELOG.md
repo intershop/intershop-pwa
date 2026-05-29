@@ -7,6 +7,37 @@ kb_everyone
 
 # Changelog
 
+## [11.1.0](https://github.com/intershop/intershop-pwa/releases/tag/11.1.0) (2026-05-29)
+
+### Features
+
+- add withdrawal functionality ([cd33eff](https://github.com/intershop/intershop-pwa/commit/cd33eff))
+- change styling of footer ([319778e](https://github.com/intershop/intershop-pwa/commit/319778e))
+
+### Bug Fixes
+
+- prevent false `missing translation` errors by no longer checking `params.interpolateParams` as valid translation key condition (#2098) ([006666d](https://github.com/intershop/intershop-pwa/commit/006666d))
+- missing subjects select in contact us form when running with `ng serve` and reloading the page ([39f6b04](https://github.com/intershop/intershop-pwa/commit/39f6b04))
+- prevent `missing translation` errors in `ish-select-field` for `placeholder` and `options` (#2098) ([6b24428](https://github.com/intershop/intershop-pwa/commit/6b24428))
+- prevent `NG0205` error on contact us page with SSR (#2098) ([95b749d](https://github.com/intershop/intershop-pwa/commit/95b749d))
+- resolve new footer Lighthouse accessibility issue (#2093) ([a6f69e2](https://github.com/intershop/intershop-pwa/commit/a6f69e2))
+- correct initialization/hydration of transfered state to feature state (#1821, #2084) ([0bf9580](https://github.com/intershop/intershop-pwa/commit/0bf9580))
+- open tender payment after redirect (#2081) ([dd81ab5](https://github.com/intershop/intershop-pwa/commit/dd81ab5))
+- track function for users list ([109cfd8](https://github.com/intershop/intershop-pwa/commit/109cfd8))
+
+### Documentation
+
+- link to Intershop Academy migration to PWA 11.0.0 video (#2099) ([a57ac3e](https://github.com/intershop/intershop-pwa/commit/a57ac3e))
+- add Wiki content to project documentation (#2086) ([2af065f](https://github.com/intershop/intershop-pwa/commit/2af065f))
+
+### Dependencies
+
+- migration from deprecated `conventional-changelog-cli` to current `conventional-changelog` (#2095) ([89be8f1](https://github.com/intershop/intershop-pwa/commit/89be8f1))
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- add withdrawal functionality - ICM 14.3.0
+
 ## [11.0.0](https://github.com/intershop/intershop-pwa/releases/tag/11.0.0) (2026-05-06)
 
 > [!NOTE]
