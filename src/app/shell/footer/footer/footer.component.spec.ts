@@ -5,6 +5,7 @@ import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
@@ -33,6 +34,7 @@ describe('Footer Component', () => {
             FeatureToggleDirective,
             FeatureTogglePipe,
             ServerHtmlDirective,
+            ServerSettingPipe,
             StoreLocatorFooterComponent,
           ],
         },
@@ -43,6 +45,7 @@ describe('Footer Component', () => {
             FeatureToggleDirective,
             MockPipe(FeatureTogglePipe, () => false),
             MockDirective(ServerHtmlDirective),
+            MockPipe(ServerSettingPipe, () => true),
             MockComponent(StoreLocatorFooterComponent),
           ],
         },
