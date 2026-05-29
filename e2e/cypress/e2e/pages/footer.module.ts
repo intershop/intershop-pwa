@@ -4,6 +4,6 @@ export class FooterModule {
   }
 
   manageCookies() {
-    cy.get('ish-footer').contains('Cookie').click();
+    cy.get('ish-footer').contains('cookie').click();
   }
 }
