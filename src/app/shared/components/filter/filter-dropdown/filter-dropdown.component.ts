@@ -1,16 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NgSelectComponent } from '@ng-select/ng-select';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -29,16 +18,13 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterDropdownComponent implements OnChanges, AfterViewInit {
+export class FilterDropdownComponent implements OnChanges {
   @Input({ required: true }) filterElement!: Filter;
   @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
-  @ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
   selectedFacetsControl = new FormControl<Facet | Facet[]>([], { nonNullable: true });
   placeholder = '';
   isMultiSelect = true;
-
-  constructor(private renderer: Renderer2) {}
 
   ngOnChanges() {
     this.isMultiSelect = this.filterElement.selectionType !== 'single';
@@ -60,13 +46,6 @@ export class FilterDropdownComponent implements OnChanges, AfterViewInit {
       if (target) {
         this.apply(target);
       }
-    }
-  }
-  // set the id on the search input for accessibility reasons
-  ngAfterViewInit() {
-    const inputElement = this.ngSelect?.searchInput?.nativeElement;
-    if (inputElement) {
-      this.renderer.setAttribute(inputElement, 'id', this.filterElement.id);
     }
   }
 }

@@ -6,6 +6,7 @@
   [clearable]="props.clearable || false"
   [formControl]="formControl"
   [items]="props.options | formlySelectOptions: field | async"
+  [labelForId]="id"
   [ngClass]="props.inputClass"
   [virtualScroll]="props.virtualScroll || false"
 />
