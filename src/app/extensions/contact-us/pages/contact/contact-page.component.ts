@@ -39,7 +39,7 @@ export class ContactPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // reset contact page if the user routes to 'contact' again
+    // reset contact success state to show the form again when the user navigates back
     this.contactUsFacade.resetContactState();
   }
 }

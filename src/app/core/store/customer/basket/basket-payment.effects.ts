@@ -48,7 +48,7 @@ import {
   updatePaymentInstrumentSuccess,
   updatePaypalCreditCardPaymentInstrument,
 } from './basket.actions';
-import { getCurrentBasket } from './basket.selectors';
+import { getCurrentBasket, getCurrentBasketId } from './basket.selectors';
 
 @Injectable()
 export class BasketPaymentEffects {
@@ -284,10 +284,9 @@ export class BasketPaymentEffects {
       ),
       switchMap(routerState =>
         this.store.pipe(
-          select(getCurrentBasket),
+          select(getCurrentBasketId),
           whenTruthy(),
           take(1),
-          filter(basket => !!basket.payment?.capabilities?.includes('PaypalCheckout')),
           map(() => updateBasketPayment({ params: routerState.queryParams }))
         )
       )

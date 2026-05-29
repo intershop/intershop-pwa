@@ -1,9 +1,40 @@
 <ng-container *ishHasNotRole="['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER']">
-  <ish-lazy-store-locator-footer />
   <div class="footer">
+    <div class="footer-custom">
+      <div class="container">
+        <ish-lazy-content-include includeId="include.footer.content.pagelet2-Include" />
+      </div>
+    </div>
+
     <div class="container">
+      <ul class="list-inline footer-fix">
+        <li class="list-inline-item">
+          <a class="footer-link" [routerLink]="['/page', 'page.legalnotice']">{{
+            'footer.legal_notice.link' | translate
+          }}</a>
+        </li>
+        <li class="list-inline-item">
+          <a class="footer-link" target="_blank" [routerLink]="['/page', 'page.privacyPolicy.pagelet2-Page']">{{
+            'footer.privacy_policy.link' | translate
+          }}</a>
+        </li>
+        <li class="list-inline-item">
+          <a class="footer-link" target="_blank" [routerLink]="['/page', 'page.termsAndConditions.pagelet2-Page']">{{
+            'footer.terms_and_conditions.link' | translate
+          }}</a>
+        </li>
+        <li class="list-inline-item">
+          <a class="footer-link" [routerLink]="['/cookies']">{{ 'footer.manage_cookies.link' | translate }}</a>
+        </li>
+        @if ('preferences.WithdrawalPreferences.WithdrawalEnabled' | ishServerSetting) {
+          <li class="list-inline-item">
+            <a class="footer-link-highlighted" [routerLink]="['/withdrawal']">{{
+              'footer.withdrawal.link' | translate
+            }}</a>
+          </li>
+        }
+      </ul>
       <div class="clearfix" [ishServerHtml]="'footer.disclaimer' | translate"></div>
-      <ish-lazy-content-include includeId="include.footer.content.pagelet2-Include" />
       <div class="clearfix" [ishServerHtml]="'footer.copyright' | translate: { appVersion: appVersion }"></div>
     </div>
   </div>

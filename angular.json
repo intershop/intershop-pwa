@@ -131,7 +131,13 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.ts", "**/*.html", "**/*.js"]
+            "lintFilePatterns": [
+              "**/*.ts",
+              "**/*.mts",
+              "**/*.js",
+              "**/*.mjs",
+              "**/*.html"
+            ]
           }
         },
         "server": {

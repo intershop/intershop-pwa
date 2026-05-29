@@ -164,9 +164,9 @@ Each entry contains:
 - Corresponding instructions to build the matching URL of the counterpart (`pwaBuild` and `icmBuild`)
 - A property `handledBy` (either `icm` or `pwa`) to decide on the target upstream
 
-The properties `icm` and `pwaBuild` can use [named capture groups](<https://2ality.com/2017/05/regexp-named-capture-groups.html#replace()-and-named-capture-groups>).
-They are only used in the _node.js_ process running on the server.
-However, `pwa` and `icmBuild` are used in the client application where [named capture groups are not yet supported by all browsers](https://github.com/tc39/proposal-regexp-named-groups#implementations).
+The properties `icm` and `pwaBuild` can use [named capturing groups](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Named_capturing_group).
+They are used in the _node.js_ process running on the server.
+The `pwa` and `icmBuild` configurations used in the client application could use named capturing groups as well as this feature is supported by all current browsers (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Named_capturing_group#browser_compatibility).
 
 > [!NOTE]
 >
