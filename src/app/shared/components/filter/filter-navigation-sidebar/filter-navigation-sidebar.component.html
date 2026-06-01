@@ -15,6 +15,7 @@
           }
           @case ('dropdown') {
             <div class="filter-dropdown">
+              <label class="visually-hidden" for="{{ element.id }}">{{ element.name }}</label>
               <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
             </div>
           }

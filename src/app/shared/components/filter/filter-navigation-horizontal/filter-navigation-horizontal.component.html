@@ -4,7 +4,7 @@
   @if (filterNavigation) {
     <div class="row justify-content-start">
       @for (element of filterNavigation.filter; track element.id) {
-        <div class="filter-dropdown col-sm-6 col-md-3">
+        <div class="filter-dropdown col-sm-6 col-md-4 col-lg-3">
           <label class="col-form-label w-100" for="{{ element.id }}">{{ element.name }} </label>
           <ish-filter-dropdown [filterElement]="element" (applyFilter)="applyFilter.emit($event)" />
         </div>
