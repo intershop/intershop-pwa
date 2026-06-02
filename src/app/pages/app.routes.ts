@@ -81,6 +81,11 @@ export const appRoutes: Routes = [
     },
   },
   {
+    path: 'withdrawal',
+    loadChildren: () =>
+      import('./withdrawal-request/withdrawal-request-page.routes').then(m => m.withdrawalRequestPageRoutes),
+  },
+  {
     path: 'account',
     loadChildren: () =>
       Promise.all([

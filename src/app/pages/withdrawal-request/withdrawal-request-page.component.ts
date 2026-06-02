@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { WithdrawalFacade } from 'ish-core/facades/withdrawal.facade';
 import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
+import { WithdrawalRequestFormComponent } from './withdrawal-request-form/withdrawal-request-form.component';
 
 /**
  * Page component for the right-of-withdrawal request flow.
@@ -14,6 +20,14 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
   selector: 'ish-withdrawal-request-page',
   templateUrl: './withdrawal-request-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    ErrorMessageComponent,
+    LoadingComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
+    WithdrawalRequestFormComponent,
+  ],
   providers: [WithdrawalFacade],
 })
 export class WithdrawalRequestPageComponent {

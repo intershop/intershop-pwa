@@ -1,8 +1,11 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
 
@@ -34,6 +37,8 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
   selector: 'ish-withdrawal-request-form',
   templateUrl: './withdrawal-request-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class WithdrawalRequestFormComponent implements OnInit {
   @Input() withdrawal: Withdrawal;
