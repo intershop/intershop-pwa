@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
-import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -11,7 +10,6 @@ import { ROLE_TOGGLE_IMPORTS } from 'ish-core/role-toggle';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
 import { CopilotComponent } from '../../../extensions/copilot/shared/copilot/copilot.component';
-import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/shared/store-locator-footer/store-locator-footer.component';
 
 /**
  * Footer Component
@@ -23,14 +21,12 @@ import { StoreLocatorFooterComponent } from '../../../extensions/store-locator/s
   standalone: true,
   imports: [
     ContentIncludeComponent,
-    FeatureToggleDirective,
     ...ROLE_TOGGLE_IMPORTS,
     ServerHtmlDirective,
     FeatureTogglePipe,
     ServerSettingPipe,
     CopilotComponent,
     RouterLink,
-    StoreLocatorFooterComponent,
     TranslatePipe,
   ],
 })
