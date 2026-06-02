@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -9,7 +10,6 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  *
  * @example
  * <ish-filter-dropdown
- *   placeholderType="selectedFacets"
  *   [filterElement]="element"
  *   (applyFilter)="applyFilter($event)" />
  */
@@ -17,33 +17,32 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
   selector: 'ish-filter-dropdown',
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./filter-dropdown.component.scss'],
 })
-export class FilterDropdownComponent implements OnInit {
+export class FilterDropdownComponent implements OnChanges {
   @Input({ required: true }) filterElement: Filter;
-  @Input() placeholderType: 'groupName' | 'selectedFacets' = 'groupName';
   @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
 
-  placeholder = '';
+  selectedFacetsControl = new FormControl<Facet | Facet[]>([], { nonNullable: true });
+  isMultiSelect = true;
+
+  ngOnChanges() {
+    this.isMultiSelect = this.filterElement.selectionType !== 'single';
+
+    const selectedFacets = this.filterElement.facets.filter(x => x.selected);
+    this.selectedFacetsControl.setValue(this.isMultiSelect ? selectedFacets : (selectedFacets[0] ?? undefined), {
+      emitEvent: false,
+    });
+  }
 
   apply(facet: Facet) {
     this.applyFilter.emit({ searchParameter: facet.searchParameter });
   }
 
-  ngOnInit() {
-    this.initPlaceHolder();
-  }
-
-  private initPlaceHolder() {
-    this.placeholder = this.filterElement.name;
-
-    const selectedFacets = this.filterElement.facets.filter(x => x.selected);
-
-    if (this.placeholderType === 'selectedFacets') {
-      const placeholder = selectedFacets.map(x => x.displayName).join(', ');
-
-      if (placeholder) {
-        this.placeholder = placeholder;
+  onSingleChange(facet: Facet) {
+    if (!this.isMultiSelect) {
+      const facetToApply = facet ?? this.filterElement.facets.find(f => f.selected);
+      if (facetToApply) {
+        this.apply(facetToApply);
       }
     }
   }

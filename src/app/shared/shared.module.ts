@@ -10,6 +10,7 @@ import {
   NgbModalModule,
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
@@ -106,7 +107,7 @@ import { CustomFieldsViewComponent } from './components/custom-fields/custom-fie
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
-import { FilterNavigationBadgesComponent } from './components/filter/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationActionsComponent } from './components/filter/filter-navigation-actions/filter-navigation-actions.component';
 import { FilterNavigationHorizontalComponent } from './components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from './components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
@@ -185,6 +186,7 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgSelectModule,
   OrderTemplatesExportsModule,
   PipesModule,
   ProductNotificationsExportsModule,
@@ -228,7 +230,7 @@ const declaredComponents = [
   FilterCheckboxComponent,
   FilterCollapsibleComponent,
   FilterDropdownComponent,
-  FilterNavigationBadgesComponent,
+  FilterNavigationActionsComponent,
   FilterNavigationHorizontalComponent,
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
