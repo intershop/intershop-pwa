@@ -4,6 +4,7 @@ import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 /**
@@ -14,6 +15,13 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
   templateUrl: './checkout-review-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [FormlyAttributes, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe, ValidationMessageComponent],
+  imports: [
+    FormlyAttributes,
+    ReactiveFormsModule,
+    ServerHtmlDirective,
+    ServerSettingPipe,
+    TranslatePipe,
+    ValidationMessageComponent,
+  ],
 })
 export class CheckoutReviewTacFieldComponent extends FieldType<FieldTypeConfig> {}

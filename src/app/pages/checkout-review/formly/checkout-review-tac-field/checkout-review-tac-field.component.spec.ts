@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -29,8 +30,14 @@ describe('Checkout Review Tac Field Component', () => {
       ],
     })
       .overrideComponent(CheckoutReviewTacFieldComponent, {
-        remove: { imports: [ServerHtmlDirective, ValidationMessageComponent] },
-        add: { imports: [MockDirective(ServerHtmlDirective), MockComponent(ValidationMessageComponent)] },
+        remove: { imports: [ServerHtmlDirective, ServerSettingPipe, ValidationMessageComponent] },
+        add: {
+          imports: [
+            MockDirective(ServerHtmlDirective),
+            MockPipe(ServerSettingPipe, () => true),
+            MockComponent(ValidationMessageComponent),
+          ],
+        },
       })
       .compileComponents();
   });
