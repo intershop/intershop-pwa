@@ -1,7 +1,9 @@
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { IntersectionStatus } from 'ish-core/directives/intersection-observer-util';
+import { IntersectionObserverDirective } from 'ish-core/directives/intersection-observer.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 
 /**
@@ -21,6 +23,8 @@ import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-co
   selector: 'ish-deferred-item',
   templateUrl: './deferred-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, IntersectionObserverDirective, NgClass, NgTemplateOutlet],
 })
 export class DeferredItemComponent implements OnInit {
   @ContentChild(LazyLoadingContentDirective) lazyContent: LazyLoadingContentDirective;
