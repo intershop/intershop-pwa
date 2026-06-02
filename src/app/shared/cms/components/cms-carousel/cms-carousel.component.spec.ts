@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockComponent } from 'ng-mocks';
@@ -15,9 +16,19 @@ describe('Cms Carousel Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CMSCarouselComponent, MockComponent(ContentPageletComponent), MockComponent(ContentSlotComponent)],
-      imports: [NgbCarouselModule],
-    }).compileComponents();
+      imports: [CMSCarouselComponent],
+    })
+      .overrideComponent(CMSCarouselComponent, {
+        set: {
+          imports: [
+            MockComponent(ContentPageletComponent),
+            MockComponent(ContentSlotComponent),
+            NgbCarouselModule,
+            NgClass,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

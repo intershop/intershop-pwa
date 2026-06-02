@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleType } from 'ish-core/feature-toggle';
 import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
 import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';

@@ -23,15 +23,20 @@ describe('Basket Validation Results Component', () => {
     when(checkoutFacadeMock.basketValidationResults$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketValidationResultsComponent,
-        MockComponent(BasketValidationItemsComponent),
-        MockComponent(BasketValidationProductsComponent),
-        MockDirective(ScrollDirective),
-      ],
-      imports: [TranslateModule.forRoot()],
+      imports: [BasketValidationResultsComponent, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketValidationResultsComponent, {
+        remove: { imports: [BasketValidationItemsComponent, BasketValidationProductsComponent, ScrollDirective] },
+        add: {
+          imports: [
+            MockComponent(BasketValidationItemsComponent),
+            MockComponent(BasketValidationProductsComponent),
+            MockDirective(ScrollDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

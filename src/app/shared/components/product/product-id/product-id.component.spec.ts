@@ -18,8 +18,7 @@ describe('Product Id Component', () => {
     when(context.select('displayProperties', 'sku')).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [ProductIdComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [ProductIdComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
     }).compileComponents();
   });

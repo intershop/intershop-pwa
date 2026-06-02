@@ -1,14 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 import { uniq } from 'lodash-es';
 import { Observable, asyncScheduler, scheduled } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketFeedback } from 'ish-core/models/basket-feedback/basket-feedback.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
+import { BasketValidationItemsComponent } from 'ish-shared/components/basket/basket-validation-items/basket-validation-items.component';
+import { BasketValidationProductsComponent } from 'ish-shared/components/basket/basket-validation-products/basket-validation-products.component';
 
 /**
  * Displays the basket validation result messages. In case of basket adjustments removed or undeliverable items are
@@ -20,6 +25,14 @@ import { PriceItem } from 'ish-core/models/price-item/price-item.model';
   selector: 'ish-basket-validation-results',
   templateUrl: './basket-validation-results.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    BasketValidationItemsComponent,
+    BasketValidationProductsComponent,
+    ScrollDirective,
+    TranslatePipe,
+  ],
 })
 export class BasketValidationResultsComponent implements OnInit {
   private validationResults$: Observable<BasketValidationResultType>;

@@ -1,3 +1,4 @@
+import { AsyncPipe, KeyValuePipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -7,7 +8,9 @@ import {
   FormControl,
   FormGroup,
   NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
 } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first, map, shareReplay, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -24,6 +27,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
       useExisting: forwardRef(() => UserRolesSelectionComponent),
     },
   ],
+  standalone: true,
+  imports: [AsyncPipe, KeyValuePipe, NgClass, ReactiveFormsModule, TranslatePipe],
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];
@@ -127,7 +132,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
 
   private modelToRoles(values: Record<string, boolean>, staticRoles: string[]): string[] {
     return Object.entries(values)
-      .filter(([, value]) => !!value)
+      .filter(([value]) => !!value)
       .map(([key]) => key)
       .concat(staticRoles);
   }

@@ -1,6 +1,7 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,10 +19,15 @@ describe('Wishlists Link Component', () => {
     when(wishlistFacadeMock.preferredWishlist$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [WishlistsLinkComponent],
-      imports: [RouterModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), WishlistsLinkComponent],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(WishlistsLinkComponent, {
+        set: {
+          imports: [AsyncPipe, NgClass, TranslatePipe, RouterLink],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

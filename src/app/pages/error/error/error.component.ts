@@ -1,4 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 /**
  * The Error Page Component informs the user that the server returned an error.
@@ -11,5 +15,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'ish-error',
   templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [SearchBoxComponent, ServerHtmlDirective, TranslatePipe, TranslatePipe],
 })
 export class ErrorComponent {}

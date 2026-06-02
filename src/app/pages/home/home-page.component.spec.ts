@@ -4,6 +4,7 @@ import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -14,9 +15,19 @@ describe('Home Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [HomePageComponent, MockComponent(ContentIncludeComponent), MockPipe(ServerSettingPipe)],
-    }).compileComponents();
+      imports: [HomePageComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(HomePageComponent, {
+        remove: { imports: [ContentIncludeComponent, PaymentPaypalComponent, ServerSettingPipe] },
+        add: {
+          imports: [
+            MockComponent(ContentIncludeComponent),
+            MockComponent(PaymentPaypalComponent),
+            MockPipe(ServerSettingPipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

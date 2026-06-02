@@ -1,4 +1,6 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
@@ -26,6 +28,8 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
   selector: 'ish-modal-dialog-link',
   templateUrl: './modal-dialog-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, ModalDialogComponent, NgTemplateOutlet, TranslatePipe],
 })
 export class ModalDialogLinkComponent {
   /**

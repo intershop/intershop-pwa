@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
@@ -8,8 +8,10 @@ import { Category } from 'ish-core/models/category/category.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 import { CategoryListComponent } from '../category-list/category-list.component';
 import { CategoryNavigationComponent } from '../category-navigation/category-navigation.component';
@@ -23,17 +25,35 @@ describe('Category Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        CategoryCategoriesComponent,
-        MockComponent(BreadcrumbComponent),
-        MockComponent(CategoryListComponent),
-        MockComponent(CategoryNavigationComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(NgbCollapse),
-        MockPipe(ServerSettingPipe),
-      ],
-    }).compileComponents();
+      imports: [CategoryCategoriesComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(CategoryCategoriesComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            CategoryListComponent,
+            CategoryNavigationComponent,
+            ContentViewcontextComponent,
+            NgbCollapseModule,
+            PaymentPaypalComponent,
+            ServerSettingPipe,
+            SkipContentLinkComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(CategoryListComponent),
+            MockComponent(CategoryNavigationComponent),
+            MockComponent(ContentViewcontextComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(PaymentPaypalComponent),
+            MockPipe(ServerSettingPipe),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

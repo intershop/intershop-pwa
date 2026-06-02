@@ -1,10 +1,18 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, tap } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
@@ -13,6 +21,20 @@ import { ProductReview } from '../../models/product-reviews/product-review.model
   selector: 'ish-product-review-create-dialog',
   templateUrl: './product-review-create-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    FormlyForm,
+    FormSubmitDirective,
+    NgbModalModule,
+    ProductContextAccessDirective,
+    ProductIdComponent,
+    ProductImageComponent,
+    ProductNameComponent,
+    ProductVariationDisplayComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
 export class ProductReviewCreateDialogComponent implements OnInit {
   /**

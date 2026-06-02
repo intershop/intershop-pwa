@@ -253,6 +253,47 @@ export class DummyComponent {
     });
   });
 
+  describe('standalone component', () => {
+    let tree: UnitTestTree;
+    let componentContent: string;
+
+    beforeEach(async () => {
+      appTree.overwrite(
+        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
+        `import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'ish-dummy',
+  templateUrl: './dummy.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+})
+export class DummyComponent {
+  @Input() input?: string;
+}
+`
+      );
+
+      tree = await schematicRunner.runSchematic(
+        'lazy-component',
+        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
+        appTree
+      );
+
+      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
+    });
+
+    it('should skip module bootstrap for standalone component', () => {
+      expect(componentContent).not.toContain('createNgModule');
+      expect(componentContent).not.toContain('ext.module');
+    });
+
+    it('should use environment injector for standalone component', () => {
+      expect(componentContent).toContain('EnvironmentInjector');
+      expect(componentContent).toContain('environmentInjector: this.environmentInjector');
+    });
+  });
+
   describe('overwriting', () => {
     beforeEach(() => {
       appTree.create('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts', 'ORIGINAL');

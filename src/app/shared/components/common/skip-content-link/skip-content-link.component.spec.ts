@@ -12,6 +12,8 @@ import { SkipContentLinkComponent } from './skip-content-link.component';
     </ish-skip-content-link>
     <div id="valid-element-id" tabindex="-1"></div>
   `,
+  standalone: true,
+  imports: [SkipContentLinkComponent],
 })
 class TestHostComponent {
   skipToElementId?: string;
@@ -26,8 +28,7 @@ describe('Skip Content Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [SkipContentLinkComponent, TestHostComponent],
+      imports: [TestHostComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { SearchNoResultComponent } from './search-no-result/search-no-result.component';
 import { SearchPageComponent } from './search-page.component';
@@ -24,13 +25,24 @@ describe('Search Page Component', () => {
     when(shoppingFacade.searchLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(SearchNoResultComponent), MockComponent(SearchResultComponent), SearchPageComponent],
+      imports: [SearchPageComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(SearchPageComponent, {
+        remove: { imports: [LoadingComponent, SearchNoResultComponent, SearchResultComponent] },
+        add: {
+          imports: [
+            MockComponent(LoadingComponent),
+            MockComponent(SearchNoResultComponent),
+            MockComponent(SearchResultComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

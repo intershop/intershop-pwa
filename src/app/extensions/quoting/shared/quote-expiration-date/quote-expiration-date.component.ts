@@ -1,5 +1,9 @@
+import { AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+
+import { DatePipe as IshDatePipe } from 'ish-core/pipes/date.pipe';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 import { Quote, QuoteStatus } from '../../models/quoting/quoting.model';
@@ -8,6 +12,8 @@ import { Quote, QuoteStatus } from '../../models/quoting/quoting.model';
   selector: 'ish-quote-expiration-date',
   templateUrl: './quote-expiration-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, IshDatePipe, NgSwitch, NgSwitchCase, NgSwitchDefault, TranslatePipe],
 })
 export class QuoteExpirationDateComponent implements OnChanges {
   @Input({ required: true }) quote: Partial<Pick<Quote, 'id' | 'validToDate'>>;

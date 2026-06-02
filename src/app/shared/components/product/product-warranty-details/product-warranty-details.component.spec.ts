@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -21,13 +22,20 @@ describe('Product Warranty Details Component', () => {
     when(shoppingFacade.warrantyById$(anything())).thenReturn(of({ id: 'war1' } as Warranty));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(ModalDialogLinkComponent),
-        ProductWarrantyDetailsComponent,
-      ],
+      imports: [ProductWarrantyDetailsComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductWarrantyDetailsComponent, {
+        remove: { imports: [ErrorMessageComponent, ModalDialogLinkComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(ModalDialogLinkComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

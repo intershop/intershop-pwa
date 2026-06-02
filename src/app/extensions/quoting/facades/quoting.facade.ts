@@ -1,8 +1,9 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { ApplicationRef, Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable, OperatorFunction, identity, timer } from 'rxjs';
 import { map, sample, switchMap, take, tap } from 'rxjs/operators';
 
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
@@ -24,6 +25,7 @@ interface QuoteEntitiesOptions {
 
 @Injectable({ providedIn: 'root' })
 export class QuotingFacade {
+  private moduleLoader = inject(ModuleLoaderService);
   private isStable$ = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -32,50 +34,58 @@ export class QuotingFacade {
   ) {
     appRef.isStable.pipe(whenTruthy(), take(1)).subscribe(isStable => this.isStable$.next(isStable));
   }
-  loading$ = this.store.pipe(select(getQuotingLoading));
+  loading$ = this.moduleLoader.whenLoaded('quoting', () => this.store.pipe(select(getQuotingLoading)));
 
   quotingEntities$(options: QuoteEntitiesOptions = { automaticRefresh: true }) {
-    // update on subscription
-    this.loadQuoting();
+    return this.moduleLoader.whenLoaded('quoting', () => {
+      // update on subscription
+      this.loadQuoting();
 
-    return this.store.pipe(
-      select(getQuotingEntities),
-      sample(this.loading$.pipe(whenFalsy())),
-      options?.automaticRefresh ? this.automaticQuoteRefresh() : identity,
-      tap(entities => {
-        entities.filter(QuotingHelper.isStub).forEach(entity => {
-          this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
-        });
-      }),
-      map(entities => entities.filter(QuotingHelper.isNotStub))
-    );
+      return this.store.pipe(
+        select(getQuotingEntities),
+        sample(this.loading$.pipe(whenFalsy())),
+        options?.automaticRefresh ? this.automaticQuoteRefresh() : identity,
+        tap(entities => {
+          entities.filter(QuotingHelper.isStub).forEach(entity => {
+            this.store.dispatch(loadQuotingDetail({ entity, level: 'List' }));
+          });
+        }),
+        map(entities => entities.filter(QuotingHelper.isNotStub))
+      );
+    });
   }
 
   state$(quoteId: string) {
-    return this.store.pipe(select(getQuotingEntity(quoteId)), map(QuotingHelper.state));
+    return this.moduleLoader.whenLoaded('quoting', () =>
+      this.store.pipe(select(getQuotingEntity(quoteId)), map(QuotingHelper.state))
+    );
   }
 
   name$(quoteId: string) {
-    return this.store.pipe(
-      select(getQuotingEntity(quoteId)),
-      map((quote: Quote | QuoteRequest) => quote?.displayName)
+    return this.moduleLoader.whenLoaded('quoting', () =>
+      this.store.pipe(
+        select(getQuotingEntity(quoteId)),
+        map((quote: Quote | QuoteRequest) => quote?.displayName)
+      )
     );
   }
 
   delete(entity: QuotingEntity) {
-    this.store.dispatch(deleteQuotingEntity({ entity }));
+    void this.moduleLoader.ensureLoaded('quoting').then(() => this.store.dispatch(deleteQuotingEntity({ entity })));
   }
 
   createQuoteRequestFromBasket() {
-    this.store.dispatch(createQuoteRequestFromBasket());
+    void this.moduleLoader.ensureLoaded('quoting').then(() => this.store.dispatch(createQuoteRequestFromBasket()));
   }
 
   loadQuoting() {
-    this.store.dispatch(loadQuoting());
+    void this.moduleLoader.ensureLoaded('quoting').then(() => this.store.dispatch(loadQuoting()));
   }
 
   deleteQuoteFromBasket(quoteId: string) {
-    this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
+    void this.moduleLoader
+      .ensureLoaded('quoting')
+      .then(() => this.store.dispatch(deleteQuoteFromBasket({ id: quoteId })));
   }
 
   private automaticQuoteRefresh<T>(): OperatorFunction<T, T> {

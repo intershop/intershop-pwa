@@ -25,8 +25,8 @@ describe('Price Pipe', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent, PricePipe],
-      imports: [TranslateModule.forRoot()],
+      declarations: [DummyComponent],
+      imports: [PricePipe, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
@@ -118,8 +118,8 @@ describe('Price Pipe', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent, PricePipe],
-      imports: [TranslateModule.forRoot()],
+      declarations: [DummyComponent],
+      imports: [PricePipe, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

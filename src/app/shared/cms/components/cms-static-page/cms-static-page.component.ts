@@ -1,10 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentNavigationComponent } from 'ish-shared/cms/components/content-navigation/content-navigation.component';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 
 /**
  * The CMS Static Page Component to render CMS managed static content pages.
@@ -14,6 +18,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
   selector: 'ish-cms-static-page',
   templateUrl: './cms-static-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, BreadcrumbComponent, ContentNavigationComponent, ContentSlotComponent],
 })
 export class CMSStaticPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

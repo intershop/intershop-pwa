@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -7,6 +9,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   selector: 'ish-product-quantity-label',
   templateUrl: './product-quantity-label.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class ProductQuantityLabelComponent implements OnInit {
   @Input() for = '';

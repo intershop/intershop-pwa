@@ -1,3 +1,4 @@
+import { AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -7,11 +8,24 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationOptionGroup } from 'ish-core/models/product-variation/variation-option-group.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
+import { ProductVariationSelectDefaultComponent } from 'ish-shared/components/product/product-variation-select-default/product-variation-select-default.component';
+import { ProductVariationSelectEnhancedComponent } from 'ish-shared/components/product/product-variation-select-enhanced/product-variation-select-enhanced.component';
+import { ProductVariationSelectSwatchComponent } from 'ish-shared/components/product/product-variation-select-swatch/product-variation-select-swatch.component';
 
 @Component({
   selector: 'ish-product-variation-select',
   templateUrl: './product-variation-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    ProductVariationSelectDefaultComponent,
+    ProductVariationSelectEnhancedComponent,
+    ProductVariationSelectSwatchComponent,
+  ],
 })
 export class ProductVariationSelectComponent implements OnInit {
   uuid = uuid();

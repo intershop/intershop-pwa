@@ -4,7 +4,6 @@ import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -25,16 +24,23 @@ describe('Products List Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(DeferredItemComponent),
-        MockComponent(ProductItemComponent),
-        MockDirective(BrowserLazyViewDirective),
-        MockDirective(LazyLoadingContentDirective),
-        MockDirective(ProductContextDirective),
-        ProductsListComponent,
-      ],
+      imports: [ProductsListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductsListComponent, {
+        remove: {
+          imports: [ProductContextDirective, ProductItemComponent, DeferredItemComponent, LazyLoadingContentDirective],
+        },
+        add: {
+          imports: [
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+            MockComponent(DeferredItemComponent),
+            MockDirective(LazyLoadingContentDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -60,6 +66,17 @@ describe('Products List Component', () => {
 
     expect(element.querySelector('.swiper')).toBeTruthy();
     expect(element.querySelectorAll('.swiper-slide')).toHaveLength(2);
+  });
+
+  it('should render product items directly for server-side rendering', () => {
+    component.productSKUs = ['1', '2'];
+    component.listStyle = 'carousel';
+    component.isServerSideRendering = true;
+    component.ngOnChanges();
+    fixture.detectChanges();
+
+    expect(element.querySelector('swiper')).toBeFalsy();
+    expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {

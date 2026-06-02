@@ -16,8 +16,7 @@ describe('Quote List Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
-      declarations: [QuoteListComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [QuoteListComponent, TranslateModule.forRoot()],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
     }).compileComponents();
   });

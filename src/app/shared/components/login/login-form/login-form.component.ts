@@ -1,12 +1,18 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { provideIshFormly } from 'ish-shared/formly/formly';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -25,6 +31,18 @@ import { InjectSingle } from 'ish-core/utils/injection';
   selector: 'ish-login-form',
   templateUrl: './login-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  providers: [...provideIshFormly()],
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyForm,
+    FormSubmitDirective,
+    NgClass,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class LoginFormComponent implements OnInit {
   @Input() labelClass: string;

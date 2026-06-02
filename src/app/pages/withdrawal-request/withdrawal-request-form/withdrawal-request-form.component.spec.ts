@@ -1,8 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -20,10 +25,15 @@ describe('Withdrawal Request Form Component', () => {
     when(appFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [WithdrawalRequestFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot(), WithdrawalRequestFormComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(WithdrawalRequestFormComponent, {
+        set: {
+          imports: [AsyncPipe, FormlyForm, MockDirective(FormSubmitDirective), ReactiveFormsModule, TranslatePipe],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

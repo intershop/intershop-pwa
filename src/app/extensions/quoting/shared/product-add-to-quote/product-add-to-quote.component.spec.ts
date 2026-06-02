@@ -25,8 +25,7 @@ describe('Product Add To Quote Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ProductAddToQuoteComponent],
+      imports: [ProductAddToQuoteComponent, TranslateModule.forRoot()],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideRouter([{ path: '**', children: [] }]),

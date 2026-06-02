@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -15,6 +16,8 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
   selector: 'ish-basket-info',
   templateUrl: './basket-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [AsyncPipe],
 })
 export class BasketInfoComponent implements OnInit {
   infoMessages$: Observable<BasketInfo[]>;

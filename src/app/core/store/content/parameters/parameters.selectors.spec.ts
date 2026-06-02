@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ContentStoreProviders } from 'ish-core/store/content/content-store.providers';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadParametersProductListFilterSuccess } from './parameters.actions';
@@ -12,7 +12,7 @@ describe('Parameters Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule.forTesting('parameters'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), ContentStoreProviders.forTesting('parameters')],
       providers: [provideStoreSnapshots()],
     });
 

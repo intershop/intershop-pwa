@@ -1,10 +1,13 @@
 import { CdkTableModule } from '@angular/cdk/table';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { CostCenterImportResult } from 'ish-core/models/cost-center/cost-center.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -43,8 +46,7 @@ describe('Cost Center Import Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CostCenterImportPageComponent],
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
+      imports: [CostCenterImportPageComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: OrganizationManagementFacade,
@@ -56,7 +58,13 @@ describe('Cost Center Import Page Component', () => {
         },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CostCenterImportPageComponent, {
+        set: {
+          imports: [AsyncPipe, CdkTableModule, MockComponent(LoadingComponent), NgClass, TranslatePipe, RouterLink],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

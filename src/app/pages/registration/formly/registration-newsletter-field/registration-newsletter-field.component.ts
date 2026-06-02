@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 /**
  * Type that will render a newsletter subscription field, specific for the registration form.
@@ -8,5 +12,7 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
   selector: 'ish-registration-newsletter-field',
   templateUrl: './registration-newsletter-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyAttributes, ReactiveFormsModule, ServerSettingPipe, TranslatePipe],
 })
 export class RegistrationNewsletterFieldComponent extends FieldType<FieldTypeConfig> {}

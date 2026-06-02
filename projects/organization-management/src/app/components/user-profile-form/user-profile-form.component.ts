@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -11,6 +13,8 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   selector: 'ish-user-profile-form',
   templateUrl: './user-profile-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [ErrorMessageComponent, FormlyForm, ReactiveFormsModule, TranslatePipe],
 })
 export class UserProfileFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

@@ -1,7 +1,13 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { BasketApprover } from 'ish-core/models/basket-approval/basket-approval.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
 
 import { Requisition, RequisitionViewer } from '../../../models/requisition/requisition.model';
 
@@ -9,6 +15,8 @@ import { Requisition, RequisitionViewer } from '../../../models/requisition/requ
   selector: 'ish-requisition-summary',
   templateUrl: './requisition-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [BasketCustomFieldsViewComponent, DatePipe, NgClass, PricePipe, RouterLink, TranslatePipe],
 })
 export class RequisitionSummaryComponent implements OnInit {
   @Input({ required: true }) requisition: Requisition;

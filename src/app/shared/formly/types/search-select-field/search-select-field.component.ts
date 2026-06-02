@@ -1,6 +1,9 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, Renderer2, ViewChild } from '@angular/core';
-import { NgSelectComponent } from '@ng-select/ng-select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { FormlySelectModule } from '@ngx-formly/core/select';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
@@ -12,6 +15,8 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
   selector: 'ish-search-select-field',
   templateUrl: './search-select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [AsyncPipe, FormlySelectModule, NgClass, NgSelectModule, ReactiveFormsModule],
 })
 export class SearchSelectFieldComponent extends FieldType<FieldTypeConfig> implements AfterViewInit {
   @ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;

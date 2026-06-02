@@ -36,7 +36,10 @@
       </div>
       -- DISABLED VIEW CONTEXT -->
       @if ((productLoading$ | async) !== true) {
-        <ish-lazy-recently-viewed />
+        @defer (when ('recently' | ishFeature) && ((productLoading$ | async) !==
+    true)) {
+          <ish-recently-viewed />
+        }
       }
       <!-- DISABLED VIEW CONTEXT --
       <div class="marketing-area">

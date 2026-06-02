@@ -1,6 +1,8 @@
+import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Price } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 /**
  * The budget bar visualizes the current and spent budget of a user. If an additional amount is defined, it will be displayed in addition to the spent  budget.
@@ -18,6 +20,8 @@ import { Price } from 'ish-core/models/price/price.model';
   templateUrl: './budget-bar.component.html',
   styleUrls: ['./budget-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, NgStyle, PercentPipe, PricePipe],
 })
 export class BudgetBarComponent implements OnChanges {
   @Input({ required: true }) budget: Price;

@@ -14,13 +14,13 @@ describe('Login Modal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        LoginModalComponent,
-        MockComponent(IdentityProviderLoginComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
-    }).compileComponents();
+      imports: [LoginModalComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(LoginModalComponent, {
+        remove: { imports: [IdentityProviderLoginComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(IdentityProviderLoginComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

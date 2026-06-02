@@ -16,7 +16,6 @@ describe('Select Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SelectFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'ish-select-field', component: SelectFieldComponent }],
@@ -24,6 +23,7 @@ describe('Select Field Component', () => {
         FormlySelectModule,
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
+        SelectFieldComponent,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();

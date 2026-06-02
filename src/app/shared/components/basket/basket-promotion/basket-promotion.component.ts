@@ -1,14 +1,21 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { PromotionDetailsComponent } from 'ish-shared/components/promotion/promotion-details/promotion-details.component';
+import { PromotionRemoveComponent } from 'ish-shared/components/promotion/promotion-remove/promotion-remove.component';
 
 @Component({
   selector: 'ish-basket-promotion',
   templateUrl: './basket-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, PromotionDetailsComponent, PromotionRemoveComponent, ServerHtmlDirective, TranslatePipe],
 })
 export class BasketPromotionComponent implements OnChanges {
   @Input({ required: true }) rebate: BasketRebate;

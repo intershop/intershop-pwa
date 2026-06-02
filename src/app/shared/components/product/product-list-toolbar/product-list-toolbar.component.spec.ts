@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe } from 'ng-mocks';
+
+import { ProductListPagingComponent } from 'ish-shared/components/product/product-list-paging/product-list-paging.component';
 
 import { ProductListToolbarComponent } from './product-list-toolbar.component';
 
@@ -12,10 +14,14 @@ describe('Product List Toolbar Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockPipe(TranslatePipe), ProductListToolbarComponent],
-      imports: [RouterModule],
+      imports: [ProductListToolbarComponent],
       providers: [provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductListToolbarComponent, {
+        remove: { imports: [ProductListPagingComponent, TranslatePipe] },
+        add: { imports: [MockComponent(ProductListPagingComponent), MockPipe(TranslatePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

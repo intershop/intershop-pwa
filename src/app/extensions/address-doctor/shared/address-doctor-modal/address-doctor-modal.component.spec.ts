@@ -59,8 +59,7 @@ describe('Address Doctor Modal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [AddressDoctorModalComponent],
+      imports: [AddressDoctorModalComponent, FormlyTestingModule, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

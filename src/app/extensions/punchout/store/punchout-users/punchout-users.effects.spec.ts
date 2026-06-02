@@ -8,13 +8,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { toArray } from 'rxjs/operators';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 import { PunchoutService } from '../../services/punchout/punchout.service';
-import { PunchoutStoreModule } from '../punchout-store.module';
+import { PunchoutStoreProviders } from '../punchout-store.providers';
 
 import {
   addPunchoutUser,
@@ -49,7 +49,7 @@ describe('Punchout Users Effects', () => {
     when(punchoutService.deleteUser(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), PunchoutStoreModule.forTesting('punchoutUsers')],
+      imports: [...CoreStoreProviders.forTesting(['router']), PunchoutStoreProviders.forTesting('punchoutUsers')],
       providers: [
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
         provideMockActions(() => actions$),

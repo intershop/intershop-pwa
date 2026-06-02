@@ -1,9 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ImageLoading } from 'ish-core/models/image/image.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductRowComponent } from 'ish-shared/components/product/product-row/product-row.component';
+import { ProductTileComponent } from 'ish-shared/components/product/product-tile/product-tile.component';
 
 export type ProductItemDisplayType = 'tile' | 'row';
 
@@ -15,6 +19,8 @@ export type ProductItemDisplayType = 'tile' | 'row';
   selector: 'ish-product-item',
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, LoadingComponent, ProductRowComponent, ProductTileComponent],
 })
 export class ProductItemComponent implements OnInit {
   @Input() displayType: ProductItemDisplayType = 'tile';

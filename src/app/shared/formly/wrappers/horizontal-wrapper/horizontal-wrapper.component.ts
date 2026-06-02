@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * The default wrapper for displaying fields with labels.
@@ -18,6 +20,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-horizontal-wrapper',
   templateUrl: './horizontal-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule, TranslatePipe],
 })
 export class HorizontalWrapperComponent extends FieldWrapper {
   dprops = {

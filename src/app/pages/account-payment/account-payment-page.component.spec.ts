@@ -19,14 +19,14 @@ describe('Account Payment Page Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [
-        AccountPaymentPageComponent,
-        MockComponent(AccountPaymentComponent),
-        MockComponent(ErrorMessageComponent),
-      ],
+      imports: [AccountPaymentPageComponent, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountPaymentPageComponent, {
+        remove: { imports: [AccountPaymentComponent, ErrorMessageComponent] },
+        add: { imports: [MockComponent(AccountPaymentComponent), MockComponent(ErrorMessageComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

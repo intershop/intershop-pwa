@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyConfig, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.helper';
+import { provideIshFormly } from 'ish-shared/formly/formly';
+
+import { QuickorderRepeatFieldComponent } from '../formly/quickorder-repeat-field/quickorder-repeat-field.component';
 
 /**
  * The Quick Add Products Component displays a form to insert multiple product sku and quantity to add them to the cart.
@@ -12,7 +15,10 @@ import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 @Component({
   selector: 'ish-quickorder-add-products-form',
   templateUrl: './quickorder-add-products-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
+  providers: [...provideIshFormly()],
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});
@@ -24,8 +30,13 @@ export class QuickorderAddProductsFormComponent implements OnInit {
 
   constructor(
     private translate: TranslateService,
-    private shoppingFacade: ShoppingFacade
-  ) {}
+    private shoppingFacade: ShoppingFacade,
+    formlyConfig: FormlyConfig
+  ) {
+    if (!formlyConfig.getType('repeat')) {
+      formlyConfig.setType({ name: 'repeat', component: QuickorderRepeatFieldComponent });
+    }
+  }
 
   ngOnInit() {
     this.initModel();

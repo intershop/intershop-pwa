@@ -1,4 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, SkipSelf } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -8,6 +11,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-master-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
+  standalone: true,
+  imports: [AsyncPipe, RouterLink, TranslatePipe],
 })
 export class ProductMasterLinkComponent implements OnInit {
   masterProductURL$: Observable<string>;

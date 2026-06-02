@@ -1,5 +1,8 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,7 +10,11 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceHelper } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 /**
  * The Cost Summary Component displays a detailed summary of basket or order costs, respectively.
@@ -19,6 +26,17 @@ import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-confi
   selector: 'ish-basket-cost-summary',
   templateUrl: './basket-cost-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    BasketPromotionComponent,
+    NgbPopover,
+    NgTemplateOutlet,
+    PaymentPaypalComponent,
+    PricePipe,
+    ServerSettingPipe,
+    TranslatePipe,
+  ],
 })
 export class BasketCostSummaryComponent implements OnInit {
   @Input({ required: true }) totals: BasketTotal;

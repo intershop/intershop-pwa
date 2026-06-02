@@ -1,3 +1,4 @@
+import { AsyncPipe, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -55,14 +56,23 @@ describe('Product Variation Select Component', () => {
     context = mock(ProductContextFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ProductVariationSelectDefaultComponent),
-        MockComponent(ProductVariationSelectEnhancedComponent),
-        MockComponent(ProductVariationSelectSwatchComponent),
-        ProductVariationSelectComponent,
-      ],
+      imports: [ProductVariationSelectComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductVariationSelectComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            NgSwitch,
+            NgSwitchCase,
+            NgSwitchDefault,
+            MockComponent(ProductVariationSelectDefaultComponent),
+            MockComponent(ProductVariationSelectEnhancedComponent),
+            MockComponent(ProductVariationSelectSwatchComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

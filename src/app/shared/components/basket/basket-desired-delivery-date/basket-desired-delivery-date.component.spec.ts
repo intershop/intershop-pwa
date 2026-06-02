@@ -19,8 +19,7 @@ describe('Basket Desired Delivery Date Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [BasketDesiredDeliveryDateComponent],
+      imports: [BasketDesiredDeliveryDateComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
     }).compileComponents();
   });

@@ -2,19 +2,25 @@ import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { addToCompare } from '../store/compare';
-import { CompareStoreModule } from '../store/compare-store.module';
+import { CompareStoreProviders } from '../store/compare-store.providers';
 
 import { CompareFacade } from './compare.facade';
+
+const moduleLoaderService = {
+  ensureLoaded: () => Promise.resolve(),
+  whenLoaded: <T>(_feature: string, sourceFactory: () => T) => sourceFactory(),
+};
 
 describe('Compare Facade', () => {
   let facade: CompareFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore()],
+      providers: [{ provide: ModuleLoaderService, useValue: moduleLoaderService }, provideMockStore()],
     });
 
     facade = TestBed.inject(CompareFacade);
@@ -31,7 +37,8 @@ describe('Compare Facade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CompareStoreModule.forTesting('_compare'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CompareStoreProviders.forTesting('_compare')],
+      providers: [{ provide: ModuleLoaderService, useValue: moduleLoaderService }],
     });
 
     facade = TestBed.inject(CompareFacade);

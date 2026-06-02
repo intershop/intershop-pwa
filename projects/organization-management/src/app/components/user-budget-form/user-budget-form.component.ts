@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -19,6 +19,8 @@ interface UserBudgetModel {
   selector: 'ish-user-budget-form',
   templateUrl: './user-budget-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [FormlyForm, ReactiveFormsModule],
 })
 export class UserBudgetFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

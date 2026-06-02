@@ -1,7 +1,11 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 /**
  * The Budget Info Component display an info icon containing a message which budget type (gross or net) is used.
@@ -12,8 +16,9 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   templateUrl: './budget-info.component.html',
   styleUrls: ['./budget-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgbPopoverModule, ServerHtmlDirective, ServerSettingPipe, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class BudgetInfoComponent {
   /** translation key for a further message text after the main message */
   @Input() suffix = '';

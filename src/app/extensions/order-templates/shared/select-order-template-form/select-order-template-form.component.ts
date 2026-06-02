@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
   selector: 'ish-select-order-template-form',
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, FormlyForm],
 })
 export class SelectOrderTemplateFormComponent implements OnInit {
   @Input() formGroup: FormGroup;
@@ -22,6 +25,9 @@ export class SelectOrderTemplateFormComponent implements OnInit {
    * changes the some logic and the translations keys between add or move a product (default: 'add')
    */
   @Input() addMoveProduct: 'add' | 'move' = 'add';
+
+  readonly emptyOptions: SelectOption[] = [];
+  readonly emptyFieldConfig: FormlyFieldConfig[] = [];
 
   orderTemplatesOptions$: Observable<SelectOption[]>;
 

@@ -12,7 +12,7 @@ describe('Quote Expiration Date Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuoteExpirationDateComponent],
+      imports: [QuoteExpirationDateComponent],
       providers: [{ provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) }],
     }).compileComponents();
   });

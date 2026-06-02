@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="footer-custom">
       <div class="container">
-        <ish-lazy-content-include includeId="include.footer.content.pagelet2-Include" />
+        <ish-content-include includeId="include.footer.content.pagelet2-Include" />
       </div>
     </div>
 
@@ -39,3 +39,7 @@
     </div>
   </div>
 </ng-container>
+
+@defer (when ('copilot' | ishFeature)) {
+  <ish-copilot />
+}

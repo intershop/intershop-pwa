@@ -12,6 +12,8 @@ import { Address } from 'ish-core/models/address/address.model';
   selector: 'ish-address',
   templateUrl: './address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [],
 })
 export class AddressComponent {
   /**

@@ -1,10 +1,12 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { BasketMerchantMessageComponent } from './basket-merchant-message.component';
@@ -19,10 +21,15 @@ describe('Basket Merchant Message Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [BasketMerchantMessageComponent],
+      imports: [BasketMerchantMessageComponent, FormlyTestingModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketMerchantMessageComponent, {
+        set: {
+          imports: [FormlyTestingModule, TranslateModule, MockComponent(SuccessMessageComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -30,7 +37,7 @@ describe('Basket Merchant Message Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    when(checkoutFacade.setBasketCustomAttribute(anything())).thenReturn();
+    when(checkoutFacade.setBasketMessageToMerchant(anything())).thenReturn();
   });
 
   it('should be created', () => {

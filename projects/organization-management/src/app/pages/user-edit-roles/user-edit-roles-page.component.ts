@@ -1,13 +1,19 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -15,6 +21,16 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   selector: 'ish-user-edit-roles-page',
   templateUrl: './user-edit-roles-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+    UserRolesSelectionComponent,
+  ],
 })
 export class UserEditRolesPageComponent implements OnInit {
   selectedUser$: Observable<B2bUser>;

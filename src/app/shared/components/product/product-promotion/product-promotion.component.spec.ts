@@ -22,13 +22,14 @@ describe('Product Promotion Component', () => {
     when(context.select('promotions')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(PromotionDetailsComponent),
-        MockDirective(ServerHtmlDirective),
-        ProductPromotionComponent,
-      ],
+      imports: [ProductPromotionComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductPromotionComponent, {
+        remove: { imports: [PromotionDetailsComponent, ServerHtmlDirective] },
+        add: { imports: [MockComponent(PromotionDetailsComponent), MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

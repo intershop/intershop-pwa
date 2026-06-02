@@ -1,10 +1,19 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { FormGroupDirective, UntypedFormGroup } from '@angular/forms';
+import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
+import { CheckoutAddressAnonymousFormComponent } from '../formly/components/checkout-address-anonymous-form/checkout-address-anonymous-form.component';
 
 /**
  * The Checkout Address Anonymous Component renders the initial checkout address page of an anonymous user. On this page the user can either login or checkout as guest by entering an invoice and (optionally) shipping address.
@@ -21,6 +30,18 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   selector: 'ish-checkout-address-anonymous',
   templateUrl: './checkout-address-anonymous.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CheckoutAddressAnonymousFormComponent,
+    ErrorMessageComponent,
+    FeatureToggleDirective,
+    IdentityProviderLoginComponent,
+    NgbCollapseModule,
+    NgClass,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class CheckoutAddressAnonymousComponent implements OnChanges {
   @Input({ required: true }) basket: Basket;

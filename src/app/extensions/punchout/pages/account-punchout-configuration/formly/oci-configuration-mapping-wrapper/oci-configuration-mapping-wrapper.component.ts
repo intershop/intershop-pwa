@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
@@ -9,5 +10,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-oci-configuration-mapping-wrapper',
   templateUrl: './oci-configuration-mapping-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class OciConfigurationMappingWrapperComponent extends FieldWrapper {}

@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -18,6 +22,16 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   selector: 'ish-organization-settings-page',
   templateUrl: './organization-settings-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FormlyForm,
+    ModalDialogComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    ServerHtmlDirective,
+    ServerSettingPipe,
+    TranslatePipe,
+  ],
 })
 export class OrganizationSettingsPageComponent implements OnInit {
   private destroyRef = inject(DestroyRef);

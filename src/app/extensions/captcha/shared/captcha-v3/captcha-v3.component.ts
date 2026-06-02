@@ -1,13 +1,12 @@
-// eslint-disable-next-line max-classes-per-file
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { DirectivesModule } from 'ish-core/directives.module';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -25,6 +24,15 @@ import {
   selector: 'ish-captcha-v3',
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [RecaptchaV3Module, ServerHtmlDirective, TranslatePipe],
+  providers: [
+    {
+      provide: RECAPTCHA_V3_SITE_KEY,
+      useFactory: getSynchronizedSiteKey,
+      deps: [SitekeyProviderService],
+    },
+  ],
 })
 export class CaptchaV3Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;
@@ -73,16 +81,3 @@ export class CaptchaV3Component implements OnInit {
     }
   }
 }
-
-@NgModule({
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
-  declarations: [CaptchaV3Component],
-  providers: [
-    {
-      provide: RECAPTCHA_V3_SITE_KEY,
-      useFactory: getSynchronizedSiteKey,
-      deps: [SitekeyProviderService],
-    },
-  ],
-})
-export class CaptchaV3ComponentModule {}

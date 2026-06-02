@@ -18,8 +18,7 @@ describe('User Budget Form Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule],
-      declarations: [UserBudgetFormComponent],
+      imports: [FormlyTestingModule, UserBudgetFormComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });

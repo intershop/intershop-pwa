@@ -1,17 +1,26 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyForm } from '@ngx-formly/core';
 import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
+
+import { AddressDoctorComponent } from '../../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 /**
  * Standalone widget component for selecting and setting the basket shipping address in the checkout.
@@ -20,6 +29,18 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   selector: 'ish-basket-shipping-address-widget',
   templateUrl: './basket-shipping-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    AddressComponent,
+    AddressDoctorComponent,
+    AsyncPipe,
+    FormlyCustomerAddressFormComponent,
+    FormlyForm,
+    ModalDialogComponent,
+    NgbCollapseModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;

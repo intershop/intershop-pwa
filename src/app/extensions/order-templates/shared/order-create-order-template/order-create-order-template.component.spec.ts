@@ -23,10 +23,14 @@ describe('Order Create Order Template Component', () => {
     when(orderTemplatesFacadeMock.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(OrderTemplatePreferencesDialogComponent), OrderCreateOrderTemplateComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [OrderCreateOrderTemplateComponent, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) }],
-    }).compileComponents();
+    })
+      .overrideComponent(OrderCreateOrderTemplateComponent, {
+        remove: { imports: [OrderTemplatePreferencesDialogComponent] },
+        add: { imports: [MockComponent(OrderTemplatePreferencesDialogComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

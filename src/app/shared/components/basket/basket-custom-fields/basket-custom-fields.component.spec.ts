@@ -28,15 +28,20 @@ describe('Basket Custom Fields Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [
-        BasketCustomFieldsComponent,
-        MockComponent(CustomFieldsFormlyComponent),
-        MockComponent(CustomFieldsViewComponent),
-        MockDirective(NgbCollapse),
-      ],
+      imports: [BasketCustomFieldsComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketCustomFieldsComponent, {
+        remove: { imports: [CustomFieldsFormlyComponent, CustomFieldsViewComponent, NgbCollapse] },
+        add: {
+          imports: [
+            MockComponent(CustomFieldsFormlyComponent),
+            MockComponent(CustomFieldsViewComponent),
+            MockDirective(NgbCollapse),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

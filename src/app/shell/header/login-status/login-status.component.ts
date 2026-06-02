@@ -1,4 +1,7 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -8,6 +11,8 @@ import { User } from 'ish-core/models/user/user.model';
   selector: 'ish-login-status',
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, RouterLink, TranslatePipe],
 })
 export class LoginStatusComponent implements OnInit {
   @Input() logoutOnly = false;

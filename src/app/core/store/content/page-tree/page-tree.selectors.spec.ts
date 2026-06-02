@@ -2,8 +2,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
 import { ContentPageTreeElement } from 'ish-core/models/content-page-tree/content-page-tree.model';
-import { ContentStoreModule } from 'ish-core/store/content/content-store.module';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { ContentStoreProviders } from 'ish-core/store/content/content-store.providers';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { pageTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -34,7 +34,7 @@ describe('Page Tree Selectors', () => {
     tree6 = { contentPageId: '2', path: ['2'], name: '2' } as ContentPageTreeElement;
 
     TestBed.configureTestingModule({
-      imports: [ContentStoreModule.forTesting('pagetree'), CoreStoreModule.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router']), ContentStoreProviders.forTesting('pagetree')],
       providers: [provideRouter([{ path: 'page/:contentPageId', children: [] }]), provideStoreSnapshots()],
     });
 

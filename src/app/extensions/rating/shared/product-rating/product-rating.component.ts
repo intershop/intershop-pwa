@@ -1,11 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+
+import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
 
 /**
  * The Product Rating Component renders rating stars for a product (besides variation masters) with rounded average rating as number. *
@@ -14,8 +17,9 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   selector: 'ish-product-rating',
   templateUrl: './product-rating.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, ProductRatingStarComponent, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;
 

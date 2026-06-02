@@ -14,8 +14,7 @@ describe('Update Password Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UpdatePasswordFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslateModule.forRoot(), UpdatePasswordFormComponent],
     }).compileComponents();
   });
 

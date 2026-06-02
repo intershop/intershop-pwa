@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,19 +12,40 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, Subject, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
+import { BasketPaymentCostInfoComponent } from 'ish-shared/components/basket/basket-payment-cost-info/basket-payment-cost-info.component';
+import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
+import { BasketRecurrenceSummaryComponent } from 'ish-shared/components/basket/basket-recurrence-summary/basket-recurrence-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
+
+import { PaymentConcardisCreditcardCvcDetailComponent } from '../payment-concardis-creditcard-cvc-detail/payment-concardis-creditcard-cvc-detail.component';
+import { PaymentConcardisCreditcardComponent } from '../payment-concardis-creditcard/payment-concardis-creditcard.component';
+import { PaymentConcardisDirectdebitComponent } from '../payment-concardis-directdebit/payment-concardis-directdebit.component';
+import { PaymentCybersourceCreditcardComponent } from '../payment-cybersource-creditcard/payment-cybersource-creditcard.component';
+import { PaymentParameterFormComponent } from '../payment-parameter-form/payment-parameter-form.component';
+import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/payment-payone-creditcard.component';
 
 /**
  * The Checkout Payment Component renders the checkout payment page.
@@ -36,6 +58,32 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   selector: 'ish-checkout-payment',
   templateUrl: './checkout-payment.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    BasketAddressSummaryComponent,
+    BasketCostSummaryComponent,
+    BasketErrorMessageComponent,
+    BasketItemsSummaryComponent,
+    BasketPaymentCostInfoComponent,
+    BasketPromotionCodeComponent,
+    BasketRecurrenceSummaryComponent,
+    BasketValidationResultsComponent,
+    InfoMessageComponent,
+    NgbCollapseModule,
+    NgClass,
+    PaymentConcardisCreditcardComponent,
+    PaymentConcardisCreditcardCvcDetailComponent,
+    PaymentConcardisDirectdebitComponent,
+    PaymentCybersourceCreditcardComponent,
+    PaymentParameterFormComponent,
+    PaymentPayoneCreditcardComponent,
+    PaymentPaypalComponent,
+    PricePipe,
+    ReactiveFormsModule,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

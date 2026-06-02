@@ -18,7 +18,7 @@ describe('Basket Info Component', () => {
     when(checkoutFacadeMock.basketInfo$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      declarations: [BasketInfoComponent],
+      imports: [BasketInfoComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
     }).compileComponents();
   });

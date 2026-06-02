@@ -6,6 +6,8 @@ import { StoreLocation as StoreModel } from '../../models/store-location/store-l
   selector: 'ish-store-address',
   templateUrl: './store-address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [],
 })
 export class StoreAddressComponent {
   @Input({ required: true }) store: StoreModel;

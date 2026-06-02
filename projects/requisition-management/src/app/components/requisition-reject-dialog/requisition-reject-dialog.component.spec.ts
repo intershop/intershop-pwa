@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, Validators } from '@angular/forms';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
+
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 
@@ -8,6 +14,21 @@ describe('Requisition Reject Dialog Component', () => {
   let component: RequisitionRejectDialogComponent;
   let fixture: ComponentFixture<RequisitionRejectDialogComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    const ngbModal = mock(NgbModal);
+
+    await TestBed.configureTestingModule({
+      imports: [RequisitionRejectDialogComponent, TranslateModule.forRoot()],
+      providers: [{ provide: NgbModal, useFactory: () => instance(ngbModal) }],
+    })
+      .overrideComponent(RequisitionRejectDialogComponent, {
+        set: {
+          imports: [MockDirective(FormSubmitDirective), MockComponent(FormlyForm), ReactiveFormsModule, TranslatePipe],
+        },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequisitionRejectDialogComponent);

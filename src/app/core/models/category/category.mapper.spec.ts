@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { CategoryData, CategoryPathElement } from './category.interface';
@@ -14,7 +14,7 @@ describe('Category Mapper', () => {
   let imageMapper: ImageMapper;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [CoreStoreModule.forTesting(['configuration'])] });
+    TestBed.configureTestingModule({ imports: [...CoreStoreProviders.forTesting(['configuration'])] });
     categoryMapper = TestBed.inject(CategoryMapper);
     imageMapper = spy(TestBed.inject(ImageMapper));
   });

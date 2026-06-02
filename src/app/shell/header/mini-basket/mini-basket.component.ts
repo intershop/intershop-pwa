@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { AsyncPipe, Location, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,20 +10,37 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { RouterLink } from '@angular/router';
+import { NgbDropdown, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, concat, of, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
+import { ClickOutsideDirective } from 'ish-core/directives/click-outside.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PriceItem } from 'ish-core/models/price-item/price-item.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-basket-content/mini-basket-content.component';
 
 @Component({
   selector: 'ish-mini-basket',
   templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ClickOutsideDirective,
+    MiniBasketContentComponent,
+    NgbDropdownModule,
+    NgbPopoverModule,
+    NgClass,
+    PricePipe,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class MiniBasketComponent implements OnInit {
   @ViewChild('miniBasketDropdown', { static: true }) miniBasketDropdown!: NgbDropdown;

@@ -1,9 +1,17 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 import { UserBudget } from '../../models/user-budget/user-budget.model';
@@ -12,6 +20,18 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   selector: 'ish-user-edit-budget-page',
   templateUrl: './user-edit-budget-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormSubmitDirective,
+    LoadingComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    ServerSettingPipe,
+    TranslatePipe,
+    UserBudgetFormComponent,
+  ],
 })
 export class UserEditBudgetPageComponent implements OnInit {
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

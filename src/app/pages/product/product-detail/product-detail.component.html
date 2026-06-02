@@ -4,7 +4,7 @@
   <div class="row product-details">
     <div class="col-12 col-md-6 col-lg-8"><ish-product-images /></div>
     <div class="col-12 col-md-6 col-lg-4">
-      <ish-lazy-product-rating />
+      <ish-product-rating *ishFeature="'rating'" />
       <h1>
         <span itemprop="name"><ish-product-name [link]="false" /></span>
       </h1>
@@ -33,13 +33,17 @@
           <ish-product-add-to-basket [cssClass]="'btn-lg w-100'" />
         </div>
         <div class="d-grid">
-          <ish-lazy-product-add-to-order-template [cssClass]="'btn btn-secondary'" />
+          <ish-product-add-to-order-template *ishFeature="'orderTemplates'" [cssClass]="'btn btn-secondary'" />
         </div>
         <div class="d-grid">
-          <ish-lazy-product-add-to-quote [cssClass]="'btn btn-secondary'" />
+          <ish-product-add-to-quote *ishFeature="'quoting'" [cssClass]="'btn btn-secondary'" />
         </div>
         <div class="d-grid">
-          <ish-lazy-product-notification-edit cssClass="btn btn-secondary" displayType="button" />
+          <ish-product-notification-edit
+            *ishFeature="'productNotifications'"
+            cssClass="btn btn-secondary"
+            displayType="button"
+          />
         </div>
         <ish-product-warranty (submitWarranty)="setSelectedWarranty($event)" />
       </div>

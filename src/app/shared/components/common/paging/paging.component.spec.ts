@@ -13,8 +13,7 @@ describe('Paging Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [PagingComponent],
+      imports: [PagingComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 

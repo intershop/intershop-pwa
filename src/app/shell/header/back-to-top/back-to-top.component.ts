@@ -1,9 +1,15 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 
 @Component({
   selector: 'ish-back-to-top',
   templateUrl: './back-to-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FeatureTogglePipe, NgClass, TranslatePipe],
 })
 export class BackToTopComponent {
   /**

@@ -1,14 +1,24 @@
+import { CdkTableModule } from '@angular/cdk/table';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest, map, of, take } from 'rxjs';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 
+import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
+import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
+
+import { CostCentersFilterComponent } from './cost-centers-filter/cost-centers-filter.component';
 
 type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterManager' | 'costCenterBudget' | 'actions';
 
@@ -16,6 +26,20 @@ type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterMana
   selector: 'ish-cost-centers-page',
   templateUrl: './cost-centers-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    BudgetInfoComponent,
+    CdkTableModule,
+    CostCenterBudgetComponent,
+    CostCentersFilterComponent,
+    LoadingComponent,
+    ModalDialogComponent,
+    NgClass,
+    PagingComponent,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class CostCentersPageComponent implements OnInit {
   costCenters$: Observable<CostCenter[]>;

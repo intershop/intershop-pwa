@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
 
@@ -35,8 +34,7 @@ describe('User Csv Import Component', () => {
   beforeEach(async () => {
     organizationManagementFacadeMock = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      declarations: [UserCsvImportComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), UserCsvImportComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacadeMock) },
       ],

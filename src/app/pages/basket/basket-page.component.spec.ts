@@ -1,15 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { LazyRecentlyViewedComponent } from '../../extensions/recently/exports/lazy-recently-viewed/lazy-recently-viewed.component';
+import { RecentlyViewedComponent } from '../../extensions/recently/shared/recently-viewed/recently-viewed.component';
 
 import { BasketPageComponent } from './basket-page.component';
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty/shopping-basket-empty.component';
@@ -24,17 +25,33 @@ describe('Basket Page Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [
-        BasketPageComponent,
-        MockComponent(ContentIncludeComponent),
-        MockComponent(LazyRecentlyViewedComponent),
-        MockComponent(LoadingComponent),
-
-        MockComponent(ShoppingBasketComponent),
-        MockComponent(ShoppingBasketEmptyComponent),
-      ],
+      imports: [BasketPageComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
-    }).compileComponents();
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
+    })
+      .overrideComponent(BasketPageComponent, {
+        remove: {
+          imports: [
+            ContentIncludeComponent,
+            FeatureTogglePipe,
+            LoadingComponent,
+            RecentlyViewedComponent,
+            ShoppingBasketComponent,
+            ShoppingBasketEmptyComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(ContentIncludeComponent),
+            MockPipe(FeatureTogglePipe, () => true),
+            MockComponent(LoadingComponent),
+            MockComponent(RecentlyViewedComponent),
+            MockComponent(ShoppingBasketComponent),
+            MockComponent(ShoppingBasketEmptyComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -72,8 +89,11 @@ describe('Basket Page Component', () => {
     expect(element.querySelector('ish-shopping-basket')).toBeTruthy();
   });
 
-  it('should render recently viewed items on basket page', () => {
+  it('should render recently viewed items on basket page', async () => {
     fixture.detectChanges();
-    expect(element.querySelector('ish-lazy-recently-viewed')).toBeTruthy();
+    await fixture.whenRenderingDone();
+    fixture.detectChanges();
+
+    expect(element.querySelector('ish-recently-viewed')).toBeTruthy();
   });
 });

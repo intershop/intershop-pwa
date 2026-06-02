@@ -1,4 +1,7 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * The Info Box Component renders the parent's outlet html in a box.
@@ -13,6 +16,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'ish-info-box',
   templateUrl: './info-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass, RouterLink, TranslatePipe],
 })
 export class InfoBoxComponent {
   /**

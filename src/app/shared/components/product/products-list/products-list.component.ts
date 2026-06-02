@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,15 +21,31 @@ import {
   MEDIUM_BREAKPOINT_WIDTH,
   SMALL_BREAKPOINT_WIDTH,
 } from 'ish-core/configurations/injection-keys';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
-import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
+import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
+import {
+  ProductItemComponent,
+  ProductItemDisplayType,
+} from 'ish-shared/components/product/product-item/product-item.component';
 
 @Component({
   selector: 'ish-products-list',
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { ngSkipHydration: 'true' },
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    DeferredItemComponent,
+    LazyLoadingContentDirective,
+    NgClass,
+    ProductContextDirective,
+    ProductItemComponent,
+  ],
 })
 export class ProductsListComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) productSKUs: string[];
@@ -38,6 +55,7 @@ export class ProductsListComponent implements OnChanges, OnDestroy {
   @Input() listItemCSSClass: string;
   @Input() listItemConfiguration: Partial<ProductContextDisplayProperties>;
 
+  isServerSideRendering = SSR;
   productSKUs$: Observable<string[]>;
 
   private swiper: Swiper;

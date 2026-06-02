@@ -1,9 +1,10 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * Structural directive.
@@ -22,6 +23,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  */
 @Directive({
   selector: '[ishFeature]',
+  standalone: true,
 })
 export class FeatureToggleDirective {
   private otherTemplateRef: TemplateRef<unknown>;

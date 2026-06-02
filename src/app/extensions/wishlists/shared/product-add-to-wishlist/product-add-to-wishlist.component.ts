@@ -1,12 +1,13 @@
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wishlist-modal.component';
@@ -15,6 +16,8 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
   selector: 'ish-product-add-to-wishlist',
   templateUrl: './product-add-to-wishlist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, NgSwitch, NgSwitchCase, SelectWishlistModalComponent, TranslatePipe],
 })
 /**
  * The Product Add To Wishlist Component adds a product to a wishlist.
@@ -22,7 +25,6 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
  * @example
  * <ish-product-add-to-wishlist displayType="icon" />
  */
-@GenerateLazyComponent()
 export class ProductAddToWishlistComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;

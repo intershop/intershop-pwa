@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ish-accordion-item',
   templateUrl: './accordion-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgbCollapseModule],
 })
 export class AccordionItemComponent {
   @Input() heading: string;

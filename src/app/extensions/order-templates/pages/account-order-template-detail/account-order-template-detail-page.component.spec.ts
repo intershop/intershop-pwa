@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -35,17 +36,33 @@ describe('Account Order Template Detail Page Component', () => {
     when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial as OrderTemplate));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountOrderTemplateDetailPageComponent,
-        InPlaceEditComponent,
-        MockComponent(AccountOrderTemplateDetailLineItemComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(ProductAddToBasketComponent),
-        MockDirective(ProductContextDirective),
+      imports: [AccountOrderTemplateDetailPageComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideRouter([]),
       ],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplateDetailPageComponent, {
+        remove: {
+          imports: [
+            AccountOrderTemplateDetailLineItemComponent,
+            ErrorMessageComponent,
+            InPlaceEditComponent,
+            ProductAddToBasketComponent,
+            ProductContextDirective,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountOrderTemplateDetailLineItemComponent),
+            MockComponent(ErrorMessageComponent),
+            InPlaceEditComponent,
+            MockComponent(ProductAddToBasketComponent),
+            MockDirective(ProductContextDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

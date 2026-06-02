@@ -3,6 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { EXTRALARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
@@ -12,15 +13,6 @@ describe('Password Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
-
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn((query: string) => ({
-        media: query,
-      })),
-    });
-  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -34,10 +26,11 @@ describe('Password Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        PasswordFieldComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [PasswordFieldComponent],
+      providers: [{ provide: EXTRALARGE_BREAKPOINT_WIDTH, useValue: 1400 }],
     }).compileComponents();
   });
 

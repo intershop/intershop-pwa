@@ -1,15 +1,21 @@
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageRoutePipe } from 'ish-core/routing/content-page/content-page-route.pipe';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 @Component({
   selector: 'ish-cms-navigation-page',
   templateUrl: './cms-navigation-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, ContentPageRoutePipe, NgClass, NgStyle, NgTemplateOutlet, RouterLink, ServerHtmlDirective],
 })
 export class CMSNavigationPageComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

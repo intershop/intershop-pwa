@@ -1,8 +1,6 @@
-// eslint-disable-next-line max-classes-per-file
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha-2';
 import { Observable } from 'rxjs';
 
@@ -17,6 +15,8 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
   selector: 'ish-captcha-v2',
   templateUrl: './captcha-v2.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, RecaptchaModule],
 })
 export class CaptchaV2Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;
@@ -44,9 +44,3 @@ export class CaptchaV2Component implements OnInit {
     return this.parentForm?.get('captcha');
   }
 }
-
-@NgModule({
-  declarations: [CaptchaV2Component],
-  imports: [CommonModule, RecaptchaModule, TranslateModule],
-})
-export class CaptchaV2ComponentModule {}

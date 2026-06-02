@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { ofUrl } from './router.operators';
@@ -21,7 +21,7 @@ describe('Router Integration', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'], true)],
+      imports: [...CoreStoreProviders.forTesting(['router'], true)],
       providers: [
         provideRouter([
           {

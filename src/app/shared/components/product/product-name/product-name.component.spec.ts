@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,8 +18,7 @@ describe('Product Name Component', () => {
     when(context.select('displayProperties', 'name')).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [ProductNameComponent],
+      imports: [ProductNameComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideRouter([])],
     }).compileComponents();
   });

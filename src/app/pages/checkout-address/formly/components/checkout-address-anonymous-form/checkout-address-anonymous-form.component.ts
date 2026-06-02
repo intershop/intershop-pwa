@@ -1,14 +1,19 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
+import { FORMLY_ADDRESS_FORMS_COMPONENTS } from 'ish-shared/formly-address-forms/formly-address-forms';
 
 @Component({
   selector: 'ish-checkout-address-anonymous-form',
   templateUrl: './checkout-address-anonymous-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [...FORMLY_ADDRESS_FORMS_COMPONENTS, TranslatePipe, NgbCollapseModule, FormlyForm],
 })
 export class CheckoutAddressAnonymousFormComponent implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;

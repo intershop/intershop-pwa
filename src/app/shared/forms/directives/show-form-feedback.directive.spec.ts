@@ -8,6 +8,8 @@ import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
 @Component({
   template: ` <div [ishShowFormFeedback]="control"></div> `,
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [ShowFormFeedbackDirective],
 })
 class TestComponent {
   control = new FormControl('', Validators.required);
@@ -22,7 +24,7 @@ describe('Show Form Feedback Directive', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ShowFormFeedbackDirective, TestComponent],
+      imports: [TestComponent],
     });
   });
 

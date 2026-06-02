@@ -6,9 +6,9 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { Product } from 'ish-core/models/product/product.model';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { ProductListingEffects } from 'ish-core/store/shopping/product-listing/product-listing.effects';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { ProductsService } from './products.service';
@@ -71,8 +71,8 @@ describe('Products Service', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['configuration'], [ProductListingEffects]),
-        ShoppingStoreModule.forTesting('productListing'),
+        ...CoreStoreProviders.forTesting(['configuration'], [ProductListingEffects]),
+        ShoppingStoreProviders.forTesting('productListing'),
       ],
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },

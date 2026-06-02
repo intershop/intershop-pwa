@@ -1,7 +1,12 @@
+import { CdkTableModule } from '@angular/cdk/table';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map, of } from 'rxjs';
 
 import { CostCenterImportResult } from 'ish-core/models/cost-center/cost-center.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -9,6 +14,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   selector: 'ish-cost-center-import-page',
   templateUrl: './cost-center-import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, RouterLink, TranslatePipe],
 })
 export class CostCenterImportPageComponent implements OnInit {
   importedCostCenters$: Observable<CostCenterImportResult[]> = of([]);

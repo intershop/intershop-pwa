@@ -34,14 +34,22 @@ describe('Account Product Notifications List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, MockComponent(ProductImageComponent), TranslateModule.forRoot()],
-      declarations: [
-        AccountProductNotificationsListComponent,
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockDirective(ProductContextDirective),
-      ],
-    }).compileComponents();
+      imports: [AccountProductNotificationsListComponent, CdkTableModule, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountProductNotificationsListComponent, {
+        remove: {
+          imports: [ProductImageComponent, ProductNameComponent, ProductPriceComponent, ProductContextDirective],
+        },
+        add: {
+          imports: [
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockDirective(ProductContextDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

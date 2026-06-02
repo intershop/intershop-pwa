@@ -16,7 +16,6 @@ describe('Search Select Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchSelectFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [
@@ -30,6 +29,7 @@ describe('Search Select Field Component', () => {
         FormlyTestingComponentsModule,
         NgSelectModule,
         ReactiveFormsModule,
+        SearchSelectFieldComponent,
       ],
     }).compileComponents();
   });

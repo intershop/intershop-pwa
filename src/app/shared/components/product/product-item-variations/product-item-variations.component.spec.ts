@@ -41,20 +41,23 @@ describe('Product Item Variations Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [
+        ProductItemVariationsComponent,
         TranslateModule.forRoot({
           compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
         }),
-      ],
-      declarations: [
-        MockComponent(ProductVariationDisplayComponent),
-        MockComponent(ProductVariationSelectComponent),
-        ProductItemVariationsComponent,
       ],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductItemVariationsComponent, {
+        remove: { imports: [ProductVariationDisplayComponent, ProductVariationSelectComponent] },
+        add: {
+          imports: [MockComponent(ProductVariationDisplayComponent), MockComponent(ProductVariationSelectComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

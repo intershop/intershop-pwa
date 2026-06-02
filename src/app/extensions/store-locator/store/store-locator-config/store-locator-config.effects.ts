@@ -3,7 +3,7 @@ import { Actions, createEffect } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { map, take, takeWhile } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 

@@ -1,8 +1,9 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
+import { instance, mock } from 'ts-mockito';
 
+import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
 import { CostCenterBudgetComponent } from './cost-center-budget.component';
@@ -15,8 +16,8 @@ describe('Cost Center Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
-      declarations: [CostCenterBudgetComponent],
+      imports: [CostCenterBudgetComponent, TranslateModule.forRoot()],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
 

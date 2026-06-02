@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 export type RatingFilledType = 'full' | 'half' | 'empty';
@@ -12,6 +13,8 @@ export type RatingFilledType = 'full' | 'half' | 'empty';
   templateUrl: './product-rating-star.component.html',
   styleUrls: ['./product-rating-star.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgClass],
 })
 export class ProductRatingStarComponent {
   /**

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -22,18 +22,23 @@ describe('Account Product Notifications Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslateModule.forRoot()],
-      declarations: [
-        AccountProductNotificationsPageComponent,
-        MockComponent(AccountProductNotificationsListComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [AccountProductNotificationsPageComponent, NgbNavModule, TranslateModule.forRoot()],
       providers: [
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountProductNotificationsPageComponent, {
+        remove: { imports: [AccountProductNotificationsListComponent, ErrorMessageComponent, LoadingComponent] },
+        add: {
+          imports: [
+            MockComponent(AccountProductNotificationsListComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

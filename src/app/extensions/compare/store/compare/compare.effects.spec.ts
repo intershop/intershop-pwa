@@ -4,9 +4,9 @@ import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
-import { CompareStoreModule } from '../compare-store.module';
+import { CompareStoreProviders } from '../compare-store.providers';
 
 import { addToCompare, removeFromCompare, toggleCompare } from './compare.actions';
 import { CompareEffects } from './compare.effects';
@@ -18,7 +18,7 @@ describe('Compare Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CompareStoreModule.forTesting('_compare'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), CompareStoreProviders.forTesting('_compare')],
       providers: [CompareEffects, provideMockActions(() => actions$)],
     });
 

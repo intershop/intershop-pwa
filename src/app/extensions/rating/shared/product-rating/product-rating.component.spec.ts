@@ -23,10 +23,14 @@ describe('Product Rating Component', () => {
     when(context.select('product')).thenReturn(of({ type: 'Product' }));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(ProductRatingStarComponent), ProductRatingComponent],
+      imports: [ProductRatingComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductRatingComponent, {
+        remove: { imports: [ProductRatingStarComponent] },
+        add: { imports: [MockComponent(ProductRatingStarComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

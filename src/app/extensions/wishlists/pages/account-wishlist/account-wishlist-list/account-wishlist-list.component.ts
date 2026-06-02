@@ -1,3 +1,4 @@
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +10,8 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateService } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -26,6 +28,8 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
   selector: 'ish-account-wishlist-list',
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ModalDialogComponent, NgClass, NgTemplateOutlet, RouterLink, TranslatePipe],
 })
 export class AccountWishlistListComponent implements OnChanges {
   /**

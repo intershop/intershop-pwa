@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
 
-import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
-import { LazyQuickorderLinkComponent } from '../../../extensions/quickorder/exports/lazy-quickorder-link/lazy-quickorder-link.component';
-import { LazyWishlistsLinkComponent } from '../../../extensions/wishlists/exports/lazy-wishlists-link/lazy-wishlists-link.component';
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 import { UserInformationMobileComponent } from './user-information-mobile.component';
 
@@ -19,15 +19,22 @@ describe('User Information Mobile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists'), TranslateModule.forRoot()],
-      declarations: [
-        MockComponent(LazyProductCompareStatusComponent),
-        MockComponent(LazyQuickorderLinkComponent),
-        MockComponent(LazyWishlistsLinkComponent),
-        MockComponent(LoginStatusComponent),
-        UserInformationMobileComponent,
-      ],
-    }).compileComponents();
+      imports: [TranslateModule.forRoot(), UserInformationMobileComponent],
+      providers: [...(FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists').providers ?? [])],
+    })
+      .overrideComponent(UserInformationMobileComponent, {
+        set: {
+          imports: [
+            FeatureToggleDirective,
+            MockComponent(LoginStatusComponent),
+            MockComponent(ProductCompareStatusComponent),
+            MockComponent(QuickorderLinkComponent),
+            MockComponent(WishlistsLinkComponent),
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -49,9 +56,9 @@ describe('User Information Mobile Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-login-status",
-        "ish-lazy-product-compare-status",
-        "ish-lazy-quickorder-link",
-        "ish-lazy-wishlists-link",
+        "ish-product-compare-status",
+        "ish-quickorder-link",
+        "ish-wishlists-link",
       ]
     `);
   });

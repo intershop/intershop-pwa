@@ -24,17 +24,19 @@ describe('Description Wrapper Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        DescriptionWrapperComponent,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'description', component: DescriptionWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [
-        DescriptionWrapperComponent,
-        MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`),
-      ],
-    }).compileComponents();
+    })
+      .overrideComponent(DescriptionWrapperComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

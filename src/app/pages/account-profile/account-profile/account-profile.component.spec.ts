@@ -1,14 +1,32 @@
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { IdentityProviderModule } from 'ish-core/identity-provider.module';
 import { User } from 'ish-core/models/user/user.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 
 import { AccountProfileComponent } from './account-profile.component';
+
+@Directive({
+  selector: '[ishIdentityProviderCapability]',
+  standalone: true,
+})
+class MockIdentityProviderCapabilityDirective {
+  @Input() set ishIdentityProviderCapability(capability: unknown) {
+    void capability;
+    this.viewContainerRef.clear();
+    this.viewContainerRef.createEmbeddedView(this.templateRef);
+  }
+
+  constructor(
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
+}
 
 describe('Account Profile Component', () => {
   let component: AccountProfileComponent;
@@ -19,14 +37,20 @@ describe('Account Profile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountProfileComponent,
-        IdentityProviderCapabilityDirective,
-        MockDirective(ServerHtmlDirective),
-        MockPipe(ServerSettingPipe, () => true),
-      ],
-      imports: [IdentityProviderModule.forTesting(), TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [AccountProfileComponent, TranslateModule.forRoot()],
+      providers: [provideRouter([])],
+    })
+      .overrideComponent(AccountProfileComponent, {
+        remove: { imports: [IdentityProviderCapabilityDirective, ServerHtmlDirective, ServerSettingPipe] },
+        add: {
+          imports: [
+            MockIdentityProviderCapabilityDirective,
+            MockDirective(ServerHtmlDirective),
+            MockPipe(ServerSettingPipe, () => true),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

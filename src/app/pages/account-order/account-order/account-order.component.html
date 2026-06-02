@@ -61,7 +61,13 @@
       <!-- Add Order Items to Cart Button -->
       <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
       <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
+      @defer {
+        <ish-order-create-order-template
+          *ishFeature="'orderTemplates'"
+          [cssClass]="'mb-3'"
+          [lineItems]="order.lineItems"
+        />
+      }
     </div>
   </div>
   <div class="row">
@@ -131,7 +137,13 @@
       <!-- Add Order Items to Cart Button -->
       <ish-account-order-to-basket [cssClass]="'mb-3'" [order]="order" />
       <!-- Create Order-Template from Order Button -->
-      <ish-lazy-order-create-order-template [cssClass]="'mb-3'" [lineItems]="order.lineItems" />
+      @defer {
+        <ish-order-create-order-template
+          *ishFeature="'orderTemplates'"
+          [cssClass]="'mb-3'"
+          [lineItems]="order.lineItems"
+        />
+      }
     </div>
   </div>
 }

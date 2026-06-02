@@ -1,12 +1,13 @@
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
@@ -21,8 +22,17 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
   selector: 'ish-product-add-to-order-template',
   templateUrl: './product-add-to-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    NgClass,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    SelectOrderTemplateModalComponent,
+    TranslatePipe,
+  ],
 })
-@GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnInit {
   @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
   @Input() cssClass: string;

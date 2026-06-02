@@ -1,11 +1,12 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterLink, provideRouter } from '@angular/router';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
@@ -48,10 +49,22 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(RequisitionRejectDialogComponent), MockPipe(PricePipe), RequisitionsListComponent],
+      imports: [RequisitionsListComponent, TranslateModule.forRoot()],
       providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }, provideRouter([])],
-    }).compileComponents();
+    })
+      .overrideComponent(RequisitionsListComponent, {
+        set: {
+          imports: [
+            CdkTableModule,
+            DatePipe,
+            MockPipe(PricePipe),
+            MockComponent(RequisitionRejectDialogComponent),
+            RouterLink,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

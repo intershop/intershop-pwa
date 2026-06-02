@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { PriceType } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 /**
  * Component for displaying payment costs and payment restriction information.
@@ -12,6 +14,8 @@ import { PriceType } from 'ish-core/models/price/price.model';
   selector: 'ish-basket-payment-cost-info',
   templateUrl: './basket-payment-cost-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [PricePipe, TranslatePipe],
 })
 export class BasketPaymentCostInfoComponent {
   @Input({ required: true }) paymentMethod: PaymentMethod;

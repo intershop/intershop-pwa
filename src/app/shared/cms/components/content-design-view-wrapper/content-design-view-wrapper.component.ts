@@ -1,6 +1,9 @@
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
@@ -11,6 +14,8 @@ import { PreviewService } from 'ish-core/utils/preview/preview.service';
   templateUrl: './content-design-view-wrapper.component.html',
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, NgSwitch, NgSwitchCase, NgTemplateOutlet, ScrollDirective, TranslatePipe],
 })
 export class ContentDesignViewWrapperComponent implements OnInit {
   // pagelet parameter

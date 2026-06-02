@@ -7,19 +7,23 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual, parseISO } from 'date-fns';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 @Component({
   selector: 'ish-basket-desired-delivery-date',
   templateUrl: './basket-desired-delivery-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyForm, ReactiveFormsModule, SuccessMessageComponent, TranslatePipe],
 })
 export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;

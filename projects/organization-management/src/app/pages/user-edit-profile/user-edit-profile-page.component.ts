@@ -1,9 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
@@ -11,6 +17,16 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   selector: 'ish-user-edit-profile-page',
   templateUrl: './user-edit-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    FormSubmitDirective,
+    LoadingComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+    UserProfileFormComponent,
+  ],
 })
 export class UserEditProfilePageComponent implements OnInit {
   loading$: Observable<boolean>;

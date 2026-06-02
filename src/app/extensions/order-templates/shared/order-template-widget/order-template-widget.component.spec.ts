@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -30,13 +32,24 @@ describe('Order Template Widget Component', () => {
     when(orderTemplatesFacade.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent), OrderTemplateWidgetComponent],
+      imports: [OrderTemplateWidgetComponent, TranslateModule.forRoot()],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(OrderTemplateWidgetComponent, {
+        remove: { imports: [InfoBoxComponent, LoadingComponent, ProductAddToBasketComponent, ProductContextDirective] },
+        add: {
+          imports: [
+            MockComponent(InfoBoxComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(ProductAddToBasketComponent),
+            MockDirective(ProductContextDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

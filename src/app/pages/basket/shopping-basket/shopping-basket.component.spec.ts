@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { RoleToggleModule } from 'ish-core/role-toggle.module';
+import { AuthorizationToggleDirective, AuthorizationToggleModule } from 'ish-core/authorization-toggle.imports';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { NotRoleToggleDirective, RoleToggleModule } from 'ish-core/role-toggle.imports';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -16,13 +19,17 @@ import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/ba
 import { BasketPromotionCodeComponent } from 'ish-shared/components/basket/basket-promotion-code/basket-promotion-code.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { ClearBasketComponent } from 'ish-shared/components/basket/clear-basket/clear-basket.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
-import { LazyBasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-basket-create-order-template/lazy-basket-create-order-template.component';
-import { LazyDirectOrderComponent } from '../../../extensions/quickorder/exports/lazy-direct-order/lazy-direct-order.component';
-import { LazyBasketAddToQuoteComponent } from '../../../extensions/quoting/exports/lazy-basket-add-to-quote/lazy-basket-add-to-quote.component';
+import { BasketCreateOrderTemplateComponent } from '../../../extensions/order-templates/shared/basket-create-order-template/basket-create-order-template.component';
+import { PunchoutTransferBasketComponent } from '../../../extensions/punchout/shared/punchout-transfer-basket/punchout-transfer-basket.component';
+import { DirectOrderComponent } from '../../../extensions/quickorder/shared/direct-order/direct-order.component';
+import { BasketAddToQuoteComponent } from '../../../extensions/quoting/shared/basket-add-to-quote/basket-add-to-quote.component';
+import { QuotingBasketLineItemsComponent } from '../../../extensions/quoting/shared/quoting-basket-line-items/quoting-basket-line-items.component';
+import { BasketOrderRecurrenceEditComponent } from '../basket-order-recurrence-edit/basket-order-recurrence-edit.component';
 import { ShoppingBasketPaymentComponent } from '../shopping-basket-payment/shopping-basket-payment.component';
 
 import { ShoppingBasketComponent } from './shopping-basket.component';
@@ -34,32 +41,47 @@ describe('Shopping Basket Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(BasketCostCenterSelectionComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketCustomFieldsComponent),
-        MockComponent(BasketErrorMessageComponent),
-        MockComponent(BasketInfoComponent),
-        MockComponent(BasketPromotionCodeComponent),
-        MockComponent(BasketValidationResultsComponent),
-        MockComponent(ClearBasketComponent),
-        MockComponent(ContentIncludeComponent),
-        MockComponent(LazyBasketAddToQuoteComponent),
-        MockComponent(LazyBasketCreateOrderTemplateComponent),
-        MockComponent(LazyDirectOrderComponent),
-        MockComponent(LineItemListComponent),
-        MockComponent(ModalDialogLinkComponent),
-        MockComponent(ShoppingBasketPaymentComponent),
-        MockComponent(SkipContentLinkComponent),
-        ShoppingBasketComponent,
+      imports: [ShoppingBasketComponent, TranslateModule.forRoot()],
+      providers: [
+        ...(AuthorizationToggleModule.forTesting().providers ?? []),
+        ...(FeatureToggleModule.forTesting().providers ?? []),
+        ...(RoleToggleModule.forTesting().providers ?? []),
       ],
-      imports: [
-        AuthorizationToggleModule.forTesting(),
-        FeatureToggleModule.forTesting(),
-        RoleToggleModule.forTesting(),
-        TranslateModule.forRoot(),
-      ],
-    }).compileComponents();
+    })
+      .overrideComponent(ShoppingBasketComponent, {
+        set: {
+          imports: [
+            MockComponent(ContentIncludeComponent),
+            TranslatePipe,
+            MockComponent(ModalDialogLinkComponent),
+            MockComponent(BasketErrorMessageComponent),
+            MockComponent(BasketInfoComponent),
+            MockComponent(BasketValidationResultsComponent),
+            MockDirective(ServerHtmlDirective),
+            MockComponent(BasketCostCenterSelectionComponent),
+            MockComponent(BasketCustomFieldsComponent),
+            MockComponent(SkipContentLinkComponent),
+            FeatureToggleDirective,
+            MockComponent(BasketAddToQuoteComponent),
+            MockComponent(BasketCreateOrderTemplateComponent),
+            MockComponent(LineItemListComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(ClearBasketComponent),
+            MockComponent(DirectOrderComponent),
+            MockComponent(BasketPromotionCodeComponent),
+            MockComponent(BasketCostSummaryComponent),
+            MockComponent(BasketOrderRecurrenceEditComponent),
+            MockComponent(PunchoutTransferBasketComponent),
+            MockComponent(QuotingBasketLineItemsComponent),
+            MockPipe(ServerSettingPipe),
+            NotRoleToggleDirective,
+            MockComponent(ShoppingBasketPaymentComponent),
+            MockDirective(LazyLoadingContentDirective),
+            AuthorizationToggleDirective,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

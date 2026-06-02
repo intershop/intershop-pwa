@@ -1,4 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { LoginFormComponent } from 'ish-shared/components/login/login-form/login-form.component';
 
 @Component({
   template: `
@@ -8,5 +11,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [LoginFormComponent, TranslatePipe],
 })
 export class LoginComponent {}

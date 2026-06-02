@@ -1,12 +1,37 @@
+import { Component, Directive, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyField, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 
 import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.component';
+
+@Directive({
+  selector: '[ishProductContext]',
+  standalone: true,
+})
+class MockProductContextDirective {
+  @Input() configuration: unknown;
+  @Input() quantity: number;
+  @Output() readonly quantityChange = new EventEmitter<number>();
+
+  context = {
+    connect: jest.fn(),
+    select: jest.fn(() => of(undefined)),
+  } as Partial<ProductContextFacade>;
+}
+
+@Component({
+  selector: 'ish-product-quantity',
+  template: '',
+  standalone: true,
+})
+class MockProductQuantityComponent {}
 
 describe('Quickorder Repeat Field Component', () => {
   let component: FormlyTestingContainerComponent;
@@ -15,15 +40,21 @@ describe('Quickorder Repeat Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuickorderRepeatFieldComponent],
       imports: [
-        FormlyModule.forChild({
+        FormlyModule.forRoot({
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
         FormlyTestingComponentsModule,
+        QuickorderRepeatFieldComponent,
         TranslateModule.forRoot(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(QuickorderRepeatFieldComponent, {
+        set: {
+          imports: [MockProductContextDirective, TranslateModule, MockProductQuantityComponent, FormlyField],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

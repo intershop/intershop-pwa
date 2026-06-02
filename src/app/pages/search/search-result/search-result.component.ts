@@ -1,6 +1,14 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
+import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
+import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
 /**
  * The Search Result Component displays a list of products as the result of a search and emits events for changing view type or sorting of the list.
@@ -13,6 +21,17 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   selector: 'ish-search-result',
   templateUrl: './search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    BreadcrumbComponent,
+    ContentIncludeComponent,
+    FilterNavigationComponent,
+    NgbCollapse,
+    NgClass,
+    ProductListingComponent,
+    SkipContentLinkComponent,
+    TranslatePipe,
+  ],
 })
 export class SearchResultComponent implements OnInit, OnChanges {
   /**

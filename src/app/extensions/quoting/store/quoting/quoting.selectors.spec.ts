@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { QuoteStub, QuotingEntity } from '../../models/quoting/quoting.model';
-import { QuotingStoreModule } from '../quoting-store.module';
+import { QuotingStoreProviders } from '../quoting-store.providers';
 
 import {
   deleteQuotingEntity,
@@ -21,7 +21,7 @@ describe('Quoting Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), QuotingStoreModule.forTesting('quoting')],
+      imports: [...CoreStoreProviders.forTesting(), QuotingStoreProviders.forTesting('quoting')],
       providers: [provideStoreSnapshots()],
     });
 

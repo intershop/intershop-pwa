@@ -47,12 +47,12 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   imports: [
     AsyncPipe,
     NgClass,
-    TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,
     SuggestKeywordsComponent,
     SuggestProductsComponent,
     SuggestSearchTermsComponent,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

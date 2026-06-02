@@ -16,6 +16,7 @@ describe('Formly Testing Fieldgroup Example Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        FieldsetFieldComponent,
         FormlyModule.forRoot({
           types: [
             {
@@ -27,7 +28,6 @@ describe('Formly Testing Fieldgroup Example Component', () => {
         }),
         FormlyTestingComponentsModule,
       ],
-      declarations: [FieldsetFieldComponent],
     }).compileComponents();
   });
 

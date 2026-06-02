@@ -44,10 +44,14 @@ describe('Product Price Component', () => {
     when(context.select('product')).thenReturn(of({ sku: '123' }));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockPipe(PricePipe, (price: Price) => `$${price.value?.toFixed(2)}`), ProductPriceComponent],
+      imports: [ProductPriceComponent, TranslateModule.forRoot()],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductPriceComponent, {
+        remove: { imports: [PricePipe] },
+        add: { imports: [MockPipe(PricePipe, (price: Price) => `$${price.value?.toFixed(2)}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

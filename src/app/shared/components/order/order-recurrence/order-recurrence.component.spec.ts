@@ -14,9 +14,13 @@ describe('Order Recurrence Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockPipe(DatePipe), MockPipe(FrequencyPipe), OrderRecurrenceComponent],
-    }).compileComponents();
+      imports: [OrderRecurrenceComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(OrderRecurrenceComponent, {
+        remove: { imports: [DatePipe, FrequencyPipe] },
+        add: { imports: [MockPipe(DatePipe), MockPipe(FrequencyPipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

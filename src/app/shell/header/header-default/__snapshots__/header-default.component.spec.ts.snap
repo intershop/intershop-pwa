@@ -5,9 +5,9 @@ exports[`Header Default Component should render normal header adequately for des
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
+      <ish-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      ></ish-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -46,7 +46,9 @@ exports[`Header Default Component should render normal header adequately for des
           rel="home"
           routerlink="/home"
           class="logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -65,7 +67,7 @@ exports[`Header Default Component should render normal header adequately for des
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse show"
       ng-reflect-collapsed="false"
       aria-label="navigation.main.aria_label"
     >
@@ -82,9 +84,9 @@ exports[`Header Default Component should render normal header adequately for mob
 <div class="header container mobile" ng-reflect-ng-class="mobile">
   <ul class="user-links">
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
+      <ish-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      ></ish-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -94,7 +96,10 @@ exports[`Header Default Component should render normal header adequately for mob
       tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
-    <div class="search-container header-search-container show" ng-reflect-collapsed="false">
+    <div
+      class="search-container header-search-container show collapse"
+      ng-reflect-collapsed="false"
+    >
       <ish-search-box
         data-testing-id="search-box-desktop"
         ng-reflect-device-type="mobile"
@@ -130,7 +135,9 @@ exports[`Header Default Component should render normal header adequately for mob
           rel="home"
           routerlink="/home"
           class="mobile-logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -142,7 +149,7 @@ exports[`Header Default Component should render normal header adequately for mob
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse"
       ng-reflect-collapsed="true"
       aria-label="navigation.main.aria_label"
     >
@@ -160,9 +167,9 @@ exports[`Header Default Component should render normal header adequately for tab
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
-      <ish-lazy-product-compare-status
+      <ish-product-compare-status
         data-testing-id="compare-status-desktop"
-      ></ish-lazy-product-compare-status>
+      ></ish-product-compare-status>
     </li>
   </ul>
   <div class="header-utility">
@@ -201,7 +208,9 @@ exports[`Header Default Component should render normal header adequately for tab
           rel="home"
           routerlink="/home"
           class="logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -220,7 +229,7 @@ exports[`Header Default Component should render normal header adequately for tab
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse show"
       ng-reflect-collapsed="false"
       aria-label="navigation.main.aria_label"
     >
@@ -268,7 +277,9 @@ exports[`Header Default Component should render sticky header adequately for des
           rel="home"
           routerlink="/home"
           class="logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -287,7 +298,7 @@ exports[`Header Default Component should render sticky header adequately for des
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse show"
       ng-reflect-collapsed="false"
       aria-label="navigation.main.aria_label"
     >
@@ -310,7 +321,10 @@ exports[`Header Default Component should render sticky header adequately for mob
       aria-label="search.searchbox.button.sticky_header.aria_label"
       ><i class="bi bi-search header-icon"></i
     ></a>
-    <div class="search-container header-search-container" ng-reflect-collapsed="false">
+    <div
+      class="search-container header-search-container collapse show"
+      ng-reflect-collapsed="false"
+    >
       <ish-search-box
         data-testing-id="search-box-desktop"
         ng-reflect-device-type="mobile"
@@ -341,7 +355,9 @@ exports[`Header Default Component should render sticky header adequately for mob
           rel="home"
           routerlink="/home"
           class="mobile-logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -353,7 +369,7 @@ exports[`Header Default Component should render sticky header adequately for mob
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse"
       ng-reflect-collapsed="true"
       aria-label="navigation.main.aria_label"
     >
@@ -401,7 +417,9 @@ exports[`Header Default Component should render sticky header adequately for tab
           rel="home"
           routerlink="/home"
           class="mobile-logo"
+          ng-reflect-router-link="/home"
           aria-label="common.home.link"
+          href="/home"
         ></a>
       </div>
     </div>
@@ -420,7 +438,7 @@ exports[`Header Default Component should render sticky header adequately for tab
   </button>
   <div class="global-nav-container">
     <nav
-      class="global-nav navbar-expand-md"
+      class="global-nav navbar-expand-md collapse"
       ng-reflect-collapsed="true"
       aria-label="navigation.main.aria_label"
     >

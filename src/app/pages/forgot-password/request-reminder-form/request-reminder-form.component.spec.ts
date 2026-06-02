@@ -18,8 +18,7 @@ describe('Request Reminder Form Component', () => {
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [RequestReminderFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, RequestReminderFormComponent, TranslateModule.forRoot()],
       providers: [{ provide: AppFacade, useFactory: () => instance(mockAppFacade) }],
     }).compileComponents();
   });

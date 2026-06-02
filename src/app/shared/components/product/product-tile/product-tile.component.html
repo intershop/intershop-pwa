@@ -6,7 +6,7 @@
         <ish-product-label />
       </div>
       <ish-product-name />
-      <ish-lazy-product-rating [hideNumberOfReviews]="true" />
+      <ish-product-rating *ishFeature="'rating'" [hideNumberOfReviews]="true" />
       <ish-product-promotion displayType="simple" />
       @if (configuration$('price') | async) {
         <div class="price-container">
@@ -15,10 +15,20 @@
       }
       <ish-product-item-variations />
       <div class="product-tile-actions btn-group">
-        <ish-lazy-product-add-to-quote cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-compare cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-order-template cssClass="btn btn-link me-0" displayType="icon" [ariaHidden]="true" />
-        <ish-lazy-product-add-to-wishlist cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+        <ish-product-add-to-quote *ishFeature="'quoting'" cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+        <ish-product-add-to-compare cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
+        <ish-product-add-to-order-template
+          *ishFeature="'orderTemplates'"
+          cssClass="btn btn-link me-0"
+          displayType="icon"
+          [ariaHidden]="true"
+        />
+        <ish-product-add-to-wishlist
+          *ishFeature="'wishlists'"
+          cssClass="btn-link"
+          displayType="icon"
+          [ariaHidden]="true"
+        />
         <ish-product-add-to-basket cssClass="btn-link" displayType="icon" [ariaHidden]="true" />
       </div>
     </div>

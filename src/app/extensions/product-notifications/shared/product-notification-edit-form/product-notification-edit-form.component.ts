@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -28,6 +28,8 @@ import { ProductNotification } from '../../models/product-notification/product-n
   selector: 'ish-product-notification-edit-form',
   templateUrl: './product-notification-edit-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [FormlyForm, ReactiveFormsModule],
 })
 export class ProductNotificationEditFormComponent implements OnChanges {
   @Input({ required: true }) form: FormGroup;

@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -11,6 +13,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
   templateUrl: './product-label.component.html',
   styleUrls: ['./product-label.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, NgSwitch, NgSwitchCase, TranslatePipe],
 })
 export class ProductLabelComponent implements OnInit {
   productLabel$: Observable<string>;

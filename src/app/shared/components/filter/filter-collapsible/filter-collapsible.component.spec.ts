@@ -11,7 +11,7 @@ describe('Filter Collapsible Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterCollapsibleComponent],
+      imports: [FilterCollapsibleComponent],
     }).compileComponents();
   });
 

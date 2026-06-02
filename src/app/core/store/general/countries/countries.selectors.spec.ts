@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Country } from 'ish-core/models/country/country.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { GeneralStoreModule } from 'ish-core/store/general/general-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { GeneralStoreProviders } from 'ish-core/store/general/general-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadCountriesSuccess } from './countries.actions';
@@ -18,7 +18,7 @@ describe('Countries Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), GeneralStoreModule.forTesting('countries')],
+      imports: [...CoreStoreProviders.forTesting(), GeneralStoreProviders.forTesting('countries')],
       providers: [provideStoreSnapshots()],
     });
 

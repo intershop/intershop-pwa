@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { cold } from 'jasmine-marbles';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.imports';
 import { getFeatures } from 'ish-core/store/core/configuration';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
 describe('Feature Toggle Service', () => {
   describe('without features defined', () => {
@@ -12,7 +12,7 @@ describe('Feature Toggle Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CoreStoreModule.forTesting(['configuration'])],
+        imports: [...CoreStoreProviders.forTesting(['configuration'])],
       });
       featureToggle = TestBed.inject(FeatureToggleService);
     });

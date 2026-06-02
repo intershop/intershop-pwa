@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Component that renders a tooltip.
@@ -17,6 +20,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'ish-field-tooltip',
   templateUrl: './field-tooltip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, NgbPopoverModule, TranslatePipe],
 })
 export class FieldTooltipComponent {
   @Input({ required: true }) tooltipInfo: { text: string; link: string; title?: string; class?: string };

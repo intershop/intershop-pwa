@@ -4,6 +4,7 @@ import { Requisition } from 'projects/requisition-management/src/app/models/requ
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 
 /**
  * The Basket Merchant Message View Component displays the message to merchant on related pages like basket review, order details and requisition details page.
@@ -13,6 +14,8 @@ import { Order } from 'ish-core/models/order/order.model';
   selector: 'ish-basket-merchant-message-view',
   templateUrl: './basket-merchant-message-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [InfoBoxComponent],
 })
 export class BasketMerchantMessageViewComponent implements OnChanges {
   @Input({ required: true }) data: Basket | Order | Requisition;

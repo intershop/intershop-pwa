@@ -1,5 +1,7 @@
+import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type FormErrorMessages = Record<string, string>;
 
@@ -7,6 +9,8 @@ type FormErrorMessages = Record<string, string>;
   selector: 'ish-form-control-feedback',
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [SlicePipe, TranslatePipe],
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input({ required: true }) control: AbstractControl;

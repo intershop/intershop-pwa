@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Wrapper that adds a small description underneath the field.
@@ -14,6 +16,8 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-description-wrapper',
   templateUrl: './description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, TranslatePipe],
 })
 export class DescriptionWrapperComponent extends FieldWrapper implements OnInit {
   ngOnInit(): void {

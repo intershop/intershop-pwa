@@ -12,9 +12,13 @@ describe('Account Punchout Configuration Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [AccountPunchoutConfigurationPageComponent, MockComponent(OciConfigurationFormComponent)],
-    }).compileComponents();
+      imports: [AccountPunchoutConfigurationPageComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(AccountPunchoutConfigurationPageComponent, {
+        remove: { imports: [OciConfigurationFormComponent] },
+        add: { imports: [MockComponent(OciConfigurationFormComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

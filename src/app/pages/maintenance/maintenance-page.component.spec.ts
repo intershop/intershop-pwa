@@ -13,9 +13,13 @@ describe('Maintenance Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MaintenancePageComponent, MockDirective(ServerHtmlDirective)],
-    }).compileComponents();
+      imports: [MaintenancePageComponent, TranslateModule.forRoot()],
+    })
+      .overrideComponent(MaintenancePageComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

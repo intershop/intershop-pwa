@@ -1,8 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -10,8 +10,9 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   selector: 'ish-buyers-select',
   templateUrl: './buyers-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class BuyersSelectComponent implements OnInit {
   @Input({ required: true }) control: FormControl;
   @Input() field: Partial<FormlyFieldConfig>;

@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -8,6 +10,8 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
   selector: 'ish-promotion-remove',
   templateUrl: './promotion-remove.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class PromotionRemoveComponent implements OnInit {
   basket$: Observable<BasketView>;

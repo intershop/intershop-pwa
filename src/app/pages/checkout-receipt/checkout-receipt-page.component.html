@@ -2,7 +2,9 @@
   <div data-testing-id="checkout-receipt-page">
     <ish-checkout-receipt [order]="data.basket || data.order">
       @if (data.basket) {
-        <ish-lazy-checkout-receipt-requisition [basket]="data.basket" />
+        @defer {
+          <ish-checkout-receipt-requisition [basket]="data.basket" />
+        }
       } @else {
         <ish-checkout-receipt-order [order]="data.order" />
       }

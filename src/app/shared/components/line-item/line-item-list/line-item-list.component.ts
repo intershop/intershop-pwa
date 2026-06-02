@@ -1,8 +1,14 @@
+import { NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { OrderLineItem } from 'ish-core/models/order/order.model';
 import { Price } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
+import { LineItemListElementComponent } from 'ish-shared/components/line-item/line-item-list-element/line-item-list-element.component';
 
 /**
  * The Line Item List Component displays line items of orders and baskets.
@@ -22,6 +28,8 @@ import { Price } from 'ish-core/models/price/price.model';
   selector: 'ish-line-item-list',
   templateUrl: './line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [LineItemListElementComponent, NgForOf, PagingComponent, PricePipe, ProductContextDirective, TranslatePipe],
 })
 export class LineItemListComponent implements OnChanges {
   @Input({ required: true }) lineItems: Partial<LineItemView & OrderLineItem>[];

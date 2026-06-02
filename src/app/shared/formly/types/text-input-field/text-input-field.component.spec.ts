@@ -16,7 +16,6 @@ describe('Text Input Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextInputFieldComponent],
       imports: [
         FormlyModule.forRoot({
           types: [{ name: 'ish-text-input-field', component: TextInputFieldComponent }],
@@ -24,6 +23,7 @@ describe('Text Input Field Component', () => {
         FormlyTestingComponentsModule,
         NgxMaskDirective,
         ReactiveFormsModule,
+        TextInputFieldComponent,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();

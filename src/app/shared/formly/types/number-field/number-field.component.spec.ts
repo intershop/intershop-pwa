@@ -26,10 +26,10 @@ describe('Number Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
+        NumberFieldComponent,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
-      declarations: [NumberFieldComponent],
     }).compileComponents();
   });
 

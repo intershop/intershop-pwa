@@ -1,9 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, iif, of } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -11,8 +15,9 @@ import { QuotingFacade } from '../../facades/quoting.facade';
   selector: 'ish-quote-widget',
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, RouterLink, TranslatePipe],
 })
-@GenerateLazyComponent()
 export class QuoteWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
 

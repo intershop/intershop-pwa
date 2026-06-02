@@ -18,8 +18,7 @@ describe('Select Wishlist Form Component', () => {
   beforeEach(async () => {
     wishlistFacade = mock(wishlistFacade);
     await TestBed.configureTestingModule({
-      declarations: [SelectWishlistFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, SelectWishlistFormComponent, TranslateModule.forRoot()],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacade) }],
     }).compileComponents();
   });

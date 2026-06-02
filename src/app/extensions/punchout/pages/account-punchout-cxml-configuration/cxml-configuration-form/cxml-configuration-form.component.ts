@@ -1,10 +1,15 @@
 /* eslint-disable unicorn/no-null */
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-configuration.model';
@@ -13,6 +18,16 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
   selector: 'ish-cxml-configuration-form',
   templateUrl: './cxml-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyForm,
+    FormSubmitDirective,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+  ],
 })
 export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
   @Input({ required: true }) cxmlConfiguration: CxmlConfiguration[];

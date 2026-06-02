@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { StoreLocation as StoreModel } from '../../models/store-location/store-location.model';
-import { StoreLocatorStoreModule } from '../store-locator-store.module';
+import { StoreLocatorStoreProviders } from '../store-locator-store.providers';
 
 import { getLoading, highlightStore } from '.';
-import { loadStores, loadStoresSuccess } from './stores.actions';
+import { loadStores, loadStoresFail, loadStoresSuccess } from './stores.actions';
 import { getHighlightedStore, getStores } from './stores.selectors';
 
 const store: StoreModel = {
@@ -25,12 +26,18 @@ const store: StoreModel = {
   longitude: 0,
 };
 
+const error: HttpError = {
+  name: 'HttpErrorResponse',
+  status: 500,
+  message: 'store lookup failed',
+};
+
 describe('Stores Selectors', () => {
   let store$: StoreWithSnapshots;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), StoreLocatorStoreModule.forTesting('stores')],
+      imports: [...CoreStoreProviders.forTesting(), StoreLocatorStoreProviders.forTesting('stores')],
       providers: [provideStoreSnapshots()],
     });
 
@@ -114,6 +121,17 @@ describe('Stores Selectors', () => {
 
     it('should set loading to false on store loading success', () => {
       store$.dispatch(loadStoresSuccessAction);
+      expect(getLoading(store$.state)).toBeFalse();
+    });
+  });
+
+  describe('error handling', () => {
+    beforeEach(() => {
+      store$.dispatch(loadStores({ countryCode: '', postalCode: '', city: '' }));
+      store$.dispatch(loadStoresFail({ error }));
+    });
+
+    it('should set loading to false after store loading fails', () => {
       expect(getLoading(store$.state)).toBeFalse();
     });
   });

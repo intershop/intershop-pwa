@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -26,13 +27,21 @@ describe('Recently Page Component', () => {
     when(recentlyFacade.recentlyViewedProducts$).thenReturn(of(['sku1', 'sku2']));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent), RecentlyPageComponent],
+      imports: [RecentlyPageComponent, TranslateModule.forRoot()],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RecentlyPageComponent, {
+        remove: {
+          imports: [AsyncPipe, BreadcrumbComponent, ProductsListComponent],
+        },
+        add: {
+          imports: [AsyncPipe, MockComponent(BreadcrumbComponent), MockComponent(ProductsListComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

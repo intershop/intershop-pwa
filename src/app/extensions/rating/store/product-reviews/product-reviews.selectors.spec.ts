@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
@@ -8,9 +8,9 @@ import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ng
 import { ProductReviews } from '../../models/product-reviews/product-reviews.model';
 import {
   PRODUCT_REVIEW_STORE_CONFIG,
-  ProductReviewStoreModule,
+  ProductReviewStoreProviders,
   ReviewsStoreConfig,
-} from '../product-review-store.module';
+} from '../product-review-store.providers';
 
 import { loadProductReviews, loadProductReviewsFail, loadProductReviewsSuccess } from './product-reviews.actions';
 import { getProductReviewsBySku, getProductReviewsError, getProductReviewsLoading } from './product-reviews.selectors';
@@ -37,7 +37,7 @@ describe('Product Reviews Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ProductReviewStoreModule.forTesting('productReviews')],
+      imports: [...CoreStoreProviders.forTesting(), ProductReviewStoreProviders.forTesting('productReviews')],
       providers: [{ provide: PRODUCT_REVIEW_STORE_CONFIG, useClass: ReviewsStoreConfig }, provideStoreSnapshots()],
     });
 

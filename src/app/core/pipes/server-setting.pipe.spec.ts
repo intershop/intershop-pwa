@@ -18,6 +18,8 @@ import { ServerSettingPipe } from './server-setting.pipe';
     @if ('never' | ishServerSetting) {
       [never]
     }`,
+  standalone: true,
+  imports: [ServerSettingPipe],
 })
 class TestComponent {}
 
@@ -29,7 +31,7 @@ describe('Server Setting Pipe', () => {
   beforeEach(async () => {
     appFacade = mock(AppFacade);
     TestBed.configureTestingModule({
-      declarations: [ServerSettingPipe, TestComponent],
+      imports: [TestComponent],
       providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });

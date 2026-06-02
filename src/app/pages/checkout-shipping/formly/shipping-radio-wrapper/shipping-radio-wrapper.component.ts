@@ -1,5 +1,10 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ShippingInfoComponent } from '../shipping-info/shipping-info.component';
 
 /**
  * Wrapper that handles checkout specific formatting and display of radio buttons.
@@ -13,5 +18,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-shipping-radio-wrapper',
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [NgbPopoverModule, NgClass, ShippingInfoComponent, TranslatePipe],
 })
 export class ShippingRadioWrapperComponent extends FieldWrapper {}

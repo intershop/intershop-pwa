@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
   selector: 'ish-select-wishlist-form',
   templateUrl: './select-wishlist-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, FormlyForm],
 })
 export class SelectWishlistFormComponent implements OnInit {
   @Input({ required: true }) formGroup: FormGroup;

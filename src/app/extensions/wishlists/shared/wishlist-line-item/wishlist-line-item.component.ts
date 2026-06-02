@@ -1,7 +1,21 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
+import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
+import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wishlist-modal.component';
 
 /**
  * The Wishlist item component displays a wishlist item. This Item can be removed or moved to another wishlist.
@@ -10,6 +24,22 @@ import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
   selector: 'ish-wishlist-line-item',
   templateUrl: './wishlist-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    DatePipe,
+    ProductAddToBasketComponent,
+    ProductBundleDisplayComponent,
+    ProductContextAccessDirective,
+    ProductIdComponent,
+    ProductImageComponent,
+    ProductInventoryComponent,
+    ProductNameComponent,
+    ProductPriceComponent,
+    ProductQuantityComponent,
+    ProductVariationDisplayComponent,
+    SelectWishlistModalComponent,
+    TranslatePipe,
+  ],
 })
 export class WishlistLineItemComponent {
   constructor(private wishlistsFacade: WishlistsFacade) {}

@@ -1,16 +1,23 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { Price } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteRequestItem } from '../../models/quoting/quoting.model';
+import { QuoteLineItemListElementComponent } from '../quote-line-item-list-element/quote-line-item-list-element.component';
 
 @Component({
   selector: 'ish-quote-line-item-list',
   templateUrl: './quote-line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, PricePipe, ProductContextDirective, QuoteLineItemListElementComponent, TranslatePipe],
 })
 export class QuoteLineItemListComponent implements OnInit {
   total$: Observable<Price>;

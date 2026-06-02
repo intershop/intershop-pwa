@@ -31,25 +31,43 @@ describe('Account Order Template Detail Line Item Component', () => {
     when(context.select(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountOrderTemplateDetailLineItemComponent,
-        MockComponent(ProductBundleDisplayComponent),
-        MockComponent(ProductIdComponent),
-
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockComponent(ProductQuantityComponent),
-        MockComponent(ProductVariationDisplayComponent),
-        MockComponent(SelectOrderTemplateModalComponent),
-        MockPipe(DatePipe),
-      ],
-      imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [AccountOrderTemplateDetailLineItemComponent, ReactiveFormsModule, TranslateModule.forRoot()],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplateDetailLineItemComponent, {
+        remove: {
+          imports: [
+            DatePipe,
+            ProductBundleDisplayComponent,
+            ProductIdComponent,
+            ProductImageComponent,
+            ProductInventoryComponent,
+            ProductNameComponent,
+            ProductPriceComponent,
+            ProductQuantityComponent,
+            ProductVariationDisplayComponent,
+            SelectOrderTemplateModalComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockPipe(DatePipe),
+            MockComponent(ProductBundleDisplayComponent),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockComponent(ProductQuantityComponent),
+            MockComponent(ProductVariationDisplayComponent),
+            MockComponent(SelectOrderTemplateModalComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

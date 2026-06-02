@@ -1,12 +1,17 @@
+import { NgClass, NgForOf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
+import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 @Component({
   selector: 'ish-cms-container',
   templateUrl: './cms-container.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [ContentPageletComponent, ContentSlotComponent, NgClass, NgForOf],
 })
 export class CMSContainerComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

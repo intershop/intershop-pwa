@@ -8,7 +8,7 @@ import { take } from 'rxjs/operators';
 import { instance, mock } from 'ts-mockito';
 
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
 import { applyConfiguration } from './configuration.actions';
 import { ConfigurationEffects } from './configuration.effects';
@@ -20,7 +20,7 @@ describe('Configuration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), TranslateModule.forRoot()],
+      imports: [...CoreStoreProviders.forTesting(['configuration', 'serverConfig']), TranslateModule.forRoot()],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         ConfigurationEffects,

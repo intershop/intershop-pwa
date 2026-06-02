@@ -1,8 +1,9 @@
-import { formatNumber } from '@angular/common';
+import { CommonModule, formatNumber } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FieldType, FieldTypeConfig, FormlyFieldConfig } from '@ngx-formly/core';
-import { TranslateService } from '@ngx-translate/core';
-import { provideNgxMask } from 'ngx-mask';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 /**
  * Type for a basic input field
@@ -18,6 +19,8 @@ import { provideNgxMask } from 'ngx-mask';
   templateUrl: './text-input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNgxMask()],
+  standalone: true,
+  imports: [CommonModule, FormlyAttributes, NgxMaskDirective, ReactiveFormsModule, TranslatePipe],
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
   private textInputFieldTypes = ['text', 'email', 'password', 'tel'];
@@ -44,10 +47,10 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
 
   ngOnInit(): void {
     if (this.props?.mask?.startsWith('separator')) {
-      if (this.props?.mask === 'separator.2' && this.formControl?.value) {
-        this.formControl.setValue(formatNumber(this.formControl?.value, 'en_US', '1.2-2').replace(',', ''));
+      if (this.props.mask === 'separator.2' && this.formControl?.value) {
+        this.formControl.setValue(formatNumber(this.formControl.value, 'en_US', '1.2-2').replace(',', ''));
       }
-      // Convert underscore locale format (en_US) to hyphen format (en-US) for Intl API
+
       const locale = this.translateService.currentLang?.replace(/_/g, '-');
       const numberFormat = new Intl.NumberFormat(locale);
       const parts = numberFormat.formatToParts(1234567.89);

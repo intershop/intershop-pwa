@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -26,13 +27,18 @@ describe('Wishlist Widget Component', () => {
     when(shoppingFacade.excludeFailedProducts$(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ProductsListComponent), WishlistWidgetComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), WishlistWidgetComponent],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideRouter([]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(WishlistWidgetComponent, {
+        remove: { imports: [ProductsListComponent] },
+        add: { imports: [MockComponent(ProductsListComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

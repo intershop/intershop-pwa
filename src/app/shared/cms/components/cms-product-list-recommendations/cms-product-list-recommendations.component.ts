@@ -1,14 +1,18 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 @Component({
   selector: 'ish-cms-product-list-recommendations',
   templateUrl: './cms-product-list-recommendations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgClass, ProductsListComponent],
 })
 export class CMSProductListRecommendationsComponent implements CMSComponent, OnChanges {
   @Input({ required: true }) pagelet: ContentPageletView;

@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, forwardRef } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH } from 'ish-core/configurations/injection-keys';
@@ -13,6 +16,8 @@ import { InjectSingle } from 'ish-core/utils/injection';
   selector: 'ish-sub-category-navigation',
   templateUrl: './sub-category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, forwardRef(() => SubCategoryNavigationComponent), NgClass, NgStyle, RouterLink, TranslatePipe],
 })
 export class SubCategoryNavigationComponent implements OnInit {
   @Input({ required: true }) categoryUniqueId: string;

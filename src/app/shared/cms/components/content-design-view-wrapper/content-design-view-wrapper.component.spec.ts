@@ -39,14 +39,18 @@ describe('Content Design View Wrapper Component', () => {
     when(previewService.isDesignViewMode).thenReturn(true);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      declarations: [ContentDesignViewWrapperComponent, MockDirective(ScrollDirective)],
+      imports: [ContentDesignViewWrapperComponent, TranslateModule.forRoot()],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: DesignViewService, useFactory: () => instance(designViewService) },
         { provide: PreviewService, useFactory: () => instance(previewService) },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ContentDesignViewWrapperComponent, {
+        remove: { imports: [ScrollDirective] },
+        add: { imports: [MockDirective(ScrollDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

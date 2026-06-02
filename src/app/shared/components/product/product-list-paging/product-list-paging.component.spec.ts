@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { ProductListPagingComponent } from './product-list-paging.component';
 
@@ -10,9 +10,8 @@ describe('Product List Paging Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
+      imports: [ProductListPagingComponent],
       providers: [provideRouter([])],
-      declarations: [ProductListPagingComponent],
     }).compileComponents();
   });
 

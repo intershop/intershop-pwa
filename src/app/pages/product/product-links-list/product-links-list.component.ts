@@ -1,10 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product Link List Component
@@ -19,6 +22,8 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper
   selector: 'ish-product-links-list',
   templateUrl: './product-links-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, ProductContextDirective, ProductItemComponent],
 })
 export class ProductLinksListComponent implements OnChanges {
   /**

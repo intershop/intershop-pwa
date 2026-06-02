@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,6 +18,8 @@ import { startWith, switchMap, throttleTime } from 'rxjs/operators';
   selector: 'ish-maxlength-description-wrapper',
   templateUrl: './maxlength-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule],
 })
 export class MaxlengthDescriptionWrapperComponent extends FieldWrapper implements OnInit {
   description$: Observable<string>;

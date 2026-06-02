@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * The page header for error pages - the logo link reloads the app
@@ -8,6 +9,8 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
   selector: 'ish-header-error',
   templateUrl: './header-error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [TranslatePipe],
 })
 export class HeaderErrorComponent implements OnInit {
   constructor(@Inject(APP_BASE_HREF) private baseHref: string) {}
