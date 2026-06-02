@@ -13,7 +13,6 @@ import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import Swiper from 'swiper';
-import { SwiperModule } from 'swiper/angular';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { SwiperOptions } from 'swiper/types';
 
@@ -27,11 +26,11 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
 import {
   ProductItemComponent,
   ProductItemDisplayType,
 } from 'ish-shared/components/product/product-item/product-item.component';
-import { DeferredItemComponent } from '../../common/deferred-item/deferred-item.component';
 
 @Component({
   selector: 'ish-products-list',
@@ -46,7 +45,6 @@ import { DeferredItemComponent } from '../../common/deferred-item/deferred-item.
     NgClass,
     ProductContextDirective,
     ProductItemComponent,
-    SwiperModule,
   ],
 })
 export class ProductsListComponent implements OnChanges, OnDestroy {

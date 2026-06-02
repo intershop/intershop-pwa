@@ -11,7 +11,6 @@ import {
 import { Observable } from 'rxjs';
 import { distinctUntilKeyChanged, map, shareReplay, tap } from 'rxjs/operators';
 import Swiper from 'swiper';
-import { SwiperModule } from 'swiper/angular';
 import { A11y, Navigation } from 'swiper/modules';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -38,7 +37,7 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { ngSkipHydration: 'true' },
   standalone: true,
-  imports: [AsyncPipe, ModalDialogComponent, NgClass, ProductImageComponent_1, ProductLabelComponent, SwiperModule],
+  imports: [AsyncPipe, ModalDialogComponent, NgClass, ProductImageComponent_1, ProductLabelComponent],
 })
 export class ProductImagesComponent implements OnInit, OnDestroy {
   private swiper: Swiper;

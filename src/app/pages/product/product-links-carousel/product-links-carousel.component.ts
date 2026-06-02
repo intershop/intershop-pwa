@@ -4,7 +4,6 @@ import { RxState } from '@rx-angular/state';
 import { Observable, combineLatest, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import Swiper from 'swiper';
-import { SwiperModule } from 'swiper/angular';
 import { A11y, Navigation, Pagination } from 'swiper/modules';
 import { SwiperOptions } from 'swiper/types';
 
@@ -41,7 +40,6 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
     LazyLoadingContentDirective,
     ProductContextDirective,
     ProductItemComponent,
-    SwiperModule,
   ],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {

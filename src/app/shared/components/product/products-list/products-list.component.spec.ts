@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperModule } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
@@ -30,13 +29,7 @@ describe('Products List Component', () => {
     })
       .overrideComponent(ProductsListComponent, {
         remove: {
-          imports: [
-            ProductContextDirective,
-            ProductItemComponent,
-            SwiperModule,
-            DeferredItemComponent,
-            LazyLoadingContentDirective,
-          ],
+          imports: [ProductContextDirective, ProductItemComponent, DeferredItemComponent, LazyLoadingContentDirective],
         },
         add: {
           imports: [
