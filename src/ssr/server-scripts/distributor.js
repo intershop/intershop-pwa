@@ -8,6 +8,9 @@ const proxy = require('express-http-proxy');
 
 const app = express();
 
+// Disable Express x-powered-by header for security reasons
+app.disable('x-powered-by');
+
 const deployUrl = getDeployURLFromEnv();
 const concurrencySSR = getConcurrencySSR();
 

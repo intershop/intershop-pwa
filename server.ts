@@ -619,6 +619,9 @@ export function app() {
   // see https://expressjs.com/en/guide/behind-proxies.html
   server.set('trust proxy', true);
 
+  // Disable Express x-powered-by header for security reasons
+  server.disable('x-powered-by');
+
   return server;
 }
 
