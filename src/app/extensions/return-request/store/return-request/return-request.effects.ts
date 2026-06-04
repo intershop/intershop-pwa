@@ -26,7 +26,10 @@ import {
 
 @Injectable()
 export class ReturnRequestEffects {
-  constructor(private actions$: Actions, private returnRequestService: ReturnRequestService) {}
+  constructor(
+    private actions$: Actions,
+    private returnRequestService: ReturnRequestService
+  ) {}
 
   loadOrderReturnReasons$ = createEffect(() =>
     this.actions$.pipe(

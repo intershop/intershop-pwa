@@ -41,7 +41,7 @@ export interface CreateReturnRequestPosition {
 export interface CreateReturnRequestPayload {
   type: ReturnRequestType;
   positions: CreateReturnRequestPosition[];
-  customAttributes?: { [key: string]: string }[];
+  customAttributes?: Record<string, string>[];
   isGuest: boolean;
   orderId?: string;
   email?: string;

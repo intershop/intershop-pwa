@@ -26,7 +26,10 @@ export class ReturnOverviewPageComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private accountFacade: AccountFacade, private returnRequestFacade: ReturnRequestFacade) {}
+  constructor(
+    private accountFacade: AccountFacade,
+    private returnRequestFacade: ReturnRequestFacade
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.returnRequestFacade.returnRequestLoading$;

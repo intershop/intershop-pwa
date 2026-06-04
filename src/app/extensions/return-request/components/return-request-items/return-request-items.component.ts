@@ -10,12 +10,12 @@ import { ReturnRequest } from '../../models/return-request/return-request.model'
 export class ReturnRequestItemsComponent implements OnInit {
   @Input() orders: ReturnRequest[] = [];
 
-  groupOrders: { [key: string]: ReturnRequest[] };
+  groupOrders: Record<string, ReturnRequest[]>;
 
   orderIds: string[];
 
   ngOnInit() {
-    this.groupOrders = this.orders.reduce<{ [key: string]: ReturnRequest[] }>((acc, nxt) => {
+    this.groupOrders = this.orders.reduce<Record<string, ReturnRequest[]>>((acc, nxt) => {
       acc[nxt.orderId] = acc[nxt.orderId] ? [...acc[nxt.orderId], nxt] : [nxt];
       return acc;
     }, {});

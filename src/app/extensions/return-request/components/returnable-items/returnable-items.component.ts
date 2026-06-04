@@ -17,9 +17,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 import { ReturnRequestFacade } from '../../facades/return-request.facade';
 import { CreateReturnRequestPosition, ReturnablePosition } from '../../models/return-request/return-request.model';
 
-interface FormItems {
-  [key: string]: { checked: boolean; qty: number; reason: 'string' };
-}
+type FormItems = Record<string, { checked: boolean; qty: number; reason: 'string' }>;
 
 @Component({
   selector: 'ish-returnable-items',
@@ -31,13 +29,16 @@ export class ReturnableItemsComponent implements OnInit {
   @Input() form: UntypedFormGroup;
 
   returnReasons: SelectOption[] = [];
-  @Output() itemsUpdated = new EventEmitter<CreateReturnRequestPosition[]>();
-  @Output() quantityUpdated = new EventEmitter<number>();
+  @Output() readonly itemsUpdated = new EventEmitter<CreateReturnRequestPosition[]>();
+  @Output() readonly quantityUpdated = new EventEmitter<number>();
 
   private destroyRef = inject(DestroyRef);
   isB2C = false;
 
-  constructor(private returnRequestFacade: ReturnRequestFacade, private accountFacade: AccountFacade) {}
+  constructor(
+    private returnRequestFacade: ReturnRequestFacade,
+    private accountFacade: AccountFacade
+  ) {}
 
   totalQuantity = 0;
   columnsToDisplay = ['select', 'product', 'returnable_qty', 'qty'];
@@ -71,7 +72,7 @@ export class ReturnableItemsComponent implements OnInit {
     });
 
     this.itemsForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((items: FormItems) => {
-      if (this.isItemformHasValidRow()) {
+      if (this.isItemFormHasValidRow()) {
         this.updatePositions(items);
       }
       if (this.itemsCheckState().every(item => !item)) {
@@ -127,9 +128,9 @@ export class ReturnableItemsComponent implements OnInit {
     return this.itemsForm.get(`${sku}.${control}`);
   }
 
-  updateStatusAndValidity(controlName: string, isChecked: boolean, maxQuantiy?: number) {
+  updateStatusAndValidity(controlName: string, isChecked: boolean, maxQuantity?: number) {
     this.itemsForm.get(controlName)[isChecked ? 'enable' : 'disable']();
-    const validators = maxQuantiy ? [Validators.required, Validators.max(maxQuantiy)] : [Validators.required];
+    const validators = maxQuantity ? [Validators.required, Validators.max(maxQuantity)] : [Validators.required];
     this.itemsForm.get(controlName)[isChecked ? 'setValidators' : 'removeValidators'](validators);
     this.itemsForm.get(controlName).updateValueAndValidity();
   }
@@ -138,7 +139,7 @@ export class ReturnableItemsComponent implements OnInit {
     return Object.keys(this.itemsForm.value).map(key => this.itemsForm.value[key].checked);
   }
 
-  isItemformHasValidRow(): boolean {
+  isItemFormHasValidRow(): boolean {
     return !!Object.keys(this.itemsForm.value).filter(
       key =>
         this.itemsForm.value[key].checked &&
@@ -147,7 +148,7 @@ export class ReturnableItemsComponent implements OnInit {
     ).length;
   }
 
-  toggleFields(event: Event, sku: string, maxQuantiy: number) {
+  toggleFields(event: Event, sku: string, maxQuantity: number) {
     const isChecked = (event.target as HTMLInputElement).checked;
 
     // uncheck checkAll checkbox if any row is unselected
@@ -160,7 +161,7 @@ export class ReturnableItemsComponent implements OnInit {
       this.checkAll.setValue(true, { emitEvent: false });
     }
 
-    this.updateStatusAndValidity(`${sku}.qty`, isChecked, maxQuantiy);
+    this.updateStatusAndValidity(`${sku}.qty`, isChecked, maxQuantity);
     if (this.isB2C) {
       this.updateStatusAndValidity(`${sku}.reason`, isChecked);
     }

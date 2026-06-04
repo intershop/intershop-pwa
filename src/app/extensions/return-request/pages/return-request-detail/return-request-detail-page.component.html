@@ -25,15 +25,17 @@
         </p>
         <span>
           {{ 'toolineo.account.return_detail.before_date' | translate }}
-          <fa-icon class="ml-1" [icon]="['fas', 'info-circle']" />
+          <i class="bi bi-info-circle-fill"></i>
         </span>
         <h3 class="mt-0">22.06.2023</h3>
       </div>
       <p class="mt-3">
-        <fa-icon class="mr-1" [icon]="['fas', 'info-circle']" />
+        <i class="bi bi-info-circle-fill"></i>
         {{ 'toolineo.account.return_detail.credit_return_note' | translate }}
       </p>
-      <button class="btn btn-primary">{{ 'toolineo.account.return_detail.button.download_return' | translate }}</button>
+      <button class="btn btn-primary" type="button">
+        {{ 'toolineo.account.return_detail.button.download_return' | translate }}
+      </button>
     </div>
   </div>
   <table class="table table-striped mt-4">

@@ -32,7 +32,7 @@ export class ReturnRequestModalComponent implements OnInit, OnChanges {
   @Input() order: Order;
   @Input() isOpenModal: boolean;
   @Input() isGuest: boolean;
-  @Output() closeModal = new EventEmitter<void>();
+  @Output() readonly closeModal = new EventEmitter<void>();
   @ViewChild('returnRequestDialog') returnRequestDialog: ModalDialogComponent<unknown>;
 
   form: UntypedFormGroup;
@@ -42,7 +42,10 @@ export class ReturnRequestModalComponent implements OnInit, OnChanges {
   returnItemsLoaded = false;
   selectedQuantity = 0;
 
-  constructor(private returnRequestFacade: ReturnRequestFacade, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private returnRequestFacade: ReturnRequestFacade,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup({

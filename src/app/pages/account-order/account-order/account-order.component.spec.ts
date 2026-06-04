@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
+import { LazyReturnRequestReturnButtonComponent } from 'src/app/extensions/return-request/exports/lazy-return-request-return-button/lazy-return-request-return-button.component';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -34,6 +35,7 @@ describe('Account Order Component', () => {
         MockComponent(BasketShippingMethodComponent),
         MockComponent(InfoBoxComponent),
         MockComponent(LazyOrderCreateOrderTemplateComponent),
+        MockComponent(LazyReturnRequestReturnButtonComponent),
         MockComponent(LineItemListComponent),
         MockPipe(DatePipe),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
