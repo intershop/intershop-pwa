@@ -19,7 +19,7 @@ export class LocalizedParserFormatter extends NgbDateParserFormatter {
   constructor(private translate: TranslateService) {
     super();
     // magic accessing Angular's internal locale api. Uses the short date format with long years.
-    this.dateFormatString = ɵfindLocaleData(this.translate.currentLang)[10][0];
+    this.dateFormatString = ɵfindLocaleData(this.translate.getCurrentLang())[10][0];
   }
 
   parse(value: string | undefined): NgbDateStruct | undefined {

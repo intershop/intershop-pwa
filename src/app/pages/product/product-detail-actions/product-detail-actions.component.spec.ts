@@ -35,7 +35,7 @@ describe('Product Detail Actions Component', () => {
     element = fixture.nativeElement;
 
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
 
     const product = { sku: 'sku', available: true } as Product;

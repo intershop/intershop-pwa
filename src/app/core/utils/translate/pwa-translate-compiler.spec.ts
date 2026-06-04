@@ -22,7 +22,7 @@ describe('Pwa Translate Compiler', () => {
     });
 
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
   });
 
@@ -228,7 +228,7 @@ describe('Pwa Translate Compiler', () => {
     });
 
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('cy');
+    translate.setFallbackLang('cy');
     translate.use('cy');
   });
 

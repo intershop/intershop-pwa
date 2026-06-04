@@ -94,7 +94,7 @@ describe('Product Compare List Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     element = fixture.nativeElement;
     component.compareProducts = [compareProduct1.sku, compareProduct2.sku];

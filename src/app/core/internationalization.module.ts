@@ -3,10 +3,10 @@ import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { Inject, LOCALE_ID, NgModule, TransferState } from '@angular/core';
 import {
-  MissingTranslationHandler,
-  TranslateCompiler,
-  TranslateLoader,
   TranslateService,
+  provideMissingTranslationHandler,
+  provideTranslateCompiler,
+  provideTranslateLoader,
   provideTranslateService,
 } from '@ngx-translate/core';
 
@@ -24,10 +24,9 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
   providers: [
     { provide: LOCALE_ID, useValue: 'en-US' },
     provideTranslateService({
-      loader: { provide: TranslateLoader, useClass: ICMTranslateLoader },
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: FallbackMissingTranslationHandler },
-      useDefaultLang: false,
-      compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
+      loader: provideTranslateLoader(ICMTranslateLoader),
+      missingTranslationHandler: provideMissingTranslationHandler(FallbackMissingTranslationHandler),
+      compiler: provideTranslateCompiler(PWATranslateCompiler),
     }),
     {
       provide: FALLBACK_LANG,
@@ -63,7 +62,7 @@ export class InternationalizationModule {
     registerLocaleData(localeFr);
 
     const defaultLang = transferState.hasKey(SSR_LOCALE) ? transferState.get(SSR_LOCALE, fallbackLang) : fallbackLang;
-    translateService.setDefaultLang(defaultLang);
+    translateService.setFallbackLang(defaultLang);
     translateService.use(defaultLang);
 
     generator.init();

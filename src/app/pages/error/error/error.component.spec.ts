@@ -33,7 +33,7 @@ describe('Error Component', () => {
     element = fixture.nativeElement;
     component = fixture.componentInstance;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en_US');
+    translate.setFallbackLang('en_US');
     translate.use('en_US');
     translate.set('error.page.text', '<h3>test paragraph title</h3>');
   });

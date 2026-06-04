@@ -20,7 +20,7 @@ describe('Attribute Pipe', () => {
     });
     pipe = TestBed.inject(AttributeToStringPipe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
   });
 
   describe.each`

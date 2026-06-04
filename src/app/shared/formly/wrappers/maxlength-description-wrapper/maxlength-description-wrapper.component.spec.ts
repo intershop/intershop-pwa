@@ -32,7 +32,7 @@ describe('Maxlength Description Wrapper Component', () => {
 
   beforeEach(() => {
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
     translateService.use('en');
     translateService.set('textarea.max_limit', '{{0}}');
 
