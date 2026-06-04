@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { ProductReview } from '../../models/product-reviews/product-review.model';
 
@@ -31,7 +33,10 @@ describe('Reviews Service', () => {
     when(apiServiceMock.encodeResourceId(anything())).thenCall(id => id);
 
     TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useFactory: () => instance(apiServiceMock) }],
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiServiceMock) },
+        provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: { customerNo: '123' } }] }),
+      ],
     });
     reviewsService = TestBed.inject(ReviewsService);
   });
@@ -40,24 +45,28 @@ describe('Reviews Service', () => {
     expect(reviewsService).toBeTruthy();
   });
 
-  it('should get product reviews when "getProductReviews" is called with isLoggedIn true', done => {
+  it('should get product reviews when "getProductReviews" is called with logged-in user', done => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of());
     when(apiServiceMock.resolveLinks())
       .thenReturn(() => of([]))
       .thenReturn(() => of([review]));
 
-    reviewsService.getProductReviews(sku, true).subscribe(data => {
+    reviewsService.getProductReviews(sku).subscribe(data => {
       verify(apiServiceMock.get(`products/${sku}/reviews`, anything())).twice();
       expect(data).toHaveProperty('reviews', [{ ...review, status: undefined }]);
       done();
     });
   });
 
-  it('should get product reviews when "getProductReviews" is called with isLoggedIn false', done => {
+  it('should get product reviews when "getProductReviews" is called with anonymous user', done => {
+    const store = TestBed.inject(MockStore);
+    store.overrideSelector(getLoggedInCustomer, undefined);
+    store.refreshState();
+
     when(apiServiceMock.get(anything(), anything())).thenReturn(of());
     when(apiServiceMock.resolveLinks()).thenReturn(() => of([review]));
 
-    reviewsService.getProductReviews(sku, false).subscribe(data => {
+    reviewsService.getProductReviews(sku).subscribe(data => {
       verify(apiServiceMock.get(`products/${sku}/reviews`, anything())).once();
       expect(data).toHaveProperty('reviews', [review]);
       done();
@@ -71,7 +80,7 @@ describe('Reviews Service', () => {
       .thenReturn(() => of([review]))
       .thenReturn(() => of([ownReview]));
 
-    reviewsService.getProductReviews(sku, true).subscribe(data => {
+    reviewsService.getProductReviews(sku).subscribe(data => {
       expect(data.reviews).toHaveLength(2);
       expect(data.reviews).toContainEqual(expect.objectContaining({ id: '1' }));
       expect(data.reviews).toContainEqual(expect.objectContaining({ id: '2', own: true }));
@@ -85,7 +94,7 @@ describe('Reviews Service', () => {
       .thenReturn(() => of([review]))
       .thenReturn(() => of([]));
 
-    reviewsService.getProductReviews(sku, true).subscribe(data => {
+    reviewsService.getProductReviews(sku).subscribe(data => {
       expect(data).toHaveProperty('reviews', [{ ...review, status: undefined }]);
       done();
     });
@@ -95,7 +104,9 @@ describe('Reviews Service', () => {
     when(apiServiceMock.get(anything(), anything())).thenReturn(of());
     when(apiServiceMock.resolveLinks()).thenReturn(() => of(undefined));
 
-    reviewsService.getProductReviews(sku, false).subscribe({
+    TestBed.inject(MockStore).overrideSelector(getLoggedInCustomer, undefined);
+
+    reviewsService.getProductReviews(sku).subscribe({
       error: err => {
         expect(err.message).toContain('productReviews data is required');
         done();
@@ -104,7 +115,7 @@ describe('Reviews Service', () => {
   });
 
   it('should throw error when called without sku', done => {
-    reviewsService.getProductReviews('', false).subscribe({
+    reviewsService.getProductReviews('').subscribe({
       error: err => {
         expect(err.message).toContain('getProductReviews() called without sku');
         done();
