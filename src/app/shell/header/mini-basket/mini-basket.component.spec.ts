@@ -44,7 +44,7 @@ describe('Mini Basket Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.setTranslation('en', {
       'shopping_cart.ministatus.items.text': '{{0}} items',

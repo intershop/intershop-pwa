@@ -31,7 +31,7 @@ describe('Product Shipment Component', () => {
     fixture = TestBed.createComponent(ProductShipmentComponent);
     component = fixture.componentInstance;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     element = fixture.nativeElement;
   });

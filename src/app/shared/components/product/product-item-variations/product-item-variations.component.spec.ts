@@ -78,7 +78,7 @@ describe('Product Item Variations Component', () => {
     advancedVariationHandling$.next(true);
     variationCount$.next(25);
 
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('product.variations.text', '{{ 0, plural, =1{one model} other{# models} }}');
 

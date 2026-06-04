@@ -1,1 +1,3 @@
-export type Translations = Record<string, Function | string>;
+import { TranslationObject } from '@ngx-translate/core';
+
+export type Translations = TranslationObject;

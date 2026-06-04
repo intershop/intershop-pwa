@@ -21,7 +21,7 @@ describe('Variation Attribute Pipe', () => {
 
     variationAttributePipe = TestBed.inject(VariationAttributePipe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
     translateService.use('en');
   });
 

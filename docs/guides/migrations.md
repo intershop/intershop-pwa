@@ -35,6 +35,13 @@ Failing to configure the correct `ALLOWED_HOSTS` will result in the following er
 The [`eslint-plugin-perfectionist`](https://perfectionist.dev/) plugin has been added to enforce consistent sorting of certain code constructs.
 It sorts arrays (`sort-arrays`), enums (`sort-enums`), as well as union and intersection types (`sort-union-types`, `sort-intersection-types`).
 
+**ngx-translate 17 upgrade**
+
+The package `@ngx-translate/core` has been updated to version 17.
+The custom `FallbackMissingTranslationHandler` has been adjusted to check loaded translations via `TranslateStore`.
+In addition, the `TranslateService.currentLang` property has been replaced by the `getCurrentLang()` method.
+For all breaking changes, see the [ngx-translate Migration Guide v16 → v17](https://ngx-translate.org/v17/getting-started/migration-guide/).
+
 **Swiper 12 upgrade**
 
 Swiper has been upgraded from version 8 to 12.

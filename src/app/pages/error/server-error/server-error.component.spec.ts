@@ -32,7 +32,7 @@ describe('Server Error Component', () => {
     component = fixture.componentInstance;
     component.error = makeHttpError({ status: 0 });
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en_US');
+    translate.setFallbackLang('en_US');
     translate.use('en_US');
     translate.set('servererror.page.text', '<h3>test paragraph title</h3>');
   });

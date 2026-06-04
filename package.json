@@ -81,7 +81,7 @@
     "@ngrx/store": "^19.2.1",
     "@ngrx/store-devtools": "^19.2.1",
     "@ngx-formly/core": "^7.1.0",
-    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/core": "^17.0.0",
     "@popperjs/core": "^2.11.8",
     "@rx-angular/state": "^19.0.3",
     "angular-oauth2-oidc": "^19.0.0",

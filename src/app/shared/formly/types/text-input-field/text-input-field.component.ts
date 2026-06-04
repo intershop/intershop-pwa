@@ -49,7 +49,7 @@ export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implemen
         this.formControl.setValue(formatNumber(this.formControl?.value, 'en_US', '1.2-2').replace(',', ''));
       }
       // Convert underscore locale format (en_US) to hyphen format (en-US) for Intl API
-      const locale = this.translateService.currentLang?.replace(/_/g, '-');
+      const locale = this.translateService.getCurrentLang()?.replace(/_/g, '-');
       const numberFormat = new Intl.NumberFormat(locale);
       const parts = numberFormat.formatToParts(1234567.89);
       this.thousandSeparator = parts.find(part => part.type === 'group')?.value || '';

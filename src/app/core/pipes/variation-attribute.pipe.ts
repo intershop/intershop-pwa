@@ -18,11 +18,11 @@ export class VariationAttributePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   private toDecimal(val: number): string {
-    return formatNumber(val, this.translateService.currentLang);
+    return formatNumber(val, this.translateService.getCurrentLang());
   }
 
   transform(attr: VariationAttribute): string {
-    if (!this.translateService.currentLang) {
+    if (!this.translateService.getCurrentLang()) {
       return 'undefined';
     }
 

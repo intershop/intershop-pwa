@@ -30,7 +30,7 @@ describe('Product Attributes Component', () => {
     component.product = product;
 
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
   });
 
