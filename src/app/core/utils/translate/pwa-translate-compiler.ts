@@ -1,10 +1,14 @@
 import { Injectable, Injector, isDevMode, ɵgetLocalePluralCase } from '@angular/core';
-import { TranslateCompiler, TranslateService } from '@ngx-translate/core';
+import {
+  InterpolatableTranslationObject,
+  InterpolateFunction,
+  TranslateCompiler,
+  TranslateService,
+  TranslationObject,
+} from '@ngx-translate/core';
 import { once } from 'lodash-es';
 
-import { Translations } from './translations.type';
-
-const cache: Record<string, Function> = {};
+const cache: Record<string, InterpolateFunction> = {};
 
 enum PluralCases {
   zero = 0,
@@ -67,7 +71,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     this.translate = once(() => injector.get(TranslateService));
   }
 
-  private checkIfCompileNeeded(value: Function | string): boolean {
+  private checkIfCompileNeeded(value: InterpolateFunction | string): boolean {
     return (
       typeof value === 'string' &&
       (PWATranslateCompiler.PLURAL_REGEX.test(value) || PWATranslateCompiler.TRANSLATE_REGEX.test(value))
@@ -77,14 +81,14 @@ export class PWATranslateCompiler implements TranslateCompiler {
   private recurse(template: string, args: Record<string, unknown>) {
     // if output still contains pluralization, do recursion
     if (this.checkIfCompileNeeded(template)) {
-      return (this.compile(template) as Function)(args);
+      return (this.compile(template) as InterpolateFunction)(args);
     }
 
     // replace all static variable values (if any)
     return template?.replace(PWATranslateCompiler.SIMPLE_VARIABLE_REGEX, (_, repl) => args?.[repl]?.toString() ?? '');
   }
 
-  private doCompile(template: string): Function {
+  private doCompile(template: string): InterpolateFunction {
     if (PWATranslateCompiler.PLURAL_REGEX.test(template)) {
       const match = PWATranslateCompiler.PLURAL_REGEX.exec(template);
       const variable = match[2];
@@ -107,7 +111,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
 
       return (args: Record<string, unknown>) => {
         const value = args?.[variable] ?? '';
-        const pluralCase = ɵgetLocalePluralCase(this.translate().currentLang)(+value);
+        const pluralCase = ɵgetLocalePluralCase(this.translate().getCurrentLang())(+value);
         const caseTemplate =
           casesMap[value?.toString()] ?? casesMap[`plural-${PluralCases[pluralCase]}`] ?? defaultCase;
         const caseOutput = caseTemplate?.replace(/#/, value?.toString());
@@ -135,7 +139,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     }
   }
 
-  compile(template: string): Function | string {
+  compile(template: string): InterpolateFunction | string {
     if (this.sanityCheck(template) && this.checkIfCompileNeeded(template)) {
       if (!cache[template]) {
         cache[template] = this.doCompile(template);
@@ -146,7 +150,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return template;
   }
 
-  private sanityCheck(value: Function | string): boolean {
+  private sanityCheck(value: InterpolateFunction | string): boolean {
     const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
     if (isDevMode() && !sane) {
       console.warn(
@@ -159,16 +163,17 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return sane;
   }
 
-  compileTranslations(translations: Translations): Translations {
+  compileTranslations(translations: TranslationObject, _lang: string): InterpolatableTranslationObject {
     // be sure translate dependency is initialized on the first run
     this.translate();
 
     // This implementation is mutable by intention
+    const result: InterpolatableTranslationObject = {};
     for (const key in translations) {
       if (Object.hasOwn(translations, key)) {
-        translations[key] = this.compile(translations[key] as string);
+        result[key] = this.compile(translations[key] as string);
       }
     }
-    return translations;
+    return result;
   }
 }

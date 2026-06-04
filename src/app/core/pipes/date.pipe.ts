@@ -39,6 +39,6 @@ export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   transform(value: Date | number | string, format = 'mediumDate', timezone?: string): string {
-    return formatISHDate(value, format, this.translateService.currentLang, timezone);
+    return formatISHDate(value, format, this.translateService.getCurrentLang(), timezone);
   }
 }

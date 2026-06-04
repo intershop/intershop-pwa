@@ -19,7 +19,7 @@ describe('Date Pipe', () => {
     datePipe = TestBed.inject(DatePipe);
 
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
   });
 
   it('should be created', () => {

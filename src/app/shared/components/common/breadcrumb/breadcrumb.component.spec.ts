@@ -26,7 +26,7 @@ describe('Breadcrumb Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('account.my_account.link', 'My Account');
     translate.set('account.order_history.link', 'Orders');

@@ -59,7 +59,7 @@ describe('Configuration Effects', () => {
     });
     it('should update TranslateService when locale was initialized', fakeAsync(() => {
       tick(1000);
-      expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
+      expect(translateService.getCurrentLang()).toMatchInlineSnapshot(`"en_US"`);
     }));
   });
 });

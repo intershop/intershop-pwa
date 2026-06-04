@@ -47,7 +47,7 @@ describe('Language Switch Component', () => {
     router.initialNavigation();
 
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('locale.en_US.long', 'English (United States)');
     translate.set('locale.fr_FR.long', 'Français (France)');

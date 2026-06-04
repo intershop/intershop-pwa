@@ -37,7 +37,7 @@ describe('Product Image Component', () => {
     component = fixture.componentInstance;
 
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('product.image.text.alttext', 'product photo');
     translate.set('product.image.not_available.alttext', 'no product image available');

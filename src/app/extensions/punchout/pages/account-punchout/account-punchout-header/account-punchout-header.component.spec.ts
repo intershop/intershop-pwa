@@ -34,7 +34,7 @@ describe('Account Punchout Header Component', () => {
     component.punchoutTypes = ['oci', 'cxml'];
     component.selectedType = 'cxml';
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('account.punchout.type.text', '{{0}}');
   });

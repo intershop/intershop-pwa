@@ -59,7 +59,7 @@ describe('Requisitions List Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.setTranslation('en', {
       'account.approvallist.items': '{{0}} items',

@@ -83,6 +83,7 @@ iisnode
 includeid
 infobox
 installable
+Interpolatable
 intershop
 intershophub
 intronics

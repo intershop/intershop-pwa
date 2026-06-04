@@ -34,7 +34,7 @@ describe('Price Pipe', () => {
   beforeEach(() => {
     registerLocaleData(localeDe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;
@@ -128,7 +128,7 @@ describe('Price Pipe', () => {
   beforeEach(() => {
     registerLocaleData(localeDe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;

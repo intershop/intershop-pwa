@@ -6,6 +6,7 @@ import {
   TranslateCompiler,
   TranslateLoader,
   TranslateParser,
+  TranslateStore,
 } from '@ngx-translate/core';
 import { memoize } from 'lodash-es';
 import { EMPTY, concat, defer, iif, of } from 'rxjs';
@@ -23,6 +24,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
     private translateLoader: TranslateLoader,
     private translateCompiler: TranslateCompiler,
     private translateParser: TranslateParser,
+    private translateStore: TranslateStore,
     private errorHandler: ErrorHandler,
     @Inject(FALLBACK_LANG) private fallback: InjectSingle<typeof FALLBACK_LANG>,
     private store: Store
@@ -54,7 +56,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
   private retrieveOtherSpecificTranslation(lang: string, key: string) {
     return this.translateLoader.getTranslation(lang).pipe(
       map(translations => translations?.[key]),
-      map(translation => this.translateCompiler.compile(translation, lang)),
+      map(translation => this.translateCompiler.compile(translation as string, lang)),
       tap(translation => {
         if (!translation) {
           this.reportMissingTranslation(lang, key);
@@ -67,12 +69,14 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
   handle(params: MissingTranslationHandlerParams) {
     // to consider localization keys being an actual key they need to have at least 10 characters and the tested dotted format without spaces
     if (params.key.length >= 10 && /^\w+(\.[\w-]+)+$/.test(params.key)) {
-      const currentLang = params.translateService.currentLang;
+      const currentLang = params.translateService.getCurrentLang();
       /*
-       * when changing languages 'currentLang' from the translate service
-       * is out of sync -- double check before reporting
+       * Only report a missing translation if translations for the current language
+       * are actually loaded. During language switches, the handler may fire before
+       * the new translations are available — do not report in that case.
        */
-      if (!params.translateService.translations?.[currentLang]?.[params.key]) {
+      const translations = this.translateStore.getTranslations(currentLang);
+      if (translations && Object.keys(translations).length > 0) {
         this.reportMissingTranslation(currentLang, params.key);
       }
 
@@ -95,7 +99,7 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
         // stop after first emission
         whenTruthy(),
         take(1),
-        map(translation => this.translateParser.interpolate(translation, params.interpolateParams)),
+        map(translation => this.translateParser.interpolate(translation as string, params.interpolateParams)),
         map(translation => (PRODUCTION_MODE ? translation : `TRANSLATE_ME ${translation}`))
       );
     }

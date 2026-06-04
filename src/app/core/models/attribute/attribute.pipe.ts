@@ -17,19 +17,19 @@ export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   private toDate(val: Date | number | string): string {
-    return formatISHDate(val, 'shortDate', this.translateService.currentLang);
+    return formatISHDate(val, 'shortDate', this.translateService.getCurrentLang());
   }
 
   private toDecimal(val: number): string {
-    return formatNumber(val, this.translateService.currentLang);
+    return formatNumber(val, this.translateService.getCurrentLang());
   }
 
   private toCurrency(price: Price): string {
-    return formatPrice(price, this.translateService.currentLang);
+    return formatPrice(price, this.translateService.getCurrentLang());
   }
 
   transform(data: Attribute, valuesSeparator: string = ', '): string {
-    if (!this.translateService.currentLang) {
+    if (!this.translateService.getCurrentLang()) {
       return 'undefined';
     }
 

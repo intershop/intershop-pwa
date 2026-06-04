@@ -25,7 +25,7 @@ describe('Frequency Pipe', () => {
     frequencyPipe = TestBed.inject(FrequencyPipe);
 
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
   });
 
   it('should be created', () => {
