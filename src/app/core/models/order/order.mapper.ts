@@ -94,6 +94,7 @@ export class OrderMapper {
         user: data.buyer,
         messageToMerchant: data.messageToMerchant,
         externalOrderReference: data.externalOrderReference,
+        withdrawal: included?.withdrawal ? included.withdrawal[data.id] : undefined,
         customFields: CustomFieldMapper.fromData(data.customFields),
       };
     }

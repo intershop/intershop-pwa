@@ -20,7 +20,11 @@
           <ish-withdrawal-request-form [withdrawal]="withdrawal" (submitWithdrawal)="submitWithdrawal($event)" />
         } @else {
           <h2>{{ 'account.withdrawal.form.search.heading' | translate }}</h2>
-          <ish-withdrawal-request-form (createWithdrawal)="createWithdrawal($event)" />
+          <ish-withdrawal-request-form
+            [predefinedOrderEmail]="predefinedOrderEmail"
+            [predefinedOrderNumber]="predefinedOrderNumber"
+            (createWithdrawal)="createWithdrawal($event)"
+          />
         }
       </div>
     </div>

@@ -305,6 +305,8 @@
   "account.orderdetails.order_status.label": "Statut de la commande",
   "account.orderdetails.print_link.text": "Imprimer",
   "account.orderdetails.recurring_order.info": "Cette commande a été créée sur la base d’une <a href=\"{{link}}\" >commande périodique</a>.",
+  "account.orderdetails.withdrawal_received_on.label": "Withdrawal received on",
+  "account.orderdetails.withdrawal_status.label": "Withdrawal status",
   "account.orderlist.no_orders_message": "Actuellement il n’y a aucune commande.",
   "account.orderlist.no_placed_orders_message": "Vous n’avez pas encore passé de commande.",
   "account.orderlist.table.buyer": "Acheteur",
@@ -1586,5 +1588,7 @@
   "wishlist.table.header.item": "Description de l’article",
   "wishlist.table.header.price": "Prix",
   "wishlist.table.options.move_to_another_wishlist": "Déplacer vers une autre liste",
-  "wishlist.table.options.remove": "Supprimer"
+  "wishlist.table.options.remove": "Supprimer",
+  "withdrawal.status.label.approved": "approved",
+  "withdrawal.status.label.received": "received"
 }

@@ -1,7 +1,9 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { BehaviorSubject } from 'rxjs';
 import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -16,6 +18,7 @@ describe('Withdrawal Request Page Component', () => {
   let fixture: ComponentFixture<WithdrawalRequestPageComponent>;
   let element: HTMLElement;
   let withdrawalFacade: WithdrawalFacade;
+  let queryParamMap$: BehaviorSubject<ParamMap>;
 
   beforeEach(async () => {
     withdrawalFacade = mock(WithdrawalFacade);
@@ -24,12 +27,20 @@ describe('Withdrawal Request Page Component', () => {
     when(withdrawalFacade.error).thenReturn(signal(undefined));
     when(withdrawalFacade.initialized).thenReturn(signal(true));
 
+    queryParamMap$ = new BehaviorSubject<ParamMap>(convertToParamMap({}));
+
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
       declarations: [
         MockComponent(WithdrawalRequestFormComponent),
         MockDirective(ServerHtmlDirective),
         WithdrawalRequestPageComponent,
+      ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { queryParamMap: queryParamMap$ },
+        },
       ],
     })
       .overrideComponent(WithdrawalRequestPageComponent, {
@@ -61,5 +72,13 @@ describe('Withdrawal Request Page Component', () => {
     const withdrawal = { orderDocumentNumber: '12345' } as Withdrawal;
     component.submitWithdrawal(withdrawal);
     verify(withdrawalFacade.sendWithdrawal(withdrawal)).once();
+  });
+
+  it('should set predefined values from query params on init', () => {
+    queryParamMap$.next(convertToParamMap({ orderDocumentNumber: '99999', orderEmail: 'order@test.com' }));
+    fixture.detectChanges();
+
+    expect(component.predefinedOrderNumber).toBe('99999');
+    expect(component.predefinedOrderEmail).toBe('order@test.com');
   });
 });

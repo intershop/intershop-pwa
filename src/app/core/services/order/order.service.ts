@@ -60,6 +60,7 @@ export class OrderService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
+    'withdrawal',
   ];
 
   /**

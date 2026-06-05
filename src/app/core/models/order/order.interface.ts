@@ -10,6 +10,7 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 import { PaymentMethodBaseData } from 'ish-core/models/payment-method/payment-method.interface';
 import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
+import { WithdrawalInfoData } from 'ish-core/models/withdrawal-info/withdrawal-info.interface';
 
 export type OrderCreationStatus = 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
 
@@ -58,6 +59,7 @@ export interface OrderData {
     payments?: Record<string, PaymentData>;
     payments_paymentMethod?: Record<string, PaymentMethodBaseData>;
     payments_paymentInstrument?: Record<string, PaymentInstrument>;
+    withdrawal?: Record<string, WithdrawalInfoData>;
   };
   infos?: BasketInfo[];
   info?: PagingInfo;

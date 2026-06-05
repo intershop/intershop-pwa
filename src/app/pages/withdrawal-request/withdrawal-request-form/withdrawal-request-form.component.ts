@@ -37,6 +37,8 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
 })
 export class WithdrawalRequestFormComponent implements OnInit {
   @Input() withdrawal: Withdrawal;
+  @Input() predefinedOrderNumber: string;
+  @Input() predefinedOrderEmail: string;
   @Output() readonly createWithdrawal = new EventEmitter<{ orderDocumentNumber: string; orderEmail: string }>();
   @Output() readonly submitWithdrawal = new EventEmitter<Withdrawal>();
 
@@ -88,7 +90,13 @@ export class WithdrawalRequestFormComponent implements OnInit {
         confirmationEmail: this.withdrawal.orderEmail,
       };
     } else {
-      this.model = {};
+      this.model =
+        this.predefinedOrderNumber && this.predefinedOrderEmail
+          ? {
+              orderDocumentNumber: this.predefinedOrderNumber,
+              orderEmail: this.predefinedOrderEmail,
+            }
+          : {};
     }
 
     this.fields$ = combineLatest([

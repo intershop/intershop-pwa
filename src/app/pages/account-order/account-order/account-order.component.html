@@ -16,43 +16,95 @@
 <p>{{ 'account.orderdetails.headerDetails.default' | translate }}</p>
 
 @if (order) {
-  <div class="section" data-testing-id="order-summary-info">
-    <dl class="row dl-horizontal dl-separator">
-      <dt class="col-6 col-sm-4 col-md-3">
-        <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
-      </dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-number">{{ order.documentNo }}</dd>
-      @if (order.approval) {
-        <dt class="col-6 col-sm-4 col-md-3">{{ 'approval.detailspage.order.request_id' | translate }}</dt>
-        <dd class="col-6 col-sm-8 col-md-9">
-          <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
-            order.requisitionNo
-          }}</a>
-          {{
-            'account.orderdetails.approved.text'
-              | translate
-                : {
-                    '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
-                    '1': order.approval.date | ishDate: 'shortDate',
-                  }
-          }}
+  <div class="section row" data-testing-id="order-summary-info">
+    <div class="col-12" [ngClass]="order.withdrawal ? 'col-md-6' : ''">
+      <dl class="row dl-horizontal dl-separator">
+        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+          <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
+        </dt>
+        <dd
+          data-testing-id="order-number"
+          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
+        >
+          {{ order.documentNo }}
         </dd>
+        @if (order.approval) {
+          <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+            {{ 'approval.detailspage.order.request_id' | translate }}
+          </dt>
+          <dd [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'">
+            <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
+              order.requisitionNo
+            }}</a>
+            {{
+              'account.orderdetails.approved.text'
+                | translate
+                  : {
+                      '0': order.approval.approverFirstName + ' ' + order.approval.approverLastName,
+                      '1': order.approval.date | ishDate: 'shortDate',
+                    }
+            }}
+          </dd>
+        }
+        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+          <span>{{ 'account.orderdetails.date_of_order.label' | translate }}</span>
+        </dt>
+        <dd
+          data-testing-id="order-date"
+          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
+        >
+          {{ order.creationDate | ishDate }}
+        </dd>
+        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+          <span>{{ 'account.orderdetails.order_status.label' | translate }}</span>
+        </dt>
+        <dd
+          data-testing-id="order-status"
+          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
+        >
+          <span class="badge text-bg-info">{{ order.status }}</span>
+        </dd>
+      </dl>
+      @if (order.recurringOrderID) {
+        <span
+          [ishServerHtml]="
+            'account.orderdetails.recurring_order.info'
+              | translate: { link: 'route://account/recurring-orders/' + order.recurringOrderID }
+          "
+        ></span>
       }
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.date_of_order.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-date">{{ order.creationDate | ishDate }}</dd>
-      <dt class="col-6 col-sm-4 col-md-3">{{ 'account.orderdetails.order_status.label' | translate }}</dt>
-      <dd class="col-6 col-sm-8 col-md-9" data-testing-id="order-status">
-        <span class="badge text-bg-info">{{ order.status }}</span>
-      </dd>
-    </dl>
-    @if (order.recurringOrderID) {
-      <span
-        [ishServerHtml]="
-          'account.orderdetails.recurring_order.info'
-            | translate: { link: 'route://account/recurring-orders/' + order.recurringOrderID }
-        "
-      ></span>
-    }
+    </div>
+
+    <div class="col-12 col-md-6">
+      @if (order.withdrawal?.withdrawalAllowed) {
+        <a
+          [queryParams]="{ orderDocumentNumber: order.documentNo, orderEmail: order.email }"
+          [routerLink]="['/withdrawal']"
+          >{{ 'account.orderdetails.withdrawal.link' | translate }}</a
+        >
+      } @else if (order.withdrawal?.status) {
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-7 col-md-6 col-lg-5">{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
+          <dd class="col-5 col-md-6 col-lg-7" data-testing-id="withdrawal-status">
+            <span class="badge text-bg-secondary">
+              @if (order.withdrawal?.status === 'CREATED') {
+                {{ 'withdrawal.status.label.received' | translate }}
+              } @else {
+                {{ 'withdrawal.status.label.approved' | translate }}
+              }
+            </span>
+          </dd>
+          @if (order.withdrawal?.withdrawalCreationDate) {
+            <dt class="col-7 col-md-6 col-lg-5">
+              <span>{{ 'account.orderdetails.withdrawal_received_on.label' | translate }}</span>
+            </dt>
+            <dd class="col-5 col-md-6 col-lg-7" data-testing-id="withdrawal-received-on">
+              {{ order.withdrawal.withdrawalCreationDate | ishDate }}
+            </dd>
+          }
+        </dl>
+      }
+    </div>
   </div>
 }
 @if (order) {
@@ -118,7 +170,7 @@
     </ish-info-box>
   </div>
   <!-- Line Items -->
-  @if (order.lineItems?.length > 0) {
+  @if (order?.lineItems?.length) {
     <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="order.lineItems" />
   }
   <!-- Cost Summary -->
