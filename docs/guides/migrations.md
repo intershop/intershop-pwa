@@ -49,6 +49,13 @@ It lets the customer choose an existing quote request or create a new one before
 The new quote request name is optional.
 When left empty, a new quote request is created automatically, and the ID is used as the name as before.
 
+**Order template and wishlist selection UX**
+
+The order template and wishlist selection modals have been reworked for a more consistent user experience after the introduction of the new quote request selection modal:
+
+- The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
+- The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

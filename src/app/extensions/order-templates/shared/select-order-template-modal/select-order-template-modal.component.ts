@@ -11,12 +11,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -52,10 +52,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
 
   @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
-  constructor(
-    private orderTemplatesFacade: OrderTemplatesFacade,
-    private translate: TranslateService
-  ) {}
+  constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
     this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'move');
@@ -70,6 +67,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
       }
     } else if (radioButtons.newOrderTemplate && this.formGroup.valid) {
       this.submitNew(radioButtons.newOrderTemplate);
+    } else {
+      markAsDirtyRecursive(this.formGroup);
     }
   }
 
@@ -117,8 +116,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(option => {
-        const defaultValue = this.translate.instant('account.order_template.new_order_template.text');
-        this.formGroup.patchValue({ orderTemplate: option.value, newOrderTemplate: defaultValue });
+        this.formGroup.patchValue({ orderTemplate: option.value });
       });
   }
 
