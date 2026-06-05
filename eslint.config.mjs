@@ -121,6 +121,7 @@ export default defineConfig([
       ...ngrx.configs.operators.rules,
       '@ngrx/avoid-combining-selectors': 'off',
       '@ngrx/avoid-mapping-selectors': 'off',
+      '@ngrx/no-multiple-actions-in-effects': 'off',
       '@ngrx/no-store-subscription': 'off',
       '@ngrx/prefer-effect-callback-in-block-statement': 'off',
       '@ngrx/prefix-selectors-with-select': 'off',
