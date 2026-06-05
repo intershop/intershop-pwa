@@ -42,6 +42,13 @@ Now, the Design View is activated via its own `DesignView` query parameter, and 
 The custom `.modal-fullscreen` and `.modal-dialog-scrollable` SCSS overrides have been removed in favor of the native ng-bootstrap modal behavior.
 You can now use the built-in options `fullscreen: true` and `scrollable: true`, which apply standard Bootstrap styling.
 
+**Quote request selection modal**
+
+Adding a product to a quote now opens the new `SelectQuoteRequestModalComponent`.
+It lets the customer choose an existing quote request or create a new one before adding the product.
+The new quote request name is optional.
+When left empty, a new quote request is created automatically, and the ID is used as the name as before.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

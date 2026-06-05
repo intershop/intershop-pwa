@@ -1,29 +1,32 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store } from '@ngrx/store';
 
-import { ProductAddToQuoteDialogComponent } from '../shared/product-add-to-quote-dialog/product-add-to-quote-dialog.component';
-import { addProductToQuoteRequest } from '../store/quoting';
+import { SelectQuoteRequestModalComponent } from '../shared/select-quote-request-modal/select-quote-request-modal.component';
 
 /**
- * Opens a dialog after adding a product to a quote request
+ * Opens the quote request selection dialog: the user picks an existing "New" quote request or names a new one.
+ * Aborts without opening the dialog when the required `sku` query param is missing.
+ * A missing or invalid `quantity` query param defaults to 1.
  */
-
 export function productAddToQuoteRequestGuard(route: ActivatedRouteSnapshot): boolean {
+  const sku = route.queryParamMap.get('sku')?.trim();
+
+  if (!sku) {
+    return false;
+  }
+
+  const parsedQuantity = Number(route.queryParamMap.get('quantity'));
+  const quantity = Number.isInteger(parsedQuantity) && parsedQuantity > 0 ? parsedQuantity : 1;
+
   const modalService = inject(NgbModal);
-  const store = inject(Store);
 
-  store.dispatch(
-    addProductToQuoteRequest({ sku: route.queryParamMap.get('sku'), quantity: +route.queryParamMap.get('quantity') })
-  );
-
-  const ref = modalService.open(ProductAddToQuoteDialogComponent, {
-    centered: true,
-    size: 'lg',
-    ariaLabelledBy: 'product-add-to-quote-modal-title',
+  const ref = modalService.open(SelectQuoteRequestModalComponent, {
+    ariaLabelledBy: 'select-quote-request-modal-title',
   });
-  const component = ref.componentInstance as ProductAddToQuoteDialogComponent;
+  const component = ref.componentInstance as SelectQuoteRequestModalComponent;
+  component.sku = sku;
+  component.quantity = quantity;
   component.modalRef = ref;
 
   return false;

@@ -3,17 +3,21 @@ import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable, OperatorFunction, identity, timer } from 'rxjs';
 import { map, sample, switchMap, take, tap } from 'rxjs/operators';
 
+import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { delayUntil, whenFalsy, whenTruthy } from 'ish-core/utils/operators';
 
 import { QuotingHelper } from '../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuotingEntity } from '../models/quoting/quoting.model';
 import {
+  addProductToQuoteRequest,
   createQuoteRequestFromBasket,
   deleteQuoteFromBasket,
   deleteQuotingEntity,
+  getNewQuoteRequests,
   getQuotingEntities,
   getQuotingEntity,
   getQuotingLoading,
+  isQuotingInitialized,
   loadQuoting,
   loadQuotingDetail,
 } from '../store/quoting';
@@ -76,6 +80,22 @@ export class QuotingFacade {
 
   deleteQuoteFromBasket(quoteId: string) {
     this.store.dispatch(deleteQuoteFromBasket({ id: quoteId }));
+  }
+
+  newQuoteRequests$ = this.store.pipe(
+    select(isQuotingInitialized),
+    tap(initialized => {
+      if (!initialized) {
+        this.loadQuoting();
+      }
+    }),
+    switchMap(() => this.store.pipe(select(getNewQuoteRequests)))
+  );
+
+  addProductToQuoteRequest(
+    payload: SkuQuantityType & { quoteRequestId?: string; displayName?: string; createNew?: boolean }
+  ) {
+    this.store.dispatch(addProductToQuoteRequest(payload));
   }
 
   private automaticQuoteRefresh<T>(): OperatorFunction<T, T> {

@@ -1,5 +1,6 @@
 import { createSelector } from '@ngrx/store';
 
+import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { getQuotingState } from '../quoting-store';
 
 import { quotingAdapter } from './quoting.reducer';
@@ -19,3 +20,9 @@ export const getQuotingEntity = (id: string) => createSelector(selectEntities, e
 export const getActiveQuoteRequestId = createSelector(getQuotingInternalState, state => state.activeQuoteRequest);
 
 export const isQuotingInitialized = createSelector(getQuotingInternalState, state => state.initialized);
+
+export const getNewQuoteRequests = createSelector(getQuotingEntities, entities =>
+  entities
+    .filter(entity => entity.type === 'QuoteRequest' && QuotingHelper.state(entity) === 'New')
+    .sort(QuotingHelper.sort)
+);
