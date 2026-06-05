@@ -82,7 +82,7 @@ input[type='radio'] ~ input[type='text'] {
 
 input[type='radio'],
 input[type='checkbox'] {
-  margin-right: 4px;
+  margin-right: divide($space-default, 3);
 }
 
 input[type='checkbox'] {

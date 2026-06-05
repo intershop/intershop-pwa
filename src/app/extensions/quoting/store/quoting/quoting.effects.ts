@@ -243,8 +243,8 @@ export class QuotingEffects {
     this.actions$.pipe(
       ofType(addProductToQuoteRequest),
       mapToPayload(),
-      concatMap(({ sku, quantity }) =>
-        this.quotingService.addProductToQuoteRequest(sku, quantity).pipe(
+      concatMap(({ sku, quantity, quoteRequestId, displayName, createNew }) =>
+        this.quotingService.addProductToQuoteRequest(sku, quantity, { quoteRequestId, displayName, createNew }).pipe(
           concatMap(id => this.quotingService.getQuoteDetails(id, 'QuoteRequest', 'Detail')),
           map(entity => addProductToQuoteRequestSuccess({ entity })),
           mapErrorToAction(loadQuotingFail)

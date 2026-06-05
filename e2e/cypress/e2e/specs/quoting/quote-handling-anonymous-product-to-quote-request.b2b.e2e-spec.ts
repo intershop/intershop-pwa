@@ -3,6 +3,7 @@ import { createB2BUserViaREST } from '../../framework/b2b-user';
 import { LoginPage } from '../../pages/account/login.page';
 import { sensibleDefaults } from '../../pages/account/registration.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { QuoteRequestSelectionDialog } from '../../pages/shopping/quote-request-selection.dialog';
 import { QuoteRequestDialog } from '../../pages/shopping/quote-request.dialog';
 
 const _ = {
@@ -28,16 +29,17 @@ describe('Quote Handling as Anonymous User', () => {
       at(LoginPage);
     });
 
-    it('user should log in and land at product detail page with open dialog', () => {
+    it('user should log in and land at product detail page with open quote request selection dialog', () => {
       at(LoginPage, page => {
         page.fillForm(_.user.login, _.user.password);
         page.submit().its('response.statusCode').should('equal', 200);
       });
       at(ProductDetailPage, page => page.sku.should('have.text', _.product.sku));
-      at(QuoteRequestDialog);
+      at(QuoteRequestSelectionDialog);
     });
 
     it('user should be able to submit quote request', () => {
+      at(QuoteRequestSelectionDialog, dialog => dialog.confirmNew('My Quote'));
       at(QuoteRequestDialog, dialog => {
         dialog.submitQuoteRequest();
         dialog.productId.eq(0).should('contain', _.product.sku);

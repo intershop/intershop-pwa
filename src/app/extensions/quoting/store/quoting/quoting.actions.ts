@@ -100,7 +100,7 @@ export const createQuoteRequestFromBasketSuccess = createAction(
 
 export const addProductToQuoteRequest = createAction(
   '[Quoting] Add Product To Quote Request',
-  payload<SkuQuantityType>()
+  payload<SkuQuantityType & { quoteRequestId?: string; displayName?: string; createNew?: boolean }>()
 );
 
 export const addProductToQuoteRequestSuccess = createAction(

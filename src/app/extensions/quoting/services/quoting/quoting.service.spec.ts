@@ -211,12 +211,78 @@ describe('Quoting Service', () => {
     });
   });
 
+  describe('addProductToQuoteRequest', () => {
+    beforeEach(() => {
+      when(apiService.post(anything())).thenReturn(
+        of({ type: 'Link', title: 'newQR', uri: 'site/-/quoterequests/newQR' })
+      );
+      when(apiService.post(anything(), anything())).thenReturn(of({}));
+      when(apiService.put(anything(), anything())).thenReturn(of({}));
+      when(apiService.get(anything(), anything())).thenReturn(of([]));
+    });
+
+    it('should add item to provided quote request when quoteRequestId is given', done => {
+      quotingService.addProductToQuoteRequest('SKU', 5, { quoteRequestId: 'existingQR' }).subscribe({
+        next: id => {
+          expect(id).toMatchInlineSnapshot(`"existingQR"`);
+          verify(apiService.post(anything())).never();
+          verify(apiService.put(anything(), anything())).never();
+          verify(apiService.post(anything(), anything())).once();
+          const [path, body] = capture(apiService.post).last();
+          expect(path).toMatchInlineSnapshot(`"quoterequests/existingQR/items"`);
+          expect(body).toMatchInlineSnapshot(`
+            {
+              "productSKU": "SKU",
+              "quantity": {
+                "value": 5,
+              },
+            }
+          `);
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should create new quote request, set displayName via PUT and add item when displayName is given', done => {
+      quotingService.addProductToQuoteRequest('SKU', 1, { displayName: 'My Quote', createNew: true }).subscribe({
+        next: () => {
+          verify(apiService.post('quoterequests')).once();
+          verify(apiService.put(anything(), anything())).once();
+          const [putPath, putBody] = capture(apiService.put).last();
+          expect(putPath).toMatchInlineSnapshot(`"quoterequests/newQR"`);
+          expect(putBody).toMatchInlineSnapshot(`
+            {
+              "displayName": "My Quote",
+            }
+          `);
+          const [postItemPath] = capture(apiService.post).last();
+          expect(postItemPath).toMatchInlineSnapshot(`"quoterequests/newQR/items"`);
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+
+    it('should create a new quote request without PUT when no displayName and no active quote request exists', done => {
+      quotingService.addProductToQuoteRequest('SKU', 1).subscribe({
+        next: () => {
+          verify(apiService.post('quoterequests')).once();
+          verify(apiService.put(anything(), anything())).never();
+          const [postItemPath] = capture(apiService.post).last();
+          expect(postItemPath).toMatchInlineSnapshot(`"quoterequests/newQR/items"`);
+        },
+        error: fail,
+        complete: done,
+      });
+    });
+  });
+
   describe('updateQuoteRequest', () => {
     beforeEach(() => {
       when(apiService.put(anything(), anything())).thenReturn(of({}));
       when(apiService.delete(anything())).thenReturn(of({}));
     });
-
     it('should use the quoterequest API for updating quote requests', done => {
       quotingService
         .updateQuoteRequest('quoteRequestID', [
