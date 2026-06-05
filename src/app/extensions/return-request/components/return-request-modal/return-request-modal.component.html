@@ -40,20 +40,16 @@
           <textarea class="form-control" formControlName="comment" rows="3"></textarea>
         </div>
         <div class="row">
-          <div class="col-4 offset-8">
-            <div class="summary-section">
-              <h3>{{ 'toolineo.account.return_request.modal.summary.title' | translate }}</h3>
-              <span
-                >{{ selectedQuantity }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
-              >
-              <button
-                class="btn-block btn btn-primary"
-                type="submit"
-                [disabled]="form.invalid || selectedQuantity === 0"
-              >
-                {{ 'toolineo.account.return_request.modal.form.btn.label' | translate }}
-              </button>
-            </div>
+          <div class="col-6">
+            <h3 class="d-inline">{{ 'toolineo.account.return_request.modal.summary.title' | translate }}</h3>
+            <span class="ms-2"
+              >{{ selectedQuantity }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
+            >
+          </div>
+          <div class="col-6">
+            <button class="btn btn-primary float-end" type="submit" [disabled]="form.invalid || selectedQuantity === 0">
+              {{ 'toolineo.account.return_request.modal.form.btn.label' | translate }}
+            </button>
           </div>
         </div>
       </form>

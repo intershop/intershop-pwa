@@ -25,7 +25,7 @@ export class ReturnRequestMapper {
       id: r.id,
       orderId,
       businessStatus: r.businessStatus,
-      creationDate: r.creationDate,
+      creationDate: Math.round(r.creationDate * 1000),
       rmaNumber: r.rmaNumber,
       status: r.status,
     }));

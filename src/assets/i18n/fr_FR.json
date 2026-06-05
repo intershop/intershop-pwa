@@ -1618,7 +1618,7 @@
   "toolineo.account.return_request.modal.form.comment_sub_label": "Ce commentaire sera communiqué au concessionnaire. Si vous disposez d'informations détaillées sur votre demande, veuillez les saisir ici.",
   "toolineo.account.return_request.modal.form.select_reason_label": "Sélectionnez la raison",
   "toolineo.account.return_request.modal.orde_date": "Date de commande:",
-  "toolineo.account.return_request.modal.orde_number": "Numéro de commande revendeur:",
+  "toolineo.account.return_request.modal.orde_number": "Numéro de commande:",
   "toolineo.account.return_request.modal.submit_success": "La demande a été soumise avec succès",
   "toolineo.account.return_request.modal.summary.items": "des articles",
   "toolineo.account.return_request.modal.summary.title": "Vous demandez un retour pour",

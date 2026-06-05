@@ -1618,7 +1618,7 @@
   "toolineo.account.return_request.modal.form.comment_sub_label": "Dieses Kommentar wird dem Händler mitgeteilt. Sollten Sie detaillierte Informationen zu Ihrer Anfrage haben, tragen Sie diese bitte hier mit ein.",
   "toolineo.account.return_request.modal.form.select_reason_label": "Wählen Sie Grund aus",
   "toolineo.account.return_request.modal.orde_date": "Bestelldatum:",
-  "toolineo.account.return_request.modal.orde_number": "Bestellnummer Händler:",
+  "toolineo.account.return_request.modal.orde_number": "Bestellnummer:",
   "toolineo.account.return_request.modal.submit_success": "Die Anfrage wurde erfolgreich übermittelt",
   "toolineo.account.return_request.modal.summary.items": "Artikel",
   "toolineo.account.return_request.modal.summary.title": "Sie fragen eine Retoure an für",
