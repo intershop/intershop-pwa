@@ -1,10 +1,12 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { Observable, of, throwError } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
+import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import { ProductReview, ProductReviewCreationType } from '../../models/product-reviews/product-review.model';
 import { ProductReviewsMapper } from '../../models/product-reviews/product-reviews.mapper';
@@ -12,26 +14,54 @@ import { ProductReviews } from '../../models/product-reviews/product-reviews.mod
 
 @Injectable({ providedIn: 'root' })
 export class ReviewsService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private store: Store
+  ) {}
+
+  private currentCustomer$ = this.store.pipe(select(getLoggedInCustomer), take(1));
 
   /**
-   * Gets the reviews for a given product.
+   * Fetches public reviews for a product. For logged-in users, additionally fetches
+   * their own reviews (flagged with `own: true`) which may include non-public entries
+   * pending approval. The own-reviews request bypasses caching to reflect latest state.
    *
-   * @param sku The product sku.
-   * @returns   The available reviews of a product.
+   * @param sku  The product SKU.
+   * @returns    The combined product reviews.
    */
   getProductReviews(sku: string): Observable<ProductReviews> {
     if (!sku) {
       return throwError(() => new Error('getProductReviews() called without sku'));
     }
 
-    const params = new HttpParams().set('attrs', 'own');
+    const params = new HttpParams().set('own', 'false');
     return this.apiService
       .get(`products/${this.apiService.encodeResourceId(sku)}/reviews`, { sendSPGID: true, params })
       .pipe(
         unpackEnvelope<Link>(),
         this.apiService.resolveLinks<ProductReview>(),
-        map(reviews => ProductReviewsMapper.fromData(sku, reviews))
+        map(reviews => ProductReviewsMapper.fromData(sku, reviews)),
+        switchMap(allReviews =>
+          this.currentCustomer$.pipe(
+            switchMap(customer =>
+              customer
+                ? this.apiService
+                    .get(`products/${this.apiService.encodeResourceId(sku)}/reviews`, {
+                      sendSPGID: true,
+                      params: new HttpParams().set('own', 'true'),
+                    })
+                    .pipe(
+                      unpackEnvelope<Link>(),
+                      this.apiService.resolveLinks<ProductReview>(),
+                      map(ownReviews => ({
+                        ...allReviews,
+                        reviews: [...allReviews.reviews, ...ProductReviewsMapper.fromData(sku, ownReviews).reviews],
+                      }))
+                    )
+                : of(allReviews)
+            )
+          )
+        )
       );
   }
 
