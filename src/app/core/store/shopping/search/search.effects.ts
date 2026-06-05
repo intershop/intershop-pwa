@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { Store, select } from '@ngrx/store';
-import { Action } from '@ngrx/store/src/models';
+import { Action, Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
 import { concatMap, map, sample, switchMap, withLatestFrom } from 'rxjs/operators';
 
