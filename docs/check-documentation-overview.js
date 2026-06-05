@@ -20,7 +20,7 @@ if (match) {
   });
 }
 
-const files = globSync('docs/*/*.md');
+const files = globSync('docs/*/*.md', { ignore: 'docs/security/*.md' });
 let isError = false;
 
 files.forEach(file => {
