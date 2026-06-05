@@ -12,41 +12,41 @@ kb_sync_latest_only
   - [What Is the Scope?](#what-is-the-scope)
   - [How This Guide Helps](#how-this-guide-helps)
 - [Understanding PCI DSS 4.0 Applicability](#understanding-pci-dss-40-applicability)
-- [Secure Angular PWA Code & Dependencies](#secure-angular-pwa-code--dependencies)
+- [Secure Angular PWA Code \& Dependencies](#secure-angular-pwa-code--dependencies)
   - [Prevent Cross-Site Scripting (XSS) Attacks](#prevent-cross-site-scripting-xss-attacks)
-  - [Secure API Calls & Prevent CORS Attacks](#secure-api-calls--prevent-cors-attacks)
+  - [Secure API Calls \& Prevent CORS Attacks](#secure-api-calls--prevent-cors-attacks)
   - [Use Secure HTTP Headers to Prevent Browser Attacks](#use-secure-http-headers-to-prevent-browser-attacks)
-  - [Enforce Secure Authentication & Session Management](#enforce-secure-authentication--session-management)
+  - [Enforce Secure Authentication \& Session Management](#enforce-secure-authentication--session-management)
   - [Secure Server-Side Rendering (SSR)](#secure-server-side-rendering-ssr)
-  - [Regular Testing & Harden Dependency Management](#regular-testing--harden-dependency-management)
+  - [Regular Testing \& Harden Dependency Management](#regular-testing--harden-dependency-management)
 - [Adding Custom Trusted Resources for PWA Extensions](#adding-custom-trusted-resources-for-pwa-extensions)
   - [Why This Matters for PCI DSS 4.0](#why-this-matters-for-pci-dss-40)
   - [How the PWA CSP Is Configured](#how-the-pwa-csp-is-configured)
   - [Step-by-Step: Adding a Trusted Resource](#step-by-step-adding-a-trusted-resource)
+    - [1. Identify the Required Origins](#1-identify-the-required-origins)
+    - [2. Extend the NGINX CSP Configuration](#2-extend-the-nginx-csp-configuration)
+    - [3. Use Subresource Integrity (SRI) Where Possible](#3-use-subresource-integrity-sri-where-possible)
+    - [4. Maintain a Script Inventory](#4-maintain-a-script-inventory)
   - [Common Extension Scenarios](#common-extension-scenarios)
   - [What to Avoid](#what-to-avoid)
   - [Summary](#summary)
 - [Additional Points to Consider](#additional-points-to-consider)
   - [Secure Data Handling](#secure-data-handling)
-  - [Secure Authentication & Access Control](#secure-authentication--access-control)
-  - [Logging & Monitoring](#logging--monitoring)
+  - [Secure Authentication \& Access Control](#secure-authentication--access-control)
+  - [Logging \& Monitoring](#logging--monitoring)
   - [Password Autocomplete](#password-autocomplete)
 
 ## Introduction
 
-PCI DSS -- the **Payment Card Industry Data Security Standard** -- is a set of security requirements
-defined by the major card networks (Visa, Mastercard, Amex, etc.) to protect payment card data
-during storage, processing, and transmission. Any organization that accepts, processes, or
-transmits credit card payments must comply with these standards. The authoritative specification is
-published in the [PCI Document Library](https://www.pcisecuritystandards.org/document_library/?category=pcidss).
+PCI DSS -- the **Payment Card Industry Data Security Standard** -- is a set of security requirements defined by the major card networks (Visa, Mastercard, Amex, etc.) to protect payment card data during storage, processing, and transmission.
+Any organization that accepts, processes, or transmits credit card payments must comply with these standards.
+The authoritative specification is published in the [PCI Document Library](https://www.pcisecuritystandards.org/document_library/?category=pcidss).
 
 ### Who Needs to Care -- and Why Now?
 
-If your Intershop storefront handles online payments, PCI DSS applies to you -- and most likely to
-your technology partners and system integrators as well. With **PCI DSS version 4.0**, the
-requirements were significantly updated, with stricter rules specifically targeting **web application
-security** and the browser environment. The transition deadline for all organizations was
-**31 March 2025**: from that date onward, PCI DSS 4.0 is the only accepted version.
+If your Intershop storefront handles online payments, PCI DSS applies to you -- and most likely to your technology partners and system integrators as well.
+With **PCI DSS version 4.0**, the requirements were significantly updated, with stricter rules specifically targeting **web application security** and the browser environment.
+The transition deadline for all organizations was **31 March 2025**: from that date onward, PCI DSS 4.0 is the only accepted version.
 
 The most impactful new requirements for frontend developers and solution architects are:
 
@@ -59,20 +59,15 @@ These two requirements directly affect how an Angular-based PWA is built, config
 
 ### What Is the Scope?
 
-Not every page of your storefront automatically falls under the strictest PCI DSS rules. The scope
-is primarily determined by pages where **cardholder data (CHD)** or **sensitive authentication
-data (SAD)** is entered or transmitted -- in practice, this means checkout and payment pages.
+Not every page of your storefront automatically falls under the strictest PCI DSS rules.
+The scope is primarily determined by pages where **cardholder data (CHD)** or **sensitive authentication data (SAD)** is entered or transmitted -- in practice, this means checkout and payment pages.
 
-However, because a single-page application (SPA) like the Intershop PWA loads a shared JavaScript
-bundle across all pages, the security measures described in this guide apply to the **entire
-storefront**, not just the payment step.
+However, because a single-page application (SPA) like the Intershop PWA loads a shared JavaScript bundle across all pages, the security measures described in this guide apply to the **entire storefront**, not just the payment step.
 
 ### How This Guide Helps
 
-This guide explains the specific measures that are already implemented in the Intershop PWA by
-default, and what you -- as a developer, system integrator, or merchant -- need to additionally
-configure or verify in your own project to achieve PCI DSS 4.0 compliance. It is structured along
-the main risk areas relevant for a PWA:
+This guide explains the specific measures that are already implemented in the Intershop PWA by default, and what you -- as a developer, system integrator, or merchant -- need to additionally configure or verify in your own project to achieve PCI DSS 4.0 compliance.
+It is structured along the main risk areas relevant for a PWA:
 
 - Preventing script injection (XSS) and enforcing Content Security Policy (CSP)
 - Securing API communication and HTTP headers
@@ -80,10 +75,10 @@ the main risk areas relevant for a PWA:
 - Safely handling cardholder data via compliant payment providers
 - Logging, monitoring, and dependency management
 
-> **A note on responsibility:** The Intershop PWA provides a secure baseline. However, every
-> customization, third-party integration, or infrastructure decision made in a project can affect
-> the compliance status. Achieving and maintaining PCI DSS 4.0 compliance is a shared
-> responsibility between Intershop, the system integrator, and the merchant.
+> **A note on responsibility:**
+> The Intershop PWA provides a secure baseline.
+> However, every customization, third-party integration, or infrastructure decision made in a project can affect the compliance status.
+> Achieving and maintaining PCI DSS 4.0 compliance is a shared responsibility between Intershop, the system integrator, and the merchant.
 
 ## Understanding PCI DSS 4.0 Applicability
 
@@ -168,11 +163,13 @@ The package-lock file (`package-lock.json`) is tracked in Git to prevent depende
 
 ## Adding Custom Trusted Resources for PWA Extensions
 
-When extending the Intershop PWA with custom features -- such as third-party analytics, tag managers, fonts, payment widgets, or other external integrations -- every additional external resource must be explicitly declared as a trusted source in the Content Security Policy (CSP). Failing to do so either breaks the functionality of your extension or forces insecure fallbacks like `unsafe-inline` or wildcard (`*`) directives, both of which directly violate PCI DSS 4.0 Requirement 6.4.3.
+When extending the Intershop PWA with custom features -- such as third-party analytics, tag managers, fonts, payment widgets, or other external integrations -- every additional external resource must be explicitly declared as a trusted source in the Content Security Policy (CSP).
+Failing to do so either breaks the functionality of your extension or forces insecure fallbacks like `unsafe-inline` or wildcard (`*`) directives, both of which directly violate PCI DSS 4.0 Requirement 6.4.3.
 
 ### Why This Matters for PCI DSS 4.0
 
-PCI DSS 4.0 Requirement 6.4.3 mandates that **all scripts loaded and executed on a payment page must be authorized, their integrity must be verified, and an inventory of all such scripts must be maintained**. This applies not only to JavaScript but also to stylesheets, fonts, images, and connection endpoints loaded from external origins.
+PCI DSS 4.0 Requirement 6.4.3 mandates that **all scripts loaded and executed on a payment page must be authorized, their integrity must be verified, and an inventory of all such scripts must be maintained**.
+This applies not only to JavaScript but also to stylesheets, fonts, images, and connection endpoints loaded from external origins.
 
 Any custom PWA extension that introduces an external resource therefore requires:
 
@@ -182,7 +179,9 @@ Any custom PWA extension that introduces an external resource therefore requires
 
 ### How the PWA CSP Is Configured
 
-The Intershop PWA manages its CSP via the NGINX configuration layer. Custom CSP directives are set through environment variable `ADDITIONAL_HEADERS` or in NGINX templates. Refer to the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy) for the baseline setup.
+The Intershop PWA manages its CSP via the NGINX configuration layer.
+Custom CSP directives are set through environment variable `ADDITIONAL_HEADERS` or in NGINX templates.
+Refer to the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy) for the baseline setup.
 
 The relevant directives and their purpose:
 
@@ -200,7 +199,9 @@ The relevant directives and their purpose:
 
 #### 1. Identify the Required Origins
 
-Before adding a CSP entry, determine **all** origins the resource loads from. Many third-party scripts load sub-resources from additional domains at runtime. Use browser developer tools (Network tab, CSP violation reports) or the vendor's documentation to compile a complete list.
+Before adding a CSP entry, determine **all** origins the resource loads from.
+Many third-party scripts load sub-resources from additional domains at runtime.
+Use browser developer tools (Network tab, CSP violation reports) or the vendor's documentation to compile a complete list.
 
 **Example -- Google Tag Manager:**
 
@@ -212,7 +213,8 @@ img-src:     https://www.google-analytics.com
 
 #### 2. Extend the NGINX CSP Configuration
 
-Add the identified origins to the corresponding directives in your NGINX environment configuration. Keep each directive on a single line and append new origins with a space separator:
+Add the identified origins to the corresponding directives in your NGINX environment configuration.
+Keep each directive on a single line and append new origins with a space separator:
 
 ```nginx
 # nginx.conf.template or environment-specific override
@@ -226,13 +228,16 @@ add_header Content-Security-Policy "
 " always;
 ```
 
-> **Important:** Never use `unsafe-inline` or `unsafe-eval` for `script-src`. If a third-party script requires inline execution, evaluate whether the vendor provides a nonce-compatible or SRI-compatible alternative, or consider whether this vendor meets your PCI DSS obligations.
+> **Important:**
+> Never use `unsafe-inline` or `unsafe-eval` for `script-src`.
+> If a third-party script requires inline execution, evaluate whether the vendor provides a nonce-compatible or SRI-compatible alternative, or consider whether this vendor meets your PCI DSS obligations.
 
 #### 3. Use Subresource Integrity (SRI) Where Possible
 
 For statically versioned third-party scripts (i.e., scripts loaded from a fixed, versioned URL), add an `integrity` attribute to enforce cryptographic verification.
 This directly satisfies the PCI DSS 4.0 Requirement 6.4.3 integrity verification mandate.
-It can be achieved by handing in the SRI hash together with the script link into the `ScriptLoaderService`. It will generate an HTML snippet like this.
+It can be achieved by handing in the SRI hash together with the script link into the `ScriptLoaderService`.
+It will generate an HTML snippet like this.
 
 ```html
 <script
@@ -249,11 +254,14 @@ If not available you can generate the SRI hash using the [SRI Hash Generator](ht
 curl -s https://example.com/widget.v2.3.1.min.js | openssl dgst -sha384 -binary | openssl base64 -A
 ```
 
-> **Note:** SRI is not compatible with dynamically generated scripts (e.g., scripts whose content changes on every request). For such cases, ensure the origin is strictly scoped in the CSP and document the risk acceptance in your compliance records.
+> **Note:**
+> SRI is not compatible with dynamically generated scripts (e.g., scripts whose content changes on every request).
+> For such cases, ensure the origin is strictly scoped in the CSP and document the risk acceptance in your compliance records.
 
 #### 4. Maintain a Script Inventory
 
-PCI DSS 4.0 Requirement 6.4.3 explicitly requires an **inventory of all authorized scripts**. For each custom trusted resource added to your PWA extension, document the following:
+PCI DSS 4.0 Requirement 6.4.3 explicitly requires an **inventory of all authorized scripts**.
+For each custom trusted resource added to your PWA extension, document the following:
 
 | Field                  | Description                                    |
 | ---------------------- | ---------------------------------------------- |
