@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { concatMap, map, switchMap } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
@@ -23,8 +23,16 @@ export class OrderTemplateService {
    */
   getOrderTemplates(): Observable<OrderTemplate[]> {
     return this.apiService.get(`customers/-/users/-/wishlists`).pipe(
-      unpackEnvelope<OrderTemplateListElementData>(),
-      map(orderTemplateData => this.orderTemplateMapper.fromListData(orderTemplateData))
+      unpackEnvelope<OrderTemplateListElementData | OrderTemplateData>(),
+      switchMap(orderTemplateData => {
+        if (orderTemplateData.length === 0 || 'attributes' in orderTemplateData[0]) {
+          return of(this.orderTemplateMapper.fromListData(orderTemplateData as OrderTemplateListElementData[]));
+        }
+        // legacy data format with uri only in the list response -> get each order template separately to get all data
+        const data = orderTemplateData as OrderTemplateData[];
+        const obsArray = data.map(d => this.getOrderTemplate(this.orderTemplateMapper.fromDataToId(d)));
+        return obsArray.length ? forkJoin(obsArray) : of([]);
+      })
     );
   }
 

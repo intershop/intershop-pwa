@@ -21,7 +21,7 @@ export class WishlistMapper {
   fromListData(wishlistsData: WishlistListElementData[]): Wishlist[] {
     if (wishlistsData) {
       return wishlistsData.map(wishlistData => ({
-        id: WishlistMapper.parseIdFromURI(wishlistData.uri),
+        id: wishlistData.itemId,
         title: wishlistData.title,
         itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(wishlistData.attributes, 'itemsCount'),
         preferred: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'preferred'),
@@ -65,6 +65,10 @@ export class WishlistMapper {
     } else {
       throw new Error(`wishlistData is required`);
     }
+  }
+
+  fromDataToId(wishlistData: WishlistData): string {
+    return wishlistData ? WishlistMapper.parseIdFromURI(wishlistData.uri) : undefined;
   }
 
   fromUpdate(wishlist: Wishlist, id: string): Wishlist {

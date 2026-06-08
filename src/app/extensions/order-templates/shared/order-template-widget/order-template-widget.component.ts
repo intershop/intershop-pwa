@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
-import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -20,7 +21,11 @@ export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
   orderTemplates$: Observable<OrderTemplate[]>;
 
-  constructor(private facade: OrderTemplatesFacade) {}
+  constructor(
+    private facade: OrderTemplatesFacade,
+    private shoppingFacade: ShoppingFacade,
+    private destroyRef: DestroyRef
+  ) {}
 
   ngOnInit() {
     this.facade.loadOrderTemplates();
@@ -31,7 +36,24 @@ export class OrderTemplateWidgetComponent implements OnInit {
     );
   }
 
-  getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+  addToBasket(orderTemplateId: string) {
+    this.facade.orderTemplates$
+      .pipe(
+        map(orderTemplates => {
+          const template = orderTemplates.find(t => t.id === orderTemplateId);
+          if (template && template.itemsCount !== template.items?.length) {
+            this.facade.loadOrderTemplateDetails(orderTemplateId);
+          }
+          return template;
+        }),
+        filter(orderTemplate => orderTemplate?.itemsCount === orderTemplate.items?.length),
+        take(1),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(orderTemplate => {
+        this.shoppingFacade.addProductsToBasket(
+          orderTemplate.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))
+        );
+      });
   }
 }

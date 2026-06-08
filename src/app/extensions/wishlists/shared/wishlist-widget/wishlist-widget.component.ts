@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, filter, map, tap } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
@@ -20,8 +20,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 })
 @GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
-  // Determines which wishlists are used to display products
-  @Input() wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' = 'all';
+  wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' = 'all';
   wishlistName: string;
   allWishlistsItemsSkus$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
@@ -47,13 +46,6 @@ export class WishlistWidgetComponent implements OnInit {
   }
 
   /**
-   * Necessary to set a default value for the input in case it is not set by the consumer.
-   */
-  getWishlistSelectionStrategy(): 'all' | 'preferred' | 'latest' {
-    return this.wishlistSelectionStrategy ?? 'all';
-  }
-
-  /**
    * Returns an observable of product SKUs based on the selected wishlist strategy.
    * - `preferred`: Only SKUs from the preferred wishlist (falls back to latest wishlist if none is preferred).
    * - `latest`: Only SKUs from the most recently created wishlist.
@@ -75,7 +67,7 @@ export class WishlistWidgetComponent implements OnInit {
 
   private getProductSkus(wishlists: Wishlist[]): string[] {
     let selectedWishLists: Wishlist[] = [];
-    switch (this.getWishlistSelectionStrategy()) {
+    switch (this.wishlistSelectionStrategy) {
       case 'preferred': {
         const preferred = wishlists.find(w => w.preferred);
         if (preferred) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { concatMap, first, map } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
@@ -28,8 +28,16 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope<WishlistListElementData>(),
-          map(wishlistData => this.wishlistMapper.fromListData(wishlistData))
+          unpackEnvelope<WishlistListElementData | WishlistData>(),
+          switchMap(wishlistData => {
+            if (wishlistData.length === 0 || 'attributes' in wishlistData[0]) {
+              return of(this.wishlistMapper.fromListData(wishlistData as WishlistListElementData[]));
+            }
+            // legacy data format with uri only in the list response -> get each wishlist separately to get all data
+            const data = wishlistData as WishlistData[];
+            const obsArray = data.map(d => this.getWishlist(this.wishlistMapper.fromDataToId(d)));
+            return obsArray.length ? forkJoin(obsArray) : of([]);
+          })
         )
       )
     );

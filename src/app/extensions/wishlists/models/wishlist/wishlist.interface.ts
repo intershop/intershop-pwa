@@ -15,4 +15,5 @@ export interface WishlistListElementData {
   attributes: Attribute[];
   title?: string;
   uri?: string;
+  itemId: string;
 }

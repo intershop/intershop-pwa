@@ -4,7 +4,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 
-import { OrderTemplateData } from '../../models/order-template/order-template.interface';
+import { OrderTemplateData, OrderTemplateListElementData } from '../../models/order-template/order-template.interface';
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
 import { OrderTemplateService } from './order-template.service';
@@ -27,10 +27,12 @@ describe('Order Template Service', () => {
     expect(orderTemplateService).toBeTruthy();
   });
 
-  it("should get order templates when 'getOrderTemplates' is called", done => {
+  it("should get order templates when 'getOrderTemplates' is called with list element data", done => {
     when(apiServiceMock.get(`customers/-/users/-/wishlists`)).thenReturn(
       of({
-        elements: [{ uri: 'any/wishlists/1234', title: 'My Template', attributes: [{ name: 'itemsCount', value: 2 }] }],
+        elements: [
+          { itemId: '1234', title: 'My Template', attributes: [{ name: 'itemsCount', value: 2 }] },
+        ] as OrderTemplateListElementData[],
       })
     );
 
@@ -46,6 +48,31 @@ describe('Order Template Service', () => {
           },
         ]
       `);
+      done();
+    });
+  });
+
+  it("should get order templates individually when 'getOrderTemplates' returns OrderTemplateData", done => {
+    when(apiServiceMock.get(`customers/-/users/-/wishlists`)).thenReturn(
+      of({
+        elements: [
+          { title: 'Template 1', uri: 'any/wishlists/1234' },
+          { title: 'Template 2', uri: 'any/wishlists/5678' },
+        ] as OrderTemplateData[],
+      })
+    );
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).thenReturn(
+      of({ title: 'Template 1', itemsCount: 2, items: [] } as OrderTemplateData)
+    );
+    when(apiServiceMock.get(`customers/-/users/-/wishlists/5678`)).thenReturn(
+      of({ title: 'Template 2', itemsCount: 0, items: [] } as OrderTemplateData)
+    );
+
+    orderTemplateService.getOrderTemplates().subscribe(data => {
+      verify(apiServiceMock.get(`customers/-/users/-/wishlists`)).once();
+      verify(apiServiceMock.get(`customers/-/users/-/wishlists/1234`)).once();
+      verify(apiServiceMock.get(`customers/-/users/-/wishlists/5678`)).once();
+      expect(data).toHaveLength(2);
       done();
     });
   });

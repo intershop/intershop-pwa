@@ -56,7 +56,7 @@ export class OrderTemplateMapper {
       return [];
     }
     return orderTemplateListElementsData.map(orderTemplateListElementData => ({
-      id: OrderTemplateMapper.parseIdFromURI(orderTemplateListElementData.uri),
+      id: orderTemplateListElementData.itemId,
       title: orderTemplateListElementData.title,
       itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(
         orderTemplateListElementData.attributes,
@@ -67,6 +67,13 @@ export class OrderTemplateMapper {
         'creationDate'
       ),
     }));
+  }
+
+  /**
+   * extract ID from URI
+   */
+  fromDataToId(orderTemplateData: OrderTemplateData): string {
+    return orderTemplateData ? OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri) : undefined;
   }
 
   fromUpdate(orderTemplate: OrderTemplate, id: string): OrderTemplate {

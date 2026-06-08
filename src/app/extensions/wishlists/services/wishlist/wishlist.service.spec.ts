@@ -6,7 +6,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
-import { WishlistData } from '../../models/wishlist/wishlist.interface';
+import { WishlistData, WishlistListElementData } from '../../models/wishlist/wishlist.interface';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
 import { WishlistService } from './wishlist.service';
@@ -41,14 +41,14 @@ describe('Wishlist Service', () => {
       of({
         elements: [
           {
-            uri: 'any/wishlists/1234',
+            itemId: '1234',
             title: 'My Wishlist',
             attributes: [
               { name: 'itemsCount', value: 2 },
               { name: 'preferred', value: true },
             ],
           },
-        ],
+        ] as WishlistListElementData[],
       })
     );
 
@@ -77,14 +77,14 @@ describe('Wishlist Service', () => {
       of({
         elements: [
           {
-            uri: 'any/wishlists/1234',
+            itemId: '1234',
             title: 'My Wishlist',
             attributes: [
               { name: 'itemsCount', value: 2 },
               { name: 'preferred', value: true },
             ],
           },
-        ],
+        ] as WishlistListElementData[],
       })
     );
 
@@ -103,6 +103,31 @@ describe('Wishlist Service', () => {
           },
         ]
       `);
+      done();
+    });
+  });
+
+  it("should get wishlists individually when 'getWishlists' returns WishlistData", done => {
+    when(apiServiceMock.get(`privatecustomers/-/wishlists`)).thenReturn(
+      of({
+        elements: [
+          { title: 'Wishlist 1', uri: 'any/wishlists/1234', preferred: false },
+          { title: 'Wishlist 2', uri: 'any/wishlists/5678', preferred: true },
+        ] as WishlistData[],
+      })
+    );
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).thenReturn(
+      of({ title: 'Wishlist 1', itemsCount: 2, items: [], preferred: false } as WishlistData)
+    );
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/5678`)).thenReturn(
+      of({ title: 'Wishlist 2', itemsCount: 0, items: [], preferred: true } as WishlistData)
+    );
+
+    wishlistService.getWishlists().subscribe(data => {
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists`)).once();
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).once();
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/5678`)).once();
+      expect(data).toHaveLength(2);
       done();
     });
   });

@@ -1,5 +1,5 @@
 <div class="section">
-  @if (getWishlistSelectionStrategy() === 'all' || wishlistName === undefined) {
+  @if (wishlistSelectionStrategy === 'all' || wishlistName === undefined) {
     <h2 class="h3">{{ 'account.wishlists.widget.all.heading' | translate }}</h2>
   } @else {
     <h2 class="h3">

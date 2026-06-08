@@ -14,4 +14,5 @@ export interface OrderTemplateListElementData {
   attributes: Attribute[];
   title?: string;
   uri?: string;
+  itemId: string;
 }

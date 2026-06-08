@@ -11,15 +11,21 @@
             @for (orderTemplate of orderTemplates; track orderTemplate.id) {
               <div class="mb-2">
                 <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
-                @if (orderTemplate.items?.length) {
-                  <a class="align-top float-end">
-                    <ish-product-add-to-basket
-                      cssClass="p-0 mb-0"
-                      displayType="icon"
-                      ishProductContext
-                      [parts]="getParts(orderTemplate)"
-                    />
-                  </a>
+                @if (orderTemplate.itemsCount && orderTemplate.itemsCount > 0) {
+                  <div class="float-end align-top">
+                    <button
+                      class="btn btn-link p-0"
+                      data-testing-id="addToCartButton"
+                      name="addProduct"
+                      type="button"
+                      [attr.aria-label]="'product.add_to_cart.link' | translate"
+                      [tabindex]="0"
+                      [title]="'product.add_to_cart.link' | translate"
+                      (click)="addToBasket(orderTemplate.id)"
+                    >
+                      <i class="bi bi-cart-fill"></i>
+                    </button>
+                  </div>
                 }
               </div>
             }

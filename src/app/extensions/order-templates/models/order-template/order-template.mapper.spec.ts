@@ -73,7 +73,7 @@ describe('Order Template Mapper', () => {
     it('should map list element data to order template array', () => {
       const listData: OrderTemplateListElementData[] = [
         {
-          uri: 'any/wishlists/1234',
+          itemId: '1234',
           title: 'My Template',
           attributes: [
             { name: 'itemsCount', value: 3 },
@@ -81,7 +81,7 @@ describe('Order Template Mapper', () => {
           ],
         },
         {
-          uri: 'any/wishlists/5678',
+          itemId: '5678',
           title: 'Second Template',
           attributes: [{ name: 'itemsCount', value: 0 }],
         },
@@ -102,6 +102,20 @@ describe('Order Template Mapper', () => {
         itemsCount: 0,
         creationDate: undefined,
       });
+    });
+  });
+
+  describe('fromDataToId', () => {
+    it('should return undefined when input is falsy', () => {
+      expect(orderTemplateMapper.fromDataToId(undefined)).toBeUndefined();
+    });
+
+    it('should extract id from URI in order template data', () => {
+      const data: OrderTemplateData = {
+        title: 'test',
+        uri: 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD/wishlists/ot1234',
+      };
+      expect(orderTemplateMapper.fromDataToId(data)).toBe('ot1234');
     });
   });
 });

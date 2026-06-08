@@ -141,7 +141,7 @@ describe('Order Template Effects', () => {
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(of(orderTemplates));
     });
 
-    it('should not call the OrderTemplateService when user is not authorized', () => {
+    it('should not emit any actions when user is not authorized', () => {
       const action = loadOrderTemplates();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
