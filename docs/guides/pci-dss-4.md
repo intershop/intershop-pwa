@@ -211,22 +211,49 @@ connect-src: https://www.google-analytics.com https://analytics.google.com
 img-src:     https://www.google-analytics.com
 ```
 
+**Example -- Sparque over policy enforcer:**
+
+```
+connect-src: https:// policy-int.cloud.intershop.com
+```
+
 #### 2. Extend the NGINX CSP Configuration
 
-Add the identified origins to the corresponding directives in your NGINX environment configuration.
-Keep each directive on a single line and append new origins with a space separator:
+Add the identified origins to the corresponding CSP directives.
+In Intershop PWA you can do this in two equivalent ways:
+
+1. Directly in NGINX configuration templates (for example `nginx.conf.tmpl` or environment-specific overrides)
+2. Via the `ADDITIONAL_HEADERS` configuration (recommended for containerized and Helm-based deployments)
+
+Keep each directive on a single line and append new origins with a space separator.
+The following sample is based on the Google Tag Manager scenario and additionally includes the Sparque Policy Enforcer endpoint in `connect-src`.
+
+**Option A -- Direct NGINX configuration**
 
 ```nginx
 # nginx.conf.template or environment-specific override
 add_header Content-Security-Policy "
   default-src 'self';
   script-src  'self' https://www.googletagmanager.com;
-  connect-src 'self' https://www.google-analytics.com https://analytics.google.com;
+  connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://policy-int.cloud.intershop.com;
   img-src     'self' data: https://www.google-analytics.com;
   style-src   'self';
   font-src    'self' https://fonts.gstatic.com;
 " always;
 ```
+
+**Option B -- Environment variable (`ADDITIONAL_HEADERS`)**
+
+```yaml
+nginx:
+  environment:
+    ADDITIONAL_HEADERS: |
+      headers:
+        - Content-Security-Policy: "default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://policy-int.cloud.intershop.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self'; font-src 'self' https://fonts.gstatic.com;"
+```
+
+For Helm deployments, use `cache.additionalHeaders` with the same header content.
+See the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy) for the exact syntax and deployment-specific examples.
 
 > **Important:**
 > Never use `unsafe-inline` or `unsafe-eval` for `script-src`.
