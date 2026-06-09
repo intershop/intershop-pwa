@@ -93,7 +93,7 @@ export class QuotingFacade {
   );
 
   addProductToQuoteRequest(
-    payload: SkuQuantityType & { quoteRequestId?: string; displayName?: string; createNew?: boolean }
+    payload: { quoteRequestId?: string; displayName?: string; createNew?: boolean } & SkuQuantityType
   ) {
     this.store.dispatch(addProductToQuoteRequest(payload));
   }

@@ -10,7 +10,7 @@ import { RequisitionWidgetComponent } from './components/requisition-widget/requ
 import { RequisitionsListComponent } from './components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementStoreModule } from './store/requisition-management-store.module';
 
-const exportedComponents = [RequisitionsListComponent, RequisitionRejectDialogComponent];
+const exportedComponents = [RequisitionRejectDialogComponent, RequisitionsListComponent];
 
 const importExportModules = [NgbNavModule];
 

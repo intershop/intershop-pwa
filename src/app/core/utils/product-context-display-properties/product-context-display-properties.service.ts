@@ -12,7 +12,7 @@ import { ProductHelper } from 'ish-core/models/product/product.helper';
 @Injectable({ providedIn: 'root' })
 export class ProductContextDisplayPropertiesService implements ExternalDisplayPropertiesProvider {
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+    context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return context$.pipe(
       map(({ product, prices, inventory }) => {

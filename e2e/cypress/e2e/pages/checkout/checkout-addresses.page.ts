@@ -2,7 +2,7 @@ import { fillFormField, selectNgSelectOption, waitLoadingEnd } from '../../frame
 import { Registration } from '../account/registration.page';
 
 export type AddressDetailsTypes = Partial<
-  Pick<Registration, 'countryCode' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
+  Pick<Registration, 'addressLine1' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'postalCode'>
 >;
 
 export class CheckoutAddressesPage {

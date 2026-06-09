@@ -12,4 +12,4 @@ export interface ProductReview {
   status?: 'NEW' | 'REJECTED';
 }
 
-export type ProductReviewCreationType = Pick<ProductReview, 'title' | 'content' | 'rating' | 'showAuthorNameFlag'>;
+export type ProductReviewCreationType = Pick<ProductReview, 'content' | 'rating' | 'showAuthorNameFlag' | 'title'>;

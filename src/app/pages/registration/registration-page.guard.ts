@@ -27,7 +27,7 @@ export function registrationPageGuard(): Observable<boolean | UrlTree> {
 export function canDeactivateRegistrationPage(
   _: RegistrationPageComponent,
   currentRoute: ActivatedRouteSnapshot
-): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+): boolean | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | UrlTree {
   const registrationConfigurationService = inject(RegistrationFormConfigurationService);
 
   return registrationConfigurationService.canDeactivate(registrationConfigurationService.extractConfig(currentRoute));

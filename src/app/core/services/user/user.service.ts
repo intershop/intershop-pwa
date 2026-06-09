@@ -126,7 +126,7 @@ export class UserService {
       mainDivision: body.address.mainDivisionCode,
     };
 
-    const newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType> =
+    const newCustomer$: Observable<CreateBusinessCustomerType | CreatePrivateCustomerType> =
       this.appFacade.currentLocale$.pipe(
         map(currentLocale =>
           body.customer.isBusinessCustomer

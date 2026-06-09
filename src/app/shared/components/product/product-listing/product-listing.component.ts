@@ -55,7 +55,7 @@ export class ProductListingComponent implements OnInit {
   /**
    * Emits the event for loading more products.
    */
-  loadMoreProducts(direction: 'up' | 'down') {
+  loadMoreProducts(direction: 'down' | 'up') {
     this.productListingView$
       .pipe(
         take(1),

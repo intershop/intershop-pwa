@@ -56,7 +56,7 @@ export class WishlistsFacade {
     );
   }
 
-  addWishlist(wishlist: WishlistHeader): void | HttpError {
+  addWishlist(wishlist: WishlistHeader): HttpError | void {
     this.store.dispatch(createWishlist({ wishlist }));
   }
 

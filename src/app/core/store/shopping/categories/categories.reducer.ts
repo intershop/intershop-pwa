@@ -14,7 +14,7 @@ const initialState: CategoriesState = {
 
 function mergeCategories(
   state: CategoriesState,
-  action: ReturnType<typeof loadTopLevelCategoriesSuccess | typeof loadCategorySuccess | typeof loadCategoryTreeSuccess>
+  action: ReturnType<typeof loadCategorySuccess | typeof loadCategoryTreeSuccess | typeof loadTopLevelCategoriesSuccess>
 ) {
   const loadedTree = action.payload.categories;
   const categories = CategoryTreeHelper.merge(state.categories, loadedTree);

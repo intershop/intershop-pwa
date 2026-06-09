@@ -14,7 +14,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationComponent implements OnInit {
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   categories$: Observable<NavigationCategory[]>;
 

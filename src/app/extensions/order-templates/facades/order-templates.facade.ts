@@ -55,11 +55,11 @@ export class OrderTemplatesFacade {
     );
   }
 
-  addOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
+  addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {
     this.store.dispatch(createOrderTemplate({ orderTemplate }));
   }
 
-  createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): void | HttpError {
+  createOrderTemplateFromLineItems(orderTemplate: OrderTemplateHeader, lineItems: LineItem[]): HttpError | void {
     this.store.dispatch(orderTemplatesActions.createOrderTemplateFromLineItems({ orderTemplate, lineItems }));
   }
 

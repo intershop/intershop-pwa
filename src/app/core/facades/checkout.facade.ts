@@ -423,11 +423,11 @@ export class CheckoutFacade {
     );
   }
 
-  assignBasketAddress(addressId: string, scope: 'invoice' | 'shipping' | 'any') {
+  assignBasketAddress(addressId: string, scope: 'any' | 'invoice' | 'shipping') {
     this.store.dispatch(assignBasketAddress({ addressId, scope }));
   }
 
-  createBasketAddress(address: Address, scope: 'invoice' | 'shipping' | 'any') {
+  createBasketAddress(address: Address, scope: 'any' | 'invoice' | 'shipping') {
     if (!address || !scope) {
       return;
     }

@@ -12,13 +12,13 @@ import { PaymentData } from 'ish-core/models/payment/payment.interface';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { WithdrawalInfo } from 'ish-core/models/withdrawal-info/withdrawal-info.model';
 
-export type OrderCreationStatus = 'COMPLETED' | 'ROLLED_BACK' | 'STOPPED' | 'CONTINUE';
+export type OrderCreationStatus = 'COMPLETED' | 'CONTINUE' | 'ROLLED_BACK' | 'STOPPED';
 
 export type OrderStopActionReason =
-  | 'waiting_for_pending_payments'
-  | 'redirect_urls_required'
+  | 'paypal_wallet_initialized'
   | 'recurring.order'
-  | 'paypal_wallet_initialized';
+  | 'redirect_urls_required'
+  | 'waiting_for_pending_payments';
 
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;

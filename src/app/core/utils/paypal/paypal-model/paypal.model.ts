@@ -60,33 +60,33 @@ interface PaypalCardFieldsCardObject {
     | 'American Express'
     | 'Diners Club'
     | 'discover'
+    | 'Elo'
+    | 'Hiper'
+    | 'Hipercard'
     | 'JCB'
     | 'Maestro'
     | 'Mastercard'
     | 'UnionPay'
-    | 'Visa'
-    | 'Elo'
-    | 'Hiper'
-    | 'Hipercard';
+    | 'Visa';
   type:
     | 'american-express'
     | 'diners-club'
     | 'discover'
+    | 'elo'
+    | 'hiper'
+    | 'hipercard'
     | 'jcb'
     | 'maestro'
     | 'mastercard'
     | 'unionpay'
-    | 'visa'
-    | 'elo'
-    | 'hiper'
-    | 'hipercard';
+    | 'visa';
 }
 
 export enum PaypalCardFieldError {
+  InvalidCvv = 'INVALID_CVV',
+  InvalidExpiry = 'INVALID_EXPIRY',
   InvalidName = 'INVALID_NAME',
   InvalidNumber = 'INVALID_NUMBER',
-  InvalidExpiry = 'INVALID_EXPIRY',
-  InvalidCvv = 'INVALID_CVV',
 }
 
 interface PaypalCardFieldCardFieldData {
@@ -98,7 +98,7 @@ interface PaypalCardFieldCardFieldData {
 
 export interface PaypalStateObject {
   dispatching: boolean;
-  error: string | null;
+  error: null | string;
   rejected: boolean;
   resolved: boolean;
   value: PaypalCardFieldsStateObject;
@@ -106,7 +106,7 @@ export interface PaypalStateObject {
 
 export interface PaypalCardFieldsStateObject {
   cards: PaypalCardFieldsCardObject[];
-  emittedBy?: 'name' | 'number' | 'cvv' | 'expiry';
+  emittedBy?: 'cvv' | 'expiry' | 'name' | 'number';
   isFormValid: boolean;
   errors: PaypalCardFieldError[];
   fields: {
@@ -124,7 +124,7 @@ interface PaypalCardFieldsIndividualFieldOptions {
 }
 
 export interface PaypalCardFieldsIndividualField {
-  render(container: string | HTMLElement): Promise<void>;
+  render(container: HTMLElement | string): Promise<void>;
   addClass(className: string): Promise<void>;
   clear(): void;
   focus(): void;

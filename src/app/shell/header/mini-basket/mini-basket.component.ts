@@ -34,7 +34,7 @@ export class MiniBasketComponent implements OnInit {
   itemCount$: Observable<number>;
   basketLoading$: Observable<boolean>;
 
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   private basketError$: Observable<HttpError>;
   private destroyRef = inject(DestroyRef);

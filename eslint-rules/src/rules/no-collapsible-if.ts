@@ -39,7 +39,7 @@ const noCollapsibleIfRule: TSESLint.RuleModule<keyof typeof messages> = {
  * @param node the current if statement
  * @returns the second condition, when if statement is collapsible, otherwise false
  */
-function collapsibleIfStatement(node: TSESTree.IfStatement): TSESTree.Expression | false {
+function collapsibleIfStatement(node: TSESTree.IfStatement): false | TSESTree.Expression {
   return node.consequent &&
     !node.alternate &&
     node.consequent.type === AST_NODE_TYPES.BlockStatement &&

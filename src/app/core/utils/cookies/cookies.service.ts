@@ -10,10 +10,10 @@ import { InjectSingle } from 'ish-core/utils/injection';
 interface CookiesOptions {
   path?: string;
   domain?: string;
-  expires?: string | Date;
+  expires?: Date | string;
   secure?: boolean;
   httpOnly?: boolean;
-  sameSite?: 'Lax' | 'Strict' | 'None';
+  sameSite?: 'Lax' | 'None' | 'Strict';
 }
 
 /**

@@ -5,7 +5,7 @@ import { getCurrentLocale, getICMStaticURL } from 'ish-core/store/core/configura
 
 import { ContentConfigurationParameterData } from './content-configuration-parameter.interface';
 
-export type ContentConfigurationParameters = Record<string, string | object | number>;
+export type ContentConfigurationParameters = Record<string, number | object | string>;
 
 @Injectable({ providedIn: 'root' })
 export class ContentConfigurationParameterMapper {
@@ -30,7 +30,7 @@ export class ContentConfigurationParameterMapper {
   }
 
   // post process the configuration parameter data to apply special handling for specific types
-  private postProcessData(data: ContentConfigurationParameterData): string | object | number {
+  private postProcessData(data: ContentConfigurationParameterData): number | object | string {
     switch (data.type) {
       case 'bc_pmc:types.pagelet2-ImageFileRef':
       case 'bc_pmc:types.pagelet2-FileRef':

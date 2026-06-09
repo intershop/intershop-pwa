@@ -185,7 +185,7 @@ export class ProductVariationHelper {
     );
   }
 
-  private static toValue(input: VariationAttribute['value']): string | number {
+  private static toValue(input: VariationAttribute['value']): number | string {
     return typeof input === 'object' ? input.value : input;
   }
 

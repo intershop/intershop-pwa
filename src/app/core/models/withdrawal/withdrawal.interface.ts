@@ -6,7 +6,7 @@ export interface WithdrawalData {
 interface WithdrawalBaseData {
   orderDocumentNumber: string;
   orderEmail: string;
-  status: 'INITIAL' | 'CREATED';
+  status: 'CREATED' | 'INITIAL';
   confirmationEmail?: string;
   name?: string;
 }

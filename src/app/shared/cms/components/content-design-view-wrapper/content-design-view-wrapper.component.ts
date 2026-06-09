@@ -22,7 +22,7 @@ export class ContentDesignViewWrapperComponent {
   @Input() include: ContentPageletEntryPointView;
 
   pagelet$: Observable<ContentPageletView>;
-  type: 'pagelet' | 'slot' | 'include';
+  type: 'include' | 'pagelet' | 'slot';
 
   isDesignViewMode = false;
 

@@ -27,33 +27,33 @@ export interface Environment {
 
   /* FEATURE TOGGLES */
   features: (
+    | 'addressDoctor'
+    | 'businessCustomerRegistration'
     | 'compare'
     | 'contactUs'
+    | 'copilot'
+    | 'costCenters'
     | 'extraConfiguration'
+    | 'guestCheckout'
+    | 'legacyEncoding'
+    /* B2B features */
+    | 'maps'
+    | 'orderTemplates'
     | 'productNotifications'
+    | 'punchout'
+    | 'quickorder'
+    | 'quoting'
+    /* B2C features */
     | 'rating'
     | 'recently'
-    | 'saveLanguageSelection'
-    | 'stickyHeader'
-    | 'storeLocator'
-    /* B2B features */
-    | 'businessCustomerRegistration'
-    | 'costCenters'
-    | 'quoting'
-    | 'quickorder'
-    | 'orderTemplates'
-    | 'punchout'
-    /* B2C features */
-    | 'guestCheckout'
-    | 'wishlists'
     /* ICM compatibility - a.o. to be used with the ICMCompatibilityInterceptor */
     // | 'messageToMerchant'
-    | 'legacyEncoding'
+    | 'saveLanguageSelection'
     /* Third-party Integrations */
-    | 'addressDoctor'
-    | 'copilot'
-    | 'maps'
+    | 'stickyHeader'
+    | 'storeLocator'
     | 'tracking'
+    | 'wishlists'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
@@ -83,12 +83,12 @@ export interface Environment {
 
   // global definition of the product listing page size
   productListingItemsPerPage:
-    | number
     | {
         category: number;
         search: number;
         master: number;
-      };
+      }
+    | number;
 
   /**
    * default viewType used for product listings
@@ -98,7 +98,7 @@ export interface Environment {
    * - to override it for all device types use `defaultProductListingViewType: 'list'`
    * - to override it for mobile and tablet use `defaultProductListingViewType: { mobile: 'list', tablet: 'list' }`
    */
-  defaultProductListingViewType?: ViewType | Partial<Record<DeviceType, ViewType>>;
+  defaultProductListingViewType?: Partial<Record<DeviceType, ViewType>> | ViewType;
 
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
@@ -140,7 +140,7 @@ export interface Environment {
    * - 'always': fetch fresh price information all the time
    * - 'stable': only fetch prices once per application lifetime
    */
-  priceUpdate: 'stable' | 'always';
+  priceUpdate: 'always' | 'stable';
 
   // sparque integration
   sparque?: SparqueConfig;

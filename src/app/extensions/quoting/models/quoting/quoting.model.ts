@@ -1,7 +1,7 @@
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Price } from 'ish-core/models/price/price.model';
 
-export type QuoteCompletenessLevel = 'Stub' | 'List' | 'Detail';
+export type QuoteCompletenessLevel = 'Detail' | 'List' | 'Stub';
 
 export interface QuoteStub {
   type: 'Quote' | 'QuoteRequest';
@@ -63,12 +63,12 @@ export interface Quote extends QuoteBase<QuoteItem> {
   originTotal: Price;
 }
 
-export interface QuoteRequest extends QuoteBase<QuoteRequestItem | QuoteItemStub> {
+export interface QuoteRequest extends QuoteBase<QuoteItemStub | QuoteRequestItem> {
   type: 'QuoteRequest';
 
   submittedDate?: number;
 }
 
-export type QuotingEntity = QuoteStub | Quote | QuoteRequest | QuoteStubFromAttributes;
+export type QuotingEntity = Quote | QuoteRequest | QuoteStub | QuoteStubFromAttributes;
 
-export type QuoteStatus = 'Rejected' | 'Expired' | 'Responded' | 'Submitted' | 'New' | 'Unknown';
+export type QuoteStatus = 'Expired' | 'New' | 'Rejected' | 'Responded' | 'Submitted' | 'Unknown';

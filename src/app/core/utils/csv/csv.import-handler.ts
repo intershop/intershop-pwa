@@ -5,7 +5,7 @@ export interface CsvImportData {
   data: string[];
 }
 
-export type CsvImportStatus = 'Default' | 'Valid' | 'InvalidFormat' | 'InvalidHeader' | 'InvalidData';
+export type CsvImportStatus = 'Default' | 'InvalidData' | 'InvalidFormat' | 'InvalidHeader' | 'Valid';
 export class CsvImportHandler {
   /**
    * Processes a CSV file and extracts its content and headers.

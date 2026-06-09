@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 export function formatISHDate(
-  value: string | number | Date,
+  value: Date | number | string,
   format = 'mediumDate',
   lang: string,
   timezone?: string
@@ -38,7 +38,7 @@ export function formatISHDate(
 export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  transform(value: string | number | Date, format = 'mediumDate', timezone?: string): string {
+  transform(value: Date | number | string, format = 'mediumDate', timezone?: string): string {
     return formatISHDate(value, format, this.translateService.currentLang, timezone);
   }
 }

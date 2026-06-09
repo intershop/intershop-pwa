@@ -61,7 +61,7 @@ const newGroupName = (num: number) => {
 };
 
 function isFailure(
-  results: CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult
+  results: CypressCommandLine.CypressFailedRunResult | CypressCommandLine.CypressRunResult
 ): results is CypressCommandLine.CypressFailedRunResult {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (results as any).status === 'failed';
@@ -71,7 +71,7 @@ const run = (
   num: number,
   spec,
   retryGroup?: string
-): Promise<CypressCommandLine.CypressRunResult | CypressCommandLine.CypressFailedRunResult> => {
+): Promise<CypressCommandLine.CypressFailedRunResult | CypressCommandLine.CypressRunResult> => {
   /* eslint-disable-next-line no-param-reassign  */
   num += 1;
   // eslint-disable-next-line @typescript-eslint/no-shadow

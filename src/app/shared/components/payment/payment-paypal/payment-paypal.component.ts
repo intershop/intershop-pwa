@@ -42,11 +42,11 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     PaypalAdaptersBuilder,
+    PaypalApplePayAdapter,
     PaypalButtonsAdapter,
     PaypalCardFieldsAdapter,
-    PaypalMessagesAdapter,
     PaypalGooglePayAdapter,
-    PaypalApplePayAdapter,
+    PaypalMessagesAdapter,
   ],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-export type RatingFilledType = 'full' | 'half' | 'empty';
+export type RatingFilledType = 'empty' | 'full' | 'half';
 /**
  * The Product Rating Star Component renders a single rating star.
  *

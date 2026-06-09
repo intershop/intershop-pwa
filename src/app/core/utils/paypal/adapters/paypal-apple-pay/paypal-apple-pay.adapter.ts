@@ -360,7 +360,7 @@ export class PaypalApplePayAdapter {
   /**
    * ICM order creation needs to be continued after Apple Pay authorization.
    */
-  private async continueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'CANCELLED' | 'ERROR' }> {
+  private async continueICMOrderCreation(orderId: string): Promise<{ status: 'CANCELLED' | 'ERROR' | 'SUCCESS' }> {
     const orderContextPromise = firstValueFrom(
       this.paypalDataTransferService.paypalOrder$.pipe(
         filter(order => !!order?.orderStatus),

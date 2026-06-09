@@ -28,7 +28,7 @@ export function back() {
   cy.go('back');
 }
 
-export function selectNgSelectOption(dataTestingId: string, option: string | number) {
+export function selectNgSelectOption(dataTestingId: string, option: number | string) {
   const ngSelect = cy.get(`[data-testing-id="${dataTestingId}"]`);
   ngSelect.then(selects => {
     const select = selects[0];

@@ -14,11 +14,11 @@ import { QuoteItem, QuoteRequestItem } from '../../models/quoting/quoting.model'
 })
 export class QuoteLineItemListElementComponent implements OnInit {
   @Input({ required: true }) lineItem: Partial<
-    Pick<QuoteRequestItem, 'id' | 'productSKU' | 'quantity' | 'singleBasePrice' | 'total'> &
-      Pick<
-        QuoteItem,
-        'id' | 'productSKU' | 'quantity' | 'originSingleBasePrice' | 'singleBasePrice' | 'total' | 'originTotal'
-      >
+    Pick<
+      QuoteItem,
+      'id' | 'originSingleBasePrice' | 'originTotal' | 'productSKU' | 'quantity' | 'singleBasePrice' | 'total'
+    > &
+      Pick<QuoteRequestItem, 'id' | 'productSKU' | 'quantity' | 'singleBasePrice' | 'total'>
   >;
 
   editable$: Observable<boolean>;

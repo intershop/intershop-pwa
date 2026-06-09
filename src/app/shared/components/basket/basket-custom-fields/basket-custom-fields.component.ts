@@ -18,7 +18,7 @@ import { whenFalsy } from 'ish-core/utils/operators';
 export class BasketCustomFieldsComponent implements OnInit {
   customFields$: Observable<CustomFieldsComponentInput[]>;
   visible$: Observable<boolean>;
-  editMode$: Observable<'edit' | 'add'>;
+  editMode$: Observable<'add' | 'edit'>;
 
   collapsed = true;
   form = new FormGroup({});
