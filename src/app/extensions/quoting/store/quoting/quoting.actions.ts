@@ -29,7 +29,7 @@ export const loadQuotingSuccess = createAction(
 
 export const loadQuotingDetail = createAction(
   '[Quoting] Load Quoting Detail',
-  payload<EntityPayloadType & { level: QuoteCompletenessLevel }>()
+  payload<{ level: QuoteCompletenessLevel } & EntityPayloadType>()
 );
 
 export const loadQuotingDetailSuccess = createAction(
@@ -100,7 +100,7 @@ export const createQuoteRequestFromBasketSuccess = createAction(
 
 export const addProductToQuoteRequest = createAction(
   '[Quoting] Add Product To Quote Request',
-  payload<SkuQuantityType & { quoteRequestId?: string; displayName?: string; createNew?: boolean }>()
+  payload<{ quoteRequestId?: string; displayName?: string; createNew?: boolean } & SkuQuantityType>()
 );
 
 export const addProductToQuoteRequestSuccess = createAction(

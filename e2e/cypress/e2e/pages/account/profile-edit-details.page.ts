@@ -2,7 +2,7 @@ import { fillFormField } from '../../framework';
 
 import { Registration } from './registration.page';
 
-export type ProfileEditDetailsTypes = Partial<Pick<Registration, 'title' | 'firstName' | 'lastName' | 'phoneHome'>>;
+export type ProfileEditDetailsTypes = Partial<Pick<Registration, 'firstName' | 'lastName' | 'phoneHome' | 'title'>>;
 
 export class ProfileEditDetailsPage {
   readonly tag = 'ish-account-profile-user';

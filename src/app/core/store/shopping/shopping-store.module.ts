@@ -43,14 +43,14 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
 
 const shoppingEffects = [
   CategoriesEffects,
-  ProductsEffects,
-  SearchEffects,
   FilterEffects,
-  PromotionsEffects,
   ProductInventoryEffects,
   ProductListingEffects,
   ProductPricesEffects,
+  ProductsEffects,
+  PromotionsEffects,
   RecommendationsEffects,
+  SearchEffects,
   WarrantiesEffects,
 ];
 

@@ -9,4 +9,4 @@ export interface Image {
   primaryImage: boolean;
 }
 
-export type ImageLoading = 'lazy' | 'eager';
+export type ImageLoading = 'eager' | 'lazy';

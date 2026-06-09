@@ -20,7 +20,7 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;
 
-  stars$: Observable<('full' | 'half' | 'empty')[]>;
+  stars$: Observable<('empty' | 'full' | 'half')[]>;
   rating$: Observable<number>;
   numberOfReviews$: Observable<number>;
   isVariationMaster$: Observable<boolean>;

@@ -233,7 +233,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
     }
   }
 
-  updateOrderRecurrence(updateData: Recurrence | null) {
+  updateOrderRecurrence(updateData: null | Recurrence) {
     if (updateData) {
       // update order recurrence with form values (or default value)
       this.checkoutFacade.updateBasketRecurrence(updateData);

@@ -116,7 +116,7 @@ export class OrganizationManagementFacade {
     this.store.dispatch(deleteUser({ login }));
   }
 
-  roles$(roleIDs: string[] | Observable<string[]>) {
+  roles$(roleIDs: Observable<string[]> | string[]) {
     return toObservable(roleIDs).pipe(switchMap(ids => this.store.pipe(select(getRoles(ids)))));
   }
 

@@ -45,7 +45,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy 
     );
   }
 
-  get errorMessage(): string | Observable<string> {
+  get errorMessage(): Observable<string> | string {
     const fieldForm = this.field.formControl;
     for (const error in fieldForm.errors) {
       if (Object.hasOwn(fieldForm.errors, error)) {
@@ -65,7 +65,7 @@ export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy 
     }
   }
 
-  private determineErrorMessage(error: string): string | Observable<string> {
+  private determineErrorMessage(error: string): Observable<string> | string {
     let message = this.config.getValidatorMessage(error);
 
     if (this.field.validation?.messages?.[error]) {

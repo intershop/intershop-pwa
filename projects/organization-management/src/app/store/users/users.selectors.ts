@@ -15,12 +15,12 @@ export const getUsersError = createSelector(getUsersState, state => state.error)
 const { selectAll, selectEntities, selectTotal } = usersAdapter.getSelectors(getUsersState);
 
 export const getUsers = createSelector(selectAll, users =>
-  users.filter(user => !user.roleIDs?.find(roleID => ['APP_B2B_OCI_USER', 'APP_B2B_CXML_USER'].includes(roleID)))
+  users.filter(user => !user.roleIDs?.find(roleID => ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'].includes(roleID)))
 );
 
 export const getCostCenterManagers = createSelector(selectAll, users =>
   users.filter(user =>
-    user.roleIDs?.find(roleID => ['APP_B2B_COSTCENTER_OWNER', 'APP_B2B_ACCOUNT_OWNER'].includes(roleID))
+    user.roleIDs?.find(roleID => ['APP_B2B_ACCOUNT_OWNER', 'APP_B2B_COSTCENTER_OWNER'].includes(roleID))
   )
 );
 

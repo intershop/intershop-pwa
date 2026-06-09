@@ -24,11 +24,11 @@ const punchoutReducers: ActionReducerMap<PunchoutState> = {
 };
 
 const punchoutEffects = [
+  CxmlConfigurationEffects,
   OciConfigurationEffects,
-  PunchoutUsersEffects,
   PunchoutFunctionsEffects,
   PunchoutTypesEffects,
-  CxmlConfigurationEffects,
+  PunchoutUsersEffects,
 ];
 
 @Injectable()

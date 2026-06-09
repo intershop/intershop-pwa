@@ -1,6 +1,6 @@
 import { Observable, Subject, debounceTime, filter } from 'rxjs';
 
-export type IntersectionStatus = 'Visible' | 'Pending' | 'NotVisible';
+export type IntersectionStatus = 'NotVisible' | 'Pending' | 'Visible';
 
 export const fromIntersectionObserver = (
   element: HTMLElement,

@@ -35,12 +35,12 @@ class Logger {
 
 let logger: Logger;
 
-type AngularPlugin = WebpackPluginInstance & {
+type AngularPlugin = {
   options: {
     directTemplateLoading: boolean;
     fileReplacements: Record<string, string>;
   };
-};
+} & WebpackPluginInstance;
 
 function crawlFiles(folder: string, callback: (files: string[]) => void) {
   if (fs.statSync(folder).isDirectory() && !['node_modules', '.git'].some(baseName => folder.endsWith(baseName))) {
@@ -172,7 +172,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (targetOptions.target === 'server') {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
-    (config.resolve.alias as Record<string, string | false>)['elastic-apm-node'] = false;
+    (config.resolve.alias as Record<string, false | string>)['elastic-apm-node'] = false;
   }
 
   logger.log('setting production:', production);

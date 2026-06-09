@@ -16,7 +16,7 @@ export interface Payment {
       name: string;
       value: string;
     }[];
-    status: 'SUCCESS' | 'FAILURE' | 'CANCEL';
+    status: 'CANCEL' | 'FAILURE' | 'SUCCESS';
   };
   redirectRequired?: boolean;
   status?: string;

@@ -16,7 +16,7 @@ import { Attribute } from './attribute.model';
 export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  private toDate(val: string | number | Date): string {
+  private toDate(val: Date | number | string): string {
     return formatISHDate(val, 'shortDate', this.translateService.currentLang);
   }
 
@@ -44,7 +44,7 @@ export class AttributeToStringPipe implements PipeTransform {
       case 'Boolean':
         return data.value.toString();
       case 'Date':
-        return this.toDate(data.value as string | number | Date);
+        return this.toDate(data.value as Date | number | string);
       case 'MultipleInteger':
       case 'MultipleDouble':
       case 'MultipleLong':

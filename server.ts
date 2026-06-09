@@ -173,22 +173,22 @@ export function app() {
       });
 
       const certErrorCodes = [
-        'CERT_SIGNATURE_FAILURE',
-        'CERT_NOT_YET_VALID',
+        'CERT_CHAIN_TOO_LONG',
         'CERT_HAS_EXPIRED',
-        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
-        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'CERT_NOT_YET_VALID',
+        'CERT_REJECTED',
+        'CERT_REVOKED',
+        'CERT_SIGNATURE_FAILURE',
+        'CERT_UNTRUSTED',
         'DEPTH_ZERO_SELF_SIGNED_CERT',
+        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
+        'HOSTNAME_MISMATCH',
+        'INVALID_CA',
+        'INVALID_PURPOSE',
         'SELF_SIGNED_CERT_IN_CHAIN',
         'UNABLE_TO_GET_ISSUER_CERT_LOCALLY',
         'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
-        'CERT_CHAIN_TOO_LONG',
-        'CERT_REVOKED',
-        'INVALID_CA',
-        'INVALID_PURPOSE',
-        'CERT_UNTRUSTED',
-        'CERT_REJECTED',
-        'HOSTNAME_MISMATCH',
       ];
 
       req.on('error', (e: { code: string }) => {

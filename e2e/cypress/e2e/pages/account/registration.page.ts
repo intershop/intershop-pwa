@@ -1,6 +1,6 @@
 import { fillFormField } from '../../framework';
 
-export type SupportedLanguage = 'en_US' | 'de_DE' | 'fr_FR';
+export type SupportedLanguage = 'de_DE' | 'en_US' | 'fr_FR';
 
 export interface Registration {
   login: string;
@@ -45,7 +45,7 @@ export class RegistrationPage {
     const input = cy.get(`[data-testing-id="${key}"]`);
     return {
       ...input,
-      should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
+      should: (t: 'be.invalid' | 'be.valid' | string, arg?) => {
         switch (t) {
           case 'be.valid':
             return input.should('have.class', 'ng-valid');
@@ -62,7 +62,7 @@ export class RegistrationPage {
     const wrapper = cy.get(`[data-testing-id="${key}-wrapper"]`);
     return {
       ...wrapper,
-      should: (t: 'be.valid' | 'be.invalid' | string, arg?) => {
+      should: (t: 'be.invalid' | 'be.valid' | string, arg?) => {
         switch (t) {
           case 'be.valid':
             return wrapper.should('not.have.class', 'has-error');

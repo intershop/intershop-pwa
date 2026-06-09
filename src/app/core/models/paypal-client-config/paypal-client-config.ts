@@ -1,3 +1,3 @@
 export interface PaypalClientConfig {
-  googlePayEnvironment: 'TEST' | 'PRODUCTION';
+  googlePayEnvironment: 'PRODUCTION' | 'TEST';
 }

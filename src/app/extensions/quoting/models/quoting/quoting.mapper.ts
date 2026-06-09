@@ -11,7 +11,7 @@ import { Quote, QuoteRequest, QuoteStub, QuoteStubFromAttributes } from './quoti
 
 @Injectable({ providedIn: 'root' })
 export class QuotingMapper {
-  fromData(quoteData: QuoteData, type: 'Quote' | 'QuoteRequest'): QuoteStub | Quote | QuoteRequest {
+  fromData(quoteData: QuoteData, type: 'Quote' | 'QuoteRequest'): Quote | QuoteRequest | QuoteStub {
     if (quoteData) {
       if (quoteData.type === 'Link') {
         return this.fromLinkData(quoteData, type);

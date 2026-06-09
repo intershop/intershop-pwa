@@ -19,9 +19,9 @@ export interface Customer {
 
 type Without<T, U> = Partial<Record<Exclude<keyof T, keyof U>, never>>;
 
-type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+type XOR<T, U> = T | U extends object ? (T & Without<U, T>) | (U & Without<T, U>) : T | U;
 
-export type CustomerLoginType = CustomerUserType & { pgid?: string };
+export type CustomerLoginType = { pgid?: string } & CustomerUserType;
 
 /**
  * result response data type, for business customers user data are missing and have to be fetched separately
@@ -38,8 +38,8 @@ export type CustomerRegistrationType = {
   address: Address;
   credentials?: Credentials;
   subscribedToNewsletter?: boolean;
-} & CustomerUserType &
-  Captcha;
+} & Captcha &
+  CustomerUserType;
 
 export interface SsoRegistrationType {
   companyInfo: { companyName1: string; companyName2?: string; taxationID: string };

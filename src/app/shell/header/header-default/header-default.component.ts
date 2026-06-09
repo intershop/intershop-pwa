@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleCha
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-type CollapsibleComponent = 'search' | 'navbar' | 'minibasket';
+type CollapsibleComponent = 'minibasket' | 'navbar' | 'search';
 
 /**
  * The Header Component displays the page header.

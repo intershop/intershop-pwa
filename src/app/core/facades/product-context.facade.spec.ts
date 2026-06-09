@@ -846,7 +846,7 @@ describe('Product Context Facade', () => {
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(({ product: prod }) =>
@@ -866,7 +866,7 @@ describe('Product Context Facade', () => {
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(() => ({
@@ -879,7 +879,7 @@ describe('Product Context Facade', () => {
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           switchMap(() => someOther$),

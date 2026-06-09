@@ -112,7 +112,7 @@ export class ShoppingFacade {
 
   selectedProductId$ = this.store.pipe(select(selectRouteParam('sku')));
 
-  product$(sku: string | Observable<string>, level: ProductCompletenessLevel | true) {
+  product$(sku: Observable<string> | string, level: ProductCompletenessLevel | true) {
     const completenessLevel = level === true ? ProductCompletenessLevel.Detail : level;
     return toObservable(sku).pipe(
       tap(plainSKU => {
@@ -147,14 +147,14 @@ export class ShoppingFacade {
   failedProducts$ = this.store.pipe(select(getFailedProducts));
 
   // remove all SKUs from the productSKUs that are also contained in the failed products
-  excludeFailedProducts$(productSKUs: string[] | Observable<string[]>) {
+  excludeFailedProducts$(productSKUs: Observable<string[]> | string[]) {
     return combineLatest([toObservable(productSKUs), this.store.pipe(select(getFailedProducts))]).pipe(
       distinctUntilChanged<[string[], string[]]>(isEqual),
       map(([skus, failed]) => skus.filter(sku => !failed.includes(sku)))
     );
   }
 
-  productPrices$(sku: string | Observable<string>, fresh = false) {
+  productPrices$(sku: Observable<string> | string, fresh = false) {
     return toObservable(sku).pipe(
       whenTruthy(),
       switchMap(plainSKU =>
@@ -177,14 +177,14 @@ export class ShoppingFacade {
     );
   }
 
-  productInventory$(sku: string | Observable<string>) {
+  productInventory$(sku: Observable<string> | string) {
     return toObservable(sku).pipe(
       whenTruthy(),
       switchMap(plainSKU => this.store.pipe(select(getProductInventory(plainSKU)), distinctUntilChanged()))
     );
   }
 
-  private lazyLoadVariations(sku: string | Observable<string>) {
+  private lazyLoadVariations(sku: Observable<string> | string) {
     return this.product$(sku, ProductCompletenessLevel.List).pipe(
       whenTruthy(),
       filter(ProductHelper.isMasterProduct),
@@ -196,13 +196,13 @@ export class ShoppingFacade {
     );
   }
 
-  productVariations$(sku: string | Observable<string>) {
+  productVariations$(sku: Observable<string> | string) {
     return this.lazyLoadVariations(sku).pipe(
       switchMap(varSku => this.store.pipe(select(getProductVariations(varSku))))
     );
   }
 
-  productVariationCount$(sku: string | Observable<string>) {
+  productVariationCount$(sku: Observable<string> | string) {
     return this.lazyLoadVariations(sku).pipe(
       switchMap(plainSKU => this.store.pipe(select(getProductVariationCount(plainSKU))))
     );
@@ -220,7 +220,7 @@ export class ShoppingFacade {
 
   // PRODUCT LISTING
 
-  productListingView$(productListingId: ProductListingID | Observable<ProductListingID>) {
+  productListingView$(productListingId: Observable<ProductListingID> | ProductListingID) {
     return toObservable(productListingId).pipe(
       whenTruthy(),
       tap(id => this.store.dispatch(loadMoreProducts({ id }))),
@@ -237,7 +237,7 @@ export class ShoppingFacade {
 
   // PRODUCT LINKS
 
-  productLinks$(sku: string | Observable<string>) {
+  productLinks$(sku: Observable<string> | string) {
     return toObservable(sku).pipe(
       whenTruthy(),
       switchMap(plainSKU =>
@@ -255,7 +255,7 @@ export class ShoppingFacade {
 
   // PRODUCT RETAIL SET / BUNDLES
 
-  productParts$(sku: string | Observable<string>) {
+  productParts$(sku: Observable<string> | string) {
     return toObservable(sku).pipe(
       whenTruthy(),
       tap(plainSKU => {

@@ -26,5 +26,5 @@ export interface RecurringOrder extends OrderBasket {
 
   lastPlacedOrders?: { id: string; documentNumber: string; creationDate: string }[];
 
-  user: User & { companyName: string };
+  user: { companyName: string } & User;
 }

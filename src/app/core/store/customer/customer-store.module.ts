@@ -44,20 +44,20 @@ const customerReducers: ActionReducerMap<CustomerState> = {
 
 const customerEffects = [
   AddressesEffects,
+  AuthorizationEffects,
   BasketAddressesEffects,
   BasketEffects,
   BasketItemsEffects,
   BasketPaymentEffects,
   BasketPromotionCodeEffects,
   BasketValidationEffects,
+  DataRequestsEffects,
   OrdersEffects,
-  RecurringOrdersEffects,
-  UserEffects,
-  AuthorizationEffects,
   OrganizationManagementEffects,
+  RecurringOrdersEffects,
   RequisitionManagementEffects,
   SsoRegistrationEffects,
-  DataRequestsEffects,
+  UserEffects,
   UserNewsletterEffects,
 ];
 

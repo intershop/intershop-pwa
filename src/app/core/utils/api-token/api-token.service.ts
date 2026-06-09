@@ -49,7 +49,7 @@ import {
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
-type ApiTokenCookieType = 'user' | 'order';
+type ApiTokenCookieType = 'order' | 'user';
 
 export interface ApiTokenCookie {
   apiToken: string;

@@ -67,7 +67,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     this.translate = once(() => injector.get(TranslateService));
   }
 
-  private checkIfCompileNeeded(value: string | Function): boolean {
+  private checkIfCompileNeeded(value: Function | string): boolean {
     return (
       typeof value === 'string' &&
       (PWATranslateCompiler.PLURAL_REGEX.test(value) || PWATranslateCompiler.TRANSLATE_REGEX.test(value))
@@ -135,7 +135,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     }
   }
 
-  compile(template: string): string | Function {
+  compile(template: string): Function | string {
     if (this.sanityCheck(template) && this.checkIfCompileNeeded(template)) {
       if (!cache[template]) {
         cache[template] = this.doCompile(template);
@@ -146,7 +146,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
     return template;
   }
 
-  private sanityCheck(value: string | Function): boolean {
+  private sanityCheck(value: Function | string): boolean {
     const sane = typeof value !== 'string' || value.length <= PWATranslateCompiler.MAX_COMPILATION_LENGTH;
     if (isDevMode() && !sane) {
       console.warn(

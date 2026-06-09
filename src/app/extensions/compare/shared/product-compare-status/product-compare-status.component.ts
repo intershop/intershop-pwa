@@ -13,7 +13,7 @@ import { CompareFacade } from '../../facades/compare.facade';
 })
 @GenerateLazyComponent()
 export class ProductCompareStatusComponent implements OnInit {
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   productCompareCount$: Observable<number>;
 

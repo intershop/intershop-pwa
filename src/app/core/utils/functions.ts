@@ -13,7 +13,7 @@ export const arraySlices = <T>(input: T[], sliceLength: number): T[][] =>
         .map(n => input.slice(n * sliceLength, (n + 1) * sliceLength))
     : undefined;
 
-export const toObservable = <T>(input: T | Observable<T>): Observable<T> => (isObservable(input) ? input : of(input));
+export const toObservable = <T>(input: Observable<T> | T): Observable<T> => (isObservable(input) ? input : of(input));
 
 function isObject(item: unknown) {
   return item && typeof item === 'object' && !Array.isArray(item);
@@ -52,7 +52,7 @@ export function mergeDeep(target: any, source: any): any {
  * NOTE: This simplified custom implementation should be used in the codebase instead of `lodash-es/omit`
  * since the lodash one is not used to its full potential and it's a rather large helper (2 kB in the vendor bundle)
  */
-export function omit<T extends object, K extends (string | number | symbol)[]>(
+export function omit<T extends object, K extends (number | string | symbol)[]>(
   from: T,
   ...keys: K
 ): Omit<T, K[number]> {

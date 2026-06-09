@@ -17,7 +17,7 @@ export class RequisitionDetailPageComponent implements OnInit {
   requisition$: Observable<Requisition>;
   error$: Observable<HttpError>;
   loading$: Observable<boolean>;
-  view$: Observable<'buyer' | 'approver'>;
+  view$: Observable<'approver' | 'buyer'>;
 
   constructor(private context: RequisitionContextFacade) {}
 

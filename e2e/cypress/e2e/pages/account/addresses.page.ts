@@ -3,7 +3,7 @@ import { Registration } from '../account/registration.page';
 import { HeaderModule } from '../header.module';
 
 export type AddressDetailsTypes = Partial<
-  Pick<Registration, 'countryCode' | 'companyName1' | 'firstName' | 'lastName' | 'addressLine1' | 'postalCode' | 'city'>
+  Pick<Registration, 'addressLine1' | 'city' | 'companyName1' | 'countryCode' | 'firstName' | 'lastName' | 'postalCode'>
 >;
 export class AddressesPage {
   readonly header = new HeaderModule();

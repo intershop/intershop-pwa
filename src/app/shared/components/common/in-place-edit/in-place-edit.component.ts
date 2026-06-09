@@ -31,7 +31,7 @@ export class InPlaceEditComponent implements AfterViewInit {
   @Output() readonly edited = new EventEmitter<void>();
   @Output() readonly aborted = new EventEmitter<void>();
 
-  private mode: 'view' | 'edit' = 'view';
+  private mode: 'edit' | 'view' = 'view';
   private destroyRef = inject(DestroyRef);
 
   constructor(

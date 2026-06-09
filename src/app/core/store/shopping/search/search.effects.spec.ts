@@ -59,7 +59,7 @@ describe('Search Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], [SearchEffects, ProductListingEffects]),
+        CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects, SearchEffects]),
         CustomerStoreModule.forTesting('user'),
         ShoppingStoreModule.forTesting('productListing'),
       ],

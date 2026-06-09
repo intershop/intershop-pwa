@@ -28,15 +28,15 @@ import { OrderService } from 'ish-core/services/order/order.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 
 export type BasketUpdateType =
+  | { calculated: boolean }
   | { commonShippingMethod: string }
   | { commonShipToAddress: string }
-  | { calculated: boolean }
   | { costCenter: string }
+  | { customFields: CustomFieldData[] }
   | { externalOrderReference: string }
   | { invoiceToAddress: string }
   | { messageToMerchant: string }
-  | { recurrence: Recurrence }
-  | { customFields: CustomFieldData[] };
+  | { recurrence: Recurrence };
 
 /**
  * The Basket Service handles the interaction with the 'baskets' REST API.

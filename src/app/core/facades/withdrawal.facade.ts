@@ -22,7 +22,7 @@ export class WithdrawalFacade implements OnDestroy {
   }
 
   // Private writable signals for internal state management
-  private withdrawalSignal = signal<Withdrawal | undefined>(undefined);
+  private withdrawalSignal = signal<undefined | Withdrawal>(undefined);
   private loadingSignal = signal<boolean>(false);
   private errorSignal = signal<HttpError | undefined>(undefined);
   private initializedSignal = signal<boolean>(false);

@@ -53,7 +53,7 @@ interface FormModel extends Record<string, unknown> {
   buyer?: string;
 }
 
-type UrlModel = Partial<Record<'from' | 'to' | 'orderNo' | 'sku' | 'state' | 'buyer', string | string[]>>;
+type UrlModel = Partial<Record<'buyer' | 'from' | 'orderNo' | 'sku' | 'state' | 'to', string | string[]>>;
 
 function selectFirst(val: string | string[]): string {
   return Array.isArray(val) ? val[0] : val;

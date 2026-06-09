@@ -24,7 +24,7 @@ describe('User Detail Page Component', () => {
       firstName: 'Patricia',
       lastName: 'Miller',
       email: 'pmiller@test.intershop.de',
-      roleIDs: ['BUYER', 'APPROVER'],
+      roleIDs: ['APPROVER', 'BUYER'],
     } as B2bUser;
 
     organizationManagementFacade = mock(OrganizationManagementFacade);

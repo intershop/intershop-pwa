@@ -15,7 +15,7 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 })
 @GenerateLazyComponent()
 export class WishlistsLinkComponent implements OnInit {
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
   preferredWishlist$: Observable<Wishlist>;
   routerLink$: Observable<string>;
 

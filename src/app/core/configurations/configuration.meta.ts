@@ -83,7 +83,7 @@ export function configurationMeta(reducer: ActionReducer<CoreState>): ActionRedu
 
   return (
     state: CoreState,
-    action: typeof routerNavigationAction & { payload: RouterNavigationPayload<RouterState> }
+    action: { payload: RouterNavigationPayload<RouterState> } & typeof routerNavigationAction
   ) => {
     let newState = state;
     if (!first && action.type === routerNavigationAction.type) {

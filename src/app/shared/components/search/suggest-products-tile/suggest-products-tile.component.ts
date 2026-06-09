@@ -10,7 +10,7 @@ import { ProductImageComponent } from 'ish-shared/components/product/product-ima
 
 @Component({
   selector: 'ish-suggest-products-tile',
-  imports: [AsyncPipe, HighlightPipe, RouterLink, ProductImageComponent],
+  imports: [AsyncPipe, HighlightPipe, ProductImageComponent, RouterLink],
   templateUrl: './suggest-products-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

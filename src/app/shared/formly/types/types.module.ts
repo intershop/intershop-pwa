@@ -43,15 +43,15 @@ const fieldComponents = [
   DateRangePickerFieldComponent,
   FieldsetFieldComponent,
   HtmlTextFieldComponent,
+  NumberFieldComponent,
   PasswordFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
   RadioGroupFieldComponent,
+  SearchSelectFieldComponent,
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
-  SearchSelectFieldComponent,
-  NumberFieldComponent,
 ];
 
 @NgModule({

@@ -2,7 +2,7 @@ import { CustomFieldDefinitionsData } from 'ish-core/models/custom-field-definit
 
 export interface ServerConfigDataEntry {
   customFieldDefinitions?: CustomFieldDefinitionsData[];
-  [key: string]: string | boolean | number | string[] | ServerConfigDataEntry[] | ServerConfigDataEntry;
+  [key: string]: boolean | number | ServerConfigDataEntry | ServerConfigDataEntry[] | string | string[];
 }
 
 export interface ServerConfigData {

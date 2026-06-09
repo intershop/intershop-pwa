@@ -22,7 +22,7 @@ export class RequisitionContextFacade extends RxState<{
   loading: boolean;
   error: HttpError;
   entity: Requisition;
-  view: 'buyer' | 'approver';
+  view: 'approver' | 'buyer';
 }> {
   constructor(private store: Store) {
     super();

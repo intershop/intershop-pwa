@@ -18,9 +18,9 @@ export abstract class AddressFormConfiguration {
 // helper method to reduce repetition when defining address form configurations containing standard fields
 export function addressesFieldConfiguration(
   keys: (
+    | (({ key: keyof Address } & FormlyFieldConfig) | keyof Address)[]
+    | ({ key: keyof Address } & FormlyFieldConfig)
     | keyof Address
-    | (FormlyFieldConfig & { key: keyof Address })
-    | (keyof Address | (FormlyFieldConfig & { key: keyof Address }))[]
   )[]
 ): FormlyFieldConfig[] {
   return keys

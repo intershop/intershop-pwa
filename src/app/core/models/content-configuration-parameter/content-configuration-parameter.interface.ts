@@ -1,5 +1,5 @@
 export interface ContentConfigurationParameterData {
   definitionQualifiedName: string;
-  value: string | object;
+  value: object | string;
   type: string;
 }

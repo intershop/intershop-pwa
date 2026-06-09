@@ -73,7 +73,7 @@ export class PriceHelper {
    * @param locale The locale string (optional, defaults to undefined)
    * @returns The currency symbol or code if formatting fails
    */
-  static getCurrencySymbol(code: string, format: 'wide' | 'narrow' | 'symbol', locale?: string): string {
+  static getCurrencySymbol(code: string, format: 'narrow' | 'symbol' | 'wide', locale?: string): string {
     try {
       const currencyDisplay = format === 'narrow' ? 'narrowSymbol' : 'symbol';
       // Convert underscore locale format (en_US) to hyphen format (en-US) for Intl API
