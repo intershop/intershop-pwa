@@ -6,6 +6,7 @@ import rxjs from '@smarttools/eslint-plugin-rxjs';
 import ban from 'eslint-plugin-ban';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
+import perfectionist from 'eslint-plugin-perfectionist';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
@@ -70,6 +71,7 @@ export default defineConfig([
       ban,
       jest,
       jsdoc,
+      perfectionist,
       unicorn,
       'unused-imports': unusedImports,
       'ish-custom-rules': ishCustomRules,
@@ -222,6 +224,27 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/prefer-optional-chain': 'warn',
+
+      'perfectionist/sort-arrays': [
+        'warn',
+        {
+          ignoreCase: true,
+          useConfigurationIf: {
+            allNamesMatchPattern: '^[A-Z][a-zA-Z0-9_]+$',
+          },
+        },
+      ],
+      'perfectionist/sort-enums': [
+        'warn',
+        {
+          type: 'alphabetical',
+          order: 'asc',
+          ignoreCase: true,
+          sortByValue: 'ifNumericEnum',
+        },
+      ],
+      'perfectionist/sort-intersection-types': ['warn'],
+      'perfectionist/sort-union-types': ['warn'],
 
       // Custom Rules
       'ish-custom-rules/ban-imports-file-pattern': [

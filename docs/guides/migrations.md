@@ -30,6 +30,11 @@ Failing to configure the correct `ALLOWED_HOSTS` will result in the following er
 
 > `URL with hostname "abc.xyz.com" is not allowed.`
 
+**ESLint Perfectionist plugin**
+
+The [`eslint-plugin-perfectionist`](https://perfectionist.dev/) plugin has been added to enforce consistent sorting of certain code constructs.
+It sorts arrays (`sort-arrays`), enums (`sort-enums`), as well as union and intersection types (`sort-union-types`, `sort-intersection-types`).
+
 **Swiper 12 upgrade**
 
 Swiper has been upgraded from version 8 to 12.
