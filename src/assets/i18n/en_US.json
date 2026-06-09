@@ -1590,6 +1590,6 @@
   "wishlist.table.header.price": "Price",
   "wishlist.table.options.move_to_another_wishlist": "Move to other list",
   "wishlist.table.options.remove": "Remove",
-  "withdrawal.status.label.approved": "approved",
-  "withdrawal.status.label.received": "received"
+  "withdrawal.status.label.approved": "Approved",
+  "withdrawal.status.label.received": "Received"
 }

@@ -169,7 +169,7 @@ export class WithdrawalRequestFormComponent implements OnInit {
               },
             },
           ]),
-      ...(isCaptchaEnabled
+      ...(isCaptchaEnabled && !isRequestMode
         ? [
             {
               type: 'ish-captcha-field',

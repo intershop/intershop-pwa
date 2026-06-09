@@ -75,7 +75,13 @@
       }
     </div>
 
-    <div class="col-12 col-md-6">
+    <div
+      [ngClass]="
+        order.withdrawal && (order.withdrawal.withdrawalAllowed || order.withdrawal.status)
+          ? 'col-12 col-md-6'
+          : 'd-none'
+      "
+    >
       @if (order.withdrawal?.withdrawalAllowed) {
         <a
           [queryParams]="{ orderDocumentNumber: order.documentNo, orderEmail: order.email }"
