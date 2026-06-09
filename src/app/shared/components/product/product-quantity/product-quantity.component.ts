@@ -15,7 +15,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductQuantityComponent implements OnInit {
-  @Input() type: 'input' | 'select' | 'counter' = 'counter';
+  @Input() type: 'counter' | 'input' | 'select' = 'counter';
   @Input() elementId: string = uuid();
 
   visible$: Observable<boolean>;

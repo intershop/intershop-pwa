@@ -113,7 +113,7 @@ export class DomService {
    * @param name            The property name.
    * @param value           The value to be set.
    */
-  setProperty(el: HTMLElement, name: string, value: string | boolean): void {
+  setProperty(el: HTMLElement, name: string, value: boolean | string): void {
     return this.renderer.setProperty(el, name, value);
   }
 

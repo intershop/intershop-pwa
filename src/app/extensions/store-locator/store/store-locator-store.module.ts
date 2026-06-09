@@ -14,7 +14,7 @@ const storeLocatorReducers: ActionReducerMap<StoreLocatorState> = {
   storeLocatorConfig: storeLocatorConfigReducer,
 };
 
-const storeLocatorEffects: Type<unknown>[] = [StoresEffects, StoreLocatorConfigEffects];
+const storeLocatorEffects: Type<unknown>[] = [StoreLocatorConfigEffects, StoresEffects];
 
 @NgModule({
   imports: [

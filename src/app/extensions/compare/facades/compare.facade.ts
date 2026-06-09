@@ -21,7 +21,7 @@ export class CompareFacade {
   compareProducts$ = this.store.pipe(select(getCompareProductsSKUs));
   compareProductsCount$ = this.store.pipe(select(getCompareProductsCount));
 
-  inCompareProducts$(sku: string | Observable<string>) {
+  inCompareProducts$(sku: Observable<string> | string) {
     return toObservable(sku).pipe(switchMap(plainSKU => this.store.pipe(select(isInCompareProducts(plainSKU)))));
   }
 

@@ -23,4 +23,4 @@ interface FetchTokenRefreshTokenOptions {
   refresh_token: string;
 }
 
-export type GrantType = 'anonymous' | 'password' | 'client_credentials' | 'refresh_token';
+export type GrantType = 'anonymous' | 'client_credentials' | 'password' | 'refresh_token';

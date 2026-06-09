@@ -1,6 +1,6 @@
-export type ViewType<T extends string = ''> = T | ('grid' | 'list');
+export type ViewType<T extends string = ''> = ('grid' | 'list') | T;
 
-export type DeviceType<T extends string = ''> = T | ('mobile' | 'tablet' | 'desktop');
+export type DeviceType<T extends string = ''> = ('desktop' | 'mobile' | 'tablet') | T;
 
 export const headerTypes = <const>['simple', 'error', 'checkout'];
 

@@ -134,7 +134,7 @@ function checkAction(node: Node) {
         { internal: [], external: [] }
       );
 
-      const isInternal: (type: string) => boolean = type => ['Internal', 'API'].some(t => type.endsWith(t));
+      const isInternal: (type: string) => boolean = type => ['API', 'Internal'].some(t => type.endsWith(t));
 
       if (references.length === 1 && internal.length) {
         logWarning(`${printRef(a.node)}: ${a.name} is only used once internally and should be removed.`);

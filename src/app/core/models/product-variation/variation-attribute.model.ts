@@ -1,14 +1,14 @@
 export interface VariationAttribute {
   variationAttributeId: string;
   name: string;
-  value: string | number | { value: number; unit: string };
+  value: { value: number; unit: string } | number | string;
   attributeType: VariationAttributeType;
   metaData?: string;
 }
 
 export type VariationAttributeType =
-  | 'default'
   | 'colorCode'
+  | 'default'
   | 'defaultAndColorCode'
-  | 'swatchImage'
-  | 'defaultAndSwatchImage';
+  | 'defaultAndSwatchImage'
+  | 'swatchImage';

@@ -91,7 +91,7 @@ describe('Paypal Google Pay Adapter', () => {
   };
 
   const mockGooglePayConfig = {
-    allowedPaymentMethods: [{ type: 'CARD', parameters: { allowedCardNetworks: ['VISA', 'MASTERCARD'] } }],
+    allowedPaymentMethods: [{ type: 'CARD', parameters: { allowedCardNetworks: ['MASTERCARD', 'VISA'] } }],
     merchantInfo: { merchantId: 'test-merchant', merchantName: 'Test Shop' },
   };
 

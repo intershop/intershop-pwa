@@ -19,7 +19,7 @@ export interface RecurringOrderData {
   };
 }
 
-export interface RecurringOrderDetailData extends Omit<RecurringOrderListData, 'totalNet' | 'totalGross'> {
+export interface RecurringOrderDetailData extends Omit<RecurringOrderListData, 'totalGross' | 'totalNet'> {
   orderCount?: number;
   totals: BasketTotalData;
   error?: boolean; // error flag if the recurring order was set to inactive by the system

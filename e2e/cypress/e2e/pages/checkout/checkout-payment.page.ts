@@ -13,7 +13,7 @@ export class CheckoutPaymentPage {
     return cy.get(this.tag).find('input[data-testing-id="saveForLater"]');
   }
 
-  selectPayment(payment: 'INVOICE' | 'CASH_ON_DELIVERY' | 'CASH_IN_ADVANCE') {
+  selectPayment(payment: 'CASH_IN_ADVANCE' | 'CASH_ON_DELIVERY' | 'INVOICE') {
     cy.get(this.tag).find(`#paymentOption_ISH_${payment}`).check();
     cy.wait(3000);
     waitLoadingEnd();

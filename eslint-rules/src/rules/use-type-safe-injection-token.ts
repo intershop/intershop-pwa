@@ -29,7 +29,7 @@ const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> 
   },
   create: context => ({
     [`TSParameterProperty${HAS_INJECT_DECORATOR},Identifier${HAS_INJECT_DECORATOR}`]: (
-      node: TSESTree.TSParameterProperty | TSESTree.Identifier
+      node: TSESTree.Identifier | TSESTree.TSParameterProperty
     ) => {
       const injectDecorator = node.decorators.find(
         decorator =>

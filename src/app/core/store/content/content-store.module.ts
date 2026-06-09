@@ -29,7 +29,7 @@ const contentReducers: ActionReducerMap<ContentState> = {
   designView: designViewReducer,
 };
 
-const contentEffects = [IncludesEffects, PagesEffects, ViewcontextsEffects, PageTreeEffects, ParametersEffects];
+const contentEffects = [IncludesEffects, PagesEffects, PageTreeEffects, ParametersEffects, ViewcontextsEffects];
 
 @Injectable()
 export class ContentStoreConfig implements StoreConfig<ContentState> {

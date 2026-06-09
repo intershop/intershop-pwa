@@ -3,7 +3,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { getClosestAncestorByKind, normalizePath } from '../helpers';
 
 interface RuleSetting {
-  pattern: string | RegExp;
+  pattern: RegExp | string;
   replacement: string;
   text: string;
 }

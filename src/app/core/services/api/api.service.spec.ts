@@ -93,7 +93,7 @@ describe('Api Service', () => {
       consoleSpy.mockRestore();
 
       verify(store.dispatch(anything())).once();
-      const [action] = capture<Action & { payload: { error: HttpError } }>(store.dispatch).last();
+      const [action] = capture<{ payload: { error: HttpError } } & Action>(store.dispatch).last();
       expect(action.type).toEqual(serverError.type);
       expect(action.payload.error).toHaveProperty('statusText', statusText);
     });

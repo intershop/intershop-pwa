@@ -1,1 +1,1 @@
-export type Translations = Record<string, string | Function>;
+export type Translations = Record<string, Function | string>;

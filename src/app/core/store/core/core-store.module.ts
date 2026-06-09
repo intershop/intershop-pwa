@@ -29,12 +29,12 @@ const coreReducers: ActionReducerMap<CoreState> = {
 };
 
 const coreEffects = [
-  ErrorEffects,
-  ViewconfEffects,
   ConfigurationEffects,
+  ErrorEffects,
   MessagesEffects,
-  ServerConfigEffects,
   RouterEffects,
+  ServerConfigEffects,
+  ViewconfEffects,
 ];
 
 const coreMetaReducers: MetaReducer<CoreState>[] = [
@@ -72,7 +72,7 @@ export class CoreStoreModule {
    */
   static forTesting(
     reducers: (keyof ActionReducerMap<CoreState>)[] = [],
-    effects: Type<unknown>[] | boolean = false,
+    effects: boolean | Type<unknown>[] = false,
     metaReducers: MetaReducer<CoreState>[] = []
   ) {
     const modules = [

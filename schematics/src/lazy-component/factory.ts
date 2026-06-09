@@ -85,7 +85,7 @@ export function createLazyComponent(options: Options): Rule {
       );
     }
 
-    let onChanges: 'simple' | 'complex';
+    let onChanges: 'complex' | 'simple';
 
     if (componentContent.includes('ngOnChanges')) {
       const ngOnChangesDeclaration = tsquery(

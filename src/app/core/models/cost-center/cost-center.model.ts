@@ -37,7 +37,7 @@ export interface CostCenter extends CostCenterBase {
   buyers?: CostCenterBuyer[];
   orders?: Pick<
     Order,
-    'documentNo' | 'creationDate' | 'status' | 'attributes' | 'user' | 'totalProductQuantity' | 'totals'
+    'attributes' | 'creationDate' | 'documentNo' | 'status' | 'totalProductQuantity' | 'totals' | 'user'
   >[];
   paginationPosition?: number;
 }

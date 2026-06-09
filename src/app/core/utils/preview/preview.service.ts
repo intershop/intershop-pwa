@@ -8,7 +8,7 @@ import { DesignViewService } from 'ish-core/utils/design-view/design-view.servic
 import { whenTruthy } from 'ish-core/utils/operators';
 
 interface StorefrontEditingMessage {
-  type: 'sfe-pwaready' | 'sfe-pwanavigation' | 'sfe-pwastable' | 'sfe-setcontext';
+  type: 'sfe-pwanavigation' | 'sfe-pwaready' | 'sfe-pwastable' | 'sfe-setcontext';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }

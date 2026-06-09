@@ -1,9 +1,9 @@
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { Product, VariationProduct, VariationProductMaster } from 'ish-core/models/product/product.model';
 
-export type ProductView = Partial<SimpleProductView> &
+export type ProductView = Partial<Omit<VariationProductMasterView, 'type'>> &
   Partial<Omit<VariationProductView, 'type'>> &
-  Partial<Omit<VariationProductMasterView, 'type'>>;
+  Partial<SimpleProductView>;
 
 interface SimpleProductView extends Product {
   defaultCategory: CategoryView;

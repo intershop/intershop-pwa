@@ -54,4 +54,4 @@ export interface QuoteRequestResponse extends QuoteBaseData<Link | QuoteRequestL
   submittedDate?: number;
 }
 
-export type QuoteData = Link | QuoteResponse | QuoteRequestResponse;
+export type QuoteData = Link | QuoteRequestResponse | QuoteResponse;

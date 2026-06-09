@@ -62,7 +62,7 @@ export abstract class StoreWithSnapshots {
  */
 export function provideStoreSnapshots(): FactoryProvider {
   const actionList: Action[] = [];
-  function saveStore(store: StoreWithSnapshots & Store, actions: Actions) {
+  function saveStore(store: Store & StoreWithSnapshots, actions: Actions) {
     store.subscribe(state => (store.state = state as CoreState));
     if (actions) {
       actions.subscribe(action => {

@@ -1,6 +1,6 @@
 import { FormlyExtension, FormlyFieldConfig } from '@ngx-formly/core';
 
-type FieldConfigWithDisabled = Omit<FormlyFieldConfig, 'options'> & { options: { formState: { disabled: string[] } } };
+type FieldConfigWithDisabled = { options: { formState: { disabled: string[] } } } & Omit<FormlyFieldConfig, 'options'>;
 
 /**
  * Extension that disables all fields that have keys that match those

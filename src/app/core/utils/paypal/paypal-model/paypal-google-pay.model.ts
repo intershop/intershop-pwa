@@ -10,9 +10,9 @@ export interface PaypalGooglePayComponent extends PaypalComponentBasics {
   /** Confirms the order with PayPal after Google Pay authorization */
   confirmOrder(
     params: GooglePayConfirmOrderParams
-  ): Promise<{ status: 'APPROVED' | 'PAYER_ACTION_REQUIRED' | 'COMPLETED' | string }>;
+  ): Promise<{ status: 'APPROVED' | 'COMPLETED' | 'PAYER_ACTION_REQUIRED' | string }>;
   /** Initiates 3D Secure payer action if required */
-  initiatePayerAction(params: { orderId: string }): Promise<{ liabilityShift?: 'POSSIBLE' | 'NO' | 'UNKNOWN' }>;
+  initiatePayerAction(params: { orderId: string }): Promise<{ liabilityShift?: 'NO' | 'POSSIBLE' | 'UNKNOWN' }>;
 }
 
 /** Google Pay configuration response from PayPal */
@@ -58,7 +58,7 @@ export interface GooglePayPaymentClient {
 
 /** Google Pay payment authorization result */
 export interface GooglePayPaymentAuthorizationResult {
-  transactionState: 'SUCCESS' | 'ERROR';
+  transactionState: 'ERROR' | 'SUCCESS';
   error?: {
     intent: string;
     message: string;

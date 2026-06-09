@@ -48,7 +48,7 @@ class TestablePaypalApplePayAdapter extends PaypalApplePayAdapter {
     return (this as any).mapBillingContactData();
   }
 
-  testContinueICMOrderCreation(orderId: string): Promise<{ status: 'SUCCESS' | 'CANCELLED' }> {
+  testContinueICMOrderCreation(orderId: string): Promise<{ status: 'CANCELLED' | 'SUCCESS' }> {
     return (this as any).continueICMOrderCreation(orderId);
   }
 

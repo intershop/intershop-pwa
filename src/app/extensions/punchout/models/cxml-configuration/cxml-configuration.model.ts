@@ -6,4 +6,4 @@ export interface CxmlConfiguration {
   inputType?: CxmlConfigurationInputType;
 }
 
-export type CxmlConfigurationInputType = 'text-short' | 'text-long';
+export type CxmlConfigurationInputType = 'text-long' | 'text-short';

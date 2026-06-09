@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 
-export type TriggerReturnType = Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree;
+export type TriggerReturnType = boolean | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | UrlTree;
 
 export interface IdentityProviderCapabilities {
   editPassword?: boolean;

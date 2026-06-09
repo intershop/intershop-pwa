@@ -9,7 +9,7 @@ import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
  */
 export function addGlobalGuard(
   router: Router,
-  guard: CanActivateFn | CanActivateChildFn,
+  guard: CanActivateChildFn | CanActivateFn,
   config: { canActivate: boolean; canActivateChild: boolean } = { canActivate: true, canActivateChild: true }
 ) {
   router.config.forEach(route => {

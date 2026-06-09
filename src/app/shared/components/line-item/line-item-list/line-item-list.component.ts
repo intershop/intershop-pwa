@@ -28,7 +28,7 @@ export class LineItemListComponent implements OnChanges {
   @Input({ required: true }) lineItems: Partial<LineItemView & OrderLineItem>[];
   @Input() editable = true;
   @Input() total: Price;
-  @Input() lineItemViewType: 'simple' | 'availability';
+  @Input() lineItemViewType: 'availability' | 'simple';
   /**
    * If pageSize > 0 only <pageSize> items are shown at once and a paging bar is shown below the line item list.
    */

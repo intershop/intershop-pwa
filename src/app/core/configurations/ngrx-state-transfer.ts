@@ -20,7 +20,7 @@ let transferredState: Record<string, unknown>;
  * This allows to apply the transferred state in parts and only once, e.g. as features are loaded, and prevents transferred state from being lost if the store is updated before a feature is loaded.
  */
 export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
-  return (state: CoreState, action: Action & { payload: Record<string, unknown>; features: string[] }) => {
+  return (state: CoreState, action: { payload: Record<string, unknown>; features: string[] } & Action) => {
     if (action.type === STATE_ACTION_TYPE) {
       // keep a mutable copy — slices are removed as they're applied
       transferredState = { ...action.payload };

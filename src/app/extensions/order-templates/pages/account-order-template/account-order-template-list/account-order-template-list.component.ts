@@ -7,7 +7,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
 
-type OrderTemplateColumnsType = 'title' | 'creationDate' | 'lineItems' | 'actions';
+type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'title';
 
 @Component({
   selector: 'ish-account-order-template-list',

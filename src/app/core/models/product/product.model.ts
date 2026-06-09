@@ -60,6 +60,6 @@ export interface ProductBundle extends Product {
   type: 'Bundle';
 }
 
-export type AllProductTypes = Product | VariationProduct | VariationProductMaster | ProductBundle | ProductRetailSet;
+export type AllProductTypes = Product | ProductBundle | ProductRetailSet | VariationProduct | VariationProductMaster;
 
 export * from './product.helper';

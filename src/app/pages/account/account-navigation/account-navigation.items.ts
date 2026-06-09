@@ -59,14 +59,14 @@ export const navigationItems: NavigationItem[] = [
     icon: 'bi-check-lg',
     isCollapsed: true,
     serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-    permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
+    permission: ['APP_B2B_MANAGE_COSTCENTER', 'APP_B2B_ORDER_APPROVAL'],
     children: [
       {
         id: 'approvals',
         localizationKey: 'account.requisitions.approvals',
         routerLink: '/account/requisitions/approver',
         serverSetting: 'services.OrderApprovalServiceDefinition.runnable',
-        permission: ['APP_B2B_ORDER_APPROVAL', 'APP_B2B_MANAGE_COSTCENTER'],
+        permission: ['APP_B2B_MANAGE_COSTCENTER', 'APP_B2B_ORDER_APPROVAL'],
       },
     ],
   },

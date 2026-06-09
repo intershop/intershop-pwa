@@ -91,7 +91,7 @@ export class PaymentPaypalService {
 
   getPaypalPaymentInstrument(
     paymentInstrument: PaymentInstrument
-  ): Observable<PaymentInstrument | { errorMessage: string }> {
+  ): Observable<{ errorMessage: string } | PaymentInstrument> {
     return this.apiService
       .currentBasketEndpoint()
       .get<PaypalPaymentSourceData>('payments/open-tender/paypal-experience-context', {

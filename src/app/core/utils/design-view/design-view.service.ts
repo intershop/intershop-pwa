@@ -15,18 +15,18 @@ interface DesignViewMessage<T = ToDVMessageType> {
 }
 
 type FromDVMessageType =
-  | 'dv-clientRefresh'
   | 'dv-clientHighlightPagelet'
   | 'dv-clientPreviewPagelet'
+  | 'dv-clientRefresh'
   | 'dv-clientScrollToPagelet';
 
 type ToDVMessageType =
   | 'dv-clientAction'
-  | 'dv-clientReady'
-  | 'dv-clientNavigation'
-  | 'dv-clientStable'
+  | 'dv-clientContentIds'
   | 'dv-clientLocale'
-  | 'dv-clientContentIds';
+  | 'dv-clientNavigation'
+  | 'dv-clientReady'
+  | 'dv-clientStable';
 
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {

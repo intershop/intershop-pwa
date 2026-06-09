@@ -24,7 +24,7 @@ describe('Product Item Variations Component', () => {
   const readOnly$ = new BehaviorSubject<boolean>(false);
   const visible$ = new BehaviorSubject<boolean>(true);
   const advancedVariationHandling$ = new BehaviorSubject<boolean>(true);
-  const productType$ = new BehaviorSubject<'VariationProduct' | 'VariationProductMaster' | 'Product'>(
+  const productType$ = new BehaviorSubject<'Product' | 'VariationProduct' | 'VariationProductMaster'>(
     'VariationProduct'
   );
   const variationCount$ = new BehaviorSubject<number>(25);

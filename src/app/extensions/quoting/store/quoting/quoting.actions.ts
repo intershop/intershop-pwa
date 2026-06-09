@@ -29,7 +29,7 @@ export const loadQuotingSuccess = createAction(
 
 export const loadQuotingDetail = createAction(
   '[Quoting] Load Quoting Detail',
-  payload<EntityPayloadType & { level: QuoteCompletenessLevel }>()
+  payload<{ level: QuoteCompletenessLevel } & EntityPayloadType>()
 );
 
 export const loadQuotingDetailSuccess = createAction(

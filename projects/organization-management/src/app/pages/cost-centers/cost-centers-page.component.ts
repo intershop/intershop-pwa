@@ -10,7 +10,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterQuery } from '../../models/cost-center-query/cost-center-query.model';
 
-type CostCenterColumnsType = 'costCenterId' | 'costCenterName' | 'costCenterManager' | 'costCenterBudget' | 'actions';
+type CostCenterColumnsType = 'actions' | 'costCenterBudget' | 'costCenterId' | 'costCenterManager' | 'costCenterName';
 
 @Component({
   selector: 'ish-cost-centers-page',

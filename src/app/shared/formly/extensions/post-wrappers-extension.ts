@@ -1,6 +1,6 @@
 import { FormlyConfig, FormlyExtension, FormlyFieldConfig, FormlyFieldProps } from '@ngx-formly/core';
 
-type PostWrapper = string | { index: number; wrapper: string };
+type PostWrapper = { index: number; wrapper: string } | string;
 
 /**
  * Extension that enables appending wrappers to the default configuration.
@@ -15,7 +15,7 @@ class PostWrappersExtension implements FormlyExtension {
   constructor(private formlyConfig: FormlyConfig) {}
 
   prePopulate(field: FormlyFieldConfig): void {
-    const props: FormlyFieldProps & { postWrappers?: PostWrapper[] } = field.props;
+    const props: { postWrappers?: PostWrapper[] } & FormlyFieldProps = field.props;
     if (!props?.postWrappers || props.postWrappers.length === 0) {
       return;
     }

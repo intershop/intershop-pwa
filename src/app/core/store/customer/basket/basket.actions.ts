@@ -42,19 +42,19 @@ export const createBasketSuccess = createAction('[Basket API] Create Basket Succ
 
 export const createBasketAddress = createAction(
   '[Basket] Create Basket Address',
-  payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()
+  payload<{ address: Address; scope: 'any' | 'invoice' | 'shipping' }>()
 );
 
 export const createBasketAddressSuccess = createAction(
   '[Basket API] Create Basket Address Success',
-  payload<{ address: Address; scope: 'invoice' | 'shipping' | 'any' }>()
+  payload<{ address: Address; scope: 'any' | 'invoice' | 'shipping' }>()
 );
 
 export const createBasketAddressFail = createAction('[Basket API] Create Basket Address Fail', httpError());
 
 export const assignBasketAddress = createAction(
   '[Basket] Assign an Address to the Basket',
-  payload<{ addressId: string; scope: 'invoice' | 'shipping' | 'any' }>()
+  payload<{ addressId: string; scope: 'any' | 'invoice' | 'shipping' }>()
 );
 
 export const updateBasketAddress = createAction(

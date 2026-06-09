@@ -43,7 +43,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   /**
     form containing the captcha form controls
    */
-  @Input({ required: true }) form: FormGroup | FormArray;
+  @Input({ required: true }) form: FormArray | FormGroup;
 
   @Input({ required: true }) topic: CaptchaTopic;
 

@@ -20,9 +20,9 @@ export interface SkuQuantityType {
 }
 
 export enum ProductCompletenessLevel {
-  Detail = 3,
-  List = 2,
   Base = 1,
+  List = 2,
+  Detail = 3,
 }
 
 export class ProductHelper {
@@ -97,14 +97,14 @@ export class ProductHelper {
   /**
    * Check if product is a master product
    */
-  static isMasterProduct(product: Partial<AllProductTypes>): product is VariationProductMaster & ProductView {
+  static isMasterProduct(product: Partial<AllProductTypes>): product is ProductView & VariationProductMaster {
     return product?.type === 'VariationProductMaster';
   }
 
   /**
    * Check if product is a variation product
    */
-  static isVariationProduct(product: Partial<AllProductTypes>): product is VariationProduct & ProductView {
+  static isVariationProduct(product: Partial<AllProductTypes>): product is ProductView & VariationProduct {
     return product?.type === 'VariationProduct';
   }
 

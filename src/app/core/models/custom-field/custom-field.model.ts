@@ -4,6 +4,6 @@ type CustomFieldValue = string;
 
 export type CustomFields = Record<string, CustomFieldValue>;
 
-export type CustomFieldsComponentInput = CustomFieldDefinitionScopeType & {
+export type CustomFieldsComponentInput = {
   value: CustomFieldValue;
-};
+} & CustomFieldDefinitionScopeType;

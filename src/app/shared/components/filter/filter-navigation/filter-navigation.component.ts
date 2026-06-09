@@ -14,7 +14,7 @@ import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-param
 })
 export class FilterNavigationComponent implements OnInit {
   @Input() fragmentOnRouting: string;
-  @Input() orientation: 'sidebar' | 'horizontal' = 'sidebar';
+  @Input() orientation: 'horizontal' | 'sidebar' = 'sidebar';
   @Input() showCategoryFilter = true;
 
   filter$: Observable<FilterNavigation>;

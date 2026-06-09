@@ -140,9 +140,9 @@ export class UserCsvImportComponent implements OnInit {
 
   private isRoleField(header: string): boolean {
     return [
-      'APP_B2B_BUYER',
       'APP_B2B_ACCOUNT_OWNER',
       'APP_B2B_APPROVER',
+      'APP_B2B_BUYER',
       'APP_B2B_COSTCENTER_OWNER',
       'APP_B2B_COSTOBJECT_MANAGER',
     ].includes(header);

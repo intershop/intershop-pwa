@@ -37,7 +37,7 @@ describe('Authorization Toggle Service', () => {
     });
 
     it("should return false if user doesn't have any of the given permissions", () => {
-      expect(authorizationToggleService.isAuthorizedTo(['DO_THAT', 'DO_NOTHING'])).toBeObservable(
+      expect(authorizationToggleService.isAuthorizedTo(['DO_NOTHING', 'DO_THAT'])).toBeObservable(
         cold('a', { a: false })
       );
     });

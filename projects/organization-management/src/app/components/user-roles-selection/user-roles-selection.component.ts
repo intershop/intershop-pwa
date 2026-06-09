@@ -56,7 +56,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
               ...acc,
               [role.id]: this.createFormControl(
                 staticRoles.includes(role.id),
-                ['APP_B2B_OCI_USER', 'APP_B2B_CXML_USER'].includes(role.id)
+                ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'].includes(role.id)
               ),
             }),
             {}

@@ -73,7 +73,7 @@ const localStorageSaveMeta = <S>(baseHref: string, prefix: string, key: keyof S 
 const sessionStorageSaveMeta = <S>(baseHref: string, prefix: string, key: keyof S & string) =>
   saveMeta<S>(sessionStorage, baseHref, prefix, key);
 
-type DataRetentionPolicyValue = 'session' | number | 'forever';
+type DataRetentionPolicyValue = 'forever' | 'session' | number;
 
 export type DataRetentionPolicy = Record<string, DataRetentionPolicyValue>;
 
