@@ -8,6 +8,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -30,6 +31,7 @@ describe('Registration Page Component', () => {
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyAddressDoctorComponent),
         RegistrationPageComponent,
