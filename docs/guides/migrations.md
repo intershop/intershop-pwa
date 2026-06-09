@@ -27,6 +27,11 @@ The Angular SSR `CommonEngine` now validates the `Host` header of incoming reque
 By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
 For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production host names (see [SSR Startup](./ssr-startup.md)).
 
+**ESLint Perfectionist plugin**
+
+The [`eslint-plugin-perfectionist`](https://perfectionist.dev/) plugin has been added to enforce a consistent sorting of certain code constructs.
+It sorts arrays (`sort-arrays`), enums (`sort-enums`), as well as union and intersection types (`sort-union-types`, `sort-intersection-types`).
+
 **Swiper 12 upgrade**
 
 Swiper has been upgraded from version 8 to 12.
