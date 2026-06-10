@@ -6,6 +6,7 @@ import rxjs from '@smarttools/eslint-plugin-rxjs';
 import ban from 'eslint-plugin-ban';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
+import perfectionist from 'eslint-plugin-perfectionist';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
@@ -70,6 +71,7 @@ export default defineConfig([
       ban,
       jest,
       jsdoc,
+      perfectionist,
       unicorn,
       'unused-imports': unusedImports,
       'ish-custom-rules': ishCustomRules,
@@ -219,6 +221,16 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/prefer-optional-chain': 'warn',
+
+      'perfectionist/sort-arrays': [
+        'warn',
+        {
+          ignoreCase: true,
+          useConfigurationIf: {
+            allNamesMatchPattern: '^[A-Z][a-zA-Z0-9_]+$',
+          },
+        },
+      ],
 
       // Custom Rules
       'ish-custom-rules/ban-imports-file-pattern': [
@@ -681,7 +693,6 @@ export default defineConfig([
         },
       ],
       'ish-custom-rules/require-formly-code-documentation': 'warn',
-      'ish-custom-rules/sort-standalone-component-imports': 'warn',
       'ish-custom-rules/sort-testbed-metadata-arrays': 'warn',
       'ish-custom-rules/use-alias-imports': 'error',
       'ish-custom-rules/use-async-synchronization-in-tests': 'warn',
