@@ -12,7 +12,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { switchMap, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -22,11 +22,11 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
 /**
  * The Captcha Component
  *
- * Displays a captcha form control (V2) or widget (V3) if the captchaV2 or the captchaV3 feature is enabled.
- * It expects the given form to have the form controls for the captcha (controlName) and the captcha action (actionControlName).
- * If the captcha is confirmed the captcha form control contains the captcha response token provided by the captcha service.
+ * Displays a captcha form control (V2) or info text (V3) if the captchaV2 or the captchaV3 feature is enabled.
+ * For V3, the token is fetched by the ApiService when the request is made.
+ * For V2, it expects the form to have a 'captchaAction' control. The 'captcha' control is added dynamically.
  *
- * The parent form supplied must have controls for 'captcha' and 'captchaAction'
+ * The parent form supplied must have a control for 'captchaAction'
  *
  * @example
  * <ish-lazy-captcha cssClass="offset-md-2 col-md-8" topic="contactUs" [form]="form" />
@@ -81,11 +81,9 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
             await import('../../shared/captcha-v3/captcha-v3.component');
 
           const moduleRef = createNgModule(CaptchaV3ComponentModule, this.injector);
-          const componentRef = this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
-
-          componentRef.instance.parentForm = this.form as FormGroup;
-          componentRef.changeDetectorRef.markForCheck();
+          this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
         } else if (version === 2) {
+          this.ensureCaptchaFormControl();
           this.formControl.setValidators([Validators.required]);
           this.formControl.updateValueAndValidity();
 
@@ -103,12 +101,16 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
       });
   }
 
+  private ensureCaptchaFormControl() {
+    const form = this.form as FormGroup;
+    if (!form.get('captcha')) {
+      form.addControl('captcha', new FormControl(''));
+    }
+  }
+
   private sanityCheck() {
     if (!this.form) {
       throw new Error('required input parameter <form> is missing for LazyCaptchaComponent');
-    }
-    if (!this.formControl) {
-      throw new Error(`form control 'captcha' does not exist in the given form for LazyCaptchaComponent`);
     }
     if (!this.actionFormControl) {
       throw new Error(`form control 'captchaAction' does not exist in the given form for LazyCaptchaComponent`);

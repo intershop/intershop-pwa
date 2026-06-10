@@ -1,88 +1,24 @@
 // eslint-disable-next-line max-classes-per-file
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
-import { timer } from 'rxjs';
-import { filter, switchMap, take } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
-import { AppFacade } from 'ish-core/facades/app.facade';
-import { whenTruthy } from 'ish-core/utils/operators';
-
-import {
-  SitekeyProviderService,
-  getSynchronizedSiteKey,
-} from '../../exports/sitekey-provider/sitekey-provider.service';
 
 /**
  * The Captcha V3 Component
  *
- * Displays a captcha widget (V3) and saves the response token in the given form. It should only be used by {@link CaptchaComponent}
+ * Displays the reCAPTCHA V3 info text. Token handling is done in the ApiService.
+ * It should only be used by {@link CaptchaComponent}
  */
 @Component({
   selector: 'ish-captcha-v3',
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptchaV3Component implements OnInit {
-  @Input({ required: true }) parentForm: FormGroup;
-
-  private destroyRef = inject(DestroyRef);
-
-  constructor(
-    private recaptchaV3Service: ReCaptchaV3Service,
-    private appFacade: AppFacade
-  ) {}
-
-  ngOnInit() {
-    this.parentForm.get('captchaAction').setValidators([Validators.required]);
-
-    // as soon as the app is getting stable the form requests a captcha token every 2 minutes
-    if (!SSR) {
-      this.appFacade.appBecameStable$
-        .pipe(
-          take(1),
-          switchMap(() =>
-            timer(0, 2 * (60 - 3) * 1000).pipe(
-              switchMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value))
-            )
-          ),
-          whenTruthy(),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe(token => {
-          this.parentForm.get('captcha').setValue(token);
-          this.parentForm.get('captcha').updateValueAndValidity();
-        });
-
-      // if the captcha is set to undefined from outside request a captcha token
-      this.parentForm
-        .get('captcha')
-        .valueChanges.pipe(
-          filter(token => token === undefined),
-          switchMap(() => this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value)),
-          whenTruthy(),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe(token => {
-          this.parentForm.get('captcha').setValue(token);
-          this.parentForm.get('captcha').updateValueAndValidity();
-        });
-    }
-  }
-}
+export class CaptchaV3Component {}
 
 @NgModule({
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
+  imports: [DirectivesModule, TranslateModule],
   declarations: [CaptchaV3Component],
-  providers: [
-    {
-      provide: RECAPTCHA_V3_SITE_KEY,
-      useFactory: getSynchronizedSiteKey,
-      deps: [SitekeyProviderService],
-    },
-  ],
 })
 export class CaptchaV3ComponentModule {}

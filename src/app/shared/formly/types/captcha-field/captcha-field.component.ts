@@ -8,7 +8,8 @@ import { FieldType } from '@ngx-formly/core';
  * @props **topic** - defines the captcha topic that is passed to the component.
  *
  * @usageNotes
- * Automatically adds the required ``captcha`` and ``captchaAction`` FormControls to the form.
+ * Automatically adds the required ``captchaAction`` FormControl to the form.
+ * The captcha token is fetched by the ApiService when the request is made.
  * Refer to the ``ish-lazy-captcha`` component for more details.
  */
 @Component({
@@ -23,9 +24,6 @@ export class CaptchaFieldComponent extends FieldType implements OnInit {
 
   private registerControls() {
     const form = this.form as FormGroup;
-    if (!form.get('captcha')) {
-      form.addControl('captcha', new FormControl(''));
-    }
 
     if (!form.get('captchaAction')) {
       form.addControl('captchaAction', new FormControl(this.props.topic));
