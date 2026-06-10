@@ -2,6 +2,10 @@
 
 This file documents externally loaded payment-related scripts currently used in the PWA codebase.
 
+> [!NOTE]
+> This file shows how the scripts used on the payment page could be inventoried.
+> Unused payment methods can be removed, and the remaining empty columns must be filled in with the latest data.
+
 ## Inventory
 
 | Script/Resource                   | Origin URL / Pattern                                                  | SRI Hash                                                         | Business Justification                                                                  | Owner | Last Reviewed |

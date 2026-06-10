@@ -10,7 +10,7 @@ if (files.length === 0) {
 
 // ignore documentation overview and security folder
 files = files.filter(p => !p.endsWith(path.join('docs', 'README.md')));
-files = files.filter(p => !p.includes(path.join('docs', 'security')));
+files = files.filter(p => !p.includes(path.join('docs', 'examples')));
 
 let isError = false;
 
