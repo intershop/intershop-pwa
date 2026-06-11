@@ -47,6 +47,8 @@
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
     "build:application-spike": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-spike.ts",
+    "compare:application-spike": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-parity.ts",
+    "serve:application-spike": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts",
     "build": "node scripts/build-pwa",
     "build:multi": "node scripts/build-multi-pwa",
     "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
