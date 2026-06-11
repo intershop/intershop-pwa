@@ -5,13 +5,12 @@ import { UrlSerializer } from '@angular/router';
 
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
-import { CAPTCHA_V3_TOKEN_PROVIDER } from 'ish-core/models/captcha/captcha-token-provider.model';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { CaptchaV3TokenService } from './extensions/captcha/services/captcha-v3-token.service';
+import { CaptchaExportsModule } from './extensions/captcha/exports/captcha-exports.module';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
 import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
@@ -33,6 +32,7 @@ import { ShellModule } from './shell/shell.module';
     BrowserAnimationsModule,
     CoreModule,
     ShellModule,
+    CaptchaExportsModule,
     CopilotExportsModule,
     AppRoutingModule,
     QuickorderRoutingModule,
@@ -50,7 +50,6 @@ import { ShellModule } from './shell/shell.module';
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
-    { provide: CAPTCHA_V3_TOKEN_PROVIDER, useExisting: CaptchaV3TokenService },
     provideClientHydration(withNoHttpTransferCache()),
   ],
 })

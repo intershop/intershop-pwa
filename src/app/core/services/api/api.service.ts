@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { ReCaptchaV3Service } from 'ng-recaptcha-2';
 import {
   EMPTY,
   MonoTypeOperatorFunction,
@@ -14,10 +15,9 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { catchError, concatMap, filter, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { CAPTCHA_V3_TOKEN_PROVIDER } from 'ish-core/models/captcha/captcha-token-provider.model';
 import { Captcha } from 'ish-core/models/captcha/captcha.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {
@@ -30,7 +30,6 @@ import { communicationTimeoutError, serverError } from 'ish-core/store/core/erro
 import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { getBasketIdOrCurrent } from 'ish-core/store/customer/basket';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
-import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -75,9 +74,7 @@ export class ApiService {
     private httpClient: HttpClient,
     private store: Store,
     private featureToggleService: FeatureToggleService,
-    @Optional()
-    @Inject(CAPTCHA_V3_TOKEN_PROVIDER)
-    private captchaV3TokenProvider: InjectSingle<typeof CAPTCHA_V3_TOKEN_PROVIDER>
+    private injector: Injector
   ) {}
 
   /**
@@ -108,24 +105,31 @@ export class ApiService {
         : // just use default headers
           defaultHeaders
     ).pipe(
+      tap(() => console.log('API request with options', options)),
       // testing token gets 'null' from captcha service, so we accept it as a valid value here
       options?.captcha?.captcha !== undefined
         ? // captcha V2: token already provided
           this.appendCaptchaTokenToHeaders(options.captcha.captcha, options.captcha.captchaAction)
-        : options?.captcha?.captchaAction && this.captchaV3TokenProvider
+        : options?.captcha?.captchaAction
           ? // captcha V3: fetch token on the fly
-            switchMap(headers =>
-              this.captchaV3TokenProvider
+            switchMap(headers => {
+              const recaptchaV3Service = this.injector.get(ReCaptchaV3Service, undefined);
+              if (!recaptchaV3Service) {
+                return of(headers);
+              }
+              return recaptchaV3Service
                 .execute(options.captcha.captchaAction)
                 .pipe(
                   map(token =>
-                    headers.set(
-                      ApiService.AUTHORIZATION_HEADER_KEY,
-                      `CAPTCHA recaptcha_token=${token} action=${options.captcha.captchaAction}`
-                    )
+                    token
+                      ? headers.set(
+                          ApiService.AUTHORIZATION_HEADER_KEY,
+                          `CAPTCHA recaptcha_token=${token} action=${options.captcha.captchaAction}`
+                        )
+                      : headers
                   )
-                )
-            )
+                );
+            })
           : identity
     );
   }

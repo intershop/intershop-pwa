@@ -212,7 +212,7 @@ export class RegistrationFormConfigurationService {
       }
 
       const registration: CustomerRegistrationType = { customer, user, credentials, address };
-      registration.captcha = form.get('captcha').value;
+      registration.captcha = form.get('captcha') ? form.get('captcha').value : undefined;
       registration.captchaAction = form.get('captchaAction').value;
 
       registration.subscribedToNewsletter = formValue.newsletterSubscription;
