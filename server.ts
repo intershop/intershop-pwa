@@ -5,6 +5,8 @@ import express from 'express';
 import proxy from 'express-http-proxy';
 import robots from 'express-robots-txt';
 import * as fs from 'fs';
+import { createServer } from 'http';
+import { hostname } from 'os';
 import { join } from 'path';
 import * as client from 'prom-client';
 import { getGlobalDispatcher, install, interceptors, setGlobalDispatcher } from 'undici';
@@ -392,6 +394,10 @@ export function app() {
   }
 
   function defaultCacheControl(path: string): string {
+    if (!PRODUCTION_MODE) {
+      return 'no-store';
+    }
+
     if (/\.[0-9a-f]{16,}\./.test(path)) {
       // file was output-hashed -> 1y
       return 'public, max-age=31557600';
@@ -647,12 +653,11 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
 }
 
 function run() {
-  const http = require('http');
-  http.createServer(app()).listen(PORT);
+  createServer(app()).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
   logger.info(
     {
-      host: { name: require('os').hostname() },
+      host: { name: hostname() },
       server: { port: PORT },
     },
     'Node Express server started'
@@ -666,12 +671,7 @@ function run() {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __non_webpack_require__: NodeJS.Require | undefined;
 
-const nodeRequire =
-  typeof __non_webpack_require__ !== 'undefined'
-    ? __non_webpack_require__
-    : typeof require !== 'undefined'
-      ? require
-      : undefined;
+const nodeRequire = typeof __non_webpack_require__ !== 'undefined' ? __non_webpack_require__ : undefined;
 
 const mainModule = nodeRequire?.main;
 

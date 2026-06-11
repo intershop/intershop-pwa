@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import { createHash } from 'crypto';
 import * as fs from 'fs';
 import { join } from 'path';
@@ -61,6 +61,18 @@ const RUNNER_CONSTANTS: Readonly<Record<string, string>> = {
   workspaceBackupPath: join('node_modules', '.cache', 'application-spike', 'angular.original.json'),
   workspacePath: 'angular.json',
 };
+
+const SERVER_ALLOWED_COMMON_JS_DEPENDENCIES = [
+  '@elastic/ecs-pino-format',
+  'express-http-proxy',
+  'on-finished',
+  'pino',
+  'pino-pretty',
+  'prom-client',
+  'undici',
+];
+
+const APPLICATION_BUILDER_POLYFILLS = ['@angular/localize/init'];
 
 const SUPPORTED_REPLACEMENT_EXTENSION = /\.(([cm]?[jt])sx?|json)$/;
 
@@ -192,6 +204,24 @@ function getModeBuilderOptions(
   };
 }
 
+function getAllowedCommonJsDependencies(options: Record<string, unknown>): string[] {
+  const existing = options.allowedCommonJsDependencies;
+  const existingDependencies = Array.isArray(existing)
+    ? existing.filter((dependency): dependency is string => typeof dependency === 'string')
+    : [];
+
+  return [...new Set([...existingDependencies, ...SERVER_ALLOWED_COMMON_JS_DEPENDENCIES])];
+}
+
+function getApplicationBuilderPolyfills(options: Record<string, unknown>): string[] {
+  const existing = options.polyfills;
+  const existingPolyfills = Array.isArray(existing)
+    ? existing.filter((polyfill): polyfill is string => typeof polyfill === 'string')
+    : [];
+
+  return [...new Set([...APPLICATION_BUILDER_POLYFILLS, ...existingPolyfills])];
+}
+
 function toAngularFileReplacements(fileReplacements: Record<string, string>, workspaceRoot = process.cwd()) {
   return Object.entries(toRelativeReplacements(fileReplacements, workspaceRoot))
     .filter(
@@ -283,6 +313,32 @@ function applyThemeToOutputIndexFiles(theme: string) {
   ['index.html', 'index.csr.html', 'index.server.html'].forEach(indexFile =>
     applyThemeToIndexHtml(join(browserOutputPath, indexFile), theme)
   );
+}
+
+function watchOutputIndexFiles(theme: string): () => void {
+  const browserOutputPath = join(RUNNER_CONSTANTS.outputBasePath, 'browser');
+  const indexFiles = ['index.html', 'index.csr.html', 'index.server.html'].map(indexFile =>
+    join(browserOutputPath, indexFile)
+  );
+  const timestamps = new Map<string, number>();
+
+  const timer = setInterval(() => {
+    const changed = indexFiles.some(indexFile => {
+      if (!fs.existsSync(indexFile)) {
+        return false;
+      }
+      const mtime = fs.statSync(indexFile).mtimeMs;
+      const previous = timestamps.get(indexFile);
+      timestamps.set(indexFile, mtime);
+      return previous !== undefined && previous !== mtime;
+    });
+
+    if (changed) {
+      applyThemeToOutputIndexFiles(theme);
+    }
+  }, 1000);
+
+  return () => clearInterval(timer);
 }
 
 function getResourceOverlayReplacements(fileReplacements: Record<string, string>): Record<string, string> {
@@ -377,7 +433,45 @@ function writeDiagnosticFiles(
   );
 }
 
-function run() {
+function isWatchMode(args: string[]): boolean {
+  return args.some(arg => arg === '--watch' || arg === '--watch=true');
+}
+
+function runAngularBuilder(projectName: string, args: string[], theme: string): Promise<void> {
+  const commandArgs = ['run', 'ng', '--', 'run', `${projectName}:${RUNNER_CONSTANTS.spikeTarget}`, ...args];
+
+  if (!isWatchMode(args)) {
+    execSync(`npm ${commandArgs.join(' ')}`, { stdio: 'inherit' });
+    applyThemeToOutputIndexFiles(theme);
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve, reject) => {
+    const stopIndexWatcher = watchOutputIndexFiles(theme);
+    const child = spawn('npm', commandArgs, { shell: true, stdio: 'inherit' });
+
+    const stopChild = () => {
+      child.kill('SIGINT');
+    };
+
+    process.once('SIGINT', stopChild);
+    process.once('SIGTERM', stopChild);
+
+    child.on('exit', code => {
+      stopIndexWatcher();
+      process.off('SIGINT', stopChild);
+      process.off('SIGTERM', stopChild);
+
+      if (code && code !== 0) {
+        reject(new Error(`Application builder exited with code ${code}.`));
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+async function run() {
   const originalWorkspaceText = readWorkspaceTextWithRecovery();
   const workspace = JSON.parse(originalWorkspaceText) as AngularWorkspace;
   const projectName = getDefaultProjectName(workspace);
@@ -430,12 +524,14 @@ function run() {
         output: '/',
       },
     ],
+    allowedCommonJsDependencies: getAllowedCommonJsDependencies(target.options),
     define: createDefineValues(configuration, theme, production, serviceWorker),
     fileReplacements: angularFileReplacements,
     index: {
       input: generatedIndex,
       output: 'index.html',
     },
+    polyfills: getApplicationBuilderPolyfills(target.options),
     stylePreprocessorOptions: {
       ...((target.options.stylePreprocessorOptions as Record<string, unknown>) || {}),
       includePaths: [`src/styles/themes/${theme}`],
@@ -488,10 +584,7 @@ function run() {
   let buildError: unknown;
   const restoreOverlay = applyResourceOverlay(resourceReplacements);
   try {
-    execSync(`npm run ng -- run ${projectName}:${RUNNER_CONSTANTS.spikeTarget} ${remainingArgs.join(' ')}`, {
-      stdio: 'inherit',
-    });
-    applyThemeToOutputIndexFiles(theme);
+    await runAngularBuilder(projectName, remainingArgs, theme);
   } catch (error) {
     buildError = error;
   } finally {
@@ -505,4 +598,7 @@ function run() {
   }
 }
 
-run();
+run().catch(error => {
+  console.error(error);
+  process.exit(1);
+});
