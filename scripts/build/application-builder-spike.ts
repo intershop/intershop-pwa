@@ -1,4 +1,5 @@
 import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import * as fs from 'fs';
 import { join } from 'path';
 
@@ -11,7 +12,7 @@ import {
   writeReplacementsJson,
 } from './theme-resolver';
 
-/* eslint-disable no-console */
+/* eslint-disable max-lines, no-console */
 
 interface AngularWorkspaceTarget {
   configurations?: Record<string, Record<string, unknown>>;
@@ -293,6 +294,23 @@ function getResourceOverlayReplacements(fileReplacements: Record<string, string>
   );
 }
 
+function getResourceOverlayCacheKey(resourceReplacements: Record<string, string>): string {
+  const hash = createHash('sha256');
+  const entries = Object.entries(resourceReplacements).sort(([left], [right]) => left.localeCompare(right));
+
+  if (!entries.length) {
+    return 'no-resource-overlay';
+  }
+
+  entries.forEach(([original, replacement]) => {
+    hash.update(original);
+    hash.update(replacement);
+    hash.update(fs.readFileSync(replacement));
+  });
+
+  return hash.digest('hex').slice(0, 12);
+}
+
 function applyResourceOverlay(resourceReplacements: Record<string, string>): () => void {
   const backups = Object.entries(resourceReplacements).map(([original, replacement]) => ({
     content: fs.readFileSync(original),
@@ -389,6 +407,7 @@ function run() {
   const unsupportedResourceReplacements = toDiagnosticReplacements(themeFileReplacements);
   const resourceReplacements = getResourceOverlayReplacements(themeFileReplacements);
   const resourceReplacementReadMap = buildResourceReplacements(themeFileReplacements);
+  const resourceOverlayCacheKey = getResourceOverlayCacheKey(resourceReplacements);
   const generatedIndex = writeThemedIndex(theme);
   const report = createReplacementReport(
     configuration,
@@ -438,7 +457,7 @@ function run() {
     ...workspace.cli,
     cache: {
       ...workspace.cli?.cache,
-      path: join(ANGULAR_CACHE_DIR, RUNNER_CONSTANTS.spikeTarget, theme, mode),
+      path: join(ANGULAR_CACHE_DIR, RUNNER_CONSTANTS.spikeTarget, theme, mode, resourceOverlayCacheKey),
     },
   };
 
