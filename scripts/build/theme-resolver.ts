@@ -138,9 +138,9 @@ export function resolveThemeFileReplacements(
 
       if (original !== file && [`.${theme}`, '.all.'].some(themeMarker => file.includes(themeMarker))) {
         accumulator[original] = [...(accumulator[original] || []), file].sort((left, right) => {
-          if (left.includes(`.'${theme}.`) || right.includes('.all.')) {
+          if (left.includes(`.${theme}.`) || right.includes('.all.')) {
             return -1;
-          } else if (right.includes(`.'${theme}.`) || left.includes('.all.')) {
+          } else if (right.includes(`.${theme}.`) || left.includes('.all.')) {
             return 1;
           }
           return 0;

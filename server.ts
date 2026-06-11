@@ -662,15 +662,24 @@ function run() {
 
 // Webpack will replace 'require' with '__webpack_require__'
 // '__non_webpack_require__' is a proxy to Node 'require'
-// The below code is to ensure that the server is run only when not requiring the bundle.
+// The fallback keeps the server executable when bundled as ESM by Angular's application builder.
 // eslint-disable-next-line @typescript-eslint/naming-convention
-declare const __non_webpack_require__: NodeJS.Require;
+declare const __non_webpack_require__: NodeJS.Require | undefined;
 
-const mainModule = __non_webpack_require__.main;
+const nodeRequire =
+  typeof __non_webpack_require__ !== 'undefined'
+    ? __non_webpack_require__
+    : typeof require !== 'undefined'
+      ? require
+      : undefined;
+
+const mainModule = nodeRequire?.main;
 
 const moduleFilename = mainModule?.filename || '';
 
-if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+const currentFilename = typeof __filename !== 'undefined' ? __filename : '';
+
+if (!nodeRequire || moduleFilename === currentFilename || moduleFilename.includes('iisnode')) {
   run();
 }
 

@@ -20,6 +20,11 @@ import { ICMTranslateLoader, LOCAL_TRANSLATIONS } from './utils/translate/icm-tr
 import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
 import { TranslationGenerator } from './utils/translate/translations-generator';
 
+const normalizeTranslations = (translations: object): object => {
+  const module = translations as { default?: object };
+  return module.default ?? translations;
+};
+
 @NgModule({
   providers: [
     { provide: LOCALE_ID, useValue: 'en-US' },
@@ -39,11 +44,11 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
         useFactory: (lang: string) => {
           switch (lang) {
             case 'en_US':
-              return import('../../assets/i18n/en_US.json');
+              return import('../../assets/i18n/en_US.json').then(normalizeTranslations);
             case 'fr_FR':
-              return import('../../assets/i18n/fr_FR.json');
+              return import('../../assets/i18n/fr_FR.json').then(normalizeTranslations);
             case 'de_DE':
-              return import('../../assets/i18n/de_DE.json');
+              return import('../../assets/i18n/de_DE.json').then(normalizeTranslations);
           }
         },
       },

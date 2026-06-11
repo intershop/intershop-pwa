@@ -101,6 +101,96 @@
             "b2c": {}
           }
         },
+        "build-application-spike": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/application-spike",
+              "browser": "browser",
+              "server": "server"
+            },
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "server": "src/main.server.ts",
+            "polyfills": ["src/polyfills.ts"],
+            "tsConfig": "tsconfig.application-spike.json",
+            "assets": [
+              "src/assets",
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/themes/b2b/img/",
+                "output": "/"
+              }
+            ],
+            "scripts": [],
+            "styles": ["src/styles/themes/b2b/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/b2b"],
+              "sass": {
+                "silenceDeprecations": [
+                  "mixed-decls",
+                  "color-functions",
+                  "global-builtin",
+                  "import"
+                ]
+              }
+            },
+            "sourceMap": true,
+            "allowedCommonJsDependencies": ["js-yaml", "localforage"],
+            "externalDependencies": ["elastic-apm-node"],
+            "define": {
+              "PWA_VERSION": "\"11.1.0 application-builder-spike - configuration:b2b,production service-worker:false\"",
+              "PRODUCTION_MODE": "true",
+              "SERVICE_WORKER": "false",
+              "NGRX_RUNTIME_CHECKS": "false",
+              "THEME": "\"b2b\"",
+              "SSR": "globalThis.ngServerMode"
+            },
+            "ssr": {
+              "entry": "server.ts"
+            },
+            "prerender": false
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "budgets": [
+                {
+                  "type": "bundle",
+                  "name": "main",
+                  "maximumWarning": "500kb",
+                  "maximumError": "600kb"
+                },
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.6mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "serviceWorker": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/store/store-devtools.module.ts",
+                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                },
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                }
+              ]
+            },
+            "b2b": {},
+            "b2c": {}
+          },
+          "defaultConfiguration": "b2b,production"
+        },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
@@ -280,6 +370,9 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "cache": {
+      "path": ".angular\\cache\\build-application-spike\\b2b\\development"
+    }
   }
 }
