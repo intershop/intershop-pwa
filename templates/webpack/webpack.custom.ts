@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';
@@ -6,6 +5,14 @@ import { flattenDeep } from 'lodash';
 import { basename, dirname, join, normalize, resolve } from 'path';
 import * as ts from 'typescript';
 import { Compiler, Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
+
+import {
+  buildResourceReplacements,
+  resolveThemeBuildContext,
+  resolveThemeFileReplacements,
+  toRelativeReplacements,
+  writeReplacementsJson,
+} from '../../scripts/build/theme-resolver';
 
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention */
 
@@ -42,76 +49,6 @@ type AngularPlugin = {
   };
 } & WebpackPluginInstance;
 
-function crawlFiles(folder: string, callback: (files: string[]) => void) {
-  if (fs.statSync(folder).isDirectory() && !['node_modules', '.git'].some(baseName => folder.endsWith(baseName))) {
-    const content = fs.readdirSync(folder).map(file => join(folder, file));
-
-    const files = content.filter(f => fs.statSync(f).isFile());
-    if (files.length) {
-      callback(files);
-    }
-
-    content.filter(f => fs.statSync(f).isDirectory()).forEach(d => crawlFiles(d, callback));
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function traverse(obj: object, filterTest: (value: unknown) => boolean, func: (obj: any, key: string) => void) {
-  Object.entries(obj).forEach(([k, v]) => {
-    if (filterTest(v)) {
-      func(obj, k);
-    }
-  });
-  Object.values(obj).forEach(v => {
-    if (v && typeof v === 'object') {
-      traverse(v, filterTest, func);
-    }
-  });
-}
-
-function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) {
-  const angularJson = JSON.parse(fs.readFileSync('angular.json', { encoding: 'utf-8' }));
-
-  // use angular.json 'defaultConfiguration' if no explicit configuration was set
-  if (!targetOptions.configuration) {
-    targetOptions.configuration =
-      angularJson.projects[targetOptions.project].architect[targetOptions.target].defaultConfiguration ||
-      'b2b,production';
-  }
-
-  if (targetOptions.configuration === 'development' || targetOptions.configuration === 'production') {
-    console.error(
-      `configuration cannot just be ${targetOptions.configuration}, it has to be used with a theme (--configuration=<theme>,${targetOptions.configuration})`
-    );
-    process.exit(1);
-  }
-
-  const availableThemes = Object.keys(
-    angularJson.projects[Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '')]
-      .architect.build.configurations
-  );
-
-  const normalConfigTest = (x: string) => x !== 'development' && x !== 'production';
-
-  const configRegex = `^(${availableThemes.filter(normalConfigTest).join('|')}),(development|production)$`;
-  if (!new RegExp(configRegex).test(targetOptions.configuration)) {
-    console.error(`requested configuration does not match pattern '${configRegex}'`);
-    process.exit(1);
-  }
-
-  logger = new Logger(targetOptions.target, targetOptions.configuration, angularJsonConfig.progress);
-
-  const configurations = targetOptions.configuration.split(',');
-  const theme = configurations.filter(normalConfigTest)[0];
-  const production = !!(configurations.includes('production') || angularJsonConfig.buildOptimizer);
-
-  return {
-    theme,
-    production,
-    availableThemes,
-  };
-}
-
 /*
  * RULES:
  * - no elvis operators
@@ -119,7 +56,12 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
  */
 // eslint-disable-next-line complexity
 export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSchema, targetOptions: TargetOptions) => {
-  const { theme, production, availableThemes } = determineConfiguration(angularJsonConfig, targetOptions);
+  const { theme, production, availableThemes, configuration } = resolveThemeBuildContext(
+    angularJsonConfig,
+    targetOptions
+  );
+  targetOptions.configuration = configuration;
+  logger = new Logger(targetOptions.target, configuration, angularJsonConfig.progress);
 
   // apply babel-loader to undici node module
   const path = require('path');
@@ -301,66 +243,19 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     );
   }
 
-  crawlFiles(join(process.cwd()), files => {
-    const themes = [...availableThemes, 'all'];
-
-    // sanity check preventing to use 'all' with other themes
-    files.forEach(f => {
-      const used = themes.filter(t => basename(f).includes(`.${t}.`));
-      if (used.length > 1 && used.includes('all')) {
-        throw new Error(`override for 'all' cannot be used next to other themes:\n  ${f}`);
-      }
-    });
-
-    // find original files and their possible replacements
-    const replacers = files
-      // filter for replaceable files
-      .filter(f => ['html', 'scss', 'ts'].some(ext => f.endsWith(ext)) && !f.endsWith('.spec.ts'))
-      .reduce<Record<string, string[]>>((acc, file) => {
-        // deduce original name
-        const original = themes.reduce((a, k) => a.replace(`.${k}.`, '.'), file);
-
-        // add possible replacements (current theme or 'all')
-        if (original !== file && [`.${theme}`, '.all.'].some(t => file.includes(t))) {
-          acc[original] = [...(acc[original] || []), file]
-            // sort replacements (theme should be prioritized, 'all' should come last)
-            .sort((a, b) => {
-              if (a.includes(`'${theme}.`) || b.includes('.all.')) {
-                return -1;
-              } else if (b.includes(`'${theme}.`) || a.includes('.all.')) {
-                return 1;
-              }
-              return 0;
-            });
-        }
-        return acc;
-      }, {});
-
-    const replacements = Object.entries(replacers)
-      .map(([original, overrides]) => ({
-        replacement: overrides[0],
-        original,
-      }))
-      .filter(replacement => files.includes(replacement.original));
-
-    replacements.forEach(replacement => {
-      angularCompilerPlugin.options.fileReplacements[replacement.original] = replacement.replacement;
-    });
-  });
+  angularCompilerPlugin.options.fileReplacements = {
+    ...angularCompilerPlugin.options.fileReplacements,
+    ...resolveThemeFileReplacements(theme, availableThemes),
+  };
   const noOfReplacements = Object.keys(angularCompilerPlugin.options.fileReplacements).length;
   logger.log(`using ${noOfReplacements} replacement${noOfReplacements === 1 ? '' : 's'} for "${theme}"`);
 
-  // HTML: Patch inputFileSystem for template reads by the Angular compiler.
-  // In Angular 19+, disabling directTemplateLoading breaks standalone component type-checking,
-  // so it must stay enabled. This means templates are read directly via inputFileSystem (bypassing
-  // webpack loaders), requiring us to intercept at the file system level instead of using file-replace-loader.
-  const htmlReplacements: Record<string, string> = {};
-  for (const [key, value] of Object.entries(angularCompilerPlugin.options.fileReplacements)) {
-    if (key.endsWith('.html')) {
-      htmlReplacements[normalize(key)] = normalize(value);
-    }
-  }
-  if (Object.keys(htmlReplacements).length) {
+  /* Angular 19+: The Angular compiler reads templates/styles via webpack's inputFileSystem (createWebpackSystem),
+     bypassing ts.sys.readFile entirely. Since fileReplacements only handles .ts module resolution, we wrap
+     inputFileSystem.readFileSync to redirect template/style reads to their theme-specific overrides. */
+  const resourceReplacements = buildResourceReplacements(angularCompilerPlugin.options.fileReplacements);
+
+  if (Object.keys(resourceReplacements).length) {
     config.plugins.push({
       apply(compiler: Compiler) {
         compiler.hooks.afterEnvironment.tap('ThemeFileReplacementPlugin', () => {
@@ -469,14 +364,9 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     const l = process.cwd().length + 1;
     const logOutputFile = (file: string) => file.substring(l).replace(/\\/g, '/');
 
-    // write replacements json with relative parts for script use
-    const relativeReplacements = Object.entries(angularCompilerPlugin.options.fileReplacements).reduce<
-      Record<string, string>
-    >((acc, [k, v]) => ({ ...acc, [k.substring(l).replace(/\\/g, '/')]: v.substring(l).replace(/\\/g, '/') }), {});
-
-    const replacementsPath = join(config.output.path, 'replacements.json');
+    const relativeReplacements = toRelativeReplacements(angularCompilerPlugin.options.fileReplacements);
+    const replacementsPath = writeReplacementsJson(config.output.path, angularCompilerPlugin.options.fileReplacements);
     logger.log('writing', logOutputFile(replacementsPath));
-    fs.writeFileSync(replacementsPath, JSON.stringify(relativeReplacements, undefined, 2));
 
     const outputFolder = fs.readdirSync(config.output.path);
     const sourceMaps = outputFolder.filter(f => f.endsWith('.js.map'));
