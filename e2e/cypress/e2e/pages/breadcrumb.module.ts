@@ -1,5 +1,5 @@
 export class BreadcrumbModule {
   get items() {
-    return cy.get('li.breadcrumbs-list');
+    return cy.get('li.breadcrumb-item');
   }
 }
