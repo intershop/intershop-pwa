@@ -74,11 +74,10 @@ describe('Withdrawal Request Page Component', () => {
     verify(withdrawalFacade.sendWithdrawal(withdrawal)).once();
   });
 
-  it('should set predefined values from query params on init', () => {
+  it('should expose query params via params signal', () => {
     queryParamMap$.next(convertToParamMap({ orderDocumentNumber: '99999', orderEmail: 'order@test.com' }));
     fixture.detectChanges();
 
-    expect(component.predefinedOrderNumber).toBe('99999');
-    expect(component.predefinedOrderEmail).toBe('order@test.com');
+    expect(component.params()).toEqual({ orderDocumentNumber: '99999', orderEmail: 'order@test.com' });
   });
 });

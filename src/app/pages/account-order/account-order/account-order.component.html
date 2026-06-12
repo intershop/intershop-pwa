@@ -17,22 +17,19 @@
 
 @if (order) {
   <div class="section row" data-testing-id="order-summary-info">
-    <div class="col-12" [ngClass]="order.withdrawal ? 'col-md-6' : ''">
+    <div class="col-md-6">
       <dl class="row dl-horizontal dl-separator">
-        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+        <dt class="col-6 col-lg-5">
           <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
         </dt>
-        <dd
-          data-testing-id="order-number"
-          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
-        >
+        <dd class="col-6 col-lg-7" data-testing-id="order-number">
           {{ order.documentNo }}
         </dd>
         @if (order.approval) {
-          <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+          <dt class="col-6 col-lg-5">
             {{ 'approval.detailspage.order.request_id' | translate }}
           </dt>
-          <dd [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'">
+          <dd class="col-6 col-lg-7">
             <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
               order.requisitionNo
             }}</a>
@@ -46,22 +43,16 @@
             }}
           </dd>
         }
-        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+        <dt class="col-6 col-lg-5">
           <span>{{ 'account.orderdetails.date_of_order.label' | translate }}</span>
         </dt>
-        <dd
-          data-testing-id="order-date"
-          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
-        >
+        <dd class="col-6 col-lg-7" data-testing-id="order-date">
           {{ order.creationDate | ishDate }}
         </dd>
-        <dt [ngClass]="order.withdrawal ? 'col-7 col-md-6 col-lg-5' : 'col-6 col-sm-4 col-md-3'">
+        <dt class="col-6 col-lg-5">
           <span>{{ 'account.orderdetails.order_status.label' | translate }}</span>
         </dt>
-        <dd
-          data-testing-id="order-status"
-          [ngClass]="order.withdrawal ? 'col-5 col-md-6 col-lg-7' : 'col-6 col-sm-8 col-md-9'"
-        >
+        <dd class="col-6 col-lg-7" data-testing-id="order-status">
           <span class="badge text-bg-info">{{ order.status }}</span>
         </dd>
       </dl>
@@ -77,9 +68,7 @@
 
     <div
       [ngClass]="
-        order.withdrawal && (order.withdrawal.withdrawalAllowed || order.withdrawal.status)
-          ? 'col-12 col-md-6'
-          : 'd-none'
+        order.withdrawal && (order.withdrawal.withdrawalAllowed || order.withdrawal.status) ? 'col-md-6' : 'd-none'
       "
     >
       @if (order.withdrawal?.withdrawalAllowed) {
@@ -90,8 +79,8 @@
         >
       } @else if (order.withdrawal?.status) {
         <dl class="row dl-horizontal dl-separator">
-          <dt class="col-7 col-md-6 col-lg-5">{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
-          <dd class="col-5 col-md-6 col-lg-7" data-testing-id="withdrawal-status">
+          <dt class="col-6 col-lg-5">{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
+          <dd class="col-6 col-lg-7" data-testing-id="withdrawal-status">
             <span class="badge text-bg-secondary">
               @if (order.withdrawal?.status === 'CREATED') {
                 {{ 'withdrawal.status.label.received' | translate }}
@@ -101,10 +90,10 @@
             </span>
           </dd>
           @if (order.withdrawal?.withdrawalCreationDate) {
-            <dt class="col-7 col-md-6 col-lg-5">
+            <dt class="col-6 col-lg-5">
               <span>{{ 'account.orderdetails.withdrawal_received_on.label' | translate }}</span>
             </dt>
-            <dd class="col-5 col-md-6 col-lg-7" data-testing-id="withdrawal-received-on">
+            <dd class="col-6 col-lg-7" data-testing-id="withdrawal-received-on">
               {{ order.withdrawal.withdrawalCreationDate | ishDate }}
             </dd>
           }
