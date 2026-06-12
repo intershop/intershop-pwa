@@ -3,9 +3,9 @@ import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ish-switch',
-  standalone: true,
   templateUrl: './switch.component.html',
   styleUrls: ['./switch.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**

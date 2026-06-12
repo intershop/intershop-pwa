@@ -20,7 +20,6 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
  */
 @Component({
   selector: 'ish-date-picker-field',
-  standalone: false,
   templateUrl: './date-picker-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -19,7 +19,6 @@ import { CompareFacade } from '../../../facades/compare.facade';
  */
 @Component({
   selector: 'ish-product-compare-list',
-  standalone: false,
   templateUrl: './product-compare-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 
 @Component({
   selector: 'ish-login-modal',
-  standalone: false,
   templateUrl: './login-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

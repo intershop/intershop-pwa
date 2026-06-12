@@ -4,7 +4,6 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
 @Component({
   selector: 'ish-cost-center-budget',
-  standalone: false,
   templateUrl: './cost-center-budget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

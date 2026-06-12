@@ -25,7 +25,6 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
  */
 @Component({
   selector: 'ish-select-order-template-modal',
-  standalone: false,
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

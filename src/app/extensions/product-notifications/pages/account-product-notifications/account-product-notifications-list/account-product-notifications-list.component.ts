@@ -6,7 +6,6 @@ type ProductNotificationsColumnsType = 'notification' | 'notificationEditDelete'
 
 @Component({
   selector: 'ish-account-product-notifications-list',
-  standalone: false,
   templateUrl: './account-product-notifications-list.component.html',
   styleUrls: ['./account-product-notifications-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

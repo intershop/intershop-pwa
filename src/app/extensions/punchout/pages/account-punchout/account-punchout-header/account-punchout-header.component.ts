@@ -6,7 +6,6 @@ import { PunchoutType } from '../../../models/punchout-user/punchout-user.model'
 
 @Component({
   selector: 'ish-account-punchout-header',
-  standalone: false,
   templateUrl: './account-punchout-header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

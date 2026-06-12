@@ -4,7 +4,6 @@ import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-in
 
 @Component({
   selector: 'ish-account-payment-concardis-directdebit',
-  standalone: false,
   templateUrl: './account-payment-concardis-directdebit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

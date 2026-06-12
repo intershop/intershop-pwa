@@ -14,7 +14,6 @@ import { RatingFilledType } from '../product-rating-star/product-rating-star.com
 
 @Component({
   selector: 'ish-product-reviews',
-  standalone: false,
   templateUrl: './product-reviews.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

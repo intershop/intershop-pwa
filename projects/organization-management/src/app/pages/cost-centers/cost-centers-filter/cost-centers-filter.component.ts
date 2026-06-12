@@ -64,7 +64,6 @@ function urlToQuery(params: UrlModel): Partial<CostCenterQuery> {
 
 @Component({
   selector: 'ish-cost-centers-filter',
-  standalone: false,
   templateUrl: './cost-centers-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

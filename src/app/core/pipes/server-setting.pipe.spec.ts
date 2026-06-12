@@ -9,7 +9,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ServerSettingPipe } from './server-setting.pipe';
 
 @Component({
-  standalone: false,
   template: `@if ('service.ABC.runnable' | ishServerSetting) {
       TEST
     }

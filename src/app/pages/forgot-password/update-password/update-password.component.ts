@@ -13,7 +13,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-update-password',
-  standalone: false,
   templateUrl: './update-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

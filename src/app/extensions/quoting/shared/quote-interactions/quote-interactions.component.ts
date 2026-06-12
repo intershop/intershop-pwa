@@ -6,7 +6,6 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
 
 @Component({
   selector: 'ish-quote-interactions',
-  standalone: false,
   templateUrl: './quote-interactions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -12,7 +12,6 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
  */
 @Component({
   selector: 'ish-wishlist-widget',
-  standalone: false,
   templateUrl: './wishlist-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

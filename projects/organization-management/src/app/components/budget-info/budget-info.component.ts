@@ -9,7 +9,6 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  */
 @Component({
   selector: 'ish-budget-info',
-  standalone: false,
   templateUrl: './budget-info.component.html',
   styleUrls: ['./budget-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

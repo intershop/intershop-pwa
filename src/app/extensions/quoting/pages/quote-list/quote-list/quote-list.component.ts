@@ -21,7 +21,6 @@ type QuoteColumnsType =
  */
 @Component({
   selector: 'ish-quote-list',
-  standalone: false,
   templateUrl: './quote-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

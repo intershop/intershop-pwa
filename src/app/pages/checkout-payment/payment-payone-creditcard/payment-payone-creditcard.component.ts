@@ -28,7 +28,6 @@ declare let Payone: any;
 
 @Component({
   selector: 'ish-payment-payone-creditcard',
-  standalone: false,
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

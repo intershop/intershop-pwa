@@ -18,7 +18,6 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-basket-invoice-address-widget',
-  standalone: false,
   templateUrl: './basket-invoice-address-widget.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

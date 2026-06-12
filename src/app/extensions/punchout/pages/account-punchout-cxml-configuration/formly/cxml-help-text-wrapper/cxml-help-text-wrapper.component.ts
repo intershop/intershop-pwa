@@ -8,7 +8,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-cxml-help-text-wrapper',
-  standalone: false,
   templateUrl: './cxml-help-text-wrapper.component.html',
   styleUrls: ['./cxml-help-text-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

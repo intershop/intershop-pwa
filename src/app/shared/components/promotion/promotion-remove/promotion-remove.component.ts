@@ -6,7 +6,6 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 
 @Component({
   selector: 'ish-promotion-remove',
-  standalone: false,
   templateUrl: './promotion-remove.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

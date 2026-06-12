@@ -12,7 +12,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-checkout-shipping',
-  standalone: false,
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

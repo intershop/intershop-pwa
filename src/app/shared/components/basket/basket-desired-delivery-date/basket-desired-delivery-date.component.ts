@@ -18,7 +18,6 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
 
 @Component({
   selector: 'ish-basket-desired-delivery-date',
-  standalone: false,
   templateUrl: './basket-desired-delivery-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

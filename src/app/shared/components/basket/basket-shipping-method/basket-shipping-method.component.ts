@@ -6,7 +6,6 @@ import { Order } from 'ish-core/models/order/order.model';
 
 @Component({
   selector: 'ish-basket-shipping-method',
-  standalone: false,
   templateUrl: './basket-shipping-method.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

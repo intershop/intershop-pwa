@@ -11,7 +11,6 @@ import { OrderLineItem } from 'ish-core/models/order/order.model';
 
 @Component({
   selector: 'ish-line-item-list-element',
-  standalone: false,
   templateUrl: './line-item-list-element.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

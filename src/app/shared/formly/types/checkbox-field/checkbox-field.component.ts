@@ -13,7 +13,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-checkbox-field',
-  standalone: false,
   templateUrl: './checkbox-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

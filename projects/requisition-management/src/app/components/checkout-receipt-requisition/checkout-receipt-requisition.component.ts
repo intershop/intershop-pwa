@@ -10,7 +10,6 @@ import { Requisition } from '../../models/requisition/requisition.model';
 @GenerateLazyComponent()
 @Component({
   selector: 'ish-checkout-receipt-requisition',
-  standalone: false,
   templateUrl: './checkout-receipt-requisition.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

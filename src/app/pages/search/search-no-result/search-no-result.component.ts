@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-search-no-result',
-  standalone: false,
   templateUrl: './search-no-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

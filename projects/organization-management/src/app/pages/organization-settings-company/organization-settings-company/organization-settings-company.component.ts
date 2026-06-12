@@ -13,7 +13,6 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
  */
 @Component({
   selector: 'ish-organization-settings-company',
-  standalone: false,
   templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

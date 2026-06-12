@@ -6,7 +6,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-account-order-select-buyer-field',
-  standalone: false,
   templateUrl: './account-order-select-buyer-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

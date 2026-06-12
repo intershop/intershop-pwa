@@ -24,7 +24,6 @@ import {
  *
  */
 @Component({
-  standalone: false,
   templateUrl: './registration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

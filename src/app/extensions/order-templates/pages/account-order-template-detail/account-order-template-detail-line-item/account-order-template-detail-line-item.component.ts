@@ -9,7 +9,6 @@ import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template
 
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
-  standalone: false,
   templateUrl: './account-order-template-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

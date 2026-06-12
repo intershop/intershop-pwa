@@ -122,7 +122,6 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
 
 @Component({
   selector: 'ish-account-order-filters',
-  standalone: false,
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],

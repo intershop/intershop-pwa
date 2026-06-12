@@ -4,7 +4,6 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 
 @Component({
   selector: 'ish-quickorder-link',
-  standalone: false,
   templateUrl: './quickorder-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

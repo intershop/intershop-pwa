@@ -5,7 +5,6 @@ type FormErrorMessages = Record<string, string>;
 
 @Component({
   selector: 'ish-form-control-feedback',
-  standalone: false,
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

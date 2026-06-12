@@ -9,7 +9,6 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Component({
   selector: 'ish-product-quantity',
-  standalone: false,
   templateUrl: './product-quantity.component.html',
   styleUrls: ['./product-quantity.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

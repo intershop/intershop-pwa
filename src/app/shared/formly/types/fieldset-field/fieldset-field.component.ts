@@ -17,7 +17,6 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-fieldset-field',
-  standalone: false,
   templateUrl: './fieldset-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

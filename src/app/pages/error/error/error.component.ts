@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
  */
 @Component({
   selector: 'ish-error',
-  standalone: false,
   templateUrl: './error.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

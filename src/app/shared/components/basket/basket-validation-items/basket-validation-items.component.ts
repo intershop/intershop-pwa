@@ -10,7 +10,6 @@ import { LineItemView } from 'ish-core/models/line-item/line-item.model';
  */
 @Component({
   selector: 'ish-basket-validation-items',
-  standalone: false,
   templateUrl: './basket-validation-items.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

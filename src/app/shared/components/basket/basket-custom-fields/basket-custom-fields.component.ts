@@ -11,7 +11,6 @@ import { whenFalsy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-basket-custom-fields',
-  standalone: false,
   templateUrl: './basket-custom-fields.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

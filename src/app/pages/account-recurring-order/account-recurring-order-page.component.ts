@@ -8,7 +8,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-account-recurring-order-page',
-  standalone: false,
   templateUrl: './account-recurring-order-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

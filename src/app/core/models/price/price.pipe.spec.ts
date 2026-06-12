@@ -18,7 +18,7 @@ describe('Price Pipe', () => {
   let element: HTMLElement;
   let translateService: TranslateService;
 
-  @Component({ standalone: false, template: '~{{ price | ishPrice }}~' })
+  @Component({ template: '~{{ price | ishPrice }}~' })
   class DummyComponent {
     price: Price | PriceItem;
   }
@@ -109,7 +109,6 @@ describe('Price Pipe', () => {
   let accountFacade: AccountFacade;
 
   @Component({
-    standalone: false,
     template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
   })
   class DummyComponent {

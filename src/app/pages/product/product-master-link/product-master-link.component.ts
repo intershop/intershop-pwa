@@ -5,7 +5,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-master-link',
-  standalone: false,
   templateUrl: './product-master-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],

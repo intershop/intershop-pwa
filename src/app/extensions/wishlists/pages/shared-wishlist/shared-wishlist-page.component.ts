@@ -4,7 +4,6 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
 
 @Component({
   selector: 'ish-wishlist-page',
-  standalone: false,
   templateUrl: './shared-wishlist-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -5,7 +5,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-freestyle',
-  standalone: false,
   templateUrl: './cms-freestyle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

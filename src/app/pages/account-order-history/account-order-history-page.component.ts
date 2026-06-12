@@ -16,7 +16,6 @@ import { OrderColumnsType } from 'ish-shared/components/order/order-list/order-l
  * If no order placed yet, filters should not be rendered
  */
 @Component({
-  standalone: false,
   templateUrl: './account-order-history-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

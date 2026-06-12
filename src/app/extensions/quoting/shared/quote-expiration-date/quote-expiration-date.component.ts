@@ -6,7 +6,6 @@ import { Quote, QuoteStatus } from '../../models/quoting/quoting.model';
 
 @Component({
   selector: 'ish-quote-expiration-date',
-  standalone: false,
   templateUrl: './quote-expiration-date.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

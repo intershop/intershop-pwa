@@ -16,7 +16,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  */
 @Component({
   selector: 'ish-basket-cost-center-selection',
-  standalone: false,
   templateUrl: './basket-cost-center-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

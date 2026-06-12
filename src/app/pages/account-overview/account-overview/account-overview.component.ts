@@ -11,7 +11,6 @@ import { User } from 'ish-core/models/user/user.model';
  */
 @Component({
   selector: 'ish-account-overview',
-  standalone: false,
   templateUrl: './account-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

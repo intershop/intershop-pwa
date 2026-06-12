@@ -19,7 +19,6 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
  */
 @Component({
   selector: 'ish-checkout-address-anonymous',
-  standalone: false,
   templateUrl: './checkout-address-anonymous.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

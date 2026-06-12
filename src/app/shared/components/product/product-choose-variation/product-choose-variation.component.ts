@@ -5,7 +5,6 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-choose-variation',
-  standalone: false,
   templateUrl: './product-choose-variation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

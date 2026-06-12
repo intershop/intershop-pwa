@@ -13,7 +13,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-validation-wrapper',
-  standalone: false,
   templateUrl: './validation-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

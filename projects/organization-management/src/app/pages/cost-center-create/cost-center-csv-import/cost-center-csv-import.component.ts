@@ -18,7 +18,6 @@ import { OrganizationManagementFacade } from '../../../facades/organization-mana
 
 @Component({
   selector: 'ish-cost-center-csv-import',
-  standalone: false,
   templateUrl: './cost-center-csv-import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

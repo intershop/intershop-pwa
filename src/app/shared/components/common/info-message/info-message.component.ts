@@ -10,7 +10,6 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
  */
 @Component({
   selector: 'ish-info-message',
-  standalone: false,
   templateUrl: './info-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

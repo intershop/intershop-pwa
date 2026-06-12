@@ -11,7 +11,6 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
 
 @Component({
   selector: 'ish-account-punchout-page',
-  standalone: false,
   templateUrl: './account-punchout-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

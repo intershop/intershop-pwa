@@ -27,7 +27,6 @@ import { ProductItemDisplayType } from 'ish-shared/components/product/product-it
 
 @Component({
   selector: 'ish-products-list',
-  standalone: false,
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

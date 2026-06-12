@@ -23,7 +23,6 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-login-form',
-  standalone: false,
   templateUrl: './login-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

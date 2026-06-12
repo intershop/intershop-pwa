@@ -11,7 +11,6 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
  */
 @Component({
   selector: 'ish-cookies-banner',
-  standalone: false,
   templateUrl: './cookies-banner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [bottomOutAnimation()],

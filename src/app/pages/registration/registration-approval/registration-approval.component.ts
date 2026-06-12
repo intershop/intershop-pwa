@@ -8,7 +8,6 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
  */
 @Component({
   selector: 'ish-registration-approval',
-  standalone: false,
   templateUrl: './registration-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

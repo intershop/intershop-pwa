@@ -12,7 +12,6 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
  */
 @Component({
   selector: 'ish-update-password-form',
-  standalone: false,
   templateUrl: './update-password-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

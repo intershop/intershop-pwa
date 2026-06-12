@@ -5,7 +5,6 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation-actions',
-  standalone: false,
   templateUrl: './filter-navigation-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

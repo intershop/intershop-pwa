@@ -13,7 +13,6 @@ import { SelectWishlistModalComponent } from '../select-wishlist-modal/select-wi
 
 @Component({
   selector: 'ish-product-add-to-wishlist',
-  standalone: false,
   templateUrl: './product-add-to-wishlist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

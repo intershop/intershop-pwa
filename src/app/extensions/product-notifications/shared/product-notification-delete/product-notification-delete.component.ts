@@ -19,7 +19,6 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-delete',
-  standalone: false,
   templateUrl: './product-notification-delete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

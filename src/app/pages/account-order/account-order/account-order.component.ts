@@ -10,7 +10,6 @@ import { Order } from 'ish-core/models/order/order.model';
  */
 @Component({
   selector: 'ish-account-order',
-  standalone: false,
   templateUrl: './account-order.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

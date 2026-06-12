@@ -21,7 +21,6 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  */
 @Component({
   selector: 'ish-select-field',
-  standalone: false,
   templateUrl: './select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

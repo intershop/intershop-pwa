@@ -10,7 +10,6 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
 
 @Component({
   selector: 'ish-approver-page',
-  standalone: false,
   templateUrl: './approver-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

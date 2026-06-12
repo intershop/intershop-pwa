@@ -23,7 +23,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-cms-product-list-rest',
-  standalone: false,
   templateUrl: './cms-product-list-rest.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

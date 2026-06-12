@@ -7,7 +7,6 @@ import { NavigationCategory } from 'ish-core/models/navigation-category/navigati
 
 @Component({
   selector: 'ish-category-navigation',
-  standalone: false,
   templateUrl: './category-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

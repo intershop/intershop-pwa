@@ -7,7 +7,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-image-enhanced',
-  standalone: false,
   templateUrl: './cms-image-enhanced.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

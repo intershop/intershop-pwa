@@ -8,7 +8,6 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
 
 @Component({
   selector: 'ish-punchout-user-form',
-  standalone: false,
   templateUrl: './punchout-user-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

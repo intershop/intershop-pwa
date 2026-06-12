@@ -14,7 +14,6 @@ type CostCenterColumnsType = 'actions' | 'costCenterBudget' | 'costCenterId' | '
 
 @Component({
   selector: 'ish-cost-centers-page',
-  standalone: false,
   templateUrl: './cost-centers-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -16,7 +16,6 @@ import { AddressDoctorModalComponent } from '../address-doctor-modal/address-doc
 
 @Component({
   selector: 'ish-address-doctor',
-  standalone: false,
   templateUrl: './address-doctor.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

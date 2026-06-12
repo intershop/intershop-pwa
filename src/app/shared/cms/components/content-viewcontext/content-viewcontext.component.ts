@@ -18,7 +18,6 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
  */
 @Component({
   selector: 'ish-content-viewcontext',
-  standalone: false,
   templateUrl: './content-viewcontext.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

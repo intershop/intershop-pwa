@@ -22,7 +22,6 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  */
 @Component({
   selector: 'ish-shopping-basket',
-  standalone: false,
   templateUrl: './shopping-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

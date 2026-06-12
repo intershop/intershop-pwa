@@ -6,7 +6,6 @@ import { PunchoutFacade } from '../../facades/punchout.facade';
 
 @Component({
   selector: 'ish-punchout-transfer-basket',
-  standalone: false,
   templateUrl: './punchout-transfer-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -14,7 +14,6 @@ import { LoginFormComponent } from 'ish-shared/components/login/login-form/login
 
 @Component({
   selector: 'ish-identity-provider-login',
-  standalone: false,
   templateUrl: './identity-provider-login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

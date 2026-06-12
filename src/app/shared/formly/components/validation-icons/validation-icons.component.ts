@@ -10,7 +10,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-validation-icons',
-  standalone: false,
   templateUrl: './validation-icons.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

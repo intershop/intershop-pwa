@@ -7,7 +7,6 @@ type ProductContextAccessContext = { context: ProductContextFacade } & ProductCo
 
 @Directive({
   selector: '[ishProductContextAccess]',
-  standalone: false,
 })
 export class ProductContextAccessDirective {
   @Input() ishProductContextAccessAlways = false;

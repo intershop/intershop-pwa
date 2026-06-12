@@ -14,7 +14,6 @@ import { Order } from 'ish-core/models/order/order.model';
  */
 @Component({
   selector: 'ish-account-order-to-basket',
-  standalone: false,
   templateUrl: './account-order-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

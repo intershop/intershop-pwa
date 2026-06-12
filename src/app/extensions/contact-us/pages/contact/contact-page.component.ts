@@ -8,7 +8,6 @@ import { ContactUsFacade } from '../../facades/contact-us.facade';
 
 @Component({
   selector: 'ish-contact-page',
-  standalone: false,
   templateUrl: './contact-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

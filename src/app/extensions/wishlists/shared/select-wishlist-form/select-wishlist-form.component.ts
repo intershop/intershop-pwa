@@ -12,7 +12,6 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
 
 @Component({
   selector: 'ish-select-wishlist-form',
-  standalone: false,
   templateUrl: './select-wishlist-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

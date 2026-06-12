@@ -8,7 +8,6 @@ import { URLFormParams, formParamsToString } from 'ish-core/utils/url-form-param
 
 @Component({
   selector: 'ish-filter-navigation',
-  standalone: false,
   templateUrl: './filter-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -8,7 +8,6 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-account-user-info',
-  standalone: false,
   templateUrl: './account-user-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -13,7 +13,6 @@ import { QuotingFacade } from '../../facades/quoting.facade';
  */
 @Component({
   selector: 'ish-basket-add-to-quote',
-  standalone: false,
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

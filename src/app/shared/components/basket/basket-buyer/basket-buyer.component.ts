@@ -11,7 +11,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-basket-buyer',
-  standalone: false,
   templateUrl: './basket-buyer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -9,7 +9,6 @@ import { RatingFilledType } from '../../shared/product-rating-star/product-ratin
  */
 @Component({
   selector: 'ish-rating-stars-field',
-  standalone: false,
   templateUrl: './rating-stars-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

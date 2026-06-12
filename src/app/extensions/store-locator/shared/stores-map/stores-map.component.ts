@@ -4,7 +4,6 @@ import { StoreLocatorFacade } from '../../facades/store-locator.facade';
 
 @Component({
   selector: 'ish-stores-map',
-  standalone: false,
   templateUrl: './stores-map.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

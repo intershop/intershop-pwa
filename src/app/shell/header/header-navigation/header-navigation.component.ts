@@ -9,7 +9,6 @@ import { InjectSingle } from 'ish-core/utils/injection';
 
 @Component({
   selector: 'ish-header-navigation',
-  standalone: false,
   templateUrl: './header-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

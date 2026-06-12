@@ -10,7 +10,6 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  */
 @Component({
   selector: 'ish-root',
-  standalone: false,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

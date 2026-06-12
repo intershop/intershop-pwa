@@ -19,7 +19,6 @@ import { B2bUser } from '../../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-csv-import',
-  standalone: false,
   templateUrl: './user-csv-import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

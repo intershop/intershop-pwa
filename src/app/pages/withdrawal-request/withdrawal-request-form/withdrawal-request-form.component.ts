@@ -32,7 +32,6 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
  */
 @Component({
   selector: 'ish-withdrawal-request-form',
-  standalone: false,
   templateUrl: './withdrawal-request-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

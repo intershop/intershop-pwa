@@ -15,7 +15,6 @@ import { StoresMapComponent } from '../../shared/stores-map/stores-map.component
 
 @Component({
   selector: 'ish-store-locator-page',
-  standalone: false,
   templateUrl: './store-locator-page.component.html',
   styleUrls: ['./store-locator-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

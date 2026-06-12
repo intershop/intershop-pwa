@@ -4,7 +4,6 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-account-profile',
-  standalone: false,
   templateUrl: './account-profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

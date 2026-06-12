@@ -8,7 +8,6 @@ import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-line-item',
-  standalone: false,
   templateUrl: './wishlist-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

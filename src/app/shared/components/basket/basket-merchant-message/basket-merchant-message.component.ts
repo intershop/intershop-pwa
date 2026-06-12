@@ -21,7 +21,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
  */
 @Component({
   selector: 'ish-basket-merchant-message',
-  standalone: false,
   templateUrl: './basket-merchant-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -16,7 +16,6 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
  */
 @Component({
   selector: 'ish-organization-settings-page',
-  standalone: false,
   templateUrl: './organization-settings-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

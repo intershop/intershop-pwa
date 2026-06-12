@@ -16,7 +16,6 @@ type CostCenterBuyersListColumnsType = 'actions' | 'budget' | 'buyerName' | 'ord
  */
 @Component({
   selector: 'ish-cost-center-users-list',
-  standalone: false,
   templateUrl: './cost-center-users-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

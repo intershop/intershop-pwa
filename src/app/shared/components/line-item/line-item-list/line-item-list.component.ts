@@ -20,7 +20,6 @@ import { Price } from 'ish-core/models/price/price.model';
  */
 @Component({
   selector: 'ish-line-item-list',
-  standalone: false,
   templateUrl: './line-item-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -12,7 +12,6 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-cms-static-page',
-  standalone: false,
   templateUrl: './cms-static-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

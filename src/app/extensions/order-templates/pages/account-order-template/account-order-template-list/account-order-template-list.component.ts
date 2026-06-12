@@ -11,7 +11,6 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
 
 @Component({
   selector: 'ish-account-order-template-list',
-  standalone: false,
   templateUrl: './account-order-template-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

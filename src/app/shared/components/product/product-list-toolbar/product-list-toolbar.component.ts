@@ -7,7 +7,6 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-product-list-toolbar',
-  standalone: false,
   templateUrl: './product-list-toolbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

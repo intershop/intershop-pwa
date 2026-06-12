@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-info-box',
-  standalone: false,
   templateUrl: './info-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

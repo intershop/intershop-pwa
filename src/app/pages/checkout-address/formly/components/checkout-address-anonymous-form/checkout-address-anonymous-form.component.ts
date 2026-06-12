@@ -7,7 +7,6 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 
 @Component({
   selector: 'ish-checkout-address-anonymous-form',
-  standalone: false,
   templateUrl: './checkout-address-anonymous-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

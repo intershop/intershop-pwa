@@ -5,7 +5,6 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
  */
 @Directive({
   selector: '[ishClickOutside]',
-  standalone: false,
 })
 export class ClickOutsideDirective {
   constructor(private elementRef: ElementRef) {}

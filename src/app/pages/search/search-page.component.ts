@@ -9,7 +9,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-search-page',
-  standalone: false,
   templateUrl: './search-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

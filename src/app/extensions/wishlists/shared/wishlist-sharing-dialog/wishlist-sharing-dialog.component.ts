@@ -18,7 +18,6 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-sharing-dialog',
-  standalone: false,
   templateUrl: './wishlist-sharing-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

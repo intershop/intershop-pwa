@@ -6,7 +6,6 @@ import { SkuQuantityType } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-bundle-display',
-  standalone: false,
   templateUrl: './product-bundle-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

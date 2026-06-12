@@ -7,7 +7,6 @@ import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { InPlaceEditComponent } from './in-place-edit.component';
 
 @Component({
-  standalone: false,
   template: `
     <ish-in-place-edit>
       <p viewModeContent>VIEW</p>

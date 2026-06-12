@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ish-checkout-progress-bar',
-  standalone: false,
   templateUrl: './checkout-progress-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -12,7 +12,6 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
  */
 @Component({
   selector: 'ish-quote-edit',
-  standalone: false,
   templateUrl: './quote-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

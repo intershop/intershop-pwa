@@ -11,7 +11,6 @@ import { ProductReview } from '../../models/product-reviews/product-review.model
 
 @Component({
   selector: 'ish-product-review-create-dialog',
-  standalone: false,
   templateUrl: './product-review-create-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

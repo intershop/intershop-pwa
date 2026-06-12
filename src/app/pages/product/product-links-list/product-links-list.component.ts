@@ -17,7 +17,6 @@ import { ProductCompletenessLevel } from 'ish-core/models/product/product.helper
  */
 @Component({
   selector: 'ish-product-links-list',
-  standalone: false,
   templateUrl: './product-links-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

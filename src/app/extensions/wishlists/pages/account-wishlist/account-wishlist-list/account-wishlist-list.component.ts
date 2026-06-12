@@ -24,7 +24,6 @@ import { Wishlist } from '../../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-account-wishlist-list',
-  standalone: false,
   templateUrl: './account-wishlist-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

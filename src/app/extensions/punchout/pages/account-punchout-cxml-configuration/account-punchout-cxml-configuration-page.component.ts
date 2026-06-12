@@ -7,7 +7,6 @@ import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
 
 @Component({
   selector: 'ish-account-punchout-cxml-configuration-page',
-  standalone: false,
   templateUrl: './account-punchout-cxml-configuration-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

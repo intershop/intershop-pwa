@@ -3,7 +3,6 @@ import { FieldArrayType } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-oci-configuration-repeat-field',
-  standalone: false,
   templateUrl: './oci-configuration-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

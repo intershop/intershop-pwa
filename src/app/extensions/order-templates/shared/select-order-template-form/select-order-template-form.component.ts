@@ -12,7 +12,6 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
 @Component({
   selector: 'ish-select-order-template-form',
-  standalone: false,
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

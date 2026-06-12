@@ -6,7 +6,6 @@ import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.
 import { FeatureTogglePipe } from './feature-toggle.pipe';
 
 @Component({
-  standalone: false,
   template: `
     <div>unrelated</div>
     @if ('feature1' | ishFeature) {

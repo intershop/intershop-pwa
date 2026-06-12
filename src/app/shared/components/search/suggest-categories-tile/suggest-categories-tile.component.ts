@@ -13,6 +13,7 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
   selector: 'ish-suggest-categories-tile',
   imports: [AsyncPipe, CategoryImageComponent, HighlightPipe, PipesModule, RouterLink],
   templateUrl: './suggest-categories-tile.component.html',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesTileComponent implements OnInit {

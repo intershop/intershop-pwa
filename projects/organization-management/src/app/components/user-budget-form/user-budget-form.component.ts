@@ -17,7 +17,6 @@ interface UserBudgetModel {
 
 @Component({
   selector: 'ish-user-budget-form',
-  standalone: false,
   templateUrl: './user-budget-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

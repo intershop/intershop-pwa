@@ -14,7 +14,6 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-text',
-  standalone: false,
   templateUrl: './filter-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

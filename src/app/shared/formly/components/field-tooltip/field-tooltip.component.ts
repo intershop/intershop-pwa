@@ -15,7 +15,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'ish-field-tooltip',
-  standalone: false,
   templateUrl: './field-tooltip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

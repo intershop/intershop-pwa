@@ -22,7 +22,6 @@ import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/p
 
 @Component({
   selector: 'ish-checkout-review',
-  standalone: false,
   templateUrl: './checkout-review.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

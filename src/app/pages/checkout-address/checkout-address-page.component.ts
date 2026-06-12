@@ -18,7 +18,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-checkout-address-page',
-  standalone: false,
   templateUrl: './checkout-address-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

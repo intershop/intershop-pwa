@@ -11,7 +11,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-shipping-radio-wrapper',
-  standalone: false,
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

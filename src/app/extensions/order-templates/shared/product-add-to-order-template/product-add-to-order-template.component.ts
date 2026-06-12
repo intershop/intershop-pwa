@@ -19,7 +19,6 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
  */
 @Component({
   selector: 'ish-product-add-to-order-template',
-  standalone: false,
   templateUrl: './product-add-to-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

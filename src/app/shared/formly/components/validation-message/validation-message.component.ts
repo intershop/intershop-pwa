@@ -10,7 +10,6 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-validation-message',
-  standalone: false,
   template: '<small class="mt-1" id="{{ field.id }}-validation-error">{{ errorMessage$ | async | translate }} </small>',
   changeDetection: ChangeDetectionStrategy.Default,
 })

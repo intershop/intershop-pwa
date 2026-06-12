@@ -25,7 +25,6 @@ function findElement(element: { parentElement: HTMLElement } | HTMLElement): HTM
 
 @Directive({
   selector: '[ishBrowserLazyView]',
-  standalone: false,
 })
 export class BrowserLazyViewDirective implements OnInit {
   private view: EmbeddedViewRef<unknown>;

@@ -10,7 +10,6 @@ import { PriceType } from 'ish-core/models/price/price.model';
  */
 @Component({
   selector: 'ish-basket-payment-cost-info',
-  standalone: false,
   templateUrl: './basket-payment-cost-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
 
 @Component({
   selector: 'ish-paging',
-  standalone: false,
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

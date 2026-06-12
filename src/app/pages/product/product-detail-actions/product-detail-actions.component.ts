@@ -7,7 +7,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-detail-actions',
-  standalone: false,
   templateUrl: './product-detail-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

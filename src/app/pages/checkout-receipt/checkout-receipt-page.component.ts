@@ -8,7 +8,6 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
 
 @Component({
   selector: 'ish-checkout-receipt-page',
-  standalone: false,
   templateUrl: './checkout-receipt-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

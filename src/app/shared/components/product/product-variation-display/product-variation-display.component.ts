@@ -6,7 +6,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-variation-display',
-  standalone: false,
   templateUrl: './product-variation-display.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -4,7 +4,6 @@ import { MessageFacade } from 'ish-core/facades/message.facade';
 
 @Component({
   selector: 'ish-success-message',
-  standalone: false,
   templateUrl: './success-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

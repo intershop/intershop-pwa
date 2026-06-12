@@ -17,7 +17,6 @@ import { whenFalsy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-product-add-to-basket',
-  standalone: false,
   templateUrl: './product-add-to-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

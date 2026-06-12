@@ -12,7 +12,6 @@ import { QuoteStatus } from '../../models/quoting/quoting.model';
  */
 @Component({
   selector: 'ish-quote-state',
-  standalone: false,
   templateUrl: './quote-state.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -16,7 +16,6 @@ import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-
 
 @Component({
   selector: 'ish-checkout-payment-page',
-  standalone: false,
   templateUrl: './checkout-payment-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

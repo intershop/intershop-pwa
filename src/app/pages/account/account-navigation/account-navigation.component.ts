@@ -24,7 +24,6 @@ export interface NavigationItem {
  */
 @Component({
   selector: 'ish-account-navigation',
-  standalone: false,
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

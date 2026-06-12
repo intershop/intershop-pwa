@@ -7,7 +7,6 @@ import { ProductItemDisplayType } from 'ish-shared/components/product/product-it
 
 @Component({
   selector: 'ish-retail-set-parts',
-  standalone: false,
   templateUrl: './retail-set-parts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -7,7 +7,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-oci-configuration-mapping-wrapper',
-  standalone: false,
   templateUrl: './oci-configuration-mapping-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

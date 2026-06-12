@@ -16,7 +16,6 @@ import { ProductLinksDictionary } from 'ish-core/models/product-links/product-li
  */
 @Component({
   selector: 'ish-product-links',
-  standalone: false,
   templateUrl: './product-links.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

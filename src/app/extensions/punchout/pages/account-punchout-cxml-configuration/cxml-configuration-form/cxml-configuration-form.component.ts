@@ -11,7 +11,6 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
 
 @Component({
   selector: 'ish-cxml-configuration-form',
-  standalone: false,
   templateUrl: './cxml-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

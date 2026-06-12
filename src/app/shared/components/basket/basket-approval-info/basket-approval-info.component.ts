@@ -9,7 +9,6 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
  */
 @Component({
   selector: 'ish-basket-approval-info',
-  standalone: false,
   templateUrl: './basket-approval-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

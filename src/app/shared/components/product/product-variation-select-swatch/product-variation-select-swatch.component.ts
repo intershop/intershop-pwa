@@ -4,7 +4,6 @@ import { VariationOptionGroup } from 'ish-core/models/product-variation/variatio
 
 @Component({
   selector: 'ish-product-variation-select-swatch',
-  standalone: false,
   templateUrl: './product-variation-select-swatch.component.html',
   styleUrls: ['./product-variation-select-swatch.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -13,7 +13,6 @@ const sizes = ['h1', 'h2'];
  */
 @Component({
   selector: 'ish-registration-heading-field',
-  standalone: false,
   templateUrl: './registration-heading-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

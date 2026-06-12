@@ -5,7 +5,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-category-categories',
-  standalone: false,
   templateUrl: './category-categories.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

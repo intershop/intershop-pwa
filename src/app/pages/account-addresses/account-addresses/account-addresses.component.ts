@@ -21,7 +21,6 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-account-addresses',
-  standalone: false,
   templateUrl: './account-addresses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

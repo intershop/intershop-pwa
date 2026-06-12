@@ -7,7 +7,6 @@ import { Promotion } from 'ish-core/models/promotion/promotion.model';
 
 @Component({
   selector: 'ish-basket-promotion',
-  standalone: false,
   templateUrl: './basket-promotion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

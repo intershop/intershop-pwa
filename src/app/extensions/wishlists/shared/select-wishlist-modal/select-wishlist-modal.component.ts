@@ -25,7 +25,6 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
  */
 @Component({
   selector: 'ish-select-wishlist-modal',
-  standalone: false,
   templateUrl: './select-wishlist-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

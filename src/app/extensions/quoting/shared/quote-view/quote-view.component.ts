@@ -9,7 +9,6 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
 
 @Component({
   selector: 'ish-quote-view',
-  standalone: false,
   templateUrl: './quote-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

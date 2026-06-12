@@ -13,7 +13,6 @@ import { OrderTemplatePreferencesDialogComponent } from '../order-template-prefe
 
 @Component({
   selector: 'ish-basket-create-order-template',
-  standalone: false,
   templateUrl: './basket-create-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

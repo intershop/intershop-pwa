@@ -3,7 +3,6 @@ import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-formly-testing-example',
-  standalone: false,
   templateUrl: './formly-testing-example.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

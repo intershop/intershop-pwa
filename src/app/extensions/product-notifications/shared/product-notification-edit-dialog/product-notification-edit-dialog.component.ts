@@ -30,7 +30,6 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-edit-dialog',
-  standalone: false,
   templateUrl: './product-notification-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

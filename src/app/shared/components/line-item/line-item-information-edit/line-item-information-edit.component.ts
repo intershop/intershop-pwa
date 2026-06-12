@@ -21,7 +21,6 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-line-item-information-edit',
-  standalone: false,
   templateUrl: './line-item-information-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],

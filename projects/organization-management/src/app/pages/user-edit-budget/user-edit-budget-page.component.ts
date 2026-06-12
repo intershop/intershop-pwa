@@ -10,7 +10,6 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
 
 @Component({
   selector: 'ish-user-edit-budget-page',
-  standalone: false,
   templateUrl: './user-edit-budget-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

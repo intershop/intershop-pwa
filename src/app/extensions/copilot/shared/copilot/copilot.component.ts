@@ -35,7 +35,6 @@ declare let Chatbot: any;
  */
 @Component({
   selector: 'ish-copilot',
-  standalone: false,
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

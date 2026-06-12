@@ -8,7 +8,6 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
-  standalone: false,
   templateUrl: './product-price.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

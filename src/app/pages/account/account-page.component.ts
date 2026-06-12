@@ -6,7 +6,6 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-account-page',
-  standalone: false,
   templateUrl: './account-page.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

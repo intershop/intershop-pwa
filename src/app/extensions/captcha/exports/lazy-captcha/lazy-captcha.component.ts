@@ -33,7 +33,6 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
  */
 @Component({
   selector: 'ish-lazy-captcha',
-  standalone: false,
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

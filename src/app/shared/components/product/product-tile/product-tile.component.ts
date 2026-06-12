@@ -7,7 +7,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-tile',
-  standalone: false,
   templateUrl: './product-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

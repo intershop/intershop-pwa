@@ -16,7 +16,6 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  */
 @Component({
   selector: 'ish-product-warranty-details',
-  standalone: false,
   templateUrl: './product-warranty-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

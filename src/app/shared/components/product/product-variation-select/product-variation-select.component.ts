@@ -10,7 +10,6 @@ import { ProductHelper } from 'ish-core/models/product/product.helper';
 
 @Component({
   selector: 'ish-product-variation-select',
-  standalone: false,
   templateUrl: './product-variation-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

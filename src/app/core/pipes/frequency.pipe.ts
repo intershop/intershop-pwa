@@ -5,10 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
  * The frequency pipe converts a string of special interval format to the corresponding display string
  * example: interval 'P21D' returns '3 Week(s)'
  */
-@Pipe({
-  name: 'ishFrequency',
-  standalone: false,
-})
+@Pipe({ name: 'ishFrequency' })
 export class FrequencyPipe implements PipeTransform {
   constructor(private translate: TranslateService) {}
 

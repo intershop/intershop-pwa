@@ -9,7 +9,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-category-page',
-  standalone: false,
   templateUrl: './category-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

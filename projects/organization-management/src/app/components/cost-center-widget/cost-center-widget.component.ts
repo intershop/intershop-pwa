@@ -11,7 +11,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 @GenerateLazyComponent()
 @Component({
   selector: 'ish-cost-center-widget',
-  standalone: false,
   templateUrl: './cost-center-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

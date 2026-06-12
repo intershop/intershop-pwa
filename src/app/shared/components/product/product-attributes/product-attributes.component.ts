@@ -4,7 +4,6 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-attributes',
-  standalone: false,
   templateUrl: './product-attributes.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

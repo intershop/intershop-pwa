@@ -8,8 +8,9 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 
 @Component({
   selector: 'ish-suggest-keywords',
-  imports: [AsyncPipe, HighlightPipe, SlicePipe, TranslatePipe],
   templateUrl: './suggest-keywords.component.html',
+  standalone: true,
+  imports: [AsyncPipe, HighlightPipe, SlicePipe, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestKeywordsComponent {

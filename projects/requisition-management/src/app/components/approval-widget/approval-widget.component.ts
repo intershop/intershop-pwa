@@ -11,7 +11,6 @@ import { Requisition } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-approval-widget',
-  standalone: false,
   templateUrl: './approval-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

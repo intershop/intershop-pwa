@@ -10,7 +10,6 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-users-page',
-  standalone: false,
   templateUrl: './users-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

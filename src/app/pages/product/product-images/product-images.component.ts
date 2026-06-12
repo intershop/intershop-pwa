@@ -30,7 +30,6 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
  */
 @Component({
   selector: 'ish-product-images',
-  standalone: false,
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { ngSkipHydration: 'true' },

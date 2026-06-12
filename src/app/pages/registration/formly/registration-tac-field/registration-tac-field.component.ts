@@ -6,7 +6,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-registration-tac-field',
-  standalone: false,
   templateUrl: './registration-tac-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

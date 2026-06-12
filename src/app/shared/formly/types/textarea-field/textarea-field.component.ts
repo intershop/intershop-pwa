@@ -15,7 +15,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-textarea-field',
-  standalone: false,
   templateUrl: './textarea-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

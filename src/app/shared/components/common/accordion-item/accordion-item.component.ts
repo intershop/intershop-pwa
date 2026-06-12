@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'ish-accordion-item',
-  standalone: false,
   templateUrl: './accordion-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

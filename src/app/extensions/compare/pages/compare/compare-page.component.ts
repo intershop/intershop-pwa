@@ -5,7 +5,6 @@ import { CompareFacade } from '../../facades/compare.facade';
 
 @Component({
   selector: 'ish-compare-page',
-  standalone: false,
   templateUrl: './compare-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

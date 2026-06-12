@@ -16,7 +16,6 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
  */
 @Component({
   selector: 'ish-content-include',
-  standalone: false,
   templateUrl: './content-include.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

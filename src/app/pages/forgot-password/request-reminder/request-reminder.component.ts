@@ -11,7 +11,6 @@ import { PasswordReminder } from 'ish-core/models/password-reminder/password-rem
  */
 @Component({
   selector: 'ish-request-reminder',
-  standalone: false,
   templateUrl: './request-reminder.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

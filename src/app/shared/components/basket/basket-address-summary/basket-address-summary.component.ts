@@ -4,7 +4,6 @@ import { Basket } from 'ish-core/models/basket/basket.model';
 
 @Component({
   selector: 'ish-basket-address-summary',
-  standalone: false,
   templateUrl: './basket-address-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

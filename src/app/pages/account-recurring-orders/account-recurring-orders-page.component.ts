@@ -10,7 +10,6 @@ import { RecurringOrderColumnsType } from './recurring-order-list/recurring-orde
 
 @Component({
   selector: 'ish-account-recurring-orders-page',
-  standalone: false,
   templateUrl: './account-recurring-orders-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

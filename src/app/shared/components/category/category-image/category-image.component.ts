@@ -8,8 +8,8 @@ import { ImageLoading } from 'ish-core/models/image/image.model';
  */
 @Component({
   selector: 'ish-category-image',
-  standalone: true,
   templateUrl: './category-image.component.html',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryImageComponent implements OnChanges {

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core'
 
 @Component({
   selector: 'ish-back-to-top',
-  standalone: false,
   templateUrl: './back-to-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

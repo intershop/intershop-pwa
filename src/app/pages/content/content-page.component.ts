@@ -8,7 +8,6 @@ import { ContentPageletEntryPointView } from 'ish-core/models/content-view/conte
  * The Content Page Component fetches and renders the data of CMS managed pages.
  */
 @Component({
-  standalone: false,
   templateUrl: './content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

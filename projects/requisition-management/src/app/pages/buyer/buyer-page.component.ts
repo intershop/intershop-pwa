@@ -10,7 +10,6 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
 
 @Component({
   selector: 'ish-buyer-page',
-  standalone: false,
   templateUrl: './buyer-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -30,7 +30,6 @@ interface RecurrenceFormData {
 
 @Component({
   selector: 'ish-basket-order-recurrence-edit',
-  standalone: false,
   templateUrl: './basket-order-recurrence-edit.component.html',
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

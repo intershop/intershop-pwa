@@ -15,7 +15,6 @@ import { startWith, switchMap, throttleTime } from 'rxjs/operators';
  */
 @Component({
   selector: 'ish-maxlength-description-wrapper',
-  standalone: false,
   templateUrl: './maxlength-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

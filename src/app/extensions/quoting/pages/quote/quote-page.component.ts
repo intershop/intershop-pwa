@@ -9,7 +9,6 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
 
 @Component({
   selector: 'ish-quote-page',
-  standalone: false,
   templateUrl: './quote-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: QuoteContextFacade, useClass: SelectedQuoteContextFacade }],

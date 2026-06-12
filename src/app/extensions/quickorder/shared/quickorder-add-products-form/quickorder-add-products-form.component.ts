@@ -11,7 +11,6 @@ import { SkuQuantityType } from 'ish-core/models/product/product.helper';
  */
 @Component({
   selector: 'ish-quickorder-add-products-form',
-  standalone: false,
   templateUrl: './quickorder-add-products-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

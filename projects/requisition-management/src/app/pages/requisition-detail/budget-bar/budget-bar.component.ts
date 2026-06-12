@@ -15,7 +15,6 @@ import { Price } from 'ish-core/models/price/price.model';
 
 @Component({
   selector: 'ish-budget-bar',
-  standalone: false,
   templateUrl: './budget-bar.component.html',
   styleUrls: ['./budget-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
