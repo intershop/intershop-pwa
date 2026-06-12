@@ -219,15 +219,16 @@ If `app_sf_base_cm` is not the correct resource set ID for the view contexts use
 ## Design View
 
 > [!NOTE]
-> To use the Design View for the PWA within the Intershop Administration Portal, ICM version 14.2.3 or above is needed.
-> The Intershop PWA 5.0.0 in combination with ICM 11.7.0 or later introduced experimental support for the Design View with limited functionality.
+> To use the Design View for the PWA within the Intershop Administration Portal, ICM version 14.2.3 or later is required.
+> Intershop PWA 5.0.0, in combination with ICM 11.7.0 or later, introduced experimental support for the Design View with limited functionality.
 
-Intershop PWA 12.0.0 introduces production-ready support for Design View, which can be used within the Intershop Administration Portal (IAP).
+Intershop PWA 12.0.0 introduces production-ready support for the Design View, which is accessible within the Intershop Administration Portal (IAP).
 In addition to access to the IAP, you require ICM 14+, which provides the necessary CMS Management REST API.
-This allows you to retrieve information about available CMS models and the CMS page tree, as well as edit CMS components.
+This allows you to retrieve information about available CMS models and the CMS page tree, as well as to edit CMS components.
 
-The Design View integration highlights CMS components in the PWA, allowing them to be selected and edited in the IAP.
-These changes are reflected in real time in the PWA, and client-side messages are sent between the PWA and IAP to synchronize interactions.
+The Design View integration highlights CMS components in the PWA, enabling them to be selected and edited in the IAP.
+These changes are reflected in real time in the PWA.
+Client-side messages are sent between the PWA and IAP to synchronize interactions.
 The Design View is activated within an IAP context by adding the `DesignView` query parameter to the PWA URL.
 
 ## Preview Context
