@@ -305,8 +305,9 @@
   "account.orderdetails.order_status.label": "Bestellstatus",
   "account.orderdetails.print_link.text": "Drucken",
   "account.orderdetails.recurring_order.info": "Diese Bestellung wurde auf Grundlage einer <a href=\"{{link}}\" >wiederkehrenden Bestellung</a> erzeugt.",
-  "account.orderdetails.withdrawal_received_on.label": "Withdrawal received on",
-  "account.orderdetails.withdrawal_status.label": "Withdrawal status",
+  "account.orderdetails.withdrawal.link": "Vertrag widerrufen",
+  "account.orderdetails.withdrawal_received_on.label": "Widerruf eingegangen am",
+  "account.orderdetails.withdrawal_status.label": "Widerrufsstatus",
   "account.orderlist.no_orders_message": "Derzeit sind keine Bestellungen vorhanden.",
   "account.orderlist.no_placed_orders_message": "Sie haben noch keine Bestellung aufgegeben.",
   "account.orderlist.table.buyer": "Einkäufer",
@@ -1589,6 +1590,6 @@
   "wishlist.table.header.price": "Preis",
   "wishlist.table.options.move_to_another_wishlist": "In andere Liste verschieben",
   "wishlist.table.options.remove": "Entfernen",
-  "withdrawal.status.label.approved": "approved",
-  "withdrawal.status.label.received": "received"
+  "withdrawal.status.label.approved": "Genehmigt",
+  "withdrawal.status.label.received": "Erhalten"
 }
