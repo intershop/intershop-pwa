@@ -158,7 +158,8 @@ export class SelectWishlistModalComponent implements OnInit {
     const selectedValue = this.formGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
+        whenTruthy(),
+        map(currentWishlist => `route://account/wishlists/${currentWishlist.id}`),
         take(1)
       );
     } else {

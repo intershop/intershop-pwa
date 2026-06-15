@@ -205,5 +205,16 @@ describe('Select Order Template Modal Component', () => {
       });
       done();
     });
+
+    it('should wait for the created order template and not emit an "undefined" route', done => {
+      when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(undefined, orderTemplateDetails));
+      startup();
+      updateOrderTemplateAndNew();
+
+      component.selectedOrderTemplateRoute$.subscribe(r => {
+        expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
+      });
+    });
   });
 });
