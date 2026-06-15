@@ -2,7 +2,7 @@ import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-export function provideCopilotFeature(): (Provider | EnvironmentProviders)[] {
+export function provideCopilotFeature(): (EnvironmentProviders | Provider)[] {
   return [
     {
       provide: LAZY_FEATURE_MODULE,

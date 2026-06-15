@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { CustomWebpackBrowserSchema, TargetOptions } from '@angular-builders/custom-webpack';
 import { tsquery } from '@phenomnomnominal/tsquery';
 import * as fs from 'fs';

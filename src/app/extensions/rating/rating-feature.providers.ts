@@ -15,7 +15,7 @@ const ratingFormlyConfig: ConfigOption = {
   ],
 };
 
-export function provideRatingFeature(): (Provider | EnvironmentProviders)[] {
+export function provideRatingFeature(): (EnvironmentProviders | Provider)[] {
   return [
     provideFormlyConfig(ratingFormlyConfig),
     {

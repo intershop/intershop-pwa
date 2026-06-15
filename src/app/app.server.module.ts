@@ -1,12 +1,13 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   ErrorHandler,
   Optional,
   TransferState,
   importProvidersFrom,
+  inject,
   mergeApplicationConfig,
+  provideAppInitializer,
 } from '@angular/core';
 import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -104,11 +105,10 @@ const providers = [
   { provide: DATA_RETENTION_POLICY, useValue: {} },
 ];
 
-function initializeServerTransferState(transferState: TransferState) {
-  return () => {
-    transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
-    transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
-  };
+function initializeServerTransferState() {
+  const transferState = inject(TransferState);
+  transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
+  transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
 }
 
 const serverConfig: ApplicationConfig = {
@@ -116,12 +116,7 @@ const serverConfig: ApplicationConfig = {
     importProvidersFrom(ServerModule),
     provideNoopAnimations(),
     ...providers,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeServerTransferState,
-      deps: [TransferState],
-      multi: true,
-    },
+    provideAppInitializer(initializeServerTransferState),
   ],
 };
 

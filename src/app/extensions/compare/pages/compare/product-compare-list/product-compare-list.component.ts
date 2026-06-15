@@ -61,7 +61,7 @@ export class ProductCompareListComponent implements OnInit {
    * The list of products to compare
    */
   @Input()
-  set compareProducts(val: string[] | null) {
+  set compareProducts(val: null | string[]) {
     this.compareProductSKUs$.next(val ?? []);
   }
 

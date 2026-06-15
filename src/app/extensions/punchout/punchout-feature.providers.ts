@@ -5,7 +5,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 
 import { PunchoutProductContextDisplayPropertiesService } from './exports/punchout-product-context-display-properties/punchout-product-context-display-properties.service';
 
-export function providePunchoutFeature(): (Provider | EnvironmentProviders)[] {
+export function providePunchoutFeature(): (EnvironmentProviders | Provider)[] {
   return [
     {
       provide: LAZY_FEATURE_MODULE,

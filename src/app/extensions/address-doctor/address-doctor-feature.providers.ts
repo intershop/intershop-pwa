@@ -5,7 +5,7 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
 
 import { AddressDoctorEventsService } from './services/address-doctor-events/address-doctor-events.service';
 
-export function provideAddressDoctorFeature(): (Provider | EnvironmentProviders)[] {
+export function provideAddressDoctorFeature(): (EnvironmentProviders | Provider)[] {
   return [
     {
       provide: LAZY_FEATURE_MODULE,

@@ -2,7 +2,7 @@ import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-export function provideQuotingFeature(): (Provider | EnvironmentProviders)[] {
+export function provideQuotingFeature(): (EnvironmentProviders | Provider)[] {
   return [
     {
       provide: LAZY_FEATURE_MODULE,

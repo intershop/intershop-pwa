@@ -2,7 +2,7 @@ import { EnvironmentProviders, Provider } from '@angular/core';
 
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
-export function provideWishlistsFeature(): (Provider | EnvironmentProviders)[] {
+export function provideWishlistsFeature(): (EnvironmentProviders | Provider)[] {
   return [
     {
       provide: LAZY_FEATURE_MODULE,

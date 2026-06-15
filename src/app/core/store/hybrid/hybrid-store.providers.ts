@@ -1,4 +1,10 @@
-import { APP_INITIALIZER, EnvironmentProviders, TransferState, makeEnvironmentProviders } from '@angular/core';
+import {
+  EnvironmentProviders,
+  TransferState,
+  inject,
+  makeEnvironmentProviders,
+  provideAppInitializer,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 
@@ -9,25 +15,17 @@ import { HybridEffects, SSR_HYBRID_STATE } from './hybrid.effects';
 
 const hybridStoreEffects = [HybridEffects];
 
-function initializeHybridStore(router: Router, transferState: TransferState) {
-  return () => {
-    // enable the Hybrid Approach handling for the browser side if Hybrid Approach is configured
-    if (!SSR && transferState.get(SSR_HYBRID_STATE, false)) {
-      addGlobalGuard(router, hybridRedirectGuard);
-    }
-  };
+function initializeHybridStore() {
+  const router = inject(Router);
+  const transferState = inject(TransferState);
+  // enable the Hybrid Approach handling for the browser side if Hybrid Approach is configured
+  if (!SSR && transferState.get(SSR_HYBRID_STATE, false)) {
+    addGlobalGuard(router, hybridRedirectGuard);
+  }
 }
 
 export function provideHybridStore(): EnvironmentProviders {
-  return makeEnvironmentProviders([
-    provideEffects(hybridStoreEffects),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeHybridStore,
-      deps: [Router, TransferState],
-      multi: true,
-    },
-  ]);
+  return makeEnvironmentProviders([provideEffects(hybridStoreEffects), provideAppInitializer(initializeHybridStore)]);
 }
 
 export class HybridStoreProviders {}

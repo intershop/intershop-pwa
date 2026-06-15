@@ -1,9 +1,9 @@
 import {
-  ENVIRONMENT_INITIALIZER,
   EnvironmentProviders,
   importProvidersFrom,
   inject,
   makeEnvironmentProviders,
+  provideEnvironmentInitializer,
 } from '@angular/core';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
@@ -32,10 +32,6 @@ export function provideAppearance(): EnvironmentProviders {
         preventDuplicates: true,
       })
     ),
-    {
-      provide: ENVIRONMENT_INITIALIZER,
-      multi: true,
-      useValue: initializeAppearance,
-    },
+    provideEnvironmentInitializer(initializeAppearance),
   ]);
 }

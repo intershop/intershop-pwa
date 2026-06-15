@@ -1,9 +1,9 @@
 import {
-  APP_INITIALIZER,
   EnvironmentProviders,
-  Provider,
   TransferState,
+  inject,
   makeEnvironmentProviders,
+  provideAppInitializer,
 } from '@angular/core';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -18,10 +18,6 @@ import { provideHybridStore } from './store/hybrid/hybrid-store.providers';
 import { provideShoppingStore } from './store/shopping/shopping-store.providers';
 import { providePwaStoreDevtools } from './store/store-devtools.providers';
 
-const stateManagementProviders: Provider[] = [
-  { provide: APP_INITIALIZER, useFactory: ngrxStateTransfer, deps: [TransferState, Store, Actions], multi: true },
-];
-
 export function provideStateManagement(): EnvironmentProviders {
   return makeEnvironmentProviders([
     provideCoreStore(),
@@ -32,6 +28,6 @@ export function provideStateManagement(): EnvironmentProviders {
     provideHybridStore(),
     provideShoppingStore(),
     providePwaStoreDevtools(), // disable the Store Devtools in production (https://ngrx.io/guide/store-devtools/recipes/exclude)
-    ...stateManagementProviders,
+    provideAppInitializer(() => ngrxStateTransfer(inject(TransferState), inject(Store), inject(Actions))()),
   ]);
 }

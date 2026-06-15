@@ -1,5 +1,12 @@
 /* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import { APP_ID, APP_INITIALIZER, ApplicationConfig, EnvironmentProviders, TransferState } from '@angular/core';
+import {
+  APP_ID,
+  ApplicationConfig,
+  EnvironmentProviders,
+  TransferState,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import {
   UrlSerializer,
   provideRouter,
@@ -36,18 +43,16 @@ import { provideWishlistsFeature } from './extensions/wishlists/wishlists-featur
 import { appLastRoutes } from './pages/app-last.routes';
 import { appRoutes } from './pages/app.routes';
 
-function initializeCookieConsent(transferState: TransferState) {
-  return () => {
-    if (!transferState.hasKey<number>(COOKIE_CONSENT_VERSION)) {
-      transferState.set(COOKIE_CONSENT_VERSION, environment.cookieConsentVersion);
-    }
-  };
+function initializeCookieConsent() {
+  const transferState = inject(TransferState);
+  if (!transferState.hasKey<number>(COOKIE_CONSENT_VERSION)) {
+    transferState.set(COOKIE_CONSENT_VERSION, environment.cookieConsentVersion);
+  }
 }
 
-function initializeModuleLoader(moduleLoader: ModuleLoaderService) {
-  return () => {
-    moduleLoader.init();
-  };
+function initializeModuleLoader() {
+  const moduleLoader = inject(ModuleLoaderService);
+  moduleLoader.init();
 }
 
 function provideFeatureStores(): EnvironmentProviders[] {
@@ -68,18 +73,8 @@ export const appConfig: ApplicationConfig = {
     ),
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeCookieConsent,
-      deps: [TransferState],
-      multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeModuleLoader,
-      deps: [ModuleLoaderService],
-      multi: true,
-    },
+    provideAppInitializer(initializeCookieConsent),
+    provideAppInitializer(initializeModuleLoader),
     provideCore(),
     provideCMS(),
     provideFormlyCore(),

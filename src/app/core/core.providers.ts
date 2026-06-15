@@ -23,7 +23,7 @@ import { provideInternationalization } from './internationalization.providers';
 import { provideStateManagement } from './state-management.providers';
 import { DefaultErrorHandler } from './utils/default-error-handler';
 
-const coreProviders: (Provider | EnvironmentProviders)[] = [
+const coreProviders: (EnvironmentProviders | Provider)[] = [
   // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
   // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: PGIDChangeInterceptor, multi: true },

@@ -2,11 +2,12 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import {
-  APP_INITIALIZER,
   EnvironmentProviders,
   LOCALE_ID,
   TransferState,
+  inject,
   makeEnvironmentProviders,
+  provideAppInitializer,
 } from '@angular/core';
 import {
   TranslateService,
@@ -25,25 +26,23 @@ import { ICMTranslateLoader, LOCAL_TRANSLATIONS } from './utils/translate/icm-tr
 import { PWATranslateCompiler } from './utils/translate/pwa-translate-compiler';
 import { TranslationGenerator } from './utils/translate/translations-generator';
 
-function initializeInternationalization(
-  angularDefaultLocale: string,
-  translateService: TranslateService,
-  transferState: TransferState,
-  generator: TranslationGenerator
-) {
-  return () => {
-    registerLocaleData(localeDe);
-    registerLocaleData(localeFr);
+function initializeInternationalization() {
+  const angularDefaultLocale = inject(LOCALE_ID);
+  const translateService = inject(TranslateService);
+  const transferState = inject(TransferState);
+  const generator = inject(TranslationGenerator);
 
-    let defaultLang = angularDefaultLocale.replace(/-/, '_');
-    if (transferState.hasKey(SSR_LOCALE)) {
-      defaultLang = transferState.get(SSR_LOCALE, defaultLang);
-    }
-    translateService.setDefaultLang(defaultLang);
-    translateService.use(defaultLang);
+  registerLocaleData(localeDe);
+  registerLocaleData(localeFr);
 
-    generator.init();
-  };
+  let defaultLang = angularDefaultLocale.replace(/-/, '_');
+  if (transferState.hasKey(SSR_LOCALE)) {
+    defaultLang = transferState.get(SSR_LOCALE, defaultLang);
+  }
+  translateService.setFallbackLang(defaultLang);
+  translateService.use(defaultLang);
+
+  generator.init();
 }
 
 export function provideInternationalization(): EnvironmentProviders {
@@ -74,11 +73,6 @@ export function provideInternationalization(): EnvironmentProviders {
       },
     },
     TranslationGenerator,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeInternationalization,
-      deps: [LOCALE_ID, TranslateService, TransferState, TranslationGenerator],
-      multi: true,
-    },
+    provideAppInitializer(initializeInternationalization),
   ]);
 }

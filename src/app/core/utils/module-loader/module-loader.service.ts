@@ -20,7 +20,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export interface LazyFeatureProviderType {
   feature: 'always' | FeatureToggleType;
   loadStrategy?: 'appInit' | 'onDemand';
-  providers(): Promise<EnvironmentProviders | (Provider | EnvironmentProviders)[]>;
+  providers(): Promise<(EnvironmentProviders | Provider)[] | EnvironmentProviders>;
 }
 
 export const LAZY_FEATURE_PROVIDER = new InjectionToken<LazyFeatureProviderType>('lazyFeatureProvider');
