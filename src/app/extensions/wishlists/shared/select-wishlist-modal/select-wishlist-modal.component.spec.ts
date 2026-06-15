@@ -242,5 +242,17 @@ describe('Select Wishlist Modal Component', () => {
         done();
       });
     });
+
+    it('should wait for the created wishlist and not emit an "undefined" route', done => {
+      startup();
+      updateWishlistAndNewList();
+
+      when(wishlistFacadeMock.currentWishlist$).thenReturn(of(undefined, { id: 'newList' } as Wishlist));
+
+      component.selectedWishlistRoute$.subscribe(r => {
+        expect(r).toBe('route://account/wishlists/newList');
+        done();
+      });
+    });
   });
 });

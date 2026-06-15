@@ -15,6 +15,7 @@ import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
@@ -148,7 +149,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
 
     if (selectedValue === 'new' || !selectedValue) {
       return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
-        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
+        whenTruthy(),
+        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate.id}`),
         take(1)
       );
     } else {
