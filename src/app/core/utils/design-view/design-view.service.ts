@@ -30,13 +30,33 @@ type ToDVMessageType =
 
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {
+  private designViewMode: boolean;
+
   constructor(
     private router: Router,
     private appRef: ApplicationRef,
     private domService: DomService,
     private store: Store
   ) {
+    if (!SSR && new URLSearchParams(window.location.search).has('DesignView')) {
+      this.setDesignViewMode(true);
+    }
     this.init();
+  }
+
+  private setDesignViewMode(value: boolean) {
+    this.designViewMode = value;
+    if (!SSR) {
+      if (value) {
+        sessionStorage.setItem('DesignViewMode', 'true');
+      } else {
+        sessionStorage.removeItem('DesignViewMode');
+      }
+    }
+  }
+
+  isDesignViewMode(): boolean {
+    return this.designViewMode ?? (!SSR ? sessionStorage.getItem('DesignViewMode') === 'true' : false);
   }
 
   /**

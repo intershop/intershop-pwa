@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -13,7 +14,6 @@ import {
   createContentPageletView,
 } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
-import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
 import { ContentDesignViewWrapperComponent } from './content-design-view-wrapper.component';
 
@@ -23,12 +23,10 @@ describe('Content Design View Wrapper Component', () => {
   let element: HTMLElement;
   let cmsFacade: CMSFacade;
   let designViewService: DesignViewService;
-  let previewService: PreviewService;
 
   beforeEach(async () => {
     cmsFacade = mock(CMSFacade);
     designViewService = mock(DesignViewService);
-    previewService = mock(PreviewService);
 
     when(cmsFacade.pagelet$(anything())).thenReturn(
       of({ id: 'xyz', displayName: 'Pagelet Name xyz' } as ContentPageletView)
@@ -36,7 +34,7 @@ describe('Content Design View Wrapper Component', () => {
     when(cmsFacade.designViewSelectedPageletId$).thenReturn(of('xyz'));
     when(cmsFacade.designViewPreviewedPageletId$).thenReturn(of(undefined));
     when(cmsFacade.designViewScrollToPageletId$).thenReturn(of('xyz'));
-    when(previewService.isDesignViewMode).thenReturn(true);
+    when(designViewService.isDesignViewMode()).thenReturn(true);
 
     await TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
@@ -44,7 +42,6 @@ describe('Content Design View Wrapper Component', () => {
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: DesignViewService, useFactory: () => instance(designViewService) },
-        { provide: PreviewService, useFactory: () => instance(previewService) },
       ],
     }).compileComponents();
   });
@@ -69,6 +66,9 @@ describe('Content Design View Wrapper Component', () => {
 
   it('should be rendered if a pageletId is given', () => {
     component.pageletId = 'xyz';
+    // afterNextRender doesn't fire in Jest - manually trigger initialization
+    component.isDesignViewMode = true;
+    component['initializeComponent']();
     fixture.detectChanges();
 
     expect(component.type).toEqual('pagelet');
@@ -103,6 +103,9 @@ describe('Content Design View Wrapper Component', () => {
         },
       ],
     } as ContentPagelet);
+    // afterNextRender doesn't fire in Jest - manually trigger initialization
+    component.isDesignViewMode = true;
+    component['initializeComponent']();
     fixture.detectChanges();
 
     expect(component.type).toEqual('slot');
@@ -130,6 +133,9 @@ describe('Content Design View Wrapper Component', () => {
       id: 'xyz_include_id',
       displayName: 'Include Name xyz',
     } as ContentPageletEntryPointView;
+    // afterNextRender doesn't fire in Jest - manually trigger initialization
+    component.isDesignViewMode = true;
+    component['initializeComponent']();
     fixture.detectChanges();
 
     expect(component.type).toEqual('include');

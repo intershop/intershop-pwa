@@ -31,6 +31,12 @@ Use `ish-deferred-item` with `ishLazyLoadingContent` for lazy loading.
 With the rework of the `FilterDropdownComponent` to use `ng-select` instead of `ngbDropdown` and to support multi-selection, the `FilterNavigationBadgesComponent` has been renamed to `FilterNavigationActionsComponent` (selector changed from `ish-filter-navigation-badges` to `ish-filter-navigation-actions`).
 The component now only provides a "Remove all filters" action.
 
+**Design View and Preview Context changes**
+
+The Design View and Preview Context features have been reworked so that they can be used simultaneously.
+Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real Preview Context data from being used at the same time.
+Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for Preview Context data.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**
