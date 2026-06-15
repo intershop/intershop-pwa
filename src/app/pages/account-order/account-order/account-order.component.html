@@ -18,18 +18,18 @@
 @if (order) {
   <div class="section row" data-testing-id="order-summary-info">
     <div class="col-md-6">
-      <dl class="row dl-horizontal dl-separator">
-        <dt class="col-6 col-lg-5">
+      <dl class="dl-grid dl-horizontal dl-separator">
+        <dt>
           <span>{{ 'account.orderdetails.order_number.label' | translate }}</span>
         </dt>
-        <dd class="col-6 col-lg-7" data-testing-id="order-number">
+        <dd data-testing-id="order-number">
           {{ order.documentNo }}
         </dd>
         @if (order.approval) {
-          <dt class="col-6 col-lg-5">
-            {{ 'approval.detailspage.order.request_id' | translate }}
+          <dt>
+            <span>{{ 'approval.detailspage.order.request_id' | translate }}</span>
           </dt>
-          <dd class="col-6 col-lg-7">
+          <dd>
             <a [routerLink]="['/account/requisitions/buyer', order.id, { status: 'APPROVED' }]">{{
               order.requisitionNo
             }}</a>
@@ -43,16 +43,16 @@
             }}
           </dd>
         }
-        <dt class="col-6 col-lg-5">
+        <dt>
           <span>{{ 'account.orderdetails.date_of_order.label' | translate }}</span>
         </dt>
-        <dd class="col-6 col-lg-7" data-testing-id="order-date">
+        <dd data-testing-id="order-date">
           {{ order.creationDate | ishDate }}
         </dd>
-        <dt class="col-6 col-lg-5">
+        <dt>
           <span>{{ 'account.orderdetails.order_status.label' | translate }}</span>
         </dt>
-        <dd class="col-6 col-lg-7" data-testing-id="order-status">
+        <dd data-testing-id="order-status">
           <span class="badge text-bg-info">{{ order.status }}</span>
         </dd>
       </dl>
@@ -66,40 +66,38 @@
       }
     </div>
 
-    <div
-      [ngClass]="
-        order.withdrawal && (order.withdrawal.withdrawalAllowed || order.withdrawal.status) ? 'col-md-6' : 'd-none'
-      "
-    >
-      @if (order.withdrawal?.withdrawalAllowed) {
-        <a
-          [queryParams]="{ orderDocumentNumber: order.documentNo, orderEmail: order.email }"
-          [routerLink]="['/withdrawal']"
-          >{{ 'account.orderdetails.withdrawal.link' | translate }}</a
-        >
-      } @else if (order.withdrawal?.status) {
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-6 col-lg-5">{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
-          <dd class="col-6 col-lg-7" data-testing-id="withdrawal-status">
-            <span class="badge text-bg-secondary">
-              @if (order.withdrawal?.status === 'CREATED') {
-                {{ 'withdrawal.status.label.received' | translate }}
-              } @else {
-                {{ 'withdrawal.status.label.approved' | translate }}
-              }
-            </span>
-          </dd>
-          @if (order.withdrawal?.withdrawalCreationDate) {
-            <dt class="col-6 col-lg-5">
-              <span>{{ 'account.orderdetails.withdrawal_received_on.label' | translate }}</span>
-            </dt>
-            <dd class="col-6 col-lg-7" data-testing-id="withdrawal-received-on">
-              {{ order.withdrawal.withdrawalCreationDate | ishDate }}
+    @if (order.withdrawal?.withdrawalAllowed || order.withdrawal?.status) {
+      <div class="col-md-6">
+        @if (order.withdrawal?.withdrawalAllowed) {
+          <a
+            [queryParams]="{ orderDocumentNumber: order.documentNo, orderEmail: order.email }"
+            [routerLink]="['/withdrawal']"
+            >{{ 'account.orderdetails.withdrawal.link' | translate }}</a
+          >
+        } @else if (order.withdrawal?.status) {
+          <dl class="dl-grid dl-horizontal dl-separator">
+            <dt>{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
+            <dd data-testing-id="withdrawal-status">
+              <span class="badge text-bg-secondary">
+                @if (order.withdrawal?.status === 'CREATED') {
+                  {{ 'withdrawal.status.label.received' | translate }}
+                } @else {
+                  {{ 'withdrawal.status.label.approved' | translate }}
+                }
+              </span>
             </dd>
-          }
-        </dl>
-      }
-    </div>
+            @if (order.withdrawal?.withdrawalCreationDate) {
+              <dt>
+                <span>{{ 'account.orderdetails.withdrawal_received_on.label' | translate }}</span>
+              </dt>
+              <dd data-testing-id="withdrawal-received-on">
+                {{ order.withdrawal.withdrawalCreationDate | ishDate }}
+              </dd>
+            }
+          </dl>
+        }
+      </div>
+    }
   </div>
 }
 @if (order) {

@@ -1,0 +1,19 @@
+@import 'variables';
+
+.dl-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  @media (width <= 767.98px) {
+    grid-template-columns: 55% 1fr;
+  }
+
+  dt {
+    padding-right: $space-default * 2;
+    white-space: nowrap;
+  }
+
+  dd {
+    white-space: nowrap;
+  }
+}
