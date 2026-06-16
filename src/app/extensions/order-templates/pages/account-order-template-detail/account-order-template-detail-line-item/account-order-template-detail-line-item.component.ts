@@ -3,15 +3,19 @@ import { FormControl } from '@angular/forms';
 import { map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { SharedModule } from 'ish-shared/shared.module';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
+import { OrderTemplatesModule } from '../../../order-templates.module';
 
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
   standalone: false,
   templateUrl: './account-order-template-detail-line-item.component.html',
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [SharedModule, OrderTemplatesModule],
 })
 export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
   @Input() orderTemplateItemData: OrderTemplateItem;

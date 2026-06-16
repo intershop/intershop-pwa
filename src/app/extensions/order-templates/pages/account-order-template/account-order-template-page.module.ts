@@ -5,6 +5,7 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { OrderTemplatesModule } from '../../order-templates.module';
 
+import { AccountOrderTemplateAddToBasketDialogComponent } from './account-order-template-add-to-basket-dialog/account-order-template-add-to-basket-dialog.component';
 import { AccountOrderTemplateListComponent } from './account-order-template-list/account-order-template-list.component';
 import { AccountOrderTemplatePageComponent } from './account-order-template-page.component';
 

@@ -8,6 +8,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
+import { AccountOrderTemplateAddToBasketDialogComponent } from '../account-order-template-add-to-basket-dialog/account-order-template-add-to-basket-dialog.component';
 
 type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'title';
 
@@ -39,6 +40,10 @@ export class AccountOrderTemplateListComponent {
   /** Emits the id of the order template to delete. */
   delete(orderTemplateId: string) {
     this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
+  }
+
+  openModal(modal: AccountOrderTemplateAddToBasketDialogComponent) {
+    modal.show();
   }
 
   /** Determine the heading of the delete modal and opens the modal. */

@@ -56,26 +56,22 @@
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-actions" scope="col"></th>
         <td *cdkCellDef="let orderTemplate" cdk-cell class="column-price">
           @if (orderTemplate.itemsCount > 0) {
-            <div class="btn-tool d-inline-flex align-top">
-              <button
-                class="btn btn-link p-0"
-                data-testing-id="addToCartButton"
-                name="addProduct"
-                type="button"
-                [attr.aria-label]="'product.add_to_cart.link' | translate"
-                [tabindex]="0"
-                [title]="'product.add_to_cart.link' | translate"
-                (click)="addToBasket(orderTemplate.id)"
-              >
-                @if ((loadingOrderTemplateId$ | async) !== orderTemplate.id) {
-                  <!-- Add to Cart button -->
-                  <i class="bi bi-cart-fill"></i>
-                } @else {
-                  <!-- button with spinning animation after Add to Cart -->
-                  <i class="bi bi-arrow-clockwise spin-icon"></i>
-                }
-              </button>
-            </div>
+            <button
+              class="btn-tool btn-link"
+              data-testing-id="addBasketToOrderTemplateButton"
+              type="button"
+              (click)="openModal(modal)"
+            >
+              @if ((loadingOrderTemplateId$ | async) !== orderTemplate.id) {
+                <!-- Add to Cart button -->
+                <i class="bi bi-cart-fill"></i>
+              } @else {
+                <!-- button with spinning animation after Add to Cart -->
+                <i class="bi bi-arrow-clockwise spin-icon"></i>
+              }
+            </button>
+
+            <ish-account-order-template-add-to-basket-dialog #modal [orderTemplate]="orderTemplate" />
           }
           <a
             class="btn-tool"
