@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -17,8 +17,11 @@ describe('User Profile Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule.withPresetMocks(['title', 'firstName', 'lastName', 'phoneHome']), TranslatePipe],
-      declarations: [MockComponent(ErrorMessageComponent), UserProfileFormComponent],
+      imports: [
+        FormlyTestingModule.withPresetMocks(['title', 'firstName', 'lastName', 'phoneHome']),
+        MockComponent(ErrorMessageComponent),
+        UserProfileFormComponent,
+      ],
       providers: [provideTranslateService()],
     }).compileComponents();
   });

@@ -18,15 +18,17 @@ describe('Price Pipe', () => {
   let element: HTMLElement;
   let translateService: TranslateService;
 
-  @Component({ template: '~{{ price | ishPrice }}~' })
+  @Component({
+    imports: [PricePipe],
+    template: '~{{ price | ishPrice }}~',
+  })
   class DummyComponent {
     price: Price | PriceItem;
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [PricePipe, TranslateModule.forRoot()],
+      imports: [DummyComponent, PricePipe, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
     }).compileComponents();
   });
@@ -107,6 +109,7 @@ describe('Price Pipe', () => {
   let accountFacade: AccountFacade;
 
   @Component({
+    imports: [PricePipe],
     template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
   })
   class DummyComponent {
@@ -118,8 +121,7 @@ describe('Price Pipe', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      declarations: [DummyComponent],
-      imports: [PricePipe, TranslateModule.forRoot()],
+      imports: [DummyComponent, PricePipe, TranslateModule.forRoot()],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
     }).compileComponents();
   });

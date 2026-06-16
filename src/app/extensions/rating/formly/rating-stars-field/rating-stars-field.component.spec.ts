@@ -4,8 +4,8 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { ProductRatingStarComponent } from '../../shared/product-rating-star/product-rating-star.component';
 
@@ -19,6 +19,7 @@ describe('Rating Stars Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -27,7 +28,6 @@ describe('Rating Stars Field Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
         RatingStarsFieldComponent,
         TranslateModule.forRoot(),
       ],

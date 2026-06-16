@@ -3,9 +3,9 @@ import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { CostCenterBuyersRepeatFieldComponent } from './cost-center-buyers-repeat-field.component';
 
@@ -17,6 +17,7 @@ describe('Cost Center Buyers Repeat Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         CostCenterBuyersRepeatFieldComponent,
         FormlyModule.forRoot({
           types: [
@@ -24,7 +25,6 @@ describe('Cost Center Buyers Repeat Field Component', () => {
             { name: 'example', component: FormlyTestingExampleComponent },
           ],
         }),
-        FormlyTestingComponentsModule,
       ],
     }).compileComponents();
   });

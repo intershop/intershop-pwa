@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, ModuleWithProviders, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -18,18 +18,21 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
 
 @Component({
   selector: 'ish-captcha-test-field',
+  imports: [JsonPipe],
   template: 'CaptchaFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class CaptchaFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-checkbox-test-field',
+  imports: [JsonPipe],
   template: 'CheckboxFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class CheckboxFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-fieldset-test-field',
+  imports: [JsonPipe],
   template: `FieldsetFieldComponent:
     @for (f of field.fieldGroup; track f) {
       <div>
@@ -51,66 +54,77 @@ class FieldsetFieldComponent extends FieldType {
 
 @Component({
   selector: 'ish-radio-test-field',
+  imports: [JsonPipe],
   template: `RadioFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }} `,
 })
 class RadioFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-radio-group-test-field',
+  imports: [JsonPipe],
   template: 'RadioGroupFieldComponent: {{ field.key }} {{ to | json }}',
 })
 class RadioGroupFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-input-test-field',
+  imports: [JsonPipe],
   template: 'TextInputFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class TextInputFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-plain-text-test-field',
+  imports: [JsonPipe],
   template: 'PlainTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PlainTextFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-html-test-field',
+  imports: [JsonPipe],
   template: 'HtmlTextFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class HtmlTextFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-email-test-field',
+  imports: [JsonPipe],
   template: 'EmailFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class EmailFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-phone-test-field',
+  imports: [JsonPipe],
   template: 'PhoneFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PhoneFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-password-test-field',
+  imports: [JsonPipe],
   template: 'PasswordFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class PasswordFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-select-test-field',
+  imports: [JsonPipe],
   template: 'SelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class SelectFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-search-select-test-field',
+  imports: [JsonPipe],
   template: 'SearchSelectFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class SearchSelectFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-textarea-test-field',
+  imports: [JsonPipe],
   template: 'TextareaFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class TextareaFieldComponent extends FieldType {}
@@ -129,33 +143,39 @@ class DummyWrapperComponent extends FieldWrapper {}
 
 @Component({
   selector: 'ish-date-picker-test-field',
+  imports: [JsonPipe],
   template: 'DatePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class DatePickerFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-date-range-picker-test-field',
+  imports: [JsonPipe],
   template: 'DateRangePickerFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class DateRangePickerFieldComponent extends FieldType {}
 
 @Component({
   selector: 'ish-repeat-test-field',
+  imports: [JsonPipe],
   template: 'RepeatFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class RepeatFieldComponent extends FieldArrayType {}
 
 @Component({
   selector: 'ish-number-test-field',
+  imports: [JsonPipe],
   template: 'NumberFieldComponent: {{ field.key }} {{ field.type }} {{ to | json }}',
 })
 class NumberFieldComponent extends FieldType {}
 
 @NgModule({
-  declarations: [
+  imports: [
     CaptchaFieldComponent,
     CheckboxFieldComponent,
     DatePickerFieldComponent,
+    DateRangePickerFieldComponent,
+    DummyLibraryFieldComponent,
     DummyWrapperComponent,
     EmailFieldComponent,
     FieldsetFieldComponent,
@@ -171,13 +191,10 @@ class NumberFieldComponent extends FieldType {}
     SelectFieldComponent,
     TextareaFieldComponent,
     TextInputFieldComponent,
-  ],
-  imports: [
     CommonModule,
     FormlyField,
     FormlyForm,
     FormlyModule.forRoot({
-      formlyForm: FormlyForm,
       types: [
         {
           name: 'ish-text-input-field',
@@ -250,8 +267,7 @@ class NumberFieldComponent extends FieldType {}
         { name: 'description', component: DummyWrapperComponent },
         { name: 'form-field-radio-horizontal', component: DummyWrapperComponent },
       ],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any),
+    }),
     FormlySelectModule,
     ReactiveFormsModule,
   ],

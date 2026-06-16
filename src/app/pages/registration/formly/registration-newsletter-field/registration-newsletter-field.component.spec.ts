@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { RegistrationNewsletterFieldComponent } from './registration-newsletter-field.component';
 
@@ -18,10 +18,10 @@ describe('Registration Newsletter Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'newsletter', component: RegistrationNewsletterFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         RegistrationNewsletterFieldComponent,
         TranslateModule.forRoot(),

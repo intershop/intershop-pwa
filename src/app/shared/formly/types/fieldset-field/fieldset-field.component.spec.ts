@@ -4,9 +4,9 @@ import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { FieldsetFieldComponent } from './fieldset-field.component';
 
@@ -18,6 +18,7 @@ describe('Fieldset Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FieldsetFieldComponent,
         FormlyModule.forRoot({
           types: [
@@ -28,7 +29,6 @@ describe('Fieldset Field Component', () => {
             { name: 'example', component: FormlyTestingExampleComponent },
           ],
         }),
-        FormlyTestingComponentsModule,
         TranslateModule.forRoot(),
       ],
     }).compileComponents();

@@ -7,8 +7,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { DatePickerFieldComponent } from './date-picker-field.component';
 
@@ -28,11 +28,11 @@ describe('Date Picker Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         DatePickerFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'ish-date-picker-field', component: DatePickerFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],

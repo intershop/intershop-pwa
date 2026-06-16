@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 @Component({
   selector: 'ish-formly-testing-container',
+  imports: [FormlyModule, ReactiveFormsModule],
+  standalone: true,
   templateUrl: './formly-testing-container.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

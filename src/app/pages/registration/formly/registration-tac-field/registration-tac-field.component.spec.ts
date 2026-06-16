@@ -5,8 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { RegistrationTacFieldComponent } from './registration-tac-field.component';
 
@@ -18,10 +18,10 @@ describe('Registration Tac Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'tac', component: RegistrationTacFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         RegistrationTacFieldComponent,
         TranslateModule.forRoot(),

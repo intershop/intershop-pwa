@@ -6,8 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.component';
 
@@ -41,10 +41,10 @@ describe('Quickorder Repeat Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         QuickorderRepeatFieldComponent,
         TranslateModule.forRoot(),
       ],

@@ -3,8 +3,8 @@ import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/tes
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { AccountOrderSelectBuyerFieldComponent } from './account-order-select-buyer-field.component';
 
@@ -43,11 +43,11 @@ describe('Account Order Select Buyer Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         AccountOrderSelectBuyerFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'select-buyer', component: AccountOrderSelectBuyerFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
       ],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
     })

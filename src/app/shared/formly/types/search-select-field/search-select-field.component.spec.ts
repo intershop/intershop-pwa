@@ -4,8 +4,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { SearchSelectFieldComponent } from './search-select-field.component';
 
@@ -17,6 +17,7 @@ describe('Search Select Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -26,7 +27,6 @@ describe('Search Select Field Component', () => {
           ],
         }),
         FormlySelectModule,
-        FormlyTestingComponentsModule,
         NgSelectModule,
         ReactiveFormsModule,
         SearchSelectFieldComponent,

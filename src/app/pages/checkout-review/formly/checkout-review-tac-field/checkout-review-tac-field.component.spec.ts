@@ -7,8 +7,8 @@ import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { CheckoutReviewTacFieldComponent } from './checkout-review-tac-field.component';
 
@@ -20,11 +20,11 @@ describe('Checkout Review Tac Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         CheckoutReviewTacFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],

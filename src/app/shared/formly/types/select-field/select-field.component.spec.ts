@@ -4,8 +4,8 @@ import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { SelectFieldComponent } from './select-field.component';
 
@@ -17,11 +17,11 @@ describe('Select Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'ish-select-field', component: SelectFieldComponent }],
         }),
         FormlySelectModule,
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         SelectFieldComponent,
         TranslateModule.forRoot(),

@@ -8,6 +8,7 @@ import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-co
 import { DeferredItemComponent } from './deferred-item.component';
 
 @Component({
+  imports: [DeferredItemComponent, LazyLoadingContentDirective],
   template: `
     <ish-deferred-item [cssClass]="cssClass">
       <ng-template ishLazyLoadingContent>
@@ -27,8 +28,7 @@ describe('Deferred Item Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeferredItemComponent, LazyLoadingContentDirective],
-      declarations: [TestHostComponent],
+      imports: [TestHostComponent],
     })
       .overrideComponent(DeferredItemComponent, {
         remove: { imports: [IntersectionObserverDirective] },

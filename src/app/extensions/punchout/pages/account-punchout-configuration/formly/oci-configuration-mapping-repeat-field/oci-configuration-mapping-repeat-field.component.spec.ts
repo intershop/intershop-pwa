@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { OciConfigurationMappingRepeatFieldComponent } from './oci-configuration-mapping-repeat-field.component';
 
@@ -16,10 +16,10 @@ describe('Oci Configuration Mapping Repeat Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forChild({
           types: [{ name: 'repeat-oci-configuration-mapping', component: OciConfigurationMappingRepeatFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         OciConfigurationMappingRepeatFieldComponent,
         TranslateModule.forRoot(),
       ],

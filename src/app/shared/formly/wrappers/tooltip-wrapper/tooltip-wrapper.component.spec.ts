@@ -4,9 +4,9 @@ import { FormlyModule } from '@ngx-formly/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FieldTooltipComponent } from 'ish-shared/formly/components/field-tooltip/field-tooltip.component';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
@@ -18,11 +18,11 @@ describe('Tooltip Wrapper Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'tooltip-wrapper', component: TooltipWrapperComponent }],
         }),
-        FormlyTestingComponentsModule,
         TooltipWrapperComponent,
       ],
     })

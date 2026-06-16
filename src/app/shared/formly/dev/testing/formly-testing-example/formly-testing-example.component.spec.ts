@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { FormlyTestingExampleComponent } from './formly-testing-example.component';
 
@@ -14,11 +15,11 @@ describe('Formly Testing Example Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
         }),
       ],
-      declarations: [FormlyTestingContainerComponent],
     }).compileComponents();
   });
 
