@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -18,7 +18,7 @@ import { TranslatePipe } from '@ngx-translate/core';
  */
 @Component({
   selector: 'ish-textarea-field',
-  imports: [CommonModule, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyAttributes, NgClass, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './textarea-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

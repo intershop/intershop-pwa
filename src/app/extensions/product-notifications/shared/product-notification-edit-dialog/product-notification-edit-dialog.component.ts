@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
@@ -36,7 +36,7 @@ import { ProductNotificationEditFormComponent } from '../product-notification-ed
 @Component({
   selector: 'ish-product-notification-edit-dialog',
   imports: [
-    CommonModule,
+    AsyncPipe,
     FormSubmitDirective,
     ModalDialogComponent,
     ProductImageComponent,

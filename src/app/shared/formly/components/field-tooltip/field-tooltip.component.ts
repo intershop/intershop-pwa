@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import { TranslatePipe } from '@ngx-translate/core';
  */
 @Component({
   selector: 'ish-field-tooltip',
-  imports: [CommonModule, NgbPopoverModule, TranslatePipe],
+  imports: [NgbPopoverModule, NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './field-tooltip.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

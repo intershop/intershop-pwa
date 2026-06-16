@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
@@ -217,7 +216,6 @@ export function provideIshFormlyTypes(): Provider[] {
 }
 
 export const FORMLY_TYPES_IMPORTS = [
-  CommonModule,
   ...fieldComponents,
   FormlySelectModule,
   NgbDatepickerModule,

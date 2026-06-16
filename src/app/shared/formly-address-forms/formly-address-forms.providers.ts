@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyAttributes, FormlyField, FormlyForm, FormlyTemplate, FormlyValidationMessage } from '@ngx-formly/core';
@@ -34,7 +33,6 @@ export const FORMLY_ADDRESS_FORMS_COMPONENTS = [
 ] as const;
 
 export const FORMLY_ADDRESS_FORMS_IMPORTS = [
-  CommonModule,
   ...FORMLY_ADDRESS_FORMS_COMPONENTS,
   FormlyAttributes,
   FormlyField,

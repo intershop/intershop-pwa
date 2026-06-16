@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -38,7 +37,6 @@ import { AccountOrderToBasketComponent } from '../account-order-to-basket/accoun
     BasketCustomFieldsViewComponent,
     BasketMerchantMessageViewComponent,
     BasketShippingMethodComponent,
-    CommonModule,
     DatePipe,
     FeatureToggleDirective,
     InfoBoxComponent,

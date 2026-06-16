@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ import { AccountOrderTemplateListComponent } from './account-order-template-list
   selector: 'ish-account-order-template-page',
   imports: [
     AccountOrderTemplateListComponent,
-    CommonModule,
+    AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
     OrderTemplatePreferencesDialogComponent,

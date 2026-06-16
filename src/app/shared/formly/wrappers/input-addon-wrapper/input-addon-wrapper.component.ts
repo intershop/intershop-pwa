@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -13,7 +13,7 @@ import { of } from 'rxjs';
  */
 @Component({
   selector: 'ish-input-addon-wrapper',
-  imports: [CommonModule, TranslatePipe],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './input-addon-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

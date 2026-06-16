@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
@@ -17,7 +17,7 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
  */
 @Component({
   selector: 'ish-validation-wrapper',
-  imports: [CommonModule, ValidationIconsComponent, ValidationMessageComponent],
+  imports: [NgClass, ValidationIconsComponent, ValidationMessageComponent],
   standalone: true,
   templateUrl: './validation-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
@@ -22,7 +22,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-delete',
-  imports: [CommonModule, ModalDialogComponent, ServerHtmlDirective, TranslatePipe],
+  imports: [AsyncPipe, ModalDialogComponent, NgClass, ServerHtmlDirective, TranslatePipe],
   standalone: true,
   templateUrl: './product-notification-delete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

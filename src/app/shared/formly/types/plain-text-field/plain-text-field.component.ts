@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
 
@@ -9,7 +9,7 @@ import { FieldType } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-plain-text-field',
-  imports: [CommonModule],
+  imports: [NgClass],
   standalone: true,
   templateUrl: './plain-text-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

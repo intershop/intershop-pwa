@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Provider } from '@angular/core';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 
@@ -51,4 +50,4 @@ export function provideIshFormlyFieldLibrary(): Provider[] {
   ];
 }
 
-export const FORMLY_FIELD_LIBRARY_IMPORTS = [CommonModule, ...FORMS_SHARED_IMPORTS] as const;
+export const FORMLY_FIELD_LIBRARY_IMPORTS = [...FORMS_SHARED_IMPORTS] as const;

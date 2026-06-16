@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -19,7 +19,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-password-field',
-  imports: [CommonModule, FocusOutsideDirective, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  imports: [FocusOutsideDirective, FormlyAttributes, NgClass, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './password-field.component.html',
   styleUrls: ['./password-field.component.scss'],

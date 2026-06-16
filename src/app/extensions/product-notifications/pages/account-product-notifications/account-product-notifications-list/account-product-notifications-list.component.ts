@@ -1,5 +1,4 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -19,7 +18,6 @@ type ProductNotificationsColumnsType = 'notification' | 'notificationEditDelete'
   selector: 'ish-account-product-notifications-list',
   imports: [
     CdkTableModule,
-    CommonModule,
     PricePipe,
     ProductContextDirective,
     ProductImageComponent,

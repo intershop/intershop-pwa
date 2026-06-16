@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDate, NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
  */
 @Component({
   selector: 'ish-date-picker-field',
-  imports: [CommonModule, FormlyAttributes, NgbDatepickerModule, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyAttributes, NgbDatepickerModule, NgClass, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './date-picker-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

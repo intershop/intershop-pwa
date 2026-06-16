@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
@@ -11,7 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
  */
 @Component({
   selector: 'ish-number-field',
-  imports: [CommonModule, FormlyAttributes, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyAttributes, NgClass, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './number-field.component.html',
   styleUrls: ['./number-field.component.scss'],

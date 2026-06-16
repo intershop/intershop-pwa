@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -42,7 +42,7 @@ function toObservableNumber(days: number | Observable<number>) {
  */
 @Component({
   selector: 'ish-date-range-picker-field',
-  imports: [CommonModule, FormlyAttributes, NgbDatepickerModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyAttributes, NgbDatepickerModule, NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './date-range-picker-field.component.html',
   styleUrls: ['./date-range-picker-field.component.scss'],

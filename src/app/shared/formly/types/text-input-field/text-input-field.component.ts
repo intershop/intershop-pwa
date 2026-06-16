@@ -1,4 +1,4 @@
-import { CommonModule, formatNumber } from '@angular/common';
+import { NgClass, formatNumber } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig, FormlyAttributes, FormlyFieldConfig } from '@ngx-formly/core';
@@ -16,7 +16,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
  */
 @Component({
   selector: 'ish-text-input-field',
-  imports: [CommonModule, FormlyAttributes, NgxMaskDirective, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyAttributes, NgClass, NgxMaskDirective, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './text-input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

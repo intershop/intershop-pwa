@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -10,7 +9,6 @@ import { ShowFormFeedbackDirective } from './directives/show-form-feedback.direc
 const exportedComponents = [FormControlFeedbackComponent, ShowFormFeedbackDirective];
 
 export const FORMS_SHARED_IMPORTS = [
-  CommonModule,
   ...FEATURE_TOGGLE_IMPORTS,
   FormControlFeedbackComponent,
   ReactiveFormsModule,

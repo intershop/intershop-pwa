@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ import { ProductNotificationEditDialogComponent } from '../product-notification-
  */
 @Component({
   selector: 'ish-product-notification-edit',
-  imports: [CommonModule, ProductNotificationEditDialogComponent, TranslatePipe],
+  imports: [AsyncPipe, NgClass, ProductNotificationEditDialogComponent, TranslatePipe],
   standalone: true,
   templateUrl: './product-notification-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

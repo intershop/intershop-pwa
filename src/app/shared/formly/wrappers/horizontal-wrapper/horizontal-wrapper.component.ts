@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import { TranslatePipe } from '@ngx-translate/core';
  */
 @Component({
   selector: 'ish-horizontal-wrapper',
-  imports: [CommonModule, TranslatePipe],
+  imports: [NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './horizontal-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,7 +25,7 @@ import { ValidationMessageComponent } from 'ish-shared/formly/components/validat
  */
 @Component({
   selector: 'ish-horizontal-checkbox-wrapper',
-  imports: [CommonModule, FieldTooltipComponent, TranslatePipe, ValidationMessageComponent],
+  imports: [FieldTooltipComponent, NgClass, TranslatePipe, ValidationMessageComponent],
   standalone: true,
   templateUrl: './horizontal-checkbox-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,

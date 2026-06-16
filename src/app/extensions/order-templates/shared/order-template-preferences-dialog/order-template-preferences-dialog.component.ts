@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
@@ -20,7 +19,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',
-  imports: [CommonModule, FormlyForm, ModalDialogComponent, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

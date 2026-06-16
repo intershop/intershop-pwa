@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
@@ -24,7 +24,7 @@ import { AccountOrderTemplateDetailLineItemComponent } from './account-order-tem
   selector: 'ish-account-order-template-detail-page',
   imports: [
     AccountOrderTemplateDetailLineItemComponent,
-    CommonModule,
+    AsyncPipe,
     ErrorMessageComponent,
     FormlyForm,
     InPlaceEditComponent,

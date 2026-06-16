@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,7 +21,6 @@ import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
   imports: [
-    CommonModule,
     DatePipe,
     ProductBundleDisplayComponent,
     ProductIdComponent,

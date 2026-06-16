@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -11,7 +10,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-validation-icons',
-  imports: [CommonModule],
   standalone: true,
   templateUrl: './validation-icons.component.html',
   changeDetection: ChangeDetectionStrategy.Default,

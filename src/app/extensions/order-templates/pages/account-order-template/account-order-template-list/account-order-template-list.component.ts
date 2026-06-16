@@ -1,5 +1,4 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -19,7 +18,6 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
   selector: 'ish-account-order-template-list',
   imports: [
     CdkTableModule,
-    CommonModule,
     DatePipe,
     ModalDialogComponent,
     ProductAddToBasketComponent,

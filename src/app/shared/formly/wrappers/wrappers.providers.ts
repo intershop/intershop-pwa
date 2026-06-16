@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Provider } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigOption, provideFormlyConfig } from '@ngx-formly/core';
@@ -44,7 +43,6 @@ export function provideIshFormlyWrappers(): Provider[] {
 }
 
 export const FORMLY_WRAPPERS_IMPORTS = [
-  CommonModule,
   ...FORMLY_COMPONENTS_IMPORTS,
   ...wrapperComponents,
   ReactiveFormsModule,

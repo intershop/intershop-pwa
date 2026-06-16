@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -22,7 +22,7 @@ import { AccountProductNotificationsListComponent } from './account-product-noti
   selector: 'ish-account-product-notifications-page',
   imports: [
     AccountProductNotificationsListComponent,
-    CommonModule,
+    AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
     NgbNavModule,

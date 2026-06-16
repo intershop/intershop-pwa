@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
@@ -9,7 +9,7 @@ import { FormlySelectModule } from '@ngx-formly/core/select';
  */
 @Component({
   selector: 'ish-radio-group-field',
-  imports: [CommonModule, FormlySelectModule, ReactiveFormsModule],
+  imports: [AsyncPipe, FormlySelectModule, NgClass, ReactiveFormsModule],
   standalone: true,
   templateUrl: './radio-group-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
