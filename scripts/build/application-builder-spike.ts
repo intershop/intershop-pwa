@@ -1,8 +1,10 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import { execSync, spawn } from 'child_process';
 import { createHash } from 'crypto';
 import * as fs from 'fs';
-import { join } from 'path';
+import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from 'path';
 import { PurgeCSS } from 'purgecss';
+import * as ts from 'typescript';
 
 import {
   ANGULAR_CACHE_DIR,
@@ -58,6 +60,11 @@ interface FileOverlay {
   original: string;
 }
 
+interface AngularDeclarationMetadata {
+  kind: 'Component' | 'Directive' | 'Pipe';
+  token: string;
+}
+
 interface ReplacementReport {
   angularFileReplacements: AngularFileReplacement[];
   configuration: string;
@@ -95,6 +102,8 @@ const APPLICATION_BUILDER_POLYFILLS = ['@angular/localize/init'];
 
 const DATA_TESTING_ID_TEMPLATE_ROOTS = ['src', 'projects'];
 
+const ACTIVE_FILES_TEMPLATE_ROOTS = ['src', 'projects'];
+
 const PURGE_CSS_CONTENT_ROOTS = ['src', 'projects'];
 
 const PURGE_CSS_IGNORE_CLASS_SELECTOR = /(^|[^\\\w-])\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)/g;
@@ -125,6 +134,8 @@ const PURGE_CSS_DISABLED_REPORT: PurgeCssReport = {
 };
 
 const SUPPORTED_REPLACEMENT_EXTENSION = /\.(([cm]?[jt])sx?|json)$/;
+
+let activeFilesTemplateContentCache: string | undefined;
 
 function getPurgeCssMode(production: boolean): 'disabled' | 'safe' | 'strict' {
   if (!production) {
@@ -184,22 +195,37 @@ function writeWorkspaceBackup(workspaceText: string) {
   fs.writeFileSync(RUNNER_CONSTANTS.workspaceBackupPath, workspaceText);
 }
 
+function normalizeConfigurationArgument(configuration?: string): string | undefined {
+  const normalizedConfiguration = configuration?.trim();
+  const npmSplitConfiguration = /^([a-z0-9_-]+)\s+(development|production)$/i.exec(normalizedConfiguration || '');
+
+  return npmSplitConfiguration ? `${npmSplitConfiguration[1]},${npmSplitConfiguration[2]}` : normalizedConfiguration;
+}
+
+function getNpmConfigFlag(name: string): boolean {
+  return /^(true|1)$/i.test(process.env[`npm_config_${name}`] || '');
+}
+
 function getConfigurationArgument(args: string[]): { configuration?: string; remainingArgs: string[] } {
   const remainingArgs: string[] = [];
-  let configuration = process.env.npm_config_configuration;
+  let configuration = normalizeConfigurationArgument(process.env.npm_config_configuration);
 
   for (let index = 0; index < args.length; index++) {
     const arg = args[index];
     if (arg === '--configuration' || arg === '-c') {
-      configuration = args[index + 1];
+      configuration = normalizeConfigurationArgument(args[index + 1]);
       index++;
     } else if (arg.startsWith('--configuration=')) {
-      configuration = arg.split('=')[1];
+      configuration = normalizeConfigurationArgument(arg.split('=')[1]);
     } else if (arg.startsWith('-c=')) {
-      configuration = arg.split('=')[1];
+      configuration = normalizeConfigurationArgument(arg.split('=')[1]);
     } else {
       remainingArgs.push(arg);
     }
+  }
+
+  if (getNpmConfigFlag('source_map') && !remainingArgs.some(arg => arg.startsWith('--source-map'))) {
+    remainingArgs.push('--source-map');
   }
 
   if (configuration === 'true') {
@@ -488,6 +514,249 @@ function toPurgeCssPath(path: string): string {
   return path.replace(/\\/g, '/');
 }
 
+function toWorkspacePath(path: string): string {
+  return path.replace(/\\/g, '/');
+}
+
+function resolveWorkspaceSourcePath(
+  source: string,
+  sourceMapPath: string,
+  workspaceRoot = process.cwd()
+): string | undefined {
+  const normalizedSource = toWorkspacePath(source)
+    .replace(/^webpack:\/\//, '')
+    .replace(/^ng:\/\//, '')
+    .replace(/^file:\/+/, '')
+    .replace(/^\.\//, '');
+  const directMatch = /(?:^|\/)((?:src|projects)\/.*)$/.exec(normalizedSource);
+  if (directMatch) {
+    return directMatch[1];
+  }
+
+  const absoluteSource = isAbsolute(normalizedSource)
+    ? normalizedSource
+    : resolve(dirname(sourceMapPath), normalizedSource);
+  const relativeSource = toWorkspacePath(relative(workspaceRoot, absoluteSource)).replace(/^(\.\.\/)+/, '');
+  const relativeMatch = /^((?:src|projects)\/.*)$/.exec(relativeSource);
+
+  return relativeMatch?.[1];
+}
+
+function getSourceMapSources(sourceMapPath: string): string[] {
+  const sourceMap = readJsonFile<{ sourceRoot?: string; sources?: string[] }>(sourceMapPath);
+  const sources = sourceMap.sources || [];
+
+  return sourceMap.sourceRoot ? sources.flatMap(source => [source, join(sourceMap.sourceRoot || '', source)]) : sources;
+}
+
+function normalizeActiveFilePath(path: string): string {
+  return toWorkspacePath(normalize(path));
+}
+
+function toWorkspaceRelativeActiveFilePath(path: string, workspaceRoot = process.cwd()): string {
+  const absolutePath = isAbsolute(path) ? path : resolve(workspaceRoot, path);
+
+  return normalizeActiveFilePath(relative(workspaceRoot, absolutePath));
+}
+
+function toActiveFileReplacements(
+  fileReplacements: Record<string, string>,
+  workspaceRoot = process.cwd()
+): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(fileReplacements).map(([original, replacement]) => [
+      toWorkspaceRelativeActiveFilePath(original, workspaceRoot),
+      toWorkspaceRelativeActiveFilePath(replacement, workspaceRoot),
+    ])
+  );
+}
+
+function resolveComponentStylePath(componentPath: string, styleUrl: string): string {
+  return normalizeActiveFilePath(styleUrl.startsWith('.') ? join(dirname(componentPath), styleUrl) : styleUrl);
+}
+
+function collectImportedStyleFiles(stylePath: string, theme: string): string[] {
+  const fileWithExtension = stylePath.endsWith('.scss') ? stylePath : `${stylePath}.scss`;
+  const scssPath = ['', 'src/styles/', `src/styles/themes/${theme}/`]
+    .map(prefix => normalizeActiveFilePath(prefix + fileWithExtension))
+    .find(file => fs.existsSync(file));
+
+  if (!scssPath) {
+    return [];
+  }
+
+  const importedFiles = [...fs.readFileSync(scssPath, { encoding: 'utf-8' }).matchAll(/@import\s+['"]([^'"]+)['"]/g)]
+    .map(match => match[1])
+    .flatMap(importPath => collectImportedStyleFiles(importPath, theme));
+
+  return [scssPath, ...importedFiles];
+}
+
+function expandComponentActiveFiles(
+  sourcePath: string,
+  theme: string,
+  relativeReplacements: Record<string, string>
+): string[] {
+  if (!basename(sourcePath).includes('.component.') || !sourcePath.endsWith('.ts') || !fs.existsSync(sourcePath)) {
+    return [sourcePath];
+  }
+
+  const styleFiles = tsquery(
+    tsquery.ast(fs.readFileSync(sourcePath, { encoding: 'utf-8' })),
+    'CallExpression:has(Identifier[name=Component]) PropertyAssignment:has(Identifier[name=styleUrls]) ArrayLiteralExpression > StringLiteral'
+  )
+    .map((styleUrl: ts.StringLiteral) => resolveComponentStylePath(sourcePath, styleUrl.text))
+    .map(stylePath => relativeReplacements[stylePath] ?? stylePath)
+    .flatMap(stylePath => collectImportedStyleFiles(stylePath, theme));
+
+  return [...styleFiles, sourcePath];
+}
+
+function resolveTypescriptImportPath(sourcePath: string, importPath: string): string | undefined {
+  const resolvedImport = importPath.startsWith('.')
+    ? normalizeActiveFilePath(join(dirname(sourcePath), importPath))
+    : importPath;
+  const candidates = [resolvedImport, `${resolvedImport}.ts`, join(resolvedImport, 'index.ts')];
+
+  return candidates.find(file => fs.existsSync(file));
+}
+
+function collectNamedImportPaths(sourcePath: string): Record<string, string> {
+  const sourceFile = tsquery.ast(fs.readFileSync(sourcePath, { encoding: 'utf-8' }));
+  return tsquery(sourceFile, 'ImportDeclaration').reduce<Record<string, string>>((accumulator, node) => {
+    const importDeclaration = node as ts.ImportDeclaration;
+    const moduleSpecifier = importDeclaration.moduleSpecifier;
+    const importPath = ts.isStringLiteral(moduleSpecifier)
+      ? resolveTypescriptImportPath(sourcePath, moduleSpecifier.text)
+      : undefined;
+    const namedBindings = importDeclaration.importClause?.namedBindings;
+
+    if (importPath && namedBindings && ts.isNamedImports(namedBindings)) {
+      namedBindings.elements.forEach(element => {
+        accumulator[element.name.text] = importPath;
+      });
+    }
+
+    return accumulator;
+  }, {});
+}
+
+function collectArrayIdentifierElements(sourcePath: string): Record<string, string[]> {
+  const sourceFile = tsquery.ast(fs.readFileSync(sourcePath, { encoding: 'utf-8' }));
+  return tsquery(sourceFile, 'VariableDeclaration').reduce<Record<string, string[]>>((accumulator, node) => {
+    const declaration = node as ts.VariableDeclaration;
+    const name = declaration.name;
+    const initializer = declaration.initializer;
+
+    if (ts.isIdentifier(name) && initializer && ts.isArrayLiteralExpression(initializer)) {
+      accumulator[name.text] = initializer.elements.filter(ts.isIdentifier).map(identifier => identifier.text);
+    }
+
+    return accumulator;
+  }, {});
+}
+
+function getActiveFilesTemplateContent(): string {
+  if (!activeFilesTemplateContentCache) {
+    activeFilesTemplateContentCache = ACTIVE_FILES_TEMPLATE_ROOTS.flatMap(root => collectHtmlTemplateFiles(root))
+      .map(file => fs.readFileSync(file, { encoding: 'utf-8' }))
+      .join('\n');
+  }
+
+  return activeFilesTemplateContentCache;
+}
+
+function getAngularDeclarationMetadata(sourcePath: string): AngularDeclarationMetadata | undefined {
+  const metadataMatch = /@(Component|Directive|Pipe)\s*\(\s*{[\s\S]*?(?:selector|name)\s*:\s*['"]([^'"]+)['"]/.exec(
+    fs.readFileSync(sourcePath, { encoding: 'utf-8' })
+  );
+
+  if (!metadataMatch) {
+    return;
+  }
+
+  return {
+    kind: metadataMatch[1] as AngularDeclarationMetadata['kind'],
+    token: metadataMatch[2],
+  };
+}
+
+function isAngularDeclarationUsedInTemplates(sourcePath: string): boolean {
+  const metadata = getAngularDeclarationMetadata(sourcePath);
+  if (!metadata) {
+    return false;
+  }
+
+  const templateContent = getActiveFilesTemplateContent();
+  const escapedToken = escapeRegExp(metadata.token);
+
+  if (metadata.kind === 'Pipe') {
+    return new RegExp(`\\|\\s*${escapedToken}\\b`).test(templateContent);
+  }
+
+  if (metadata.token.startsWith('[') && metadata.token.endsWith(']')) {
+    return new RegExp(`\\b${escapeRegExp(metadata.token.slice(1, -1))}\\b`).test(templateContent);
+  }
+
+  return new RegExp(`<\\s*${escapedToken}\\b`).test(templateContent);
+}
+
+function expandNgModuleDeclarationFiles(sourcePath: string): string[] {
+  if (!sourcePath.endsWith('.module.ts') || !fs.existsSync(sourcePath)) {
+    return [sourcePath];
+  }
+
+  const importedFiles = collectNamedImportPaths(sourcePath);
+  const arrayIdentifierElements = collectArrayIdentifierElements(sourcePath);
+  const sourceFile = tsquery.ast(fs.readFileSync(sourcePath, { encoding: 'utf-8' }));
+  const declarationFiles = tsquery(
+    sourceFile,
+    'CallExpression:has(Identifier[name=NgModule]) PropertyAssignment:has(Identifier[name=declarations]) SpreadElement > Identifier'
+  )
+    .flatMap((identifier: ts.Identifier) => arrayIdentifierElements[identifier.text] || [])
+    .map(identifier => importedFiles[identifier])
+    .filter((file): file is string => !!file)
+    .filter(isAngularDeclarationUsedInTemplates);
+
+  return [...declarationFiles, sourcePath];
+}
+
+function isReportableActiveFile(file: string): boolean {
+  return /\.(html|scss|ts)$/.test(file) && !file.endsWith('.spec.ts');
+}
+
+function writeActiveFilesReport(theme: string, fileReplacements: Record<string, string>): string | undefined {
+  const browserOutputPath = join(RUNNER_CONSTANTS.outputBasePath, 'browser');
+  const activeFilesPath = join(browserOutputPath, 'active-files.json');
+  const sourceMapFiles = collectFiles(browserOutputPath).filter(file => file.endsWith('.js.map'));
+
+  if (!sourceMapFiles.length) {
+    if (fs.existsSync(activeFilesPath)) {
+      fs.unlinkSync(activeFilesPath);
+    }
+    return;
+  }
+
+  const relativeReplacements = toActiveFileReplacements(fileReplacements);
+  const activeFiles = [
+    ...sourceMapFiles
+      .flatMap(sourceMapPath =>
+        getSourceMapSources(sourceMapPath).map(source => resolveWorkspaceSourcePath(source, sourceMapPath))
+      )
+      .filter((sourcePath): sourcePath is string => !!sourcePath)
+      .map(sourcePath => relativeReplacements[sourcePath] ?? sourcePath)
+      .filter(isReportableActiveFile)
+      .flatMap(sourcePath => expandNgModuleDeclarationFiles(sourcePath))
+      .flatMap(sourcePath => expandComponentActiveFiles(sourcePath, theme, relativeReplacements)),
+    ...collectImportedStyleFiles(`src/styles/themes/${theme}/style`, theme),
+  ]
+    .filter((file, index, files) => files.indexOf(file) === index)
+    .sort();
+
+  fs.writeFileSync(activeFilesPath, JSON.stringify(activeFiles, undefined, 2));
+  return activeFilesPath;
+}
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -709,6 +978,8 @@ async function purgeCssOutput(production: boolean): Promise<PurgeCssReport> {
 async function applyPostBuildOptimizations(
   production: boolean,
   remainingArgs: string[],
+  theme: string,
+  fileReplacements: Record<string, string>,
   report: ReplacementReport
 ): Promise<void> {
   if (isWatchMode(remainingArgs)) {
@@ -716,6 +987,12 @@ async function applyPostBuildOptimizations(
   }
 
   report.purgeCss = await purgeCssOutput(production);
+  const activeFilesPath = writeActiveFilesReport(theme, fileReplacements);
+  if (activeFilesPath) {
+    console.log(`${RUNNER_CONSTANTS.spikeTarget}: writing ${activeFilesPath}`);
+  } else {
+    console.warn(`${RUNNER_CONSTANTS.spikeTarget}: skipping active-files report because no JS source maps were found`);
+  }
 }
 
 function summarizeFileBytes(files: string[]): number {
@@ -796,6 +1073,10 @@ function isWatchMode(args: string[]): boolean {
   return args.some(arg => arg === '--watch' || arg === '--watch=true');
 }
 
+function isDryRun(args: string[]): boolean {
+  return args.includes('--dry-run') || getNpmConfigFlag('dry_run');
+}
+
 function runAngularBuilder(projectName: string, args: string[], theme: string): Promise<void> {
   const commandArgs = ['run', 'ng', '--', 'run', `${projectName}:${RUNNER_CONSTANTS.spikeTarget}`, ...args];
 
@@ -845,7 +1126,7 @@ async function run() {
   const configuration = requestedConfiguration || target.defaultConfiguration || 'b2b,production';
   const mode = configuration.includes('production') ? 'production' : 'development';
   const modeConfiguration = target.configurations?.[mode] || {};
-  const dryRun = remainingArgs.includes('--dry-run');
+  const dryRun = isDryRun(remainingArgs);
   const { availableThemes, production, theme } = resolveThemeBuildContext(modeConfiguration, {
     configuration,
     project: projectName,
@@ -854,7 +1135,11 @@ async function run() {
   const serviceWorker = !!modeConfiguration.serviceWorker;
   const themeFileReplacements = resolveThemeFileReplacements(theme, availableThemes);
   const modeFileReplacements = getModeFileReplacements(modeConfiguration);
+  const modeFileReplacementMap = Object.fromEntries(
+    modeFileReplacements.map(replacement => [replacement.replace, replacement.with])
+  );
   const angularFileReplacements = [...modeFileReplacements, ...toAngularFileReplacements(themeFileReplacements)];
+  const activeFileReplacements = { ...modeFileReplacementMap, ...themeFileReplacements };
   const unsupportedResourceReplacements = toDiagnosticReplacements(themeFileReplacements);
   const resourceReplacements = getResourceOverlayReplacements(themeFileReplacements);
   const resourceReplacementReadMap = buildResourceReplacements(themeFileReplacements);
@@ -945,13 +1230,14 @@ async function run() {
     return;
   }
 
+  getActiveFilesTemplateContent();
   writeWorkspaceBackup(originalWorkspaceText);
   fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, JSON.stringify(workspace, undefined, 2));
   let buildError: unknown;
   const restoreOverlay = applyFileOverlays(fileOverlays);
   try {
     await runAngularBuilder(projectName, remainingArgs, theme);
-    await applyPostBuildOptimizations(production, remainingArgs, report);
+    await applyPostBuildOptimizations(production, remainingArgs, theme, activeFileReplacements, report);
   } catch (error) {
     buildError = error;
   } finally {
