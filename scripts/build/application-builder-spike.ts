@@ -53,9 +53,15 @@ interface PurgeCssReport {
   rejectedSelectors: number;
 }
 
+interface FileOverlay {
+  content: Buffer | string;
+  original: string;
+}
+
 interface ReplacementReport {
   angularFileReplacements: AngularFileReplacement[];
   configuration: string;
+  dataTestingIdTemplatesStripped: number;
   generatedIndex: string;
   note: string;
   production: boolean;
@@ -86,6 +92,8 @@ const SERVER_ALLOWED_COMMON_JS_DEPENDENCIES = [
 ];
 
 const APPLICATION_BUILDER_POLYFILLS = ['@angular/localize/init'];
+
+const DATA_TESTING_ID_TEMPLATE_ROOTS = ['src', 'projects'];
 
 const PURGE_CSS_CONTENT_ROOTS = ['src', 'projects'];
 
@@ -405,21 +413,51 @@ function getResourceOverlayReplacements(fileReplacements: Record<string, string>
   );
 }
 
-function getResourceOverlayCacheKey(resourceReplacements: Record<string, string>): string {
+function getFileOverlayCacheKey(fileOverlays: FileOverlay[]): string {
   const hash = createHash('sha256');
-  const entries = Object.entries(resourceReplacements).sort(([left], [right]) => left.localeCompare(right));
+  const entries = [...fileOverlays].sort((left, right) => left.original.localeCompare(right.original));
 
   if (!entries.length) {
-    return 'no-resource-overlay';
+    return 'no-file-overlay';
   }
 
-  entries.forEach(([original, replacement]) => {
+  entries.forEach(({ content, original }) => {
     hash.update(original);
-    hash.update(replacement);
-    hash.update(fs.readFileSync(replacement));
+    hash.update(content);
   });
 
   return hash.digest('hex').slice(0, 12);
+}
+
+function createResourceFileOverlays(resourceReplacements: Record<string, string>): FileOverlay[] {
+  return Object.entries(resourceReplacements).map(([original, replacement]) => ({
+    content: fs.readFileSync(replacement),
+    original,
+  }));
+}
+
+function stripDataTestingIdAttributes(template: string): string {
+  return template.replace(/ ?\[?(attr\.)?data-testing-[a-z-]*?\]?="([^"]*?)"/g, '');
+}
+
+function collectHtmlTemplateFiles(path: string): string[] {
+  return collectFiles(path).filter(file => file.endsWith('.html'));
+}
+
+function createDataTestingIdFileOverlays(production: boolean): FileOverlay[] {
+  if (!production || process.env.TESTING) {
+    return [];
+  }
+
+  return DATA_TESTING_ID_TEMPLATE_ROOTS.flatMap(root => collectHtmlTemplateFiles(root))
+    .map(original => {
+      const template = fs.readFileSync(original, { encoding: 'utf-8' });
+      return {
+        content: stripDataTestingIdAttributes(template),
+        original,
+      };
+    })
+    .filter(({ content, original }) => content !== fs.readFileSync(original, { encoding: 'utf-8' }));
 }
 
 function collectFiles(path: string): string[] {
@@ -684,15 +722,15 @@ function summarizeFileBytes(files: string[]): number {
   return files.reduce((sum, file) => sum + fs.statSync(file).size, 0);
 }
 
-function applyResourceOverlay(resourceReplacements: Record<string, string>): () => void {
-  const backups = Object.entries(resourceReplacements).map(([original, replacement]) => ({
+function applyFileOverlays(fileOverlays: FileOverlay[]): () => void {
+  const backups = fileOverlays.map(({ content: replacementContent, original }) => ({
     content: fs.readFileSync(original),
     original,
-    replacement,
+    replacementContent,
   }));
 
-  backups.forEach(({ original, replacement }) => {
-    fs.copyFileSync(replacement, original);
+  backups.forEach(({ original, replacementContent }) => {
+    fs.writeFileSync(original, replacementContent);
   });
 
   return () => {
@@ -710,11 +748,13 @@ function createReplacementReport(
   generatedIndex: string,
   angularFileReplacements: AngularFileReplacement[],
   resourceReplacements: Record<string, string>,
+  dataTestingIdTemplatesStripped: number,
   purgeCss: PurgeCssReport
 ): ReplacementReport {
   return {
     angularFileReplacements,
     configuration,
+    dataTestingIdTemplatesStripped,
     generatedIndex,
     note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay.',
     production,
@@ -818,7 +858,10 @@ async function run() {
   const unsupportedResourceReplacements = toDiagnosticReplacements(themeFileReplacements);
   const resourceReplacements = getResourceOverlayReplacements(themeFileReplacements);
   const resourceReplacementReadMap = buildResourceReplacements(themeFileReplacements);
-  const resourceOverlayCacheKey = getResourceOverlayCacheKey(resourceReplacements);
+  const resourceFileOverlays = createResourceFileOverlays(resourceReplacements);
+  const dataTestingIdFileOverlays = createDataTestingIdFileOverlays(production);
+  const fileOverlays = [...resourceFileOverlays, ...dataTestingIdFileOverlays];
+  const fileOverlayCacheKey = getFileOverlayCacheKey(fileOverlays);
   const generatedIndex = writeThemedIndex(theme);
   const report = createReplacementReport(
     configuration,
@@ -828,6 +871,7 @@ async function run() {
     generatedIndex,
     angularFileReplacements,
     unsupportedResourceReplacements,
+    dataTestingIdFileOverlays.length,
     createPendingPurgeCssReport(production)
   );
 
@@ -871,7 +915,7 @@ async function run() {
     ...workspace.cli,
     cache: {
       ...workspace.cli?.cache,
-      path: join(ANGULAR_CACHE_DIR, RUNNER_CONSTANTS.spikeTarget, theme, mode, resourceOverlayCacheKey),
+      path: join(ANGULAR_CACHE_DIR, RUNNER_CONSTANTS.spikeTarget, theme, mode, fileOverlayCacheKey),
     },
   };
 
@@ -889,6 +933,9 @@ async function run() {
   console.log(
     `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: reporting ${Object.keys(resourceReplacementReadMap).length} resource read aliases and ${Object.keys(resourceReplacements).length} prebuild overlay replacements outside Angular fileReplacements`
   );
+  console.log(
+    `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: stripping data-testing attributes from ${report.dataTestingIdTemplatesStripped} templates`
+  );
   console.log(`${RUNNER_CONSTANTS.spikeTarget}@${configuration}: setting up purgecss:`, report.purgeCss.enabled);
 
   if (dryRun) {
@@ -901,7 +948,7 @@ async function run() {
   writeWorkspaceBackup(originalWorkspaceText);
   fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, JSON.stringify(workspace, undefined, 2));
   let buildError: unknown;
-  const restoreOverlay = applyResourceOverlay(resourceReplacements);
+  const restoreOverlay = applyFileOverlays(fileOverlays);
   try {
     await runAngularBuilder(projectName, remainingArgs, theme);
     await applyPostBuildOptimizations(production, remainingArgs, report);
