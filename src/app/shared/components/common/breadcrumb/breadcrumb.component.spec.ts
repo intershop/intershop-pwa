@@ -43,13 +43,13 @@ describe('Breadcrumb Component', () => {
     it('should render trail from home and trail with translation keys if set', () => {
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'KEY' }, { key: 'KEY2' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"HomeKEYKEY2"`);
+      expect(element.textContent).toMatchInlineSnapshot(`"Home KEY  KEY2 "`);
     });
 
     it('should render trail from home and trail with text if set', () => {
       when(appFacade.breadcrumbData$).thenReturn(of([{ text: 'TEXT' }, { text: 'TEXT2' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"HomeTEXTTEXT2"`);
+      expect(element.textContent).toMatchInlineSnapshot(`"Home TEXT  TEXT2 "`);
     });
 
     it('should render trail from home and with link if set', () => {
@@ -70,14 +70,14 @@ describe('Breadcrumb Component', () => {
       component.account = true;
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'account.order_history.link' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"My AccountOrders"`);
+      expect(element.textContent).toMatchInlineSnapshot(`"My Account Orders "`);
     });
 
     it('should render breadcrumbtrail from home and account and trail when account is active', () => {
       component.account = true;
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'account.order_history.link' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"HomeMy AccountOrders"`);
+      expect(element.textContent).toMatchInlineSnapshot(`"HomeMy Account Orders "`);
       expect(element.textContent).toContain('My Account');
     });
   });

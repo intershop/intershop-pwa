@@ -8,31 +8,31 @@
 >
   <ol class="breadcrumb">
     @if (showHome) {
-      <li class="breadcrumb-item breadcrumbs-list-home">
-        <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{
-          'common.home.link' | translate
-        }}</a>
+      <li class="breadcrumb-item">
+        <a rel="home" routerLink="/home">{{ 'common.home.link' | translate }}</a>
       </li>
     }
     @if (account) {
       @if ((trail$ | async)?.length) {
         <li class="breadcrumb-item">
-          <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a>
+          <a routerLink="/account">{{ 'account.my_account.link' | translate }}</a>
         </li>
       } @else {
-        <li class="breadcrumb-item active">
-          <span aria-current="page">{{ 'account.my_account.link' | translate }}</span>
+        <li aria-current="page" class="breadcrumb-item active">
+          {{ 'account.my_account.link' | translate }}
         </li>
       }
     }
-    @for (item of trail$ | async; track item.key; let index = $index; let last = $last) {
-      <li class="breadcrumb-item" [ngClass]="{ active: last }">
+    @for (item of trail$ | async; track item.key; let last = $last) {
+      <li
+        class="breadcrumb-item"
+        [attr.aria-current]="last && !item.link ? 'page' : null"
+        [ngClass]="{ active: last && !item.link }"
+      >
         @if (item.link) {
-          <a class="breadcrumbs-list-link" [queryParams]="item.linkParams" [routerLink]="item.link">{{
-            item.text || (item.key | translate)
-          }}</a>
+          <a [queryParams]="item.linkParams" [routerLink]="item.link">{{ item.text || (item.key | translate) }}</a>
         } @else {
-          <span aria-current="page">{{ item.text || (item.key | translate) }}</span>
+          {{ item.text || (item.key | translate) }}
         }
       </li>
     }
