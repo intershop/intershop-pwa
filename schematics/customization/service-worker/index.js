@@ -13,18 +13,26 @@ console.log('setting serviceWorker to', enable);
 // replace in angular.json
 const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
 const project = Object.keys(angularJson.projects)[0];
-const build = angularJson.projects[project].architect.build;
+const architect = angularJson.projects[project].architect;
 
-if (build.options.serviceWorker !== undefined) {
-  build.options.serviceWorker = enable;
+function setServiceWorker(target, value = enable) {
+  if (!target) {
+    return;
+  }
+
+  if (target.options?.serviceWorker !== undefined) {
+    target.options.serviceWorker = value;
+  }
+
+  Object.values(target.configurations || {}).forEach(configuration => {
+    if (configuration.serviceWorker !== undefined) {
+      configuration.serviceWorker = value;
+    }
+  });
 }
 
-Object.keys(build.configurations).forEach(key => {
-  const configuration = build.configurations[key];
-  if (configuration.serviceWorker !== undefined) {
-    configuration.serviceWorker = enable;
-  }
-});
+setServiceWorker(architect.build);
+setServiceWorker(architect['build-application-spike'], enable ? 'ngsw-config.json' : false);
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
 execSync('npx prettier --write angular.json');

@@ -1061,6 +1061,26 @@ async function purgeCssOutput(production: boolean): Promise<PurgeCssReport> {
   };
 }
 
+/**
+ * Remove Angular's service worker cache check for resources, especially index.html.
+ * https://github.com/angular/angular/issues/23613#issuecomment-415886919
+ */
+function removeServiceWorkerCacheCheck() {
+  const serviceWorkerScript = join(RUNNER_CONSTANTS.outputBasePath, 'browser', 'ngsw-worker.js');
+  if (!fs.existsSync(serviceWorkerScript)) {
+    return;
+  }
+
+  const script = fs.readFileSync(serviceWorkerScript, { encoding: 'utf-8' });
+  const patchedScript = script.replace('canonicalHash !== cacheBustedHash', 'false');
+  if (patchedScript === script) {
+    return;
+  }
+
+  console.warn(`${RUNNER_CONSTANTS.runnerLabel}: replacing service worker cache check in ${serviceWorkerScript}`);
+  fs.writeFileSync(serviceWorkerScript, patchedScript);
+}
+
 async function applyPostBuildOptimizations(
   production: boolean,
   remainingArgs: string[],
@@ -1072,6 +1092,7 @@ async function applyPostBuildOptimizations(
     return;
   }
 
+  removeServiceWorkerCacheCheck();
   report.purgeCss = await purgeCssOutput(production);
   const activeFilesPath = writeActiveFilesReport(theme, fileReplacements);
   if (activeFilesPath) {

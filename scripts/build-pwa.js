@@ -54,19 +54,6 @@ function splitBuildArgs(args) {
   };
 }
 
-/**
- * remove service worker cache check for resources (especially index.html)
- * https://github.com/angular/angular/issues/23613#issuecomment-415886919
- */
-function removeServiceWorkerCacheCheck(outputBasePath) {
-  const serviceWorkerScript = path.join(outputBasePath, 'browser', 'ngsw-worker.js');
-  if (fs.existsSync(serviceWorkerScript)) {
-    console.warn('replacing cache check for service worker in', serviceWorkerScript);
-    const script = fs.readFileSync(serviceWorkerScript, { encoding: 'utf-8' });
-    fs.writeFileSync(serviceWorkerScript, script.replace('canonicalHash !== cacheBustedHash', 'false'));
-  }
-}
-
 function writeServerCompatibilityEntrypoint(outputBasePath) {
   const serverOutputPath = path.join(outputBasePath, 'server');
   const serverEntry = path.join(serverOutputPath, 'server.mjs');
@@ -129,4 +116,3 @@ if (result.status !== 0) {
 }
 
 writeServerCompatibilityEntrypoint(outputBasePath);
-removeServiceWorkerCacheCheck(outputBasePath);
