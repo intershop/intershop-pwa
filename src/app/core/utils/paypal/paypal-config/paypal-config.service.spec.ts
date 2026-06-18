@@ -51,7 +51,6 @@ describe('Paypal Config Service', () => {
         },
       })
     );
-    when(appFacade.appBecameStable$).thenReturn(of(true));
     when(scriptLoader.load(anything(), anything())).thenReturn(
       of({ src: 'https://www.paypal.com/sdk/js', loaded: true })
     );
