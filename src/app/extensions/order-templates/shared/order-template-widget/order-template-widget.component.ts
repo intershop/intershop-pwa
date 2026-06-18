@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplateAddToCartDialogComponent } from '../order-template-add-to-cart/order-template-add-to-cart-dialog/order-template-add-to-cart-dialog.component';
 
 @Component({
   selector: 'ish-order-template-widget',
@@ -21,11 +20,7 @@ export class OrderTemplateWidgetComponent implements OnInit {
   loading$: Observable<boolean>;
   orderTemplates$: Observable<OrderTemplate[]>;
 
-  constructor(
-    private facade: OrderTemplatesFacade,
-    private shoppingFacade: ShoppingFacade,
-    private destroyRef: DestroyRef
-  ) {}
+  constructor(private facade: OrderTemplatesFacade) {}
 
   ngOnInit() {
     this.facade.loadOrderTemplates();
@@ -36,24 +31,7 @@ export class OrderTemplateWidgetComponent implements OnInit {
     );
   }
 
-  addToBasket(orderTemplateId: string) {
-    this.facade.orderTemplates$
-      .pipe(
-        map(orderTemplates => {
-          const template = orderTemplates.find(t => t.id === orderTemplateId);
-          if (template && template.itemsCount !== template.items?.length) {
-            this.facade.loadOrderTemplateDetails(orderTemplateId);
-          }
-          return template;
-        }),
-        filter(orderTemplate => orderTemplate?.itemsCount === orderTemplate.items?.length),
-        take(1),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(orderTemplate => {
-        this.shoppingFacade.addProductsToBasket(
-          orderTemplate.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))
-        );
-      });
+  openModal(modal: OrderTemplateAddToCartDialogComponent) {
+    modal.show();
   }
 }

@@ -21,10 +21,11 @@
                       [attr.aria-label]="'product.add_to_cart.link' | translate"
                       [tabindex]="0"
                       [title]="'product.add_to_cart.link' | translate"
-                      (click)="addToBasket(orderTemplate.id)"
+                      (click)="openModal(modal)"
                     >
                       <i class="bi bi-cart-fill"></i>
                     </button>
+                    <ish-order-template-add-to-cart-dialog #modal [orderTemplate]="orderTemplate" />
                   </div>
                 }
               </div>

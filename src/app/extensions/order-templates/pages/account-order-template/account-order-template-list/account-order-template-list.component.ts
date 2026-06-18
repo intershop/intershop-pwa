@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, filter, finalize, map, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
-import { AccountOrderTemplateAddToBasketDialogComponent } from '../account-order-template-add-to-basket-dialog/account-order-template-add-to-basket-dialog.component';
+import { OrderTemplateAddToCartDialogComponent } from '../../../shared/order-template-add-to-cart/order-template-add-to-cart-dialog/order-template-add-to-cart-dialog.component';
 
 type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'title';
 
@@ -32,9 +30,7 @@ export class AccountOrderTemplateListComponent {
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
-    private shoppingFacade: ShoppingFacade,
-    private translate: TranslateService,
-    private destroyRef: DestroyRef
+    private translate: TranslateService
   ) {}
 
   /** Emits the id of the order template to delete. */
@@ -42,7 +38,7 @@ export class AccountOrderTemplateListComponent {
     this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
   }
 
-  openModal(modal: AccountOrderTemplateAddToBasketDialogComponent) {
+  openModal(modal: OrderTemplateAddToCartDialogComponent) {
     modal.show();
   }
 
@@ -56,28 +52,5 @@ export class AccountOrderTemplateListComponent {
 
   loadOrderTemplateDetails(orderTemplateId: string) {
     this.orderTemplatesFacade.loadOrderTemplateDetails(orderTemplateId);
-  }
-
-  addToBasket(orderTemplateId: string) {
-    this.loadingOrderTemplateId$.next(orderTemplateId);
-    this.orderTemplatesFacade.orderTemplates$
-      .pipe(
-        map(orderTemplates => {
-          const template = orderTemplates.find(t => t.id === orderTemplateId);
-          if (template && template.itemsCount !== template.items?.length) {
-            this.loadOrderTemplateDetails(orderTemplateId);
-          }
-          return template;
-        }),
-        filter(orderTemplate => orderTemplate?.itemsCount === orderTemplate.items?.length),
-        take(1),
-        finalize(() => this.loadingOrderTemplateId$.next(undefined)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(orderTemplate => {
-        this.shoppingFacade.addProductsToBasket(
-          orderTemplate.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))
-        );
-      });
   }
 }

@@ -4,6 +4,7 @@ import { SharedModule } from 'ish-shared/shared.module';
 
 import { BasketCreateOrderTemplateComponent } from './shared/basket-create-order-template/basket-create-order-template.component';
 import { OrderCreateOrderTemplateComponent } from './shared/order-create-order-template/order-create-order-template.component';
+import { OrderTemplateAddToCartDialogComponent } from './shared/order-template-add-to-cart/order-template-add-to-cart-dialog/order-template-add-to-cart-dialog.component';
 import { OrderTemplatePreferencesDialogComponent } from './shared/order-template-preferences-dialog/order-template-preferences-dialog.component';
 import { OrderTemplateWidgetComponent } from './shared/order-template-widget/order-template-widget.component';
 import { ProductAddToOrderTemplateComponent } from './shared/product-add-to-order-template/product-add-to-order-template.component';
@@ -11,6 +12,7 @@ import { SelectOrderTemplateFormComponent } from './shared/select-order-template
 import { SelectOrderTemplateModalComponent } from './shared/select-order-template-modal/select-order-template-modal.component';
 
 @NgModule({
+  imports: [OrderTemplateAddToCartDialogComponent, SharedModule],
   declarations: [
     BasketCreateOrderTemplateComponent,
     OrderCreateOrderTemplateComponent,
@@ -20,7 +22,11 @@ import { SelectOrderTemplateModalComponent } from './shared/select-order-templat
     SelectOrderTemplateFormComponent,
     SelectOrderTemplateModalComponent,
   ],
-  imports: [SharedModule],
-  exports: [OrderTemplatePreferencesDialogComponent, OrderTemplateWidgetComponent, SelectOrderTemplateModalComponent],
+  exports: [
+    OrderTemplateAddToCartDialogComponent,
+    OrderTemplatePreferencesDialogComponent,
+    OrderTemplateWidgetComponent,
+    SelectOrderTemplateModalComponent,
+  ],
 })
 export class OrderTemplatesModule {}

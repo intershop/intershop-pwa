@@ -4,23 +4,19 @@
     <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
   </div>
 
-  <div class="modal-body">
-    <div class="list-header d-md-flex">
-      <div class="col-6 list-header-item">{{ 'account.order_template.table.header.item' | translate }}</div>
-      <div class="col-2 list-header-item text-end">
+  <div class="modal-body order-template-add-to-cart-modal">
+    <div class="list-header d-flex flex-row justify-content-between">
+      <div class="list-header-item ms-2">
+        {{ 'account.order_template.table.header.item' | translate }}
+      </div>
+      <div class="list-header-item me-2">
         {{ 'shopping_cart.qty.heading' | translate }}
-      </div>
-      <div class="col-2 list-header-item text-end">
-        {{ 'account.order_template.table.header.date_added' | translate }}
-      </div>
-      <div class="col-2 list-header-item column-price text-end">
-        {{ 'account.order_template.table.header.price' | translate }}
       </div>
     </div>
     <div class="list-body">
       @for (item of orderTemplateItems$ | async; track item.sku; let i = $index) {
         <div class="list-item-row list-item-row-big">
-          <ish-account-order-template-detail-line-item
+          <ish-order-template-add-to-cart-item
             ishProductContext
             [currentOrderTemplate]="orderTemplate()"
             [orderTemplateItemData]="item"
@@ -34,7 +30,7 @@
   </div>
 
   <div class="modal-footer">
-    <ish-product-add-to-basket ishProductContext [cssClass]="'mt-1'" [parts]="items$ | async" (click)="hide()" />
+    <ish-product-add-to-basket [cssClass]="'mt-1'" (click)="hide()" />
     <button class="btn btn-secondary" type="button" (click)="hide()">
       {{ 'account.cancel.button.label' | translate }}
     </button>
