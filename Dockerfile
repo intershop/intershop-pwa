@@ -8,12 +8,13 @@ COPY package.json package-lock.json /workspace/
 RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.json ngsw-config.json angular.json eslint.config.mjs /workspace/
+COPY tsconfig.app.json tsconfig.application-spike.json tsconfig.scripts.json tsconfig.json tsconfig.server.json ngsw-config.json angular.json eslint.config.mjs /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
 COPY src /workspace/src
 COPY scripts /workspace/scripts/
+COPY server.ts babel.config.js /workspace/
 RUN npm run postinstall
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
@@ -22,10 +23,7 @@ ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
 RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
-COPY tsconfig.server.json server.ts /workspace/
-COPY babel.config.js /workspace/
-RUN npm run build:multi server
+RUN npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 

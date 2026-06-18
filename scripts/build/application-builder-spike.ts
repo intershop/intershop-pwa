@@ -1,5 +1,5 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { execSync, spawn } from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 import { createHash } from 'crypto';
 import * as fs from 'fs';
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from 'path';
@@ -80,11 +80,16 @@ interface ReplacementReport {
 }
 
 const RUNNER_CONSTANTS: Readonly<Record<string, string>> = {
-  generatedBasePath: join('node_modules', '.cache', 'application-spike'),
-  outputBasePath: join('dist', 'application-spike'),
-  spikeTarget: 'build-application-spike',
+  generatedBasePath:
+    process.env.APPLICATION_BUILDER_GENERATED_BASE_PATH || join('node_modules', '.cache', 'application-spike'),
+  outputBasePath: process.env.APPLICATION_BUILDER_OUTPUT_BASE_PATH || join('dist', 'application-spike'),
+  runnerLabel: process.env.APPLICATION_BUILDER_RUNNER_LABEL || 'build-application-spike',
+  spikeTarget: process.env.APPLICATION_BUILDER_TARGET || 'build-application-spike',
+  versionLabel: process.env.APPLICATION_BUILDER_VERSION_LABEL || 'application-builder-spike',
   themeEnvironmentReplacement: 'src/environments/environment.ts',
-  workspaceBackupPath: join('node_modules', '.cache', 'application-spike', 'angular.original.json'),
+  workspaceBackupPath:
+    process.env.APPLICATION_BUILDER_WORKSPACE_BACKUP_PATH ||
+    join('node_modules', '.cache', 'application-spike', 'angular.original.json'),
   workspacePath: 'angular.json',
 };
 
@@ -173,7 +178,7 @@ function isTemporarySpikeWorkspace(workspace: AngularWorkspace): boolean {
     typeof index === 'object' &&
     !!index &&
     typeof (index as { input?: unknown }).input === 'string' &&
-    (index as { input: string }).input.includes('application-spike')
+    (index as { input: string }).input.includes(RUNNER_CONSTANTS.generatedBasePath.replace(/\\/g, '/'))
   );
 }
 
@@ -204,6 +209,10 @@ function normalizeConfigurationArgument(configuration?: string): string | undefi
 
 function getNpmConfigFlag(name: string): boolean {
   return /^(true|1)$/i.test(process.env[`npm_config_${name}`] || '');
+}
+
+function getEnvironmentFlag(name: string): boolean {
+  return /^(true|1|on|yes)$/i.test(process.env[name] || '');
 }
 
 function getConfigurationArgument(args: string[]): { configuration?: string; remainingArgs: string[] } {
@@ -332,17 +341,31 @@ function toDiagnosticReplacements(fileReplacements: Record<string, string>, work
 
 function createDefineValues(configuration: string, theme: string, production: boolean, serviceWorker: boolean) {
   const version = readJsonFile<PackageJson>('package.json').version;
-  const ngrxRuntimeChecks = !!process.env.TESTING || !production;
+  const ngrxRuntimeChecks = getEnvironmentFlag('TESTING') || !production;
 
   return {
     NGRX_RUNTIME_CHECKS: JSON.stringify(ngrxRuntimeChecks),
     PRODUCTION_MODE: JSON.stringify(production),
     PWA_VERSION: JSON.stringify(
-      `${version} application-builder-spike - configuration:${configuration} service-worker:${serviceWorker}`
+      `${version} ${RUNNER_CONSTANTS.versionLabel} - configuration:${configuration} service-worker:${serviceWorker}`
     ),
     SERVICE_WORKER: JSON.stringify(serviceWorker),
     SSR: 'globalThis.ngServerMode',
     THEME: JSON.stringify(theme),
+  };
+}
+
+function getApplicationOutputPath(options: Record<string, unknown>): Record<string, string> {
+  const outputPath = options.outputPath;
+  const outputPathObject = outputPath && typeof outputPath === 'object' ? (outputPath as Record<string, unknown>) : {};
+
+  return {
+    ...Object.fromEntries(
+      Object.entries(outputPathObject).filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+    ),
+    base: RUNNER_CONSTANTS.outputBasePath,
+    browser: 'browser',
+    server: 'server',
   };
 }
 
@@ -471,7 +494,7 @@ function collectHtmlTemplateFiles(path: string): string[] {
 }
 
 function createDataTestingIdFileOverlays(production: boolean): FileOverlay[] {
-  if (!production || process.env.TESTING) {
+  if (!production || getEnvironmentFlag('TESTING')) {
     return [];
   }
 
@@ -989,9 +1012,9 @@ async function applyPostBuildOptimizations(
   report.purgeCss = await purgeCssOutput(production);
   const activeFilesPath = writeActiveFilesReport(theme, fileReplacements);
   if (activeFilesPath) {
-    console.log(`${RUNNER_CONSTANTS.spikeTarget}: writing ${activeFilesPath}`);
+    console.log(`${RUNNER_CONSTANTS.runnerLabel}: writing ${activeFilesPath}`);
   } else {
-    console.warn(`${RUNNER_CONSTANTS.spikeTarget}: skipping active-files report because no JS source maps were found`);
+    console.warn(`${RUNNER_CONSTANTS.runnerLabel}: skipping active-files report because no JS source maps were found`);
   }
 }
 
@@ -1043,6 +1066,51 @@ function createReplacementReport(
   };
 }
 
+function cleanApplicationOutputBasePath(outputBasePath: string) {
+  for (const outputChild of ['browser', 'server']) {
+    fs.rmSync(join(outputBasePath, outputChild), { force: true, recursive: true });
+  }
+
+  for (const diagnosticFile of [
+    'effective.angular.json',
+    'replacements.json',
+    'resource-replacements.json',
+    'theme-replacements-report.json',
+  ]) {
+    fs.rmSync(join(outputBasePath, diagnosticFile), { force: true });
+  }
+}
+
+function restoreDistRootSupportFiles() {
+  if (resolve(RUNNER_CONSTANTS.outputBasePath) !== resolve('dist')) {
+    return;
+  }
+
+  fs.mkdirSync('dist', { recursive: true });
+  fs.writeFileSync('dist/.gitignore', '/**/*\n!.gitignore\n!/entrypoint.sh\n!/robots.txt\n');
+  fs.writeFileSync(
+    'dist/entrypoint.sh',
+    [
+      '#!/bin/sh',
+      '',
+      'set -e',
+      '',
+      'if [ -z "$*" ]',
+      'then',
+      "  # use 'exec node dist/<theme>/run-standalone'",
+      '  # instead of pm2 to fallback to running',
+      '  # a single theme only',
+      '',
+      '  node dist/build-ecosystem.js',
+      '  exec pm2-runtime dist/ecosystem.yml',
+      'else',
+      '  exec "$@"',
+      'fi',
+      '',
+    ].join('\n')
+  );
+}
+
 function writeDiagnosticFiles(
   workspace: AngularWorkspace,
   fileReplacements: Record<string, string>,
@@ -1051,7 +1119,7 @@ function writeDiagnosticFiles(
   cleanOutput: boolean
 ) {
   if (cleanOutput) {
-    fs.rmSync(RUNNER_CONSTANTS.outputBasePath, { force: true, recursive: true });
+    cleanApplicationOutputBasePath(RUNNER_CONSTANTS.outputBasePath);
   }
   fs.mkdirSync(RUNNER_CONSTANTS.outputBasePath, { recursive: true });
   writeReplacementsJson(RUNNER_CONSTANTS.outputBasePath, fileReplacements);
@@ -1081,7 +1149,10 @@ function runAngularBuilder(projectName: string, args: string[], theme: string): 
   const commandArgs = ['run', 'ng', '--', 'run', `${projectName}:${RUNNER_CONSTANTS.spikeTarget}`, ...args];
 
   if (!isWatchMode(args)) {
-    execSync(`npm ${commandArgs.join(' ')}`, { stdio: 'inherit' });
+    const result = spawnSync('npm', commandArgs, { shell: process.platform === 'win32', stdio: 'inherit' });
+    if (result.status !== 0) {
+      throw new Error(`Application builder exited with code ${result.status}.`);
+    }
     applyThemeToOutputIndexFiles(theme);
     return Promise.resolve();
   }
@@ -1163,6 +1234,7 @@ async function run() {
   const effectiveOptions = {
     ...target.options,
     ...getModeBuilderOptions(production, modeConfiguration),
+    outputPath: getApplicationOutputPath(target.options),
     assets: [
       'src/assets',
       {
@@ -1206,26 +1278,27 @@ async function run() {
 
   writeDiagnosticFiles(workspace, themeFileReplacements, unsupportedResourceReplacements, report, !dryRun);
 
-  console.log(`${RUNNER_CONSTANTS.spikeTarget}@${configuration}: setting production:`, production);
-  console.log(`${RUNNER_CONSTANTS.spikeTarget}@${configuration}: setting serviceWorker:`, serviceWorker);
+  console.log(`${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting outputPath:`, RUNNER_CONSTANTS.outputBasePath);
+  console.log(`${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting production:`, production);
+  console.log(`${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting serviceWorker:`, serviceWorker);
   console.log(
-    `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: setting ngrxRuntimeChecks:`,
-    !!process.env.TESTING || !production
+    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting ngrxRuntimeChecks:`,
+    getEnvironmentFlag('TESTING') || !production
   );
   console.log(
-    `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: using ${angularFileReplacements.length} Angular file replacements for "${theme}"`
+    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: using ${angularFileReplacements.length} Angular file replacements for "${theme}"`
   );
   console.log(
-    `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: reporting ${Object.keys(resourceReplacementReadMap).length} resource read aliases and ${Object.keys(resourceReplacements).length} prebuild overlay replacements outside Angular fileReplacements`
+    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: reporting ${Object.keys(resourceReplacementReadMap).length} resource read aliases and ${Object.keys(resourceReplacements).length} prebuild overlay replacements outside Angular fileReplacements`
   );
   console.log(
-    `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: stripping data-testing attributes from ${report.dataTestingIdTemplatesStripped} templates`
+    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: stripping data-testing attributes from ${report.dataTestingIdTemplatesStripped} templates`
   );
-  console.log(`${RUNNER_CONSTANTS.spikeTarget}@${configuration}: setting up purgecss:`, report.purgeCss.enabled);
+  console.log(`${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting up purgecss:`, report.purgeCss.enabled);
 
   if (dryRun) {
     console.log(
-      `${RUNNER_CONSTANTS.spikeTarget}@${configuration}: wrote diagnostics to ${RUNNER_CONSTANTS.outputBasePath}`
+      `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: wrote diagnostics to ${RUNNER_CONSTANTS.outputBasePath}`
     );
     return;
   }
@@ -1237,6 +1310,7 @@ async function run() {
   const restoreOverlay = applyFileOverlays(fileOverlays);
   try {
     await runAngularBuilder(projectName, remainingArgs, theme);
+    restoreDistRootSupportFiles();
     await applyPostBuildOptimizations(production, remainingArgs, theme, activeFileReplacements, report);
   } catch (error) {
     buildError = error;

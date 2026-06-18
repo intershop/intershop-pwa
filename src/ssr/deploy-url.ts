@@ -4,13 +4,9 @@ export function getDeployURLFromEnv(): string {
   return `${envDeployUrl}${envDeployUrl.endsWith('/') ? '' : '/'}`;
 }
 
-export function setDeployUrlInFile(deployUrl: string, path: string, input: string): string {
+export function setDeployUrlInFile(deployUrl: string, _path: string, input: string): string {
   if (input) {
-    if (path.startsWith('runtime') && path.endsWith('.js')) {
-      return input.replace(/DEPLOY_URL_PLACEHOLDER/g, deployUrl);
-    }
-
-    let newInput = input;
+    let newInput = input.replace(/DEPLOY_URL_PLACEHOLDER/g, deployUrl);
 
     const cssRegex = /url\((?!http|data)\/?(assets.*?|[a-zA-Z].*?woff2?)\)/g;
     if (cssRegex.test(newInput)) {
@@ -23,7 +19,7 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
     }
 
     const javascriptRegex =
-      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles|scripts)[^"]*\.(js|css))"/g;
+      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles|scripts|chunk)[^"]*\.(js|css))"/g;
     if (javascriptRegex.test(newInput)) {
       newInput = newInput.replace(javascriptRegex, (...args) => `"${deployUrl}${args[2]}"`);
     }

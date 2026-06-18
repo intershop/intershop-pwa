@@ -1,27 +1,65 @@
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { sync: spawnSync } = require('cross-spawn');
 
 const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
 const defaultProject = Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '');
+
+function normalizePath(filePath) {
+  return filePath.replace(/\\/g, '/');
+}
+
+function stripTrailingSeparator(filePath) {
+  return filePath.replace(/[\\/]$/, '');
+}
+
+function getDefaultOutputBasePath() {
+  const outputPath = angularJson.projects[defaultProject].architect.build.options.outputPath;
+  return path.dirname(outputPath);
+}
+
+function getOutputBasePath(outputPath) {
+  if (!outputPath) {
+    return getDefaultOutputBasePath();
+  }
+
+  const normalizedOutputPath = stripTrailingSeparator(normalizePath(outputPath));
+  if (normalizedOutputPath.endsWith('/browser') || normalizedOutputPath.endsWith('/server')) {
+    return path.dirname(normalizedOutputPath);
+  }
+
+  return normalizedOutputPath;
+}
+
+function splitBuildArgs(args) {
+  const remainingArgs = [];
+  let outputPath;
+
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+
+    if (arg === '--output-path') {
+      outputPath = args[index + 1];
+      index++;
+    } else if (arg.startsWith('--output-path=')) {
+      outputPath = arg.split('=')[1];
+    } else {
+      remainingArgs.push(arg);
+    }
+  }
+
+  return {
+    outputBasePath: getOutputBasePath(outputPath),
+    remainingArgs,
+  };
+}
 
 /**
  * remove service worker cache check for resources (especially index.html)
  * https://github.com/angular/angular/issues/23613#issuecomment-415886919
  */
-function removeServiceWorkerCacheCheck(args) {
-  const outputPathArg = args.find(arg => arg.startsWith('--output-path'));
-
-  let outputPath = '';
-  if (outputPathArg) {
-    // get outputPath from build args (in case of build:multi)
-    outputPath = outputPathArg.split('=')[1];
-  } else {
-    // get default outputPath from angular.json
-    outputPath = angularJson.projects[defaultProject].architect.build.options.outputPath;
-  }
-
-  const serviceWorkerScript = path.join(outputPath, 'ngsw-worker.js');
+function removeServiceWorkerCacheCheck(outputBasePath) {
+  const serviceWorkerScript = path.join(outputBasePath, 'browser', 'ngsw-worker.js');
   if (fs.existsSync(serviceWorkerScript)) {
     console.warn('replacing cache check for service worker in', serviceWorkerScript);
     const script = fs.readFileSync(serviceWorkerScript, { encoding: 'utf-8' });
@@ -29,38 +67,66 @@ function removeServiceWorkerCacheCheck(args) {
   }
 }
 
-// https://stackoverflow.com/questions/51388921/pass-command-line-args-to-npm-scripts-in-package-json/64694166#64694166
-let configuration = process.env.npm_config_configuration;
+function writeServerCompatibilityEntrypoint(outputBasePath) {
+  const serverOutputPath = path.join(outputBasePath, 'server');
+  const serverEntry = path.join(serverOutputPath, 'server.mjs');
+  const compatibilityEntry = path.join(serverOutputPath, 'main.js');
 
-if (configuration === 'true') {
-  console.error('it seems you missed the equal sign in "--configuration=<config>"');
-  process.exit(1);
+  if (fs.existsSync(serverEntry)) {
+    fs.writeFileSync(compatibilityEntry, "import('./server.mjs');\n");
+  }
 }
 
-let configString = '';
+function getConfigurationArgs() {
+  const configuration = process.env.npm_config_configuration;
 
-if (configuration) {
-  configString = '-c ' + configuration;
+  if (configuration === 'true') {
+    console.error('it seems you missed the equal sign in "--configuration=<config>"');
+    process.exit(1);
+  }
+
+  return configuration
+    ? [`--configuration=${configuration.replace(/^([a-z0-9_-]+)\s+(development|production)$/i, '$1,$2')}`]
+    : [];
 }
 
 const processArgs = process.argv.slice(2);
 const client = processArgs.includes('client') || !processArgs.includes('server');
 const server = processArgs.includes('server') || !processArgs.includes('client');
-const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
+const buildArgs = processArgs.filter(arg => arg !== 'client' && arg !== 'server');
+const { outputBasePath, remainingArgs } = splitBuildArgs(buildArgs);
 
-if (client) {
-  execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
+if (!client && !server) {
+  process.exit(0);
+}
+
+if (processArgs.includes('client') || processArgs.includes('server')) {
+  console.warn('Application builder creates browser and server bundles in a single build.');
+}
+
+const result = spawnSync(
+  'ts-node',
+  [
+    '--project',
+    'tsconfig.scripts.json',
+    'scripts/build/application-builder-spike.ts',
+    ...getConfigurationArgs(),
+    ...remainingArgs,
+  ],
+  {
+    env: {
+      ...process.env,
+      APPLICATION_BUILDER_OUTPUT_BASE_PATH: outputBasePath,
+      APPLICATION_BUILDER_RUNNER_LABEL: 'build',
+      APPLICATION_BUILDER_VERSION_LABEL: 'application-builder',
+    },
     stdio: 'inherit',
-  });
-  removeServiceWorkerCacheCheck(remainingArgs);
+  }
+);
+
+if (result.status !== 0) {
+  process.exit(result.status);
 }
 
-if (configuration) {
-  configString = ':' + configuration;
-}
-
-if (server) {
-  execSync(`npm run ng -- run ${defaultProject}:server${configString} ${remainingArgs.join(' ')}`, {
-    stdio: 'inherit',
-  });
-}
+writeServerCompatibilityEntrypoint(outputBasePath);
+removeServiceWorkerCacheCheck(outputBasePath);
