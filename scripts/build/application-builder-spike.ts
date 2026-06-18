@@ -509,6 +509,69 @@ function createDataTestingIdFileOverlays(production: boolean): FileOverlay[] {
     .filter(({ content, original }) => content !== fs.readFileSync(original, { encoding: 'utf-8' }));
 }
 
+function writeDataTestingIdPreloadScript(enabled: boolean): string | undefined {
+  if (!enabled) {
+    return;
+  }
+
+  fs.mkdirSync(RUNNER_CONSTANTS.generatedBasePath, { recursive: true });
+  const preloadPath = join(RUNNER_CONSTANTS.generatedBasePath, 'strip-data-testing.cjs');
+  fs.writeFileSync(
+    preloadPath,
+    [
+      "'use strict';",
+      '',
+      "const fs = require('fs');",
+      "const path = require('path');",
+      '',
+      'const workspaceRoot = process.cwd();',
+      'const stripPattern = / ?\\[?(attr\\.)?data-testing-[a-z-]*?\\]?="([^"]*?)"/g;',
+      '',
+      'function shouldStrip(file) {',
+      "  if (typeof file !== 'string' || !file.endsWith('.html')) {",
+      '    return false;',
+      '  }',
+      "  const relativePath = path.relative(workspaceRoot, path.resolve(file)).replace(/\\\\/g, '/');",
+      "  return relativePath.startsWith('src/') || relativePath.startsWith('projects/');",
+      '}',
+      '',
+      'function strip(value, encoding) {',
+      "  const text = Buffer.isBuffer(value) ? value.toString(encoding || 'utf-8') : String(value);",
+      "  const stripped = text.replace(stripPattern, '');",
+      '  return Buffer.isBuffer(value) && !encoding ? Buffer.from(stripped) : stripped;',
+      '}',
+      '',
+      'const originalReadFileSync = fs.readFileSync;',
+      'fs.readFileSync = function patchedReadFileSync(file, options) {',
+      '  const result = originalReadFileSync.apply(this, arguments);',
+      "  return shouldStrip(file) ? strip(result, typeof options === 'string' ? options : options && options.encoding) : result;",
+      '};',
+      '',
+      'const originalReadFile = fs.readFile;',
+      'fs.readFile = function patchedReadFile(file, options, callback) {',
+      "  const actualCallback = typeof options === 'function' ? options : callback;",
+      "  const actualOptions = typeof options === 'function' ? undefined : options;",
+      '  return originalReadFile.call(this, file, actualOptions, (error, data) => {',
+      '    if (error || !shouldStrip(file)) {',
+      '      actualCallback(error, data);',
+      '      return;',
+      '    }',
+      "    actualCallback(undefined, strip(data, typeof actualOptions === 'string' ? actualOptions : actualOptions && actualOptions.encoding));",
+      '  });',
+      '};',
+      '',
+      'const originalPromisesReadFile = fs.promises.readFile;',
+      'fs.promises.readFile = async function patchedPromisesReadFile(file, options) {',
+      '  const result = await originalPromisesReadFile.call(this, file, options);',
+      "  return shouldStrip(file) ? strip(result, typeof options === 'string' ? options : options && options.encoding) : result;",
+      '};',
+      '',
+    ].join('\n')
+  );
+
+  return preloadPath;
+}
+
 function collectFiles(path: string): string[] {
   if (!fs.existsSync(path)) {
     return [];
@@ -1056,7 +1119,7 @@ function createReplacementReport(
     configuration,
     dataTestingIdTemplatesStripped,
     generatedIndex,
-    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay.',
+    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload in the Angular child process.',
     production,
     purgeCss,
     resourceOverlayApplied: Object.keys(resourceReplacements).length > 0,
@@ -1145,11 +1208,24 @@ function isDryRun(args: string[]): boolean {
   return args.includes('--dry-run') || getNpmConfigFlag('dry_run');
 }
 
-function runAngularBuilder(projectName: string, args: string[], theme: string): Promise<void> {
+function createChildProcessEnv(preloadPath?: string): NodeJS.ProcessEnv {
+  if (!preloadPath) {
+    return process.env;
+  }
+
+  const preloadOption = `--require=${resolve(preloadPath)}`;
+  return {
+    ...process.env,
+    NODE_OPTIONS: [process.env.NODE_OPTIONS, preloadOption].filter(Boolean).join(' '),
+  };
+}
+
+function runAngularBuilder(projectName: string, args: string[], theme: string, preloadPath?: string): Promise<void> {
   const commandArgs = ['run', 'ng', '--', 'run', `${projectName}:${RUNNER_CONSTANTS.spikeTarget}`, ...args];
+  const env = createChildProcessEnv(preloadPath);
 
   if (!isWatchMode(args)) {
-    const result = spawnSync('npm', commandArgs, { shell: process.platform === 'win32', stdio: 'inherit' });
+    const result = spawnSync('npm', commandArgs, { env, shell: process.platform === 'win32', stdio: 'inherit' });
     if (result.status !== 0) {
       throw new Error(`Application builder exited with code ${result.status}.`);
     }
@@ -1159,7 +1235,7 @@ function runAngularBuilder(projectName: string, args: string[], theme: string): 
 
   return new Promise((finish, reject) => {
     const stopIndexWatcher = watchOutputIndexFiles(theme);
-    const child = spawn('npm', commandArgs, { shell: true, stdio: 'inherit' });
+    const child = spawn('npm', commandArgs, { env, shell: true, stdio: 'inherit' });
 
     const stopChild = () => {
       child.kill('SIGINT');
@@ -1216,8 +1292,9 @@ async function run() {
   const resourceReplacementReadMap = buildResourceReplacements(themeFileReplacements);
   const resourceFileOverlays = createResourceFileOverlays(resourceReplacements);
   const dataTestingIdFileOverlays = createDataTestingIdFileOverlays(production);
-  const fileOverlays = [...resourceFileOverlays, ...dataTestingIdFileOverlays];
-  const fileOverlayCacheKey = getFileOverlayCacheKey(fileOverlays);
+  const dataTestingIdPreloadScript = writeDataTestingIdPreloadScript(dataTestingIdFileOverlays.length > 0);
+  const fileOverlays = resourceFileOverlays;
+  const fileOverlayCacheKey = getFileOverlayCacheKey([...fileOverlays, ...dataTestingIdFileOverlays]);
   const generatedIndex = writeThemedIndex(theme);
   const report = createReplacementReport(
     configuration,
@@ -1292,7 +1369,7 @@ async function run() {
     `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: reporting ${Object.keys(resourceReplacementReadMap).length} resource read aliases and ${Object.keys(resourceReplacements).length} prebuild overlay replacements outside Angular fileReplacements`
   );
   console.log(
-    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: stripping data-testing attributes from ${report.dataTestingIdTemplatesStripped} templates`
+    `${RUNNER_CONSTANTS.runnerLabel}@${configuration}: stripping data-testing attributes from ${report.dataTestingIdTemplatesStripped} templates in-memory`
   );
   console.log(`${RUNNER_CONSTANTS.runnerLabel}@${configuration}: setting up purgecss:`, report.purgeCss.enabled);
 
@@ -1309,7 +1386,7 @@ async function run() {
   let buildError: unknown;
   const restoreOverlay = applyFileOverlays(fileOverlays);
   try {
-    await runAngularBuilder(projectName, remainingArgs, theme);
+    await runAngularBuilder(projectName, remainingArgs, theme, dataTestingIdPreloadScript);
     restoreDistRootSupportFiles();
     await applyPostBuildOptimizations(production, remainingArgs, theme, activeFileReplacements, report);
   } catch (error) {
