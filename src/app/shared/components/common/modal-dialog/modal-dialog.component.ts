@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  ContentChild,
   DestroyRef,
   EventEmitter,
   Inject,
@@ -13,6 +14,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroupDirective } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
@@ -87,6 +89,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
   @Output() readonly shown = new EventEmitter<T>();
 
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
+  @ContentChild(FormGroupDirective) private formDirective: FormGroupDirective;
 
   // visible-for-testing
   ngbModalRef: NgbModalRef;
@@ -109,6 +112,8 @@ export class ModalDialogComponent<T> implements OnDestroy {
    */
   show(data?: T) {
     this.data = data ? data : undefined;
+    // Reset the form's submitted state so validation errors don't persist across modal open/close cycles.
+    this.formDirective?.resetForm();
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, {
       ...this.options,
