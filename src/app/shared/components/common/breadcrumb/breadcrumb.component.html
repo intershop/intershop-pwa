@@ -23,7 +23,7 @@
         </li>
       }
     }
-    @for (item of trail$ | async; track item.key; let last = $last) {
+    @for (item of trail$ | async; track $index; let last = $last) {
       <li
         class="breadcrumb-item"
         [attr.aria-current]="last && !item.link ? 'page' : null"
