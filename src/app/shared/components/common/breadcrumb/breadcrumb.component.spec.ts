@@ -33,6 +33,10 @@ describe('Breadcrumb Component', () => {
     translate.set('common.home.link', 'Home');
   });
 
+  function breadcrumbItemTexts(): string[] {
+    return Array.from(element.querySelectorAll('li.breadcrumb-item')).map(li => (li.textContent ?? '').trim());
+  }
+
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
@@ -43,13 +47,13 @@ describe('Breadcrumb Component', () => {
     it('should render trail from home and trail with translation keys if set', () => {
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'KEY' }, { key: 'KEY2' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"Home KEY  KEY2 "`);
+      expect(breadcrumbItemTexts()).toEqual(['Home', 'KEY', 'KEY2']);
     });
 
     it('should render trail from home and trail with text if set', () => {
       when(appFacade.breadcrumbData$).thenReturn(of([{ text: 'TEXT' }, { text: 'TEXT2' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"Home TEXT  TEXT2 "`);
+      expect(breadcrumbItemTexts()).toEqual(['Home', 'TEXT', 'TEXT2']);
     });
 
     it('should render trail from home and with link if set', () => {
@@ -60,7 +64,7 @@ describe('Breadcrumb Component', () => {
         ])
       );
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"HomeL1L2"`);
+      expect(breadcrumbItemTexts()).toEqual(['Home', 'L1', 'L2']);
     });
   });
 
@@ -70,15 +74,14 @@ describe('Breadcrumb Component', () => {
       component.account = true;
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'account.order_history.link' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"My Account Orders "`);
+      expect(breadcrumbItemTexts()).toEqual(['My Account', 'Orders']);
     });
 
     it('should render breadcrumbtrail from home and account and trail when account is active', () => {
       component.account = true;
       when(appFacade.breadcrumbData$).thenReturn(of([{ key: 'account.order_history.link' }]));
       fixture.detectChanges();
-      expect(element.textContent).toMatchInlineSnapshot(`"HomeMy Account Orders "`);
-      expect(element.textContent).toContain('My Account');
+      expect(breadcrumbItemTexts()).toEqual(['Home', 'My Account', 'Orders']);
     });
   });
 });

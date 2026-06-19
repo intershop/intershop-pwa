@@ -4,7 +4,7 @@
   id="nav-breadcrumbs"
   tabindex="-1"
   [attr.aria-label]="'breadcrumbs.aria_label' | translate"
-  [ngStyle]="separator ? { '--bs-breadcrumb-divider': '\'' + separator + '\'' } : {}"
+  [ngStyle]="dividerStyle"
 >
   <ol class="breadcrumb">
     @if (showHome) {
