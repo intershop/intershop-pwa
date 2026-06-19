@@ -15,5 +15,9 @@
 
   dd {
     white-space: nowrap;
+
+    @media (width <= 767.98px) {
+      white-space: normal;
+    }
   }
 }
