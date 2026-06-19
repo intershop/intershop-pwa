@@ -3,8 +3,9 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderData } from 'ish-core/models/order/order.interface';
 import { OrderMapper } from 'ish-core/models/order/order.mapper';
@@ -38,6 +39,7 @@ export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   constructor(
+    private appFacade: AppFacade,
     private apiService: ApiService,
     private tokenService: TokenService,
     private store: Store,
@@ -60,7 +62,6 @@ export class OrderService {
     'payments',
     'payments_paymentMethod',
     'payments_paymentInstrument',
-    'withdrawal',
   ];
 
   /**
@@ -155,18 +156,28 @@ export class OrderService {
    * @returns       The order
    */
   getOrder(orderId: string): Observable<Order> {
-    const params = new HttpParams().set('include', this.allOrderIncludes.join());
+    const defaultParams = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
       return throwError(() => new Error('getOrder() called without orderId'));
     }
 
-    return this.apiService
-      .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
-        headers: this.orderHeaders,
-        params,
-      })
-      .pipe(map(OrderMapper.fromData));
+    return this.appFacade.serverSetting$<boolean>('preferences.WithdrawalPreferences.WithdrawalEnabled').pipe(
+      take(1),
+      map(withdrawalEnabled =>
+        withdrawalEnabled
+          ? new HttpParams().set('include', this.allOrderIncludes.join().concat(',withdrawal'))
+          : defaultParams
+      ),
+      switchMap(params =>
+        this.apiService
+          .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
+            headers: this.orderHeaders,
+            params,
+          })
+          .pipe(map(OrderMapper.fromData))
+      )
+    );
   }
 
   /**

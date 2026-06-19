@@ -1,7 +1,7 @@
 import { AbstractBasket } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
-import { WithdrawalInfoData } from 'ish-core/models/withdrawal-info/withdrawal-info.interface';
+import { WithdrawalInfoData } from 'ish-core/models/withdrawal-info/withdrawal-info.model';
 
 import { OrderCreationStatus, OrderStopActionReason } from './order.interface';
 
