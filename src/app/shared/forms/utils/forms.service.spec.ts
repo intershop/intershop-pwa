@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { isEmpty, of } from 'rxjs';
-import { anyString, instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -15,7 +15,7 @@ describe('Forms Service', () => {
 
   beforeEach(() => {
     translateServiceMock = mock(TranslateService);
-    when(translateServiceMock.get(anyString())).thenReturn(of([]));
+    when(translateServiceMock.get(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['configuration'])],

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, OperatorFunction, forkJoin } from 'rxjs';
+import { Observable, OperatorFunction } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -91,11 +91,10 @@ export class FormsService {
    * @returns salutation select options
    */
   getSalutationOptionsForCountryCode(countryCode: string): Observable<SelectOption[]> {
-    return forkJoin<SelectOption[]>(
-      this.determineSalutations(countryCode).map(title =>
-        this.translate.get(title).pipe(map(translation => ({ value: translation, label: title })))
-      )
-    );
+    const salutations = this.determineSalutations(countryCode);
+    return this.translate
+      .get(salutations)
+      .pipe(map(translations => salutations.map(title => ({ value: translations[title], label: title }))));
   }
 
   /**
