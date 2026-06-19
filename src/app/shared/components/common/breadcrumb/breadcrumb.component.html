@@ -1,40 +1,38 @@
 <!-- tabindex is necessary to be a valid focus target for the <ish-skip-content-link> component -->
 <nav
-  class="breadcrumbs row"
+  class="breadcrumbs"
   id="nav-breadcrumbs"
   tabindex="-1"
   [attr.aria-label]="'breadcrumbs.aria_label' | translate"
+  [ngStyle]="dividerStyle"
 >
-  <ol class="breadcrumbs-list">
+  <ol class="breadcrumb">
     @if (showHome) {
-      <li class="breadcrumbs-list breadcrumbs-list-home">
-        <a class="breadcrumbs-list-link breadcrumbs-list-link-home" rel="home" routerLink="/home">{{
-          'common.home.link' | translate
-        }}</a
-        ><span class="breadcrumb-list-separator">{{ separator }}</span>
+      <li class="breadcrumb-item">
+        <a rel="home" routerLink="/home">{{ 'common.home.link' | translate }}</a>
       </li>
     }
     @if (account) {
-      <li class="breadcrumbs-list">
-        @if ((trail$ | async)?.length) {
-          <a class="breadcrumbs-list-link" routerLink="/account">{{ 'account.my_account.link' | translate }}</a
-          ><span class="breadcrumb-list-separator">{{ separator }}</span>
-        } @else {
+      @if ((trail$ | async)?.length) {
+        <li class="breadcrumb-item">
+          <a routerLink="/account">{{ 'account.my_account.link' | translate }}</a>
+        </li>
+      } @else {
+        <li aria-current="page" class="breadcrumb-item active">
           {{ 'account.my_account.link' | translate }}
-        }
-      </li>
+        </li>
+      }
     }
-    @for (item of trail$ | async; track item.key; let index = $index; let last = $last) {
-      <li class="breadcrumbs-list" [ngClass]="{ 'breadcrumbs-list-active': last }">
+    @for (item of trail$ | async; track $index; let last = $last) {
+      <li
+        class="breadcrumb-item"
+        [attr.aria-current]="last && !item.link ? 'page' : null"
+        [ngClass]="{ active: last && !item.link }"
+      >
         @if (item.link) {
-          <a class="breadcrumbs-list-link" [queryParams]="item.linkParams" [routerLink]="item.link">{{
-            item.text || (item.key | translate)
-          }}</a>
+          <a [queryParams]="item.linkParams" [routerLink]="item.link">{{ item.text || (item.key | translate) }}</a>
         } @else {
-          <div aria-current="location">{{ item.text || (item.key | translate) }}</div>
-        }
-        @if (!last) {
-          <span aria-hidden="true" class="breadcrumb-list-separator">{{ separator }}</span>
+          {{ item.text || (item.key | translate) }}
         }
       </li>
     }
