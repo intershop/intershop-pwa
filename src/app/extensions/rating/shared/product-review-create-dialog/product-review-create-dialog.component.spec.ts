@@ -2,24 +2,20 @@ import { AsyncPipe } from '@angular/common';
 import { Directive, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
@@ -61,7 +57,6 @@ describe('Product Review Create Dialog Component', () => {
   let element: HTMLElement;
   let accountFacade: AccountFacade;
   let reviewsFacade: ProductReviewsFacade;
-  let modalService: Pick<NgbModal, 'open'>;
 
   /**
    * emulates a realistic startup scenario:
@@ -77,19 +72,16 @@ describe('Product Review Create Dialog Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     reviewsFacade = mock(ProductReviewsFacade);
-    modalService = {
-      open: jest.fn(() => ({ close: jest.fn() }) as never),
-    };
     when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
 
     await TestBed.configureTestingModule({
       imports: [
         FormlyTestingModule,
-        MockDirective(FormSubmitDirective),
-        ProductReviewCreateDialogComponent,
         MockComponent(ModalDialogComponent),
+        MockDirective(FormSubmitDirective),
+        MockPipe(TranslatePipe),
+        ProductReviewCreateDialogComponent,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
@@ -101,6 +93,7 @@ describe('Product Review Create Dialog Component', () => {
           imports: [
             AsyncPipe,
             MockComponent(FormlyForm),
+            MockComponent(ModalDialogComponent),
             MockDirective(FormSubmitDirective),
             MockNgFormDirective,
             MockProductContextAccessDirective,

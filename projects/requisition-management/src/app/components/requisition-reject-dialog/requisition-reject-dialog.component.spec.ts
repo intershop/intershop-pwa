@@ -1,17 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
-import { anything, capture, instance, mock, spy, verify } from 'ts-mockito';
-
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 
@@ -22,20 +17,17 @@ describe('Requisition Reject Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      declarations: [MockComponent(ModalDialogComponent), RequisitionRejectDialogComponent],
-    }).compileComponents();
-  });
-
-  beforeEach(async () => {
-    const ngbModal = mock(NgbModal);
-
-    await TestBed.configureTestingModule({
-      imports: [RequisitionRejectDialogComponent, MockComponent(ModalDialogComponent), TranslateModule.forRoot()],
+      imports: [RequisitionRejectDialogComponent],
     })
       .overrideComponent(RequisitionRejectDialogComponent, {
         set: {
-          imports: [MockDirective(FormSubmitDirective), MockComponent(FormlyForm), ReactiveFormsModule, TranslatePipe],
+          imports: [
+            MockDirective(FormSubmitDirective),
+            MockComponent(ModalDialogComponent),
+            MockComponent(FormlyForm),
+            MockPipe(TranslatePipe),
+            ReactiveFormsModule,
+          ],
         },
       })
       .compileComponents();

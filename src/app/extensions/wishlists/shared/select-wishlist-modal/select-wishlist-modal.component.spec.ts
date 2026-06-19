@@ -1,16 +1,15 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist } from '../../models/wishlist/wishlist.model';
+import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 import { SelectWishlistModalComponent } from './select-wishlist-modal.component';
 
@@ -19,7 +18,6 @@ describe('Select Wishlist Modal Component', () => {
   let fixture: ComponentFixture<SelectWishlistModalComponent>;
   let element: HTMLElement;
   let wishlistFacadeMock: WishlistsFacade;
-  let ngbModalMock: NgbModal;
 
   /**
    * A fixture.detectChanges() is necessary to make sure the newList
@@ -53,20 +51,22 @@ describe('Select Wishlist Modal Component', () => {
 
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
-    ngbModalMock = mock(NgbModal);
-    when(ngbModalMock.open(anything(), anything())).thenReturn({ close: jest.fn() } as never);
 
     await TestBed.configureTestingModule({
-      imports: [
-        MockComponent(FormlyTestingModule),
-        MockComponent(ModalDialogComponent),
-        SelectWishlistModalComponent,
-        ,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [SelectWishlistModalComponent],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
-    }).compileComponents();
+    })
+      .overrideComponent(SelectWishlistModalComponent, {
+        set: {
+          imports: [
+            MockComponent(ModalDialogComponent),
+            MockComponent(SelectWishlistFormComponent),
+            MockPipe(TranslatePipe),
+            ReactiveFormsModule,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -208,6 +208,7 @@ describe('Select Wishlist Modal Component', () => {
   it('should auto-submit to preferred wishlist in add mode', fakeAsync(() => {
     const emitter = spy(component.submitEmitter);
     when(wishlistFacadeMock.preferredWishlist$).thenReturn(of(wishlistDetails as Wishlist));
+    when(wishlistFacadeMock.currentWishlist$).thenReturn(of(undefined));
 
     startup();
     tick(1000);

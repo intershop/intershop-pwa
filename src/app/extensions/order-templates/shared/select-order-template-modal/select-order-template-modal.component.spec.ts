@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 import { SelectOrderTemplateModalComponent } from './select-order-template-modal.component';
 
@@ -18,7 +18,6 @@ describe('Select Order Template Modal Component', () => {
   let fixture: ComponentFixture<SelectOrderTemplateModalComponent>;
   let element: HTMLElement;
   let orderTemplateFacadeMock: OrderTemplatesFacade;
-  let ngbModalMock: NgbModal;
   const orderTemplateDetails = {
     title: 'testing order template',
     id: '.SKsEQAE4FIAAAFuNiUBWx0d',
@@ -49,19 +48,27 @@ describe('Select Order Template Modal Component', () => {
 
   beforeEach(async () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
-    ngbModalMock = mock(NgbModal);
-    when(ngbModalMock.open(anything(), anything())).thenReturn({ close: jest.fn() } as never);
+    when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
+      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
+    );
 
     await TestBed.configureTestingModule({
-      imports: [
-        MockComponent(FormlyTestingModule),
-        MockComponent(ModalDialogComponent),
-        ReactiveFormsModule,
-        SelectOrderTemplateModalComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [SelectOrderTemplateModalComponent, TranslateModule.forRoot()],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
-    }).compileComponents();
+    })
+      .overrideComponent(SelectOrderTemplateModalComponent, {
+        set: {
+          imports: [
+            MockComponent(ModalDialogComponent),
+            MockComponent(SelectOrderTemplateFormComponent),
+            MockDirective(FormSubmitDirective),
+            MockPipe(TranslatePipe),
+            ReactiveFormsModule,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -69,10 +76,6 @@ describe('Select Order Template Modal Component', () => {
 
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
-    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
-      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
-    );
   });
 
   it('should be created', () => {

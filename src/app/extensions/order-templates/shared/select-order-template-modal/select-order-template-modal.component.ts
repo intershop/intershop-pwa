@@ -20,8 +20,8 @@ import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';

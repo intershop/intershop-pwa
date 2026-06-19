@@ -3,8 +3,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { WishlistSharing } from '../../models/wishlist-sharing/wishlist-sharing.model';

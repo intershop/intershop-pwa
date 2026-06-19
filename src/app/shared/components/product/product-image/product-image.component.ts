@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { QueryParamsHandling, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,7 @@ import { Image, ImageLoading } from 'ish-core/models/image/image.model';
  */
 @Component({
   selector: 'ish-product-image',
-  imports: [AsyncPipe, RouterLink, TranslatePipe],
+  imports: [AsyncPipe, NgTemplateOutlet, RouterLink, TranslatePipe],
   standalone: true,
   templateUrl: './product-image.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -20,9 +21,15 @@ describe('Compare Page Component', () => {
   beforeEach(async () => {
     compareFacade = mock(CompareFacade);
     await TestBed.configureTestingModule({
-      imports: [ComparePageComponent, MockComponent(ProductCompareListComponent), TranslateModule.forRoot()],
+      imports: [ComparePageComponent],
       providers: [{ provide: CompareFacade, useFactory: () => instance(compareFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ComparePageComponent, {
+        set: {
+          imports: [AsyncPipe, MockComponent(ProductCompareListComponent), MockPipe(TranslatePipe)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -44,6 +51,7 @@ describe('Compare Page Component', () => {
 
   it('should display compare product list when compare products available', () => {
     when(compareFacade.compareProductsCount$).thenReturn(of(2));
+    when(compareFacade.compareProducts$).thenReturn(of(['sku1', 'sku2']));
 
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toEqual(['ish-product-compare-list']);

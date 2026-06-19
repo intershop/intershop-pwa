@@ -4,8 +4,8 @@ import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -19,7 +19,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',
-  imports: [FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
+  imports: [FormlyForm, FormSubmitDirective, ModalDialogComponent, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -144,9 +144,15 @@ export class SelectWishlistModalComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
-        // set default form value to preferred wishlist unless the current wishlist is the preferred one
-        if (data.preferredWishlist.id !== data.selectedWishlist?.id) {
+        // don't show wishlist selection form but add a product immediately if there is a preferred wishlist
+        if (this.addMoveProduct === 'add') {
           this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
+          this.submitForm();
+        } else {
+          // set default form value to preferred wishlist unless the current wishlist is the preferred one
+          if (data.preferredWishlist.id !== data.selectedWishlist?.id) {
+            this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
+          }
         }
       });
   }

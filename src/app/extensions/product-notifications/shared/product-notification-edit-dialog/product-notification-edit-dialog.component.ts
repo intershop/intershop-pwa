@@ -11,8 +11,8 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
