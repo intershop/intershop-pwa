@@ -59,11 +59,6 @@
       "description": "Create an extension.",
       "schema": "./extension/schema.json"
     },
-    "lazy-component": {
-      "factory": "./lazy-component/factory#createLazyComponent",
-      "description": "Deprecated: use standalone components with Angular @defer blocks.",
-      "schema": "./lazy-component/schema.json"
-    },
     "store": {
       "factory": "./store/factory#createStore",
       "description": "Create a store.",

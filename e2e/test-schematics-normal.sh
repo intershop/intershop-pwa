@@ -41,10 +41,6 @@ npx ng g c shared/components/inventory/warehouse
 test -f src/app/shared/components/inventory/warehouse/warehouse.component.ts
 grep "WarehouseComponent" src/app/shared/shared.module.ts
 
-npx ng g lazy-component src/app/shared/components/inventory/warehouse/warehouse.component.ts
-test -f src/app/shell/shared/lazy-warehouse/lazy-warehouse.component.ts
-grep GenerateLazyComponent src/app/shared/components/inventory/warehouse/warehouse.component.ts
-
 
 npx ng g p warehouses
 test -f src/app/pages/warehouses/warehouses-page.module.ts

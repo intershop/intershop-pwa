@@ -44,7 +44,6 @@
     "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath templates/3rd-party-licenses_format.json",
     "3rd-party-licenses:summary": "npx license-checker --summary",
     "docs": "npx markserv -a localhost docs/README.md",
-    "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
     "build:multi": "node scripts/build-multi-pwa",
