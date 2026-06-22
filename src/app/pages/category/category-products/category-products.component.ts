@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -18,7 +18,7 @@ import { CategoryNavigationComponent } from '../category-navigation/category-nav
     BreadcrumbComponent,
     CategoryNavigationComponent,
     FilterNavigationComponent,
-    NgbCollapseModule,
+    NgbCollapse,
     NgClass,
     ProductListingComponent,
     SkipContentLinkComponent,

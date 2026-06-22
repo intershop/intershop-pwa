@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
@@ -31,7 +31,7 @@ describe('Account Wishlist Detail Page Component', () => {
         set: {
           imports: [
             AsyncPipe,
-            NgbPopoverModule,
+            NgbPopover,
             MockDirective(ProductContextDirective),
             TranslatePipe,
             MockComponent(LoadingComponent),

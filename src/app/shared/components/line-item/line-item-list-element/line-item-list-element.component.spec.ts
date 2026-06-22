@@ -1,6 +1,6 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -68,7 +68,7 @@ describe('Line Item List Element Component', () => {
             FeatureToggleDirective,
             LineItemInformationEditComponent,
             LineItemWarrantyComponent,
-            NgbPopoverModule,
+            NgbPopover,
             PricePipe,
             ProductAddToOrderTemplateComponent,
             ProductAddToWishlistComponent,

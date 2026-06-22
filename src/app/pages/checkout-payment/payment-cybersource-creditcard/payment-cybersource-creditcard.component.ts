@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 
@@ -34,7 +34,7 @@ declare let Flex: any;
   selector: 'ish-payment-cybersource-creditcard',
   imports: [
     FormControlFeedbackComponent,
-    NgbPopoverModule,
+    NgbPopover,
     NgClass,
     PaymentSaveCheckboxComponent,
     ReactiveFormsModule,

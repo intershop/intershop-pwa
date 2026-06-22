@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map } from 'rxjs';
 
@@ -18,7 +18,11 @@ import { ProductReviewsComponent } from '../../../extensions/rating/shared/produ
 @Component({
   selector: 'ish-product-detail-info',
   imports: [
-    NgbNavModule,
+    NgbNav,
+    NgbNavContent,
+    NgbNavItem,
+    NgbNavLink,
+    NgbNavOutlet,
     ...FEATURE_TOGGLE_IMPORTS,
     ProductReviewsComponent,
     AsyncPipe,

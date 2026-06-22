@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -16,7 +16,7 @@ import { ShippingInfoComponent } from '../shipping-info/shipping-info.component'
  */
 @Component({
   selector: 'ish-shipping-radio-wrapper',
-  imports: [NgbPopoverModule, NgClass, ShippingInfoComponent, TranslatePipe],
+  imports: [NgbPopover, NgClass, ShippingInfoComponent, TranslatePipe],
   standalone: true,
   templateUrl: './shipping-radio-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

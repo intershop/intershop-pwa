@@ -1,4 +1,4 @@
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 import { FieldTooltipComponent } from './field-tooltip/field-tooltip.component';
 import { ValidationIconsComponent } from './validation-icons/validation-icons.component';
@@ -8,7 +8,7 @@ const components = [FieldTooltipComponent, ValidationIconsComponent, ValidationM
 
 export const FORMLY_COMPONENTS_IMPORTS = [
   FieldTooltipComponent,
-  NgbPopoverModule,
+  NgbPopover,
   ValidationIconsComponent,
   ValidationMessageComponent,
 ] as const;

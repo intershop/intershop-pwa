@@ -1,4 +1,15 @@
-import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -12,7 +23,23 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-import-page',
-  imports: [AsyncPipe, CdkTableModule, LoadingComponent, NgClass, RouterLink, TranslatePipe],
+  imports: [
+    AsyncPipe,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
+    LoadingComponent,
+    NgClass,
+    RouterLink,
+    TranslatePipe,
+  ],
   standalone: true,
   templateUrl: './cost-center-import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

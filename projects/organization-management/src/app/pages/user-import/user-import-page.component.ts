@@ -1,4 +1,15 @@
-import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -16,7 +27,16 @@ import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-
   selector: 'ish-user-import-page',
   imports: [
     AsyncPipe,
-    CdkTableModule,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
     LoadingComponent,
     NgClass,
     PricePipe,

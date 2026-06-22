@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -10,7 +10,7 @@ import { FORMLY_ADDRESS_FORMS_COMPONENTS } from 'ish-shared/formly-address-forms
 
 @Component({
   selector: 'ish-checkout-address-anonymous-form',
-  imports: [...FORMLY_ADDRESS_FORMS_COMPONENTS, TranslatePipe, NgbCollapseModule, FormlyForm],
+  imports: [...FORMLY_ADDRESS_FORMS_COMPONENTS, TranslatePipe, NgbCollapse, FormlyForm],
   standalone: true,
   templateUrl: './checkout-address-anonymous-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

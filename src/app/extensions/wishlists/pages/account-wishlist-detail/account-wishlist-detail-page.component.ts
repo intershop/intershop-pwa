@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -23,7 +23,7 @@ import { WishlistSharingDialogComponent } from '../../shared/wishlist-sharing-di
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgbPopoverModule,
+    NgbPopover,
     ProductContextDirective,
     RouterLink,
     TranslatePipe,

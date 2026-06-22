@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
@@ -26,7 +26,7 @@ import { OciConfigurationItem } from '../../../models/oci-configuration-item/oci
     FormlyForm,
     FormSubmitDirective,
     LoadingComponent,
-    NgbPopoverModule,
+    NgbPopover,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,

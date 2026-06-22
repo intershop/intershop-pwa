@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, Subject, merge } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -67,7 +67,7 @@ import { PaymentPayoneCreditcardComponent } from '../payment-payone-creditcard/p
     BasketRecurrenceSummaryComponent,
     BasketValidationResultsComponent,
     InfoMessageComponent,
-    NgbCollapseModule,
+    NgbCollapse,
     NgClass,
     PaymentConcardisCreditcardComponent,
     PaymentConcardisCreditcardCvcDetailComponent,

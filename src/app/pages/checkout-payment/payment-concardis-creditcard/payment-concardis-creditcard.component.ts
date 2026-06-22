@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 
@@ -33,7 +33,7 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-creditcard',
   imports: [
     FormControlFeedbackComponent,
-    NgbPopoverModule,
+    NgbPopover,
     NgClass,
     PaymentSaveCheckboxComponent,
     ReactiveFormsModule,

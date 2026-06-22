@@ -1,4 +1,15 @@
-import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -24,7 +35,16 @@ export type RecurringOrderColumnsType =
 @Component({
   selector: 'ish-recurring-order-list',
   imports: [
-    CdkTableModule,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
     DatePipe,
     FrequencyPipe,
     ModalDialogComponent,

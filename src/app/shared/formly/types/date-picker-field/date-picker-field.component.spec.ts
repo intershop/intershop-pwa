@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgbCalendar, NgbDate, NgbDatepickerModule, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -38,7 +38,7 @@ describe('Date Picker Field Component', () => {
       ],
     })
       .overrideComponent(DatePickerFieldComponent, {
-        remove: { imports: [NgbDatepickerModule] },
+        remove: { imports: [NgbInputDatepicker] },
         add: { imports: [MockDirective(NgbInputDatepicker)] },
       })
       .compileComponents();

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -32,7 +31,7 @@ describe('Mini Basket Component', () => {
     when(appFacade.routingInProgress$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [MiniBasketComponent, NgbDropdownModule, TranslateModule.forRoot()],
+      imports: [MiniBasketComponent, TranslateModule.forRoot()],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },

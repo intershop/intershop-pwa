@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
-import { FormlySelectModule } from '@ngx-formly/core/select';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
@@ -13,7 +13,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 
 @Component({
   selector: 'ish-search-select-field',
-  imports: [AsyncPipe, FormlySelectModule, NgClass, NgSelectModule, ReactiveFormsModule],
+  imports: [AsyncPipe, FormlySelectOptionsPipe, NgClass, NgSelectModule, ReactiveFormsModule],
   standalone: true,
   templateUrl: './search-select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,

@@ -14,7 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbCollapseModule, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, distinctUntilChanged, map, shareReplay, takeUntil } from 'rxjs';
@@ -123,7 +123,7 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
 
 @Component({
   selector: 'ish-account-order-filters',
-  imports: [AsyncPipe, FormlyForm, NgbCollapseModule, ReactiveFormsModule, TranslatePipe],
+  imports: [AsyncPipe, FormlyForm, NgbCollapse, ReactiveFormsModule, TranslatePipe],
   standalone: true,
   templateUrl: './account-order-filters.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

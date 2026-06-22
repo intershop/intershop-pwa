@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { NgbDropdown, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, concat, of, timer } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -31,8 +31,10 @@ import { MiniBasketContentComponent } from 'ish-shared/components/basket/mini-ba
     AsyncPipe,
     ClickOutsideDirective,
     MiniBasketContentComponent,
-    NgbDropdownModule,
-    NgbPopoverModule,
+    NgbDropdown,
+    NgbDropdownMenu,
+    NgbDropdownToggle,
+    NgbPopover,
     NgClass,
     PricePipe,
     RouterLink,

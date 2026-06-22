@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNav, NgbNavItem, NgbNavLink } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
@@ -23,7 +23,9 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
     AsyncPipe,
     ErrorMessageComponent,
     LoadingComponent,
-    NgbNavModule,
+    NgbNav,
+    NgbNavItem,
+    NgbNavLink,
     RequisitionsListComponent,
     RouterLink,
     TranslatePipe,

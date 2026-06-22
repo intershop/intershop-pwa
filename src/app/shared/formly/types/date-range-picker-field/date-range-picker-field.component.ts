@@ -14,7 +14,7 @@ import {
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbDateStruct,
-  NgbDatepickerModule,
+  NgbInputDatepicker,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -42,7 +42,7 @@ function toObservableNumber(days: number | Observable<number>) {
  */
 @Component({
   selector: 'ish-date-range-picker-field',
-  imports: [AsyncPipe, FormlyAttributes, NgbDatepickerModule, NgClass, TranslatePipe],
+  imports: [AsyncPipe, FormlyAttributes, NgbInputDatepicker, NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './date-range-picker-field.component.html',
   styleUrls: ['./date-range-picker-field.component.scss'],

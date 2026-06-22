@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
@@ -24,12 +24,7 @@ describe('Payment Cybersource Creditcard Component', () => {
     })
       .overrideComponent(PaymentCybersourceCreditcardComponent, {
         remove: {
-          imports: [
-            FormControlFeedbackComponent,
-            NgbPopoverModule,
-            PaymentSaveCheckboxComponent,
-            ShowFormFeedbackDirective,
-          ],
+          imports: [FormControlFeedbackComponent, NgbPopover, PaymentSaveCheckboxComponent, ShowFormFeedbackDirective],
         },
         add: {
           imports: [

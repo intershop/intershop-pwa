@@ -1,4 +1,15 @@
-import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,7 +36,16 @@ type CostCenterBuyersListColumnsType = 'actions' | 'budget' | 'buyerName' | 'ord
   selector: 'ish-cost-center-users-list',
   imports: [
     AuthorizationToggleDirective,
-    CdkTableModule,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
     CostCenterBuyerEditDialogComponent,
     ModalDialogComponent,
     NotRoleToggleDirective,

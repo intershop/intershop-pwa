@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -25,7 +25,7 @@ describe('Oci Configuration Form Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, NgbPopoverModule, OciConfigurationFormComponent, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, NgbPopover, OciConfigurationFormComponent, TranslateModule.forRoot()],
       providers: [
         {
           provide: FORMLY_CONFIG,

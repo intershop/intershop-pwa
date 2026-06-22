@@ -1,7 +1,7 @@
 import { DecimalPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
@@ -41,7 +41,7 @@ import { ProductAddToWishlistComponent } from '../../../../extensions/wishlists/
     LineItemEditComponent,
     LineItemInformationEditComponent,
     LineItemWarrantyComponent,
-    NgbPopoverModule,
+    NgbPopover,
     NgClass,
     PricePipe,
     ProductAddToOrderTemplateComponent,

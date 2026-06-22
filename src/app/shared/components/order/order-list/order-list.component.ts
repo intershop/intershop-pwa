@@ -1,4 +1,15 @@
-import { CdkTableModule } from '@angular/cdk/table';
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -32,7 +43,24 @@ export type OrderColumnsType =
  */
 @Component({
   selector: 'ish-order-list',
-  imports: [AddressComponent, CdkTableModule, DatePipe, LoadingComponent, PricePipe, RouterLink, TranslatePipe],
+  imports: [
+    AddressComponent,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
+    DatePipe,
+    LoadingComponent,
+    PricePipe,
+    RouterLink,
+    TranslatePipe,
+  ],
   standalone: true,
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

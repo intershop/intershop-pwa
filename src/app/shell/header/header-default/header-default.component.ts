@@ -1,7 +1,7 @@
 import { DOCUMENT, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { FEATURE_TOGGLE_IMPORTS } from 'ish-core/feature-toggle';
@@ -43,7 +43,7 @@ type CollapsibleComponent = 'minibasket' | 'navbar' | 'search';
     QuickorderLinkComponent,
     WishlistsLinkComponent,
     ...FEATURE_TOGGLE_IMPORTS,
-    NgbCollapseModule,
+    NgbCollapse,
     NgTemplateOutlet,
     LanguageSwitchComponent_1,
     MiniBasketComponent_1,

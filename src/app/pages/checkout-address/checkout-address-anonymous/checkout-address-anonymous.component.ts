@@ -2,7 +2,7 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormGroupDirective, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
@@ -33,7 +33,7 @@ import { CheckoutAddressAnonymousFormComponent } from '../formly/components/chec
     ErrorMessageComponent,
     FeatureToggleDirective,
     IdentityProviderLoginComponent,
-    NgbCollapseModule,
+    NgbCollapse,
     NgClass,
     ReactiveFormsModule,
     RouterLink,

@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -31,7 +31,7 @@ import { AddressDoctorComponent } from '../../../../extensions/address-doctor/sh
     AsyncPipe,
     FormlyCustomerAddressFormComponent,
     FormlyForm,
-    NgbCollapseModule,
+    NgbCollapse,
     ReactiveFormsModule,
     TranslatePipe,
   ],

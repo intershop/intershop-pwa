@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -13,7 +13,7 @@ import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
  */
 @Component({
   selector: 'ish-budget-info',
-  imports: [AsyncPipe, NgbPopoverModule, ServerHtmlDirective, ServerSettingPipe, TranslatePipe],
+  imports: [AsyncPipe, NgbPopover, ServerHtmlDirective, ServerSettingPipe, TranslatePipe],
   standalone: true,
   templateUrl: './budget-info.component.html',
   styleUrls: ['./budget-info.component.scss'],

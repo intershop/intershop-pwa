@@ -10,7 +10,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbCarousel, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
 import { map, take } from 'rxjs/operators';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
@@ -22,7 +22,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-carousel',
-  imports: [ContentPageletComponent, ContentSlotComponent, NgbCarouselModule, NgClass],
+  imports: [ContentPageletComponent, ContentSlotComponent, NgbCarousel, NgClass],
   standalone: true,
   templateUrl: './cms-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

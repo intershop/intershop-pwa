@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -13,7 +13,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
  */
 @Component({
   selector: 'ish-cxml-help-text-wrapper',
-  imports: [NgbCollapseModule, NgClass, ServerHtmlDirective, TranslatePipe],
+  imports: [NgbCollapse, NgClass, ServerHtmlDirective, TranslatePipe],
   standalone: true,
   templateUrl: './cxml-help-text-wrapper.component.html',
   styleUrls: ['./cxml-help-text-wrapper.component.scss'],

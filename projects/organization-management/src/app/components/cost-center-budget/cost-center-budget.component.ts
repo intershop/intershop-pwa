@@ -1,6 +1,6 @@
 import { NgClass, NgStyle, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
@@ -8,7 +8,7 @@ import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 @Component({
   selector: 'ish-cost-center-budget',
-  imports: [NgbPopoverModule, NgClass, NgStyle, PercentPipe, PricePipe, TranslatePipe],
+  imports: [NgbPopover, NgClass, NgStyle, PercentPipe, PricePipe, TranslatePipe],
   standalone: true,
   templateUrl: './cost-center-budget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
