@@ -1,4 +1,4 @@
-export interface WithdrawalInfoData {
+export interface WithdrawalInfo {
   status: 'CREATED' | 'VERIFIED';
   confirmationEmail?: string;
   withdrawalAllowed?: boolean;
