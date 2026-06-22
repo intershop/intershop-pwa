@@ -56,18 +56,10 @@
           <span class="badge text-bg-info">{{ order.status }}</span>
         </dd>
       </dl>
-      @if (order.recurringOrderID) {
-        <span
-          [ishServerHtml]="
-            'account.orderdetails.recurring_order.info'
-              | translate: { link: 'route://account/recurring-orders/' + order.recurringOrderID }
-          "
-        ></span>
-      }
     </div>
 
     @if (order.withdrawal?.withdrawalAllowed || order.withdrawal?.status) {
-      <div class="col-md-6">
+      <div class="col-md-6 mb-2">
         @if (order.withdrawal?.withdrawalAllowed) {
           <a
             [queryParams]="{ orderDocumentNumber: order.documentNo, orderEmail: order.email }"
@@ -96,6 +88,16 @@
             }
           </dl>
         }
+      </div>
+    }
+    @if (order.recurringOrderID) {
+      <div class="col-12">
+        <span
+          [ishServerHtml]="
+            'account.orderdetails.recurring_order.info'
+              | translate: { link: 'route://account/recurring-orders/' + order.recurringOrderID }
+          "
+        ></span>
       </div>
     }
   </div>
