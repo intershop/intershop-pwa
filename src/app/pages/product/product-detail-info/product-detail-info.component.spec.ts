@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -25,9 +25,9 @@ describe('Product Detail Info Component', () => {
     when(context.select('variationCount')).thenReturn(of(0));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('rating'), NgbNavModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('rating'), NgbNavModule, TranslatePipe],
       declarations: [MockDirective(ServerHtmlDirective), ProductDetailInfoComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     }).compileComponents();
   });
 

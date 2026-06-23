@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { ReplaySubject } from 'rxjs';
 
@@ -15,7 +15,8 @@ describe('Suggest Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(SuggestCategoriesTileComponent), SuggestCategoriesComponent, TranslateModule.forRoot()],
+      imports: [MockComponent(SuggestCategoriesTileComponent), SuggestCategoriesComponent, TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

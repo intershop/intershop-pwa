@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -24,9 +24,10 @@ describe('Maxlength Description Wrapper Component', () => {
           wrappers: [{ name: 'maxlength-description-wrapper', component: MaxlengthDescriptionWrapperComponent }],
         }),
         FormlyTestingComponentsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       declarations: [MaxlengthDescriptionWrapperComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
@@ -13,8 +13,9 @@ describe('Back To Top Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [BackToTopComponent, MockPipe(FeatureTogglePipe, () => true)],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
@@ -25,7 +25,8 @@ describe('Account Profile Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, () => true),
       ],
-      imports: [IdentityProviderModule.forTesting(), TranslateModule.forRoot()],
+      imports: [IdentityProviderModule.forTesting(), TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

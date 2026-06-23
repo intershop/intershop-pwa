@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -16,8 +16,8 @@ describe('Checkout Receipt Order Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CheckoutReceiptOrderComponent, MockComponent(ModalDialogLinkComponent)],
-      imports: [RouterModule, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [RouterModule, TranslatePipe],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

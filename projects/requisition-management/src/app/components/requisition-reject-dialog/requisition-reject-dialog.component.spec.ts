@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
@@ -16,8 +16,9 @@ describe('Requisition Reject Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
       declarations: [MockComponent(ModalDialogComponent), RequisitionRejectDialogComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

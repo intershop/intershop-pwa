@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { HeaderSimpleComponent } from './header-simple.component';
 
@@ -10,8 +10,9 @@ describe('Header Simple Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [HeaderSimpleComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

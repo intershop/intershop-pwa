@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -27,10 +27,11 @@ describe('Wishlist Widget Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(ProductsListComponent), WishlistWidgetComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

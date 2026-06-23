@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { of } from 'rxjs';
@@ -21,8 +21,8 @@ describe('Captcha V3 Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-      imports: [RecaptchaV3Module, TranslateModule.forRoot()],
-      providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey }],
+      imports: [RecaptchaV3Module, TranslatePipe],
+      providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey }, provideTranslateService()],
     }).compileComponents();
   });
 
@@ -86,10 +86,11 @@ describe('Captcha V3 Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective), WrapperComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
       providers: [
         { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
         { provide: ReCaptchaV3Service, useFactory: () => instance(recaptchaV3Service) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

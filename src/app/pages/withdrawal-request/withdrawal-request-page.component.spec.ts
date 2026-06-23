@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap, convertToParamMap } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
 import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
@@ -30,7 +30,7 @@ describe('Withdrawal Request Page Component', () => {
     queryParamMap$ = new BehaviorSubject<ParamMap>(convertToParamMap({}));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         MockComponent(WithdrawalRequestFormComponent),
         MockDirective(ServerHtmlDirective),
@@ -41,6 +41,7 @@ describe('Withdrawal Request Page Component', () => {
           provide: ActivatedRoute,
           useValue: { queryParamMap: queryParamMap$ },
         },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(WithdrawalRequestPageComponent, {

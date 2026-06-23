@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -82,7 +82,7 @@ describe('Wishlist Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        TranslateModule.forRoot(),
+        TranslatePipe,
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
@@ -90,6 +90,7 @@ describe('Wishlist Effects', () => {
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
         provideMockActions(() => actions$),
         provideRouter([{ path: 'account/wishlists/:wishlistName', children: [] }]),
+        provideTranslateService(),
         WishlistEffects,
       ],
     });
