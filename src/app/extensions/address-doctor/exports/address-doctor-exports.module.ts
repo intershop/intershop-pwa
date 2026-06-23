@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
@@ -9,7 +9,7 @@ import { LazyAddressDoctorComponent } from './lazy-address-doctor/lazy-address-d
 
 @NgModule({
   declarations: [LazyAddressDoctorComponent],
-  imports: [CommonModule, FeatureToggleModule, TranslateModule],
+  imports: [CommonModule, FeatureToggleModule, TranslatePipe],
   exports: [LazyAddressDoctorComponent],
   providers: [
     {

@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, NgModule, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { timer } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
@@ -77,7 +77,7 @@ export class CaptchaV3Component implements OnInit {
 
 @NgModule({
   declarations: [CaptchaV3Component],
-  imports: [DirectivesModule, RecaptchaV3Module, TranslateModule],
+  imports: [DirectivesModule, RecaptchaV3Module, TranslatePipe],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -72,7 +72,7 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     SearchBoxComponent,
     SeoExportsModule,
     TrackingExportsModule,
-    TranslateModule,
+    TranslatePipe,
     WishlistsExportsModule,
   ],
   exports: [...exportedComponents],

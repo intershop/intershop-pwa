@@ -39,24 +39,22 @@
           <button
             class="btn btn-link decrease-button"
             tabindex="-1"
-            translate
             type="button"
             [attr.data-testing-id]="'decrease-quantity-' + elementId"
             [disabled]="cannotDecrease$ | async"
             (click)="decrease()"
           >
-            product.quantity.decrease.text
+            {{ 'product.quantity.decrease.text' | translate }}
           </button>
           <button
             class="btn btn-link increase-button"
             tabindex="-1"
-            translate
             type="button"
             [attr.data-testing-id]="'increase-quantity-' + elementId"
             [disabled]="cannotIncrease$ | async"
             (click)="increase()"
           >
-            product.quantity.increase.text
+            {{ 'product.quantity.increase.text' | translate }}
           </button>
           <input
             class="form-control text-center"

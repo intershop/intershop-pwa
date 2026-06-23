@@ -32,12 +32,21 @@ For production deployments, the `ALLOWED_HOSTS` environment variable must be set
 The [`eslint-plugin-perfectionist`](https://perfectionist.dev/) plugin has been added to enforce a consistent sorting of certain code constructs.
 It sorts arrays (`sort-arrays`), enums (`sort-enums`), as well as union and intersection types (`sort-union-types`, `sort-intersection-types`).
 
-**ngx-translate 17 upgrade**
+**ngx-translate 17 + 18 upgrade**
 
-The package `@ngx-translate/core` has been updated to version 17.
-The custom `FallbackMissingTranslationHandler` has been adjusted to check loaded translations via `TranslateStore`.
+The package `@ngx-translate/core` has been updated to version 17 and subsequently to version 18.
+
+With version 17, the custom `FallbackMissingTranslationHandler` has been adjusted to check loaded translations via `TranslateStore`.
 In addition, the `TranslateService.currentLang` property has been replaced by the `getCurrentLang()` method.
 For all breaking changes, see the [ngx-translate Migration guide v16 → v17](https://ngx-translate.org/v17/getting-started/migration-guide/).
+
+With version 18, `TranslateModule` has been removed.
+The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`, and the `forChild()` imports are no longer needed.
+The same applies to test setups, where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
+`TranslatePipe` and `TranslateDirective` are now standalone and have to be added directly to the `imports` of the consuming modules (or standalone components) where the `translate` pipe or directive is used.
+The element-text-as-key form of the `translate` directive (for example `<span translate>my.key</span>`) is deprecated in version 18 and removed in version 19; use the `translate` pipe (`{{ 'my.key' | translate }}`) or the bound directive (`[translate]="'my.key'"`) instead.
+The `getCurrentLang()` method can now return `undefined`, so any custom code relying on it has to handle that case.
+For all breaking changes, see the [ngx-translate Migration guide v17 → v18](https://ngx-translate.org/getting-started/migration-guide/).
 
 **Swiper 12 upgrade**
 
