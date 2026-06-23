@@ -1,9 +1,7 @@
-<a
-  class="btn btn-secondary"
-  routerLink="/login"
-  translate
-  [ngClass]="signInClass"
-  [queryParams]="{ returnUrl: returnUrl }"
->
-  account.signin.auth0.button.label
-</a>
+<div class="row form-group">
+  <div [ngClass]="signInClass || 'col-md-auto'">
+    <a class="btn btn-secondary" routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">
+      {{ 'account.signin.auth0.button.label' | translate }}
+    </a>
+  </div>
+</div>

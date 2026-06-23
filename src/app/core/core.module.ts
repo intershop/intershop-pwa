@@ -2,7 +2,7 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AppearanceModule } from './appearance.module';
 import { ConfigurationModule } from './configuration.module';
@@ -27,9 +27,9 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     InternationalizationModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
     StateManagementModule,
+    TranslatePipe,
   ],
-  // exports needed to use the cookie banner in the AppComponent
-  exports: [TranslateModule],
+  exports: [TranslatePipe],
   providers: [
     // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
     // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },

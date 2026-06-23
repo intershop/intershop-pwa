@@ -11,7 +11,7 @@ import {
   NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -198,7 +198,7 @@ const importExportModules = [
   RecentlyExportsModule,
   RoleToggleModule,
   RouterModule,
-  TranslateModule,
+  TranslatePipe,
   WishlistsExportsModule,
 ];
 
