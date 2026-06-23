@@ -1,6 +1,6 @@
 @if (filterNavigation) {
   <div class="filter-panel">
-    @for (element of filterNavigation.filter; track element) {
+    @for (element of filterNavigation.filter; track element.id) {
       <ish-filter-collapsible [filterElement]="element" [(collapsed)]="collapsedElements[element.name]">
         @switch (element.displayType) {
           @case ('checkbox') {

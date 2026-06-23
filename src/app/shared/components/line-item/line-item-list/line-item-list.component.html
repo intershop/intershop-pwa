@@ -11,7 +11,7 @@
     <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.total.heading' | translate }}</div>
   </div>
   <div class="list-body">
-    @for (pli of displayItems; track pli; let i = $index) {
+    @for (pli of displayItems; track pli.id; let i = $index) {
       <ish-line-item-list-element
         ishProductContext
         [allowZeroQuantity]="true"
