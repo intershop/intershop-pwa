@@ -1158,7 +1158,7 @@ function createReplacementReport(
     configuration,
     dataTestingIdTemplatesStripped,
     generatedIndex,
-    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload in the Angular child process.',
+    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload in the Angular child process. Webpack keep_classnames=/.*Module$/ is intentionally not migrated: the application builder does not expose a scoped keepNames option, and no runtime dependency on Angular module class names is known.',
     production,
     purgeCss,
     resourceOverlayApplied: Object.keys(resourceReplacements).length > 0,
