@@ -1,7 +1,7 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 
@@ -15,8 +15,9 @@ describe('Cost Center Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, TranslatePipe],
       declarations: [CostCenterBudgetComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

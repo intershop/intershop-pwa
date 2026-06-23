@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -27,14 +27,14 @@ describe('Basket Promotion Component', () => {
     when(appFacade.icmBaseUrl).thenReturn('example.org');
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         BasketPromotionComponent,
         MockComponent(PromotionDetailsComponent),
         MockComponent(PromotionRemoveComponent),
         MockDirective(ServerHtmlDirective),
       ],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

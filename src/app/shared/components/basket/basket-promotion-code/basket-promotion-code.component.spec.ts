@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -21,9 +21,9 @@ describe('Basket Promotion Code Component', () => {
     when(checkoutFacade.basket$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
       declarations: [BasketPromotionCodeComponent, MockComponent(ErrorMessageComponent), MockDirective(NgbCollapse)],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

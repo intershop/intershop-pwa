@@ -1,7 +1,7 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -27,12 +27,8 @@ describe('Formly Customer Address Form Component', () => {
         MockComponent(FormlyAddressExtensionFormComponent),
         MockComponent(FormlyAddressFormComponent),
       ],
-      imports: [
-        FeatureToggleModule.forTesting('businessCustomerRegistration'),
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-      ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      imports: [FeatureToggleModule.forTesting('businessCustomerRegistration'), ReactiveFormsModule, TranslatePipe],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

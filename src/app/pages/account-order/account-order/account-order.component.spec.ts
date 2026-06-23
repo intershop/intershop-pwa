@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -38,7 +38,8 @@ describe('Account Order Component', () => {
         MockPipe(DatePipe),
         MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
       ],
-      imports: [FeatureToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

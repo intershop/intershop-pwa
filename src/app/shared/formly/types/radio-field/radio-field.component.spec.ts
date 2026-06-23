@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -22,8 +22,9 @@ describe('Radio Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

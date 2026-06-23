@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -29,11 +29,12 @@ describe('Contact Form Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ContactFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(mockAppFacade) },
         { provide: ContactUsFacade, useFactory: () => instance(contactUsFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

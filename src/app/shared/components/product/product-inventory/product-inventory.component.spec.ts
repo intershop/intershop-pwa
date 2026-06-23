@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -21,9 +21,9 @@ describe('Product Inventory Component', () => {
     when(context.select('inventory', 'availableStock')).thenReturn(of(-1));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [ProductInventoryComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     }).compileComponents();
   });
 

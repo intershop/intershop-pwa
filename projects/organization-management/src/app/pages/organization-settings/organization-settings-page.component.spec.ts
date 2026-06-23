@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -27,14 +27,14 @@ describe('Organization Settings Page Component', () => {
     when(accountFacade.customer$).thenReturn(of(customer));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [
         MockComponent(ModalDialogComponent),
         MockDirective(ServerHtmlDirective),
         MockPipe(ServerSettingPipe, () => true),
         OrganizationSettingsPageComponent,
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

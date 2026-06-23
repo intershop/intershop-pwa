@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
@@ -16,8 +16,9 @@ describe('Order Template Preferences Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
       declarations: [MockComponent(ModalDialogComponent), OrderTemplatePreferencesDialogComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

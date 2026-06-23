@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,11 +30,12 @@ describe('Mini Basket Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [MiniBasketComponent, MockComponent(LazyMiniBasketContentComponent), PricePipe],
-      imports: [NgbDropdownModule, TranslateModule.forRoot()],
+      imports: [NgbDropdownModule, TranslatePipe],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

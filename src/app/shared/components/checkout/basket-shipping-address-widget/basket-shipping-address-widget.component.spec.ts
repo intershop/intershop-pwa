@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -38,7 +38,7 @@ describe('Basket Shipping Address Widget Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslatePipe],
       declarations: [
         BasketShippingAddressWidgetComponent,
         MockComponent(AddressComponent),
@@ -50,6 +50,7 @@ describe('Basket Shipping Address Widget Component', () => {
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

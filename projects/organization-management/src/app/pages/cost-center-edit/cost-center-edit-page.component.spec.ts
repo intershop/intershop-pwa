@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -32,9 +32,12 @@ describe('Cost Center Edit Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
       declarations: [CostCenterEditPageComponent, MockComponent(CostCenterFormComponent)],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
 
     when(organizationManagementFacade.selectedCostCenter$).thenReturn(of(costCenter));

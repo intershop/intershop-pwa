@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
@@ -23,9 +23,9 @@ describe('Product Detail Actions Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('compare'), TranslatePipe],
       declarations: [MockComponent(LazyProductSendToCompareComponent), ProductDetailActionsComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -39,7 +39,7 @@ describe('Product Review Create Dialog Component', () => {
     when(accountFacade.user$).thenReturn(of({ firstName: 'Patricia', lastName: 'Miller' } as User));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
       declarations: [
         MockComponent(ModalDialogComponent),
         MockDirective(FormSubmitDirective),
@@ -48,6 +48,7 @@ describe('Product Review Create Dialog Component', () => {
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductReviewsFacade, useFactory: () => instance(reviewsFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective } from 'ngx-mask';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -24,8 +24,9 @@ describe('Text Input Field Component', () => {
         FormlyTestingComponentsModule,
         NgxMaskDirective,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

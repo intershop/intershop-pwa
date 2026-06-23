@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -16,7 +16,8 @@ describe('Basket Address Summary Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BasketAddressSummaryComponent, MockComponent(AddressComponent)],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

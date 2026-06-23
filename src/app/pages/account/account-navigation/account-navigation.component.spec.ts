@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -31,9 +31,9 @@ describe('Account Navigation Component', () => {
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_PURCHASE'),
         RoleToggleModule.forTesting(),
         RouterModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

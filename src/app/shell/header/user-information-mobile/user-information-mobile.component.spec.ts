@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -19,7 +19,7 @@ describe('User Information Mobile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists'), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('compare', 'quickorder', 'wishlists'), TranslatePipe],
       declarations: [
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LazyQuickorderLinkComponent),
@@ -27,6 +27,7 @@ describe('User Information Mobile Component', () => {
         MockComponent(LoginStatusComponent),
         UserInformationMobileComponent,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

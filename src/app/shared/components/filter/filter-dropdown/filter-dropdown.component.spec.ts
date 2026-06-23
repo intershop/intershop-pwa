@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
@@ -26,8 +26,9 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgSelectModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [NgSelectModule, ReactiveFormsModule, TranslatePipe],
       declarations: [FilterDropdownComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FilterDropdownComponent);

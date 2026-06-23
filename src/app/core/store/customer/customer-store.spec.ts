@@ -2,7 +2,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -91,7 +91,7 @@ describe('Customer Store', () => {
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
         CustomerStoreModule,
         ShoppingStoreModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
@@ -111,6 +111,7 @@ describe('Customer Store', () => {
           },
         ]),
         provideStoreSnapshots(),
+        provideTranslateService(),
       ],
     });
 

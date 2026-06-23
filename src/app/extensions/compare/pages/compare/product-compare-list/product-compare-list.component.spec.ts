@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -70,7 +70,7 @@ describe('Product Compare List Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslatePipe],
       declarations: [
         MockComponent(ProductAttributesComponent),
         MockComponent(ProductComparePagingComponent),
@@ -85,6 +85,7 @@ describe('Product Compare List Component', () => {
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

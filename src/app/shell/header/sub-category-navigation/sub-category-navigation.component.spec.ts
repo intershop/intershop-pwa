@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -34,12 +34,13 @@ describe('Sub Category Navigation Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslatePipe],
       declarations: [SubCategoryNavigationComponent],
       providers: [
         { provide: MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH, useValue: 2 },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

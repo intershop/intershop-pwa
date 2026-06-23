@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
@@ -64,8 +64,7 @@ describe('Orders Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user', 'orders', 'basket'),
-
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       providers: [
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
@@ -82,6 +81,7 @@ describe('Orders Effects', () => {
           { path: 'account/orders/:orderId', children: [] },
           { path: '**', children: [] },
         ]),
+        provideTranslateService(),
       ],
     });
 

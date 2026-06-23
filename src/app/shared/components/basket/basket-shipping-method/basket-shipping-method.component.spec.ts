@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -15,11 +15,12 @@ describe('Basket Shipping Method Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         BasketShippingMethodComponent,
         MockPipe(DatePipe, value => formatDate(new Date(Date.parse(value as string)), 'mediumDate', 'en-US')),
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,14 +24,14 @@ describe('Mini Basket Content Component', () => {
     when(checkoutFacade.basketLineItems$).thenReturn(of([lineItem, lineItem, lineItem]));
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslatePipe],
       declarations: [
         MiniBasketContentComponent,
         MockComponent(ProductNameComponent),
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

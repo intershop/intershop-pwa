@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
@@ -15,9 +15,9 @@ describe('Info Message Component', () => {
   beforeEach(async () => {
     messageFacade = mock(MessageFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [InfoMessageComponent],
-      providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }],
+      providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
@@ -41,7 +41,7 @@ describe('Quote Line Item List Element Component', () => {
     quoteContext = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslatePipe],
       declarations: [
         MockComponent(LazyProductAddToOrderTemplateComponent),
         MockComponent(LazyProductAddToWishlistComponent),
@@ -58,6 +58,7 @@ describe('Quote Line Item List Element Component', () => {
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
         { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

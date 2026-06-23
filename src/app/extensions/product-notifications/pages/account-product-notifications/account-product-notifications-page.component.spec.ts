@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,7 +22,7 @@ describe('Account Product Notifications Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslateModule.forRoot()],
+      imports: [NgbNavModule, RouterModule, TranslatePipe],
       declarations: [
         AccountProductNotificationsPageComponent,
         MockComponent(AccountProductNotificationsListComponent),
@@ -32,6 +32,7 @@ describe('Account Product Notifications Page Component', () => {
       providers: [
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

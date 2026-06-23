@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { ReplaySubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -29,10 +29,11 @@ describe('Suggest Products Component', () => {
     when(shoppingFacade.productInventory$(anything())).thenReturn(of({} as ProductInventory));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

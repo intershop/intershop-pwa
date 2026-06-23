@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -24,8 +24,9 @@ describe('Select Field Component', () => {
         FormlySelectModule,
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

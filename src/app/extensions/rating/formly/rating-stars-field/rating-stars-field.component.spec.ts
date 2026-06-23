@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -28,9 +28,10 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       declarations: [MockComponent(ProductRatingStarComponent), RatingStarsFieldComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

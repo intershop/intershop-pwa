@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -26,10 +26,11 @@ describe('Select Quote Request Modal Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SelectQuoteRequestModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       providers: [
         { provide: NgbModal, useFactory: () => instance(ngbModal) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });
