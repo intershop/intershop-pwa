@@ -246,6 +246,9 @@ function getConfigurationsByTheme(value: string): MatrixConfiguration[] {
 }
 
 function buildConfiguration(matrixConfiguration: MatrixConfiguration, ssr: boolean) {
+  fs.rmSync(join('dist', 'browser'), { force: true, recursive: true });
+  fs.rmSync(join('dist', 'server'), { force: true, recursive: true });
+
   console.log(`application-spike:parity: building webpack ${matrixConfiguration.configuration}`);
   execSync(`npm run ng -- run intershop-pwa:build:${matrixConfiguration.configuration} --progress=false`, {
     stdio: 'inherit',
