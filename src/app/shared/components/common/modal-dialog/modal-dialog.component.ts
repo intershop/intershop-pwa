@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   DestroyRef,
@@ -105,6 +106,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   constructor(
     private ngbModal: NgbModal,
+    private cdRef: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -115,6 +117,8 @@ export class ModalDialogComponent<T> implements OnDestroy {
     this.data = data ? data : undefined;
     // Reset the form's submitted state so validation errors don't persist across modal open/close cycles.
     this.formDirective?.resetForm();
+    // Mark for check to ensure that the modal is rendered with the latest data (this became necessary with ngx-translate v18 with its pipe now being pure).
+    this.cdRef.markForCheck();
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, {
       ...this.options,

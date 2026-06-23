@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ComponentsModule } from 'ish-shared/formly/components/components.module';
 
@@ -32,7 +32,7 @@ const wrapperComponents = [
     CommonModule,
     ComponentsModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
     FormlyBaseModule.forChild({
       wrappers: [
         { name: 'form-field-horizontal', component: HorizontalWrapperComponent },
