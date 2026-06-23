@@ -1,11 +1,21 @@
 // eslint-disable-next-line max-classes-per-file
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input, NgModule, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  Input,
+  NgModule,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
-import { EMPTY, fromEvent } from 'rxjs';
-import { catchError, filter, switchMap } from 'rxjs/operators';
+import { EMPTY, fromEvent, race, timer } from 'rxjs';
+import { catchError, exhaustMap, filter, map, tap } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -25,69 +35,78 @@ import {
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptchaV3Component implements OnInit {
+export class CaptchaV3Component implements OnInit, AfterViewInit {
   @Input({ required: true }) parentForm: FormGroup;
 
   private tokenReady = false;
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(
-    private destroyRef: DestroyRef,
     private elementRef: ElementRef<HTMLElement>,
     private recaptchaV3Service: ReCaptchaV3Service
   ) {}
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
+  }
 
-    if (!SSR) {
-      // Intercept form submit in capture phase: block until a fresh token is available
-      const formElement = this.elementRef.nativeElement.closest('form');
-
-      if (formElement) {
-        const captureOptions: AddEventListenerOptions = { capture: true };
-        let pendingSubmitter: HTMLElement | undefined;
-        fromEvent<SubmitEvent>(formElement, 'submit', captureOptions)
-          .pipe(
-            filter(event => {
-              if (this.tokenReady) {
-                // Token is ready — let the submit propagate to Angular's (ngSubmit)
-                this.tokenReady = false;
-                return false;
-              }
-
-              // Let invalid submits propagate normally so validation UX (e.g. focus first invalid field) is not delayed
-              if (this.parentForm.invalid) {
-                return false;
-              }
-
-              pendingSubmitter = (event.submitter as HTMLElement) || undefined;
-
-              // Block the submit until we have a fresh token
-              event.preventDefault();
-              event.stopPropagation();
-              return true;
-            }),
-            switchMap(() =>
-              this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value).pipe(
-                whenTruthy(),
-                catchError(() => {
-                  pendingSubmitter = undefined;
-                  return EMPTY;
-                })
-              )
-            ),
-            takeUntilDestroyed(this.destroyRef)
-          )
-          .subscribe(token => {
-            this.parentForm.get('captcha').setValue(token);
-            this.parentForm.get('captcha').updateValueAndValidity();
-            this.tokenReady = true;
-            // Re-trigger submit — this time it will pass through
-            formElement.requestSubmit(pendingSubmitter);
-            pendingSubmitter = undefined;
-          });
-      }
+  ngAfterViewInit() {
+    if (SSR) {
+      return;
     }
+
+    const formElement = this.elementRef.nativeElement.closest('form');
+    if (!formElement) {
+      return;
+    }
+
+    // Intercept form submit in capture phase: block until a fresh reCAPTCHA token is obtained,
+    // then re-trigger the submit so Angular's (ngSubmit) fires with the token in place.
+    let pendingSubmitter: HTMLElement;
+    fromEvent<SubmitEvent>(formElement, 'submit', { capture: true })
+      .pipe(
+        filter(event => this.interceptSubmit(event)),
+        tap(event => {
+          pendingSubmitter = event.submitter;
+          event.preventDefault();
+          event.stopPropagation();
+        }),
+        exhaustMap(() => this.requestToken()),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(token => {
+        this.applyTokenAndResubmit(token, formElement, pendingSubmitter);
+        pendingSubmitter = undefined;
+      });
+  }
+
+  private interceptSubmit(_event: SubmitEvent): boolean {
+    if (this.tokenReady) {
+      this.tokenReady = false;
+      return false;
+    }
+    // Clear previous captcha errors so they don't block a retry
+    this.parentForm.get('captcha').setErrors(undefined);
+    return this.parentForm.valid;
+  }
+
+  private requestToken() {
+    const token$ = this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value).pipe(whenTruthy());
+    const timeout$ = timer(5000).pipe(
+      map(() => {
+        throw new Error('reCAPTCHA token request timed out');
+      })
+    );
+
+    return race(token$, timeout$).pipe(catchError(() => EMPTY));
+  }
+
+  private applyTokenAndResubmit(token: string, formElement: HTMLFormElement, submitter: HTMLElement) {
+    this.parentForm.get('captcha').setValue(token);
+    this.parentForm.get('captcha').updateValueAndValidity();
+    this.tokenReady = true;
+    formElement.requestSubmit(submitter);
   }
 }
 

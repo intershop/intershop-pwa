@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
@@ -61,7 +61,9 @@ describe('Captcha V3 Component', () => {
 });
 
 @Component({
-  template: `<form [formGroup]="form"><ish-captcha-v3 [parentForm]="form" /></form>`,
+  template: `<form [formGroup]="form">
+    <ish-captcha-v3 [parentForm]="form" /><button type="submit">Submit</button>
+  </form>`,
 })
 class WrapperComponent {
   @ViewChild(CaptchaV3Component) captchaComponent: CaptchaV3Component;
@@ -99,22 +101,24 @@ describe('Captcha V3 Component', () => {
 
   it('should block initial submit and fetch a token', fakeAsync(() => {
     const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
     const ngSubmitSpy = jest.fn();
     formElement.addEventListener('submit', ngSubmitSpy);
 
-    formElement.requestSubmit();
-    tick();
+    submitButton.click();
+    flush();
 
     expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
   }));
 
   it('should re-trigger submit after token is set', fakeAsync(() => {
     const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
     let submitCount = 0;
     formElement.addEventListener('submit', () => submitCount++);
 
-    formElement.requestSubmit();
-    tick();
+    submitButton.click();
+    flush();
 
     // First submit is blocked, second submit passes through after token is ready
     expect(submitCount).toBeGreaterThanOrEqual(1);
@@ -123,20 +127,22 @@ describe('Captcha V3 Component', () => {
 
   it('should set captcha token value in the parent form', fakeAsync(() => {
     const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
 
     expect(wrapper.form.get('captcha').value).toBeEmpty();
 
-    formElement.requestSubmit();
-    tick();
+    submitButton.click();
+    flush();
 
     expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
   }));
 
   it('should fetch a fresh token on every submit', fakeAsync(() => {
     const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
 
-    formElement.requestSubmit();
-    tick();
+    submitButton.click();
+    flush();
 
     expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
 
@@ -144,8 +150,8 @@ describe('Captcha V3 Component', () => {
     wrapper.form.get('captcha').setValue('');
     when(recaptchaV3Service.execute('testAction')).thenReturn(of('mock-token-456'));
 
-    formElement.requestSubmit();
-    tick();
+    submitButton.click();
+    flush();
 
     expect(wrapper.form.get('captcha').value).toEqual('mock-token-456');
   }));
