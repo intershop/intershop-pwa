@@ -32,7 +32,7 @@ export class CaptchaV3Component implements OnInit {
 
   constructor(
     private destroyRef: DestroyRef,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private recaptchaV3Service: ReCaptchaV3Service
   ) {}
 
@@ -54,6 +54,12 @@ export class CaptchaV3Component implements OnInit {
                 this.tokenReady = false;
                 return false;
               }
+
+              // Let invalid submits propagate normally so validation UX (e.g. focus first invalid field) is not delayed
+              if (this.parentForm.invalid) {
+                return false;
+              }
+
               pendingSubmitter = (event.submitter as HTMLElement) || undefined;
 
               // Block the submit until we have a fresh token
