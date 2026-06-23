@@ -1225,6 +1225,10 @@ function isWatchMode(args: string[]): boolean {
   return args.some(arg => arg === '--watch' || arg === '--watch=true');
 }
 
+function isStatsJsonMode(args: string[]): boolean {
+  return getNpmConfigFlag('stats_json') || args.some(arg => arg === '--stats-json' || arg === '--stats-json=true');
+}
+
 function isDryRun(args: string[]): boolean {
   return args.includes('--dry-run') || getNpmConfigFlag('dry_run');
 }
@@ -1349,6 +1353,7 @@ async function run() {
       output: 'index.html',
     },
     polyfills: getApplicationBuilderPolyfills(target.options),
+    statsJson: isStatsJsonMode(remainingArgs) || target.options.statsJson,
     stylePreprocessorOptions: {
       ...((target.options.stylePreprocessorOptions as Record<string, unknown>) || {}),
       includePaths: [`src/styles/themes/${theme}`],
