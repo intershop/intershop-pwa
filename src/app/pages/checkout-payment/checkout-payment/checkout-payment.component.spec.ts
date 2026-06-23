@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
@@ -56,10 +56,11 @@ describe('Checkout Payment Component', () => {
         MockPipe(PricePipe),
         PaymentParameterFormComponent,
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
       providers: [
         { provide: PaypalConfigService, useValue: { getPaypalAdapterType: (): undefined => undefined } },
         provideRouter([{ path: 'checkout/review', children: [] }]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutPaymentComponent, {

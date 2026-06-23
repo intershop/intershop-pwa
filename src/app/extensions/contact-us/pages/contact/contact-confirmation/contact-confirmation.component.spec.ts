@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { ContactConfirmationComponent } from './contact-confirmation.component';
 
@@ -11,7 +11,8 @@ describe('Contact Confirmation Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ContactConfirmationComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

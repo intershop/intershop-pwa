@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -147,11 +147,12 @@ describe('Paypal Card Fields Adapter', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalCardFieldsAdapter, useClass: TestablePaypalCardFields },
         { provide: PaypalConfigService, useValue: paypalConfigServiceMock },
+        provideTranslateService(),
       ],
     });
 

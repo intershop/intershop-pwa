@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -27,9 +27,9 @@ describe('Direct Order Component', () => {
     when(checkoutFacade.basketMaxItemQuantity$).thenReturn(of(100));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [DirectOrderComponent, MockComponent(ProductQuantityComponent)],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     })
       .overrideComponent(DirectOrderComponent, {
         set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }] },

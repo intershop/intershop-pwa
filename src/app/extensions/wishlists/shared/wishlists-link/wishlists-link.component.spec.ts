@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -19,8 +19,12 @@ describe('Wishlists Link Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [WishlistsLinkComponent],
-      imports: [RouterModule, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }, provideRouter([])],
+      imports: [RouterModule, TranslatePipe],
+      providers: [
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

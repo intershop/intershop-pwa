@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, UntypedFormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -21,9 +21,9 @@ describe('Basket Order Reference Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [BasketOrderReferenceComponent],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -14,8 +14,9 @@ describe('Home Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [HomePageComponent, MockComponent(ContentIncludeComponent), MockPipe(ServerSettingPipe)],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

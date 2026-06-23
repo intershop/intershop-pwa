@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -89,8 +89,8 @@ describe('Account Addresses Component', () => {
           MockComponent(LazyAddressDoctorComponent),
           MockComponent(ModalDialogComponent),
         ],
-        imports: [FeatureToggleModule.forTesting(), FormlyTestingModule, TranslateModule.forRoot()],
-        providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+        imports: [FeatureToggleModule.forTesting(), FormlyTestingModule, TranslatePipe],
+        providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
       })
         .overrideComponent(AccountAddressesComponent, {
           set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -309,10 +309,11 @@ describe('Account Addresses Component', () => {
           MockComponent(ErrorMessageComponent),
           MockComponent(LazyAddressDoctorComponent),
         ],
-        imports: [FeatureToggleModule.forTesting('addressDoctor'), TranslateModule.forRoot()],
+        imports: [FeatureToggleModule.forTesting('addressDoctor'), TranslatePipe],
         providers: [
           { provide: AccountFacade, useFactory: () => instance(accountFacade) },
           { provide: FeatureEventService, useFactory: () => instance(featureEventService) },
+          provideTranslateService(),
         ],
       })
         .overrideComponent(AccountAddressesComponent, {

@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { HeaderErrorComponent } from './header-error.component';
 
@@ -11,9 +11,9 @@ describe('Header Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [HeaderErrorComponent],
-      providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
+      providers: [{ provide: APP_BASE_HREF, useValue: '/' }, provideTranslateService()],
     }).compileComponents();
   });
 

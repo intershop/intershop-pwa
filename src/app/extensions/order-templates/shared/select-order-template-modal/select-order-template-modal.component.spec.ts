@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -55,8 +55,11 @@ describe('Select Order Template Modal Component', () => {
         MockComponent(SelectOrderTemplateFormComponent),
         SelectOrderTemplateModalComponent,
       ],
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

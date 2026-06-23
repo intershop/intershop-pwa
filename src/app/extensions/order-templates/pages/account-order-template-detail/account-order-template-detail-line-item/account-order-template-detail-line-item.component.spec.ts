@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -44,10 +44,11 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(SelectOrderTemplateModalComponent),
         MockPipe(DatePipe),
       ],
-      imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslatePipe],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

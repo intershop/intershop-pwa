@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify } from 'ts-mockito';
@@ -22,7 +22,7 @@ describe('Messages Effects', () => {
     toastrServiceMock = mock(ToastrService);
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: ToastrService, useFactory: () => instance(toastrServiceMock) },
         MessagesEffects,
@@ -33,6 +33,7 @@ describe('Messages Effects', () => {
             { selector: getDeviceType, value: 'desktop' },
           ],
         }),
+        provideTranslateService(),
       ],
     });
 

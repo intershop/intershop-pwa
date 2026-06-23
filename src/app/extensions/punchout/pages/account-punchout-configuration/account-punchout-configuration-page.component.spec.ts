@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
@@ -12,8 +12,9 @@ describe('Account Punchout Configuration Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [AccountPunchoutConfigurationPageComponent, MockComponent(OciConfigurationFormComponent)],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

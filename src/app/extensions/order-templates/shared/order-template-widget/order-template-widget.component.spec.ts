@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,11 +30,12 @@ describe('Order Template Widget Component', () => {
     when(orderTemplatesFacade.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslatePipe],
       declarations: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent), OrderTemplateWidgetComponent],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

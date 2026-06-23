@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -23,7 +23,7 @@ describe('Category Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         CategoryCategoriesComponent,
         MockComponent(BreadcrumbComponent),
@@ -33,6 +33,7 @@ describe('Category Categories Component', () => {
         MockDirective(NgbCollapse),
         MockPipe(ServerSettingPipe),
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

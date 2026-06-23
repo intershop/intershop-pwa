@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -17,8 +17,9 @@ describe('Account Profile Email Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [AccountProfileEmailComponent, MockComponent(ErrorMessageComponent)],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

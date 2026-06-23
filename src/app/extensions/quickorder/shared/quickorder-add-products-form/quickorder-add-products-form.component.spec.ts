@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -16,8 +16,8 @@ describe('Quickorder Add Products Form Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QuickorderAddProductsFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      imports: [FormlyTestingModule, TranslatePipe],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

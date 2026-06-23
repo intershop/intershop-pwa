@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { InPlaceEditComponent } from './in-place-edit.component';
 
@@ -27,8 +27,9 @@ describe('In Place Edit Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [DummyComponent, InPlaceEditComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

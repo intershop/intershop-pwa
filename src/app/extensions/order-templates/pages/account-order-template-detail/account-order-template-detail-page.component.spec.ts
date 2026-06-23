@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
@@ -35,7 +35,7 @@ describe('Account Order Template Detail Page Component', () => {
     when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial as OrderTemplate));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
         InPlaceEditComponent,
@@ -44,7 +44,10 @@ describe('Account Order Template Detail Page Component', () => {
         MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
       ],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

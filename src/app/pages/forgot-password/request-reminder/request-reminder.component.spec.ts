@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -24,8 +24,11 @@ describe('Request Reminder Component', () => {
         MockDirective(ServerHtmlDirective),
         RequestReminderComponent,
       ],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      imports: [TranslatePipe],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

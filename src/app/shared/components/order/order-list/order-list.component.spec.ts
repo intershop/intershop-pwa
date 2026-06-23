@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -20,8 +20,9 @@ describe('Order List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, TranslatePipe],
       declarations: [MockComponent(AddressComponent), MockComponent(LoadingComponent), OrderListComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

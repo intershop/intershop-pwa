@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
@@ -18,13 +18,14 @@ describe('Wishlist Sharing Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
       declarations: [
         MockComponent(ModalDialogComponent),
         MockDirective(FormSubmitDirective),
         MockDirective(ServerHtmlDirective),
         WishlistSharingDialogComponent,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

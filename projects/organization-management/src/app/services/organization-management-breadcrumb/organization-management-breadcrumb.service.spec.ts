@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -39,9 +39,12 @@ describe('Organization Management Breadcrumb Service', () => {
         CoreStoreModule.forTesting(['router', 'configuration']),
         FeatureToggleModule.forTesting('costCenters'),
         OrganizationManagementStoreModule.forTesting('users', 'costCenters'),
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
-      providers: [provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }])],
+      providers: [
+        provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),
+        provideTranslateService(),
+      ],
     });
 
     organizationManagementBreadcrumbService = TestBed.inject(OrganizationManagementBreadcrumbService);

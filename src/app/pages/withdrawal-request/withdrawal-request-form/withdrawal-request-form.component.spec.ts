@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
@@ -21,8 +21,8 @@ describe('Withdrawal Request Form Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [WithdrawalRequestFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      imports: [FormlyTestingModule, TranslatePipe],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

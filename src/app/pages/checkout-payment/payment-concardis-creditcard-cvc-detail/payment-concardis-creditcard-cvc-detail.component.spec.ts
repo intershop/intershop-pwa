@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -17,8 +17,11 @@ describe('Payment Concardis Creditcard Cvc Detail Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PaymentConcardisCreditcardCvcDetailComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
+      imports: [FormlyTestingModule, TranslatePipe],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

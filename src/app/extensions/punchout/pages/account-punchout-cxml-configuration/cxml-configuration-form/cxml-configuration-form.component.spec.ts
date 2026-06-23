@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -22,9 +22,13 @@ describe('Cxml Configuration Form Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, RouterModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, RouterModule, TranslatePipe],
       declarations: [CxmlConfigurationFormComponent, MockComponent(ErrorMessageComponent), MockComponent(FormlyForm)],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideRouter([])],
+      providers: [
+        { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

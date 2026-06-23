@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -79,14 +79,17 @@ describe('Requisition Widget Component', () => {
   beforeEach(async () => {
     requisitionManagementFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         MockComponent(InfoBoxComponent),
         MockComponent(LoadingComponent),
         MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
         RequisitionWidgetComponent,
       ],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(requisitionManagementFacade) }],
+      providers: [
+        { provide: RequisitionManagementFacade, useFactory: () => instance(requisitionManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

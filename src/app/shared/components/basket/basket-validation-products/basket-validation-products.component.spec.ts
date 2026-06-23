@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -27,7 +27,8 @@ describe('Basket Validation Products Component', () => {
         MockDirective(ProductContextDirective),
         MockPipe(PricePipe),
       ],
-      imports: [MockComponent(ProductImageComponent), TranslateModule.forRoot()],
+      imports: [MockComponent(ProductImageComponent), TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

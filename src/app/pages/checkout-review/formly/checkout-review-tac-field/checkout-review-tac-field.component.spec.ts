@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -24,9 +24,10 @@ describe('Checkout Review Tac Field Component', () => {
         }),
         FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       declarations: [CheckoutReviewTacFieldComponent, MockDirective(ServerHtmlDirective), MockPipe(ServerSettingPipe)],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anyNumber, anyString, instance, mock, verify } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -18,8 +18,8 @@ describe('Quickorder Csv Form Component', () => {
     shoppingFacadeMock = mock(ShoppingFacade);
     await TestBed.configureTestingModule({
       declarations: [QuickorderCsvFormComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useValue: instance(shoppingFacadeMock) }],
+      imports: [ReactiveFormsModule, TranslatePipe],
+      providers: [{ provide: ShoppingFacade, useValue: instance(shoppingFacadeMock) }, provideTranslateService()],
     }).compileComponents();
   });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -18,9 +18,9 @@ describe('Cookies Banner Component', () => {
     const cookiesServiceMock = mock(CookiesService);
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, TranslateModule.forRoot()],
+      imports: [BrowserAnimationsModule, TranslatePipe],
       declarations: [CookiesBannerComponent, MockDirective(ServerHtmlDirective)],
-      providers: [{ provide: CookiesService, useValue: instance(cookiesServiceMock) }],
+      providers: [{ provide: CookiesService, useValue: instance(cookiesServiceMock) }, provideTranslateService()],
     }).compileComponents();
   });
 

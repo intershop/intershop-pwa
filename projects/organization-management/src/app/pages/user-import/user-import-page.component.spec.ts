@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
@@ -17,9 +17,12 @@ describe('User Import Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [UserImportPageComponent],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

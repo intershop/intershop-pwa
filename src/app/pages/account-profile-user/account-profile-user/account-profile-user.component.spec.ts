@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -53,12 +53,13 @@ describe('Account Profile User Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [AccountProfileUserComponent, MockComponent(ErrorMessageComponent)],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibraryMock) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

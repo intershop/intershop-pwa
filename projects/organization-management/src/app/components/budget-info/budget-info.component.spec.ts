@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -16,9 +16,12 @@ describe('Budget Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbPopoverModule, TranslateModule.forRoot()],
+      imports: [NgbPopoverModule, TranslatePipe],
       declarations: [BudgetInfoComponent, MockPipe(ServerSettingPipe, () => true)],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

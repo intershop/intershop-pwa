@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -37,11 +37,12 @@ describe('Content Design View Wrapper Component', () => {
     when(designViewService.isDesignViewMode()).thenReturn(true);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [ContentDesignViewWrapperComponent, MockDirective(ScrollDirective)],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: DesignViewService, useFactory: () => instance(designViewService) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

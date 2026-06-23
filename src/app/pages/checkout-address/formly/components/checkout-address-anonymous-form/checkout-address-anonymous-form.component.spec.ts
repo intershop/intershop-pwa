@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -28,8 +28,9 @@ describe('Checkout Address Anonymous Form Component', () => {
         FeatureToggleModule.forTesting('businessCustomerRegistration'),
         FormlyTestingModule.withPresetMocks(['taxationID']),
         NgbCollapseModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

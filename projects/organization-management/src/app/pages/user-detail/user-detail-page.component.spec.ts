@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -38,9 +38,12 @@ describe('User Detail Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [MockPipe(ServerSettingPipe), UserDetailPageComponent],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

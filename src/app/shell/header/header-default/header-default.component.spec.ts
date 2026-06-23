@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -28,7 +28,7 @@ describe('Header Default Component', () => {
         CommonModule,
         FeatureToggleModule.forTesting('compare'),
         MockComponent(SearchBoxComponent),
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       declarations: [
         HeaderDefaultComponent,
@@ -40,6 +40,7 @@ describe('Header Default Component', () => {
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

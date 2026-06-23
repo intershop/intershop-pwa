@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -26,8 +26,11 @@ describe('Select Order Template Form Component', () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     await TestBed.configureTestingModule({
       declarations: [SelectOrderTemplateFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      imports: [FormlyTestingModule, TranslatePipe],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

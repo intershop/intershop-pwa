@@ -1,6 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -19,9 +19,9 @@ describe('Basket Desired Delivery Date Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [BasketDesiredDeliveryDateComponent],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

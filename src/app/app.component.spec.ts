@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -33,8 +33,12 @@ describe('App Component', () => {
         MockComponent(HeaderComponent),
         MockComponent(LazyCopilotComponent),
       ],
-      imports: [RouterModule, TranslateModule.forRoot()],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideRouter([])],
+      imports: [RouterModule, TranslatePipe],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

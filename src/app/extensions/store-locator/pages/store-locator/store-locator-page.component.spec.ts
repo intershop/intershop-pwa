@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -21,11 +21,12 @@ describe('Store Locator Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [MockComponent(ErrorMessageComponent), StoreLocatorPageComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: StoreLocatorFacade, useFactory: () => instance(storeLocatorFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

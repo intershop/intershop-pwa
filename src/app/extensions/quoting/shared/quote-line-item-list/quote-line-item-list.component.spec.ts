@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -40,8 +40,8 @@ describe('Quote Line Item List Component', () => {
         MockPipe(PricePipe),
         QuoteLineItemListComponent,
       ],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(quoteContext) }],
+      imports: [TranslatePipe],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(quoteContext) }, provideTranslateService()],
     }).compileComponents();
   });
 

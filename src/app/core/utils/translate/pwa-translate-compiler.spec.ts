@@ -1,6 +1,6 @@
 import '@angular/common/locales/global/cy';
 import { TestBed } from '@angular/core/testing';
-import { TranslateCompiler, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { PWATranslateCompiler } from './pwa-translate-compiler';
 
@@ -9,16 +9,15 @@ describe('Pwa Translate Compiler', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
+      teardown: { destroyAfterEach: false },
+      providers: [
+        provideTranslateService({
           compiler: {
             provide: TranslateCompiler,
             useClass: PWATranslateCompiler,
           },
         }),
       ],
-
-      teardown: { destroyAfterEach: false },
     });
 
     translate = TestBed.inject(TranslateService);
@@ -215,16 +214,15 @@ describe('Pwa Translate Compiler', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
+      teardown: { destroyAfterEach: false },
+      providers: [
+        provideTranslateService({
           compiler: {
             provide: TranslateCompiler,
             useClass: PWATranslateCompiler,
           },
         }),
       ],
-
-      teardown: { destroyAfterEach: false },
     });
 
     translate = TestBed.inject(TranslateService);

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -22,7 +22,8 @@ describe('Payment Concardis Directdebit Component', () => {
         MockComponent(PaymentSaveCheckboxComponent),
         PaymentConcardisDirectdebitComponent,
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 
