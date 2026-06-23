@@ -429,24 +429,42 @@ function applyThemeToOutputIndexFiles(theme: string) {
 
 function watchOutputIndexFiles(theme: string): () => void {
   const browserOutputPath = join(RUNNER_CONSTANTS.outputBasePath, 'browser');
+  const indexPath = join(browserOutputPath, 'index.html');
+  const csrIndexPath = join(browserOutputPath, 'index.csr.html');
   const indexFiles = ['index.html', 'index.csr.html', 'index.server.html'].map(indexFile =>
     join(browserOutputPath, indexFile)
   );
   const timestamps = new Map<string, number>();
+  const updateTimestamps = () => {
+    indexFiles.forEach(indexFile => {
+      if (fs.existsSync(indexFile)) {
+        timestamps.set(indexFile, fs.statSync(indexFile).mtimeMs);
+      } else {
+        timestamps.delete(indexFile);
+      }
+    });
+  };
 
   const timer = setInterval(() => {
-    const changed = indexFiles.some(indexFile => {
+    restoreDistRootSupportFiles();
+
+    let changed = false;
+    indexFiles.forEach(indexFile => {
       if (!fs.existsSync(indexFile)) {
-        return false;
+        timestamps.delete(indexFile);
+        return;
       }
       const mtime = fs.statSync(indexFile).mtimeMs;
       const previous = timestamps.get(indexFile);
       timestamps.set(indexFile, mtime);
-      return previous !== undefined && previous !== mtime;
+      if (previous !== undefined && previous !== mtime) {
+        changed = true;
+      }
     });
 
-    if (changed) {
+    if (changed || (!fs.existsSync(indexPath) && fs.existsSync(csrIndexPath))) {
       applyThemeToOutputIndexFiles(theme);
+      updateTimestamps();
     }
   }, 1000);
 

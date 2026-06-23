@@ -7,7 +7,7 @@ import robots from 'express-robots-txt';
 import * as fs from 'fs';
 import { createServer } from 'http';
 import { hostname } from 'os';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import * as client from 'prom-client';
 import { getGlobalDispatcher, install, interceptors, setGlobalDispatcher } from 'undici';
 import { writeHeapSnapshot } from 'v8';
@@ -129,7 +129,65 @@ const DEPLOY_URL = getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
+const BROWSER_FOLDER = resolve(process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser'));
+
+const APPLICATION_BUILDER_LIVE_RELOAD = /^(on|1|true|yes)$/i.test(process.env.APPLICATION_BUILDER_LIVE_RELOAD || '');
+
+function withApplicationBuilderLiveReload(html: string): string {
+  if (!APPLICATION_BUILDER_LIVE_RELOAD || !html.includes('</body>')) {
+    return html;
+  }
+
+  const liveReloadScript = [
+    '<script>',
+    '(() => {',
+    '  let currentSignature;',
+    '  const check = async () => {',
+    '    try {',
+    '      const response = await fetch("/__application-builder-live-reload", { cache: "no-store" });',
+    '      if (!response.ok) return;',
+    '      const nextSignature = await response.text();',
+    '      if (currentSignature === undefined) { currentSignature = nextSignature; return; }',
+    '      if (currentSignature !== nextSignature) window.location.reload();',
+    '    } catch {}',
+    '  };',
+    '  setInterval(check, 1000);',
+    '  check();',
+    '})();',
+    '</script>',
+  ].join('');
+
+  return html.replace('</body>', `${liveReloadScript}</body>`);
+}
+
+function getApplicationBuilderLiveReloadSignature(): string {
+  const entries: string[] = [];
+  const browserAssetPattern = /\.(css|js)$/;
+
+  try {
+    fs.readdirSync(BROWSER_FOLDER)
+      .filter(file => browserAssetPattern.test(file) && !file.endsWith('.map'))
+      .sort()
+      .forEach(file => {
+        const stat = fs.statSync(join(BROWSER_FOLDER, file));
+        entries.push(`${file}:${stat.mtimeMs}:${stat.size}`);
+      });
+  } catch {
+    entries.push('browser-folder-missing');
+  }
+
+  try {
+    const serverEntry = process.argv[1];
+    if (serverEntry) {
+      const stat = fs.statSync(serverEntry);
+      entries.push(`server:${stat.mtimeMs}:${stat.size}`);
+    }
+  } catch {
+    entries.push('server-entry-missing');
+  }
+
+  return entries.join('|');
+}
 
 // The Express app is exported so that it can be used by serverless Functions.
 // eslint-disable-next-line complexity
@@ -393,6 +451,18 @@ export function app() {
     server.use('/INTERSHOP', icmProxy);
   }
 
+  if (APPLICATION_BUILDER_LIVE_RELOAD) {
+    server.get('/__application-builder-live-reload', (_req, res) => {
+      res
+        .status(200)
+        .set({
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'text/plain; charset=UTF-8',
+        })
+        .send(getApplicationBuilderLiveReloadSignature());
+    });
+  }
+
   function defaultCacheControl(path: string): string {
     if (!PRODUCTION_MODE) {
       return 'no-store';
@@ -548,6 +618,7 @@ export function app() {
           newHtml = newHtml.replace(/<base href="[^>]*>/, `<base href="${baseHref}" />`);
 
           newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
+          newHtml = withApplicationBuilderLiveReload(newHtml);
 
           res.status(res.statusCode).send(newHtml);
         } else {
