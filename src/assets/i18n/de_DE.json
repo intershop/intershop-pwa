@@ -717,7 +717,7 @@
   "account.withdrawal.form.request.order_username.error": "Bitte geben Sie Ihren Namen an.",
   "account.withdrawal.form.request.order_username.label": "Name (Vor- &amp; Nachname)",
   "account.withdrawal.form.search.button.label": "Suchen",
-  "account.withdrawal.form.search.heading": "Ihre Bestellung suchen",
+  "account.withdrawal.form.search.heading": "Ihre Bestellung finden",
   "account.withdrawal.form.search.order_email.extrainfo.message": "E-Mail Adresse aus Rechnungsadresse verwenden",
   "account.withdrawal.form.search.order_email.label": "E-Mail-Adresse",
   "account.withdrawal.form.search.order_number.error": "Bitte geben Sie Ihre Bestellnummer an.",

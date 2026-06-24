@@ -717,7 +717,7 @@
   "account.withdrawal.form.request.order_username.error": "Veuillez saisir votre nom.",
   "account.withdrawal.form.request.order_username.label": "Nom (prénom et nom de famille)",
   "account.withdrawal.form.search.button.label": "Rechercher",
-  "account.withdrawal.form.search.heading": "Rechercher votre commande",
+  "account.withdrawal.form.search.heading": "Trouver votre commande",
   "account.withdrawal.form.search.order_email.extrainfo.message": "Utiliser l’adresse courriel de l’adresse de facturation",
   "account.withdrawal.form.search.order_email.label": "Adresse courriel",
   "account.withdrawal.form.search.order_number.error": "Veuillez saisir votre numéro de commande.",
