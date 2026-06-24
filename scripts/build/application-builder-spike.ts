@@ -104,6 +104,8 @@ const SERVER_ALLOWED_COMMON_JS_DEPENDENCIES = [
   'undici',
 ];
 
+const SERVER_EXTERNAL_DEPENDENCIES = ['elastic-apm-node'];
+
 const APPLICATION_BUILDER_POLYFILLS = ['@angular/localize/init'];
 
 const DATA_TESTING_ID_TEMPLATE_ROOTS = ['src', 'projects'];
@@ -310,6 +312,15 @@ function getAllowedCommonJsDependencies(options: Record<string, unknown>): strin
     : [];
 
   return [...new Set([...existingDependencies, ...SERVER_ALLOWED_COMMON_JS_DEPENDENCIES])];
+}
+
+function getExternalDependencies(options: Record<string, unknown>): string[] {
+  const existing = options.externalDependencies;
+  const existingDependencies = Array.isArray(existing)
+    ? existing.filter((dependency): dependency is string => typeof dependency === 'string')
+    : [];
+
+  return [...new Set([...existingDependencies, ...SERVER_EXTERNAL_DEPENDENCIES])];
 }
 
 function getApplicationBuilderPolyfills(options: Record<string, unknown>): string[] {
@@ -1450,6 +1461,7 @@ async function run() {
     ],
     allowedCommonJsDependencies: getAllowedCommonJsDependencies(target.options),
     define: createDefineValues(configuration, theme, production, serviceWorker),
+    externalDependencies: getExternalDependencies(target.options),
     fileReplacements: angularFileReplacements,
     index: {
       input: generatedIndex,
