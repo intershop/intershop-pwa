@@ -58,6 +58,7 @@ interface PurgeCssReport {
 interface FileOverlay {
   content: Buffer | string;
   original: string;
+  replacement?: string;
 }
 
 interface AngularDeclarationMetadata {
@@ -500,7 +501,90 @@ function createResourceFileOverlays(resourceReplacements: Record<string, string>
   return Object.entries(resourceReplacements).map(([original, replacement]) => ({
     content: fs.readFileSync(replacement),
     original,
+    replacement,
   }));
+}
+
+function getFileMtime(file: string): number {
+  return fs.existsSync(file) ? fs.statSync(file).mtimeMs : 0;
+}
+
+function touchFile(file: string) {
+  if (!fs.existsSync(file)) {
+    return;
+  }
+
+  const now = new Date();
+  fs.utimesSync(file, now, now);
+}
+
+function watchThemeReplacementFiles(
+  resourceReplacements: Record<string, string>,
+  angularReplacements: AngularFileReplacement[]
+): () => void {
+  const resourceReplacementEntries = Object.entries(resourceReplacements);
+  const angularReplacementEntries = angularReplacements
+    .map(({ replace, with: replacement }) => [replace, replacement] as const)
+    .filter(
+      ([original, replacement]) =>
+        SUPPORTED_REPLACEMENT_EXTENSION.test(original) && SUPPORTED_REPLACEMENT_EXTENSION.test(replacement)
+    );
+  const replacementEntries = [...resourceReplacementEntries, ...angularReplacementEntries].filter(
+    ([original, replacement], index, entries) =>
+      entries.findIndex(
+        ([entryOriginal, entryReplacement]) => entryOriginal === original && entryReplacement === replacement
+      ) === index
+  );
+
+  if (!replacementEntries.length) {
+    return () => undefined;
+  }
+
+  const modificationTimes = new Map(
+    replacementEntries.map(([, replacement]) => [replacement, getFileMtime(replacement)])
+  );
+
+  const timer = setInterval(() => {
+    replacementEntries.forEach(([original, replacement]) => {
+      const previousMtime = modificationTimes.get(replacement) || 0;
+      const nextMtime = getFileMtime(replacement);
+
+      if (nextMtime === previousMtime) {
+        return;
+      }
+
+      modificationTimes.set(replacement, nextMtime);
+
+      if (!nextMtime) {
+        console.warn(
+          `${RUNNER_CONSTANTS.runnerLabel}: watched theme replacement disappeared, keeping previous build input: ${replacement}`
+        );
+        return;
+      }
+
+      if (resourceReplacements[original] === replacement) {
+        fs.copyFileSync(replacement, original);
+        console.log(`${RUNNER_CONSTANTS.runnerLabel}: updated theme resource overlay ${replacement} -> ${original}`);
+      } else {
+        touchFile(original);
+        console.log(`${RUNNER_CONSTANTS.runnerLabel}: detected theme file replacement update ${replacement}`);
+      }
+    });
+  }, 500);
+
+  return () => clearInterval(timer);
+}
+
+function watchThemeReplacementFilesInWatchMode(
+  args: string[],
+  resourceReplacements: Record<string, string>,
+  angularReplacements: AngularFileReplacement[]
+): () => void {
+  if (!isWatchMode(args)) {
+    return () => undefined;
+  }
+
+  return watchThemeReplacementFiles(resourceReplacements, angularReplacements);
 }
 
 function stripDataTestingIdAttributes(template: string): string {
@@ -1301,6 +1385,7 @@ function runAngularBuilder(projectName: string, args: string[], theme: string, p
   });
 }
 
+// eslint-disable-next-line complexity
 async function run() {
   const originalWorkspaceText = readWorkspaceTextWithRecovery();
   const workspace = JSON.parse(originalWorkspaceText) as AngularWorkspace;
@@ -1429,6 +1514,11 @@ async function run() {
   fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, JSON.stringify(workspace, undefined, 2));
   let buildError: unknown;
   const restoreOverlay = applyFileOverlays(fileOverlays);
+  const stopReplacementWatcher = watchThemeReplacementFilesInWatchMode(
+    remainingArgs,
+    resourceReplacements,
+    angularFileReplacements
+  );
   try {
     await runAngularBuilder(projectName, remainingArgs, theme, dataTestingIdPreloadScript);
     restoreDistRootSupportFiles();
@@ -1436,6 +1526,7 @@ async function run() {
   } catch (error) {
     buildError = error;
   } finally {
+    stopReplacementWatcher();
     restoreOverlay();
     fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, originalWorkspaceText);
     writeDiagnosticFiles(workspace, themeFileReplacements, unsupportedResourceReplacements, report, false);
