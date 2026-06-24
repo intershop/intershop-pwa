@@ -1,10 +1,11 @@
 @import 'variables';
+@import 'bootstrap/scss/mixins';
 
 .dl-grid {
   display: grid;
   grid-template-columns: auto 1fr;
 
-  @media (width <= 767.98px) {
+  @include media-breakpoint-down(sm) {
     grid-template-columns: 55% 1fr;
   }
 
@@ -16,7 +17,7 @@
   dd {
     white-space: nowrap;
 
-    @media (width <= 767.98px) {
+    @include media-breakpoint-down(sm) {
       white-space: normal;
     }
   }

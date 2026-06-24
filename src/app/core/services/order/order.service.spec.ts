@@ -6,14 +6,12 @@ import { TokenResponse } from 'angular-oauth2-oidc';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
 import { OrderBaseData } from 'ish-core/models/order/order.interface';
 import { Order } from 'ish-core/models/order/order.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
-import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { OrderService, orderListQueryToHttpParams } from './order.service';
@@ -22,7 +20,6 @@ describe('Order Service', () => {
   let orderService: OrderService;
   let apiService: ApiService;
   let tokenService: TokenService;
-  let appFacade: AppFacade;
 
   const basketMock = BasketMockData.getBasket();
   const orderMockData = {
@@ -37,23 +34,15 @@ describe('Order Service', () => {
   beforeEach(() => {
     apiService = mock(ApiService);
     tokenService = mock(TokenService);
-    appFacade = mock(AppFacade);
 
     when(apiService.encodeResourceId(anything())).thenCall(id => id);
-    when(appFacade.serverSetting$(anything())).thenReturn(of(false));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: APP_BASE_HREF, useFactory: () => '/' },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: TokenService, useFactory: () => instance(tokenService) },
-        provideMockStore({
-          selectors: [
-            { selector: getCurrentLocale, value: 'en_US' },
-            { selector: isServerConfigurationLoaded, value: true },
-          ],
-        }),
+        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: 'en_US' }] }),
       ],
     });
 
