@@ -13,6 +13,7 @@ import { Order } from 'ish-core/models/order/order.model';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
 import { OrderService, orderListQueryToHttpParams } from './order.service';
@@ -47,7 +48,12 @@ describe('Order Service', () => {
         { provide: APP_BASE_HREF, useFactory: () => '/' },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: TokenService, useFactory: () => instance(tokenService) },
-        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: 'en_US' }] }),
+        provideMockStore({
+          selectors: [
+            { selector: getCurrentLocale, value: 'en_US' },
+            { selector: isServerConfigurationLoaded, value: true },
+          ],
+        }),
       ],
     });
 

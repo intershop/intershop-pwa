@@ -3,7 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { OrderIncludeType, OrderListQuery } from 'ish-core/models/order-list-query/order-list-query.model';
@@ -13,6 +13,7 @@ import { Order, Orders } from 'ish-core/models/order/order.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { isServerConfigurationLoaded } from 'ish-core/store/core/server-config';
 
 export function orderListQueryToHttpParams(query: OrderListQuery): HttpParams {
   return Object.entries(query).reduce(
@@ -162,7 +163,11 @@ export class OrderService {
       return throwError(() => new Error('getOrder() called without orderId'));
     }
 
-    return this.appFacade.serverSetting$<boolean>('preferences.WithdrawalPreferences.WithdrawalEnabled').pipe(
+    return this.store.pipe(
+      select(isServerConfigurationLoaded),
+      filter(loaded => !!loaded),
+      take(1),
+      switchMap(() => this.appFacade.serverSetting$<boolean>('preferences.WithdrawalPreferences.WithdrawalEnabled')),
       take(1),
       map(withdrawalEnabled =>
         withdrawalEnabled
