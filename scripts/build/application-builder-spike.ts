@@ -1,7 +1,11 @@
+import { Architect } from '@angular-devkit/architect';
+import { WorkspaceNodeModulesArchitectHost } from '@angular-devkit/architect/node';
+import { json, workspaces } from '@angular-devkit/core';
+import { NodeJsSyncHost, createConsoleLogger } from '@angular-devkit/core/node';
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { spawn, spawnSync } from 'child_process';
 import { createHash } from 'crypto';
 import * as fs from 'fs';
+import { createRequire } from 'module';
 import { basename, dirname, isAbsolute, join, normalize, relative, resolve } from 'path';
 import { PurgeCSS } from 'purgecss';
 import * as ts from 'typescript';
@@ -18,6 +22,7 @@ import {
 /* eslint-disable max-lines, no-console */
 
 interface AngularWorkspaceTarget {
+  builder?: string;
   configurations?: Record<string, Record<string, unknown>>;
   defaultConfiguration?: string;
   options?: Record<string, unknown>;
@@ -145,6 +150,8 @@ const SUPPORTED_REPLACEMENT_EXTENSION = /\.(([cm]?[jt])sx?|json)$/;
 
 let activeFilesTemplateContentCache: string | undefined;
 
+const requireFromCurrentFile = createRequire(__filename);
+
 function getPurgeCssMode(production: boolean): 'disabled' | 'safe' | 'strict' {
   if (!production) {
     return 'disabled';
@@ -196,11 +203,6 @@ function readWorkspaceTextWithRecovery(): string {
   }
 
   return workspaceText;
-}
-
-function writeWorkspaceBackup(workspaceText: string) {
-  fs.mkdirSync(RUNNER_CONSTANTS.generatedBasePath, { recursive: true });
-  fs.writeFileSync(RUNNER_CONSTANTS.workspaceBackupPath, workspaceText);
 }
 
 function normalizeConfigurationArgument(configuration?: string): string | undefined {
@@ -1253,7 +1255,7 @@ function createReplacementReport(
     configuration,
     dataTestingIdTemplatesStripped,
     generatedIndex,
-    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload in the Angular child process. Webpack keep_classnames=/.*Module$/ is intentionally not migrated: the application builder does not expose a scoped keepNames option, and no runtime dependency on Angular module class names is known.',
+    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload before scheduling the Angular builder. Webpack keep_classnames=/.*Module$/ is intentionally not migrated: the application builder does not expose a scoped keepNames option, and no runtime dependency on Angular module class names is known.',
     production,
     purgeCss,
     resourceOverlayApplied: Object.keys(resourceReplacements).length > 0,
@@ -1346,54 +1348,148 @@ function isDryRun(args: string[]): boolean {
   return args.includes('--dry-run') || getNpmConfigFlag('dry_run');
 }
 
-function createChildProcessEnv(preloadPath?: string): NodeJS.ProcessEnv {
-  if (!preloadPath) {
-    return process.env;
-  }
-
-  const preloadOption = `--require=${resolve(preloadPath)}`;
-  return {
-    ...process.env,
-    NODE_OPTIONS: [process.env.NODE_OPTIONS, preloadOption].filter(Boolean).join(' '),
-  };
+function toBuilderOptionName(name: string): string {
+  return name.replace(/-([a-z])/g, (_, character: string) => character.toUpperCase());
 }
 
-function runAngularBuilder(projectName: string, args: string[], theme: string, preloadPath?: string): Promise<void> {
-  const commandArgs = ['run', 'ng', '--', 'run', `${projectName}:${RUNNER_CONSTANTS.spikeTarget}`, ...args];
-  const env = createChildProcessEnv(preloadPath);
-
-  if (!isWatchMode(args)) {
-    const result = spawnSync('npm', commandArgs, { env, shell: process.platform === 'win32', stdio: 'inherit' });
-    if (result.status !== 0) {
-      throw new Error(`Application builder exited with code ${result.status}.`);
-    }
-    applyThemeToOutputIndexFiles(theme);
-    return Promise.resolve();
+function parseBuilderOverrideValue(value?: string): boolean | number | string {
+  if (value === undefined) {
+    return true;
+  }
+  if (/^(true|false)$/i.test(value)) {
+    return value.toLowerCase() === 'true';
+  }
+  if (/^-?\d+(\.\d+)?$/.test(value)) {
+    return Number(value);
   }
 
-  return new Promise((finish, reject) => {
-    const stopIndexWatcher = watchOutputIndexFiles(theme);
-    const child = spawn('npm', commandArgs, { env, shell: true, stdio: 'inherit' });
+  return value;
+}
 
-    const stopChild = () => {
-      child.kill('SIGINT');
+function parseBuilderOverrides(args: string[]): json.JsonObject {
+  const overrides: Record<string, boolean | number | string> = {};
+
+  for (let index = 0; index < args.length; index++) {
+    const arg = args[index];
+    if (!arg.startsWith('--')) {
+      continue;
+    }
+
+    const [rawName, inlineValue] = arg.slice(2).split('=', 2);
+    const optionName = toBuilderOptionName(rawName);
+    const nextArg = args[index + 1];
+    const value = inlineValue ?? (nextArg && !nextArg.startsWith('-') ? nextArg : undefined);
+
+    if (value === nextArg) {
+      index++;
+    }
+
+    overrides[optionName] = parseBuilderOverrideValue(value);
+  }
+
+  return overrides as json.JsonObject;
+}
+
+async function createArchitectWorkspace(
+  projectName: string,
+  workspace: AngularWorkspace
+): Promise<workspaces.WorkspaceDefinition> {
+  const workspaceHost = workspaces.createWorkspaceHost(new NodeJsSyncHost());
+  const { workspace: architectWorkspace } = await workspaces.readWorkspace(
+    RUNNER_CONSTANTS.workspacePath,
+    workspaceHost
+  );
+  const projectDefinition = architectWorkspace.projects.get(projectName);
+  const temporaryTarget = workspace.projects[projectName].architect?.[RUNNER_CONSTANTS.spikeTarget];
+
+  if (!projectDefinition) {
+    throw new Error(`Could not find project '${projectName}' in Angular workspace.`);
+  }
+  if (!temporaryTarget?.builder || !temporaryTarget.options) {
+    throw new Error(`Could not prepare temporary target '${projectName}:${RUNNER_CONSTANTS.spikeTarget}'.`);
+  }
+
+  architectWorkspace.extensions.cli = workspace.cli as json.JsonValue;
+  projectDefinition.targets.set(RUNNER_CONSTANTS.spikeTarget, {
+    builder: temporaryTarget.builder,
+    configurations: {},
+    options: temporaryTarget.options as Record<string, json.JsonValue | undefined>,
+  });
+
+  return architectWorkspace;
+}
+
+function loadPreloadScript(preloadPath?: string) {
+  if (preloadPath) {
+    requireFromCurrentFile(resolve(preloadPath));
+  }
+}
+
+function createArchitectLogger(args: string[]) {
+  const verbose = args.some(arg => arg === '--verbose' || arg === '--verbose=true');
+
+  return createConsoleLogger(verbose, process.stdout, process.stderr);
+}
+
+async function runScheduledBuilder(
+  architect: Architect,
+  projectName: string,
+  args: string[],
+  theme: string
+): Promise<void> {
+  const builderRun = await architect.scheduleTarget(
+    { project: projectName, target: RUNNER_CONSTANTS.spikeTarget },
+    parseBuilderOverrides(args),
+    { logger: createArchitectLogger(args) }
+  );
+
+  if (!isWatchMode(args)) {
+    try {
+      const result = await builderRun.result;
+      if (!result.success) {
+        throw new Error(`Application builder failed: ${result.error || 'unknown error'}.`);
+      }
+      applyThemeToOutputIndexFiles(theme);
+    } finally {
+      await builderRun.stop();
+    }
+    return;
+  }
+
+  await new Promise<void>((finish, reject) => {
+    const stopIndexWatcher = watchOutputIndexFiles(theme);
+    const stopBuilder = () => {
+      stopIndexWatcher();
+      process.off('SIGINT', stopBuilder);
+      process.off('SIGTERM', stopBuilder);
+      builderRun.stop().then(finish, reject);
     };
 
-    process.once('SIGINT', stopChild);
-    process.once('SIGTERM', stopChild);
-
-    child.on('exit', code => {
+    process.once('SIGINT', stopBuilder);
+    process.once('SIGTERM', stopBuilder);
+    builderRun.result.catch(error => {
       stopIndexWatcher();
-      process.off('SIGINT', stopChild);
-      process.off('SIGTERM', stopChild);
-
-      if (code && code !== 0) {
-        reject(new Error(`Application builder exited with code ${code}.`));
-      } else {
-        finish();
-      }
+      process.off('SIGINT', stopBuilder);
+      process.off('SIGTERM', stopBuilder);
+      reject(error);
     });
   });
+}
+
+async function runAngularBuilder(
+  projectName: string,
+  args: string[],
+  theme: string,
+  workspace: AngularWorkspace,
+  preloadPath?: string
+): Promise<void> {
+  loadPreloadScript(preloadPath);
+
+  const architectWorkspace = await createArchitectWorkspace(projectName, workspace);
+  const architectHost = new WorkspaceNodeModulesArchitectHost(architectWorkspace, process.cwd());
+  const architect = new Architect(architectHost);
+
+  await runScheduledBuilder(architect, projectName, args, theme);
 }
 
 // eslint-disable-next-line complexity
@@ -1404,7 +1500,7 @@ async function run() {
   const project = workspace.projects[projectName];
   const target = project.architect?.[RUNNER_CONSTANTS.spikeTarget];
 
-  if (!target?.options) {
+  if (!target?.builder || !target.options) {
     throw new Error(`Could not find target '${projectName}:${RUNNER_CONSTANTS.spikeTarget}'.`);
   }
 
@@ -1522,8 +1618,6 @@ async function run() {
   }
 
   getActiveFilesTemplateContent();
-  writeWorkspaceBackup(originalWorkspaceText);
-  fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, JSON.stringify(workspace, undefined, 2));
   let buildError: unknown;
   const restoreOverlay = applyFileOverlays(fileOverlays);
   const stopReplacementWatcher = watchThemeReplacementFilesInWatchMode(
@@ -1532,7 +1626,7 @@ async function run() {
     angularFileReplacements
   );
   try {
-    await runAngularBuilder(projectName, remainingArgs, theme, dataTestingIdPreloadScript);
+    await runAngularBuilder(projectName, remainingArgs, theme, workspace, dataTestingIdPreloadScript);
     restoreDistRootSupportFiles();
     await applyPostBuildOptimizations(production, remainingArgs, theme, activeFileReplacements, report);
   } catch (error) {
@@ -1540,7 +1634,6 @@ async function run() {
   } finally {
     stopReplacementWatcher();
     restoreOverlay();
-    fs.writeFileSync(RUNNER_CONSTANTS.workspacePath, originalWorkspaceText);
     writeDiagnosticFiles(workspace, themeFileReplacements, unsupportedResourceReplacements, report, false);
   }
 
