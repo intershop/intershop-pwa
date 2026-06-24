@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, map, switchMap } from 'rxjs/operators';
+import { concatMap, delay, map, switchMap } from 'rxjs/operators';
 
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
@@ -48,7 +48,10 @@ export class OrderTemplateService {
     }
     return this.apiService
       .get<OrderTemplateData>(`customers/-/users/-/wishlists/${this.apiService.encodeResourceId(orderTemplateId)}`)
-      .pipe(map(orderTemplateData => this.orderTemplateMapper.fromData(orderTemplateData, orderTemplateId)));
+      .pipe(
+        delay(2000),
+        map(orderTemplateData => this.orderTemplateMapper.fromData(orderTemplateData, orderTemplateId))
+      );
   }
 
   /**

@@ -33,6 +33,7 @@ import {
 
 export interface OrderTemplateState extends EntityState<OrderTemplate> {
   loading: boolean;
+  detailsLoading: boolean;
   selected: string;
   error: HttpError;
 }
@@ -43,6 +44,7 @@ export const orderTemplateAdapter = createEntityAdapter<OrderTemplate>({
 
 export const initialState: OrderTemplateState = orderTemplateAdapter.getInitialState({
   loading: false,
+  detailsLoading: false,
   selected: undefined,
   error: undefined,
 });
@@ -54,7 +56,6 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplate,
     deleteOrderTemplate,
     loadOrderTemplates,
-    loadOrderTemplateDetails,
     orderTemplatesActions.createOrderTemplateFromLineItems,
     updateOrderTemplate
   ),
@@ -63,7 +64,6 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateSuccess,
     deleteOrderTemplateSuccess,
     loadOrderTemplatesSuccess,
-    loadOrderTemplateDetailsSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     removeItemFromOrderTemplateSuccess,
     updateOrderTemplateSuccess
@@ -76,6 +76,15 @@ export const orderTemplateReducer = createReducer(
     loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail
+  ),
+
+  on(
+    loadOrderTemplateDetails,
+    loadOrderTemplateDetailsSuccess,
+    (state: OrderTemplateState): OrderTemplateState => ({
+      ...state,
+      detailsLoading: false,
+    })
   ),
 
   on(

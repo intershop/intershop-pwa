@@ -17,9 +17,10 @@
           [attr.data-label]="'account.order_template.list.table.template' | translate"
         >
           <a
+            class="order-template-link"
             data-testing-id="order-template-list-title"
-            [routerLink]="'/account/order-templates/' + orderTemplate.id"
-            (click)="loadOrderTemplateDetails(orderTemplate.id)"
+            [class.disabled]="!loadedDetailIds.has(orderTemplate.id)"
+            [routerLink]="loadedDetailIds.has(orderTemplate.id) ? '/account/order-templates/' + orderTemplate.id : null"
           >
             {{ orderTemplate.title }}
           </a>
@@ -55,23 +56,10 @@
       <ng-container cdkColumnDef="actions">
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-actions" scope="col"></th>
         <td *cdkCellDef="let orderTemplate" cdk-cell class="column-price">
-          @if (orderTemplate.itemsCount > 0) {
-            <button
-              class="btn-tool btn-link"
-              data-testing-id="addBasketToOrderTemplateButton"
-              type="button"
-              (click)="openModal(modal)"
-            >
-              @if ((loadingOrderTemplateId$ | async) !== orderTemplate.id) {
-                <!-- Add to Cart button -->
-                <i class="bi bi-cart-fill"></i>
-              } @else {
-                <!-- button with spinning animation after Add to Cart -->
-                <i class="bi bi-arrow-clockwise spin-icon"></i>
-              }
-            </button>
-
-            <ish-order-template-add-to-cart-dialog #modal [orderTemplate]="orderTemplate" />
+          @if (partsCache.get(orderTemplate.id) | async; as parts) {
+            <a class="btn-tool d-inline-flex align-top">
+              <ish-product-add-to-basket cssClass="btn-link p-0" displayType="icon" ishProductContext [parts]="parts" />
+            </a>
           }
           <a
             class="btn-tool"

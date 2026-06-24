@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Input, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, concatMap, filter, from, map, shareReplay, take } from 'rxjs';
 
+import { SkuQuantityType } from 'ish-core/models/product/product.helper';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
-import { OrderTemplateAddToCartDialogComponent } from '../../../shared/order-template-add-to-cart/order-template-add-to-cart-dialog/order-template-add-to-cart-dialog.component';
 
 type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'title';
 
@@ -14,13 +15,62 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
   selector: 'ish-account-order-template-list',
   standalone: false,
   templateUrl: './account-order-template-list.component.html',
+  styleUrls: ['./account-order-template-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderTemplateListComponent {
   /**
    * The list of order templates of the customer.
    */
-  @Input() orderTemplates: OrderTemplate[];
+  private orderTemplateList: OrderTemplate[] = [];
+  private requestedDetailIds = new Set<string>();
+  private destroyRef = inject(DestroyRef);
+  private cd = inject(ChangeDetectorRef);
+  loadedDetailIds = new Set<string>();
+  partsCache = new Map<string, Observable<SkuQuantityType[]>>();
+
+  @Input() set orderTemplates(templates: OrderTemplate[]) {
+    this.orderTemplateList = templates;
+    const newTemplates = templates?.filter(t => t.itemsCount > 0 && !this.requestedDetailIds.has(t.id)) ?? [];
+    newTemplates.forEach(t => {
+      this.requestedDetailIds.add(t.id);
+      this.partsCache.set(
+        t.id,
+        this.orderTemplatesFacade.orderTemplates$.pipe(
+          map(all => all.find(ot => ot.id === t.id)),
+          filter(ot => !!ot?.items),
+          map(ot => ot.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }))),
+          shareReplay(1)
+        )
+      );
+    });
+
+    from(newTemplates)
+      .pipe(
+        concatMap(t => {
+          this.orderTemplatesFacade.loadOrderTemplateDetails(t.id);
+          return this.orderTemplatesFacade.orderTemplates$.pipe(
+            filter(all => !!all.find(ot => ot.id === t.id)?.items),
+            take(1)
+          );
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: all => {
+          const loaded = all.find(ot => !this.loadedDetailIds.has(ot.id) && !!ot.items);
+          if (loaded) {
+            this.loadedDetailIds.add(loaded.id);
+            this.cd.markForCheck();
+          }
+        },
+      });
+  }
+
+  get orderTemplates(): OrderTemplate[] {
+    return this.orderTemplateList;
+  }
+
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
   /**
@@ -38,19 +88,11 @@ export class AccountOrderTemplateListComponent {
     this.orderTemplatesFacade.deleteOrderTemplate(orderTemplateId);
   }
 
-  openModal(modal: OrderTemplateAddToCartDialogComponent) {
-    modal.show();
-  }
-
   /** Determine the heading of the delete modal and opens the modal. */
   openDeleteConfirmationDialog(orderTemplate: OrderTemplate, modal: ModalDialogComponent<string>) {
     modal.options.titleText = this.translate.instant('account.order_templates.delete_dialog.header', {
       0: orderTemplate.title,
     });
     modal.show(orderTemplate.id);
-  }
-
-  loadOrderTemplateDetails(orderTemplateId: string) {
-    this.orderTemplatesFacade.loadOrderTemplateDetails(orderTemplateId);
   }
 }
