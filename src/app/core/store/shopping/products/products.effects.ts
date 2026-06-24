@@ -202,7 +202,8 @@ export class ProductsEffects {
           switchMap(pageSize =>
             this.productsServiceProvider
               // TODO: (Sparque handling) remove this additional parameter once the category navigation will be handled by Sparque
-              .get(Object.keys(searchParameter).includes('productFilter'))
+              // master variation listings are master-scoped and not handled by SPARQUE yet (no keyword), so use the ICM service
+              .get('productFilter' in searchParameter || id.type === 'master')
               .getFilteredProducts(searchParameter, pageSize, sorting, ((page || 1) - 1) * pageSize)
               .pipe(
                 concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
@@ -225,7 +226,7 @@ export class ProductsEffects {
                       )
                     ),
                   ];
-                  if (isSparque) {
+                  if (isSparque && id.type !== 'master') {
                     actions.push(
                       productFilter?.length
                         ? loadFilterSuccess({
