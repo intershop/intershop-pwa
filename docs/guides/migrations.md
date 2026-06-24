@@ -37,6 +37,11 @@ The Design View and Preview Context features have been reworked so that they can
 Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real Preview Context data from being used at the same time.
 Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for Preview Context data.
 
+**Modal fullscreen and scrollable styling**
+
+The custom `.modal-fullscreen` and `.modal-dialog-scrollable` SCSS overrides have been removed in favor of the native ng-bootstrap modal behavior.
+You can now use the built-in options `fullscreen: true` and `scrollable: true`, which apply standard Bootstrap styling.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**

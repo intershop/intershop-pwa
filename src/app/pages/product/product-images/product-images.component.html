@@ -51,11 +51,13 @@
     #zoomDialog
     [options]="{
       scrollable: true,
-      modalDialogClass: 'modal-fullscreen',
+      fullscreen: true,
     }"
   >
-    @for (imageView of zoomImages; track imageView; let i = $index) {
-      <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
-    }
+    <div class="text-center">
+      @for (imageView of zoomImages; track imageView; let i = $index) {
+        <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
+      }
+    </div>
   </ish-modal-dialog>
 }
