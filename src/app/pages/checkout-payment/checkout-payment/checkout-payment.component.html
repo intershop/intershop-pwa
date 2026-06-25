@@ -33,7 +33,7 @@
         <form class="form-horizontal" [formGroup]="paymentForm" (ngSubmit)="submitParameterForm()">
           @if (hasPaymentMethods) {
             <ul class="payment-methods list-unstyled" id="payment-accordion">
-              @for (paymentMethod of filteredPaymentMethods; track paymentMethod.id; let i = $index) {
+              @for (paymentMethod of filteredPaymentMethods; track paymentMethod; let i = $index) {
                 <li class="panel">
                   <div [ngClass]="{ 'form-check': !paymentMethod.parameters }">
                     <strong>
