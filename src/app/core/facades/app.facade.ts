@@ -1,4 +1,4 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { combineLatest, merge, noop } from 'rxjs';
@@ -32,16 +32,13 @@ import { whenTruthy } from 'ish-core/utils/operators';
 export class AppFacade {
   constructor(
     private store: Store,
-    private router: Router,
-    private appRef: ApplicationRef
+    private router: Router
   ) {
     this.routingInProgress$.subscribe(noop);
 
     store.pipe(select(getICMBaseURL)).subscribe(icmBaseUrl => (this.icmBaseUrl = icmBaseUrl));
   }
   icmBaseUrl: string;
-
-  appBecameStable$ = this.appRef.isStable.pipe(whenTruthy(), take(1));
 
   headerType$ = this.store.pipe(select(getHeaderType));
   deviceType$ = this.store.pipe(select(getDeviceType));

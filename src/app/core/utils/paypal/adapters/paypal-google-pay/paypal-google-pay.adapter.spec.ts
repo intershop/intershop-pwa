@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -269,7 +269,7 @@ describe('Paypal Google Pay Adapter', () => {
 
     it('should call processPaypalOrderCreation on checkout facade', fakeAsync(() => {
       adapter.testOnGooglePayButtonClicked();
-      tick();
+      flush();
 
       verify(checkoutFacade.processPaypalOrderCreation()).once();
     }));
@@ -289,7 +289,7 @@ describe('Paypal Google Pay Adapter', () => {
   describe('startOrderCreation()', () => {
     it('should call processPaypalOrderCreation on checkout facade', fakeAsync(() => {
       adapter.testStartOrderCreation();
-      tick();
+      flush();
 
       verify(checkoutFacade.processPaypalOrderCreation()).once();
     }));

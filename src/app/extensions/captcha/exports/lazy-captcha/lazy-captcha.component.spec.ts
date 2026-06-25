@@ -29,7 +29,6 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
-    when(appFacade.appBecameStable$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
       providers: [
