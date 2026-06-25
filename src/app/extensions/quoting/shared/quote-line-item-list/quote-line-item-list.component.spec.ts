@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -34,8 +34,8 @@ describe('Quote Line Item List Component', () => {
     when(quoteContext.select('entity', 'total')).thenReturn(of({ value: 1 } as Price));
 
     await TestBed.configureTestingModule({
-      imports: [QuoteLineItemListComponent, TranslateModule.forRoot()],
-      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(quoteContext) }],
+      imports: [QuoteLineItemListComponent],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(quoteContext) }, provideTranslateService()],
     })
       .overrideComponent(QuoteLineItemListComponent, {
         remove: { imports: [PricePipe, ProductContextDirective, QuoteLineItemListElementComponent] },

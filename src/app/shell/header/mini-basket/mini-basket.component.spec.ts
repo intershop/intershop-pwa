@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -31,12 +31,13 @@ describe('Mini Basket Component', () => {
     when(appFacade.routingInProgress$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [MiniBasketComponent, TranslateModule.forRoot()],
+      imports: [MiniBasketComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(MiniBasketComponent, {

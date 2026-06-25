@@ -1,7 +1,7 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -40,8 +40,8 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RequisitionDetailPageComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [RequisitionDetailPageComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(RequisitionDetailPageComponent, {
         set: {
@@ -64,7 +64,10 @@ describe('Requisition Detail Page Component', () => {
             MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
             TranslatePipe,
           ],
-          providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }],
+          providers: [
+            provideTranslateService(),
+            { provide: RequisitionContextFacade, useFactory: () => instance(context) },
+          ],
         },
       })
       .compileComponents();

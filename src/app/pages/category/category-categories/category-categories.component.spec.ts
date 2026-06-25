@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -25,7 +25,8 @@ describe('Category Categories Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CategoryCategoriesComponent, TranslateModule.forRoot()],
+      imports: [CategoryCategoriesComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(CategoryCategoriesComponent, {
         remove: {
@@ -39,6 +40,7 @@ describe('Category Categories Component', () => {
             ServerSettingPipe,
             SkipContentLinkComponent,
           ],
+          providers: [provideTranslateService()],
         },
         add: {
           imports: [
@@ -51,6 +53,7 @@ describe('Category Categories Component', () => {
             MockPipe(ServerSettingPipe),
             MockComponent(SkipContentLinkComponent),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

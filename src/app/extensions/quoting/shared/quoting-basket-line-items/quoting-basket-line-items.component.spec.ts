@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,10 +24,11 @@ describe('Quoting Basket Line Items Component', () => {
     quotingFacade = mock(QuotingFacade);
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     await TestBed.configureTestingModule({
-      imports: [QuotingBasketLineItemsComponent, TranslateModule.forRoot()],
+      imports: [QuotingBasketLineItemsComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(QuotingBasketLineItemsComponent, {

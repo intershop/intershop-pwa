@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -17,8 +17,12 @@ describe('Order Widget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrderWidgetComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }, provideRouter([])],
+      imports: [OrderWidgetComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(OrderWidgetComponent, {
         remove: { imports: [InfoBoxComponent, OrderListComponent] },

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,11 +30,12 @@ describe('Quote View Component', () => {
     when(accountFacade.userEmail$).thenReturn(of('test@intershop.de'));
 
     await TestBed.configureTestingModule({
-      imports: [QuoteViewComponent, TranslateModule.forRoot()],
+      imports: [QuoteViewComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: QuoteContextFacade, useFactory: () => instance(context) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(QuoteViewComponent, {

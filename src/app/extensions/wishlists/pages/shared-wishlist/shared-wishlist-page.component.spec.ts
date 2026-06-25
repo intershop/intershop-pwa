@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -32,8 +32,11 @@ describe('Shared Wishlist Page Component', () => {
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
     await TestBed.configureTestingModule({
-      imports: [SharedWishlistPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
+      imports: [SharedWishlistPageComponent],
+      providers: [
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(SharedWishlistPageComponent, {
         set: {

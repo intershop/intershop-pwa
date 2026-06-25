@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FilterDropdownComponent } from 'ish-shared/components/filter/filter-dropdown/filter-dropdown.component';
@@ -13,7 +13,8 @@ describe('Filter Navigation Horizontal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FilterNavigationHorizontalComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [FilterNavigationHorizontalComponent],
     })
       .overrideComponent(FilterNavigationHorizontalComponent, {
         remove: { imports: [FilterDropdownComponent] },

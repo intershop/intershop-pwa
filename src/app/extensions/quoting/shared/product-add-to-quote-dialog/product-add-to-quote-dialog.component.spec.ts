@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -27,8 +27,8 @@ describe('Product Add To Quote Dialog Component', () => {
     context = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ProductAddToQuoteDialogComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [ProductAddToQuoteDialogComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(ProductAddToQuoteDialogComponent, {
         remove: {
@@ -51,7 +51,9 @@ describe('Product Add To Quote Dialog Component', () => {
         },
       })
       .overrideComponent(ProductAddToQuoteDialogComponent, {
-        set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }] },
+        set: {
+          providers: [provideTranslateService(), { provide: QuoteContextFacade, useFactory: () => instance(context) }],
+        },
       })
       .compileComponents();
   });

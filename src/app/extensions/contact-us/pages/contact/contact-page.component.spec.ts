@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -20,8 +20,12 @@ describe('Contact Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ContactUsFacade, useFactory: () => instance(mock(ContactUsFacade)) }, provideRouter([])],
+      imports: [ContactPageComponent],
+      providers: [
+        { provide: ContactUsFacade, useFactory: () => instance(mock(ContactUsFacade)) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(ContactPageComponent, {
         remove: {

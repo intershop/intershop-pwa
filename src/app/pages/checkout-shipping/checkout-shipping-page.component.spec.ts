@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -34,16 +34,16 @@ describe('Checkout Shipping Page Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      imports: [CheckoutShippingPageComponent, TranslateModule.forRoot()],
+      imports: [CheckoutShippingPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutShippingPageComponent, {
         set: {
           imports: [
-            TranslateModule,
             AsyncPipe,
             MockComponent(BasketAddressSummaryComponent),
             MockComponent(BasketCostSummaryComponent),
@@ -58,6 +58,7 @@ describe('Checkout Shipping Page Component', () => {
             MockComponent(LoadingComponent),
             MockDirective(ServerHtmlDirective),
             MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+            TranslatePipe,
           ],
         },
       })

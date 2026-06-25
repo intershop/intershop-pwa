@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -21,8 +21,8 @@ describe('Quote List Page Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
-      imports: [QuoteListPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
+      imports: [QuoteListPageComponent],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }, provideTranslateService()],
     })
       .overrideComponent(QuoteListPageComponent, {
         remove: { imports: [LoadingComponent, QuoteListComponent] },

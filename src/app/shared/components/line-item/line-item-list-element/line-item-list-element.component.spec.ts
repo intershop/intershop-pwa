@@ -1,7 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -55,10 +55,11 @@ describe('Line Item List Element Component', () => {
     when(context.select('quantity')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [LineItemListElementComponent, TranslateModule.forRoot()],
+      imports: [LineItemListElementComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
       ],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
     })

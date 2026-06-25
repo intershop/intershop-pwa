@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
@@ -18,14 +18,15 @@ describe('Maxlength Description Wrapper Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'textarea', component: FormlyTestingExampleComponent }],
+
           wrappers: [{ name: 'maxlength-description-wrapper', component: MaxlengthDescriptionWrapperComponent }],
         }),
         MaxlengthDescriptionWrapperComponent,
-        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   });

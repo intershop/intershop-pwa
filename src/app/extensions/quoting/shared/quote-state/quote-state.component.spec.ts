@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
@@ -13,8 +13,11 @@ describe('Quote State Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuoteStateComponent, TranslateModule.forRoot()],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) }],
+      imports: [QuoteStateComponent],
+      providers: [
+        { provide: QuotingFacade, useFactory: () => instance(mock(QuotingFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

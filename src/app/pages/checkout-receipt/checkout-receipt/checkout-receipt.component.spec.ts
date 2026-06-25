@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
@@ -28,8 +28,8 @@ describe('Checkout Receipt Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutReceiptComponent, TranslateModule.forRoot()],
-      providers: [...(FeatureToggleModule.forTesting().providers ?? []), provideRouter([])],
+      imports: [CheckoutReceiptComponent],
+      providers: [...(FeatureToggleModule.forTesting().providers ?? []), provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(CheckoutReceiptComponent, {
         set: {

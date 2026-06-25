@@ -1,6 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -21,12 +21,12 @@ describe('Basket Merchant Message Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [BasketMerchantMessageComponent, FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      imports: [BasketMerchantMessageComponent, FormlyTestingModule],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     })
       .overrideComponent(BasketMerchantMessageComponent, {
         set: {
-          imports: [FormlyTestingModule, TranslateModule, MockComponent(SuccessMessageComponent)],
+          imports: [FormlyTestingModule, MockComponent(SuccessMessageComponent), TranslatePipe],
         },
       })
       .compileComponents();

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { QuotingFacade } from '../../../facades/quoting.facade';
@@ -16,8 +16,8 @@ describe('Quote List Component', () => {
   beforeEach(async () => {
     quotingFacade = mock(QuotingFacade);
     await TestBed.configureTestingModule({
-      imports: [QuoteListComponent, TranslateModule.forRoot()],
-      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }],
+      imports: [QuoteListComponent],
+      providers: [{ provide: QuotingFacade, useFactory: () => instance(quotingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

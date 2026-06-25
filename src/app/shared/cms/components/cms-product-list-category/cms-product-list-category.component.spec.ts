@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyNumber, anyString, instance, mock, when } from 'ts-mockito';
@@ -25,11 +25,12 @@ describe('Cms Product List Category Component', () => {
     shoppingFacade = mock(ShoppingFacade);
     cmsFacade = mock(CMSFacade);
     await TestBed.configureTestingModule({
-      imports: [CMSProductListCategoryComponent, TranslateModule.forRoot()],
+      imports: [CMSProductListCategoryComponent],
       providers: [
         { provide: CMSFacade, useFactory: () => instance(cmsFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CMSProductListCategoryComponent, {

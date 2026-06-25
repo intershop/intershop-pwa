@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleDirective, AuthorizationToggleModule } from 'ish-core/authorization-toggle.imports';
@@ -41,11 +41,12 @@ describe('Shopping Basket Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ShoppingBasketComponent, TranslateModule.forRoot()],
+      imports: [ShoppingBasketComponent],
       providers: [
         ...(AuthorizationToggleModule.forTesting().providers ?? []),
         ...(FeatureToggleModule.forTesting().providers ?? []),
         ...(RoleToggleModule.forTesting().providers ?? []),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(ShoppingBasketComponent, {

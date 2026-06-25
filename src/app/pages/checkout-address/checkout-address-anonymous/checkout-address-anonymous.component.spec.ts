@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
@@ -29,11 +29,12 @@ describe('Checkout Address Anonymous Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CheckoutAddressAnonymousComponent, TranslateModule.forRoot()],
+      imports: [CheckoutAddressAnonymousComponent],
       providers: [
         ...(FeatureToggleModule.forTesting('guestCheckout').providers ?? []),
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutAddressAnonymousComponent, {

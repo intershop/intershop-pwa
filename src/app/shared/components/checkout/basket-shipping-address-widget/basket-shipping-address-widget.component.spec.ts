@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -41,11 +41,12 @@ describe('Basket Shipping Address Widget Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [BasketShippingAddressWidgetComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [BasketShippingAddressWidgetComponent, FormlyTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useValue: { enabled: (feature: string) => feature === 'addressDoctor' } },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(BasketShippingAddressWidgetComponent, {

@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -15,7 +15,8 @@ describe('Basket Shipping Method Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketShippingMethodComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [BasketShippingMethodComponent],
     })
       .overrideComponent(BasketShippingMethodComponent, {
         remove: { imports: [DatePipe] },

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -21,8 +21,8 @@ describe('Account Wishlist Page Component', () => {
     const wishlistsFacade = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      imports: [AccountWishlistPageComponent, NgbPopover, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }],
+      imports: [AccountWishlistPageComponent, NgbPopover],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }, provideTranslateService()],
     })
       .overrideComponent(AccountWishlistPageComponent, {
         remove: { imports: [AccountWishlistListComponent, ErrorMessageComponent, WishlistPreferencesDialogComponent] },

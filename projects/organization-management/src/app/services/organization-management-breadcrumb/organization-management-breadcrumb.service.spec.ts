@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { AuthorizationToggleService } from 'ish-core/authorization-toggle';
@@ -39,7 +39,6 @@ describe('Organization Management Breadcrumb Service', () => {
       imports: [
         CoreStoreProviders.forTesting(['router', 'configuration']),
         OrganizationManagementStoreProviders.forTesting('users', 'costCenters'),
-        TranslateModule.forRoot(),
       ],
       providers: [
         {
@@ -56,6 +55,7 @@ describe('Organization Management Breadcrumb Service', () => {
           },
         },
         provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),
+        provideTranslateService(),
       ],
     });
 

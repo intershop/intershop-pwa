@@ -2,7 +2,7 @@ import { Component, Directive, EventEmitter, Input, Output } from '@angular/core
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyField, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -13,7 +13,6 @@ import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.compon
 
 @Directive({
   selector: '[ishProductContext]',
-  standalone: true,
 })
 class MockProductContextDirective {
   @Input() configuration: unknown;
@@ -28,7 +27,6 @@ class MockProductContextDirective {
 
 @Component({
   selector: 'ish-product-quantity',
-  standalone: true,
   template: '',
 })
 class MockProductQuantityComponent {}
@@ -40,18 +38,18 @@ describe('Quickorder Repeat Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
         QuickorderRepeatFieldComponent,
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(QuickorderRepeatFieldComponent, {
         set: {
-          imports: [FormlyField, MockProductContextDirective, MockProductQuantityComponent, TranslateModule],
+          imports: [FormlyField, MockProductContextDirective, MockProductQuantityComponent, TranslatePipe],
         },
       })
       .compileComponents();

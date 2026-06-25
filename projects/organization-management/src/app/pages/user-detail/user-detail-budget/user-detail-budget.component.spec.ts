@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { Price } from 'ish-core/models/price/price.model';
@@ -15,7 +15,8 @@ describe('User Detail Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), UserDetailBudgetComponent],
+      imports: [UserDetailBudgetComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(UserDetailBudgetComponent, {
         set: {
@@ -24,6 +25,7 @@ describe('User Detail Budget Component', () => {
             MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
             MockDirective(RouterLink),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

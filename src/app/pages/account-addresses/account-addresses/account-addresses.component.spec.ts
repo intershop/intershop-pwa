@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -84,10 +84,11 @@ describe('Account Addresses Component', () => {
     beforeEach(async () => {
       accountFacade = mock(AccountFacade);
       await TestBed.configureTestingModule({
-        imports: [AccountAddressesComponent, FormlyTestingModule, TranslateModule.forRoot()],
+        imports: [AccountAddressesComponent, FormlyTestingModule],
         providers: [
           { provide: AccountFacade, useFactory: () => instance(accountFacade) },
           { provide: FeatureToggleService, useValue: { enabled: () => false } },
+          provideTranslateService(),
         ],
       })
         .overrideComponent(AccountAddressesComponent, {
@@ -316,11 +317,12 @@ describe('Account Addresses Component', () => {
       accountFacade = mock(AccountFacade);
       featureEventService = mock(FeatureEventService);
       await TestBed.configureTestingModule({
-        imports: [AccountAddressesComponent, FormlyTestingModule, TranslateModule.forRoot()],
+        imports: [AccountAddressesComponent, FormlyTestingModule],
         providers: [
           { provide: AccountFacade, useFactory: () => instance(accountFacade) },
           { provide: FeatureEventService, useFactory: () => instance(featureEventService) },
           { provide: FeatureToggleService, useValue: { enabled: (feature: string) => feature === 'addressDoctor' } },
+          provideTranslateService(),
         ],
       })
         .overrideComponent(AccountAddressesComponent, {

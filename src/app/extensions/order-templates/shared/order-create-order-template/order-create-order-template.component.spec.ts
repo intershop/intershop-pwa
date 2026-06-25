@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -23,8 +23,11 @@ describe('Order Create Order Template Component', () => {
     when(orderTemplatesFacadeMock.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [OrderCreateOrderTemplateComponent, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) }],
+      imports: [OrderCreateOrderTemplateComponent],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(OrderCreateOrderTemplateComponent, {
         remove: { imports: [OrderTemplatePreferencesDialogComponent] },

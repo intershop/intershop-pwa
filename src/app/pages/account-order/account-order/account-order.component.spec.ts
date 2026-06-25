@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -31,14 +30,17 @@ describe('Account Order Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountOrderComponent, TranslateModule.forRoot()],
-      providers: [...(FeatureToggleModule.forTesting('orderTemplates').providers ?? []), provideRouter([])],
+      imports: [AccountOrderComponent],
+      providers: [
+        ...(FeatureToggleModule.forTesting('orderTemplates').providers ?? []),
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AccountOrderComponent, {
         set: {
           imports: [
             MockComponent(AccountOrderToBasketComponent),
-            CommonModule,
             MockPipe(DatePipe),
             TranslatePipe,
             MockDirective(ServerHtmlDirective),

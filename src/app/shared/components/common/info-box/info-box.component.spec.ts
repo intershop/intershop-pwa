@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { InfoBoxComponent } from './info-box.component';
 
@@ -11,8 +11,8 @@ describe('Info Box Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InfoBoxComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [InfoBoxComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

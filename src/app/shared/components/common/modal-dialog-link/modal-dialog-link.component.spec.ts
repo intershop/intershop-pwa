@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
@@ -13,7 +13,8 @@ describe('Modal Dialog Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalDialogLinkComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [ModalDialogLinkComponent],
     })
       .overrideComponent(ModalDialogLinkComponent, {
         remove: { imports: [ModalDialogComponent] },

@@ -2,7 +2,7 @@ import { CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
@@ -27,8 +27,12 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, HeaderDefaultComponent, TranslateModule.forRoot()],
-      providers: [...(FeatureToggleModule.forTesting('compare').providers ?? []), provideRouter([])],
+      imports: [CommonModule, HeaderDefaultComponent],
+      providers: [
+        ...(FeatureToggleModule.forTesting('compare').providers ?? []),
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(HeaderDefaultComponent, {
         set: {

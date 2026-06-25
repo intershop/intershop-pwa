@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaLoaderService } from 'ng-recaptcha-2';
 import { BehaviorSubject, of } from 'rxjs';
 
@@ -31,7 +31,7 @@ describe('Lazy Captcha Component', () => {
     } as unknown as CaptchaFacade;
 
     await TestBed.configureTestingModule({
-      imports: [LazyCaptchaComponent, TranslateModule.forRoot()],
+      imports: [LazyCaptchaComponent],
       providers: [
         {
           provide: AppFacade,
@@ -55,6 +55,7 @@ describe('Lazy Captcha Component', () => {
         { provide: CaptchaFacade, useValue: captchaFacade },
         { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

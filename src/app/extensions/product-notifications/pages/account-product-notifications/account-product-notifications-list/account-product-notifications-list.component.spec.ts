@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -34,11 +34,13 @@ describe('Account Product Notifications List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountProductNotificationsListComponent, CdkTableModule, TranslateModule.forRoot()],
+      imports: [AccountProductNotificationsListComponent, CdkTableModule],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(AccountProductNotificationsListComponent, {
         remove: {
           imports: [ProductContextDirective, ProductImageComponent, ProductNameComponent, ProductPriceComponent],
+          providers: [provideTranslateService()],
         },
         add: {
           imports: [
@@ -47,6 +49,7 @@ describe('Account Product Notifications List Component', () => {
             MockComponent(ProductPriceComponent),
             MockDirective(ProductContextDirective),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

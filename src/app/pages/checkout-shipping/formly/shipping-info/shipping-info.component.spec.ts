@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
@@ -15,8 +15,8 @@ describe('Shipping Info Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      imports: [ShippingInfoComponent, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      imports: [ShippingInfoComponent],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

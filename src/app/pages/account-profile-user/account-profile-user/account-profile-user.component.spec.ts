@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -58,11 +58,12 @@ describe('Account Profile User Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [AccountProfileUserComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [AccountProfileUserComponent, FormlyTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacadeMock) },
         { provide: AppFacade, useFactory: () => instance(appFacadeMock) },
         { provide: FieldLibrary, useFactory: () => instance(fieldLibraryMock) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(AccountProfileUserComponent, {

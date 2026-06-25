@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,8 +24,12 @@ describe('Checkout Receipt Requisition Component', () => {
   beforeEach(async () => {
     reqFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CheckoutReceiptRequisitionComponent, TranslateModule.forRoot()],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) }, provideRouter([])],
+      imports: [CheckoutReceiptRequisitionComponent],
+      providers: [
+        { provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(CheckoutReceiptRequisitionComponent, {
         set: {

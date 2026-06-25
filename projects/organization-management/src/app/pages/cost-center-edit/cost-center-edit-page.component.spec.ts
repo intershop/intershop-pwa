@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -36,10 +36,11 @@ describe('Cost Center Edit Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CostCenterEditPageComponent, TranslateModule.forRoot()],
+      imports: [CostCenterEditPageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CostCenterEditPageComponent, {

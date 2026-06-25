@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { Address } from 'ish-core/models/address/address.model';
@@ -15,7 +15,8 @@ describe('Basket Address Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketAddressSummaryComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [BasketAddressSummaryComponent],
     })
       .overrideComponent(BasketAddressSummaryComponent, {
         remove: { imports: [AddressComponent] },

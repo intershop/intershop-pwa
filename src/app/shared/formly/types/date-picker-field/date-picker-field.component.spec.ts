@@ -3,7 +3,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
@@ -27,6 +27,7 @@ describe('Date Picker Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         DatePickerFieldComponent,
@@ -34,7 +35,6 @@ describe('Date Picker Field Component', () => {
           types: [{ name: 'ish-date-picker-field', component: DatePickerFieldComponent }],
         }),
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(DatePickerFieldComponent, {

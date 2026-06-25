@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -14,7 +14,8 @@ describe('Update Password Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot(), UpdatePasswordFormComponent],
+      imports: [FormlyTestingModule, UpdatePasswordFormComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

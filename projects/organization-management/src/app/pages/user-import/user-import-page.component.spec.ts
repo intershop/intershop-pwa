@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -25,10 +25,11 @@ describe('User Import Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), UserImportPageComponent],
+      imports: [UserImportPageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(UserImportPageComponent, {

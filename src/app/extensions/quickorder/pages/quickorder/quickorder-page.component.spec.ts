@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -20,8 +20,11 @@ describe('Quickorder Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuickorderPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
+      imports: [QuickorderPageComponent],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(QuickorderPageComponent, {
         remove: {

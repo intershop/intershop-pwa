@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -19,8 +19,8 @@ describe('Footer Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FooterComponent, TranslateModule.forRoot()],
-      providers: [...(RoleToggleModule.forTesting().providers ?? [])],
+      imports: [FooterComponent],
+      providers: [...(RoleToggleModule.forTesting().providers ?? []), provideTranslateService()],
     })
       .overrideComponent(FooterComponent, {
         remove: {

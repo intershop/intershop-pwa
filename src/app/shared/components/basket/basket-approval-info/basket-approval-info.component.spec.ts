@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -14,11 +14,14 @@ describe('Basket Approval Info Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketApprovalInfoComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [BasketApprovalInfoComponent],
     })
       .overrideComponent(BasketApprovalInfoComponent, {
         remove: { imports: [ModalDialogLinkComponent, ServerHtmlDirective] },
-        add: { imports: [MockComponent(ModalDialogLinkComponent), MockDirective(ServerHtmlDirective)] },
+        add: {
+          imports: [MockComponent(ModalDialogLinkComponent), MockDirective(ServerHtmlDirective)],
+        },
       })
       .compileComponents();
   });

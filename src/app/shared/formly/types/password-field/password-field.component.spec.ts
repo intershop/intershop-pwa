@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { EXTRALARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -28,9 +28,8 @@ describe('Password Field Component', () => {
         }),
         PasswordFieldComponent,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
       ],
-      providers: [{ provide: EXTRALARGE_BREAKPOINT_WIDTH, useValue: 1400 }],
+      providers: [{ provide: EXTRALARGE_BREAKPOINT_WIDTH, useValue: 1400 }, provideTranslateService()],
     }).compileComponents();
   });
 

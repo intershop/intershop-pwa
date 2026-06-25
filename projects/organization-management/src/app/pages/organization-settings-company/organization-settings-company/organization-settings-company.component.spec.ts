@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, provideRouter } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -38,8 +38,12 @@ describe('Organization Settings Company Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, OrganizationSettingsCompanyComponent, TranslateModule.forRoot()],
-      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }, provideRouter([])],
+      imports: [FormlyTestingModule, OrganizationSettingsCompanyComponent],
+      providers: [
+        { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(OrganizationSettingsCompanyComponent, {
         set: {

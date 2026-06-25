@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
@@ -39,9 +39,10 @@ describe('Cost Center Csv Import Component', () => {
   beforeEach(async () => {
     organizationManagementFacadeMock = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CostCenterCsvImportComponent, TranslateModule.forRoot()],
+      imports: [CostCenterCsvImportComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacadeMock) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

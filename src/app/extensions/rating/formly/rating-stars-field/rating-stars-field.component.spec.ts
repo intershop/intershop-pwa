@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -18,6 +18,7 @@ describe('Rating Stars Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FormlyModule.forRoot({
@@ -29,7 +30,6 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         RatingStarsFieldComponent,
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(RatingStarsFieldComponent, {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -28,8 +28,8 @@ describe('Basket Custom Fields Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [BasketCustomFieldsComponent, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }],
+      imports: [BasketCustomFieldsComponent, ReactiveFormsModule],
+      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
     })
       .overrideComponent(BasketCustomFieldsComponent, {
         remove: { imports: [CustomFieldsFormlyComponent, CustomFieldsViewComponent, NgbCollapse] },

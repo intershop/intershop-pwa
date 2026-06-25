@@ -1,7 +1,7 @@
 import { AsyncPipe, SlicePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -84,10 +84,11 @@ describe('Product Compare List Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ProductCompareListComponent, TranslateModule.forRoot()],
+      imports: [ProductCompareListComponent],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
+        provideTranslateService(),
       ],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

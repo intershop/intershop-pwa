@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -14,7 +14,8 @@ describe('Cms Image Enhanced Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CMSImageEnhancedComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [CMSImageEnhancedComponent],
     })
       .overrideComponent(CMSImageEnhancedComponent, {
         remove: { imports: [ServerHtmlDirective] },

@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -41,10 +41,11 @@ describe('Cost Centers Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CostCentersPageComponent, TranslateModule.forRoot()],
+      imports: [CostCentersPageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CostCentersPageComponent, {

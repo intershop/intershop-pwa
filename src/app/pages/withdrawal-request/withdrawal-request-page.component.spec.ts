@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
@@ -27,7 +27,7 @@ describe('Withdrawal Request Page Component', () => {
     when(withdrawalFacade.initialized).thenReturn(signal(true));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), WithdrawalRequestPageComponent],
+      imports: [WithdrawalRequestPageComponent],
     })
       .overrideComponent(WithdrawalRequestPageComponent, {
         set: {
@@ -38,7 +38,10 @@ describe('Withdrawal Request Page Component', () => {
             MockDirective(ServerHtmlDirective),
             TranslatePipe,
           ],
-          providers: [{ provide: WithdrawalFacade, useFactory: () => instance(withdrawalFacade) }],
+          providers: [
+            provideTranslateService(),
+            { provide: WithdrawalFacade, useFactory: () => instance(withdrawalFacade) },
+          ],
         },
       })
       .compileComponents();

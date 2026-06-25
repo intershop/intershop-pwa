@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
@@ -23,11 +23,12 @@ describe('Basket Create Order Template Component', () => {
     orderTemplatesFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [BasketCreateOrderTemplateComponent, TranslateModule.forRoot()],
+      imports: [BasketCreateOrderTemplateComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacadeMock) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(BasketCreateOrderTemplateComponent, {

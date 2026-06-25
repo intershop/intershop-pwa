@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -19,8 +19,8 @@ describe('Account Payment Page Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [AccountPaymentPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      imports: [AccountPaymentPageComponent],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     })
       .overrideComponent(AccountPaymentPageComponent, {
         remove: { imports: [AccountPaymentComponent, ErrorMessageComponent] },

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -19,6 +19,7 @@ describe('Checkout Review Tac Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         CheckoutReviewTacFieldComponent,
@@ -26,11 +27,12 @@ describe('Checkout Review Tac Field Component', () => {
           types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
         }),
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(CheckoutReviewTacFieldComponent, {
-        remove: { imports: [ServerHtmlDirective, ServerSettingPipe, ValidationMessageComponent] },
+        remove: {
+          imports: [ServerHtmlDirective, ServerSettingPipe, ValidationMessageComponent],
+        },
         add: {
           imports: [
             MockDirective(ServerHtmlDirective),

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -17,6 +17,7 @@ describe('Fieldset Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FieldsetFieldComponent,
@@ -29,7 +30,6 @@ describe('Fieldset Field Component', () => {
             { name: 'example', component: FormlyTestingExampleComponent },
           ],
         }),
-        TranslateModule.forRoot(),
       ],
     }).compileComponents();
   });

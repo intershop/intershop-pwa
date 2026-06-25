@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,8 +22,8 @@ describe('Account Punchout Cxml Configuration Page Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [AccountPunchoutCxmlConfigurationPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
+      imports: [AccountPunchoutCxmlConfigurationPageComponent],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideTranslateService()],
     })
       .overrideComponent(AccountPunchoutCxmlConfigurationPageComponent, {
         remove: { imports: [CxmlConfigurationFormComponent, LoadingComponent] },

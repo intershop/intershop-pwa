@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -19,11 +19,12 @@ describe('Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorComponent, TranslateModule.forRoot()],
+      imports: [ErrorComponent],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(ErrorComponent, {

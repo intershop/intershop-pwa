@@ -2,7 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -20,7 +20,7 @@ describe('Login Form Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, LoginFormComponent, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, LoginFormComponent],
       providers: [
         {
           provide: AccountFacade,
@@ -28,6 +28,7 @@ describe('Login Form Component', () => {
         },
         provideMockStore(),
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

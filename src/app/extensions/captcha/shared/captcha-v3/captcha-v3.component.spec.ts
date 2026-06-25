@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha-2';
 import { of } from 'rxjs';
@@ -23,10 +23,11 @@ describe('Captcha V3 Component', () => {
     appFacade = mock(AppFacade);
     when(appFacade.appBecameStable$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      imports: [CaptchaV3Component, RecaptchaV3Module, TranslateModule.forRoot()],
+      imports: [CaptchaV3Component, RecaptchaV3Module],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CaptchaV3Component, {

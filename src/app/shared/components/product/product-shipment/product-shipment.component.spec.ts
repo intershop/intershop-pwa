@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,8 +22,8 @@ describe('Product Shipment Component', () => {
     when(context.select('displayProperties', 'shipment')).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [ProductShipmentComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      imports: [ProductShipmentComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     })
       .overrideComponent(ProductShipmentComponent, {
         remove: { imports: [ContentIncludeComponent, ModalDialogLinkComponent] },

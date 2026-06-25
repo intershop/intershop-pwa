@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -19,7 +19,8 @@ describe('Search Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchResultComponent, TranslateModule.forRoot()],
+      imports: [SearchResultComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(SearchResultComponent, {
         remove: {

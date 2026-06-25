@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
@@ -25,8 +25,8 @@ describe('Withdrawal Request Form Component', () => {
     when(appFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot(), WithdrawalRequestFormComponent],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
+      imports: [FormlyTestingModule, WithdrawalRequestFormComponent],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideTranslateService()],
     })
       .overrideComponent(WithdrawalRequestFormComponent, {
         set: {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -17,8 +17,8 @@ describe('Shopping Basket Empty Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ShoppingBasketEmptyComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [ShoppingBasketEmptyComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(ShoppingBasketEmptyComponent, {
         remove: { imports: [BasketInfoComponent, BasketValidationResultsComponent, ErrorMessageComponent] },

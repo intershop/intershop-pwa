@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -14,11 +14,16 @@ describe('Login Modal Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginModalComponent, TranslateModule.forRoot()],
+      imports: [LoginModalComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(LoginModalComponent, {
-        remove: { imports: [IdentityProviderLoginComponent, ServerHtmlDirective] },
-        add: { imports: [MockComponent(IdentityProviderLoginComponent), MockDirective(ServerHtmlDirective)] },
+        remove: {
+          imports: [IdentityProviderLoginComponent, ServerHtmlDirective],
+        },
+        add: {
+          imports: [MockComponent(IdentityProviderLoginComponent), MockDirective(ServerHtmlDirective)],
+        },
       })
       .compileComponents();
   });

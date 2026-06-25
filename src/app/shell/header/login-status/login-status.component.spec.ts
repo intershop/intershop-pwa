@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -23,8 +23,12 @@ describe('Login Status Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [LoginStatusComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      imports: [LoginStatusComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

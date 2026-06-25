@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,8 +22,12 @@ describe('Update Password Component', () => {
     when(accountFacade.passwordReminderSuccess$).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), UpdatePasswordComponent],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      imports: [UpdatePasswordComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(UpdatePasswordComponent, {
         remove: { imports: [ErrorMessageComponent, UpdatePasswordFormComponent] },

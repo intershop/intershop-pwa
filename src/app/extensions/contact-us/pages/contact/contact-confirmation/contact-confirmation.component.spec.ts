@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { ContactConfirmationComponent } from './contact-confirmation.component';
 
@@ -11,8 +11,8 @@ describe('Contact Confirmation Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactConfirmationComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [ContactConfirmationComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

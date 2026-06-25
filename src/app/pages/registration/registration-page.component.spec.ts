@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -33,12 +33,13 @@ describe('Registration Page Component', () => {
     configService = mock(RegistrationFormConfigurationService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, RegistrationPageComponent, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, RegistrationPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: FeatureToggleService, useValue: { enabled: () => true } },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(RegistrationPageComponent, {

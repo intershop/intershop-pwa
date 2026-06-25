@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, verify } from 'ts-mockito';
 
@@ -22,11 +22,12 @@ describe('Basket Add To Quote Component', () => {
     accountFacade.isLoggedIn$ = of(false);
 
     await TestBed.configureTestingModule({
-      imports: [BasketAddToQuoteComponent, TranslateModule.forRoot()],
+      imports: [BasketAddToQuoteComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

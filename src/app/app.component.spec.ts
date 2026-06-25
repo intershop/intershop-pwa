@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -25,8 +25,12 @@ describe('App Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideRouter([])],
+      imports: [AppComponent],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AppComponent, {
         remove: { imports: [CookiesBannerComponent, FooterComponent, HeaderComponent] },

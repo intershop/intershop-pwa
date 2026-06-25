@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,10 +30,11 @@ describe('Product Detail Info Component', () => {
     when(context.select('variationCount')).thenReturn(of(0));
 
     await TestBed.configureTestingModule({
-      imports: [ProductDetailInfoComponent, TranslateModule.forRoot()],
+      imports: [ProductDetailInfoComponent],
       providers: [
         ...(FeatureToggleModule.forTesting('rating').providers ?? []),
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(ProductDetailInfoComponent, {

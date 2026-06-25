@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -43,8 +43,8 @@ describe('Quote Page Component', () => {
     context = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [QuotePageComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [QuotePageComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(QuotePageComponent, {
         remove: {
@@ -67,7 +67,9 @@ describe('Quote Page Component', () => {
         },
       })
       .overrideComponent(QuotePageComponent, {
-        set: { providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }] },
+        set: {
+          providers: [provideTranslateService(), { provide: QuoteContextFacade, useFactory: () => instance(context) }],
+        },
       })
       .compileComponents();
   });

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,8 +22,8 @@ describe('Quote Edit Component', () => {
     when(context.select('entityAsQuoteRequest')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [QuoteEditComponent, TranslateModule.forRoot()],
-      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }],
+      imports: [QuoteEditComponent],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     })
       .overrideComponent(QuoteEditComponent, {
         remove: { imports: [InPlaceEditComponent, QuoteLineItemListComponent, QuoteStateComponent] },

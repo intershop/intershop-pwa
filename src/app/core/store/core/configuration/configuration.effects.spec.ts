@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { instance, mock } from 'ts-mockito';
@@ -20,11 +20,12 @@ describe('Configuration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [...CoreStoreProviders.forTesting(['configuration', 'serverConfig']), TranslateModule.forRoot()],
+      imports: [...CoreStoreProviders.forTesting(['configuration', 'serverConfig'])],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         ConfigurationEffects,
         provideMockActions(() => actions$),
+        provideTranslateService(),
       ],
     });
 

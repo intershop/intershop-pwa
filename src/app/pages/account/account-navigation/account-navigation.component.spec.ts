@@ -2,7 +2,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
@@ -55,8 +55,8 @@ describe('Account Navigation Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountNavigationComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [AccountNavigationComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(AccountNavigationComponent, {
         remove: {

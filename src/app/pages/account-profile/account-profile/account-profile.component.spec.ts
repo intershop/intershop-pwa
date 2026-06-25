@@ -1,7 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective, MockPipe } from 'ng-mocks';
 
 import { IdentityProviderCapabilityDirective } from 'ish-core/directives/identity-provider-capability.directive';
@@ -37,8 +37,8 @@ describe('Account Profile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountProfileComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [AccountProfileComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(AccountProfileComponent, {
         remove: { imports: [IdentityProviderCapabilityDirective, ServerHtmlDirective, ServerSettingPipe] },

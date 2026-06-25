@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
@@ -15,8 +15,8 @@ describe('Account Wishlist List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountWishlistListComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [AccountWishlistListComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(AccountWishlistListComponent, {
         remove: { imports: [ModalDialogComponent] },

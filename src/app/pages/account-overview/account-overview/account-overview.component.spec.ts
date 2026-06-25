@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { BudgetWidgetComponent, CostCenterWidgetComponent } from 'organization-management';
 import { ApprovalWidgetComponent, RequisitionWidgetComponent } from 'requisition-management';
@@ -33,12 +33,13 @@ describe('Account Overview Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountOverviewComponent, TranslateModule.forRoot()],
+      imports: [AccountOverviewComponent],
       providers: [
         ...(AuthorizationToggleModule.forTesting().providers ?? []),
         ...(FeatureToggleModule.forTesting().providers ?? []),
         ...(RoleToggleModule.forTesting().providers ?? []),
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(AccountOverviewComponent, {

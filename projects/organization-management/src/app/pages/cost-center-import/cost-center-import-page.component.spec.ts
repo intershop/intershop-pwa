@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 
@@ -46,7 +46,7 @@ describe('Cost Center Import Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CostCenterImportPageComponent, TranslateModule.forRoot()],
+      imports: [CostCenterImportPageComponent],
       providers: [
         {
           provide: OrganizationManagementFacade,
@@ -57,6 +57,7 @@ describe('Cost Center Import Page Component', () => {
           },
         },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CostCenterImportPageComponent, {

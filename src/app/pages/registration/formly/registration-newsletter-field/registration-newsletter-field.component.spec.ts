@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -17,6 +17,7 @@ describe('Registration Newsletter Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FormlyModule.forRoot({
@@ -24,7 +25,6 @@ describe('Registration Newsletter Field Component', () => {
         }),
         ReactiveFormsModule,
         RegistrationNewsletterFieldComponent,
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(RegistrationNewsletterFieldComponent, {

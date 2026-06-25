@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
@@ -17,8 +17,8 @@ describe('Checkout Receipt Order Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckoutReceiptOrderComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [CheckoutReceiptOrderComponent],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(CheckoutReceiptOrderComponent, {
         remove: {

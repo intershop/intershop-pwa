@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -24,8 +24,11 @@ describe('Account Wishlist Detail Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountWishlistDetailPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) }],
+      imports: [AccountWishlistDetailPageComponent],
+      providers: [
+        { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AccountWishlistDetailPageComponent, {
         set: {

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { Auth0SignInComponent } from './auth0-sign-in.component';
 
@@ -11,7 +12,7 @@ describe('Auth0 Sign In Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Auth0SignInComponent],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

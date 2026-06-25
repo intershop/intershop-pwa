@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
@@ -14,7 +14,8 @@ describe('Order Recurrence Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OrderRecurrenceComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [OrderRecurrenceComponent],
     })
       .overrideComponent(OrderRecurrenceComponent, {
         remove: { imports: [DatePipe, FrequencyPipe] },

@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -27,10 +27,11 @@ describe('User Create Page Component', () => {
   beforeEach(async () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), UserCreatePageComponent],
+      imports: [UserCreatePageComponent],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(UserCreatePageComponent, {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock, when } from 'ts-mockito';
 
 import { COOKIE_CONSENT_OPTIONS } from 'ish-core/configurations/injection-keys';
@@ -19,7 +19,7 @@ describe('Cookies Modal Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [CookiesModalComponent, TranslateModule.forRoot()],
+      imports: [CookiesModalComponent],
       providers: [
         {
           provide: COOKIE_CONSENT_OPTIONS,
@@ -40,6 +40,7 @@ describe('Cookies Modal Component', () => {
           },
         },
         { provide: CookiesService, useValue: instance(cookiesServiceMock) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

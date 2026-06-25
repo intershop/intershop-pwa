@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
@@ -13,7 +13,8 @@ describe('Basket Recurrence Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketRecurrenceSummaryComponent, TranslateModule.forRoot()],
+      providers: [provideTranslateService()],
+      imports: [BasketRecurrenceSummaryComponent],
     })
       .overrideComponent(BasketRecurrenceSummaryComponent, {
         remove: { imports: [OrderRecurrenceComponent] },

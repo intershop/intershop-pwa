@@ -4,7 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -97,7 +97,6 @@ describe('Customer Store', () => {
         CustomerStoreProviders.forTesting('user', 'basket'),
         EffectsModule.forFeature([BasketEffects, BasketValidationEffects, UserEffects]),
         ShoppingStoreProviders.forTesting('products', 'productInventory'),
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
@@ -117,6 +116,7 @@ describe('Customer Store', () => {
           },
         ]),
         provideStoreSnapshots(),
+        provideTranslateService(),
       ],
     });
 

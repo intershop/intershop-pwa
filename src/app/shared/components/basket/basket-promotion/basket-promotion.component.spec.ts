@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,8 +23,8 @@ describe('Basket Promotion Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [BasketPromotionComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      imports: [BasketPromotionComponent],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     })
       .overrideComponent(BasketPromotionComponent, {
         remove: { imports: [PromotionDetailsComponent, PromotionRemoveComponent, ServerHtmlDirective] },

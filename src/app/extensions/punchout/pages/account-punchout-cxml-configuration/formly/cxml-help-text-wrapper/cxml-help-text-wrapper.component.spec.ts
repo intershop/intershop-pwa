@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -26,6 +26,7 @@ describe('Cxml Help Text Wrapper Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         CxmlHelpTextWrapperComponent,
@@ -33,12 +34,13 @@ describe('Cxml Help Text Wrapper Component', () => {
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'description', component: CxmlHelpTextWrapperComponent }],
         }),
-        TranslateModule.forRoot(),
       ],
     })
       .overrideComponent(CxmlHelpTextWrapperComponent, {
         remove: { imports: [NgbCollapse, ServerHtmlDirective] },
-        add: { imports: [MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)] },
+        add: {
+          imports: [MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)],
+        },
       })
       .compileComponents();
   });

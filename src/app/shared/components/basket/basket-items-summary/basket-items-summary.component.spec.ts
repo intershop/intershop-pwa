@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
@@ -17,10 +17,14 @@ describe('Basket Items Summary Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketItemsSummaryComponent, TranslateModule.forRoot()],
+      imports: [BasketItemsSummaryComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(BasketItemsSummaryComponent, {
-        remove: { imports: [BasketPromotionComponent, PricePipe, ProductContextDirective, ProductNameComponent] },
+        remove: {
+          imports: [BasketPromotionComponent, PricePipe, ProductContextDirective, ProductNameComponent],
+          providers: [provideTranslateService()],
+        },
         add: {
           imports: [
             MockComponent(BasketPromotionComponent),
@@ -28,6 +32,7 @@ describe('Basket Items Summary Component', () => {
             MockDirective(ProductContextDirective),
             MockComponent(ProductNameComponent),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

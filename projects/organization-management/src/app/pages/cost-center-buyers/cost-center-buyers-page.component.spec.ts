@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, provideRouter } from '@angular/router';
 import { FORMLY_CONFIG, FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,7 +30,7 @@ describe('Cost Center Buyers Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CostCenterBuyersPageComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [CostCenterBuyersPageComponent, FormlyTestingModule],
       providers: [
         {
           provide: FORMLY_CONFIG,
@@ -42,6 +42,7 @@ describe('Cost Center Buyers Page Component', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CostCenterBuyersPageComponent, {

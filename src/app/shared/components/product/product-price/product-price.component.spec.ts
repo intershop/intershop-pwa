@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -44,8 +44,8 @@ describe('Product Price Component', () => {
     when(context.select('product')).thenReturn(of({ sku: '123' }));
 
     await TestBed.configureTestingModule({
-      imports: [ProductPriceComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      imports: [ProductPriceComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     })
       .overrideComponent(ProductPriceComponent, {
         remove: { imports: [PricePipe] },

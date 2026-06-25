@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, verify, when } from 'ts-mockito';
@@ -37,12 +37,13 @@ describe('Account Punchout Page Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
-      imports: [AccountPunchoutPageComponent, TranslateModule.forRoot()],
+      imports: [AccountPunchoutPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(AccountPunchoutPageComponent, {

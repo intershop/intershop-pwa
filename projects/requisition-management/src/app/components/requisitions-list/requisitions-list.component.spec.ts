@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -49,8 +49,12 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [RequisitionsListComponent, TranslateModule.forRoot()],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }, provideRouter([])],
+      imports: [RequisitionsListComponent],
+      providers: [
+        { provide: RequisitionManagementFacade, useFactory: () => instance(facade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(RequisitionsListComponent, {
         set: {

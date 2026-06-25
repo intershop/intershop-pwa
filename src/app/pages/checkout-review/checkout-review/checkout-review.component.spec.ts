@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { FormlyForm, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, spy, verify, when } from 'ts-mockito';
@@ -60,11 +60,11 @@ describe('Checkout Review Component', () => {
         FormlyModule.forRoot({
           types: [{ name: 'ish-checkout-review-tac-field', component: checkoutReviewTacFieldMockComponent }],
         }),
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutReviewComponent, {

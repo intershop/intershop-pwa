@@ -15,6 +15,7 @@ describe('Radio Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         FormlyModule.forRoot({
@@ -24,7 +25,6 @@ describe('Radio Field Component', () => {
         ReactiveFormsModule,
         TranslatePipe,
       ],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

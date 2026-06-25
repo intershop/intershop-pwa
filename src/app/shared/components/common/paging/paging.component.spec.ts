@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { spy, verify } from 'ts-mockito';
 
 import { PagingComponent } from './paging.component';
@@ -13,7 +13,8 @@ describe('Paging Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PagingComponent, TranslateModule.forRoot()],
+      imports: [PagingComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

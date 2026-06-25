@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -31,10 +31,11 @@ describe('Account Order Template Detail Line Item Component', () => {
     when(context.select(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      imports: [AccountOrderTemplateDetailLineItemComponent, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [AccountOrderTemplateDetailLineItemComponent, ReactiveFormsModule],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(AccountOrderTemplateDetailLineItemComponent, {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -36,10 +36,11 @@ describe('Basket Cost Center Selection Component', () => {
     when(checkoutFacade.basket$).thenReturn(of(BasketMockData.getBasket()));
 
     await TestBed.configureTestingModule({
-      imports: [BasketCostCenterSelectionComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [BasketCostCenterSelectionComponent, FormlyTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

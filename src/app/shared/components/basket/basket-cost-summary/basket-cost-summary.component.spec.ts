@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -24,8 +24,12 @@ describe('Basket Cost Summary Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [BasketCostSummaryComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      imports: [BasketCostSummaryComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(BasketCostSummaryComponent, {
         remove: { imports: [BasketPromotionComponent, NgbPopover, PaymentPaypalComponent, ServerSettingPipe] },

@@ -1,6 +1,6 @@
 import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -16,8 +16,11 @@ describe('Cost Center Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CostCenterBudgetComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      imports: [CostCenterBudgetComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

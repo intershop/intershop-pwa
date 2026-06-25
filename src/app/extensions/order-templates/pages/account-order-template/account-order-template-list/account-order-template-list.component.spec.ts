@@ -1,8 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -56,14 +55,16 @@ describe('Account Order Template List Component', () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [AccountOrderTemplateListComponent, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      imports: [AccountOrderTemplateListComponent],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AccountOrderTemplateListComponent, {
         set: {
           imports: [
             CdkTableModule,
-            CommonModule,
             MockPipe(DatePipe),
             MockComponent(ModalDialogComponent),
             MockComponent(ProductAddToBasketComponent),

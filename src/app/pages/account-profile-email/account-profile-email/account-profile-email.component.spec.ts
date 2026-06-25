@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -20,7 +20,8 @@ describe('Account Profile Email Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountProfileEmailComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [AccountProfileEmailComponent, FormlyTestingModule],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(AccountProfileEmailComponent, {
         set: {
@@ -32,6 +33,7 @@ describe('Account Profile Email Component', () => {
             TranslatePipe,
             MockDirective(RouterLink),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

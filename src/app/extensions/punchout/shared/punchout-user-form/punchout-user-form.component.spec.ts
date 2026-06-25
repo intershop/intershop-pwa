@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { PunchoutUserFormComponent } from './punchout-user-form.component';
@@ -14,8 +14,8 @@ describe('Punchout User Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PunchoutUserFormComponent, ReactiveFormsModule, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      imports: [PunchoutUserFormComponent, ReactiveFormsModule],
+      providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(PunchoutUserFormComponent, {
         remove: { imports: [FormlyForm] },

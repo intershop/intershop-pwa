@@ -1,7 +1,7 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -47,8 +47,12 @@ describe('Account Recurring Orders Page Component', () => {
     when(accountFacade.recurringOrdersError$).thenReturn(of(undefined));
 
     await TestBed.configureTestingModule({
-      imports: [AccountRecurringOrdersPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      imports: [AccountRecurringOrdersPageComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AccountRecurringOrdersPageComponent, {
         remove: {

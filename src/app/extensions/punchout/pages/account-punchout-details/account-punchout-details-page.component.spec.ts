@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -28,8 +28,8 @@ describe('Account Punchout Details Page Component', () => {
     when(punchoutFacade.punchoutLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      imports: [AccountPunchoutDetailsPageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
+      imports: [AccountPunchoutDetailsPageComponent],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideTranslateService()],
     })
       .overrideComponent(AccountPunchoutDetailsPageComponent, {
         remove: { imports: [ErrorMessageComponent, PunchoutUserFormComponent] },

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { spy, verify } from 'ts-mockito';
 
@@ -19,7 +19,8 @@ describe('Basket Validation Items Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BasketValidationItemsComponent, TranslateModule.forRoot()],
+      imports: [BasketValidationItemsComponent],
+      providers: [provideTranslateService()],
     })
       .overrideComponent(BasketValidationItemsComponent, {
         remove: {
@@ -30,6 +31,7 @@ describe('Basket Validation Items Component', () => {
             ProductInventoryComponent,
             ProductNameComponent,
           ],
+          providers: [provideTranslateService()],
         },
         add: {
           imports: [
@@ -39,6 +41,7 @@ describe('Basket Validation Items Component', () => {
             MockComponent(ProductInventoryComponent),
             MockComponent(ProductNameComponent),
           ],
+          providers: [provideTranslateService()],
         },
       })
       .compileComponents();

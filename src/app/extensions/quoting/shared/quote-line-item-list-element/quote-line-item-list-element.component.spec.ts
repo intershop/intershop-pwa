@@ -1,6 +1,6 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
@@ -54,10 +54,11 @@ describe('Quote Line Item List Element Component', () => {
     quoteContext = mock(QuoteContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [QuoteLineItemListElementComponent, TranslateModule.forRoot()],
+      imports: [QuoteLineItemListElementComponent],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(productContext) },
         { provide: QuoteContextFacade, useFactory: () => instance(quoteContext) },
+        provideTranslateService(),
       ],
       deferBlockBehavior: DeferBlockBehavior.Playthrough,
     })

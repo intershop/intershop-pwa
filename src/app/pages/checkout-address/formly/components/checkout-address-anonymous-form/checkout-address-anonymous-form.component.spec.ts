@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.imports';
@@ -20,12 +20,11 @@ describe('Checkout Address Anonymous Form Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CheckoutAddressAnonymousFormComponent,
-        FormlyTestingModule.withPresetMocks(['taxationID']),
-        TranslateModule.forRoot(),
+      imports: [CheckoutAddressAnonymousFormComponent, FormlyTestingModule.withPresetMocks(['taxationID'])],
+      providers: [
+        ...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? []),
+        provideTranslateService(),
       ],
-      providers: [...(FeatureToggleModule.forTesting('businessCustomerRegistration').providers ?? [])],
     })
       .overrideComponent(CheckoutAddressAnonymousFormComponent, {
         set: {

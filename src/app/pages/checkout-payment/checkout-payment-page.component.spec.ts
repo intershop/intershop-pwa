@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -30,10 +30,11 @@ describe('Checkout Payment Page Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [CheckoutPaymentPageComponent, TranslateModule.forRoot()],
+      imports: [CheckoutPaymentPageComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutPaymentPageComponent, {

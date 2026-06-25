@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -17,8 +17,11 @@ describe('Product Links Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductLinksComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) }],
+      imports: [ProductLinksComponent],
+      providers: [
+        { provide: ProductContextFacade, useFactory: () => instance(mock(ProductContextFacade)) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(ProductLinksComponent, {
         remove: { imports: [ProductLinksCarouselComponent, ProductLinksListComponent] },

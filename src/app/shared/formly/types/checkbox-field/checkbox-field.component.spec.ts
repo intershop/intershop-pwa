@@ -15,6 +15,7 @@ describe('Checkbox Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
         ...formlyTestingImports,
         CheckboxFieldComponent,
@@ -24,7 +25,6 @@ describe('Checkbox Field Component', () => {
         ReactiveFormsModule,
         TranslatePipe,
       ],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

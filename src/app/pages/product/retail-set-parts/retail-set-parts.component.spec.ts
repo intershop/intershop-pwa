@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -29,8 +29,8 @@ describe('Retail Set Parts Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [RetailSetPartsComponent, TranslateModule.forRoot()],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
+      imports: [RetailSetPartsComponent],
+      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     })
       .overrideComponent(RetailSetPartsComponent, {
         remove: { imports: [ProductAddToBasketComponent, ProductContextDirective, ProductItemComponent] },

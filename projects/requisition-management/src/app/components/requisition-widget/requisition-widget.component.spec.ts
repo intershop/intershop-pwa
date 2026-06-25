@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -81,10 +81,11 @@ describe('Requisition Widget Component', () => {
   beforeEach(async () => {
     requisitionManagementFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [RequisitionWidgetComponent, TranslateModule.forRoot()],
+      imports: [RequisitionWidgetComponent],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(requisitionManagementFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(RequisitionWidgetComponent, {

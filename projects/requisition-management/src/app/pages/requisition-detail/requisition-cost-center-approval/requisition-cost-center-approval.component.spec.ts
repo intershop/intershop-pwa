@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass, PercentPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { BudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
@@ -29,8 +29,8 @@ describe('Requisition Cost Center Approval Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [RequisitionCostCenterApprovalComponent, TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      imports: [RequisitionCostCenterApprovalComponent],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     })
       .overrideComponent(RequisitionCostCenterApprovalComponent, {
         set: {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -28,11 +28,12 @@ describe('Checkout Address Page Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CheckoutAddressPageComponent, TranslateModule.forRoot()],
+      imports: [CheckoutAddressPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(CheckoutAddressPageComponent, {

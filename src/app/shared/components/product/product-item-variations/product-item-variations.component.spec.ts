@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateCompiler, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject, map } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
@@ -40,15 +40,13 @@ describe('Product Item Variations Component', () => {
     when(appFacade.serverSetting$(anyString())).thenReturn(advancedVariationHandling$);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ProductItemVariationsComponent,
-        TranslateModule.forRoot({
-          compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
-        }),
-      ],
+      imports: [ProductItemVariationsComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService({
+          compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
+        }),
       ],
     })
       .overrideComponent(ProductItemVariationsComponent, {

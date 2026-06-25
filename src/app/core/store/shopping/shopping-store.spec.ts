@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { createSelector } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
@@ -178,7 +178,6 @@ describe('Shopping Store', () => {
           'productRecommendations',
           'warranties'
         ),
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
@@ -222,6 +221,7 @@ describe('Shopping Store', () => {
           },
         ]),
         provideStoreSnapshots(),
+        provideTranslateService(),
         SelectedProductContextFacade,
       ],
     });

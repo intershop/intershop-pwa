@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlSerializer, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -33,13 +33,13 @@ describe('Configuration Integration', () => {
           [ConfigurationEffects],
           [configurationMeta]
         ),
-        TranslateModule.forRoot(),
       ],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         { provide: UrlSerializer, useClass: PWAUrlSerializer },
         provideRouter([{ path: 'home', children: [] }]),
         provideStoreSnapshots(),
+        provideTranslateService(),
       ],
     });
 

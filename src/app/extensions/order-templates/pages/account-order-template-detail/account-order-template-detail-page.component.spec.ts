@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
@@ -36,10 +36,11 @@ describe('Account Order Template Detail Page Component', () => {
     when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial as OrderTemplate));
 
     await TestBed.configureTestingModule({
-      imports: [AccountOrderTemplateDetailPageComponent, FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [AccountOrderTemplateDetailPageComponent, FormlyTestingModule],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(AccountOrderTemplateDetailPageComponent, {

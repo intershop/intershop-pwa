@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -31,7 +31,7 @@ describe('Line Item Information Edit Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [LineItemInformationEditComponent, TranslateModule.forRoot()],
+      imports: [LineItemInformationEditComponent],
     })
       .overrideComponent(LineItemInformationEditComponent, {
         remove: { imports: [CustomFieldsFormlyComponent, LineItemCustomFieldsComponent, NgbCollapse] },
@@ -46,6 +46,7 @@ describe('Line Item Information Edit Component', () => {
       .overrideComponent(LineItemInformationEditComponent, {
         set: {
           providers: [
+            provideTranslateService(),
             { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
             { provide: ProductContextFacade, useFactory: () => instance(context) },
           ],

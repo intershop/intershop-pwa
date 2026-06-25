@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -22,10 +22,11 @@ describe('Product Notification Delete Component', () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
     await TestBed.configureTestingModule({
-      imports: [ProductNotificationDeleteComponent, TranslateModule.forRoot()],
+      imports: [ProductNotificationDeleteComponent],
       providers: [
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(ProductNotificationDeleteComponent, {

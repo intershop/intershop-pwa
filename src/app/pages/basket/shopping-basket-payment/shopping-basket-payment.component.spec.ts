@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -30,11 +30,12 @@ describe('Shopping Basket Payment Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [ShoppingBasketPaymentComponent, TranslateModule.forRoot()],
+      imports: [ShoppingBasketPaymentComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useValue: instance(featureToggleService) },
         provideRouter([]),
+        provideTranslateService(),
       ],
     })
       .overrideComponent(ShoppingBasketPaymentComponent, {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -54,8 +54,11 @@ describe('Select Order Template Modal Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [SelectOrderTemplateModalComponent, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
+      imports: [SelectOrderTemplateModalComponent],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(SelectOrderTemplateModalComponent, {
         set: {

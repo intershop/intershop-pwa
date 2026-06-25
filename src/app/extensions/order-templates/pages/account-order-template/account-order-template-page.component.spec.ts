@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -20,8 +20,11 @@ describe('Account Order Template Page Component', () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [AccountOrderTemplatePageComponent, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      imports: [AccountOrderTemplatePageComponent],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideTranslateService(),
+      ],
     })
       .overrideComponent(AccountOrderTemplatePageComponent, {
         remove: {
