@@ -38,7 +38,7 @@ export class SsoRegistrationEffects {
           })
           .pipe(
             concatMap(createUserResponse => [
-              registerSuccess,
+              registerSuccess(),
               ...(data.subscribedToNewsletter
                 ? [
                     userNewsletterActions.updateUserNewsletterSubscription({

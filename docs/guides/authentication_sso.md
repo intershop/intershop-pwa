@@ -18,6 +18,8 @@ Intershop Commerce Management supports logging in clients via SSO (see [Concept 
 The PWA uses the library [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc#readme) to support an easy configuration for providing access to identity providers.
 After setting up the ICM side with the identity provider, an implementation for the interface [`IdentityProvider`](../../src/app/core/identity-provider/identity-provider.interface.ts), provided in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts), has to be added.
 
+The Intershop PWA contains a working example implementation for SSO with [Auth0](https://auth0.com/) that can be used for B2B and B2C.
+
 For development purposes the configuration can be added to the Angular CLI environment files:
 
 ```typescript
