@@ -18,7 +18,7 @@ services:
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       # additional host names the SSR server accepts besides 'localhost'
-      # ALLOWED_HOSTS: 'shop.example.com,*.example.com'
+      ALLOWED_HOSTS: '*.azurewebsites.net'
       # TRUST_ICM: 'true'
       # LOGLEVEL: 'info' # trace, debug, info, warn, error, fatal - default: error
       # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
