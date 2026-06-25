@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { range } from 'lodash-es';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
 
 @Component({
   selector: 'ish-product-quantity',
-  imports: [AsyncPipe, NgClass, TranslateDirective, TranslatePipe],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
   standalone: true,
   templateUrl: './product-quantity.component.html',
   styleUrls: ['./product-quantity.component.scss'],
