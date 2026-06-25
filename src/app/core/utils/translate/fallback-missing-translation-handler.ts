@@ -69,10 +69,14 @@ export class FallbackMissingTranslationHandler implements MissingTranslationHand
     if (params.key.length >= 10 && /^\w+(\.[\w-]+)+$/.test(params.key)) {
       const currentLang = params.translateService.currentLang;
       /*
-       * when changing languages 'currentLang' from the translate service
-       * is out of sync -- double check before reporting
+       * When changing languages 'currentLang' from the translate service is out of sync with its loaded
+       * translations -- only report a missing translation when the translations for the current language
+       * are actually loaded but the key is genuinely absent. While the translations are still loading
+       * (e.g. during SSR or a language switch) the language's translations object is not yet available,
+       * so reporting would be a false positive.
        */
-      if (!params.translateService.translations?.[currentLang]?.[params.key]) {
+      const translations = params.translateService.translations?.[currentLang];
+      if (translations && !translations[params.key]) {
         this.reportMissingTranslation(currentLang, params.key);
       }
 
