@@ -42,7 +42,7 @@ export class ModuleLoaderService {
   init() {
     this.store.pipe(select(getFeatures), whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.getLazyFeatures()
-        .filter(feature => feature.loadStrategy === 'appInit')
+        .filter(feature => feature.loadStrategy !== 'onDemand')
         .forEach(feature => void this.ensureLoaded(feature.feature));
     });
   }
