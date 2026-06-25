@@ -1096,6 +1096,7 @@
   "costcenter.csv.import.reset.button.label": "Réinitialiser",
   "costcenter.csv.import.subtitle": "Téléversez un fichier CSV valide pour importer des centres de coûts par fichier.",
   "costcenter.csv.import.title": "Ou en téléversant un fichier CSV",
+  "customer.already_exists.error": "Le client existe déjà.",
   "customer.creation_failed.error": "Malheureusement quelque chose s’est mal passé lors de la création de votre compte client. Veuillez réessayer plus tard ou contacter notre service client.",
   "customer.credentials.login.not_unique.error": "Un utilisateur avec ce courriel existe déjà. Veuillez vérifier l’exactitude des informations ou entrer un courriel différent.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Le mot de passe doit comporter un minimum de 7 caractères, comprenant des chiffres et des lettres, sans espaces.",

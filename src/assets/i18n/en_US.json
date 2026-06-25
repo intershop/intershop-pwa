@@ -1096,6 +1096,7 @@
   "costcenter.csv.import.reset.button.label": "Reset",
   "costcenter.csv.import.subtitle": "Upload a valid CSV file to import cost centers by file.",
   "costcenter.csv.import.title": "Or upload a CSV file",
+  "customer.already_exists.error": "The customer already exists.",
   "customer.creation_failed.error": "Unfortunately, something went wrong while creating your customer account. Please try again later or contact our customer support.",
   "customer.credentials.login.not_unique.error": "A user with that e-mail address already exists. Please check the information for accuracy or enter a different e-mail address.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "The password must include 7 characters minimum, containing numbers and letters, no spaces.",

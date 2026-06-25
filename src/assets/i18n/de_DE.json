@@ -1096,6 +1096,7 @@
   "costcenter.csv.import.reset.button.label": "Zurücksetzen",
   "costcenter.csv.import.subtitle": "Laden Sie eine gültige CSV-Datei hoch, um Kostenstellen per Datei zu importieren.",
   "costcenter.csv.import.title": "Oder Hochladen einer CSV-Datei",
+  "customer.already_exists.error": "Der Kunde existiert bereits.",
   "customer.creation_failed.error": "Leider ist beim Anlegen Ihres Kundenkontos etwas schiefgegangen. Bitte versuchen Sie es später noch einmal oder kontaktieren Sie unseren Kundensupport.",
   "customer.credentials.login.not_unique.error": "Die angegebene E-Mail-Adresse wird bereits verwendet. Prüfen Sie die Richtigkeit der Eingabe oder geben Sie eine andere E-Mail-Adresse an.",
   "customer.credentials.passwordreset.invalid_password.error.PasswordExpressionViolation": "Das Kennwort muss mindestens 7 Zeichen enthalten, bestehend aus Zahlen und Buchstaben, ohne Leerzeichen.",
