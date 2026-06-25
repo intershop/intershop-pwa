@@ -14,11 +14,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaV3Module } from 'ng-recaptcha-2';
-import { EMPTY, fromEvent, race, timer } from 'rxjs';
-import { catchError, exhaustMap, filter, map, tap } from 'rxjs/operators';
+import { fromEvent, race, timer } from 'rxjs';
+import { exhaustMap, filter, map, tap } from 'rxjs/operators';
 
 import { DirectivesModule } from 'ish-core/directives.module';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 import {
   SitekeyProviderService,
@@ -92,14 +91,10 @@ export class CaptchaV3Component implements OnInit, AfterViewInit {
   }
 
   private requestToken() {
-    const token$ = this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value).pipe(whenTruthy());
-    const timeout$ = timer(5000).pipe(
-      map(() => {
-        throw new Error('reCAPTCHA token request timed out');
-      })
+    return race(
+      this.recaptchaV3Service.execute(this.parentForm.get('captchaAction').value),
+      timer(2000).pipe(map(() => ''))
     );
-
-    return race(token$, timeout$).pipe(catchError(() => EMPTY));
   }
 
   private applyTokenAndResubmit(token: string, formElement: HTMLFormElement, submitter: HTMLElement) {
