@@ -33,7 +33,6 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
   standalone: false,
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { ngSkipHydration: 'true' },
 })
 export class ProductImagesComponent implements OnInit, OnDestroy {
   private swiper: Swiper;
