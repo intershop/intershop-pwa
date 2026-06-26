@@ -19,8 +19,8 @@
           <a
             class="order-template-link"
             data-testing-id="order-template-list-title"
-            [class.disabled]="!loadedDetailIds.has(orderTemplate.id)"
-            [routerLink]="loadedDetailIds.has(orderTemplate.id) ? '/account/order-templates/' + orderTemplate.id : null"
+            [class.disabled]="!orderTemplateLoaded(orderTemplate.id)"
+            [routerLink]="orderTemplateLoaded(orderTemplate.id) ? '/account/order-templates/' + orderTemplate.id : null"
           >
             {{ orderTemplate.title }}
           </a>
@@ -56,9 +56,14 @@
       <ng-container cdkColumnDef="actions">
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-actions" scope="col"></th>
         <td *cdkCellDef="let orderTemplate" cdk-cell class="column-price">
-          @if (partsCache.get(orderTemplate.id) | async; as parts) {
+          @if (orderTemplateLoaded(orderTemplate.id)) {
             <a class="btn-tool d-inline-flex align-top">
-              <ish-product-add-to-basket cssClass="btn-link p-0" displayType="icon" ishProductContext [parts]="parts" />
+              <ish-product-add-to-basket
+                cssClass="btn-link p-0"
+                displayType="icon"
+                ishProductContext
+                [parts]="getParts(orderTemplate)"
+              />
             </a>
           }
           <a

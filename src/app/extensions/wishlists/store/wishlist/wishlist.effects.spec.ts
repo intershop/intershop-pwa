@@ -144,6 +144,47 @@ describe('Wishlist Effects', () => {
     });
   });
 
+  describe('loadWishlists$', () => {
+    beforeEach(() => {
+      store.dispatch(loginUserSuccess({ customer }));
+      when(wishlistServiceMock.getWishlists()).thenReturn(of(wishlists));
+    });
+
+    it('should call the wishlistService for loadWishlists', done => {
+      const action = loadWishlists();
+      actions$ = of(action);
+
+      effects.loadWishlists$.subscribe(() => {
+        verify(wishlistServiceMock.getWishlists()).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type LoadWishlistsSuccess', () => {
+      const action = loadWishlists();
+      const completion = loadWishlistsSuccess({
+        wishlists,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlists$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type LoadWishlistsFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.getWishlists()).thenReturn(throwError(() => error));
+      const action = loadWishlists();
+      const completion = loadWishlistsFail({
+        error,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlists$).toBeObservable(expected$);
+    });
+  });
+
   describe('loadWishlistDetails$', () => {
     const wishlistId = '.SKsEQAE4FIAAAFuNiUBWx0d';
 

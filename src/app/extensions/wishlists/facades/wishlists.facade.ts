@@ -17,6 +17,7 @@ import {
   getSelectedWishlistDetails,
   getSharedWishlist,
   getWishlistsError,
+  getWishlistsItemsSkus,
   getWishlistsLoading,
   loadWishlistDetails,
   loadWishlists,
@@ -43,6 +44,10 @@ export class WishlistsFacade {
 
   loadWishlistDetails(wishlistIds: string[]): void {
     this.store.dispatch(loadWishlistDetails({ wishlistIds }));
+  }
+
+  allWishlistsItemsSkus$(wishlistIds: string[]): Observable<string[]> {
+    return this.store.pipe(select(getWishlistsItemsSkus(wishlistIds)));
   }
 
   wishlistSelectOptions$(filterCurrent = true) {

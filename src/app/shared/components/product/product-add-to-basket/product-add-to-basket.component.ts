@@ -90,13 +90,9 @@ export class ProductAddToBasketComponent implements OnInit {
       this.accountFacade.userLoading$,
       this.basketLoading$,
     ]).pipe(map(conditions => conditions.some(c => c)));
-
-    console.log('sadsadsadsads');
-    console.log('onInit:', this.context);
   }
 
   addToBasket() {
-    console.log('Add to basket clicked: ', this.context);
     this.context.addToBasket();
     this.displaySpinner$.next(true);
   }

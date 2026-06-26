@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, filter, map, tap } from 'rxjs';
+import { Observable, filter, map, switchMap, tap } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -20,12 +20,11 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 })
 @GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
-  wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' = 'all';
   wishlistName: string;
-  allWishlistsItemsSkus$: Observable<string[]>;
+  productSKUs$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
   private loadingWishlistDetails = false;
-  private wishlistsLoaded = false;
+  private wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' = 'all';
 
   constructor(
     private wishlistsFacade: WishlistsFacade,
@@ -40,65 +39,52 @@ export class WishlistWidgetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.allWishlistsItemsSkus$ = this.shoppingFacade.excludeFailedProducts$(
-      this.wishlistsItemsSkusForSelectionStrategy$()
-    );
+    this.productSKUs$ = this.shoppingFacade.excludeFailedProducts$(this.extractProductSKUsFromWishlists$());
   }
 
   /**
-   * Returns an observable of product SKUs based on the selected wishlist strategy.
-   * - `preferred`: Only SKUs from the preferred wishlist (falls back to latest wishlist if none is preferred).
-   * - `latest`: Only SKUs from the most recently created wishlist.
-   * - `all` (default): SKUs from all wishlists combined.
-   * If a wishlist's item details are not yet loaded, `loadWishlistDetails` is triggered.
+   * Returns an observable of unique product SKUs based on the selected wishlist strategy.
+   * Triggers `loadWishlistDetails` via `tap` if item details are not yet loaded.
    */
-  private wishlistsItemsSkusForSelectionStrategy$(): Observable<string[]> {
+  private extractProductSKUsFromWishlists$(): Observable<string[]> {
     return this.wishlistsFacade.wishlists$.pipe(
-      tap(wishlists => {
-        if (!wishlists?.length && !this.wishlistsLoaded) {
-          this.wishlistsFacade.loadWishlists();
-          this.wishlistsLoaded = true;
-        }
-      }),
-      filter(wishlists => !!wishlists?.length),
-      map(wishlists => this.getProductSkus(wishlists))
+      this.filterWishlistsForSelectionStrategy(),
+      tap(wishlists => this.ensureDetailsLoaded(wishlists)),
+      switchMap(wishlists => this.wishlistsFacade.allWishlistsItemsSkus$(wishlists.map(w => w.id)))
     );
   }
 
-  private getProductSkus(wishlists: Wishlist[]): string[] {
-    let selectedWishLists: Wishlist[] = [];
-    switch (this.wishlistSelectionStrategy) {
-      case 'preferred': {
-        const preferred = wishlists.find(w => w.preferred);
-        if (preferred) {
-          if (preferred.itemsCount !== preferred.items?.length) {
-            this.wishlistsFacade.loadWishlistDetails([preferred.id]);
+  private filterWishlistsForSelectionStrategy(): (source$: Observable<Wishlist[]>) => Observable<Wishlist[]> {
+    return (source$: Observable<Wishlist[]>) =>
+      source$.pipe(
+        filter(wishlists => !!wishlists?.length),
+        map(wishlists => {
+          switch (this.wishlistSelectionStrategy) {
+            case 'preferred': {
+              const preferred = wishlists.filter(w => w.preferred);
+              return preferred.length
+                ? preferred
+                : [[...wishlists].sort((a, b) => (b.creationDate ?? 0) - (a.creationDate ?? 0))[0]];
+            }
+            case 'latest':
+              return [[...wishlists].sort((a, b) => (b.creationDate ?? 0) - (a.creationDate ?? 0))[0]];
+            default:
+              return wishlists;
           }
-          this.wishlistName = preferred.title;
-          selectedWishLists.push(preferred);
-          break;
-        }
-        // falls through
-      }
-      case 'latest': {
-        const sorted = [...wishlists].sort((a, b) => (b.creationDate ?? 0) - (a.creationDate ?? 0));
-        if (sorted?.length > 0 && sorted[0].itemsCount !== sorted[0].items?.length) {
-          this.wishlistsFacade.loadWishlistDetails([sorted[0].id]);
-        }
-        this.wishlistName = sorted[0]?.title;
-        selectedWishLists.push(sorted[0]);
-        break;
-      }
-      default: {
-        if (!this.loadingWishlistDetails) {
-          this.loadingWishlistDetails = true;
-          this.wishlistsFacade.loadWishlistDetails(wishlists.map(w => w.id));
-        }
-        selectedWishLists = wishlists.filter(w => w.items?.length > 0);
-        break;
+        }),
+        tap(wishlists => {
+          this.wishlistName = wishlists.length === 1 ? wishlists[0]?.title : undefined;
+        })
+      );
+  }
+
+  private ensureDetailsLoaded(wishlists: Wishlist[]): void {
+    if (!this.loadingWishlistDetails) {
+      const idsToLoad = wishlists.filter(w => w.itemsCount !== w.items?.length).map(w => w.id);
+      if (idsToLoad.length) {
+        this.loadingWishlistDetails = true;
+        this.wishlistsFacade.loadWishlistDetails(idsToLoad);
       }
     }
-    const skus = selectedWishLists.flatMap(w => w.items?.map(i => i.sku) ?? []) ?? [];
-    return Array.from(new Set(skus));
   }
 }

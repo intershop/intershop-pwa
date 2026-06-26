@@ -81,7 +81,7 @@ export class OrderTemplateEffects {
     this.actions$.pipe(
       ofType(loadOrderTemplateDetails),
       mapToPayloadProperty('orderTemplateId'),
-      switchMap(orderTemplateId =>
+      mergeMap(orderTemplateId =>
         this.orderTemplateService.getOrderTemplate(orderTemplateId).pipe(
           map(orderTemplate => loadOrderTemplateDetailsSuccess({ orderTemplate })),
           mapErrorToAction(loadOrderTemplateDetailsFail)

@@ -28,6 +28,7 @@ import {
   getSelectedWishlistId,
   getWishlistDetails,
   getWishlistsError,
+  getWishlistsItemsSkus,
   getWishlistsLoading,
 } from './wishlist.selectors';
 
@@ -348,6 +349,37 @@ describe('Wishlist Selectors', () => {
 
     it('should return correct wishlist for given title', () => {
       expect(getPreferredWishlist(store$.state)).toEqual(wishlists[0]);
+    });
+  });
+
+  describe('getWishlistsItemsSkus', () => {
+    beforeEach(() => {
+      store$.dispatch(loadWishlistsSuccess({ wishlists }));
+    });
+
+    it('should return unique SKUs for a single wishlist ID', () => {
+      const skus = getWishlistsItemsSkus([wishlists[0].id])(store$.state);
+      expect(skus).toEqual(['1929545', '1929544']);
+    });
+
+    it('should return unique SKUs for multiple wishlist IDs', () => {
+      const skus = getWishlistsItemsSkus([wishlists[0].id, wishlists[1].id])(store$.state);
+      expect(skus).toEqual(['1929545', '1929544', '4729529']);
+    });
+
+    it('should deduplicate SKUs that appear in multiple wishlists', () => {
+      const skus = getWishlistsItemsSkus([wishlists[0].id, wishlists[1].id])(store$.state);
+      expect(skus.filter(s => s === '1929544')).toHaveLength(1);
+    });
+
+    it('should return an empty array for unknown wishlist IDs', () => {
+      const skus = getWishlistsItemsSkus(['unknown-id'])(store$.state);
+      expect(skus).toBeEmpty();
+    });
+
+    it('should return an empty array for an empty ID list', () => {
+      const skus = getWishlistsItemsSkus([])(store$.state);
+      expect(skus).toBeEmpty();
     });
   });
 });

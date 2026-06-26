@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { from, of } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
@@ -64,6 +64,15 @@ export class WishlistEffects {
     private translateService: TranslateService,
     @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
+
+  loadWishlistsAfterLogin$ = createEffect(() =>
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      debounceTime(1000),
+      map(() => loadWishlists())
+    )
+  );
 
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(

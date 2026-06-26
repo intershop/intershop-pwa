@@ -1,14 +1,13 @@
 import { CdkTableModule } from '@angular/cdk/table';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
+import { MockDirective, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplateItem } from '../../../models/order-template/order-template.model';
@@ -20,7 +19,6 @@ describe('Account Order Template List Component', () => {
   let fixture: ComponentFixture<AccountOrderTemplateListComponent>;
   let element: HTMLElement;
   let orderTemplatesFacade: OrderTemplatesFacade;
-  let shoppingFacade: ShoppingFacade;
 
   const orderTemplateDetails = [
     {
@@ -55,17 +53,16 @@ describe('Account Order Template List Component', () => {
 
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
-    shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountOrderTemplateListComponent, MockComponent(ModalDialogComponent), MockPipe(DatePipe)],
+      declarations: [AccountOrderTemplateListComponent, MockDirective(ProductContextDirective), MockPipe(DatePipe)],
       imports: [CdkTableModule, RouterModule, TranslatePipe],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -102,69 +99,51 @@ describe('Account Order Template List Component', () => {
     verify(orderTemplatesFacade.deleteOrderTemplate('deleteId')).once();
   });
 
-  it('should call facade loadOrderTemplateDetails when loadOrderTemplateDetails is called', () => {
+  it('should call facade loadOrderTemplateDetails for templates without loaded items', () => {
     when(orderTemplatesFacade.loadOrderTemplateDetails(anything())).thenReturn();
 
-    component.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d');
+    const templatesWithoutItems = [
+      {
+        title: 'testing order template',
+        id: '.SKsEQAE4FIAAAFuNiUBWx0d',
+        itemsCount: 2,
+        public: false,
+        items: [] as OrderTemplateItem[],
+      },
+    ];
+
+    component.orderTemplates = templatesWithoutItems;
 
     verify(orderTemplatesFacade.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d')).once();
   });
 
-  describe('addToBasket', () => {
-    it('should set loadingOrderTemplateId$ to the template id when called', done => {
-      when(orderTemplatesFacade.orderTemplates$).thenReturn(of([]));
+  it('should not call facade loadOrderTemplateDetails for templates with all items loaded', () => {
+    when(orderTemplatesFacade.loadOrderTemplateDetails(anything())).thenReturn();
 
-      component.loadingOrderTemplateId$.subscribe(value => {
-        if (value) {
-          expect(value).toBe('.SKsEQAE4FIAAAFuNiUBWx0d');
-          done();
-        }
-      });
+    component.orderTemplates = orderTemplateDetails;
 
-      component.addToBasket('.SKsEQAE4FIAAAFuNiUBWx0d');
-    });
+    verify(orderTemplatesFacade.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d')).never();
+  });
 
-    it('should call loadOrderTemplateDetails when items are not loaded yet', () => {
-      const templateWithoutItems = [
-        {
-          title: 'testing order template',
-          id: '.SKsEQAE4FIAAAFuNiUBWx0d',
-          itemsCount: 2,
-          public: false,
-          items: [] as OrderTemplateItem[],
-        },
-      ];
-      when(orderTemplatesFacade.orderTemplates$).thenReturn(of(templateWithoutItems));
-      when(orderTemplatesFacade.loadOrderTemplateDetails(anything())).thenReturn();
+  it('should report template as loaded when items match itemsCount', () => {
+    component.orderTemplates = orderTemplateDetails;
 
-      component.addToBasket('.SKsEQAE4FIAAAFuNiUBWx0d');
+    expect(component.orderTemplateLoaded('.SKsEQAE4FIAAAFuNiUBWx0d')).toBeTrue();
+  });
 
-      verify(orderTemplatesFacade.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d')).once();
-    });
+  it('should return parts for a given template', () => {
+    const template = orderTemplateDetails[0];
 
-    it('should call shoppingFacade.addProductsToBasket when items are already loaded', () => {
-      when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplateDetails));
-      when(shoppingFacade.addProductsToBasket(anything())).thenReturn();
+    const parts = component.getParts(template);
 
-      component.addToBasket('.SKsEQAE4FIAAAFuNiUBWx0d');
+    expect(parts).toEqual([{ sku: '1234', quantity: 1 }]);
+  });
 
-      verify(shoppingFacade.addProductsToBasket(anything())).once();
-    });
+  it('should return empty array for template without items', () => {
+    const template = orderTemplateDetails[1];
 
-    it('should set loadingOrderTemplateId$ to undefined after adding products to basket', done => {
-      when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplateDetails));
-      when(shoppingFacade.addProductsToBasket(anything())).thenReturn();
+    const parts = component.getParts(template);
 
-      const values: (string | undefined)[] = [];
-      component.loadingOrderTemplateId$.subscribe(value => {
-        values.push(value);
-        if (values.length === 3) {
-          expect(values).toEqual([undefined, '.SKsEQAE4FIAAAFuNiUBWx0d', undefined]);
-          done();
-        }
-      });
-
-      component.addToBasket('.SKsEQAE4FIAAAFuNiUBWx0d');
-    });
+    expect(parts).toBeEmpty();
   });
 });

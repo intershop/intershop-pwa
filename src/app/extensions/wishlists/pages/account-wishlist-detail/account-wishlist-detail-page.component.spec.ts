@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -19,8 +20,11 @@ describe('Account Wishlist Detail Page Component', () => {
       imports: [TranslatePipe],
       declarations: [AccountWishlistDetailPageComponent, MockComponent(ErrorMessageComponent)],
       providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: convertToParamMap({ wishlistName: 'test-wishlist' }) } },
+        },
         { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
-        provideTranslateService(),
       ],
     }).compileComponents();
   });

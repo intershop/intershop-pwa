@@ -1,11 +1,12 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
-import { BehaviorSubject, of } from 'rxjs';
-import { anything, instance, mock, verify, when } from 'ts-mockito';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
@@ -19,7 +20,6 @@ describe('Order Template Widget Component', () => {
   let fixture: ComponentFixture<OrderTemplateWidgetComponent>;
   let element: HTMLElement;
   let orderTemplatesFacade: OrderTemplatesFacade;
-  let shoppingFacade: ShoppingFacade;
 
   const orderTemplates = [
     {
@@ -41,19 +41,23 @@ describe('Order Template Widget Component', () => {
 
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
-    shoppingFacade = mock(ShoppingFacade);
     when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplates));
     when(orderTemplatesFacade.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
       imports: [RouterModule, TranslatePipe],
-      declarations: [MockComponent(InfoBoxComponent), MockComponent(LoadingComponent), OrderTemplateWidgetComponent],
+      declarations: [
+        MockComponent(InfoBoxComponent),
+        MockComponent(LoadingComponent),
+        MockDirective(ProductContextDirective),
+        OrderTemplateWidgetComponent,
+      ],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -90,45 +94,21 @@ describe('Order Template Widget Component', () => {
     ] as OrderTemplate[];
     when(orderTemplatesFacade.orderTemplates$).thenReturn(of(manyTemplates));
     fixture.detectChanges();
-    expect(element.querySelectorAll('[data-testing-id="addToCartButton"]')).toHaveLength(0);
+    expect(element.querySelectorAll('ish-product-add-to-basket')).toHaveLength(0);
     expect(element.querySelector('.loading-container').textContent).not.toContain('template 4');
   });
 
   it('should render add to cart button for templates with items', () => {
     fixture.detectChanges();
-    expect(element.querySelectorAll('[data-testing-id="addToCartButton"]')).toHaveLength(2);
+    expect(element.querySelectorAll('ish-product-add-to-basket')).toHaveLength(2);
   });
 
-  describe('addToBasket', () => {
-    it('should add products to basket when items are already loaded', () => {
-      fixture.detectChanges();
-      component.addToBasket('1');
-      verify(shoppingFacade.addProductsToBasket(anything())).once();
-    });
-
-    it('should load order template details if items are not fully loaded', () => {
-      const partialTemplate = [{ id: '1', title: 'order template', itemsCount: 2, items: [] }] as OrderTemplate[];
-      const fullyLoadedTemplate = [
-        {
-          id: '1',
-          title: 'order template',
-          itemsCount: 2,
-          items: [
-            { sku: 'SKU1', id: '1', creationDate: 0, desiredQuantity: { value: 1 } },
-            { sku: 'SKU2', id: '2', creationDate: 0, desiredQuantity: { value: 3 } },
-          ],
-        },
-      ] as OrderTemplate[];
-
-      const subject$ = new BehaviorSubject<OrderTemplate[]>(partialTemplate);
-      when(orderTemplatesFacade.orderTemplates$).thenReturn(subject$);
-      fixture.detectChanges();
-
-      component.addToBasket('1');
-      verify(orderTemplatesFacade.loadOrderTemplateDetails('1')).once();
-
-      subject$.next(fullyLoadedTemplate);
-      verify(shoppingFacade.addProductsToBasket(anything())).once();
-    });
+  it('should return parts for a given template', () => {
+    const template = orderTemplates[0];
+    const parts = component.getParts(template);
+    expect(parts).toEqual([
+      { sku: 'SKU1', quantity: 1 },
+      { sku: 'SKU2', quantity: 3 },
+    ]);
   });
 });

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject, EMPTY, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { anything, deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -85,11 +86,16 @@ describe('Wishlist Widget Component', () => {
       wishlists$ = new BehaviorSubject<Wishlist[]>([wl1, wl2, wl3]);
       when(wishlistFacadeMock.wishlists$).thenReturn(wishlists$.asObservable());
       when(shoppingFacade.excludeFailedProducts$(anything())).thenCall(obs$ => obs$);
+      when(wishlistFacadeMock.allWishlistsItemsSkus$(anything())).thenCall((ids: string[]) =>
+        wishlists$.pipe(map(wls => wls.filter(w => ids.includes(w.id)).flatMap(w => w.items?.map(i => i.sku) ?? [])))
+      );
     });
 
     describe('strategy "all"', () => {
       it('should load details for all wishlists', () => {
-        component.wishlistSelectionStrategy = 'all';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'all';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl1', 'wl2', 'wl3']))).once();
       });
@@ -100,9 +106,11 @@ describe('Wishlist Widget Component', () => {
           { ...wl2, items: [{ sku: 'sku2', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }] },
         ];
         wishlists$.next(wlWithItems);
-        component.wishlistSelectionStrategy = 'all';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'all';
         fixture.detectChanges();
-        component.allWishlistsItemsSkus$.subscribe(skus => {
+        component.productSKUs$.subscribe(skus => {
           expect(skus).toEqual(['sku1', 'sku2']);
           done();
         });
@@ -111,7 +119,9 @@ describe('Wishlist Widget Component', () => {
 
     describe('strategy "preferred"', () => {
       it('should load details only for the preferred wishlist', () => {
-        component.wishlistSelectionStrategy = 'preferred';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl2']))).once();
       });
@@ -125,7 +135,9 @@ describe('Wishlist Widget Component', () => {
             items: [{ sku: 'sku1', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }],
           },
         ]);
-        component.wishlistSelectionStrategy = 'preferred';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(anything())).never();
       });
@@ -139,9 +151,11 @@ describe('Wishlist Widget Component', () => {
             items: [{ sku: 'sku-preferred', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }],
           },
         ]);
-        component.wishlistSelectionStrategy = 'preferred';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
-        component.allWishlistsItemsSkus$.subscribe(skus => {
+        component.productSKUs$.subscribe(skus => {
           expect(skus).toEqual(['sku-preferred']);
           done();
         });
@@ -152,9 +166,11 @@ describe('Wishlist Widget Component', () => {
           { ...wl1, items: [{ sku: 'sku-old', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }] },
           { ...wl3, items: [{ sku: 'sku-latest', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }] },
         ]);
-        component.wishlistSelectionStrategy = 'preferred';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
-        component.allWishlistsItemsSkus$.subscribe(skus => {
+        component.productSKUs$.subscribe(skus => {
           expect(skus).toEqual(['sku-latest']);
           done();
         });
@@ -165,7 +181,9 @@ describe('Wishlist Widget Component', () => {
           { ...wl1, preferred: false },
           { ...wl3, preferred: false },
         ]);
-        component.wishlistSelectionStrategy = 'preferred';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         // wl3 has the highest creationDate (300)
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl3']))).once();
@@ -174,7 +192,9 @@ describe('Wishlist Widget Component', () => {
 
     describe('strategy "latest"', () => {
       it('should load details only for the latest wishlist', () => {
-        component.wishlistSelectionStrategy = 'latest';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
         // wl3 has the highest creationDate (300)
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl3']))).once();
@@ -184,7 +204,9 @@ describe('Wishlist Widget Component', () => {
         wishlists$.next([
           { ...wl3, itemsCount: 1, items: [{ sku: 'sku1', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }] },
         ]);
-        component.wishlistSelectionStrategy = 'latest';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(anything())).never();
       });
@@ -194,9 +216,11 @@ describe('Wishlist Widget Component', () => {
           { ...wl1, items: [{ sku: 'sku-old', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }] },
           { ...wl3, items: [{ sku: 'sku-latest', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }] },
         ]);
-        component.wishlistSelectionStrategy = 'latest';
+        (
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+        ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
-        component.allWishlistsItemsSkus$.subscribe(skus => {
+        component.productSKUs$.subscribe(skus => {
           expect(skus).toEqual(['sku-latest']);
           done();
         });
@@ -214,7 +238,7 @@ describe('Wishlist Widget Component', () => {
         let emitted = false;
         wishlists$.next([]);
         fixture.detectChanges();
-        component.allWishlistsItemsSkus$.subscribe(() => {
+        component.productSKUs$.subscribe(() => {
           emitted = true;
         });
         tick(100);
