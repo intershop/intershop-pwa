@@ -45,7 +45,6 @@ import {
   standalone: true,
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { ngSkipHydration: 'true' },
 })
 export class ProductsListComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) productSKUs: string[];

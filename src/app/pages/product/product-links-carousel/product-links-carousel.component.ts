@@ -39,7 +39,6 @@ import { ProductItemComponent } from 'ish-shared/components/product/product-item
   standalone: true,
   templateUrl: './product-links-carousel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { ngSkipHydration: 'true' },
   providers: [RxState],
 })
 export class ProductLinksCarouselComponent implements OnDestroy {

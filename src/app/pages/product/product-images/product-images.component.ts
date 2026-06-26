@@ -37,7 +37,6 @@ import { ProductLabelComponent } from 'ish-shared/components/product/product-lab
   standalone: true,
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { ngSkipHydration: 'true' },
 })
 export class ProductImagesComponent implements OnInit, OnDestroy {
   private swiper: Swiper;
