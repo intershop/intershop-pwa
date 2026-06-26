@@ -55,7 +55,8 @@ These two requirements directly affect how an Angular-based PWA is built, config
 ### Scope of PCI DSS 4.0
 
 Not every page of your storefront automatically falls under the strictest PCI DSS rules.
-The scope is primarily determined by pages where **cardholder data (CHD)** or **sensitive authentication data (SAD)** is entered or transmitted. In practice, this applies to checkout and payment pages.
+The scope is primarily determined by pages where **cardholder data (CHD)** or **sensitive authentication data (SAD)** is entered or transmitted.
+In practice, this applies to checkout and payment pages.
 
 However, because a single-page application (SPA) like the Intershop PWA loads a shared JavaScript bundle across all pages, the security measures described in this guide apply to the **entire storefront**, not only the payment step.
 
@@ -190,7 +191,7 @@ The relevant directives and their purpose:
 | `frame-src`   | Embedded iframes (e.g., payment widgets) |
 | `worker-src`  | Service workers and web workers          |
 
-### Configuration Steps 
+### Configuration Steps
 
 Adding custom trusted resources to the PWA requires following a structured process to ensure compliance with PCI DSS 4.0 Requirement 6.4.3 without compromising the storefront's security posture:
 
