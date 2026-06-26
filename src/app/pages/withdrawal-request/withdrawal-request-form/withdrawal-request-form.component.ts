@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, input, output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, combineLatest, map } from 'rxjs';
@@ -36,9 +36,10 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithdrawalRequestFormComponent implements OnInit {
-  @Input() withdrawal: Withdrawal;
-  @Output() readonly createWithdrawal = new EventEmitter<{ orderDocumentNumber: string; orderEmail: string }>();
-  @Output() readonly submitWithdrawal = new EventEmitter<Withdrawal>();
+  readonly withdrawal = input<Withdrawal>();
+  readonly orderData = input<{ orderDocumentNumber: string; orderEmail: string }>();
+  readonly createWithdrawal = output<{ orderDocumentNumber: string; orderEmail: string }>();
+  readonly submitWithdrawal = output<Withdrawal>();
 
   withdrawalForm = new FormGroup({});
   fields$: Observable<FormlyFieldConfig[]>;
@@ -57,13 +58,14 @@ export class WithdrawalRequestFormComponent implements OnInit {
     }
 
     if (this.isRequestMode()) {
+      const withdrawal = this.withdrawal();
       this.submitWithdrawal.emit({
         ...this.withdrawalForm.value,
-        orderDocumentNumber: this.withdrawal.orderDocumentNumber,
+        orderDocumentNumber: withdrawal.orderDocumentNumber,
         name: this.withdrawalForm.get('name').value,
-        orderEmail: this.withdrawal.orderEmail,
+        orderEmail: withdrawal.orderEmail,
         confirmationEmail: this.withdrawalForm.get('confirmationEmail').value,
-        id: this.withdrawal.id,
+        id: withdrawal.id,
       });
     } else {
       this.createWithdrawal.emit({
@@ -75,20 +77,28 @@ export class WithdrawalRequestFormComponent implements OnInit {
   }
 
   private getFormConfiguration() {
-    const isRequestMode = !!this.withdrawal;
+    const withdrawal = this.withdrawal();
+    const isRequestMode = !!withdrawal;
     this.submitButtonLabel = isRequestMode
       ? 'account.withdrawal.form.request.button.label'
       : 'account.withdrawal.form.search.button.label';
 
     if (isRequestMode) {
       this.model = {
-        orderDocumentNumber: this.withdrawal.orderDocumentNumber,
-        orderEmail: this.withdrawal.orderEmail,
+        orderDocumentNumber: withdrawal.orderDocumentNumber,
+        orderEmail: withdrawal.orderEmail,
         name: undefined,
-        confirmationEmail: this.withdrawal.orderEmail,
+        confirmationEmail: withdrawal.orderEmail,
       };
     } else {
-      this.model = {};
+      const orderData = this.orderData();
+      this.model =
+        orderData?.orderDocumentNumber && orderData?.orderEmail
+          ? {
+              orderDocumentNumber: orderData.orderDocumentNumber,
+              orderEmail: orderData.orderEmail,
+            }
+          : {};
     }
 
     this.fields$ = combineLatest([
@@ -161,7 +171,7 @@ export class WithdrawalRequestFormComponent implements OnInit {
               },
             },
           ]),
-      ...(isCaptchaEnabled
+      ...(isCaptchaEnabled && !isRequestMode
         ? [
             {
               type: 'ish-captcha-field',
@@ -177,6 +187,6 @@ export class WithdrawalRequestFormComponent implements OnInit {
   }
 
   private isRequestMode(): boolean {
-    return !!this.withdrawal;
+    return !!this.withdrawal();
   }
 }
