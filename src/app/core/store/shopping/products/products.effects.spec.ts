@@ -359,6 +359,43 @@ describe('Products Effects', () => {
         done();
       });
     });
+
+    it('should skip Sparque and use the ICM products service for master listings', done => {
+      const action = loadProductsForFilter({
+        id: {
+          type: 'master',
+          value: '201807231',
+          filters: { MasterSKU: ['201807231'], Hard_disk_drive_capacity: ['1TB'] },
+        },
+        searchParameter: { MasterSKU: ['201807231'], Hard_disk_drive_capacity: ['1TB'] },
+      });
+
+      actions$ = of(action);
+      effects.loadFilteredProducts$.pipe(toArray()).subscribe(() => {
+        // skipSparque must be true so that the ICM products service is used (SPARQUE cannot handle master listings)
+        verify(productsServiceProviderMock.get(true)).once();
+        done();
+      });
+    });
+
+    it('should not emit loadFilterSuccess for master listings even when Sparque is enabled', done => {
+      when(productsServiceProviderMock.isSparqueSearchEnabled()).thenReturn(of(true));
+
+      const action = loadProductsForFilter({
+        id: {
+          type: 'master',
+          value: '201807231',
+          filters: { MasterSKU: ['201807231'], Hard_disk_drive_capacity: ['1TB'] },
+        },
+        searchParameter: { MasterSKU: ['201807231'], Hard_disk_drive_capacity: ['1TB'] },
+      });
+
+      actions$ = of(action);
+      effects.loadFilteredProducts$.pipe(toArray()).subscribe(actions => {
+        expect(actions.some(a => a.type === loadFilterSuccess.type)).toBeFalse();
+        done();
+      });
+    });
   });
 
   describe('loadProductVariations$', () => {
