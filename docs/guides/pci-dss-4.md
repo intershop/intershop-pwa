@@ -22,14 +22,9 @@ kb_sync_latest_only
 - [Add Custom Trusted Resources for PWA Extensions](#add-custom-trusted-resources-for-pwa-extensions)
   - [Relevance to PCI DSS 4.0](#relevance-to-pci-dss-40)
   - [PWA CSP Configuration](#pwa-csp-configuration)
-  - [Step-by-Step: Adding a Trusted Resource](#step-by-step-adding-a-trusted-resource)
-    - [1. Identify the Required Origins](#1-identify-the-required-origins)
-    - [2. Extend the NGINX CSP Configuration](#2-extend-the-nginx-csp-configuration)
-    - [3. Use Subresource Integrity (SRI) Where Possible](#3-use-subresource-integrity-sri-where-possible)
-    - [4. Maintain a Script Inventory](#4-maintain-a-script-inventory)
+  - [Configuration Steps](#configuration-steps)
   - [Common Extension Scenarios](#common-extension-scenarios)
-  - [What to Avoid](#what-to-avoid)
-  - [Summary](#summary)
+  - [Practices to Avoid](#practices-to-avoid)
 - [Additional Points to Consider](#additional-points-to-consider)
   - [Secure Data Handling](#secure-data-handling)
   - [Secure Authentication \& Access Control](#secure-authentication--access-control)
@@ -180,7 +175,7 @@ Any custom PWA extension that introduces an external resource therefore requires
 ### PWA CSP Configuration
 
 The Intershop PWA manages its CSP via the NGINX configuration layer.
-Custom CSP directives are set through environment variable `ADDITIONAL_HEADERS` or in NGINX templates.
+Custom CSP directives are set through the environment variable `ADDITIONAL_HEADERS` or in NGINX templates.
 Refer to the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy) for the baseline setup.
 
 The relevant directives and their purpose:
@@ -195,15 +190,23 @@ The relevant directives and their purpose:
 | `frame-src`   | Embedded iframes (e.g., payment widgets) |
 | `worker-src`  | Service workers and web workers          |
 
-### Step-by-Step: Adding a Trusted Resource
+### Configuration Steps 
 
-#### 1. Identify the Required Origins
+Adding custom trusted resources to the PWA requires following a structured process to ensure compliance with PCI DSS 4.0 Requirement 6.4.3 without compromising the storefront's security posture:
+
+1. Identify all origins required by the extension
+2. Add them explicitly to the NGINX CSP configuration
+3. Apply SRI hashes for statically versioned resources
+4. Document all additions in the script inventory
+5. Monitor violations via CSP reporting
+
+**1. Identify the required origins**
 
 Before adding a CSP entry, determine **all** origins the resource loads from.
 Many third-party scripts load sub-resources from additional domains at runtime.
 Use browser developer tools (Network tab, CSP violation reports) or the vendor's documentation to compile a complete list.
 
-**Example -- Google Tag Manager:**
+**Example: Google Tag Manager**
 
 ```
 script-src: https://www.googletagmanager.com
@@ -211,13 +214,13 @@ connect-src: https://www.google-analytics.com https://analytics.google.com
 img-src:     https://www.google-analytics.com
 ```
 
-**Example -- Sparque over policy enforcer:**
+**Example: SPARQUE via policy enforcer**
 
 ```
 connect-src: https://policy-int.cloud.intershop.com
 ```
 
-#### 2. Extend the NGINX CSP Configuration
+**2. Extend the NGINX CSP configuration**
 
 Add the identified origins to the corresponding CSP directives.
 In Intershop PWA, provide the `ADDITIONAL_HEADERS` configuration, which is recommended for containerized and Helm-based deployments.
@@ -237,12 +240,12 @@ See the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy
 > Never use `unsafe-inline` or `unsafe-eval` for `script-src`.
 > If a third-party script requires inline execution, evaluate whether the vendor provides a nonce-compatible or SRI-compatible alternative, or consider whether this vendor meets your PCI DSS obligations.
 
-#### 3. Use Subresource Integrity (SRI) Where Possible
+**3. Use Subresource Integrity (SRI) where possible**
 
 For statically versioned third-party scripts (i.e., scripts loaded from a fixed, versioned URL), add an `integrity` attribute to enforce cryptographic verification.
 This directly satisfies the PCI DSS 4.0 Requirement 6.4.3 integrity verification mandate.
-It can be achieved by handing in the SRI hash together with the script link into the `ScriptLoaderService`.
-It will generate an HTML snippet like this.
+This can be achieved by passing the SRI hash together with the script link to the `ScriptLoaderService`.
+The service generates an HTML snippet like this.
 
 ```html
 <script
@@ -252,8 +255,8 @@ It will generate an HTML snippet like this.
 ></script>
 ```
 
-In most cases the payment provider offer the SRI hash for their scripts.
-If not available you can generate the SRI hash using the [SRI Hash Generator](https://www.srihash.org/) or via CLI:
+In most cases, payment providers offer the SRI hash for their scripts.
+If not available, you can generate the SRI hash using the [SRI Hash Generator](https://www.srihash.org/) or via CLI:
 
 ```bash
 curl -s https://example.com/widget.v2.3.1.min.js | openssl dgst -sha384 -binary | openssl base64 -A
@@ -263,7 +266,7 @@ curl -s https://example.com/widget.v2.3.1.min.js | openssl dgst -sha384 -binary 
 > SRI is not compatible with dynamically generated scripts (e.g., scripts whose content changes on every request).
 > For such cases, ensure the origin is strictly scoped in the CSP and document the risk acceptance in your compliance records.
 
-#### 4. Maintain a Script Inventory
+**4. Maintain a script inventory**
 
 PCI DSS 4.0 Requirement 6.4.3 explicitly requires an **inventory of all authorized scripts**.
 For each custom trusted resource added to your PWA extension, document the following:
@@ -289,25 +292,13 @@ An example file can be found at `docs/examples/script-inventory.md`.
 | Stripe.js Payment Widget | `script-src`, `frame-src`, `connect-src` | Yes            |
 | Custom Font CDN          | `font-src`, `style-src`                  | Yes            |
 
-### What to Avoid
+### Practices to Avoid
 
-- **Wildcard origins** (`script-src *`) -- explicitly prohibited by PCI DSS 4.0 on payment pages.
-- **`unsafe-inline`** in `script-src` -- negates XSS protection and violates Requirement 6.4.3.
-- **`unsafe-eval`** -- required by some older libraries; evaluate alternatives before accepting this risk.
-- **Undocumented additions** -- every origin added to the CSP must be reflected in your script inventory and reviewed during audits.
-- **Skipping SRI for versioned scripts** -- even if optional technically, it is required by Requirement 6.4.3 where feasible.
-
-### Summary
-
-Adding custom trusted resources to a PCI DSS 4.0-compliant PWA is straightforward when following a structured process:
-
-1. Identify all origins required by the extension
-2. Add them explicitly to the NGINX CSP configuration
-3. Apply SRI hashes for statically versioned resources
-4. Document all additions in the script inventory
-5. Monitor violations via CSP reporting
-
-Following these steps ensures that PWA extensions remain compliant with PCI DSS 4.0 Requirement 6.4.3 without compromising the storefront's security posture.
+- **Wildcard origins** (`script-src *`): explicitly prohibited by PCI DSS 4.0 on payment pages.
+- **`unsafe-inline`** in `script-src`: negates XSS protection and violates Requirement 6.4.3.
+- **`unsafe-eval`**: required by some older libraries; evaluate alternatives before accepting this risk.
+- **Undocumented additions**: every origin added to the CSP must be reflected in your script inventory and reviewed during audits.
+- **Skipping SRI for versioned scripts**: even if technically optional, it is required by Requirement 6.4.3 where feasible.
 
 ## Additional Points to Consider
 
