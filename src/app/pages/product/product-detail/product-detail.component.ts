@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
@@ -32,6 +33,7 @@ import { ProductImagesComponent } from '../product-images/product-images.compone
   imports: [
     AsyncPipe,
     FeatureToggleDirective,
+    FeatureTogglePipe,
     PaymentPaypalComponent,
     ProductAddToBasketComponent,
     ProductAddToOrderTemplateComponent,

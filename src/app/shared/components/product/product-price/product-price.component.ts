@@ -14,6 +14,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   imports: [AsyncPipe, DecimalPipe, NgClass, PricePipe, TranslatePipe],
   standalone: true,
   templateUrl: './product-price.component.html',
+  // Default is required because the impure PricePipe needs CD cycles to re-invoke transform() on priceDisplayType changes
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductPriceComponent implements OnInit {

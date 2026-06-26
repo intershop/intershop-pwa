@@ -4,15 +4,16 @@ import {
   EventEmitter,
   Input,
   Output,
-  Pipe,
-  PipeTransform,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
+import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 
 import { ProductDetailComponent } from './product-detail.component';
@@ -37,20 +38,6 @@ function mockFeatureToggleDirectiveFactory() {
   }
 
   return MockFeatureToggleDirective;
-}
-
-function mockServerSettingPipeFactory() {
-  @Pipe({
-    name: 'ishServerSetting',
-    standalone: true,
-  })
-  class MockServerSettingPipe implements PipeTransform {
-    transform() {
-      return true;
-    }
-  }
-
-  return MockServerSettingPipe;
 }
 
 function mockPaymentPaypalComponentFactory() {
@@ -290,10 +277,6 @@ jest.mock('ish-core/directives/feature-toggle.directive', () => ({
   FeatureToggleDirective: mockFeatureToggleDirectiveFactory(),
 }));
 
-jest.mock('ish-core/pipes/server-setting.pipe', () => ({
-  ServerSettingPipe: mockServerSettingPipeFactory(),
-}));
-
 jest.mock('ish-shared/components/payment/payment-paypal/payment-paypal.component', () => ({
   PaymentPaypalComponent: mockPaymentPaypalComponentFactory(),
 }));
@@ -384,6 +367,7 @@ describe('Product Detail Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductDetailComponent],
+      deferBlockBehavior: DeferBlockBehavior.Playthrough,
       providers: [
         {
           provide: ProductContextFacade,
@@ -393,7 +377,12 @@ describe('Product Detail Component', () => {
           },
         },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductDetailComponent, {
+        remove: { imports: [FeatureTogglePipe, ServerSettingPipe] },
+        add: { imports: [MockPipe(FeatureTogglePipe, () => true), MockPipe(ServerSettingPipe, () => true)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -408,7 +397,9 @@ describe('Product Detail Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should render standard elements', () => {
+  it('should render standard elements', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
     fixture.detectChanges();
 
     expect(findAllCustomElements(element)).toEqual([
