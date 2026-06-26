@@ -1,16 +1,20 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { featureToggleGuard } from 'ish-core/feature-toggle';
-
-import { provideCaptchaFeature } from '../../../captcha/captcha-feature.providers';
-import { provideContactUsStore } from '../../store/contact-us-store.providers';
+import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 export const contactPageRoutes: Routes = [
   {
     path: '',
     loadComponent: () => import('./contact-page.component').then(m => m.ContactPageComponent),
-    canActivate: [featureToggleGuard],
-    providers: [provideContactUsStore(), ...provideCaptchaFeature()],
+    canActivate: [
+      featureToggleGuard,
+      () =>
+        inject(ModuleLoaderService)
+          .ensureLoaded('contactUs')
+          .then(() => true),
+    ],
     data: {
       feature: 'contactUs',
       meta: {

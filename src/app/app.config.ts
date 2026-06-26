@@ -30,6 +30,7 @@ import { environment } from '../environments/environment';
 import { provideAddressDoctorFeature } from './extensions/address-doctor/address-doctor-feature.providers';
 import { provideCaptchaFeature } from './extensions/captcha/captcha-feature.providers';
 import { provideCompareFeature } from './extensions/compare/compare-feature.providers';
+import { provideContactUsFeature } from './extensions/contact-us/contact-us-feature.providers';
 import { provideCopilotFeature } from './extensions/copilot/copilot-feature.providers';
 import { provideOrderTemplatesFeature } from './extensions/order-templates/order-templates-feature.providers';
 import { provideProductNotificationsFeature } from './extensions/product-notifications/product-notifications-feature.providers';
@@ -82,6 +83,7 @@ export const appConfig: ApplicationConfig = {
     ...provideCaptchaFeature(),
     ...provideCopilotFeature(),
     ...provideCompareFeature(),
+    ...provideContactUsFeature(),
     ...provideOrderTemplatesFeature(),
     ...providePunchoutFeature(),
     ...provideProductNotificationsFeature(),

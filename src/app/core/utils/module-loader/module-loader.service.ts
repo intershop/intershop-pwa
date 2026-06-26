@@ -19,11 +19,22 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 export interface LazyFeatureProviderType {
   feature: 'always' | FeatureToggleType;
+  /**
+   * Determines when the feature's providers are loaded.
+   * - omitted or `'appInit'`: loaded at app initialization when the feature toggle is enabled (default)
+   * - `'onDemand'`: loaded only when explicitly requested via `ensureLoaded()` (e.g., by a route guard or resolver)
+   */
   loadStrategy?: 'appInit' | 'onDemand';
   providers(): Promise<(EnvironmentProviders | Provider)[] | EnvironmentProviders>;
 }
 
+/**
+ * Injection token to register lazy feature providers.
+ * Features registered with this token are loaded at app init (default) or on-demand based on `loadStrategy`.
+ */
 export const LAZY_FEATURE_PROVIDER = new InjectionToken<LazyFeatureProviderType>('lazyFeatureProvider');
+
+/** @deprecated Use `LAZY_FEATURE_PROVIDER` instead. Will be removed in a future release. */
 export const LAZY_FEATURE_MODULE = new InjectionToken<LazyFeatureProviderType>('lazyFeatureModule');
 
 @Injectable({ providedIn: 'root' })
@@ -71,6 +82,7 @@ export class ModuleLoaderService {
   private getLazyFeatures() {
     return [
       ...this.environmentInjector.get<LazyFeatureProviderType[]>(LAZY_FEATURE_PROVIDER, []),
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       ...this.environmentInjector.get<LazyFeatureProviderType[]>(LAZY_FEATURE_MODULE, []),
     ];
   }
