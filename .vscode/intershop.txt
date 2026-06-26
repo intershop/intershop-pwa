@@ -45,6 +45,7 @@ decamelize
 designview
 deth
 deutsch
+dgst
 directdebit
 dockerignore
 dockerized
@@ -57,6 +58,7 @@ extralarge
 fastpay
 fesm
 fieldgroup
+flexkey
 flowise
 flushdb
 foo
@@ -141,6 +143,7 @@ pageobject
 pagespeed
 pagetree
 pagevariant
+payengine
 paylater
 payone
 pghow
@@ -205,6 +208,7 @@ storefinder
 stylelint
 subfolder
 subfolders
+subresource
 substate
 substates
 switchmap
