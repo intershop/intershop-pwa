@@ -3,13 +3,11 @@ import { isEqual } from 'lodash-es';
 import { Observable, map, of, race, tap, timer } from 'rxjs';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { AddressDoctorService } from '../services/address-doctor/address-doctor.service';
 
 @Injectable({ providedIn: 'root' })
 export class AddressDoctorFacade {
-  private moduleLoader = inject(ModuleLoaderService);
   private addressDoctorService = inject(AddressDoctorService);
 
   private lastAddressCheck: Address;
@@ -21,16 +19,14 @@ export class AddressDoctorFacade {
     }
 
     this.lastAddressCheck = address;
-    return this.moduleLoader.whenLoaded('addressDoctor', () =>
-      race(
-        this.addressDoctorService.postAddress(address).pipe(
-          tap(result => {
-            this.lastAddressCheckResult = result;
-          })
-        ),
-        // if the address check takes longer than 5 seconds return with no suggestions
-        timer(5000).pipe(map(() => []))
-      )
+    return race(
+      this.addressDoctorService.postAddress(address).pipe(
+        tap(result => {
+          this.lastAddressCheckResult = result;
+        })
+      ),
+      // if the address check takes longer than 5 seconds return with no suggestions
+      timer(5000).pipe(map(() => []))
     );
   }
 }

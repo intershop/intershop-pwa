@@ -1,10 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, startWith, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { WishlistSharing } from '../models/wishlist-sharing/wishlist-sharing.model';
 import { Wishlist, WishlistHeader } from '../models/wishlist/wishlist.model';
@@ -28,31 +27,15 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class WishlistsFacade {
-  private moduleLoader = inject(ModuleLoaderService);
-
   constructor(private store: Store) {}
 
-  wishlists$: Observable<Wishlist[]> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getAllWishlists))
-  );
-  currentWishlist$: Observable<Wishlist> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getSelectedWishlistDetails))
-  );
-  preferredWishlist$: Observable<Wishlist> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getPreferredWishlist))
-  );
-  allWishlistsItemsSkus$: Observable<string[]> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getAllWishlistsItemsSkus))
-  );
-  wishlistLoading$: Observable<boolean> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getWishlistsLoading))
-  );
-  wishlistError$: Observable<HttpError> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getWishlistsError))
-  );
-  sharedWishlist$: Observable<Wishlist> = this.moduleLoader.whenLoaded('wishlists', () =>
-    this.store.pipe(select(getSharedWishlist))
-  );
+  wishlists$: Observable<Wishlist[]> = this.store.pipe(select(getAllWishlists));
+  currentWishlist$: Observable<Wishlist> = this.store.pipe(select(getSelectedWishlistDetails));
+  preferredWishlist$: Observable<Wishlist> = this.store.pipe(select(getPreferredWishlist));
+  allWishlistsItemsSkus$: Observable<string[]> = this.store.pipe(select(getAllWishlistsItemsSkus));
+  wishlistLoading$: Observable<boolean> = this.store.pipe(select(getWishlistsLoading));
+  wishlistError$: Observable<HttpError> = this.store.pipe(select(getWishlistsError));
+  sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
 
   wishlistSelectOptions$(filterCurrent = true) {
     const wishlistOptions$ = this.wishlists$.pipe(
@@ -81,64 +64,44 @@ export class WishlistsFacade {
   }
 
   addWishlist(wishlist: WishlistHeader): HttpError | void {
-    void this.moduleLoader.ensureLoaded('wishlists').then(() => this.store.dispatch(createWishlist({ wishlist })));
+    this.store.dispatch(createWishlist({ wishlist }));
   }
 
   deleteWishlist(id: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(deleteWishlist({ wishlistId: id })));
+    this.store.dispatch(deleteWishlist({ wishlistId: id }));
   }
 
   updateWishlist(wishlist: Wishlist): void {
-    void this.moduleLoader.ensureLoaded('wishlists').then(() => this.store.dispatch(updateWishlist({ wishlist })));
+    this.store.dispatch(updateWishlist({ wishlist }));
   }
 
   addProductToNewWishlist(title: string, sku: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(addProductToNewWishlist({ title, sku })));
+    this.store.dispatch(addProductToNewWishlist({ title, sku }));
   }
 
   addProductToWishlist(wishlistId: string, sku: string, quantity?: number): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(addProductToWishlist({ wishlistId, sku, quantity })));
+    this.store.dispatch(addProductToWishlist({ wishlistId, sku, quantity }));
   }
 
   moveItemToWishlist(sourceWishlistId: string, targetWishlistId: string, sku: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() =>
-        this.store.dispatch(
-          moveItemToWishlist({ source: { id: sourceWishlistId }, target: { id: targetWishlistId, sku } })
-        )
-      );
+    this.store.dispatch(
+      moveItemToWishlist({ source: { id: sourceWishlistId }, target: { id: targetWishlistId, sku } })
+    );
   }
 
   moveItemToNewWishlist(sourceWishlistId: string, title: string, sku: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() =>
-        this.store.dispatch(moveItemToWishlist({ source: { id: sourceWishlistId }, target: { title, sku } }))
-      );
+    this.store.dispatch(moveItemToWishlist({ source: { id: sourceWishlistId }, target: { title, sku } }));
   }
 
   removeProductFromWishlist(wishlistId: string, sku: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(removeItemFromWishlist({ wishlistId, sku })));
+    this.store.dispatch(removeItemFromWishlist({ wishlistId, sku }));
   }
 
   shareWishlist(wishlistId: string, wishlistSharing: WishlistSharing): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(wishlistActions.shareWishlist({ wishlistId, wishlistSharing })));
+    this.store.dispatch(wishlistActions.shareWishlist({ wishlistId, wishlistSharing }));
   }
 
   unshareWishlist(wishlistId: string): void {
-    void this.moduleLoader
-      .ensureLoaded('wishlists')
-      .then(() => this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId })));
+    this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
   }
 }
