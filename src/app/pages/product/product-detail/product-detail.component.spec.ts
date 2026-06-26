@@ -1,12 +1,4 @@
-import {
-  Component,
-  Directive,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, Directive, EventEmitter, Input, Output, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior, TestBed } from '@angular/core/testing';
 import { MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
