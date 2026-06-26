@@ -38,6 +38,11 @@ export const DEFAULT_PRODUCT_LISTING_VIEW_TYPE = createEnvironmentInjectionToken
 export const COOKIE_CONSENT_OPTIONS = createEnvironmentInjectionToken('cookieConsentOptions');
 
 /**
+ * the configured cookie consent version for the application
+ */
+export const COOKIE_CONSENT_VERSION_VALUE = createEnvironmentInjectionToken('cookieConsentVersion');
+
+/**
  * the configured data retention policy for the application
  */
 export const DATA_RETENTION_POLICY = createEnvironmentInjectionToken('dataRetention');

@@ -1,12 +1,4 @@
-/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
-import {
-  APP_ID,
-  ApplicationConfig,
-  EnvironmentProviders,
-  TransferState,
-  inject,
-  provideAppInitializer,
-} from '@angular/core';
+import { APP_ID, ApplicationConfig, EnvironmentProviders, inject, provideAppInitializer } from '@angular/core';
 import {
   UrlSerializer,
   provideRouter,
@@ -18,14 +10,12 @@ import { provideFormlyCore } from '@ngx-formly/core';
 import { provideOrganizationManagementStore } from 'organization-management';
 import { provideRequisitionManagementStore } from 'requisition-management';
 
-import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
+import { initializeCookieConsent } from 'ish-core/configurations/cookie-consent.initializer';
 import { provideCore } from 'ish-core/core.providers';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 import { SelectivePreloadingStrategy } from 'ish-core/routing/selective-preloading-strategy';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { provideCMS } from 'ish-shared/cms/cms.providers';
-
-import { environment } from '../environments/environment';
 
 import { provideAddressDoctorFeature } from './extensions/address-doctor/address-doctor-feature.providers';
 import { provideCaptchaFeature } from './extensions/captcha/captcha-feature.providers';
@@ -43,13 +33,6 @@ import { provideTrackingFeature } from './extensions/tracking/tracking-feature.p
 import { provideWishlistsFeature } from './extensions/wishlists/wishlists-feature.providers';
 import { appLastRoutes } from './pages/app-last.routes';
 import { appRoutes } from './pages/app.routes';
-
-function initializeCookieConsent() {
-  const transferState = inject(TransferState);
-  if (!transferState.hasKey<number>(COOKIE_CONSENT_VERSION)) {
-    transferState.set(COOKIE_CONSENT_VERSION, environment.cookieConsentVersion);
-  }
-}
 
 function initializeModuleLoader() {
   const moduleLoader = inject(ModuleLoaderService);
