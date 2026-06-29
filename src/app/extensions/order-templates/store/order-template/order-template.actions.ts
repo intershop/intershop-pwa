@@ -67,7 +67,7 @@ export const addProductToOrderTemplateFail = createAction(
 
 export const addProductToNewOrderTemplate = createAction(
   '[Order Templates] Add Product To New Order Template',
-  payload<{ title: string; sku: string; quantity?: number }>()
+  payload<{ title: string; sku: string; quantity?: number; suppressSelect?: boolean }>()
 );
 
 export const moveItemToOrderTemplate = createAction(

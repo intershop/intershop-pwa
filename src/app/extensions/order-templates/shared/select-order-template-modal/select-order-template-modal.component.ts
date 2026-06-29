@@ -148,9 +148,12 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     const selectedValue = this.formGroup.value.orderTemplate;
 
     if (selectedValue === 'new' || !selectedValue) {
-      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
+      const title = this.formGroup.value.newOrderTemplate;
+      return this.orderTemplatesFacade.orderTemplates$.pipe(
+        // pick the most recently created template matching the title since titles are not unique
+        map(templates => templates.filter(t => t.title === title).sort((a, b) => b.creationDate - a.creationDate)[0]),
         whenTruthy(),
-        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate.id}`),
+        map(template => `route://account/order-templates/${template.id}`),
         take(1)
       );
     } else {

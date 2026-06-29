@@ -66,6 +66,7 @@ describe('Select Order Template Modal Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
+    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([orderTemplateDetails]));
     when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
       of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
     );
@@ -197,17 +198,22 @@ describe('Select Order Template Modal Component', () => {
     });
 
     it('should return correct route of new order template', done => {
+      when(orderTemplateFacadeMock.orderTemplates$).thenReturn(
+        of([{ ...orderTemplateDetails, title: 'New Ordertemplate Title' }])
+      );
       startup();
       updateOrderTemplateAndNew();
 
       component.selectedOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
       });
-      done();
     });
 
     it('should wait for the created order template and not emit an "undefined" route', done => {
-      when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(undefined, orderTemplateDetails));
+      when(orderTemplateFacadeMock.orderTemplates$).thenReturn(
+        of([], [{ ...orderTemplateDetails, title: 'New Ordertemplate Title' }])
+      );
       startup();
       updateOrderTemplateAndNew();
 
