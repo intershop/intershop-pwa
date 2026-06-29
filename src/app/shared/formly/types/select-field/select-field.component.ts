@@ -1,5 +1,9 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
+import { FormlySelectOptionsPipe } from '@ngx-formly/core/select';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 
@@ -21,7 +25,8 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  */
 @Component({
   selector: 'ish-select-field',
-  standalone: false,
+  imports: [AsyncPipe, FormlyAttributes, FormlySelectOptionsPipe, NgClass, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

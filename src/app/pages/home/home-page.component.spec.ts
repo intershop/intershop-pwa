@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
 
 import { HomePageComponent } from './home-page.component';
 
@@ -14,10 +15,24 @@ describe('Home Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [HomePageComponent, MockComponent(ContentIncludeComponent), MockPipe(ServerSettingPipe)],
+      imports: [HomePageComponent],
       providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(HomePageComponent, {
+        remove: {
+          imports: [ContentIncludeComponent, PaymentPaypalComponent, ServerSettingPipe],
+          providers: [provideTranslateService()],
+        },
+        add: {
+          imports: [
+            MockComponent(ContentIncludeComponent),
+            MockComponent(PaymentPaypalComponent),
+            MockPipe(ServerSettingPipe),
+          ],
+          providers: [provideTranslateService()],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

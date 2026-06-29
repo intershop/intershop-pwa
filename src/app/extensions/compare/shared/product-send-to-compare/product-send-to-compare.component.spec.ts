@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -21,11 +22,11 @@ describe('Product Send To Compare Component', () => {
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [ProductSendToCompareComponent],
+      imports: [ProductSendToCompareComponent],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideRouter([]),
         provideTranslateService(),
       ],
     }).compileComponents();

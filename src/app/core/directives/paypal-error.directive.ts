@@ -10,7 +10,7 @@ import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } fro
  */
 @Directive({
   selector: '[ishPaypalError]',
-  standalone: false,
+  standalone: true,
 })
 export class PaypalErrorDirective implements OnChanges {
   /** When true, shows the error message and marks the label as invalid */

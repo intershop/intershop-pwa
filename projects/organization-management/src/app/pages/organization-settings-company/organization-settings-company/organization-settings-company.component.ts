@@ -1,10 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 
 /**
@@ -13,7 +17,8 @@ import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
  */
 @Component({
   selector: 'ish-organization-settings-company',
-  standalone: false,
+  imports: [ErrorMessageComponent, FormlyForm, FormSubmitDirective, ReactiveFormsModule, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './organization-settings-company.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

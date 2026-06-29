@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -8,6 +8,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductLinksListComponent } from './product-links-list.component';
 
@@ -21,9 +22,14 @@ describe('Product Links List Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockDirective(ProductContextDirective), ProductLinksListComponent],
+      imports: [ProductLinksListComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductLinksListComponent, {
+        remove: { imports: [ProductContextDirective, ProductItemComponent] },
+        add: { imports: [MockDirective(ProductContextDirective), MockComponent(ProductItemComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

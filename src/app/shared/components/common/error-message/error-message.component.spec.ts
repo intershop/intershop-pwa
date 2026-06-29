@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
+import { MockDirective } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
@@ -15,8 +18,14 @@ describe('Error Message Component', () => {
   beforeEach(async () => {
     messageFacade = mock(MessageFacade);
     await TestBed.configureTestingModule({
-      providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }],
-    }).compileComponents();
+      imports: [ErrorMessageComponent],
+      providers: [{ provide: MessageFacade, useFactory: () => instance(messageFacade) }, provideTranslateService()],
+    })
+      .overrideComponent(ErrorMessageComponent, {
+        remove: { imports: [ServerHtmlDirective] },
+        add: { imports: [MockDirective(ServerHtmlDirective)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

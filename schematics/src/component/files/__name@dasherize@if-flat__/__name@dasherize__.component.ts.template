@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: '<%= selector %>',
-  standalone: false,
   templateUrl: './<%= dasherize(name) %>.component.html',<% if (!!styleFile) { %>
   styleUrls: ['./<%= dasherize(name) %>.component.scss'],<% } %>
   changeDetection: ChangeDetectionStrategy.OnPush,

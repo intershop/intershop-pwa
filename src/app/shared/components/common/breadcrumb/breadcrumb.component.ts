@@ -1,4 +1,7 @@
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -13,7 +16,8 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
  */
 @Component({
   selector: 'ish-breadcrumb',
-  standalone: false,
+  imports: [AsyncPipe, NgClass, NgStyle, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

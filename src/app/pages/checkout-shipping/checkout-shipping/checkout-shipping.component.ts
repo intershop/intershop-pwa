@@ -1,7 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ConfigOption, FormlyConfig, FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
 
@@ -10,9 +11,17 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { ShippingRadioWrapperComponent } from '../formly/shipping-radio-wrapper/shipping-radio-wrapper.component';
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const ShippingWrapperConfig: ConfigOption = {
+  wrappers: [{ name: 'shipping-radio-wrapper', component: ShippingRadioWrapperComponent }],
+};
+
 @Component({
   selector: 'ish-checkout-shipping',
-  standalone: false,
+  imports: [AsyncPipe, FormlyForm, ReactiveFormsModule],
+  standalone: true,
   templateUrl: './checkout-shipping.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -26,7 +35,15 @@ export class CheckoutShippingComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private checkoutFacade: CheckoutFacade) {}
+  constructor(
+    private checkoutFacade: CheckoutFacade,
+    private formlyConfig: FormlyConfig
+  ) {
+    const hasWrapper = !!this.formlyConfig.wrappers?.['shipping-radio-wrapper'];
+    if (!hasWrapper) {
+      this.formlyConfig.addConfig(ShippingWrapperConfig);
+    }
+  }
   ngOnInit() {
     this.shippingMethods$ = this.checkoutFacade.eligibleShippingMethodsNoFetch$;
     this.basket$ = this.checkoutFacade.basket$;

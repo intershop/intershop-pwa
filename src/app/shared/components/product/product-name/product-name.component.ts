@@ -1,12 +1,14 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, OnInit, Optional } from '@angular/core';
-import { QueryParamsHandling } from '@angular/router';
+import { QueryParamsHandling, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-name',
-  standalone: false,
+  imports: [AsyncPipe, RouterLink],
+  standalone: true,
   templateUrl: './product-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

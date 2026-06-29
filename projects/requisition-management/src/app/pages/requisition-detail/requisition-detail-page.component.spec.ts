@@ -1,5 +1,6 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { RouterLink, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -14,14 +15,20 @@ import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequisitionRejectDialogComponent } from '../../components/requisition-reject-dialog/requisition-reject-dialog.component';
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 
+import { RequisitionBuyerApprovalComponent } from './requisition-buyer-approval/requisition-buyer-approval.component';
 import { RequisitionCostCenterApprovalComponent } from './requisition-cost-center-approval/requisition-cost-center-approval.component';
 import { RequisitionDetailPageComponent } from './requisition-detail-page.component';
 import { RequisitionSummaryComponent } from './requisition-summary/requisition-summary.component';
+
+jest.mock('ish-shared/components/line-item/line-item-list/line-item-list.component', () => ({
+  LineItemListComponent: class MockLineItemListComponent {},
+}));
 
 describe('Requisition Detail Page Component', () => {
   let component: RequisitionDetailPageComponent;
@@ -33,25 +40,35 @@ describe('Requisition Detail Page Component', () => {
     context = mock(RequisitionContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      declarations: [
-        MockComponent(AddressComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketMerchantMessageViewComponent),
-        MockComponent(BasketShippingMethodComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(RequisitionCostCenterApprovalComponent),
-        MockComponent(RequisitionRejectDialogComponent),
-        MockComponent(RequisitionSummaryComponent),
-        MockDirective(AuthorizationToggleDirective),
-        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
-        RequisitionDetailPageComponent,
-      ],
+      imports: [RequisitionDetailPageComponent],
       providers: [provideRouter([]), provideTranslateService()],
     })
       .overrideComponent(RequisitionDetailPageComponent, {
-        set: { providers: [{ provide: RequisitionContextFacade, useFactory: () => instance(context) }] },
+        set: {
+          imports: [
+            MockComponent(AddressComponent),
+            AsyncPipe,
+            MockDirective(AuthorizationToggleDirective),
+            MockComponent(BasketCostSummaryComponent),
+            MockComponent(BasketMerchantMessageViewComponent),
+            MockComponent(BasketShippingMethodComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(InfoBoxComponent),
+            MockComponent(LoadingComponent),
+            NgTemplateOutlet,
+            MockComponent(RequisitionBuyerApprovalComponent),
+            MockComponent(RequisitionCostCenterApprovalComponent),
+            MockComponent(RequisitionRejectDialogComponent),
+            MockComponent(RequisitionSummaryComponent),
+            RouterLink,
+            MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+            TranslatePipe,
+          ],
+          providers: [
+            provideTranslateService(),
+            { provide: RequisitionContextFacade, useFactory: () => instance(context) },
+          ],
+        },
       })
       .compileComponents();
   });

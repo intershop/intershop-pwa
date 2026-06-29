@@ -1,11 +1,14 @@
-import { LocationStrategy } from '@angular/common';
+import { AsyncPipe, LocationStrategy } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { MakeHrefPipe } from 'ish-core/pipes/make-href.pipe';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 /**
@@ -13,7 +16,8 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
  */
 @Component({
   selector: 'ish-language-switch',
-  standalone: false,
+  imports: [AsyncPipe, MakeHrefPipe, NgbDropdown, NgbDropdownMenu, NgbDropdownToggle, TranslatePipe],
+  standalone: true,
   templateUrl: './language-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

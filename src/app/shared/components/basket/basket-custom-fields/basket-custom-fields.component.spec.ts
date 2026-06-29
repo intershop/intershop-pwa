@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -28,15 +28,20 @@ describe('Basket Custom Fields Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslatePipe],
-      declarations: [
-        BasketCustomFieldsComponent,
-        MockComponent(CustomFieldsFormlyComponent),
-        MockComponent(CustomFieldsViewComponent),
-        MockDirective(NgbCollapse),
-      ],
+      imports: [BasketCustomFieldsComponent, ReactiveFormsModule],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketCustomFieldsComponent, {
+        remove: { imports: [CustomFieldsFormlyComponent, CustomFieldsViewComponent, NgbCollapse] },
+        add: {
+          imports: [
+            MockComponent(CustomFieldsFormlyComponent),
+            MockComponent(CustomFieldsViewComponent),
+            MockDirective(NgbCollapse),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,8 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Self } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { combineLatest } from 'rxjs';
 
@@ -8,6 +11,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
+import { CustomFieldsFormlyComponent } from 'ish-shared/components/custom-fields/custom-fields-formly/custom-fields-formly.component';
+import { LineItemCustomFieldsComponent } from 'ish-shared/components/line-item/line-item-custom-fields/line-item-custom-fields.component';
 
 interface ComponentState {
   lineItem: Partial<Pick<LineItemView, 'customFields' | 'id' | 'productSKU'>>;
@@ -21,14 +26,23 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-line-item-information-edit',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    CustomFieldsFormlyComponent,
+    LineItemCustomFieldsComponent,
+    NgbCollapse,
+    NgClass,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './line-item-information-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
 })
 export class LineItemInformationEditComponent extends RxState<ComponentState> implements OnInit {
-  @Input({ required: true }) set lineItem(lineItem: ComponentState['lineItem']) {
-    this.set({ lineItem });
+  @Input({ required: true }) set lineItem(lineItem: ComponentState['lineItem'] | undefined) {
+    this.set({ lineItem: lineItem || {} });
     this.resetContext();
   }
   @Input() editable = false;
@@ -62,12 +76,12 @@ export class LineItemInformationEditComponent extends RxState<ComponentState> im
         customFields.map(field => ({
           name: field.name,
           editable: field.editable,
-          value: customFieldsData[field.name],
+          value: customFieldsData?.[field.name],
         }))
     );
 
     this.connect('editMode', this.select('lineItem', 'customFields'), (_, customFieldsData) =>
-      Object.keys(customFieldsData).length > 0 ? 'edit' : 'add'
+      Object.keys(customFieldsData || {}).length > 0 ? 'edit' : 'add'
     );
   }
 

@@ -1,4 +1,6 @@
+import { AsyncPipe, NgForOf } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -7,6 +9,7 @@ import {
   ContentPageletEntryPointView,
   createContentPageletEntryPointView,
 } from 'ish-core/models/content-view/content-view.model';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
 import { ContentViewcontextComponent } from './content-viewcontext.component';
 
@@ -33,9 +36,15 @@ describe('Content Viewcontext Component', () => {
     when(cmsFacade.viewContext$(anything(), anything())).thenReturn(of(entrypoint));
 
     await TestBed.configureTestingModule({
-      declarations: [ContentViewcontextComponent],
+      imports: [ContentViewcontextComponent],
       providers: [{ provide: CMSFacade, useValue: instance(cmsFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ContentViewcontextComponent, {
+        set: {
+          imports: [MockComponent(ContentPageletComponent), AsyncPipe, NgForOf],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

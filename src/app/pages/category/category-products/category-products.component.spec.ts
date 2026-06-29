@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -23,18 +23,34 @@ describe('Category Products Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        CategoryProductsComponent,
-        MockComponent(BreadcrumbComponent),
-        MockComponent(CategoryNavigationComponent),
-        MockComponent(FilterNavigationComponent),
-        MockComponent(ProductListingComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(NgbCollapse),
-      ],
+      imports: [CategoryProductsComponent],
       providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(CategoryProductsComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            CategoryNavigationComponent,
+            FilterNavigationComponent,
+            NgbCollapseModule,
+            ProductListingComponent,
+            SkipContentLinkComponent,
+          ],
+          providers: [provideTranslateService()],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(CategoryNavigationComponent),
+            MockComponent(FilterNavigationComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(ProductListingComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+          providers: [provideTranslateService()],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

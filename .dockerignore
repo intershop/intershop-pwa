@@ -50,12 +50,6 @@
 /eslint-rules/package-lock.json
 /eslint-rules/dist
 
-# from projects/organization-management/src/app/exports/.gitignore
-/projects/organization-management/src/app/exports/**/lazy*
-
-# from projects/requisition-management/src/app/exports/.gitignore
-/projects/requisition-management/src/app/exports/**/lazy*
-
 # from reports/.gitignore
 /reports/junit.xml
 /reports/unit-tests.html
@@ -70,45 +64,6 @@
 # from schematics/.gitignore
 /schematics/dist
 /schematics/package-lock.json
-
-# from schematics/src/extension/files/__name@dasherize__/exports/.gitignore
-/schematics/src/extension/files/__name@dasherize__/exports/**/lazy*
-
-# from src/app/extensions/address-doctor/exports/.gitignore
-/src/app/extensions/address-doctor/exports/**/lazy*
-
-# from src/app/extensions/compare/exports/.gitignore
-/src/app/extensions/compare/exports/**/lazy*
-
-# from src/app/extensions/copilot/exports/.gitignore
-/src/app/extensions/copilot/exports/**/lazy*
-
-# from src/app/extensions/order-templates/exports/.gitignore
-/src/app/extensions/order-templates/exports/**/lazy*
-
-# from src/app/extensions/product-notifications/exports/.gitignore
-/src/app/extensions/product-notifications/exports/**/lazy*
-
-# from src/app/extensions/punchout/exports/.gitignore
-/src/app/extensions/punchout/exports/**/lazy*
-
-# from src/app/extensions/quickorder/exports/.gitignore
-/src/app/extensions/quickorder/exports/**/lazy*
-
-# from src/app/extensions/quoting/exports/.gitignore
-/src/app/extensions/quoting/exports/**/lazy*
-
-# from src/app/extensions/rating/exports/.gitignore
-/src/app/extensions/rating/exports/**/lazy*
-
-# from src/app/extensions/recently/exports/.gitignore
-/src/app/extensions/recently/exports/**/lazy*
-
-# from src/app/extensions/wishlists/exports/.gitignore
-/src/app/extensions/wishlists/exports/**/lazy*
-
-# from src/app/shell/shared/.gitignore
-/src/app/shell/shared/**/lazy*
 
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json

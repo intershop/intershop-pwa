@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,9 +8,13 @@ import { CategoryView } from 'ish-core/models/category-view/category-view.model'
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { whenTruthy } from 'ish-core/utils/operators';
 
+import { CategoryCategoriesComponent } from './category-categories/category-categories.component';
+import { CategoryProductsComponent } from './category-products/category-products.component';
+
 @Component({
   selector: 'ish-category-page',
-  standalone: false,
+  imports: [AsyncPipe, CategoryCategoriesComponent, CategoryProductsComponent],
+  standalone: true,
   templateUrl: './category-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

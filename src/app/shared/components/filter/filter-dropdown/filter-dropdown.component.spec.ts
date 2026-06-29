@@ -26,8 +26,7 @@ describe('Filter Dropdown Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgSelectModule, ReactiveFormsModule, TranslatePipe],
-      declarations: [FilterDropdownComponent],
+      imports: [FilterDropdownComponent, NgSelectModule, ReactiveFormsModule, TranslatePipe],
       providers: [provideTranslateService()],
     }).compileComponents();
 

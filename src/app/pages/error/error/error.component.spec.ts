@@ -1,10 +1,10 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
@@ -19,14 +19,19 @@ describe('Error Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(SearchBoxComponent), TranslatePipe],
-      declarations: [ErrorComponent, ServerHtmlDirective],
+      imports: [ErrorComponent],
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ErrorComponent, {
+        remove: { imports: [SearchBoxComponent] },
+        add: { imports: [MockComponent(SearchBoxComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

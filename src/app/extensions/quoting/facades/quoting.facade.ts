@@ -32,6 +32,7 @@ export class QuotingFacade {
   ) {
     appRef.isStable.pipe(whenTruthy(), take(1)).subscribe(isStable => this.isStable$.next(isStable));
   }
+
   loading$ = this.store.pipe(select(getQuotingLoading));
 
   quotingEntities$(options: QuoteEntitiesOptions = { automaticRefresh: true }) {

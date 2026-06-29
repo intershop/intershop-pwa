@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
@@ -8,8 +9,10 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
 
+import { AccountOrderFiltersComponent } from './account-order-filters/account-order-filters.component';
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 
 describe('Account Order History Page Component', () => {
@@ -24,16 +27,25 @@ describe('Account Order History Page Component', () => {
     when(accountFacade.isOrderManager$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountOrderHistoryPageComponent,
-        MockComponent(ContentIncludeComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(OrderListComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
-      imports: [TranslatePipe],
+      imports: [AccountOrderHistoryPageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderHistoryPageComponent, {
+        set: {
+          imports: [
+            MockComponent(AccountOrderFiltersComponent),
+            AsyncPipe,
+            MockComponent(ContentIncludeComponent),
+            MockComponent(ErrorMessageComponent),
+            NgClass,
+            MockComponent(OrderListComponent),
+            MockComponent(PagingComponent),
+            MockDirective(ServerHtmlDirective),
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

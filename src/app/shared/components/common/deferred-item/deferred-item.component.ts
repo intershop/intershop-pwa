@@ -1,7 +1,9 @@
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { IntersectionStatus } from 'ish-core/directives/intersection-observer-util';
+import { IntersectionObserverDirective } from 'ish-core/directives/intersection-observer.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 
 /**
@@ -11,7 +13,7 @@ import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-co
  * Once rendered, the content remains in the DOM even when scrolled out of view.
  *
  * @example
- * <ish-deferred-item cssClass="col-6">
+ * <ish-deferred-item [cssClass]="'col-6'">
  *   <ng-template ishLazyLoadingContent>
  *     <!-- content to be lazily loaded -->
  *   </ng-template>
@@ -19,7 +21,8 @@ import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-co
  */
 @Component({
   selector: 'ish-deferred-item',
-  standalone: false,
+  imports: [AsyncPipe, IntersectionObserverDirective, NgClass, NgTemplateOutlet],
+  standalone: true,
   templateUrl: './deferred-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

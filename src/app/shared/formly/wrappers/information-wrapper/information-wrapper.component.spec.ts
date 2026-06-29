@@ -4,9 +4,9 @@ import { FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { InformationWrapperComponent } from './information-wrapper.component';
 
@@ -24,17 +24,19 @@ describe('Information Wrapper Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'information', component: InformationWrapperComponent }],
         }),
-        FormlyTestingComponentsModule,
-      ],
-      declarations: [
         InformationWrapperComponent,
-        MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(InformationWrapperComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe, (value, args) => `value:${value} args:${JSON.stringify(args)}`)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

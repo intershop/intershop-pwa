@@ -45,7 +45,7 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
       posParams.categoryUniqueId = new UrlSegment(match[2], {});
     }
     return {
-      consumed: [],
+      consumed: segments,
       posParams,
     };
   }

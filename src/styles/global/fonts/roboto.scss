@@ -10,7 +10,7 @@
     local('Roboto-Regular'),
     /*  Super Modern Browsers*/ url('~typeface-roboto/files/roboto-latin-400.woff2') format('woff2'),
     /* Modern Browsers*/ url('~typeface-roboto/files/roboto-latin-400.woff') format('woff');
-  font-display: swap;
+  font-display: optional;
 }
 
 /* roboto-700normal - latin */
@@ -23,7 +23,7 @@
     local('Roboto-Bold'),
     /*  Super Modern Browsers*/ url('~typeface-roboto/files/roboto-latin-700.woff2') format('woff2'),
     /* Modern Browsers*/ url('~typeface-roboto/files/roboto-latin-700.woff') format('woff');
-  font-display: swap;
+  font-display: optional;
 }
 
 /* roboto-condensed-400normal - latin */
@@ -36,7 +36,7 @@
     local('Roboto Condensed-Regular'),
     /*  Super Modern Browsers*/ url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff2') format('woff2'),
     /* Modern Browsers*/ url('~typeface-roboto-condensed/files/roboto-condensed-latin-400.woff') format('woff');
-  font-display: swap;
+  font-display: optional;
 }
 
 /* roboto-condensed-700normal - latin */
@@ -49,5 +49,5 @@
     local('Roboto Condensed-Bold'),
     /*  Super Modern Browsers*/ url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff2') format('woff2'),
     /* Modern Browsers*/ url('~typeface-roboto-condensed/files/roboto-condensed-latin-700.woff') format('woff');
-  font-display: swap;
+  font-display: optional;
 }

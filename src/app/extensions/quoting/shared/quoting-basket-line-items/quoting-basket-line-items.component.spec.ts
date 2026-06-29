@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -21,12 +24,18 @@ describe('Quoting Basket Line Items Component', () => {
     quotingFacade = mock(QuotingFacade);
     when(checkoutFacade.basket$).thenReturn(EMPTY);
     await TestBed.configureTestingModule({
-      declarations: [QuotingBasketLineItemsComponent],
+      imports: [QuotingBasketLineItemsComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(QuotingBasketLineItemsComponent, {
+        remove: { imports: [LineItemListComponent] },
+        add: { imports: [MockComponent(LineItemListComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

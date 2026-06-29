@@ -1,11 +1,22 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { CaptchaFieldComponent } from './captcha-field.component';
+
+@Component({
+  selector: 'ish-captcha',
+  standalone: true,
+  template: '',
+})
+class MockLazyCaptchaComponent {
+  @Input() form: FormGroup;
+  @Input() topic: string;
+}
 
 describe('Captcha Field Component', () => {
   let component: FormlyTestingContainerComponent;
@@ -15,6 +26,8 @@ describe('Captcha Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
+        CaptchaFieldComponent,
         FormlyModule.forRoot({
           types: [
             {
@@ -23,9 +36,15 @@ describe('Captcha Field Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CaptchaFieldComponent, {
+        set: {
+          template: `<ish-captcha [topic]="props.topic" [form]="form" [attr.data-testing-id]="field.key" />`,
+          imports: [MockLazyCaptchaComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -53,6 +72,6 @@ describe('Captcha Field Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('ish-captcha-field > ish-lazy-captcha')).toBeTruthy();
+    expect(element.querySelector('ish-captcha-field ish-captcha')).toBeTruthy();
   });
 });

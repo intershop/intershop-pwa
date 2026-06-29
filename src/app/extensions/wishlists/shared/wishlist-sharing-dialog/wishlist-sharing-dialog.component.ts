@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -18,7 +20,8 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-sharing-dialog',
-  standalone: false,
+  imports: [FormlyForm, ModalDialogComponent, ReactiveFormsModule, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './wishlist-sharing-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

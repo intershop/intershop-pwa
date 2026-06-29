@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,6 +18,8 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductImageComponent as ProductImageComponent_1 } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductLabelComponent } from 'ish-shared/components/product/product-label/product-label.component';
 
 /**
  * The Product Images Component
@@ -30,7 +33,8 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
  */
 @Component({
   selector: 'ish-product-images',
-  standalone: false,
+  imports: [AsyncPipe, ModalDialogComponent, NgClass, ProductImageComponent_1, ProductLabelComponent],
+  standalone: true,
   templateUrl: './product-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

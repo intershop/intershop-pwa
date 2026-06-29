@@ -9,7 +9,7 @@ export type RatingFilledType = 'empty' | 'full' | 'half';
  */
 @Component({
   selector: 'ish-product-rating-star',
-  standalone: false,
+  standalone: true,
   templateUrl: './product-rating-star.component.html',
   styleUrls: ['./product-rating-star.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

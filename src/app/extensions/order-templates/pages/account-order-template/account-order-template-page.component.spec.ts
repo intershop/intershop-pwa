@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -20,18 +20,25 @@ describe('Account Order Template Page Component', () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        AccountOrderTemplatePageComponent,
-        MockComponent(AccountOrderTemplateListComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(OrderTemplatePreferencesDialogComponent),
-      ],
+      imports: [AccountOrderTemplatePageComponent],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplatePageComponent, {
+        remove: {
+          imports: [AccountOrderTemplateListComponent, ErrorMessageComponent, OrderTemplatePreferencesDialogComponent],
+        },
+        add: {
+          imports: [
+            MockComponent(AccountOrderTemplateListComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(OrderTemplatePreferencesDialogComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

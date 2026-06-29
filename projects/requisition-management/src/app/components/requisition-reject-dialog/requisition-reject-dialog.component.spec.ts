@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { RequisitionRejectDialogComponent } from './requisition-reject-dialog.component';
 
@@ -16,10 +17,20 @@ describe('Requisition Reject Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
-      declarations: [MockComponent(ModalDialogComponent), RequisitionRejectDialogComponent],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [RequisitionRejectDialogComponent],
+    })
+      .overrideComponent(RequisitionRejectDialogComponent, {
+        set: {
+          imports: [
+            MockDirective(FormSubmitDirective),
+            MockComponent(ModalDialogComponent),
+            MockComponent(FormlyForm),
+            MockPipe(TranslatePipe),
+            ReactiveFormsModule,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

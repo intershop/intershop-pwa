@@ -1,11 +1,16 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CompareFacade } from '../../facades/compare.facade';
 
+import { ProductCompareListComponent } from './product-compare-list/product-compare-list.component';
+
 @Component({
   selector: 'ish-compare-page',
-  standalone: false,
+  imports: [AsyncPipe, ProductCompareListComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './compare-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

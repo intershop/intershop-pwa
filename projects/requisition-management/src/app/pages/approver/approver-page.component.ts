@@ -1,16 +1,36 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { NgbNav, NgbNavItem, NgbNavLink } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
-import { RequisitionColumnsType } from '../../components/requisitions-list/requisitions-list.component';
+import {
+  RequisitionColumnsType,
+  RequisitionsListComponent,
+} from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition, RequisitionStatus } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-approver-page',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    NgbNav,
+    NgbNavItem,
+    NgbNavLink,
+    RequisitionsListComponent,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './approver-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

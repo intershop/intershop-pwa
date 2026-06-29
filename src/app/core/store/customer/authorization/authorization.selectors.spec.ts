@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadRolesAndPermissionsSuccess } from './authorization.actions';
@@ -12,7 +12,7 @@ describe('Authorization Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), CustomerStoreModule.forTesting('authorization')],
+      imports: [...CoreStoreProviders.forTesting(), CustomerStoreProviders.forTesting('authorization')],
       providers: [provideStoreSnapshots()],
     });
 

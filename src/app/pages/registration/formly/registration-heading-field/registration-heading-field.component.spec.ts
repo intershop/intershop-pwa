@@ -4,8 +4,8 @@ import { FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { RegistrationHeadingFieldComponent } from './registration-heading-field.component';
 
@@ -16,14 +16,19 @@ describe('Registration Heading Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockPipe(TranslatePipe), RegistrationHeadingFieldComponent],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'heading', component: RegistrationHeadingFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
+        RegistrationHeadingFieldComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationHeadingFieldComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

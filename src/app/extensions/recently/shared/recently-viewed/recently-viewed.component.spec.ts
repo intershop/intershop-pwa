@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
@@ -28,19 +29,27 @@ describe('Recently Viewed Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule],
-      declarations: [
-        MockComponent(ProductsListComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockPipe(TranslatePipe),
-        RecentlyViewedComponent,
-      ],
+      imports: [RecentlyViewedComponent],
       providers: [
         { provide: RecentlyFacade, useFactory: () => instance(recentlyFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         provideRouter([{ path: 'recently', component: RecentlyViewedComponent }]),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RecentlyViewedComponent, {
+        remove: {
+          imports: [BrowserLazyViewDirective, ProductsListComponent, SkipContentLinkComponent, TranslatePipe],
+        },
+        add: {
+          imports: [
+            MockDirective(BrowserLazyViewDirective),
+            MockComponent(ProductsListComponent),
+            MockComponent(SkipContentLinkComponent),
+            MockPipe(TranslatePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,9 +1,12 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Contact } from 'ish-core/models/contact/contact.model';
@@ -18,9 +21,10 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
  */
 @Component({
   selector: 'ish-contact-form',
-  standalone: false,
+  imports: [AsyncPipe, FormlyForm, FormSubmitDirective, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './contact-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */

@@ -18,7 +18,8 @@ describe('Server Html Directive', () => {
       when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
       @Component({
-        standalone: false,
+        imports: [ServerHtmlDirective],
+        standalone: true,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -30,10 +31,11 @@ describe('Server Html Directive', () => {
       }
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
+          provideTranslateService(),
         ],
       }).compileComponents();
 
@@ -61,7 +63,8 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        standalone: false,
+        imports: [ServerHtmlDirective],
+        standalone: true,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -74,10 +77,11 @@ describe('Server Html Directive', () => {
       when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(appFacade) },
+          provideTranslateService(),
         ],
       }).compileComponents();
 
@@ -111,7 +115,8 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        standalone: false,
+        imports: [ServerHtmlDirective],
+        standalone: true,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -120,10 +125,11 @@ describe('Server Html Directive', () => {
       }
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+          provideTranslateService(),
         ],
       }).compileComponents();
 
@@ -143,15 +149,15 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        standalone: false,
+        imports: [ServerHtmlDirective, TranslatePipe],
+        standalone: true,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslatePipe],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
@@ -191,15 +197,15 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
-        standalone: false,
+        imports: [ServerHtmlDirective, TranslatePipe],
+        standalone: true,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
       class TestComponent {}
 
       TestBed.configureTestingModule({
-        declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslatePipe],
+        imports: [TestComponent],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/americas' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },

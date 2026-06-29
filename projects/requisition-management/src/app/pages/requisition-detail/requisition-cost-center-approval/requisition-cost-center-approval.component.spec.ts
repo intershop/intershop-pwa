@@ -1,7 +1,8 @@
+import { AsyncPipe, NgClass, PercentPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { LazyBudgetInfoComponent } from 'organization-management';
+import { BudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -10,6 +11,7 @@ import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { CostCenter, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
 
 import { Requisition } from '../../../models/requisition/requisition.model';
 import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
@@ -27,16 +29,25 @@ describe('Requisition Cost Center Approval Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(BudgetBarComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(LazyBudgetInfoComponent),
-        PricePipe,
-        RequisitionCostCenterApprovalComponent,
-      ],
+      imports: [RequisitionCostCenterApprovalComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(RequisitionCostCenterApprovalComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(BudgetBarComponent),
+            MockComponent(BudgetInfoComponent),
+            MockComponent(InfoBoxComponent),
+            NgClass,
+            MockComponent(OrderRecurrenceComponent),
+            PercentPipe,
+            PricePipe,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
 
     when(accountFacade.userEmail$).thenReturn(of('jlink@test.intershop.de'));
   });

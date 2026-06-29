@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -5,11 +6,12 @@ import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
 
-import { LazyProductSendToCompareComponent } from '../../../extensions/compare/exports/lazy-product-send-to-compare/lazy-product-send-to-compare.component';
+import { ProductSendToCompareComponent } from '../../../extensions/compare/shared/product-send-to-compare/product-send-to-compare.component';
+import { ProductAddToWishlistComponent } from '../../../extensions/wishlists/shared/product-add-to-wishlist/product-add-to-wishlist.component';
 
 import { ProductDetailActionsComponent } from './product-detail-actions.component';
 
@@ -23,10 +25,25 @@ describe('Product Detail Actions Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     await TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('compare'), TranslatePipe],
-      declarations: [MockComponent(LazyProductSendToCompareComponent), ProductDetailActionsComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [ProductDetailActionsComponent],
+      providers: [
+        ...(FeatureToggleModule.forTesting('compare').providers ?? []),
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
+      ],
+    })
+      .overrideComponent(ProductDetailActionsComponent, {
+        set: {
+          imports: [
+            FeatureToggleDirective,
+            MockComponent(ProductAddToWishlistComponent),
+            MockComponent(ProductSendToCompareComponent),
+            AsyncPipe,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

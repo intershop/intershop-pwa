@@ -1,8 +1,16 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 
-import { FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
+import { FeatureToggleType } from 'ish-core/feature-toggle';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
+import { FeatureTogglePipe } from 'ish-core/pipes/feature-toggle.pipe';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+
+import { AccountUserInfoComponent } from '../account-user-info/account-user-info.component';
 
 import { navigationItems } from './account-navigation.items';
 
@@ -24,7 +32,18 @@ export interface NavigationItem {
  */
 @Component({
   selector: 'ish-account-navigation',
-  standalone: false,
+  imports: [
+    AccountUserInfoComponent,
+    AuthorizationToggleDirective,
+    FeatureTogglePipe,
+    NgbCollapse,
+    NotRoleToggleDirective,
+    RouterLink,
+    RouterLinkActive,
+    ServerSettingPipe,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

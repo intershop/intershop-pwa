@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, provideRouter } from '@angular/router';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -27,15 +30,27 @@ describe('Organization Settings Page Component', () => {
     when(accountFacade.customer$).thenReturn(of(customer));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslatePipe],
-      declarations: [
-        MockComponent(ModalDialogComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(ServerSettingPipe, () => true),
-        OrganizationSettingsPageComponent,
+      imports: [FormlyTestingModule, OrganizationSettingsPageComponent],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(OrganizationSettingsPageComponent, {
+        set: {
+          imports: [
+            MockDirective(ServerHtmlDirective),
+            FormlyForm,
+            MockComponent(ModalDialogComponent),
+            ReactiveFormsModule,
+            TranslatePipe,
+            MockPipe(ServerSettingPipe, () => true),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

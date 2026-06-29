@@ -1,6 +1,9 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -19,7 +22,8 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-delete',
-  standalone: false,
+  imports: [AsyncPipe, ModalDialogComponent, NgClass, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './product-notification-delete.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

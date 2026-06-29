@@ -1,12 +1,12 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';
-import { PunchoutStoreModule } from '../punchout-store.module';
+import { PunchoutStoreProviders } from '../punchout-store.providers';
 
 import { loadPunchoutUsers, loadPunchoutUsersFail, loadPunchoutUsersSuccess } from './punchout-users.actions';
 import {
@@ -22,7 +22,7 @@ describe('Punchout Users Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), PunchoutStoreModule.forTesting('punchoutUsers')],
+      imports: [...CoreStoreProviders.forTesting(['router']), PunchoutStoreProviders.forTesting('punchoutUsers')],
       providers: [provideRouter([{ path: 'account/punchout/:PunchoutLogin', children: [] }]), provideStoreSnapshots()],
     });
 

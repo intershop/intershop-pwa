@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -15,7 +16,8 @@ declare let PayEngine: any;
 
 @Component({
   selector: 'ish-payment-concardis-creditcard-cvc-detail',
-  standalone: false,
+  imports: [FormlyForm, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './payment-concardis-creditcard-cvc-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

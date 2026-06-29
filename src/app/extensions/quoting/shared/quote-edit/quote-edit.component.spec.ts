@@ -1,8 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
+
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
+import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 import { QuoteEditComponent } from './quote-edit.component';
 
@@ -16,9 +22,20 @@ describe('Quote Edit Component', () => {
     when(context.select('entityAsQuoteRequest')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [QuoteEditComponent],
-      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+      imports: [QuoteEditComponent],
+      providers: [{ provide: QuoteContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
+    })
+      .overrideComponent(QuoteEditComponent, {
+        remove: { imports: [InPlaceEditComponent, QuoteLineItemListComponent, QuoteStateComponent] },
+        add: {
+          imports: [
+            MockComponent(InPlaceEditComponent),
+            MockComponent(QuoteLineItemListComponent),
+            MockComponent(QuoteStateComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

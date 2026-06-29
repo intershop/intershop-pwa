@@ -1,15 +1,40 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ProductBundleDisplayComponent } from 'ish-shared/components/product/product-bundle-display/product-bundle-display.component';
+import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
+import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
+import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template/order-template.model';
+import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-template-modal/select-order-template-modal.component';
 
 @Component({
   selector: 'ish-account-order-template-detail-line-item',
-  standalone: false,
+  imports: [
+    DatePipe,
+    ProductBundleDisplayComponent,
+    ProductIdComponent,
+    ProductImageComponent,
+    ProductInventoryComponent,
+    ProductNameComponent,
+    ProductPriceComponent,
+    ProductQuantityComponent,
+    ProductVariationDisplayComponent,
+    ReactiveFormsModule,
+    SelectOrderTemplateModalComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-order-template-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

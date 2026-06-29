@@ -9,6 +9,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 @Component({
   selector: 'ish-suggest-keywords',
   imports: [AsyncPipe, HighlightPipe, SlicePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './suggest-keywords.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -13,7 +13,6 @@ import { CheckoutShippingComponent } from './checkout-shipping.component';
 @Component({
   // custom selector to prevent component ID collision
   selector: 'ish-dummy-shipping-wrapper',
-  standalone: false,
   template: '<ng-template #fieldComponent />',
 })
 class DummyWrapperComponent extends FieldWrapper {}
@@ -27,8 +26,7 @@ describe('Checkout Shipping Component', () => {
   beforeEach(async () => {
     checkoutFacade = mock(CheckoutFacade);
     await TestBed.configureTestingModule({
-      declarations: [CheckoutShippingComponent],
-      imports: [FormlyTestingModule],
+      imports: [CheckoutShippingComponent, FormlyTestingModule],
       providers: [
         {
           provide: FORMLY_CONFIG,

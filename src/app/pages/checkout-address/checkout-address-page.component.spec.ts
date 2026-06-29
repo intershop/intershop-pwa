@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -27,18 +28,21 @@ describe('Checkout Address Page Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutAddressPageComponent,
-        MockComponent(CheckoutAddressAnonymousComponent),
-        MockComponent(CheckoutAddressComponent),
-      ],
-      imports: [TranslatePipe],
+      imports: [CheckoutAddressPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutAddressPageComponent, {
+        remove: { imports: [CheckoutAddressAnonymousComponent, CheckoutAddressComponent] },
+        add: {
+          imports: [MockComponent(CheckoutAddressAnonymousComponent), MockComponent(CheckoutAddressComponent)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

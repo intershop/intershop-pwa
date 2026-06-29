@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
@@ -20,18 +21,24 @@ describe('Product Add To Compare Component', () => {
   beforeEach(async () => {
     const context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'addToCompare')).thenReturn(of(true));
+    when(context.select('sku')).thenReturn(of('SKU'));
 
     compareFacade = mock(CompareFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MockPipe(FeatureTogglePipe, () => true), ProductAddToCompareComponent],
+      imports: [ProductAddToCompareComponent],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductAddToCompareComponent, {
+        set: {
+          imports: [NgClass, AsyncPipe, TranslatePipe, MockPipe(FeatureTogglePipe, () => true)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

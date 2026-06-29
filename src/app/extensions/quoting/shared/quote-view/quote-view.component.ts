@@ -1,15 +1,33 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
 
 import { QuoteContextFacade, isQuoteStarted } from '../../facades/quote-context.facade';
 import { QuotingHelper } from '../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
+import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 @Component({
   selector: 'ish-quote-view',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    InfoMessageComponent,
+    QuoteLineItemListComponent,
+    QuoteStateComponent,
+    RouterLink,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './quote-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

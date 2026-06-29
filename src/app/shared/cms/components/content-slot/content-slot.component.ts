@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
+import { ContentDesignViewWrapperComponent } from 'ish-shared/cms/components/content-design-view-wrapper/content-design-view-wrapper.component';
+import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
 
 /**
  * The Content Slot Component renders the assigned sub pagelets
@@ -21,7 +23,8 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
  */
 @Component({
   selector: 'ish-content-slot',
-  standalone: false,
+  imports: [ContentDesignViewWrapperComponent, ContentPageletComponent],
+  standalone: true,
   templateUrl: './content-slot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

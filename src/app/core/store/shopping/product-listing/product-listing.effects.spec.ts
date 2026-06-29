@@ -8,9 +8,9 @@ import {
   PRODUCT_LISTING_ITEMS_PER_PAGE,
 } from 'ish-core/configurations/injection-keys';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { loadMoreProducts } from './product-listing.actions';
@@ -28,9 +28,9 @@ describe('Product Listing Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration'], [ProductListingEffects]),
-        CustomerStoreModule.forTesting('user'),
-        ShoppingStoreModule.forTesting('productListing'),
+        ...CoreStoreProviders.forTesting(['router', 'configuration'], [ProductListingEffects]),
+        CustomerStoreProviders.forTesting('user'),
+        ShoppingStoreProviders.forTesting('productListing'),
       ],
       providers: [
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },

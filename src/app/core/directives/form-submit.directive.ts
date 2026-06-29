@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
  */
 @Directive({
   selector: '[ishFormSubmit]',
-  standalone: false,
+  standalone: true,
 })
 export class FormSubmitDirective {
   constructor(private elementRef: ElementRef) {}

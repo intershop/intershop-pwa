@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,15 +23,19 @@ describe('Login Page Component', () => {
     accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
-      declarations: [LoginPageComponent, MockComponent(IdentityProviderLoginComponent)],
+      imports: [LoginPageComponent, RouterModule],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(LoginPageComponent, {
+        remove: { imports: [IdentityProviderLoginComponent] },
+        add: { imports: [MockComponent(IdentityProviderLoginComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

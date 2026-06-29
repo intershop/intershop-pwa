@@ -2,17 +2,18 @@ import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
-import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { AuthorizationToggleService } from 'ish-core/authorization-toggle';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
-import { routes } from '../../pages/organization-management-routing.module';
+import { routes } from '../../pages/organization-management.routes';
 import { loadCostCenterSuccess } from '../../store/cost-centers';
-import { OrganizationManagementStoreModule } from '../../store/organization-management-store.module';
+import { OrganizationManagementStoreProviders } from '../../store/organization-management-store.providers';
 import { loadUserSuccess } from '../../store/users';
 
 import { OrganizationManagementBreadcrumbService } from './organization-management-breadcrumb.service';
@@ -21,7 +22,8 @@ function adaptRoutes(rts: Route[], cmp: Type<unknown>): Route[] {
   return rts.map(r => ({
     ...r,
     loadChildren: undefined,
-    component: (r.component || r.loadChildren) && cmp,
+    loadComponent: undefined,
+    component: (r.component || r.loadChildren || r.loadComponent) && cmp,
     children: r.children && adaptRoutes(r.children, cmp),
   }));
 }
@@ -35,13 +37,23 @@ describe('Organization Management Breadcrumb Service', () => {
     class DummyComponent {}
     TestBed.configureTestingModule({
       imports: [
-        AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_USERS', 'APP_B2B_MANAGE_COSTCENTER'),
-        CoreStoreModule.forTesting(['router', 'configuration']),
-        FeatureToggleModule.forTesting('costCenters'),
-        OrganizationManagementStoreModule.forTesting('users', 'costCenters'),
-        TranslatePipe,
+        CoreStoreProviders.forTesting(['router', 'configuration']),
+        OrganizationManagementStoreProviders.forTesting('users', 'costCenters'),
       ],
       providers: [
+        {
+          provide: AuthorizationToggleService,
+          useValue: {
+            isAuthorizedTo: () => of(true),
+          },
+        },
+        {
+          provide: FeatureToggleService,
+          useValue: {
+            enabled: () => true,
+            enabled$: () => of(true),
+          },
+        },
         provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),
         provideTranslateService(),
       ],

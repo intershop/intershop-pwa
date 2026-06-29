@@ -1,16 +1,40 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
+import { UserBudgetFormComponent } from '../../components/user-budget-form/user-budget-form.component';
+import { UserProfileFormComponent } from '../../components/user-profile-form/user-profile-form.component';
+import { UserRolesSelectionComponent } from '../../components/user-roles-selection/user-roles-selection.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 
+import { UserCsvImportComponent } from './user-csv-import/user-csv-import.component';
+
 @Component({
   selector: 'ish-user-create-page',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    FormSubmitDirective,
+    LoadingComponent,
+    ReactiveFormsModule,
+    RouterLink,
+    ServerSettingPipe,
+    TranslatePipe,
+    UserBudgetFormComponent,
+    UserCsvImportComponent,
+    UserProfileFormComponent,
+    UserRolesSelectionComponent,
+  ],
+  standalone: true,
   templateUrl: './user-create-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

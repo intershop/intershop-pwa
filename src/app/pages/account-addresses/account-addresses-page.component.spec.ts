@@ -14,9 +14,14 @@ describe('Account Addresses Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountAddressesPageComponent, MockComponent(AccountAddressesComponent)],
+      imports: [AccountAddressesPageComponent],
       providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountAddressesPageComponent, {
+        remove: { imports: [AccountAddressesComponent] },
+        add: { imports: [MockComponent(AccountAddressesComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

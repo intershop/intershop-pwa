@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle.imports';
 import { Address } from 'ish-core/models/address/address.model';
 import { Customer, CustomerUserType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { UserService } from 'ish-core/services/user/user.service';
@@ -35,8 +35,8 @@ describe('Sso Registration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FeatureToggleModule.forTesting('businessCustomerRegistration')],
       providers: [
+        { provide: FeatureToggleService, useValue: { enabled: () => true } },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),
         SsoRegistrationEffects,

@@ -1,9 +1,12 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextDisplayProperties } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -12,11 +15,11 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
  */
 @Component({
   selector: 'ish-wishlist-widget',
-  standalone: false,
+  imports: [AsyncPipe, ProductsListComponent, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './wishlist-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class WishlistWidgetComponent implements OnInit {
   allWishlistsItemsSkus$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;

@@ -1,7 +1,11 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ReplaySubject, asyncScheduler, scheduled, switchMap } from 'rxjs';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 /**
  * Displays basket-related HTTP error messages and automatically scrolls
@@ -9,7 +13,8 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  */
 @Component({
   selector: 'ish-basket-error-message',
-  standalone: false,
+  imports: [AsyncPipe, ErrorMessageComponent, ScrollDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-error-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

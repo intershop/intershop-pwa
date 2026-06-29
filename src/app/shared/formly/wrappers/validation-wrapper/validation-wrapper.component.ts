@@ -1,5 +1,9 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+
+import { ValidationIconsComponent } from 'ish-shared/formly/components/validation-icons/validation-icons.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 
 /**
  *  Wrapper to provide validation feedback and styling to fields.
@@ -13,7 +17,8 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-validation-wrapper',
-  standalone: false,
+  imports: [NgClass, ValidationIconsComponent, ValidationMessageComponent],
+  standalone: true,
   templateUrl: './validation-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

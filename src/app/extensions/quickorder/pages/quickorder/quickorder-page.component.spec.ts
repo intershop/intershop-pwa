@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 
 import { QuickorderAddProductsFormComponent } from '../../shared/quickorder-add-products-form/quickorder-add-products-form.component';
@@ -19,19 +20,33 @@ describe('Quickorder Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(QuickorderAddProductsFormComponent),
-        MockComponent(QuickorderCsvFormComponent),
-        MockComponent(SkipContentLinkComponent),
-        QuickorderPageComponent,
-      ],
+      imports: [QuickorderPageComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(QuickorderPageComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            LoadingComponent,
+            QuickorderAddProductsFormComponent,
+            QuickorderCsvFormComponent,
+            SkipContentLinkComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(LoadingComponent),
+            MockComponent(QuickorderAddProductsFormComponent),
+            MockComponent(QuickorderCsvFormComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

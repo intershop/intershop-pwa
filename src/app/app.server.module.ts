@@ -1,6 +1,17 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
-import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  Optional,
+  TransferState,
+  importProvidersFrom,
+  inject,
+  mergeApplicationConfig,
+  provideAppInitializer,
+} from '@angular/core';
+import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { ServerModule, provideServerRendering } from '@angular/platform-server';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -17,7 +28,7 @@ import { REQUEST_ID } from 'ish-core/utils/ssr/ssr.tokens';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AppModule } from './app.module';
+import { appConfig } from './app.config';
 
 const logger = getLogger('SSRErrorHandler');
 
@@ -94,14 +105,23 @@ const providers = [
   { provide: DATA_RETENTION_POLICY, useValue: {} },
 ];
 
-@NgModule({
-  imports: [AppModule],
-  providers,
-  bootstrap: [AppComponent],
-})
-export class AppServerModule {
-  constructor(transferState: TransferState) {
-    transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
-    transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
-  }
+function initializeServerTransferState() {
+  const transferState = inject(TransferState);
+  transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
+  transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
+}
+
+const serverConfig: ApplicationConfig = {
+  providers: [
+    importProvidersFrom(ServerModule),
+    provideNoopAnimations(),
+    ...providers,
+    provideAppInitializer(initializeServerTransferState),
+  ],
+};
+
+const config = mergeApplicationConfig(appConfig, serverConfig);
+
+export function bootstrap(context: BootstrapContext) {
+  return bootstrapApplication(AppComponent, config, context);
 }

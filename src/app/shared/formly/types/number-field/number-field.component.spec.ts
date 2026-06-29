@@ -2,10 +2,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { NumberFieldComponent } from './number-field.component';
 
@@ -16,7 +16,9 @@ describe('Number Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -25,12 +27,9 @@ describe('Number Field Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
+        NumberFieldComponent,
         ReactiveFormsModule,
-        TranslatePipe,
       ],
-      declarations: [NumberFieldComponent],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

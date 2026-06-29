@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
   selector: 'ish-filter-navigation-actions',
-  standalone: false,
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './filter-navigation-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

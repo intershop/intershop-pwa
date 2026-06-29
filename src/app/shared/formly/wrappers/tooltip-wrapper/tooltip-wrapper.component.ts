@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 
+import { FieldTooltipComponent } from 'ish-shared/formly/components/field-tooltip/field-tooltip.component';
+
 /**
  * Wrapper to display a tooltip below the form field.
  *
@@ -8,7 +10,8 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-tooltip-wrapper',
-  standalone: false,
+  imports: [FieldTooltipComponent],
+  standalone: true,
   templateUrl: './tooltip-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

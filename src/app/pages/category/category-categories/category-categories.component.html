@@ -16,7 +16,7 @@
         <nav [attr.aria-label]="'category.navigation.aria_label' | translate">
           <ish-category-navigation [uniqueId]="category.categoryPath[0]" />
         </nav>
-        @if ('payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting) {
+        @defer (when 'payment.paypal.payLaterPreferences.PayLaterMessagingCategoryEnabled' | ishServerSetting) {
           <div class="mt-2">
             <ish-payment-paypal pageType="product-listing" />
           </div>

@@ -1,4 +1,4 @@
-import { ViewportScroller } from '@angular/common';
+import { AsyncPipe, ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivationStart, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Observable, combineLatest } from 'rxjs';
@@ -7,10 +7,14 @@ import { debounce, filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
+import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
+import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
 
 @Component({
   selector: 'ish-product-master-variations',
-  standalone: false,
+  imports: [AsyncPipe, FilterNavigationComponent, ProductListingComponent, SkipContentLinkComponent],
+  standalone: true,
   templateUrl: './product-master-variations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

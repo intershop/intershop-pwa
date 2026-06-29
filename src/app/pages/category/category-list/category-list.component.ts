@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { CategoryTileComponent } from '../category-tile/category-tile.component';
+
 @Component({
   selector: 'ish-category-list',
-  standalone: false,
+  imports: [CategoryTileComponent],
+  standalone: true,
   templateUrl: './category-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

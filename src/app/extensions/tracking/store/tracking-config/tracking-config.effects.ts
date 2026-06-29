@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
 import { filter, map, take, takeWhile } from 'rxjs/operators';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { whenTruthy } from 'ish-core/utils/operators';

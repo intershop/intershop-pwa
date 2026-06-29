@@ -1,15 +1,20 @@
+import { AsyncPipe, DecimalPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { Price, PriceHelper, Pricing } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-price',
-  standalone: false,
+  imports: [AsyncPipe, DecimalPipe, NgClass, PricePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './product-price.component.html',
+  // Default is required because the impure PricePipe needs CD cycles to re-invoke transform() on priceDisplayType changes
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ProductPriceComponent implements OnInit {

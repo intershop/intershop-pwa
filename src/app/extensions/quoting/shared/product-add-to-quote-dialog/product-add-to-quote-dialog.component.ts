@@ -1,18 +1,35 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { ActiveQuoteContextFacade } from '../../facades/active-quote-context.facade';
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.model';
+import { QuoteEditComponent } from '../quote-edit/quote-edit.component';
+import { QuoteInteractionsComponent } from '../quote-interactions/quote-interactions.component';
+import { QuoteViewComponent } from '../quote-view/quote-view.component';
 
 @Component({
   selector: 'ish-product-add-to-quote-dialog',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    QuoteEditComponent,
+    QuoteInteractionsComponent,
+    QuoteViewComponent,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './product-add-to-quote-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],

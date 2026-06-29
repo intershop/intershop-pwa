@@ -1,5 +1,10 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 
 /**
  * Wrapper that adds a help text under an cxml configuration value. The help text can be collapsed.
@@ -8,7 +13,8 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-cxml-help-text-wrapper',
-  standalone: false,
+  imports: [NgbCollapse, NgClass, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './cxml-help-text-wrapper.component.html',
   styleUrls: ['./cxml-help-text-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

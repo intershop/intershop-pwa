@@ -1,10 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
+import { CheckoutProgressBarComponent } from './checkout-progress-bar/checkout-progress-bar.component';
+
 @Component({
-  standalone: false,
+  imports: [AsyncPipe, CheckoutProgressBarComponent, RouterOutlet],
+  standalone: true,
   templateUrl: './checkout-page.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

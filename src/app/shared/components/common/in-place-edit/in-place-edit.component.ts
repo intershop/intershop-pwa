@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,12 +13,14 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 import { fromEvent } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'ish-in-place-edit',
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './in-place-edit.component.html',
   styleUrls: ['./in-place-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

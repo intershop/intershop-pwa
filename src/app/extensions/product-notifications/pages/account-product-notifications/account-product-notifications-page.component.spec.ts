@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -22,19 +22,24 @@ describe('Account Product Notifications Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslatePipe],
-      declarations: [
-        AccountProductNotificationsPageComponent,
-        MockComponent(AccountProductNotificationsListComponent),
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [AccountProductNotificationsPageComponent, NgbNavModule],
       providers: [
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountProductNotificationsPageComponent, {
+        remove: { imports: [AccountProductNotificationsListComponent, ErrorMessageComponent, LoadingComponent] },
+        add: {
+          imports: [
+            MockComponent(AccountProductNotificationsListComponent),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

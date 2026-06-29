@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { SelectFieldComponent } from './select-field.component';
 
@@ -16,17 +16,16 @@ describe('Select Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SelectFieldComponent],
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'ish-select-field', component: SelectFieldComponent }],
         }),
         FormlySelectModule,
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
+        SelectFieldComponent,
       ],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

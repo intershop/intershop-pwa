@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
@@ -14,7 +14,7 @@ describe('Filter Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), ShoppingStoreModule.forTesting('filter')],
+      imports: [...CoreStoreProviders.forTesting(), ShoppingStoreProviders.forTesting('filter')],
       providers: [provideStoreSnapshots()],
     });
 

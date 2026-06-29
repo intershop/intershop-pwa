@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldArrayType } from '@ngx-formly/core';
+import { FieldArrayType, FormlyField } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'ish-oci-configuration-mapping-repeat-field',
-  standalone: false,
+  imports: [FormlyField, TranslatePipe],
+  standalone: true,
   templateUrl: './oci-configuration-mapping-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

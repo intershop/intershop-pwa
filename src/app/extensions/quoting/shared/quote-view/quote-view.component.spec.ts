@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
@@ -19,26 +21,44 @@ describe('Quote View Component', () => {
   let component: QuoteViewComponent;
   let fixture: ComponentFixture<QuoteViewComponent>;
   let element: HTMLElement;
+  let accountFacade: AccountFacade;
   let context: QuoteContextFacade;
 
   beforeEach(async () => {
     context = mock(QuoteContextFacade);
+    accountFacade = mock(AccountFacade);
+    when(accountFacade.userEmail$).thenReturn(of('test@intershop.de'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(InfoMessageComponent),
-        MockComponent(QuoteLineItemListComponent),
-        MockComponent(QuoteStateComponent),
-        MockPipe(DatePipe),
-        QuoteViewComponent,
-      ],
+      imports: [QuoteViewComponent],
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: QuoteContextFacade, useFactory: () => instance(context) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(QuoteViewComponent, {
+        remove: {
+          imports: [
+            DatePipe,
+            InfoMessageComponent,
+            QuoteLineItemListComponent,
+            QuoteStateComponent,
+            ServerHtmlDirective,
+          ],
+        },
+        add: {
+          imports: [
+            MockPipe(DatePipe),
+            MockComponent(InfoMessageComponent),
+            MockComponent(QuoteLineItemListComponent),
+            MockComponent(QuoteStateComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

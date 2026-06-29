@@ -10,6 +10,7 @@ import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 @Component({
   selector: 'ish-suggest-brands',
   imports: [AsyncPipe, HighlightPipe, RouterLink, SlicePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './suggest-brands.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { provideRouter } from '@angular/router';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FORMLY_CONFIG } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -25,12 +25,7 @@ describe('Oci Configuration Form Component', () => {
   beforeEach(async () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, NgbPopoverModule, RouterModule, TranslatePipe],
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        OciConfigurationFormComponent,
-      ],
+      imports: [FormlyTestingModule, NgbPopover, OciConfigurationFormComponent],
       providers: [
         {
           provide: FORMLY_CONFIG,
@@ -43,7 +38,12 @@ describe('Oci Configuration Form Component', () => {
         provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(OciConfigurationFormComponent, {
+        remove: { imports: [ErrorMessageComponent, LoadingComponent] },
+        add: { imports: [MockComponent(ErrorMessageComponent), MockComponent(LoadingComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

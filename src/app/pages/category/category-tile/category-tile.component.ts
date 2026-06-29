@@ -1,9 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
 import { ImageLoading } from 'ish-core/models/image/image.model';
+import { CategoryRoutePipe } from 'ish-core/routing/category/category-route.pipe';
+import { CategoryImageComponent } from 'ish-shared/components/category/category-image/category-image.component';
 
 /**
  * The Category Tile Component renders a category tile with the image of the
@@ -14,7 +18,8 @@ import { ImageLoading } from 'ish-core/models/image/image.model';
  */
 @Component({
   selector: 'ish-category-tile',
-  standalone: false,
+  imports: [AsyncPipe, CategoryImageComponent, CategoryRoutePipe, RouterLink],
+  standalone: true,
   templateUrl: './category-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

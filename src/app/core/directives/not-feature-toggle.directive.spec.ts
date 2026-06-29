@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FeatureToggleModule, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleModule, FeatureToggleType, NotFeatureToggleDirective } from 'ish-core/feature-toggle.imports';
 
 @Component({
-  standalone: false,
+  imports: [NotFeatureToggleDirective],
+  standalone: true,
   template: `
     <div>unrelated</div>
     <div *ishNotFeature="'feature1'">content1</div>
@@ -22,8 +23,8 @@ describe('Not Feature Toggle Directive', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [FeatureToggleModule.forTesting('feature1' as FeatureToggleType)],
+      imports: [TestComponent],
+      providers: [...(FeatureToggleModule.forTesting('feature1' as FeatureToggleType).providers ?? [])],
     }).compileComponents();
   });
 

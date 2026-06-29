@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,22 +11,39 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { SelectWishlistFormComponent } from '../select-wishlist-form/select-wishlist-form.component';
 
 /**
  * The wishlist select modal displays a list of wishlists. The user can select one wishlist or enter a name for a new wishlist in order to add or move an item to a the selected wishlist.
  */
 @Component({
   selector: 'ish-select-wishlist-modal',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    FormSubmitDirective,
+    HtmlEncodePipe,
+    ModalDialogComponent,
+    ProductContextAccessDirective,
+    ReactiveFormsModule,
+    SelectWishlistFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './select-wishlist-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,6 +64,9 @@ export class SelectWishlistModalComponent implements OnInit {
     wishlist: new FormControl(''),
     newList: new FormControl(''),
   });
+
+  successWishlistTitle = '';
+  successWishlistRoute$: Observable<string> = of('');
 
   showForm: boolean;
 
@@ -84,6 +105,8 @@ export class SelectWishlistModalComponent implements OnInit {
           id: wishlistId,
           title: label,
         });
+        this.successWishlistTitle = label;
+        this.successWishlistRoute$ = of(`route://account/wishlists/${wishlistId}`);
         this.showForm = false;
       });
   }
@@ -93,6 +116,11 @@ export class SelectWishlistModalComponent implements OnInit {
       id: undefined,
       title: newList,
     });
+    this.successWishlistTitle = newList;
+    this.successWishlistRoute$ = this.wishlistsFacade.currentWishlist$.pipe(
+      map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
+      take(1)
+    );
     this.showForm = false;
   }
 
@@ -122,7 +150,7 @@ export class SelectWishlistModalComponent implements OnInit {
           this.submitForm();
         } else {
           // set default form value to preferred wishlist unless the current wishlist is the preferred one
-          if (data.preferredWishlist.id !== data.selectedWishlist.id) {
+          if (data.preferredWishlist.id !== data.selectedWishlist?.id) {
             this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
           }
         }
@@ -136,32 +164,6 @@ export class SelectWishlistModalComponent implements OnInit {
     return () => {
       this.hide();
     };
-  }
-
-  get selectedWishlistTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.wishlist;
-    if (selectedValue === 'new' || !selectedValue) {
-      return of(this.formGroup.value.newList);
-    } else {
-      return this.wishlistOptions$.pipe(
-        filter(options => options.length > 0),
-        map(options => options.find(opt => opt.value === selectedValue).label),
-        take(1)
-      );
-    }
-  }
-
-  /** returns the route to the selected wishlist */
-  get selectedWishlistRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.get('wishlist')?.value;
-    if (selectedValue === 'new' || !selectedValue) {
-      return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
-        take(1)
-      );
-    } else {
-      return of(`route://account/wishlists/${selectedValue}`);
-    }
   }
 
   /** translation key for the modal header */

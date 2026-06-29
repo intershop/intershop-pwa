@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ish-accordion',
-  standalone: false,
+  standalone: true,
   templateUrl: './accordion.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

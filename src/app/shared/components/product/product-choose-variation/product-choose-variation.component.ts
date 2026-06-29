@@ -1,11 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
 @Component({
   selector: 'ish-product-choose-variation',
-  standalone: false,
+  imports: [AsyncPipe, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './product-choose-variation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

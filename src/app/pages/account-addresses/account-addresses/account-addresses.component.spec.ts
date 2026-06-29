@@ -1,12 +1,15 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { Address } from 'ish-core/models/address/address.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { FeatureEventResult, FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
@@ -16,7 +19,7 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { LazyAddressDoctorComponent } from '../../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
+import { AddressDoctorComponent } from '../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { AccountAddressesComponent } from './account-addresses.component';
 
@@ -81,19 +84,29 @@ describe('Account Addresses Component', () => {
     beforeEach(async () => {
       accountFacade = mock(AccountFacade);
       await TestBed.configureTestingModule({
-        declarations: [
-          AccountAddressesComponent,
-          MockComponent(AddressComponent),
-          MockComponent(ErrorMessageComponent),
-          MockComponent(FormlyCustomerAddressFormComponent),
-          MockComponent(LazyAddressDoctorComponent),
-          MockComponent(ModalDialogComponent),
+        imports: [AccountAddressesComponent, FormlyTestingModule],
+        providers: [
+          { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+          { provide: FeatureToggleService, useValue: { enabled: () => false } },
+          provideTranslateService(),
         ],
-        imports: [FeatureToggleModule.forTesting(), FormlyTestingModule, TranslatePipe],
-        providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
       })
         .overrideComponent(AccountAddressesComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
+          set: {
+            changeDetection: ChangeDetectionStrategy.Default,
+            imports: [
+              MockComponent(AddressComponent),
+              MockComponent(AddressDoctorComponent),
+              AsyncPipe,
+              MockComponent(ErrorMessageComponent),
+              MockComponent(FormlyCustomerAddressFormComponent),
+              FormlyForm,
+              MockComponent(ModalDialogComponent),
+              NgTemplateOutlet,
+              ReactiveFormsModule,
+              TranslatePipe,
+            ],
+          },
         })
         .compileComponents();
     });
@@ -304,20 +317,30 @@ describe('Account Addresses Component', () => {
       accountFacade = mock(AccountFacade);
       featureEventService = mock(FeatureEventService);
       await TestBed.configureTestingModule({
-        declarations: [
-          AccountAddressesComponent,
-          MockComponent(ErrorMessageComponent),
-          MockComponent(LazyAddressDoctorComponent),
-        ],
-        imports: [FeatureToggleModule.forTesting('addressDoctor'), TranslatePipe],
+        imports: [AccountAddressesComponent, FormlyTestingModule],
         providers: [
           { provide: AccountFacade, useFactory: () => instance(accountFacade) },
           { provide: FeatureEventService, useFactory: () => instance(featureEventService) },
+          { provide: FeatureToggleService, useValue: { enabled: (feature: string) => feature === 'addressDoctor' } },
           provideTranslateService(),
         ],
       })
         .overrideComponent(AccountAddressesComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
+          set: {
+            changeDetection: ChangeDetectionStrategy.Default,
+            imports: [
+              MockComponent(AddressComponent),
+              MockComponent(AddressDoctorComponent),
+              AsyncPipe,
+              MockComponent(ErrorMessageComponent),
+              MockComponent(FormlyCustomerAddressFormComponent),
+              FormlyForm,
+              MockComponent(ModalDialogComponent),
+              NgTemplateOutlet,
+              ReactiveFormsModule,
+              TranslatePipe,
+            ],
+          },
         })
         .compileComponents();
     });

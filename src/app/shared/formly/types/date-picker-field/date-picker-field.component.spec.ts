@@ -3,12 +3,12 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbCalendar, NgbDate, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { DatePickerFieldComponent } from './date-picker-field.component';
 
@@ -27,17 +27,21 @@ describe('Date Picker Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DatePickerFieldComponent, MockDirective(NgbInputDatepicker)],
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
+        DatePickerFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'ish-date-picker-field', component: DatePickerFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
       ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(DatePickerFieldComponent, {
+        remove: { imports: [NgbInputDatepicker] },
+        add: { imports: [MockDirective(NgbInputDatepicker)] },
+      })
+      .compileComponents();
 
     calendar = TestBed.inject(NgbCalendar);
   });

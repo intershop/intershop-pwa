@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterLink, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
@@ -15,6 +17,7 @@ import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
 
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
 
@@ -25,22 +28,31 @@ describe('Checkout Receipt Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        CheckoutReceiptComponent,
-        MockComponent(AddressComponent),
-        MockComponent(BasketCostCenterViewComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketCustomFieldsViewComponent),
-        MockComponent(BasketMerchantMessageViewComponent),
-        MockComponent(BasketShippingMethodComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(LineItemListComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
-      ],
-      imports: [FeatureToggleModule.forTesting(), TranslatePipe],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [CheckoutReceiptComponent],
+      providers: [...(FeatureToggleModule.forTesting().providers ?? []), provideRouter([]), provideTranslateService()],
+    })
+      .overrideComponent(CheckoutReceiptComponent, {
+        set: {
+          imports: [
+            MockComponent(BasketMerchantMessageViewComponent),
+            MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+            FeatureToggleDirective,
+            MockComponent(InfoBoxComponent),
+            MockComponent(BasketBuyerComponent),
+            MockComponent(OrderRecurrenceComponent),
+            MockComponent(BasketShippingMethodComponent),
+            MockComponent(AddressComponent),
+            MockComponent(SkipContentLinkComponent),
+            MockComponent(LineItemListComponent),
+            TranslatePipe,
+            MockComponent(BasketCostSummaryComponent),
+            MockComponent(BasketCostCenterViewComponent),
+            MockComponent(BasketCustomFieldsViewComponent),
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

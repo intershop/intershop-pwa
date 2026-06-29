@@ -1,11 +1,11 @@
+/* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { instance, mock } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { LoginFormComponent } from './login-form.component';
@@ -20,13 +20,13 @@ describe('Login Form Component', () => {
     accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent)],
-      imports: [FormlyTestingModule, RouterModule, TranslatePipe],
+      imports: [FormlyTestingModule, LoginFormComponent],
       providers: [
         {
           provide: AccountFacade,
           useFactory: () => instance(accountFacade),
         },
+        provideMockStore(),
         provideRouter([]),
         provideTranslateService(),
       ],

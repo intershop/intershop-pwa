@@ -1,21 +1,26 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { PriceItemHelper } from 'ish-core/models/price-item/price-item.helper';
 import { Price, PriceHelper } from 'ish-core/models/price/price.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
 
 @Component({
   selector: 'ish-requisition-widget',
-  standalone: false,
+  imports: [AsyncPipe, InfoBoxComponent, LoadingComponent, PricePipe, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './requisition-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class RequisitionWidgetComponent implements OnInit {
   numPendingRequisitions$: Observable<number>;
   totalAmountRequisitions$: Observable<Price>;

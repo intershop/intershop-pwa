@@ -1,5 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormlyConfig, FormlyFieldConfig } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, isObservable, of } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
@@ -10,7 +12,8 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-validation-message',
-  standalone: false,
+  imports: [AsyncPipe, TranslatePipe],
+  standalone: true,
   template: '<small class="mt-1" id="{{ field.id }}-validation-error">{{ errorMessage$ | async | translate }} </small>',
   changeDetection: ChangeDetectionStrategy.Default,
 })

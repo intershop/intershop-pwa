@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
 import { PunchoutType } from '../../models/punchout-user/punchout-user.model';
-import { PunchoutStoreModule } from '../punchout-store.module';
+import { PunchoutStoreProviders } from '../punchout-store.providers';
 
 import { loadPunchoutTypes, loadPunchoutTypesFail, loadPunchoutTypesSuccess } from './punchout-types.actions';
 import { getPunchoutTypes, getPunchoutTypesError, getPunchoutTypesLoading } from './punchout-types.selectors';
@@ -15,7 +15,7 @@ describe('Punchout Types Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(), PunchoutStoreModule.forTesting('punchoutTypes')],
+      imports: [...CoreStoreProviders.forTesting(), PunchoutStoreProviders.forTesting('punchoutTypes')],
       providers: [provideStoreSnapshots()],
     });
 

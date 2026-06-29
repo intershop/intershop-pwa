@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -8,6 +8,7 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductBundlePartsComponent } from './product-bundle-parts.component';
 
@@ -27,14 +28,20 @@ describe('Product Bundle Parts Component', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(ProductAddToBasketComponent),
-        MockDirective(ProductContextDirective),
-        ProductBundlePartsComponent,
-      ],
+      imports: [ProductBundlePartsComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductBundlePartsComponent, {
+        remove: { imports: [ProductAddToBasketComponent, ProductContextDirective, ProductItemComponent] },
+        add: {
+          imports: [
+            MockComponent(ProductAddToBasketComponent),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductItemComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

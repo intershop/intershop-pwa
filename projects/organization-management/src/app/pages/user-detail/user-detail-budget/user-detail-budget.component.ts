@@ -1,4 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+
+import { PricePipe } from 'ish-core/models/price/price.pipe';
 
 import { UserBudget } from '../../../models/user-budget/user-budget.model';
 
@@ -7,9 +11,10 @@ import { UserBudget } from '../../../models/user-budget/user-budget.model';
  */
 @Component({
   selector: 'ish-user-detail-budget',
-  standalone: false,
+  imports: [PricePipe, RouterLink, TranslatePipe],
+  standalone: true,
   templateUrl: './user-detail-budget.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserDetailBudgetComponent {
   @Input({ required: true }) budget: UserBudget;

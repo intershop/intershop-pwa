@@ -1,15 +1,15 @@
 import { Component, Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';
-import { routes } from '../../pages/requisition-management-routing.module';
+import { routes } from '../../pages/requisition-management.routes';
 
 import { RequisitionManagementBreadcrumbService } from './requisition-management-breadcrumb.service';
 
@@ -17,8 +17,9 @@ function adaptRoutes(rts: Route[], cmp: Type<Component>): Route[] {
   return rts.map(r => ({
     ...r,
     loadChildren: undefined,
+    loadComponent: undefined,
     path: `requisitions/${r.path}`,
-    component: (r.component || r.loadChildren) && cmp,
+    component: (r.component || r.loadChildren || r.loadComponent) && cmp,
   }));
 }
 
@@ -32,7 +33,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     class DummyComponent {}
     reqFacade = mock(RequisitionManagementFacade);
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router', 'configuration']), TranslatePipe],
+      imports: [CoreStoreProviders.forTesting(['router', 'configuration'])],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) },
         provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),

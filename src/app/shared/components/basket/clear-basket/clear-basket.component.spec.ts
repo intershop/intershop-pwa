@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock, verify, when } from 'ts-mockito';
 
@@ -18,10 +18,14 @@ describe('Clear Basket Component', () => {
     checkoutFacade = mock(CheckoutFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [ClearBasketComponent, MockComponent(ModalDialogComponent)],
-      imports: [TranslatePipe],
+      imports: [ClearBasketComponent],
       providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(ClearBasketComponent, {
+        remove: { imports: [ModalDialogComponent] },
+        add: { imports: [MockComponent(ModalDialogComponent)] },
+      })
+      .compileComponents();
 
     when(checkoutFacade.deleteBasketItems()).thenReturn(undefined);
   });

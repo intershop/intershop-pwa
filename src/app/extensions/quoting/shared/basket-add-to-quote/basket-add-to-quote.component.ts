@@ -1,10 +1,11 @@
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { NotRoleToggleDirective } from 'ish-core/directives/not-role-toggle.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { QuotingFacade } from '../../facades/quoting.facade';
 
@@ -13,11 +14,11 @@ import { QuotingFacade } from '../../facades/quoting.facade';
  */
 @Component({
   selector: 'ish-basket-add-to-quote',
-  standalone: false,
+  imports: [AsyncPipe, NotRoleToggleDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-add-to-quote.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class BasketAddToQuoteComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
 

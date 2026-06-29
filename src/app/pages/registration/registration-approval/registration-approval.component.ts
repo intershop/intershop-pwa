@@ -1,6 +1,9 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 
 /**
@@ -8,7 +11,8 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
  */
 @Component({
   selector: 'ish-registration-approval',
-  standalone: false,
+  imports: [AsyncPipe, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './registration-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

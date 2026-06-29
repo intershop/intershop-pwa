@@ -20,11 +20,16 @@
       <ish-product-inventory />
       @if (editable$ | async) {
         <div class="d-flex align-items-center">
-          <ish-lazy-product-add-to-order-template
+          <ish-product-add-to-order-template
+            *ishFeature="'orderTemplates'"
             displayType="icon"
             [cssClass]="'btn-link btn-tool add-to-order-template'"
           />
-          <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool ms-0'" />
+          <ish-product-add-to-wishlist
+            *ishFeature="'wishlists'"
+            displayType="icon"
+            [cssClass]="'btn-link btn-tool ms-0'"
+          />
           <button
             class="btn-tool btn-link"
             title="{{ 'shopping_cart.remove.item.button.label' | translate }}"

@@ -3,8 +3,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { RadioGroupFieldComponent } from './radio-group-field.component';
 
@@ -15,13 +15,13 @@ describe('Radio Group Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RadioGroupFieldComponent],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'ish-radio-group-field', component: RadioGroupFieldComponent }],
         }),
         FormlySelectModule,
-        FormlyTestingComponentsModule,
+        RadioGroupFieldComponent,
         ReactiveFormsModule,
       ],
     }).compileComponents();

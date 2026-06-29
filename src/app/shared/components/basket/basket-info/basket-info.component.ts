@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,7 +14,8 @@ import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
  */
 @Component({
   selector: 'ish-basket-info',
-  standalone: false,
+  imports: [AsyncPipe],
+  standalone: true,
   templateUrl: './basket-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

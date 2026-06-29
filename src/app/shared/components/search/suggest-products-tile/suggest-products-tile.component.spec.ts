@@ -1,9 +1,12 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { RouterLink } from '@angular/router';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { HighlightPipe } from 'ish-core/pipes/highlight.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
@@ -22,9 +25,20 @@ describe('Suggest Products Tile Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), SuggestProductsTileComponent],
+      imports: [SuggestProductsTileComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(SuggestProductsTileComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(ProductImageComponent),
+            MockPipe(HighlightPipe, value => value),
+            MockDirective(RouterLink),
+          ],
+        },
+      })
+      .compileComponents();
 
     when(context.select('productURL')).thenReturn(of(productURL));
     when(context.select('product', 'name')).thenReturn(of(productName));

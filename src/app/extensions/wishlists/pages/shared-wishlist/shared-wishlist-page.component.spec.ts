@@ -1,8 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+
 import { WishlistsFacade } from '../../facades/wishlists.facade';
+import { WishlistLineItemComponent } from '../../shared/wishlist-line-item/wishlist-line-item.component';
 
 import { SharedWishlistPageComponent } from './shared-wishlist-page.component';
 
@@ -25,9 +32,24 @@ describe('Shared Wishlist Page Component', () => {
   beforeEach(async () => {
     wishlistFacadeMock = mock(WishlistsFacade);
     await TestBed.configureTestingModule({
-      declarations: [SharedWishlistPageComponent],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
-    }).compileComponents();
+      imports: [SharedWishlistPageComponent],
+      providers: [
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideTranslateService(),
+      ],
+    })
+      .overrideComponent(SharedWishlistPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(LoadingComponent),
+            MockDirective(ProductContextDirective),
+            TranslatePipe,
+            MockComponent(WishlistLineItemComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

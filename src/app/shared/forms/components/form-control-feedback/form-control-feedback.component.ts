@@ -1,11 +1,14 @@
+import { SlicePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DoCheck, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type FormErrorMessages = Record<string, string>;
 
 @Component({
   selector: 'ish-form-control-feedback',
-  standalone: false,
+  imports: [SlicePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './form-control-feedback.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

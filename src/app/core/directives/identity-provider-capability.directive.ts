@@ -5,7 +5,7 @@ import { IdentityProviderCapabilities } from 'ish-core/identity-provider/identit
 
 @Directive({
   selector: '[ishIdentityProviderCapability]',
-  standalone: false,
+  standalone: true,
 })
 export class IdentityProviderCapabilityDirective {
   constructor(

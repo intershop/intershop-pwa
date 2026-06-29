@@ -1,10 +1,16 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { BasketPromotionComponent } from 'ish-shared/components/basket/basket-promotion/basket-promotion.component';
+import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
 @Component({
   selector: 'ish-basket-items-summary',
-  standalone: false,
+  imports: [BasketPromotionComponent, PricePipe, ProductContextDirective, ProductNameComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-items-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

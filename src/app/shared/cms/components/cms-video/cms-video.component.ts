@@ -1,3 +1,4 @@
+import { NgClass, NgStyle } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
@@ -11,7 +12,8 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
  */
 @Component({
   selector: 'ish-cms-video',
-  standalone: false,
+  imports: [NgClass, NgStyle],
+  standalone: true,
   templateUrl: './cms-video.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

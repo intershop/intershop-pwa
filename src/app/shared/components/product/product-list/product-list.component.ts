@@ -1,8 +1,13 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product List Component displays a list of products.
@@ -16,7 +21,8 @@ import { ViewType } from 'ish-core/models/viewtype/viewtype.types';
  */
 @Component({
   selector: 'ish-product-list',
-  standalone: false,
+  imports: [AsyncPipe, LoadingComponent, ProductContextDirective, ProductItemComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './product-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -60,9 +60,9 @@ describe('Returning User', () => {
         expect(cookie).to.be.null;
       });
 
-      cy.getAllLocalStorage().then(
-        localStorage => expect(localStorage[Cypress.config('baseUrl')].icm_access_token).to.be.undefined
-      );
+      cy.getAllLocalStorage().then(localStorage => {
+        expect(localStorage[Cypress.config('baseUrl')]?.icm_access_token).to.be.undefined;
+      });
     });
   });
 

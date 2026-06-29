@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { RegistrationNewsletterFieldComponent } from './registration-newsletter-field.component';
 
@@ -17,17 +17,21 @@ describe('Registration Newsletter Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [{ name: 'newsletter', component: RegistrationNewsletterFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
-        TranslatePipe,
+        RegistrationNewsletterFieldComponent,
       ],
-      declarations: [MockPipe(ServerSettingPipe, () => true), RegistrationNewsletterFieldComponent],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationNewsletterFieldComponent, {
+        remove: { imports: [ServerSettingPipe] },
+        add: { imports: [MockPipe(ServerSettingPipe, () => true)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

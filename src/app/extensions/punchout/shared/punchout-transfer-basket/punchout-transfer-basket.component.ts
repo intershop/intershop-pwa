@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 
 @Component({
   selector: 'ish-punchout-transfer-basket',
-  standalone: false,
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './punchout-transfer-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class PunchoutTransferBasketComponent {
   submitted = false;
 

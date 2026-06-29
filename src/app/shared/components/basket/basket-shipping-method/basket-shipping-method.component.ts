@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 
 @Component({
   selector: 'ish-basket-shipping-method',
-  standalone: false,
+  imports: [DatePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-shipping-method.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

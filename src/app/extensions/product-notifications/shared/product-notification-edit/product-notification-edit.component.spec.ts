@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -20,17 +21,22 @@ describe('Product Notification Edit Component', () => {
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
-    accountFacade = mock(accountFacade);
+    accountFacade = mock(AccountFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(ProductNotificationEditDialogComponent), ProductNotificationEditComponent],
+      imports: [ProductNotificationEditComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-      imports: [TranslatePipe],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductNotificationEditComponent, {
+        remove: { imports: [ProductNotificationEditDialogComponent] },
+        add: { imports: [MockComponent(ProductNotificationEditDialogComponent)] },
+      })
+      .compileComponents();
 
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
   });

@@ -1,19 +1,27 @@
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { AddressHelper } from 'ish-core/models/address/address.helper';
 import { Address } from 'ish-core/models/address/address.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
+
+import { AddressDoctorComponent } from '../../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 /**
  * The Account Address Page Component displays the preferred InvoiceTo and ShipTo addresses of the user
@@ -21,7 +29,19 @@ import { mapToAddressOptions } from 'ish-shared/forms/utils/forms.service';
  */
 @Component({
   selector: 'ish-account-addresses',
-  standalone: false,
+  imports: [
+    AddressComponent,
+    AddressDoctorComponent,
+    AsyncPipe,
+    ErrorMessageComponent,
+    FormlyCustomerAddressFormComponent,
+    FormlyForm,
+    ModalDialogComponent,
+    NgTemplateOutlet,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-addresses.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

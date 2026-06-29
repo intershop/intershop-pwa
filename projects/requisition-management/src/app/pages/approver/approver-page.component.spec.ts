@@ -1,5 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { RouterLink, provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -23,19 +24,27 @@ describe('Approver Page Component', () => {
   beforeEach(async () => {
     reqFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslatePipe],
-      declarations: [
-        ApproverPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-        MockComponent(RequisitionsListComponent),
-      ],
+      imports: [ApproverPageComponent],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ApproverPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(ErrorMessageComponent),
+            MockComponent(LoadingComponent),
+            NgbNavModule,
+            MockComponent(RequisitionsListComponent),
+            RouterLink,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

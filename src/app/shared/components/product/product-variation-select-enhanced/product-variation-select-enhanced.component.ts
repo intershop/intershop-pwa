@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -7,7 +9,8 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 @Component({
   selector: 'ish-product-variation-select-enhanced',
-  standalone: false,
+  imports: [AsyncPipe, NgClass, NgStyle, NgTemplateOutlet, TranslatePipe],
+  standalone: true,
   templateUrl: './product-variation-select-enhanced.component.html',
   styleUrls: ['./product-variation-select-enhanced.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

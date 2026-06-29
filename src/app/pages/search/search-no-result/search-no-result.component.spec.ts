@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
@@ -18,16 +18,30 @@ describe('Search No Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(SearchBoxComponent), TranslatePipe],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentIncludeComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(HtmlEncodePipe, value => value),
-        SearchNoResultComponent,
-      ],
+      imports: [SearchNoResultComponent],
       providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(SearchNoResultComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            ContentIncludeComponent,
+            HtmlEncodePipe,
+            SearchBoxComponent,
+            ServerHtmlDirective,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentIncludeComponent),
+            MockPipe(HtmlEncodePipe, value => value),
+            MockComponent(SearchBoxComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

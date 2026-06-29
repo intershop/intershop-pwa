@@ -5,7 +5,7 @@ import { anything, instance, mock, when } from 'ts-mockito';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 
 import { FormsService } from './forms.service';
 
@@ -18,7 +18,7 @@ describe('Forms Service', () => {
     when(translateServiceMock.get(anything())).thenReturn(of([]));
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration'])],
+      imports: [...CoreStoreProviders.forTesting(['configuration'])],
       providers: [{ provide: TranslateService, useFactory: () => instance(translateServiceMock) }],
     });
 

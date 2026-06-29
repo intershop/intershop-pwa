@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,22 +11,38 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ProductContextAccessDirective } from 'ish-core/directives/product-context-access.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
+import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 /**
  * The order template select modal displays a list of order templates. The user can select one order template  or enter a name for a new order template  in order to add or move an item to the selected order template .
  */
 @Component({
   selector: 'ish-select-order-template-modal',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    FormSubmitDirective,
+    HtmlEncodePipe,
+    ModalDialogComponent,
+    ProductContextAccessDirective,
+    ReactiveFormsModule,
+    SelectOrderTemplateFormComponent,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,6 +63,9 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     orderTemplate: new FormControl(''),
     newOrderTemplate: new FormControl(''),
   });
+
+  successOrderTemplateTitle = '';
+  successOrderTemplateRoute$: Observable<string> = of('');
 
   showForm: boolean;
 
@@ -87,6 +107,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
           id: orderTemplateId,
           title: label,
         });
+        this.successOrderTemplateTitle = label;
+        this.successOrderTemplateRoute$ = of(`route://account/order-templates/${orderTemplateId}`);
         this.showForm = false;
       });
   }
@@ -95,6 +117,11 @@ export class SelectOrderTemplateModalComponent implements OnInit {
       id: undefined,
       title: newOrderTemplate,
     });
+    this.successOrderTemplateTitle = newOrderTemplate;
+    this.successOrderTemplateRoute$ = this.orderTemplatesFacade.currentOrderTemplate$.pipe(
+      map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
+      take(1)
+    );
     this.showForm = false;
   }
 
@@ -130,33 +157,6 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     return () => {
       this.hide();
     };
-  }
-
-  get selectedOrderTemplateTitle$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate;
-    if (selectedValue === 'new' || !selectedValue) {
-      return of(this.formGroup.value.newOrderTemplate);
-    } else {
-      return this.orderTemplateOptions$.pipe(
-        filter(options => options.length > 0),
-        map(options => options.find(opt => opt.value === selectedValue).label),
-        take(1)
-      );
-    }
-  }
-
-  /** returns the route to the selected order template */
-  get selectedOrderTemplateRoute$(): Observable<string> {
-    const selectedValue = this.formGroup.value.orderTemplate;
-
-    if (selectedValue === 'new' || !selectedValue) {
-      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
-        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
-        take(1)
-      );
-    } else {
-      return of(`route://account/order-templates/${selectedValue}`);
-    }
   }
 
   /** translation key for the modal header */

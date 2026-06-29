@@ -1,5 +1,8 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
@@ -9,7 +12,8 @@ import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dia
  */
 @Component({
   selector: 'ish-basket-approval-info',
-  standalone: false,
+  imports: [ModalDialogLinkComponent, NgClass, ServerHtmlDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-approval-info.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

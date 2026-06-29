@@ -10,6 +10,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { v4 as uuid } from 'uuid';
 
 /**
@@ -42,7 +43,8 @@ import { v4 as uuid } from 'uuid';
  */
 @Component({
   selector: 'ish-skip-content-link',
-  standalone: false,
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './skip-content-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

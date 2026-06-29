@@ -1,4 +1,6 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -12,7 +14,8 @@ enum StockLevel {
 
 @Component({
   selector: 'ish-product-inventory',
-  standalone: false,
+  imports: [AsyncPipe, NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './product-inventory.component.html',
   styleUrls: ['./product-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

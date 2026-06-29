@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { map, skipWhile } from 'rxjs/operators';
@@ -21,8 +21,8 @@ export function checkPermission(userPermissions: string[], permission: string | 
 export class AuthorizationToggleService {
   private permissions$: Observable<string[]>;
 
-  constructor(store: Store) {
-    this.permissions$ = store.pipe(select(getUserPermissions));
+  constructor(@Optional() store: Store) {
+    this.permissions$ = store ? store.pipe(select(getUserPermissions)) : of([]);
   }
 
   isAuthorizedTo(permission: string | string[]): Observable<boolean> {

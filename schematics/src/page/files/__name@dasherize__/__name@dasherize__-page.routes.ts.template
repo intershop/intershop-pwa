@@ -1,0 +1,5 @@
+import { Routes } from '@angular/router';
+
+import { <%= artifactName %> } from './<%= dasherize(name) %>-page.component';
+
+export const <%= camelize(name) %>PageRoutes: Routes = [{ path: '', component: <%= artifactName %> }];

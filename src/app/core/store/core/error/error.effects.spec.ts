@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { communicationTimeoutError } from './error.actions';
@@ -15,7 +15,7 @@ describe('Error Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['error'], [ErrorEffects])],
+      imports: [...CoreStoreProviders.forTesting(['error'], [ErrorEffects])],
       providers: [provideRouter([{ path: 'error', children: [] }])],
     });
 

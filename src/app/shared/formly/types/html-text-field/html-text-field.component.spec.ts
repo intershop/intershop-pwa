@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { HtmlTextFieldComponent } from './html-text-field.component';
 
@@ -14,8 +14,8 @@ describe('Html Text Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HtmlTextFieldComponent],
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -24,7 +24,7 @@ describe('Html Text Field Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
+        HtmlTextFieldComponent,
       ],
     }).compileComponents();
   });

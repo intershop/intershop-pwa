@@ -1,8 +1,15 @@
+import { NgClass, PercentPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BudgetInfoComponent } from 'organization-management';
 
 import { Price } from 'ish-core/models/price/price.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
 
 import { Requisition } from '../../../models/requisition/requisition.model';
+import { BudgetBarComponent } from '../budget-bar/budget-bar.component';
 
 /**
  * The buyer approval info box
@@ -10,7 +17,17 @@ import { Requisition } from '../../../models/requisition/requisition.model';
  */
 @Component({
   selector: 'ish-requisition-buyer-approval',
-  standalone: false,
+  imports: [
+    BudgetBarComponent,
+    BudgetInfoComponent,
+    InfoBoxComponent,
+    NgClass,
+    OrderRecurrenceComponent,
+    PercentPipe,
+    PricePipe,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './requisition-buyer-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

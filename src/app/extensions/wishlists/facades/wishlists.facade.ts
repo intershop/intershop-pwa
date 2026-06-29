@@ -38,14 +38,21 @@ export class WishlistsFacade {
   sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
 
   wishlistSelectOptions$(filterCurrent = true) {
-    return this.wishlists$.pipe(
+    const wishlistOptions$ = this.wishlists$.pipe(
       startWith([] as Wishlist[]),
       map(wishlists =>
         wishlists.map(wishlist => ({
           value: wishlist.id,
           label: wishlist.title,
         }))
-      ),
+      )
+    );
+
+    if (!filterCurrent) {
+      return wishlistOptions$;
+    }
+
+    return wishlistOptions$.pipe(
       withLatestFrom(this.currentWishlist$),
       map(([wishlistOptions, currentWishlist]) => {
         if (filterCurrent && currentWishlist) {

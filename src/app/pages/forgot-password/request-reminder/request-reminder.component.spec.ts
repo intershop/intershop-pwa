@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -18,18 +18,23 @@ describe('Request Reminder Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(RequestReminderFormComponent),
-        MockDirective(ServerHtmlDirective),
-        RequestReminderComponent,
-      ],
-      imports: [TranslatePipe],
+      imports: [RequestReminderComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RequestReminderComponent, {
+        remove: { imports: [ErrorMessageComponent, RequestReminderFormComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            MockComponent(RequestReminderFormComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

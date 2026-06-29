@@ -12,7 +12,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { noop } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle.imports';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Link } from 'ish-core/models/link/link.model';
 import {
@@ -22,7 +22,7 @@ import {
   getICMServerURL,
   getRestEndpoint,
 } from 'ish-core/store/core/configuration';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { serverError } from 'ish-core/store/core/error';
 import { isServerConfigurationLoaded, loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { getPGID } from 'ish-core/store/customer/user';
@@ -555,7 +555,7 @@ describe('Api Service', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig'])],
+        imports: [...CoreStoreProviders.forTesting(['configuration', 'serverConfig'])],
         providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
       });
 

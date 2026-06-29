@@ -5,7 +5,7 @@ import { anyString, anything, capture, instance, mock, verify, when } from 'ts-m
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FilterNavigationData } from 'ish-core/models/filter-navigation/filter-navigation.interface';
 import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 import { FilterService } from './filter.service';
@@ -35,7 +35,7 @@ describe('Filter Service', () => {
     appFacadeMock = mock(AppFacade);
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration'])],
+      imports: [...CoreStoreProviders.forTesting(['configuration'])],
       providers: [{ provide: ApiService, useFactory: () => instance(apiService) }],
     });
     filterService = TestBed.inject(FilterService);

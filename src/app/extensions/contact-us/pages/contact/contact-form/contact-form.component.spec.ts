@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -28,8 +28,7 @@ describe('Contact Form Component', () => {
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
-      declarations: [ContactFormComponent],
-      imports: [FormlyTestingModule, TranslatePipe],
+      imports: [ContactFormComponent, FormlyTestingModule],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(mockAppFacade) },

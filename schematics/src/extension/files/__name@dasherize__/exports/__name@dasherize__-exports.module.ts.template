@@ -1,18 +1,18 @@
-import { NgModule } from '@angular/core';
+import { EnvironmentProviders, Provider } from '@angular/core';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
+import { LAZY_FEATURE_PROVIDER } from 'ish-core/utils/module-loader/module-loader.service';
 
-@NgModule({
-  imports: [FeatureToggleModule],
-  providers: [
+export function provide<%= classify(name) %>Feature(): (EnvironmentProviders | Provider)[] {
+  return [
     {
-      provide: LAZY_FEATURE_MODULE,
-      useValue: { feature: '<%= camelize(name) %>', location: () => import('../store/<%= dasherize(name) %>-store.module').then(m => m.<%= classify(name) %>StoreModule) },
+      provide: LAZY_FEATURE_PROVIDER,
+      useValue: {
+        feature: '<%= camelize(name) %>',
+        providers: () => import('./store/<%= dasherize(name) %>-store.providers').then(m => m.provide<%= classify(name) %>Store()),
+      },
       multi: true,
     },
-  ],
-  declarations: [],
-  exports: [],
-})
-export class <%= classify(name) %>ExportsModule {}
+  ];
+}
+
+export const <%= underscore(name).toUpperCase() %>_FEATURE_PROVIDERS = provide<%= classify(name) %>Feature();

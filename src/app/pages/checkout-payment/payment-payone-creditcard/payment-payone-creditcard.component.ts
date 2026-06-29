@@ -15,11 +15,14 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
+
+import { PaymentSaveCheckboxComponent } from '../formly/payment-save-checkbox/payment-save-checkbox.component';
 
 // spell-checker: disable
 // allows access to Payone js functionality
@@ -28,7 +31,8 @@ declare let Payone: any;
 
 @Component({
   selector: 'ish-payment-payone-creditcard',
-  standalone: false,
+  imports: [PaymentSaveCheckboxComponent, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './payment-payone-creditcard.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

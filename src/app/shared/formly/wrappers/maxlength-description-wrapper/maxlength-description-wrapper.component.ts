@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,7 +16,8 @@ import { startWith, switchMap, throttleTime } from 'rxjs/operators';
  */
 @Component({
   selector: 'ish-maxlength-description-wrapper',
-  standalone: false,
+  imports: [AsyncPipe],
+  standalone: true,
   templateUrl: './maxlength-description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

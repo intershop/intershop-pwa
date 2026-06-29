@@ -1,6 +1,7 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,6 +9,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenter, CostCenterBase } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormsService } from 'ish-shared/forms/utils/forms.service';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
@@ -15,7 +17,8 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-cost-center-form',
-  standalone: false,
+  imports: [AsyncPipe, ErrorMessageComponent, FormlyForm, ReactiveFormsModule],
+  standalone: true,
   templateUrl: './cost-center-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

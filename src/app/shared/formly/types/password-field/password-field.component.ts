@@ -1,7 +1,11 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FieldTypeConfig, FormlyAttributes } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { EXTRALARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
+import { FocusOutsideDirective } from 'ish-core/directives/focus-outside.directive';
 import { InjectSingle } from 'ish-core/utils/injection';
 
 /**
@@ -15,7 +19,8 @@ import { InjectSingle } from 'ish-core/utils/injection';
  */
 @Component({
   selector: 'ish-password-field',
-  standalone: false,
+  imports: [FocusOutsideDirective, FormlyAttributes, NgClass, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './password-field.component.html',
   styleUrls: ['./password-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

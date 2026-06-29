@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
@@ -48,19 +48,30 @@ describe('Select Order Template Modal Component', () => {
 
   beforeEach(async () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
+    when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
+    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
+      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
+    );
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ModalDialogComponent),
-        MockComponent(SelectOrderTemplateFormComponent),
-        SelectOrderTemplateModalComponent,
-      ],
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      imports: [SelectOrderTemplateModalComponent],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(SelectOrderTemplateModalComponent, {
+        set: {
+          imports: [
+            MockComponent(ModalDialogComponent),
+            MockComponent(SelectOrderTemplateFormComponent),
+            MockDirective(FormSubmitDirective),
+            MockPipe(TranslatePipe),
+            ReactiveFormsModule,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -68,10 +79,6 @@ describe('Select Order Template Modal Component', () => {
 
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
-    when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
-      of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
-    );
   });
 
   it('should be created', () => {
@@ -167,46 +174,31 @@ describe('Select Order Template Modal Component', () => {
     expect(element.querySelector('form')).toBeFalsy();
   }));
 
-  describe('selectedOrderTemplateTitle$', () => {
-    it('should return correct title of known order template', done => {
-      startup();
-      component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
-      component.selectedOrderTemplateTitle$.subscribe(t => {
-        expect(t).toBe('testing order template');
-        done();
-      });
-    });
-
-    it('should return correct title of new order template', done => {
-      startup();
-      updateOrderTemplateAndNew();
-
-      component.selectedOrderTemplateTitle$.subscribe(t => {
-        expect(t).toBe('New Ordertemplate Title');
-        done();
-      });
-    });
-  });
-
-  describe('selectedOrderTemplateRoute$', () => {
-    it('should return correct route of known order template', done => {
+  describe('success state', () => {
+    it('should store correct title and route for known order template', done => {
       startup();
       component.formGroup.patchValue({ orderTemplate: orderTemplateDetails.id });
 
-      component.selectedOrderTemplateRoute$.subscribe(r => {
+      component.submitForm();
+
+      expect(component.successOrderTemplateTitle).toBe('testing order template');
+      component.successOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
         done();
       });
     });
 
-    it('should return correct route of new order template', done => {
+    it('should store correct title and route for new order template', done => {
       startup();
       updateOrderTemplateAndNew();
 
-      component.selectedOrderTemplateRoute$.subscribe(r => {
+      component.submitForm();
+
+      expect(component.successOrderTemplateTitle).toBe('New Ordertemplate Title');
+      component.successOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
       });
-      done();
     });
   });
 });

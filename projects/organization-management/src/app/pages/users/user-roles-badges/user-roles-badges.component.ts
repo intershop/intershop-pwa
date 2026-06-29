@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,7 +7,8 @@ import { B2bRole } from '../../../models/b2b-role/b2b-role.model';
 
 @Component({
   selector: 'ish-user-roles-badges',
-  standalone: false,
+  imports: [AsyncPipe, NgClass],
+  standalone: true,
   templateUrl: './user-roles-badges.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

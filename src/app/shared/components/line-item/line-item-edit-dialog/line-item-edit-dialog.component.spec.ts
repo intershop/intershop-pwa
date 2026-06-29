@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
@@ -28,19 +29,25 @@ describe('Line Item Edit Dialog Component', () => {
     context = mock(ProductContextFacade);
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent)],
-      declarations: [
-        LineItemEditDialogComponent,
-        MockComponent(LoadingComponent),
-        MockComponent(ProductIdComponent),
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductQuantityComponent),
-        MockComponent(ProductQuantityLabelComponent),
-        MockComponent(ProductVariationSelectComponent),
-        MockPipe(PricePipe),
-      ],
+      imports: [LineItemEditDialogComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(LineItemEditDialogComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(LoadingComponent),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductQuantityComponent),
+            MockComponent(ProductQuantityLabelComponent),
+            MockComponent(ProductVariationSelectComponent),
+            MockPipe(PricePipe),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

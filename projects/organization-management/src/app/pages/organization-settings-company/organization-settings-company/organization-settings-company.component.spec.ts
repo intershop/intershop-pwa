@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, provideRouter } from '@angular/router';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -34,10 +38,26 @@ describe('Organization Settings Company Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslatePipe],
-      declarations: [MockComponent(ErrorMessageComponent), OrganizationSettingsCompanyComponent],
-      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }, provideTranslateService()],
-    }).compileComponents();
+      imports: [FormlyTestingModule, OrganizationSettingsCompanyComponent],
+      providers: [
+        { provide: FieldLibrary, useFactory: () => instance(fieldLibrary) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
+    })
+      .overrideComponent(OrganizationSettingsCompanyComponent, {
+        set: {
+          imports: [
+            MockDirective(FormSubmitDirective),
+            MockComponent(ErrorMessageComponent),
+            FormlyForm,
+            ReactiveFormsModule,
+            TranslatePipe,
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

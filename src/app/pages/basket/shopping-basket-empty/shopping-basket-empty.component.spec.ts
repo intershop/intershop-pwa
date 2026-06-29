@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -16,15 +17,20 @@ describe('Shopping Basket Empty Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(BasketInfoComponent),
-        MockComponent(BasketValidationResultsComponent),
-        MockComponent(ErrorMessageComponent),
-        ShoppingBasketEmptyComponent,
-      ],
-      imports: [TranslatePipe],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+      imports: [ShoppingBasketEmptyComponent],
+      providers: [provideRouter([]), provideTranslateService()],
+    })
+      .overrideComponent(ShoppingBasketEmptyComponent, {
+        remove: { imports: [BasketInfoComponent, BasketValidationResultsComponent, ErrorMessageComponent] },
+        add: {
+          imports: [
+            MockComponent(BasketInfoComponent),
+            MockComponent(BasketValidationResultsComponent),
+            MockComponent(ErrorMessageComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterLink, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -79,18 +81,26 @@ describe('Approval Widget Component', () => {
   beforeEach(async () => {
     requisitionManagementFacade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        ApprovalWidgetComponent,
-        MockComponent(InfoBoxComponent),
-        MockComponent(LoadingComponent),
-        MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
-      ],
+      imports: [ApprovalWidgetComponent],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(requisitionManagementFacade) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ApprovalWidgetComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(InfoBoxComponent),
+            MockComponent(LoadingComponent),
+            MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
+            RouterLink,
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

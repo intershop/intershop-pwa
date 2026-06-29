@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -15,7 +17,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-dropdown',
-  standalone: false,
+  imports: [NgSelectModule, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './filter-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

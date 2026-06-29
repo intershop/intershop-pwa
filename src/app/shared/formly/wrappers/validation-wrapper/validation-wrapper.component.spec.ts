@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { MockComponent } from 'ng-mocks';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
+import { ValidationIconsComponent } from 'ish-shared/formly/components/validation-icons/validation-icons.component';
+import { ValidationMessageComponent } from 'ish-shared/formly/components/validation-message/validation-message.component';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { ValidationWrapperComponent } from './validation-wrapper.component';
 
@@ -16,6 +19,7 @@ describe('Validation Wrapper Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -35,9 +39,14 @@ describe('Validation Wrapper Component', () => {
               (field.formControl.dirty || field.options.parentForm?.submitted || !!field.field.validation?.show),
           },
         }),
-        FormlyTestingComponentsModule,
+        ValidationWrapperComponent,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ValidationWrapperComponent, {
+        remove: { imports: [ValidationIconsComponent, ValidationMessageComponent] },
+        add: { imports: [MockComponent(ValidationIconsComponent), MockComponent(ValidationMessageComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,11 +1,17 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { Warranty } from 'ish-core/models/warranty/warranty.model';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 
 /**
  * The Warranty Details Component displays a link to a modal dialog
@@ -16,7 +22,16 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
  */
 @Component({
   selector: 'ish-product-warranty-details',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    LoadingComponent,
+    ModalDialogLinkComponent,
+    NgClass,
+    ServerHtmlDirective,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './product-warranty-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

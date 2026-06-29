@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { Recommendations } from 'ish-core/models/recommendations/recommendations.model';
+import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
 
 import { CMSProductListRecommendationsComponent } from './cms-product-list-recommendations.component';
 
@@ -24,9 +26,14 @@ describe('Cms Product List Recommendations Component', () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [CMSProductListRecommendationsComponent],
+      imports: [CMSProductListRecommendationsComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(CMSProductListRecommendationsComponent, {
+        remove: { imports: [ProductsListComponent] },
+        add: { imports: [MockComponent(ProductsListComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -6,11 +6,13 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { FieldArrayType } from '@ngx-formly/core';
+import { FieldArrayType, FormlyField } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { debounceTime, map } from 'rxjs/operators';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
 
 /**
  * The Quick Order Repeat Component provides a formly field element, which displays a field array of n elements depending on the according model.
@@ -20,7 +22,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
  */
 @Component({
   selector: 'ish-quickorder-repeat-field',
-  standalone: false,
+  imports: [FormlyField, ProductContextDirective, ProductQuantityComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './quickorder-repeat-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

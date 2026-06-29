@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
 import { FormlyTestingExampleComponent } from 'ish-shared/formly/dev/testing/formly-testing-example/formly-testing-example.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { CxmlHelpTextWrapperComponent } from './cxml-help-text-wrapper.component';
 
@@ -26,17 +26,23 @@ describe('Cxml Help Text Wrapper Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
+        CxmlHelpTextWrapperComponent,
         FormlyModule.forRoot({
           types: [{ name: 'example', component: FormlyTestingExampleComponent }],
           wrappers: [{ name: 'description', component: CxmlHelpTextWrapperComponent }],
         }),
-        FormlyTestingComponentsModule,
-        TranslatePipe,
       ],
-      declarations: [CxmlHelpTextWrapperComponent, MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(CxmlHelpTextWrapperComponent, {
+        remove: { imports: [NgbCollapse, ServerHtmlDirective] },
+        add: {
+          imports: [MockDirective(NgbCollapse), MockDirective(ServerHtmlDirective)],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

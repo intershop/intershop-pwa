@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { AppFacade } from 'ish-core/facades/app.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { BasketRebate } from 'ish-core/models/basket-rebate/basket-rebate.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
@@ -23,19 +22,21 @@ describe('Basket Promotion Component', () => {
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
-    const appFacade = mock(AppFacade);
-    when(appFacade.icmBaseUrl).thenReturn('example.org');
-
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        BasketPromotionComponent,
-        MockComponent(PromotionDetailsComponent),
-        MockComponent(PromotionRemoveComponent),
-        MockDirective(ServerHtmlDirective),
-      ],
+      imports: [BasketPromotionComponent],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(BasketPromotionComponent, {
+        remove: { imports: [PromotionDetailsComponent, PromotionRemoveComponent, ServerHtmlDirective] },
+        add: {
+          imports: [
+            MockComponent(PromotionDetailsComponent),
+            MockComponent(PromotionRemoveComponent),
+            MockDirective(ServerHtmlDirective),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,7 +1,9 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 /**
@@ -10,7 +12,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-swatch-images',
-  standalone: false,
+  imports: [NgClass, SanitizePipe],
+  standalone: true,
   templateUrl: './filter-swatch-images.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

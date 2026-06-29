@@ -30,7 +30,6 @@ export class ProductNotificationsFacade {
   // get a product notification by sku and the type
   productNotificationBySku$(sku: string, type: ProductNotificationType) {
     this.store.dispatch(productNotificationsActions.loadProductNotifications({ type }));
-
     return this.store.pipe(select(getProductNotificationBySku(sku, type))).pipe(
       map(notifications => (notifications?.length ? notifications[0] : undefined)),
       distinctUntilChanged(isEqual)

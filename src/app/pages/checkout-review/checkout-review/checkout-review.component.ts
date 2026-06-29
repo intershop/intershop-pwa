@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,21 +9,79 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ConfigOption, FormlyFieldConfig, FormlyForm, FormlyFormOptions } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-config.service';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
+import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
+import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
+import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
+import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
+import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
+import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
+import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
+import { PaymentPaypalComponent } from 'ish-shared/components/payment/payment-paypal/payment-paypal.component';
+
+import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
+
+export const checkoutReviewFormlyConfig: ConfigOption = {
+  types: [
+    {
+      name: 'ish-checkout-review-tac-field',
+      component: CheckoutReviewTacFieldComponent,
+    },
+  ],
+};
 
 @Component({
   selector: 'ish-checkout-review',
-  standalone: false,
+  imports: [
+    AddressComponent,
+    AsyncPipe,
+    BasketApprovalInfoComponent,
+    BasketBuyerComponent,
+    BasketCostCenterViewComponent,
+    BasketCostSummaryComponent,
+    BasketCustomFieldsViewComponent,
+    BasketErrorMessageComponent,
+    BasketMerchantMessageViewComponent,
+    BasketShippingMethodComponent,
+    BasketValidationResultsComponent,
+    ContentIncludeComponent,
+    FeatureToggleDirective,
+    FormlyForm,
+    InfoBoxComponent,
+    LazyLoadingContentDirective,
+    LineItemListComponent,
+    ModalDialogLinkComponent,
+    OrderRecurrenceComponent,
+    PaymentPaypalComponent,
+    ReactiveFormsModule,
+    ServerSettingPipe,
+    SkipContentLinkComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './checkout-review.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

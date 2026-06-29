@@ -6,7 +6,8 @@ import { By } from '@angular/platform-browser';
 import { ShowFormFeedbackDirective } from './show-form-feedback.directive';
 
 @Component({
-  standalone: false,
+  imports: [ShowFormFeedbackDirective],
+  standalone: true,
   template: ` <div [ishShowFormFeedback]="control"></div> `,
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -23,7 +24,7 @@ describe('Show Form Feedback Directive', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ShowFormFeedbackDirective, TestComponent],
+      imports: [TestComponent],
     });
   });
 

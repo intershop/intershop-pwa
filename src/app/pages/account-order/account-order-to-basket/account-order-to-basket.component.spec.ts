@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -39,8 +39,7 @@ describe('Account Order To Basket Component', () => {
     shoppingFacadeMock = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountOrderToBasketComponent],
-      imports: [TranslatePipe],
+      imports: [AccountOrderToBasketComponent],
       providers: [
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacadeMock) },

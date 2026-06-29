@@ -1,7 +1,10 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
+import { SanitizePipe } from 'ish-core/pipes/sanitize.pipe';
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 /**
@@ -14,7 +17,8 @@ import { URLFormParams } from 'ish-core/utils/url-form-params';
  */
 @Component({
   selector: 'ish-filter-text',
-  standalone: false,
+  imports: [NgClass, SanitizePipe, TranslatePipe],
+  standalone: true,
   templateUrl: './filter-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

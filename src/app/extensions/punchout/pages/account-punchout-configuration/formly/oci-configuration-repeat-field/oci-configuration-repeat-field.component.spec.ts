@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { OciConfigurationRepeatFieldComponent } from './oci-configuration-repeat-field.component';
 
@@ -15,10 +15,10 @@ describe('Oci Configuration Repeat Field Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forChild({
           types: [{ name: 'repeat-oci-config', component: OciConfigurationRepeatFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
       ],
     }).compileComponents();
   });

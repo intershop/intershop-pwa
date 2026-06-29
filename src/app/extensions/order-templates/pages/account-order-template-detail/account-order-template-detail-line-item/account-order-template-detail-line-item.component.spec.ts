@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { EMPTY } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -31,26 +31,44 @@ describe('Account Order Template Detail Line Item Component', () => {
     when(context.select(anything())).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountOrderTemplateDetailLineItemComponent,
-        MockComponent(ProductBundleDisplayComponent),
-        MockComponent(ProductIdComponent),
-
-        MockComponent(ProductInventoryComponent),
-        MockComponent(ProductNameComponent),
-        MockComponent(ProductPriceComponent),
-        MockComponent(ProductQuantityComponent),
-        MockComponent(ProductVariationDisplayComponent),
-        MockComponent(SelectOrderTemplateModalComponent),
-        MockPipe(DatePipe),
-      ],
-      imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslatePipe],
+      imports: [AccountOrderTemplateDetailLineItemComponent, ReactiveFormsModule],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(mock(OrderTemplatesFacade)) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplateDetailLineItemComponent, {
+        remove: {
+          imports: [
+            DatePipe,
+            ProductBundleDisplayComponent,
+            ProductIdComponent,
+            ProductImageComponent,
+            ProductInventoryComponent,
+            ProductNameComponent,
+            ProductPriceComponent,
+            ProductQuantityComponent,
+            ProductVariationDisplayComponent,
+            SelectOrderTemplateModalComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockPipe(DatePipe),
+            MockComponent(ProductBundleDisplayComponent),
+            MockComponent(ProductIdComponent),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductInventoryComponent),
+            MockComponent(ProductNameComponent),
+            MockComponent(ProductPriceComponent),
+            MockComponent(ProductQuantityComponent),
+            MockComponent(ProductVariationDisplayComponent),
+            MockComponent(SelectOrderTemplateModalComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

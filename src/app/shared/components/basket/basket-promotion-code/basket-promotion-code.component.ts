@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,13 +9,17 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { SuccessMessageComponent } from 'ish-shared/components/common/success-message/success-message.component';
 
 /**
  * The Basket Promotion Component displays a promotion code input.
@@ -25,7 +30,16 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-basket-promotion-code',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    NgbCollapse,
+    NgClass,
+    ReactiveFormsModule,
+    SuccessMessageComponent,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

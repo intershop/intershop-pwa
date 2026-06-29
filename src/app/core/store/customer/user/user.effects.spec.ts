@@ -15,10 +15,10 @@ import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
 import { UserService } from 'ish-core/services/user/user.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
@@ -130,7 +130,10 @@ describe('User Effects', () => {
     when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router', 'serverConfig']), CustomerStoreModule.forTesting('user')],
+      imports: [
+        ...CoreStoreProviders.forTesting(['router', 'serverConfig']),
+        CustomerStoreProviders.forTesting('user'),
+      ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },

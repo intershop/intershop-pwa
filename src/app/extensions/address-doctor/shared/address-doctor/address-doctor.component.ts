@@ -5,7 +5,6 @@ import { concatMap, first } from 'rxjs/operators';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenPropertyHasValue } from 'ish-core/utils/operators';
 import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
@@ -16,11 +15,11 @@ import { AddressDoctorModalComponent } from '../address-doctor-modal/address-doc
 
 @Component({
   selector: 'ish-address-doctor',
-  standalone: false,
+  imports: [AddressDoctorModalComponent],
+  standalone: true,
   templateUrl: './address-doctor.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-@GenerateLazyComponent()
 export class AddressDoctorComponent implements AfterViewInit {
   @Input() options: ModalOptions;
   // related address doctor modal

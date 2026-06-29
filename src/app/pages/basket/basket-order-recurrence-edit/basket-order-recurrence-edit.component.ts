@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-null */
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,14 +11,17 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { formatISO, parseISO } from 'date-fns';
 import { isEqual } from 'lodash-es';
 import { debounceTime, distinctUntilChanged, filter, map, skip } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Recurrence } from 'ish-core/models/recurrence/recurrence.model';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 
 interface RecurrenceFormData {
   period: string;
@@ -30,7 +34,8 @@ interface RecurrenceFormData {
 
 @Component({
   selector: 'ish-basket-order-recurrence-edit',
-  standalone: false,
+  imports: [AsyncPipe, ContentIncludeComponent, FormlyForm, NgbCollapse, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './basket-order-recurrence-edit.component.html',
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

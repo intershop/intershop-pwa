@@ -5,10 +5,10 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
-import { AddressDoctorStoreModule } from '../address-doctor-store.module';
+import { AddressDoctorStoreProviders } from '../address-doctor-store.providers';
 
 import { addressDoctorInternalActions } from './address-doctor.actions';
 import { AddressDoctorEffects } from './address-doctor.effects';
@@ -29,7 +29,7 @@ describe('Address Doctor Effects', () => {
     statePropertiesService = mock(StatePropertiesService);
 
     TestBed.configureTestingModule({
-      imports: [AddressDoctorStoreModule.forTesting('addressDoctorConfig'), CoreStoreModule.forTesting()],
+      imports: [...CoreStoreProviders.forTesting(), AddressDoctorStoreProviders.forTesting('addressDoctorConfig')],
       providers: [
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         AddressDoctorEffects,

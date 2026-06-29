@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -8,6 +8,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
@@ -54,19 +55,26 @@ describe('Account Order Template List Component', () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        AccountOrderTemplateListComponent,
-        MockComponent(ModalDialogComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(DatePipe),
-      ],
-      imports: [CdkTableModule, RouterModule, TranslatePipe],
+      imports: [AccountOrderTemplateListComponent],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(AccountOrderTemplateListComponent, {
+        set: {
+          imports: [
+            CdkTableModule,
+            MockPipe(DatePipe),
+            MockComponent(ModalDialogComponent),
+            MockComponent(ProductAddToBasketComponent),
+            MockDirective(ProductContextDirective),
+            TranslatePipe,
+            MockDirective(RouterLink),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

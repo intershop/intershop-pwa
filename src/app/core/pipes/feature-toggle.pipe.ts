@@ -1,8 +1,9 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { ChangeDetectorRef, DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 
-import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 
 /**
  * Pipe
@@ -15,11 +16,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  *   <ish-product-add-to-compare> ...</ish-product-add-to-compare>
  * }
  */
-@Pipe({
-  name: 'ishFeature',
-  pure: false,
-  standalone: false,
-})
+@Pipe({ name: 'ishFeature', pure: false, standalone: true })
 export class FeatureTogglePipe implements PipeTransform {
   private enabled: boolean;
   private destroyRef = inject(DestroyRef);

@@ -13,13 +13,13 @@ import { Product } from 'ish-core/models/product/product.model';
 import { ProductsServiceProvider } from 'ish-core/service-provider/products.service-provider';
 import { ProductsService } from 'ish-core/services/products/products.service';
 import { applyConfiguration } from 'ish-core/store/core/configuration';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user/user.actions';
 import { loadCategory } from 'ish-core/store/shopping/categories';
 import { loadFilterSuccess, loadProductsForFilter } from 'ish-core/store/shopping/filter';
 import { setProductListingPageSize } from 'ish-core/store/shopping/product-listing';
 import { loadProductPricesSuccess } from 'ish-core/store/shopping/product-prices';
-import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.module';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
@@ -120,8 +120,8 @@ describe('Products Effects', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'serverConfig', 'configuration']),
-        ShoppingStoreModule.forTesting('products', 'categories', 'productListing', 'productPrices', 'filter'),
+        ...CoreStoreProviders.forTesting(['router', 'serverConfig', 'configuration']),
+        ShoppingStoreProviders.forTesting('products', 'categories', 'productListing', 'productPrices', 'filter'),
       ],
       providers: [
         { provide: ProductsService, useFactory: () => instance(productsServiceMock) },

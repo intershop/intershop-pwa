@@ -4,7 +4,8 @@ import { StoreLocation as StoreModel } from '../../models/store-location/store-l
 
 @Component({
   selector: 'ish-store-address',
-  standalone: false,
+  imports: [],
+  standalone: true,
   templateUrl: './store-address.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

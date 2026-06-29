@@ -1,7 +1,13 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CookiesBannerComponent } from 'ish-shell/application/cookies-banner/cookies-banner.component';
+import { FooterComponent } from 'ish-shell/footer/footer/footer.component';
+import { HeaderComponent } from 'ish-shell/header/header/header.component';
 
 /**
  * The App Component provides the application frame for the single page application.
@@ -10,7 +16,17 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  */
 @Component({
   selector: 'ish-root',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    CookiesBannerComponent,
+    FooterComponent,
+    HeaderComponent,
+    NgClass,
+    RouterLink,
+    RouterOutlet,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

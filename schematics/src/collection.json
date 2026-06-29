@@ -59,17 +59,6 @@
       "description": "Create an extension.",
       "schema": "./extension/schema.json"
     },
-    "lazy-component": {
-      "factory": "./lazy-component/factory#createLazyComponent",
-      "description": "Create a lazy component for an existing component in an extension.",
-      "schema": "./lazy-component/schema.json"
-    },
-    "lazy-components": {
-      "factory": "./helpers/lazy-components/factory#createLazyComponents",
-      "description": "Create lazy components for all annotated components in extensions.",
-      "schema": "./helpers/lazy-components/schema.json",
-      "hidden": true
-    },
     "store": {
       "factory": "./store/factory#createStore",
       "description": "Create a store.",

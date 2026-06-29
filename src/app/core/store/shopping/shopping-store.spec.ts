@@ -1,8 +1,10 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
 import { createSelector } from '@ngrx/store';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
@@ -21,18 +23,28 @@ import { ProductsService } from 'ish-core/services/products/products.service';
 import { SparqueRecommendationsService } from 'ish-core/services/sparque-recommendations/sparque-recommendations.service';
 import { SparqueSuggestionsService } from 'ish-core/services/sparque-suggestions/sparque-suggestions.service';
 import { SuggestService } from 'ish-core/services/suggest/suggest.service';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
-import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
+import { CustomerStoreProviders } from 'ish-core/store/customer/customer-store.providers';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { ShoppingStoreProviders } from 'ish-core/store/shopping/shopping-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
 import { getCategoryTree, getSelectedCategory } from './categories';
+import { CategoriesEffects } from './categories/categories.effects';
+import { FilterEffects } from './filter/filter.effects';
+import { ProductInventoryEffects } from './product-inventory/product-inventory.effects';
 import { setProductListingPageSize } from './product-listing';
+import { ProductListingEffects } from './product-listing/product-listing.effects';
+import { ProductPricesEffects } from './product-prices/product-prices.effects';
 import { getProductEntities, getSelectedProduct } from './products';
+import { ProductsEffects } from './products/products.effects';
+import { PromotionsEffects } from './promotions/promotions.effects';
+import { RecommendationsEffects } from './recommendations/recommendations.effects';
 import { suggestSearch } from './search';
-import { ShoppingStoreModule } from './shopping-store.module';
+import { SearchEffects } from './search/search.effects';
+import { WarrantiesEffects } from './warranties/warranties.effects';
 
 const getCategoryIds = createSelector(getCategoryTree, tree => Object.keys(tree.nodes));
 
@@ -140,11 +152,32 @@ describe('Shopping Store', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        CoreStoreModule.forTesting(['router', 'configuration', 'serverConfig'], true),
-        CustomerStoreModule.forTesting('user'),
-
-        ShoppingStoreModule,
-        TranslatePipe,
+        ...CoreStoreProviders.forTesting(['router', 'configuration', 'serverConfig'], true),
+        CustomerStoreProviders.forTesting('user'),
+        EffectsModule.forFeature([
+          CategoriesEffects,
+          FilterEffects,
+          ProductInventoryEffects,
+          ProductListingEffects,
+          ProductPricesEffects,
+          ProductsEffects,
+          PromotionsEffects,
+          RecommendationsEffects,
+          SearchEffects,
+          WarrantiesEffects,
+        ]),
+        ShoppingStoreProviders.forTesting(
+          'categories',
+          'products',
+          'search',
+          'filter',
+          'promotions',
+          'productInventory',
+          'productListing',
+          'productPrices',
+          'productRecommendations',
+          'warranties'
+        ),
       ],
       providers: [
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },

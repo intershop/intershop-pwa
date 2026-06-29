@@ -41,10 +41,6 @@ npx ng g c shared/components/inventory/warehouse
 test -f src/app/shared/components/inventory/warehouse/warehouse.component.ts
 grep "WarehouseComponent" src/app/shared/shared.module.ts
 
-npx ng g lazy-component src/app/shared/components/inventory/warehouse/warehouse.component.ts
-test -f src/app/shell/shared/lazy-warehouse/lazy-warehouse.component.ts
-grep GenerateLazyComponent src/app/shared/components/inventory/warehouse/warehouse.component.ts
-
 
 npx ng g p warehouses
 test -f src/app/pages/warehouses/warehouses-page.module.ts
@@ -61,10 +57,6 @@ test -f src/app/extensions/awesome/exports/awesome-exports.module.ts
 
 npx ng g c extensions/awesome/shared/dummy
 test -f src/app/extensions/awesome/shared/dummy/dummy.component.ts
-
-npx ng g lazy-component extensions/awesome/shared/dummy/dummy.component.ts
-test -f src/app/extensions/awesome/exports/lazy-dummy/lazy-dummy.component.ts
-grep "LazyDummyComponent" src/app/extensions/awesome/exports/awesome-exports.module.ts
 
 (cd src/app/shared && npx ng g c common/foobar --export)
 test -f src/app/shared/common/foobar/foobar.component.ts
@@ -93,19 +85,6 @@ npx ng g cms --definition-qualified-name app:component.custom.audio.pagelet2-Com
 test -f src/app/shared/cms/components/audio/audio.component.ts
 grep "AudioComponent" src/app/shared/cms/cms.module.ts
 grep "AudioComponent" src/app/shared/shared.module.ts
-
-npx ng g lazy-component --project organization-management --path projects/organization-management/src/app/components/user-profile-form/user-profile-form.component.ts
-test -f projects/organization-management/src/app/exports/lazy-user-profile-form/lazy-user-profile-form.component.ts
-test -f projects/organization-management/src/app/exports/lazy-user-profile-form/lazy-user-profile-form.component.html
-test -f projects/organization-management/src/app/exports/organization-management-exports.module.ts
-grep "LazyUserProfileFormComponent" projects/organization-management/src/app/exports/organization-management-exports.module.ts
-grep "LazyUserProfileFormComponent" projects/organization-management/src/app/exports/index.ts
-
-npx ng g lazy-component --project organization-management --path projects/organization-management/src/app/components/user-roles-selection/user-roles-selection.component.ts
-test -f projects/organization-management/src/app/exports/lazy-user-roles-selection/lazy-user-roles-selection.component.ts
-test -f projects/organization-management/src/app/exports/lazy-user-roles-selection/lazy-user-roles-selection.component.html
-grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/organization-management-exports.module.ts
-grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/index.ts
 
 node schematics/customization/service-worker false
 grep '"serviceWorker": false' angular.json

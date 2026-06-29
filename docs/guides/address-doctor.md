@@ -60,7 +60,7 @@ environment:
 
 ## Workflow
 
-To check an address with the address doctor the PWA needs to render the `<ish-lazy-address-doctor>` component.
+To check an address with the address doctor the PWA needs to render the `<ish-address-doctor>` component.
 When the user submits the address data, the PWA needs to send a [feature notification event](../../src/app/core/utils/feature-event/feature-event.service.ts) with the request to check the data.
 
 ```typescript

@@ -14,11 +14,7 @@ export function formatPrice(price: Price, lang: string): string {
   return symbol ? formatCurrency(price.value, lang, symbol) : price.value?.toString();
 }
 
-@Pipe({
-  name: 'ishPrice',
-  pure: false,
-  standalone: false,
-})
+@Pipe({ name: 'ishPrice', pure: false, standalone: true })
 export class PricePipe implements PipeTransform {
   displayText: string;
 

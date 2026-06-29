@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
+import { EXTRALARGE_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { PasswordFieldComponent } from './password-field.component';
 
@@ -13,18 +14,10 @@ describe('Password Field Component', () => {
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
 
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn((query: string) => ({
-        media: query,
-      })),
-    });
-  });
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        ...formlyTestingImports,
         FormlyModule.forRoot({
           types: [
             {
@@ -33,12 +26,10 @@ describe('Password Field Component', () => {
             },
           ],
         }),
-        FormlyTestingComponentsModule,
+        PasswordFieldComponent,
         ReactiveFormsModule,
-        TranslatePipe,
       ],
-      declarations: [PasswordFieldComponent],
-      providers: [provideTranslateService()],
+      providers: [{ provide: EXTRALARGE_BREAKPOINT_WIDTH, useValue: 1400 }, provideTranslateService()],
     }).compileComponents();
   });
 

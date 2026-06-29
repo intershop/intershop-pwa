@@ -2,11 +2,11 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
 import { User } from 'ish-core/models/user/user.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 
-import { OrganizationManagementStoreModule } from '../organization-management-store.module';
+import { OrganizationManagementStoreProviders } from '../organization-management-store.providers';
 
 import { loadSystemUserRolesSuccess, loadUsers, loadUsersFail, loadUsersSuccess } from './users.actions';
 import {
@@ -26,7 +26,7 @@ describe('Users Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router']), OrganizationManagementStoreModule.forTesting('users')],
+      imports: [CoreStoreProviders.forTesting(['router']), OrganizationManagementStoreProviders.forTesting('users')],
       providers: [provideRouter([{ path: 'users/:B2BCustomerLogin', children: [] }]), provideStoreSnapshots()],
     });
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
@@ -19,18 +19,32 @@ describe('Search Result Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [
-        MockComponent(BreadcrumbComponent),
-        MockComponent(ContentIncludeComponent),
-        MockComponent(FilterNavigationComponent),
-        MockComponent(ProductListingComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(NgbCollapse),
-        SearchResultComponent,
-      ],
+      imports: [SearchResultComponent],
       providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(SearchResultComponent, {
+        remove: {
+          imports: [
+            BreadcrumbComponent,
+            ContentIncludeComponent,
+            FilterNavigationComponent,
+            NgbCollapse,
+            ProductListingComponent,
+            SkipContentLinkComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BreadcrumbComponent),
+            MockComponent(ContentIncludeComponent),
+            MockComponent(FilterNavigationComponent),
+            MockDirective(NgbCollapse),
+            MockComponent(ProductListingComponent),
+            MockComponent(SkipContentLinkComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,12 +1,16 @@
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { filter } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
 import { User } from 'ish-core/models/user/user.model';
+
+import { AccountPaymentConcardisDirectdebitComponent } from '../account-payment-concardis-directdebit/account-payment-concardis-directdebit.component';
 
 /**
  * The Account Payment Component displays the preferred payment method/instrument of the user
@@ -16,7 +20,8 @@ import { User } from 'ish-core/models/user/user.model';
  */
 @Component({
   selector: 'ish-account-payment',
-  standalone: false,
+  imports: [AccountPaymentConcardisDirectdebitComponent, NgClass, NgTemplateOutlet, ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './account-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

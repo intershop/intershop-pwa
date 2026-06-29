@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
@@ -11,8 +12,13 @@ describe('Validation Message Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MockPipe(TranslatePipe), ValidationMessageComponent],
-    }).compileComponents();
+      imports: [FormlyModule.forRoot(), ValidationMessageComponent],
+    })
+      .overrideComponent(ValidationMessageComponent, {
+        remove: { imports: [TranslatePipe] },
+        add: { imports: [MockPipe(TranslatePipe)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

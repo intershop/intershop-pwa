@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 
 @Component({
   selector: 'ish-success-message',
-  standalone: false,
+  imports: [TranslatePipe],
+  standalone: true,
   templateUrl: './success-message.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

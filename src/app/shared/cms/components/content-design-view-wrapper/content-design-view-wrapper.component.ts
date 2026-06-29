@@ -1,13 +1,17 @@
+import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, afterNextRender } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
+import { ScrollDirective } from 'ish-core/directives/scroll.directive';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
 
 @Component({
   selector: 'ish-content-design-view-wrapper',
-  standalone: false,
+  imports: [AsyncPipe, NgClass, NgTemplateOutlet, ScrollDirective, TranslatePipe],
+  standalone: true,
   templateUrl: './content-design-view-wrapper.component.html',
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

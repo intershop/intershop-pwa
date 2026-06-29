@@ -3,8 +3,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { CheckboxFieldComponent } from './checkbox-field.component';
 
@@ -15,16 +15,16 @@ describe('Checkbox Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CheckboxFieldComponent],
+      providers: [provideTranslateService()],
       imports: [
+        ...formlyTestingImports,
+        CheckboxFieldComponent,
         FormlyModule.forRoot({
           types: [{ name: 'checkbox', component: CheckboxFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
         ReactiveFormsModule,
         TranslatePipe,
       ],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

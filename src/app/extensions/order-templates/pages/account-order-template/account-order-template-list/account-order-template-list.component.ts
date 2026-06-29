@@ -1,8 +1,24 @@
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
@@ -11,7 +27,25 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
 
 @Component({
   selector: 'ish-account-order-template-list',
-  standalone: false,
+  imports: [
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
+    DatePipe,
+    ModalDialogComponent,
+    ProductAddToBasketComponent,
+    ProductContextDirective,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './account-order-template-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

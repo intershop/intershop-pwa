@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FieldType } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FieldType, FormlyModule } from '@ngx-formly/core';
 
 @Component({
   selector: 'ish-formly-testing-example',
-  standalone: false,
+  imports: [FormlyModule, ReactiveFormsModule],
+  standalone: true,
   templateUrl: './formly-testing-example.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

@@ -1,5 +1,7 @@
+import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FieldWrapper } from '@ngx-formly/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 /**
  * Wrapper that adds a small description underneath the field.
@@ -12,7 +14,8 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-description-wrapper',
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
+  standalone: true,
   templateUrl: './description-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

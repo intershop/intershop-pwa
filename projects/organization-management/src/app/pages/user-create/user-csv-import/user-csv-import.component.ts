@@ -9,7 +9,8 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { v4 as uuid } from 'uuid';
 
 import { CsvImportData, CsvImportHandler, CsvImportStatus } from 'ish-core/utils/csv/csv.import-handler';
@@ -19,7 +20,8 @@ import { B2bUser } from '../../../models/b2b-user/b2b-user.model';
 
 @Component({
   selector: 'ish-user-csv-import',
-  standalone: false,
+  imports: [ReactiveFormsModule, TranslatePipe],
+  standalone: true,
   templateUrl: './user-csv-import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -37,14 +37,21 @@ export class OrderTemplatesFacade {
   orderTemplateError$: Observable<HttpError> = this.store.pipe(select(getOrderTemplateError));
 
   orderTemplatesSelectOptions$(filterCurrent = true): Observable<SelectOption[]> {
-    return this.orderTemplates$.pipe(
+    const orderTemplateOptions$ = this.orderTemplates$.pipe(
       startWith([] as OrderTemplate[]),
       map(orderTemplates =>
         orderTemplates.map(orderTemplate => ({
           value: orderTemplate.id,
           label: orderTemplate.title,
         }))
-      ),
+      )
+    );
+
+    if (!filterCurrent) {
+      return orderTemplateOptions$;
+    }
+
+    return orderTemplateOptions$.pipe(
       withLatestFrom(this.currentOrderTemplate$),
       map(([orderTemplateOptions, currentOrderTemplate]) => {
         if (filterCurrent && currentOrderTemplate) {

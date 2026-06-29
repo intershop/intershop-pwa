@@ -22,14 +22,20 @@ describe('Product Item Component', () => {
     when(context.select('product')).thenReturn(of({}));
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(LoadingComponent),
-        MockComponent(ProductRowComponent),
-        MockComponent(ProductTileComponent),
-        ProductItemComponent,
-      ],
+      imports: [ProductItemComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductItemComponent, {
+        remove: { imports: [LoadingComponent, ProductRowComponent, ProductTileComponent] },
+        add: {
+          imports: [
+            MockComponent(LoadingComponent),
+            MockComponent(ProductRowComponent),
+            MockComponent(ProductTileComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -6,7 +6,7 @@ import { createCategoryView } from 'ish-core/models/category-view/category-view.
 import { Category } from 'ish-core/models/category/category.model';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product, VariationProduct } from 'ish-core/models/product/product.model';
-import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { CoreStoreProviders } from 'ish-core/store/core/core-store.providers';
 import { selectRouter } from 'ish-core/store/core/router';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
 
@@ -315,7 +315,7 @@ describe('Product Route', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'])],
+      imports: [...CoreStoreProviders.forTesting(['router'])],
       providers: [provideRouter([{ path: '**', children: [] }])],
     });
 

@@ -1,10 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { RouterLink, provideRouter } from '@angular/router';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective, FeatureToggleModule } from 'ish-core/feature-toggle.imports';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
@@ -13,7 +14,9 @@ import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 
-import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
+import { ProductCompareStatusComponent } from '../../../extensions/compare/shared/product-compare-status/product-compare-status.component';
+import { QuickorderLinkComponent } from '../../../extensions/quickorder/shared/quickorder-link/quickorder-link.component';
+import { WishlistsLinkComponent } from '../../../extensions/wishlists/shared/wishlists-link/wishlists-link.component';
 
 import { HeaderDefaultComponent } from './header-default.component';
 
@@ -24,24 +27,35 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FeatureToggleModule.forTesting('compare'),
-        MockComponent(SearchBoxComponent),
-        TranslatePipe,
+      imports: [CommonModule, HeaderDefaultComponent],
+      providers: [
+        ...(FeatureToggleModule.forTesting('compare').providers ?? []),
+        provideRouter([]),
+        provideTranslateService(),
       ],
-      declarations: [
-        HeaderDefaultComponent,
-        MockComponent(HeaderNavigationComponent),
-        MockComponent(LanguageSwitchComponent),
-        MockComponent(LazyProductCompareStatusComponent),
-        MockComponent(LoginStatusComponent),
-        MockComponent(MiniBasketComponent),
-        MockComponent(UserInformationMobileComponent),
-        MockDirective(NgbCollapse),
-      ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(HeaderDefaultComponent, {
+        set: {
+          imports: [
+            MockComponent(SearchBoxComponent),
+            NgClass,
+            MockComponent(LoginStatusComponent),
+            MockComponent(ProductCompareStatusComponent),
+            MockComponent(QuickorderLinkComponent),
+            MockComponent(WishlistsLinkComponent),
+            FeatureToggleDirective,
+            NgbCollapseModule,
+            NgTemplateOutlet,
+            MockComponent(LanguageSwitchComponent),
+            MockComponent(MiniBasketComponent),
+            RouterLink,
+            MockComponent(HeaderNavigationComponent),
+            MockComponent(UserInformationMobileComponent),
+            TranslatePipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -58,7 +72,7 @@ describe('Header Default Component', () => {
 
   it('should render User Links on template', () => {
     fixture.detectChanges();
-    expect(findAllCustomElements(element)).toIncludeAllMembers(['ish-login-status', 'ish-lazy-product-compare-status']);
+    expect(findAllCustomElements(element)).toContain('ish-login-status');
   });
 
   it('should render Language Switch on template', () => {

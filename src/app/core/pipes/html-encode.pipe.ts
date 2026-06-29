@@ -5,11 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * so they can be displayed as plain text in a web page.
  * https://jasonwatmore.com/vanilla-js-html-encode-in-javascript
  */
-@Pipe({
-  name: 'ishHtmlEncode',
-  pure: true,
-  standalone: false,
-})
+@Pipe({ name: 'ishHtmlEncode', pure: true, standalone: true })
 export class HtmlEncodePipe implements PipeTransform {
   transform(value: string): string {
     return value?.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

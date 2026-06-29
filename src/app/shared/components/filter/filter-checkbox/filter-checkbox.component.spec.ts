@@ -11,7 +11,7 @@ describe('Filter Checkbox Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FilterCheckboxComponent],
+      imports: [FilterCheckboxComponent],
     }).compileComponents();
   });
 

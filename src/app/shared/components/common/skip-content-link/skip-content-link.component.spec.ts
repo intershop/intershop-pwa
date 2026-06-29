@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { SkipContentLinkComponent } from './skip-content-link.component';
 
 @Component({
-  standalone: false,
+  imports: [SkipContentLinkComponent],
+  providers: [provideTranslateService()],
+  standalone: true,
   template: `
     <ish-skip-content-link [skipToElementId]="skipToElementId">
       <ul></ul>
@@ -27,8 +29,7 @@ describe('Skip Content Link Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [SkipContentLinkComponent, TestHostComponent],
+      imports: [TestHostComponent],
       providers: [provideTranslateService()],
     }).compileComponents();
   });

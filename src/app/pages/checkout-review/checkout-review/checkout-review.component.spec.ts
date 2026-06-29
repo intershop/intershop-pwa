@@ -1,22 +1,25 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyForm, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, spy, verify, when } from 'ts-mockito';
 
-import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleDirective } from 'ish-core/feature-toggle.imports';
 import { BasketApproval } from 'ish-core/models/basket-approval/basket-approval.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { AddressComponent } from 'ish-shared/components/address/address/address.component';
 import { BasketApprovalInfoComponent } from 'ish-shared/components/basket/basket-approval-info/basket-approval-info.component';
+import { BasketBuyerComponent } from 'ish-shared/components/basket/basket-buyer/basket-buyer.component';
 import { BasketCostCenterViewComponent } from 'ish-shared/components/basket/basket-cost-center-view/basket-cost-center-view.component';
 import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
 import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
@@ -24,14 +27,18 @@ import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket
 import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
 import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
 import { BasketCustomFieldsViewComponent } from 'ish-shared/components/checkout/basket-custom-fields-view/basket-custom-fields-view.component';
+import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
 import { SkipContentLinkComponent } from 'ish-shared/components/common/skip-content-link/skip-content-link.component';
 import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { OrderRecurrenceComponent } from 'ish-shared/components/order/order-recurrence/order-recurrence.component';
 
 import { CheckoutReviewTacFieldComponent } from '../formly/checkout-review-tac-field/checkout-review-tac-field.component';
 
 import { CheckoutReviewComponent } from './checkout-review.component';
+
+const checkoutReviewTacFieldMockComponent = MockComponent(CheckoutReviewTacFieldComponent);
 
 describe('Checkout Review Component', () => {
   let component: CheckoutReviewComponent;
@@ -48,39 +55,49 @@ describe('Checkout Review Component', () => {
     when(checkoutFacade.eligiblePaymentMethods$()).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         CheckoutReviewComponent,
-        CheckoutReviewTacFieldComponent,
-        MockComponent(AddressComponent),
-        MockComponent(BasketApprovalInfoComponent),
-        MockComponent(BasketCostCenterViewComponent),
-        MockComponent(BasketCostSummaryComponent),
-        MockComponent(BasketCustomFieldsViewComponent),
-        MockComponent(BasketErrorMessageComponent),
-        MockComponent(BasketMerchantMessageViewComponent),
-        MockComponent(BasketShippingMethodComponent),
-        MockComponent(BasketValidationResultsComponent),
-        MockComponent(InfoBoxComponent),
-        MockComponent(LineItemListComponent),
-        MockComponent(ModalDialogLinkComponent),
-        MockComponent(SkipContentLinkComponent),
-        MockDirective(ServerHtmlDirective),
-        MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+        FormlyModule.forRoot({
+          types: [{ name: 'ish-checkout-review-tac-field', component: checkoutReviewTacFieldMockComponent }],
+        }),
       ],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         provideTranslateService(),
       ],
-      imports: [
-        FeatureToggleModule.forTesting(),
-        FormlyModule.forRoot({
-          types: [{ name: 'ish-checkout-review-tac-field', component: CheckoutReviewTacFieldComponent }],
-        }),
-        ReactiveFormsModule,
-        TranslatePipe,
-      ],
-    }).compileComponents();
+    })
+      .overrideComponent(CheckoutReviewComponent, {
+        set: {
+          imports: [
+            TranslatePipe,
+            MockComponent(ModalDialogLinkComponent),
+            MockComponent(ContentIncludeComponent),
+            MockDirective(LazyLoadingContentDirective),
+            MockComponent(ErrorMessageComponent),
+            MockComponent(BasketErrorMessageComponent),
+            MockComponent(BasketValidationResultsComponent),
+            MockComponent(BasketApprovalInfoComponent),
+            MockComponent(BasketMerchantMessageViewComponent),
+            MockPipe(ServerSettingPipe, path => path === 'shipping.messageToMerchant'),
+            MockComponent(InfoBoxComponent),
+            MockComponent(BasketBuyerComponent),
+            FeatureToggleDirective,
+            MockComponent(OrderRecurrenceComponent),
+            MockComponent(AddressComponent),
+            MockComponent(SkipContentLinkComponent),
+            MockComponent(LineItemListComponent),
+            MockComponent(BasketCostSummaryComponent),
+            FormlyForm,
+            ReactiveFormsModule,
+            MockComponent(BasketShippingMethodComponent),
+            MockComponent(BasketCostCenterViewComponent),
+            MockComponent(BasketCustomFieldsViewComponent),
+            AsyncPipe,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

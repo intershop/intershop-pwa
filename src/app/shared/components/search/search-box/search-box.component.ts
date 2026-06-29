@@ -52,6 +52,7 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
     SuggestSearchTermsComponent,
     TranslatePipe,
   ],
+  standalone: true,
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

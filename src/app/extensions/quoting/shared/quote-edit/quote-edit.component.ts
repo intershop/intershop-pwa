@@ -1,10 +1,16 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { pick } from 'lodash-es';
 import { Observable } from 'rxjs';
 
+import { InPlaceEditComponent } from 'ish-shared/components/common/in-place-edit/in-place-edit.component';
+
 import { QuoteContextFacade } from '../../facades/quote-context.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';
+import { QuoteLineItemListComponent } from '../quote-line-item-list/quote-line-item-list.component';
+import { QuoteStateComponent } from '../quote-state/quote-state.component';
 
 /**
  * The Quote Edit Component displays and updates quote or quote request data.
@@ -12,7 +18,16 @@ import { QuoteRequest } from '../../models/quoting/quoting.model';
  */
 @Component({
   selector: 'ish-quote-edit',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    InPlaceEditComponent,
+    NgClass,
+    QuoteLineItemListComponent,
+    QuoteStateComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './quote-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,5 +1,8 @@
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FORMLY_CONFIG } from '@ngx-formly/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, provideRouter } from '@angular/router';
+import { FORMLY_CONFIG, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -27,12 +30,7 @@ describe('Cost Center Buyers Page Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslatePipe],
-      declarations: [
-        CostCenterBuyersPageComponent,
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LoadingComponent),
-      ],
+      imports: [CostCenterBuyersPageComponent, FormlyTestingModule],
       providers: [
         {
           provide: FORMLY_CONFIG,
@@ -43,14 +41,32 @@ describe('Cost Center Buyers Page Component', () => {
         },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideRouter([]),
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CostCenterBuyersPageComponent, {
+        set: {
+          imports: [
+            AsyncPipe,
+            MockComponent(ErrorMessageComponent),
+            FormlyForm,
+            MockComponent(LoadingComponent),
+            ReactiveFormsModule,
+            TranslatePipe,
+            RouterLink,
+          ],
+        },
+      })
+      .compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
     when(organizationManagementFacade.costCenterUnassignedBuyers$()).thenReturn(
       of([{ login: 'bboldner@test.intershop.de' }, { login: 'jlink@test.intershop.de' }])
     );
+    when(organizationManagementFacade.costCentersLoading$).thenReturn(of(false));
+    when(organizationManagementFacade.costCentersError$).thenReturn(of(undefined));
+    when(organizationManagementFacade.usersError$).thenReturn(of(undefined));
   });
 
   beforeEach(() => {

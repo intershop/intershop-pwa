@@ -4,7 +4,7 @@
   <div class="row product-details">
     <div class="col-12 col-md-6 col-lg-8"><ish-product-images /></div>
     <div class="col-12 col-md-6 col-lg-4">
-      <ish-lazy-product-rating />
+      <ish-product-rating *ishFeature="'rating'" />
       <h1>
         <span itemprop="name"><ish-product-name [link]="false" /></span>
       </h1>
@@ -14,7 +14,7 @@
         <ish-product-promotion />
         <div class="price-container" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
           <ish-product-price [showInformationalPrice]="true" [showPriceSavings]="true" />
-          @if ('payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting) {
+          @defer (when 'payment.paypal.payLaterPreferences.PayLaterMessagingProductDetailsEnabled' | ishServerSetting) {
             <ish-payment-paypal pageType="product-details" />
           }
         </div>
@@ -32,15 +32,21 @@
         <div class="d-grid">
           <ish-product-add-to-basket [cssClass]="'btn-lg w-100'" />
         </div>
-        <div class="d-grid">
-          <ish-lazy-product-add-to-order-template [cssClass]="'btn btn-secondary'" />
-        </div>
-        <div class="d-grid">
-          <ish-lazy-product-add-to-quote [cssClass]="'btn btn-secondary'" />
-        </div>
-        <div class="d-grid">
-          <ish-lazy-product-notification-edit cssClass="btn btn-secondary" displayType="button" />
-        </div>
+        @defer (when 'orderTemplates' | ishFeature) {
+          <div class="d-grid">
+            <ish-product-add-to-order-template [cssClass]="'btn btn-secondary'" />
+          </div>
+        }
+        @defer (when 'quoting' | ishFeature) {
+          <div class="d-grid">
+            <ish-product-add-to-quote [cssClass]="'btn btn-secondary'" />
+          </div>
+        }
+        @defer (when 'productNotifications' | ishFeature) {
+          <div class="d-grid">
+            <ish-product-notification-edit cssClass="btn btn-secondary" displayType="button" />
+          </div>
+        }
         <ish-product-warranty (submitWarranty)="setSelectedWarranty($event)" />
       </div>
       <!-- DISABLED VIEW CONTEXT --

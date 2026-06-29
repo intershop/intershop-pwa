@@ -1,6 +1,24 @@
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Order } from 'ish-core/models/order/order.model';
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { AddressComponent } from 'ish-shared/components/address/address/address.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 export type OrderColumnsType =
   | 'buyer'
@@ -25,7 +43,25 @@ export type OrderColumnsType =
  */
 @Component({
   selector: 'ish-order-list',
-  standalone: false,
+  imports: [
+    AddressComponent,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
+    DatePipe,
+    LoadingComponent,
+    PricePipe,
+    RouterLink,
+    TranslatePipe,
+  ],
+  standalone: true,
   templateUrl: './order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,17 +1,21 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { LineItemEditDialogComponent } from 'ish-shared/components/line-item/line-item-edit-dialog/line-item-edit-dialog.component';
 
 /**
  * The Line Item Edit Component displays an edit-link and edit-dialog.
  */
 @Component({
   selector: 'ish-line-item-edit',
-  standalone: false,
+  imports: [AsyncPipe, LineItemEditDialogComponent, ModalDialogComponent, TranslatePipe],
+  standalone: true,
   templateUrl: './line-item-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

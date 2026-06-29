@@ -1,12 +1,50 @@
+import {
+  CdkCell,
+  CdkCellDef,
+  CdkColumnDef,
+  CdkHeaderCell,
+  CdkHeaderCellDef,
+  CdkHeaderRow,
+  CdkHeaderRowDef,
+  CdkRow,
+  CdkRowDef,
+  CdkTable,
+} from '@angular/cdk/table';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, combineLatest, map, of } from 'rxjs';
+
+import { PricePipe } from 'ish-core/models/price/price.pipe';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
+import { UserRolesBadgesComponent } from '../users/user-roles-badges/user-roles-badges.component';
 
 @Component({
   selector: 'ish-user-import-page',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    CdkCell,
+    CdkCellDef,
+    CdkColumnDef,
+    CdkHeaderCell,
+    CdkHeaderCellDef,
+    CdkHeaderRow,
+    CdkHeaderRowDef,
+    CdkRow,
+    CdkRowDef,
+    CdkTable,
+    LoadingComponent,
+    NgClass,
+    PricePipe,
+    RouterLink,
+    TranslatePipe,
+    UserRolesBadgesComponent,
+  ],
+  standalone: true,
   templateUrl: './user-import-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

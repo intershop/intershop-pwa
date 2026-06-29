@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { CheckoutProgressBarComponent } from './checkout-progress-bar.component';
 
@@ -11,9 +11,8 @@ describe('Checkout Progress Bar Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
+      imports: [CheckoutProgressBarComponent],
       providers: [provideRouter([]), provideTranslateService()],
-      declarations: [CheckoutProgressBarComponent],
     }).compileComponents();
   });
 

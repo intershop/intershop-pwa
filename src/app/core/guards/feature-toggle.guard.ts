@@ -1,7 +1,8 @@
+/* eslint-disable ish-custom-rules/ban-imports-file-pattern */
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
 import { HttpStatusCodeService } from 'ish-core/utils/http-status-code/http-status-code.service';
 
 /**

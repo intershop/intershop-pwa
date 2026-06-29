@@ -1,12 +1,35 @@
+import { Component, Directive, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyField, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
-import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
+import { formlyTestingImports } from 'ish-shared/formly/dev/testing/formly-testing.imports';
 
 import { QuickorderRepeatFieldComponent } from './quickorder-repeat-field.component';
+
+@Directive({
+  selector: '[ishProductContext]',
+})
+class MockProductContextDirective {
+  @Input() configuration: unknown;
+  @Input() quantity: number;
+  @Output() readonly quantityChange = new EventEmitter<number>();
+
+  context = {
+    connect: jest.fn(),
+    select: jest.fn(() => of(undefined)),
+  } as Partial<ProductContextFacade>;
+}
+
+@Component({
+  selector: 'ish-product-quantity',
+  template: '',
+})
+class MockProductQuantityComponent {}
 
 describe('Quickorder Repeat Field Component', () => {
   let component: FormlyTestingContainerComponent;
@@ -15,16 +38,21 @@ describe('Quickorder Repeat Field Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QuickorderRepeatFieldComponent],
+      providers: [provideTranslateService()],
       imports: [
-        FormlyModule.forChild({
+        ...formlyTestingImports,
+        FormlyModule.forRoot({
           types: [{ name: 'repeat', component: QuickorderRepeatFieldComponent }],
         }),
-        FormlyTestingComponentsModule,
-        TranslatePipe,
+        QuickorderRepeatFieldComponent,
       ],
-      providers: [provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(QuickorderRepeatFieldComponent, {
+        set: {
+          imports: [FormlyField, MockProductContextDirective, MockProductQuantityComponent, TranslatePipe],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,10 +23,14 @@ describe('Product Rating Component', () => {
     when(context.select('product')).thenReturn(of({ type: 'Product' }));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
-      declarations: [MockComponent(ProductRatingStarComponent), ProductRatingComponent],
+      imports: [ProductRatingComponent],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductRatingComponent, {
+        remove: { imports: [ProductRatingStarComponent] },
+        add: { imports: [MockComponent(ProductRatingStarComponent)] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

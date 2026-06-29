@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -8,6 +9,7 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
+import { BasketErrorMessageComponent } from 'ish-shared/components/basket/basket-error-message/basket-error-message.component';
 import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
 
@@ -24,15 +26,34 @@ describe('Mini Basket Content Component', () => {
     when(checkoutFacade.basketLineItems$).thenReturn(of([lineItem, lineItem, lineItem]));
 
     await TestBed.configureTestingModule({
-      imports: [MockComponent(ProductImageComponent), TranslatePipe],
-      declarations: [
-        MiniBasketContentComponent,
-        MockComponent(ProductNameComponent),
-        MockDirective(ProductContextDirective),
-        MockPipe(PricePipe),
+      imports: [MiniBasketContentComponent],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideRouter([]),
+        provideTranslateService(),
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideTranslateService()],
-    }).compileComponents();
+    })
+      .overrideComponent(MiniBasketContentComponent, {
+        remove: {
+          imports: [
+            BasketErrorMessageComponent,
+            PricePipe,
+            ProductContextDirective,
+            ProductImageComponent,
+            ProductNameComponent,
+          ],
+        },
+        add: {
+          imports: [
+            MockComponent(BasketErrorMessageComponent),
+            MockPipe(PricePipe),
+            MockDirective(ProductContextDirective),
+            MockComponent(ProductImageComponent),
+            MockComponent(ProductNameComponent),
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

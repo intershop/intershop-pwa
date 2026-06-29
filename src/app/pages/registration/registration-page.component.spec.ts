@@ -1,17 +1,21 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
+import { AsyncPipe } from '@angular/common';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
+import { FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { FeatureToggleService } from 'ish-core/feature-toggle';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
-import { LazyAddressDoctorComponent } from '../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
+import { AddressDoctorComponent } from '../../extensions/address-doctor/shared/address-doctor/address-doctor.component';
 
 import { RegistrationPageComponent } from './registration-page.component';
 import { RegistrationFormConfigurationService } from './services/registration-form-configuration/registration-form-configuration.service';
@@ -29,19 +33,29 @@ describe('Registration Page Component', () => {
     configService = mock(RegistrationFormConfigurationService);
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ErrorMessageComponent),
-        MockComponent(LazyAddressDoctorComponent),
-        RegistrationPageComponent,
-      ],
-      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslatePipe],
+      imports: [FormlyTestingModule, RegistrationPageComponent],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
+        { provide: FeatureToggleService, useValue: { enabled: () => true } },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
         provideTranslateService(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(RegistrationPageComponent, {
+        set: {
+          imports: [
+            MockComponent(ErrorMessageComponent),
+            AsyncPipe,
+            TranslatePipe,
+            MockComponent(AddressDoctorComponent),
+            MockComponent(LoadingComponent),
+            ReactiveFormsModule,
+            FormlyForm,
+          ],
+        },
+      })
+      .compileComponents();
 
     when(configService.getFields(anything())).thenReturn([
       {
@@ -55,6 +69,7 @@ describe('Registration Page Component', () => {
     } as ActivatedRouteSnapshot);
 
     when(configService.getErrorSources()).thenReturn(of());
+    when(accountFacade.userLoading$).thenReturn(of(false));
   });
 
   beforeEach(() => {

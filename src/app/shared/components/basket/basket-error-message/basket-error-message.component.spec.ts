@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { ScrollDirective } from 'ish-core/directives/scroll.directive';
@@ -11,6 +12,20 @@ describe('Basket Error Message Component', () => {
   let component: BasketErrorMessageComponent;
   let fixture: ComponentFixture<BasketErrorMessageComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [BasketErrorMessageComponent],
+      providers: [provideTranslateService()],
+    })
+      .overrideComponent(BasketErrorMessageComponent, {
+        set: {
+          imports: [TranslatePipe, MockComponent(ErrorMessageComponent), MockDirective(ScrollDirective)],
+          providers: [provideTranslateService()],
+        },
+      })
+      .compileComponents();
+  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
