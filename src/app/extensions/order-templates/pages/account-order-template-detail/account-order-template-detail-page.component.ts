@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -8,7 +8,8 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { OrderTemplate, OrderTemplateItem } from '../../models/order-template/order-template.model';
+import { SelectOrderTemplateModalComponent } from '../../shared/select-order-template-modal/select-order-template-modal.component';
 
 @Component({
   selector: 'ish-account-order-template-detail-page',
@@ -26,7 +27,10 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
   model: { title: string };
   fields: FormlyFieldConfig[];
 
+  @ViewChild('moveDialog') moveDialog: SelectOrderTemplateModalComponent;
+
   private currentOrderTemplate: OrderTemplate;
+  moveItem: OrderTemplateItem;
 
   private destroyRef = inject(DestroyRef);
 
@@ -42,6 +46,7 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
 
     this.orderTemplate$.pipe(whenTruthy(), takeUntilDestroyed(this.destroyRef)).subscribe(orderTemplate => {
       this.currentOrderTemplate = orderTemplate;
+      this.moveItem = undefined;
       this.model = { title: orderTemplate.title };
       this.fields = this.getFields();
     });
@@ -80,5 +85,30 @@ export class AccountOrderTemplateDetailPageComponent implements OnInit {
     this.orderTemplate$
       .pipe(whenTruthy(), take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(orderTemplate => (this.model = { ...this.model, title: orderTemplate.title }));
+  }
+
+  showMoveDialog(orderTemplateItemId: string) {
+    this.moveItem = this.currentOrderTemplate.items.find(item => item.id === orderTemplateItemId);
+    if (this.moveItem) {
+      this.moveDialog.show();
+    }
+  }
+
+  moveItemToOtherOrderTemplate(orderTemplateMoveData: { id: string; title: string }) {
+    if (orderTemplateMoveData.id) {
+      this.orderTemplatesFacade.moveItemToOrderTemplate(
+        this.currentOrderTemplate.id,
+        orderTemplateMoveData.id,
+        this.moveItem.sku,
+        this.moveItem.desiredQuantity.value
+      );
+    } else {
+      this.orderTemplatesFacade.moveItemToNewOrderTemplate(
+        this.currentOrderTemplate.id,
+        orderTemplateMoveData.title,
+        this.moveItem.sku,
+        this.moveItem.desiredQuantity.value
+      );
+    }
   }
 }

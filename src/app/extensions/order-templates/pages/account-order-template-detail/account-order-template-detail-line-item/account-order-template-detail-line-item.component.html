@@ -24,7 +24,7 @@
           data-testing-id="move-order-template"
           type="button"
           [title]="'account.order_template.table.options.move_to_template' | translate"
-          (click)="moveDialog.show()"
+          (click)="emitMoveClicked()"
         >
           <i class="bi bi-arrows-move"></i>
         </button>
@@ -50,9 +50,3 @@
     <ish-product-price />
   </div>
 </div>
-
-<ish-select-order-template-modal
-  #moveDialog
-  addMoveProduct="move"
-  (submitEmitter)="moveItemToOtherOrderTemplate(orderTemplateItemData.sku, $event)"
-/>
