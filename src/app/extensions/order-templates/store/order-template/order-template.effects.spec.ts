@@ -467,6 +467,14 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-(bcd)-(bcd)-(bcd)', { b: completion1, c: completion2, d: completion3 });
       expect(effects.addProductToNewOrderTemplate$).toBeObservable(expected$);
     });
+    it('should not dispatch selectOrderTemplate when suppressSelect is true', () => {
+      const action = addProductToNewOrderTemplate({ ...payload, suppressSelect: true });
+      const completion1 = createOrderTemplateSuccess({ orderTemplate });
+      const completion2 = addProductToOrderTemplate({ orderTemplateId: orderTemplate.id, sku: payload.sku });
+      actions$ = hot('-a----a----a', { a: action });
+      const expected$ = cold('-(bc)-(bc)-(bc)', { b: completion1, c: completion2 });
+      expect(effects.addProductToNewOrderTemplate$).toBeObservable(expected$);
+    });
     it('should map failed calls to actions of type CreateOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.createOrderTemplate(anything())).thenReturn(throwError(() => error));
@@ -506,6 +514,7 @@ describe('Order Template Effects', () => {
         title: payload1.target.title,
         sku: payload1.target.sku,
         quantity: payload1.target.quantity,
+        suppressSelect: true,
       });
       const completion2 = removeItemFromOrderTemplate({
         orderTemplateId: payload1.source.id,

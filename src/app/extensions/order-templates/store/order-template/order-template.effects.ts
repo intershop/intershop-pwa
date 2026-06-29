@@ -203,7 +203,7 @@ export class OrderTemplateEffects {
                 sku: payload.sku,
                 quantity: payload.quantity,
               }),
-              selectOrderTemplate({ id: orderTemplate.id }),
+              ...(payload.suppressSelect ? [] : [selectOrderTemplate({ id: orderTemplate.id })]),
             ]),
             mapErrorToAction(createOrderTemplateFail)
           )
@@ -222,6 +222,7 @@ export class OrderTemplateEffects {
               title: payload.target.title,
               sku: payload.target.sku,
               quantity: payload.target.quantity,
+              suppressSelect: true,
             }),
             removeItemFromOrderTemplate({
               orderTemplateId: payload.source.id,
