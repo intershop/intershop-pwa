@@ -54,6 +54,7 @@
                   [propagateIndex]="i"
                   [quantity]="item.desiredQuantity.value"
                   [sku]="item.sku"
+                  (moveClicked)="showMoveDialog($event)"
                 />
               </div>
             }
@@ -73,3 +74,11 @@
 @if (orderTemplateLoading$ | async) {
   <ish-loading />
 }
+
+<ng-container ishProductContext [sku]="moveItem?.sku">
+  <ish-select-order-template-modal
+    #moveDialog
+    addMoveProduct="move"
+    (submitEmitter)="moveItemToOtherOrderTemplate($event)"
+  />
+</ng-container>

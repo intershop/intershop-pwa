@@ -17,7 +17,6 @@ import { ProductQuantityComponent } from 'ish-shared/components/product/product-
 import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
-import { SelectOrderTemplateModalComponent } from '../../../shared/select-order-template-modal/select-order-template-modal.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item.component';
 
@@ -41,7 +40,6 @@ describe('Account Order Template Detail Line Item Component', () => {
         MockComponent(ProductPriceComponent),
         MockComponent(ProductQuantityComponent),
         MockComponent(ProductVariationDisplayComponent),
-        MockComponent(SelectOrderTemplateModalComponent),
         MockPipe(DatePipe),
       ],
       imports: [MockComponent(ProductImageComponent), ReactiveFormsModule, TranslateModule.forRoot()],

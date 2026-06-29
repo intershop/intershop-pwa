@@ -14,6 +14,7 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { SelectOrderTemplateModalComponent } from '../../shared/select-order-template-modal/select-order-template-modal.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';
@@ -42,6 +43,7 @@ describe('Account Order Template Detail Page Component', () => {
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(ProductAddToBasketComponent),
+        MockComponent(SelectOrderTemplateModalComponent),
         MockDirective(ProductContextDirective),
       ],
       providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
@@ -78,6 +80,7 @@ describe('Account Order Template Detail Page Component', () => {
         [
           "ish-error-message",
           "ish-in-place-edit",
+          "ish-select-order-template-modal",
         ]
       `);
     });
@@ -93,6 +96,7 @@ describe('Account Order Template Detail Page Component', () => {
           "ish-in-place-edit",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",
+          "ish-select-order-template-modal",
         ]
       `);
     });

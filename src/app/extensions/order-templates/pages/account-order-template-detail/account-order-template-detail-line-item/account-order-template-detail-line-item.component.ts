@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map } from 'rxjs';
 
@@ -15,6 +15,8 @@ import { OrderTemplate, OrderTemplateItem } from '../../../models/order-template
 export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
   @Input() orderTemplateItemData: OrderTemplateItem;
   @Input() currentOrderTemplate: OrderTemplate;
+
+  @Output() readonly moveClicked = new EventEmitter<string>();
 
   checkBox = new FormControl();
 
@@ -40,22 +42,8 @@ export class AccountOrderTemplateDetailLineItemComponent implements OnInit {
     });
   }
 
-  moveItemToOtherOrderTemplate(sku: string, orderTemplateMoveData: { id: string; title: string }) {
-    if (orderTemplateMoveData.id) {
-      this.orderTemplatesFacade.moveItemToOrderTemplate(
-        this.currentOrderTemplate.id,
-        orderTemplateMoveData.id,
-        sku,
-        this.context.get('quantity')
-      );
-    } else {
-      this.orderTemplatesFacade.moveItemToNewOrderTemplate(
-        this.currentOrderTemplate.id,
-        orderTemplateMoveData.title,
-        sku,
-        this.context.get('quantity')
-      );
-    }
+  emitMoveClicked() {
+    this.moveClicked.emit(this.orderTemplateItemData.id);
   }
 
   private updateProductQuantity(sku: string, quantity: number) {
