@@ -7,49 +7,81 @@ kb_sync_latest_only
 
 # Application Builder Migration
 
-The PWA currently keeps the Angular application builder and the legacy custom webpack targets in parallel.
+The PWA uses the Angular application builder through the project build wrapper.
+The wrapper is the supported build entrypoint because it carries project-specific behavior that is not represented by a plain `ng run` invocation.
 
-The primary build path is the application-builder wrapper:
+## Official Build Entrypoints
+
+Use the npm scripts for local builds, CI, and release builds:
 
 ```bash
 npm run build
-npm run serve
-npm run serve -- --port=4300
-npm run build:watch
-npm run dev:ssr
-npm run analyze
-npm run build:application-spike -- --configuration=b2b,production
+npm run build -- --configuration=b2b,production
+npm run build -- --configuration=b2c,production
+npm run build -- --configuration=b2b,development
+npm run build -- --configuration=b2c,development
+npm run build -- --configuration=b2c,development --watch
 ```
 
-The wrapper applies the migration-specific behavior that is not represented by a plain `angular.json` target:
+The direct application-builder script is kept for matrix, parity, and container checks:
 
-- theme and file replacement resolution
-- temporary HTML/SCSS resource overlays
-- `data-testing-*` stripping
-- PurgeCSS
-- service worker patching
-- server compatibility output
-- runtime defines such as `PRODUCTION_MODE`, `THEME`, `SERVICE_WORKER`, and `SSR`
+```bash
+npm run build:application-builder -- --configuration=b2b,production
+npm run matrix:application-builder
+npm run compare:application-builder
+```
 
-The legacy webpack path remains available for parity checks and fallback use:
+Do not treat direct `ng run intershop-pwa:...` build invocations as the supported migration API.
+They bypass wrapper behavior and can produce artifacts that differ from `npm run build`.
+
+## Wrapper Responsibilities
+
+The wrapper keeps the behavior that previously lived in the custom Webpack build path or around it:
+
+- theme resolution for `b2b` and `b2c`
+- Angular file replacement normalization
+- HTML and SCSS resource replacements via temporary overlays before the Angular build
+- production `data-testing-*` stripping
+- PurgeCSS post-processing
+- service-worker cache-check patching
+- compile-time defines such as `PRODUCTION_MODE`, `SERVICE_WORKER`, `SSR`, and version labels
+- browser/server output wiring for SSR
+- active-file and replacement diagnostics
+
+`angular.json` remains the builder backend.
+The npm wrapper remains the public build frontend.
+
+## Legacy Webpack Fallbacks
+
+The legacy custom Webpack path remains available for comparison and fallback use:
 
 ```bash
 npm run build:webpack -- --configuration=b2b,production
 npm run build:webpack:server -- --configuration=b2b,production
-npm run build:watch:webpack
 npm run serve:webpack -- --configuration=b2b,development
 npm run analyze:webpack
-npm run dev:ssr:webpack
 ```
 
-`build:watch` defaults to `b2b,development`. For another theme, call the build wrapper directly, e.g.:
+These scripts should stay explicitly named as Webpack/legacy paths.
+They are not the default build path.
+
+## Accepted Migration Gaps
+
+The following Webpack differences are intentionally not recreated in the application-builder wrapper:
+
+- Webpack `keep_classnames`
+- Webpack-specific chunk splitting
+- the `undici` Babel-loader workaround
+
+If one of these becomes a runtime issue, address it as a targeted follow-up instead of expanding the general wrapper.
+
+## Analysis
+
+Use the application-builder analyzer for the official output:
 
 ```bash
-npm run build -- --configuration=b2c,development --watch
+npm run analyze
 ```
 
-`analyze` reads the application builder's esbuild metafile at `dist/stats.json`.
-Use `analyze:webpack` for the legacy Webpack stats format and `webpack-bundle-analyzer`.
-
-Do not replace the `build` and `server` targets in `angular.json` with the application builder directly while the wrapper still owns migration behavior.
-The final switch should either keep the wrapper as the official build entrypoint or move the wrapper behavior into a proper Angular builder target.
+`analyze` reads the application-builder metafile and writes `dist/stats.json` for bundle inspection.
+Use `analyze:webpack` only when comparing against the legacy Webpack stats format.

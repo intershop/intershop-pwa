@@ -24,7 +24,7 @@ env:
   CI: false
   SCRIPT: |
     npm run clean
-    npm run build client --configuration=b2b,development
+    npm run build -- --configuration=b2b,development
     npm run test products.service
     npm run test shell
     npm run format

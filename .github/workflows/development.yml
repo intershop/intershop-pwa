@@ -54,7 +54,7 @@ jobs:
         run: npm exec npm-run-all clean-localizations check-no-changes
 
       - name: Compile Angular
-        run: npm run build client
+        run: npm run build -- --configuration=b2b,production
         env:
           NODE_OPTIONS: --max-old-space-size=8192
 

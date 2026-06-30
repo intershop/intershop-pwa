@@ -32,10 +32,10 @@ function parseArgs(args: string[]): ServeOptions {
       return parsedOptions;
     },
     {
-      browserFolder: process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'application-spike', 'browser'),
+      browserFolder: process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'application-builder', 'browser'),
       liveReload: /^(on|1|true|yes)$/i.test(process.env.APPLICATION_BUILDER_LIVE_RELOAD || ''),
       port: process.env.PORT || '4300',
-      serverEntry: join('dist', 'application-spike', 'server', 'server.mjs'),
+      serverEntry: join('dist', 'application-builder', 'server', 'server.mjs'),
     }
   );
 
@@ -57,11 +57,11 @@ function getMissingRequiredFiles(options: ServeOptions): string[] {
 function startServer(options: ServeOptions): ChildProcess | undefined {
   const missingFiles = getMissingRequiredFiles(options);
   if (missingFiles.length) {
-    console.log(`serve:application-spike: waiting for ${missingFiles.join(', ')}`);
+    console.log(`serve:application-builder: waiting for ${missingFiles.join(', ')}`);
     return;
   }
 
-  console.log(`serve:application-spike: starting ${options.serverEntry} on port ${options.port}`);
+  console.log(`serve:application-builder: starting ${options.serverEntry} on port ${options.port}`);
   return spawn('node', [options.serverEntry], {
     env: {
       ...process.env,
@@ -82,7 +82,7 @@ function run() {
     const missingFiles = getMissingRequiredFiles(options);
     if (missingFiles.length) {
       if (server) {
-        console.log(`serve:application-spike: output incomplete, stopping server until rebuild completes`);
+        console.log(`serve:application-builder: output incomplete, stopping server until rebuild completes`);
         server.kill();
         server = undefined;
       }
@@ -96,7 +96,7 @@ function run() {
 
     lastServerMtime = serverMtime;
     if (server) {
-      console.log('serve:application-spike: server bundle changed, restarting');
+      console.log('serve:application-builder: server bundle changed, restarting');
       server.kill();
     }
     server = startServer(options);

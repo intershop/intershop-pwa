@@ -4,7 +4,7 @@ import { IncomingMessage, request } from 'http';
 import { basename, dirname, join, relative } from 'path';
 import postcss from 'postcss';
 
-/* eslint-disable no-console */
+/* eslint-disable max-lines, no-console */
 
 type Mode = 'development' | 'production';
 
@@ -108,9 +108,9 @@ interface ThemeSummary {
   path?: string;
 }
 
-const DEFAULT_APPLICATION_PATH = join('dist', 'application-spike', 'browser');
+const DEFAULT_APPLICATION_PATH = join('dist', 'application-builder', 'browser');
 
-const DEFAULT_APPLICATION_SERVER_ENTRY = join('dist', 'application-spike', 'server', 'server.mjs');
+const DEFAULT_APPLICATION_SERVER_ENTRY = join('dist', 'application-builder', 'server', 'server.mjs');
 
 const DEFAULT_PORT = 4350;
 
@@ -249,22 +249,25 @@ function buildConfiguration(matrixConfiguration: MatrixConfiguration, ssr: boole
   fs.rmSync(join('dist', 'browser'), { force: true, recursive: true });
   fs.rmSync(join('dist', 'server'), { force: true, recursive: true });
 
-  console.log(`application-spike:parity: building webpack ${matrixConfiguration.configuration}`);
+  console.log(`application-builder:parity: building webpack ${matrixConfiguration.configuration}`);
   execSync(`npm run ng -- run intershop-pwa:build:${matrixConfiguration.configuration} --progress=false`, {
     stdio: 'inherit',
   });
 
   if (ssr) {
-    console.log(`application-spike:parity: building webpack server ${matrixConfiguration.configuration}`);
+    console.log(`application-builder:parity: building webpack server ${matrixConfiguration.configuration}`);
     execSync(`npm run ng -- run intershop-pwa:server:${matrixConfiguration.configuration} --progress=false`, {
       stdio: 'inherit',
     });
   }
 
-  console.log(`application-spike:parity: building application ${matrixConfiguration.configuration}`);
-  execSync(`npm run build:application-spike -- --configuration=${matrixConfiguration.configuration} --progress=false`, {
-    stdio: 'inherit',
-  });
+  console.log(`application-builder:parity: building application ${matrixConfiguration.configuration}`);
+  execSync(
+    `npm run build:application-builder -- --configuration=${matrixConfiguration.configuration} --progress=false`,
+    {
+      stdio: 'inherit',
+    }
+  );
 }
 
 function collectFiles(path: string): string[] {

@@ -87,15 +87,15 @@ interface ReplacementReport {
 
 const RUNNER_CONSTANTS: Readonly<Record<string, string>> = {
   generatedBasePath:
-    process.env.APPLICATION_BUILDER_GENERATED_BASE_PATH || join('node_modules', '.cache', 'application-spike'),
-  outputBasePath: process.env.APPLICATION_BUILDER_OUTPUT_BASE_PATH || join('dist', 'application-spike'),
-  runnerLabel: process.env.APPLICATION_BUILDER_RUNNER_LABEL || 'build-application-spike',
-  spikeTarget: process.env.APPLICATION_BUILDER_TARGET || 'build-application-spike',
-  versionLabel: process.env.APPLICATION_BUILDER_VERSION_LABEL || 'application-builder-spike',
+    process.env.APPLICATION_BUILDER_GENERATED_BASE_PATH || join('node_modules', '.cache', 'application-builder'),
+  outputBasePath: process.env.APPLICATION_BUILDER_OUTPUT_BASE_PATH || join('dist', 'application-builder'),
+  runnerLabel: process.env.APPLICATION_BUILDER_RUNNER_LABEL || 'build-application',
+  spikeTarget: process.env.APPLICATION_BUILDER_TARGET || 'build-application',
+  versionLabel: process.env.APPLICATION_BUILDER_VERSION_LABEL || 'application-builder',
   themeEnvironmentReplacement: 'src/environments/environment.ts',
   workspaceBackupPath:
     process.env.APPLICATION_BUILDER_WORKSPACE_BACKUP_PATH ||
-    join('node_modules', '.cache', 'application-spike', 'angular.original.json'),
+    join('node_modules', '.cache', 'application-builder', 'angular.original.json'),
   workspacePath: 'angular.json',
 };
 

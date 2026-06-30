@@ -9,7 +9,7 @@ interface CliOptions {
   webpackReport: string;
 }
 
-const DEFAULT_APPLICATION_REPORT = join('dist', 'application-spike', 'browser', 'active-files.json');
+const DEFAULT_APPLICATION_REPORT = join('dist', 'application-builder', 'browser', 'active-files.json');
 
 const DEFAULT_WEBPACK_REPORT = join('dist', 'browser', 'active-files.json');
 

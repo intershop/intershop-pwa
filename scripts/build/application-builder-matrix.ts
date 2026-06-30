@@ -43,9 +43,9 @@ interface ReplacementReport {
   };
 }
 
-const BROWSER_OUTPUT_PATH = join(process.cwd(), 'dist', 'application-spike', 'browser');
+const BROWSER_OUTPUT_PATH = join(process.cwd(), 'dist', 'application-builder', 'browser');
 
-const SERVER_ENTRY = join(process.cwd(), 'dist', 'application-spike', 'server', 'server.mjs');
+const SERVER_ENTRY = join(process.cwd(), 'dist', 'application-builder', 'server', 'server.mjs');
 
 const DEFAULT_PORT = 4310;
 
@@ -116,8 +116,8 @@ function parseArgs(args: string[]): CliOptions {
 }
 
 function buildConfiguration(configuration: string) {
-  console.log(`application-spike:matrix: building ${configuration}`);
-  execSync(`npm run build:application-spike -- --configuration=${configuration} --progress=false`, {
+  console.log(`application-builder:matrix: building ${configuration}`);
+  execSync(`npm run build:application-builder -- --configuration=${configuration} --progress=false`, {
     stdio: 'inherit',
   });
 }
@@ -190,7 +190,7 @@ function assertProductionTestingIdsRemoved(mode: 'development' | 'production') {
 }
 
 function readReplacementReport(): ReplacementReport {
-  const reportPath = join('dist', 'application-spike', 'theme-replacements-report.json');
+  const reportPath = join('dist', 'application-builder', 'theme-replacements-report.json');
   if (!fs.existsSync(reportPath)) {
     throw new Error(`Missing application spike replacement report at ${reportPath}.`);
   }
@@ -256,7 +256,7 @@ function startServer(port: number): ChildProcess {
     throw new Error(`Missing application spike server at ${SERVER_ENTRY}.`);
   }
 
-  console.log(`application-spike:matrix: starting server on port ${port}`);
+  console.log(`application-builder:matrix: starting server on port ${port}`);
   return spawn(process.execPath, [SERVER_ENTRY], {
     detached: true,
     env: {
@@ -381,7 +381,7 @@ async function run() {
       buildConfiguration(matrixConfiguration.configuration);
     }
     results.push(await smokeConfiguration(matrixConfiguration, port));
-    console.log(`application-spike:matrix: ${matrixConfiguration.configuration} passed`);
+    console.log(`application-builder:matrix: ${matrixConfiguration.configuration} passed`);
   }
 
   console.log(JSON.stringify({ results }, undefined, 2));

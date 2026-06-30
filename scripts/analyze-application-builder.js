@@ -76,7 +76,7 @@ function findBundleDir(statsPath, configuredBundleDir) {
     path.join(statsDir, 'browser'),
     statsDir,
     path.join(process.cwd(), 'dist', 'browser'),
-    path.join(process.cwd(), 'dist', 'application-spike', 'browser'),
+    path.join(process.cwd(), 'dist', 'application-builder', 'browser'),
   ];
   const bundleDir = candidates.find(candidate => fs.existsSync(candidate));
   if (!bundleDir) {

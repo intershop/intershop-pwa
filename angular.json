@@ -101,11 +101,11 @@
             "b2c": {}
           }
         },
-        "build-application-spike": {
+        "build-application": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/application-spike",
+              "base": "dist/application-builder",
               "browser": "browser",
               "server": "server"
             },
@@ -113,7 +113,7 @@
             "browser": "src/main.ts",
             "server": "src/main.server.ts",
             "polyfills": ["src/polyfills.ts"],
-            "tsConfig": "tsconfig.application-spike.json",
+            "tsConfig": "tsconfig.application-builder.json",
             "assets": [
               "src/assets",
               {
@@ -139,7 +139,7 @@
             "allowedCommonJsDependencies": ["js-yaml", "localforage"],
             "externalDependencies": ["elastic-apm-node"],
             "define": {
-              "PWA_VERSION": "\"11.1.0 application-builder-spike - configuration:b2b,production service-worker:false\"",
+              "PWA_VERSION": "\"11.1.0 application-builder - configuration:b2b,production service-worker:false\"",
               "PRODUCTION_MODE": "true",
               "SERVICE_WORKER": "false",
               "NGRX_RUNTIME_CHECKS": "false",
@@ -372,7 +372,7 @@
   "cli": {
     "analytics": false,
     "cache": {
-      "path": ".angular\\cache\\build-application-spike\\b2b\\development"
+      "path": ".angular\\cache\\build-application\\b2b\\development"
     }
   }
 }

@@ -96,7 +96,7 @@ const result = spawnSync(
   [
     '--project',
     'tsconfig.scripts.json',
-    'scripts/build/application-builder-spike.ts',
+    'scripts/build/application-builder.ts',
     ...getConfigurationArgs(),
     ...remainingArgs,
   ],
