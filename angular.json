@@ -337,7 +337,7 @@
               ]
             }
           },
-          "defaultConfiguration": "b2b,development"
+          "defaultConfiguration": "b2b,production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
