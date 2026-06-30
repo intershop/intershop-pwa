@@ -6,26 +6,34 @@ import { join, resolve } from 'path';
 
 interface ServeOptions {
   browserFolder: string;
+  liveReload: boolean;
   port: string;
   serverEntry: string;
 }
 
 function parseArgs(args: string[]): ServeOptions {
   const options = args.reduce<ServeOptions>(
-    (options, arg) => {
+    (parsedOptions, arg) => {
       if (arg.startsWith('--port=')) {
-        return { ...options, port: arg.split('=')[1] };
+        return { ...parsedOptions, port: arg.split('=')[1] };
       }
       if (arg.startsWith('--browser-folder=')) {
-        return { ...options, browserFolder: arg.split('=')[1] };
+        return { ...parsedOptions, browserFolder: arg.split('=')[1] };
       }
       if (arg.startsWith('--server-entry=')) {
-        return { ...options, serverEntry: arg.split('=')[1] };
+        return { ...parsedOptions, serverEntry: arg.split('=')[1] };
       }
-      return options;
+      if (arg === '--live-reload' || arg === '--live-reload=true') {
+        return { ...parsedOptions, liveReload: true };
+      }
+      if (arg === '--live-reload=false') {
+        return { ...parsedOptions, liveReload: false };
+      }
+      return parsedOptions;
     },
     {
       browserFolder: process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'application-spike', 'browser'),
+      liveReload: /^(on|1|true|yes)$/i.test(process.env.APPLICATION_BUILDER_LIVE_RELOAD || ''),
       port: process.env.PORT || '4300',
       serverEntry: join('dist', 'application-spike', 'server', 'server.mjs'),
     }
@@ -50,14 +58,14 @@ function startServer(options: ServeOptions): ChildProcess | undefined {
   const missingFiles = getMissingRequiredFiles(options);
   if (missingFiles.length) {
     console.log(`serve:application-spike: waiting for ${missingFiles.join(', ')}`);
-    return undefined;
+    return;
   }
 
   console.log(`serve:application-spike: starting ${options.serverEntry} on port ${options.port}`);
   return spawn('node', [options.serverEntry], {
     env: {
       ...process.env,
-      APPLICATION_BUILDER_LIVE_RELOAD: 'true',
+      APPLICATION_BUILDER_LIVE_RELOAD: options.liveReload ? 'true' : 'false',
       BROWSER_FOLDER: options.browserFolder,
       PORT: options.port,
     },

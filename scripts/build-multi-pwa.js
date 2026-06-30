@@ -26,7 +26,7 @@ const builds = configurations.map(({ theme }) =>
 );
 
 if (+process.env.PWA_BUILD_MAX_WORKERS > 1) {
-  console.warn('Application builder multi compile runs sequentially while the runner patches angular.json.');
+  console.warn('Application builder multi compile currently runs sequentially.');
 }
 
 const result = spawnSync('npm-run-all', ['--silent', ...builds], { stdio: 'inherit' });
