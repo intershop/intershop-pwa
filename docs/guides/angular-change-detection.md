@@ -53,7 +53,7 @@ The stability of the Angular zone can be used to make decisions in the code. `Ap
 import { ApplicationRef } from '@angular/core';
 
 @Component({
-  /* ... */
+  // ...
 })
 export class MyComponent {
   constructor(private appRef: ApplicationRef) {
