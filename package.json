@@ -59,7 +59,7 @@
     "serve:application": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts --port=4200 --browser-folder=dist/browser --server-entry=dist/server/server.mjs",
     "serve:application:dev": "npm run serve:application -- --live-reload",
     "serve:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts --port=4200",
-    "serve:webpack": "ng serve",
+    "serve:webpack": "ng run intershop-pwa:serve-webpack",
     "build": "npm run build:application --",
     "build:multi": "node scripts/build-multi-pwa",
     "analyze": "npm run build -- --stats-json && node scripts/analyze-application-builder.js dist/stats.json",

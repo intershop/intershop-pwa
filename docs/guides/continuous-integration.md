@@ -25,7 +25,7 @@ This section provides an overview of required continuous integration steps to ve
 ## Code Integrity
 
 Since Angular projects are JavaScript-based, even though they use TypeScript-based code, everything is highly dynamic.
-Parts of the software can still run error free with `webpack-dev-server` (`ng serve`), even if other parts were not compiled or have template errors.
+Parts of the software can still run error free with the development server (`ng serve`), even if other parts were not compiled or have template errors.
 
 Angular in production mode does AoT and applies some more code optimizations that can sometimes clash with definitions or third-party libraries.
 To ensure having a consistent code base, the CI system should always perform at least a production build (`npm run build`).

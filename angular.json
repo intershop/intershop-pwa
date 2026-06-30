@@ -186,29 +186,177 @@
                 }
               ]
             },
-            "b2b": {},
-            "b2c": {}
-          },
-          "defaultConfiguration": "b2b,production"
-        },
-        "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "buildTarget": "intershop-pwa:build"
-          },
-          "defaultConfiguration": "b2b,development",
-          "configurations": {
-            "production": {
-              "buildTarget": "intershop-pwa:build:production"
-            },
-            "development": {
-              "buildTarget": "intershop-pwa:build:development"
-            },
             "b2b": {
-              "buildTarget": "intershop-pwa:build:b2b"
+              "styles": ["src/styles/themes/b2b/style.scss"],
+              "stylePreprocessorOptions": {
+                "includePaths": ["src/styles/themes/b2b"],
+                "sass": {
+                  "silenceDeprecations": [
+                    "mixed-decls",
+                    "color-functions",
+                    "global-builtin",
+                    "import"
+                  ]
+                }
+              },
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "favicon.ico",
+                  "input": "src/assets/themes/b2b/img/",
+                  "output": "/"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                }
+              ]
             },
             "b2c": {
-              "buildTarget": "intershop-pwa:build:b2c"
+              "styles": ["src/styles/themes/b2c/style.scss"],
+              "stylePreprocessorOptions": {
+                "includePaths": ["src/styles/themes/b2c"],
+                "sass": {
+                  "silenceDeprecations": [
+                    "mixed-decls",
+                    "color-functions",
+                    "global-builtin",
+                    "import"
+                  ]
+                }
+              },
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "favicon.ico",
+                  "input": "src/assets/themes/b2c/img/",
+                  "output": "/"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2c.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            },
+            "b2b-serve-development": {
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "server": false,
+              "ssr": false,
+              "prerender": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "styles": ["src/styles/themes/b2b/style.scss"],
+              "stylePreprocessorOptions": {
+                "includePaths": ["src/styles/themes/b2b"],
+                "sass": {
+                  "silenceDeprecations": [
+                    "mixed-decls",
+                    "color-functions",
+                    "global-builtin",
+                    "import"
+                  ]
+                }
+              },
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "favicon.ico",
+                  "input": "src/assets/themes/b2b/img/",
+                  "output": "/"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                }
+              ]
+            },
+            "b2c-serve-development": {
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false,
+              "server": false,
+              "ssr": false,
+              "prerender": false,
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "styles": ["src/styles/themes/b2c/style.scss"],
+              "stylePreprocessorOptions": {
+                "includePaths": ["src/styles/themes/b2c"],
+                "sass": {
+                  "silenceDeprecations": [
+                    "mixed-decls",
+                    "color-functions",
+                    "global-builtin",
+                    "import"
+                  ]
+                }
+              },
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "favicon.ico",
+                  "input": "src/assets/themes/b2c/img/",
+                  "output": "/"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2c.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "b2b,development"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "defaultConfiguration": "b2b",
+          "options": {
+            "buildTarget": "intershop-pwa:build-application:b2b-serve-development"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "intershop-pwa:build-application:b2b,production"
+            },
+            "development": {
+              "buildTarget": "intershop-pwa:build-application:b2b-serve-development"
+            },
+            "b2b": {
+              "buildTarget": "intershop-pwa:build-application:b2b-serve-development"
+            },
+            "b2c": {
+              "buildTarget": "intershop-pwa:build-application:b2c-serve-development"
             }
           }
         },
@@ -269,6 +417,27 @@
             "b2c": {
               "browserTarget": "intershop-pwa:build:b2c,development",
               "serverTarget": "intershop-pwa:server:b2c,development"
+            }
+          }
+        },
+        "serve-webpack": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "buildTarget": "intershop-pwa:build"
+          },
+          "defaultConfiguration": "b2b,development",
+          "configurations": {
+            "production": {
+              "buildTarget": "intershop-pwa:build:production"
+            },
+            "development": {
+              "buildTarget": "intershop-pwa:build:development"
+            },
+            "b2b": {
+              "buildTarget": "intershop-pwa:build:b2b"
+            },
+            "b2c": {
+              "buildTarget": "intershop-pwa:build:b2c"
             }
           }
         }

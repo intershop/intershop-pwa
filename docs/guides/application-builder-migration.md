@@ -34,6 +34,16 @@ npm run compare:application-builder
 Do not treat direct `ng run intershop-pwa:...` build invocations as the supported migration API.
 They bypass wrapper behavior and can produce artifacts that differ from `npm run build`.
 
+The standard Angular development server is wired to a browser-only application-builder target:
+
+```bash
+ng serve
+ng serve --configuration=b2c
+```
+
+Use `npm run dev:ssr:b2b` or `npm run dev:ssr:b2c` when developing the SSR path.
+Use `npm run serve:webpack` only when you explicitly need the legacy custom Webpack dev server.
+
 ## Wrapper Responsibilities
 
 The wrapper keeps the behavior that previously lived in the custom Webpack build path or around it:
