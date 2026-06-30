@@ -115,7 +115,23 @@ const APPLICATION_BUILDER_POLYFILLS = ['@angular/localize/init'];
 
 const DATA_TESTING_ID_TEMPLATE_ROOTS = ['src', 'projects'];
 
+const DATA_TESTING_ID_CACHE_VERSION = 'data-testing-preload-env-execargv-v1';
+
 const ACTIVE_FILES_TEMPLATE_ROOTS = ['src', 'projects'];
+
+const DATA_TESTING_HTML_ATTRIBUTE_PATTERN = / ?\[?(attr\.)?data-testing-[a-z-]*?\]?="([^"]*?)"/g;
+
+const DATA_TESTING_ESCAPED_HTML_ATTRIBUTE_PATTERN = / ?\[?(attr\.)?data-testing-[a-z-]*?\]?=\\"([^"]*?)\\"/g;
+
+const DATA_TESTING_COMPILED_ATTRIBUTE_WITH_TRAILING_COMMA_PATTERN = /"data-testing-[a-z-]*","[^"]*",/g;
+
+const DATA_TESTING_COMPILED_ATTRIBUTE_PATTERN = /,?"data-testing-[a-z-]*","[^"]*"/g;
+
+const DATA_TESTING_COMPILED_ATTRIBUTE_INSTRUCTION_PATTERN = /\w+\("data-testing-[a-z-]*",[^)]*?\)/g;
+
+const DATA_TESTING_CHAINED_COMPILED_ATTRIBUTE_INSTRUCTION_PATTERN = /\("data-testing-[a-z-]*",[^)]*?\)/g;
+
+const DATA_TESTING_OUTPUT_FILE_PATTERN = /\.(?:html|js|mjs|map)$/;
 
 const PURGE_CSS_CONTENT_ROOTS = ['src', 'projects'];
 
@@ -601,7 +617,17 @@ function watchThemeReplacementFilesInWatchMode(
 }
 
 function stripDataTestingIdAttributes(template: string): string {
-  return template.replace(/ ?\[?(attr\.)?data-testing-[a-z-]*?\]?="([^"]*?)"/g, '');
+  return template
+    .replace(DATA_TESTING_HTML_ATTRIBUTE_PATTERN, '')
+    .replace(DATA_TESTING_ESCAPED_HTML_ATTRIBUTE_PATTERN, '')
+    .replace(DATA_TESTING_COMPILED_ATTRIBUTE_WITH_TRAILING_COMMA_PATTERN, '')
+    .replace(DATA_TESTING_COMPILED_ATTRIBUTE_PATTERN, '')
+    .replace(DATA_TESTING_COMPILED_ATTRIBUTE_INSTRUCTION_PATTERN, 'void 0')
+    .replace(DATA_TESTING_CHAINED_COMPILED_ATTRIBUTE_INSTRUCTION_PATTERN, '');
+}
+
+function isDataTestingOutputFile(file: string): boolean {
+  return DATA_TESTING_OUTPUT_FILE_PATTERN.test(file);
 }
 
 function collectHtmlTemplateFiles(path: string): string[] {
@@ -685,6 +711,17 @@ function writeDataTestingIdPreloadScript(enabled: boolean): string | undefined {
   );
 
   return preloadPath;
+}
+
+function countDataTestingIdTemplates(production: boolean): number {
+  if (!production || getEnvironmentFlag('TESTING')) {
+    return 0;
+  }
+
+  return ['src', 'projects']
+    .flatMap(path => collectFiles(path))
+    .filter(file => file.endsWith('.html'))
+    .filter(file => fs.readFileSync(file, 'utf-8').includes('data-testing-')).length;
 }
 
 function collectFiles(path: string): string[] {
@@ -1221,6 +1258,51 @@ function summarizeFileBytes(files: string[]): number {
   return files.reduce((sum, file) => sum + fs.statSync(file).size, 0);
 }
 
+function stripDataTestingAttributesFromOutput(stripDataTestingAttributes: boolean) {
+  if (!stripDataTestingAttributes) {
+    return;
+  }
+
+  const updatedFiles = collectFiles(RUNNER_CONSTANTS.outputBasePath)
+    .filter(isDataTestingOutputFile)
+    .filter(file => {
+      const content = fs.readFileSync(file, 'utf-8');
+      const stripped = stripDataTestingIdAttributes(content);
+
+      if (stripped === content) {
+        return false;
+      }
+
+      fs.writeFileSync(file, stripped);
+      return true;
+    });
+
+  if (updatedFiles.length) {
+    console.log(
+      `${RUNNER_CONSTANTS.runnerLabel}: stripped data-testing attributes from ${updatedFiles.length} production output files`
+    );
+  }
+}
+
+function assertDataTestingAttributesRemoved(stripDataTestingAttributes: boolean) {
+  if (!stripDataTestingAttributes) {
+    return;
+  }
+
+  const filesWithTestingAttributes = collectFiles(RUNNER_CONSTANTS.outputBasePath).filter(file => {
+    if (!/\.(html|js|mjs)$/.test(file)) {
+      return false;
+    }
+    return fs.readFileSync(file, { encoding: 'utf-8' }).includes('data-testing-');
+  });
+
+  if (filesWithTestingAttributes.length) {
+    throw new Error(
+      `Production output still contains data-testing attributes in ${filesWithTestingAttributes.join(', ')}.`
+    );
+  }
+}
+
 function applyFileOverlays(fileOverlays: FileOverlay[]): () => void {
   const backups = fileOverlays.map(({ content: replacementContent, original }) => ({
     content: fs.readFileSync(original),
@@ -1255,7 +1337,7 @@ function createReplacementReport(
     configuration,
     dataTestingIdTemplatesStripped,
     generatedIndex,
-    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as a temporary prebuild overlay. data-testing-* stripping is applied in-memory through a Node preload before scheduling the Angular builder. Webpack keep_classnames=/.*Module$/ is intentionally not migrated: the application builder does not expose a scoped keepNames option, and no runtime dependency on Angular module class names is known.',
+    note: 'Angular application builder fileReplacements support TS/JS/JSON only. HTML/SCSS replacements are reported here and applied by the spike runner as temporary prebuild overlays. data-testing-* stripping is applied in-memory through a Node preload before scheduling the Angular builder. Webpack keep_classnames=/.*Module$/ is intentionally not migrated: the application builder does not expose a scoped keepNames option, and no runtime dependency on Angular module class names is known.',
     production,
     purgeCss,
     resourceOverlayApplied: Object.keys(resourceReplacements).length > 0,
@@ -1419,9 +1501,39 @@ async function createArchitectWorkspace(
   return architectWorkspace;
 }
 
-function loadPreloadScript(preloadPath?: string) {
-  if (preloadPath) {
-    requireFromCurrentFile(resolve(preloadPath));
+function getPreloadOption(preloadPath: string): string {
+  return `--require=${resolve(preloadPath)}`;
+}
+
+function getNodeOptionsWithPreload(preloadPath: string): string {
+  const preloadOption = getPreloadOption(preloadPath);
+  return [process.env.NODE_OPTIONS, preloadOption].filter(Boolean).join(' ');
+}
+
+async function withPreloadScript(preloadPath: string | undefined, callback: () => Promise<void>): Promise<void> {
+  if (!preloadPath) {
+    await callback();
+    return;
+  }
+
+  const previousNodeOptions = process.env.NODE_OPTIONS;
+  const previousExecArgv = [...process.execArgv];
+  const preloadOption = getPreloadOption(preloadPath);
+  process.env.NODE_OPTIONS = getNodeOptionsWithPreload(preloadPath);
+  if (!process.execArgv.includes(preloadOption)) {
+    process.execArgv.push(preloadOption);
+  }
+  requireFromCurrentFile(resolve(preloadPath));
+
+  try {
+    await callback();
+  } finally {
+    if (previousNodeOptions === undefined) {
+      delete process.env.NODE_OPTIONS;
+    } else {
+      process.env.NODE_OPTIONS = previousNodeOptions;
+    }
+    process.execArgv.splice(0, process.execArgv.length, ...previousExecArgv);
   }
 }
 
@@ -1483,13 +1595,13 @@ async function runAngularBuilder(
   workspace: AngularWorkspace,
   preloadPath?: string
 ): Promise<void> {
-  loadPreloadScript(preloadPath);
+  await withPreloadScript(preloadPath, async () => {
+    const architectWorkspace = await createArchitectWorkspace(projectName, workspace);
+    const architectHost = new WorkspaceNodeModulesArchitectHost(architectWorkspace, process.cwd());
+    const architect = new Architect(architectHost);
 
-  const architectWorkspace = await createArchitectWorkspace(projectName, workspace);
-  const architectHost = new WorkspaceNodeModulesArchitectHost(architectWorkspace, process.cwd());
-  const architect = new Architect(architectHost);
-
-  await runScheduledBuilder(architect, projectName, args, theme);
+    await runScheduledBuilder(architect, projectName, args, theme);
+  });
 }
 
 // eslint-disable-next-line complexity
@@ -1526,10 +1638,20 @@ async function run() {
   const resourceReplacements = getResourceOverlayReplacements(themeFileReplacements);
   const resourceReplacementReadMap = buildResourceReplacements(themeFileReplacements);
   const resourceFileOverlays = createResourceFileOverlays(resourceReplacements);
+  const stripDataTestingAttributes = production && !getEnvironmentFlag('TESTING');
   const dataTestingIdFileOverlays = createDataTestingIdFileOverlays(production);
-  const dataTestingIdPreloadScript = writeDataTestingIdPreloadScript(dataTestingIdFileOverlays.length > 0);
+  const dataTestingIdPreloadScript = writeDataTestingIdPreloadScript(stripDataTestingAttributes);
   const fileOverlays = resourceFileOverlays;
-  const fileOverlayCacheKey = getFileOverlayCacheKey([...fileOverlays, ...dataTestingIdFileOverlays]);
+  const dataTestingIdCacheInputs = dataTestingIdFileOverlays.length
+    ? [
+        ...dataTestingIdFileOverlays,
+        {
+          content: DATA_TESTING_ID_CACHE_VERSION,
+          original: 'data-testing-preload-version',
+        },
+      ]
+    : [];
+  const fileOverlayCacheKey = getFileOverlayCacheKey([...fileOverlays, ...dataTestingIdCacheInputs]);
   const generatedIndex = writeThemedIndex(theme);
   const report = createReplacementReport(
     configuration,
@@ -1539,7 +1661,7 @@ async function run() {
     generatedIndex,
     angularFileReplacements,
     unsupportedResourceReplacements,
-    dataTestingIdFileOverlays.length,
+    dataTestingIdFileOverlays.length || countDataTestingIdTemplates(production),
     createPendingPurgeCssReport(production)
   );
 
@@ -1628,6 +1750,8 @@ async function run() {
   try {
     await runAngularBuilder(projectName, remainingArgs, theme, workspace, dataTestingIdPreloadScript);
     restoreDistRootSupportFiles();
+    stripDataTestingAttributesFromOutput(stripDataTestingAttributes);
+    assertDataTestingAttributesRemoved(stripDataTestingAttributes);
     await applyPostBuildOptimizations(production, remainingArgs, theme, activeFileReplacements, report);
   } catch (error) {
     buildError = error;

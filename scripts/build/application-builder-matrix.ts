@@ -181,11 +181,11 @@ function assertProductionTestingIdsRemoved(mode: 'development' | 'production') {
     if (!/\.(html|js)$/.test(file)) {
       return false;
     }
-    return fs.readFileSync(file, { encoding: 'utf-8' }).includes('data-testing-id');
+    return fs.readFileSync(file, { encoding: 'utf-8' }).includes('data-testing-');
   });
 
   if (filesWithTestingIds.length) {
-    throw new Error(`Production output still contains data-testing-id in ${filesWithTestingIds.join(', ')}.`);
+    throw new Error(`Production output still contains data-testing attributes in ${filesWithTestingIds.join(', ')}.`);
   }
 }
 
