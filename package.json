@@ -56,7 +56,7 @@
     "compare:active-files": "ts-node --project tsconfig.scripts.json scripts/build/active-files-parity.ts",
     "compare:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-parity.ts",
     "matrix:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-matrix.ts",
-    "serve:application": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts --port=4200 --browser-folder=dist/browser --server-entry=dist/server/server.mjs",
+    "serve:application": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts",
     "serve:application:dev": "npm run serve:application -- --live-reload",
     "serve:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts --port=4200",
     "serve:webpack": "ng run intershop-pwa:serve-webpack",

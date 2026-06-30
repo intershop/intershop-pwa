@@ -11,6 +11,10 @@ interface ServeOptions {
   serverEntry: string;
 }
 
+function getNpmConfigOption(name: string): string | undefined {
+  return process.env[`npm_config_${name.replace(/-/g, '_')}`];
+}
+
 function parseArgs(args: string[]): ServeOptions {
   const options = args.reduce<ServeOptions>(
     (parsedOptions, arg) => {
@@ -32,17 +36,26 @@ function parseArgs(args: string[]): ServeOptions {
       return parsedOptions;
     },
     {
-      browserFolder: process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'application-builder', 'browser'),
-      liveReload: /^(on|1|true|yes)$/i.test(process.env.APPLICATION_BUILDER_LIVE_RELOAD || ''),
-      port: process.env.PORT || '4300',
-      serverEntry: join('dist', 'application-builder', 'server', 'server.mjs'),
+      browserFolder:
+        process.env.BROWSER_FOLDER || getNpmConfigOption('browser-folder') || join(process.cwd(), 'dist', 'browser'),
+      liveReload: /^(on|1|true|yes)$/i.test(
+        process.env.APPLICATION_BUILDER_LIVE_RELOAD || getNpmConfigOption('live-reload') || ''
+      ),
+      port: process.env.PORT || getNpmConfigOption('port') || '4200',
+      serverEntry:
+        process.env.SERVER_ENTRY || getNpmConfigOption('server-entry') || join('dist', 'server', 'server.mjs'),
     }
   );
+
+  const serverEntry = resolve(options.serverEntry);
 
   return {
     ...options,
     browserFolder: resolve(options.browserFolder),
-    serverEntry: resolve(options.serverEntry),
+    serverEntry:
+      fs.existsSync(serverEntry) && fs.statSync(serverEntry).isDirectory()
+        ? join(serverEntry, 'server.mjs')
+        : serverEntry,
   };
 }
 
