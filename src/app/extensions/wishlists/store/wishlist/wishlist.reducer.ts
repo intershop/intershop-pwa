@@ -134,11 +134,8 @@ export const wishlistReducer = createReducer(
 
     return wishlistsAdapter.upsertOne(updatedWishlist, state);
   }),
-  on(
-    wishlistApiActions.loadSharedWishlistSuccess,
-    (state, action): WishlistState => ({
-      ...state,
-      sharedWishlist: action.payload.wishlist,
-    })
-  )
+  on(wishlistApiActions.loadSharedWishlistSuccess, (state, action): WishlistState => ({
+    ...state,
+    sharedWishlist: action.payload.wishlist,
+  }))
 );

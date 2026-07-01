@@ -111,15 +111,12 @@ export const usersReducer = createReducer(
       ...usersAdapter.removeOne(login, state),
     };
   }),
-  on(
-    addUsersFromCsv,
-    (state, action): UsersState => ({
-      ...state,
-      loading: true,
-      importResults: [],
-      importTotal: action.payload.users?.length || 0,
-    })
-  ),
+  on(addUsersFromCsv, (state, action): UsersState => ({
+    ...state,
+    loading: true,
+    importResults: [],
+    importTotal: action.payload.users?.length || 0,
+  })),
   on(addUserFromCsvSingleResult, (state, action): UsersState => {
     const { importResult } = action.payload;
     const { user } = importResult;
@@ -136,36 +133,22 @@ export const usersReducer = createReducer(
       importResults: [...state.importResults, importResult],
     };
   }),
-  on(
-    addUsersFromCsvComplete,
-    (state): UsersState => ({
-      ...state,
-      loading: false,
-    })
+  on(addUsersFromCsvComplete, (state): UsersState => ({
+    ...state,
+    loading: false,
+  })),
+  on(addUsersFromCsvImportTotal, (state, action): UsersState => ({
+    ...state,
+    importTotal: action.payload.totalUsers,
+  })),
+  on(loadSystemUserRolesSuccess, (state, action): UsersState => ({
+    ...state,
+    roles: action.payload.roles,
+  })),
+  on(setUserRolesSuccess, (state, action): UsersState =>
+    usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
   ),
-  on(
-    addUsersFromCsvImportTotal,
-    (state, action): UsersState => ({
-      ...state,
-      importTotal: action.payload.totalUsers,
-    })
-  ),
-  on(
-    loadSystemUserRolesSuccess,
-    (state, action): UsersState => ({
-      ...state,
-      roles: action.payload.roles,
-    })
-  ),
-  on(
-    setUserRolesSuccess,
-    (state, action): UsersState =>
-      usersAdapter.updateOne({ id: action.payload.login, changes: { roleIDs: action.payload.roles } }, state)
-  ),
-  on(
-    setUserBudgetSuccess,
-    (state, action): UsersState => ({
-      ...usersAdapter.updateOne({ id: action.payload.login, changes: { userBudget: action.payload.budget } }, state),
-    })
-  )
+  on(setUserBudgetSuccess, (state, action): UsersState => ({
+    ...usersAdapter.updateOne({ id: action.payload.login, changes: { userBudget: action.payload.budget } }, state),
+  }))
 );

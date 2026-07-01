@@ -27,11 +27,8 @@ export const dataRequestsReducer = createReducer(
   unsetLoadingOn(confirmGDPRDataRequestSuccess, confirmGDPRDataRequestFail),
   setErrorOn(confirmGDPRDataRequestFail),
 
-  on(
-    confirmGDPRDataRequestSuccess,
-    (state, action): DataRequestsState => ({
-      ...state,
-      firstGDPRDataRequest: action.payload.infoCode === 'gdpr_request.confirmed.info',
-    })
-  )
+  on(confirmGDPRDataRequestSuccess, (state, action): DataRequestsState => ({
+    ...state,
+    firstGDPRDataRequest: action.payload.infoCode === 'gdpr_request.confirmed.info',
+  }))
 );

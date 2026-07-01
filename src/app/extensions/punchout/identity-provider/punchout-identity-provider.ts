@@ -56,14 +56,12 @@ export class PunchoutIdentityProvider implements IdentityProvider {
   triggerLogin(route: ActivatedRouteSnapshot): TriggerReturnType {
     // check for required start parameters before doing anything with the punchout route
     // 'sid', 'access-token' (cXML) or 'HOOK_URL', 'USERNAME', 'PASSWORD' (OCI)
-    if (
-      !(
-        (route.queryParamMap.has('sid') && route.queryParamMap.has('access-token')) ||
-        (route.queryParamMap.has('HOOK_URL') &&
-          route.queryParamMap.has('USERNAME') &&
-          route.queryParamMap.has('PASSWORD'))
-      )
-    ) {
+    if (!(
+      (route.queryParamMap.has('sid') && route.queryParamMap.has('access-token')) ||
+      (route.queryParamMap.has('HOOK_URL') &&
+        route.queryParamMap.has('USERNAME') &&
+        route.queryParamMap.has('PASSWORD'))
+    )) {
       this.appFacade.setBusinessError('punchout.error.missing.parameters');
       return false;
     }

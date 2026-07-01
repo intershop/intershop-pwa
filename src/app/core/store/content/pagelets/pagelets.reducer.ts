@@ -14,16 +14,13 @@ const initialState = pageletsAdapter.getInitialState();
 
 export const pageletsReducer = createReducer(
   initialState,
-  on(
-    loadContentIncludeSuccess,
-    (state, action): PageletsState => pageletsAdapter.upsertMany(action.payload.pagelets, state)
+  on(loadContentIncludeSuccess, (state, action): PageletsState =>
+    pageletsAdapter.upsertMany(action.payload.pagelets, state)
   ),
-  on(
-    loadContentPageSuccess,
-    (state, action): PageletsState => pageletsAdapter.upsertMany(action.payload.pagelets, state)
+  on(loadContentPageSuccess, (state, action): PageletsState =>
+    pageletsAdapter.upsertMany(action.payload.pagelets, state)
   ),
-  on(
-    loadViewContextEntrypointSuccess,
-    (state, action): PageletsState => pageletsAdapter.upsertMany(action.payload.pagelets, state)
+  on(loadViewContextEntrypointSuccess, (state, action): PageletsState =>
+    pageletsAdapter.upsertMany(action.payload.pagelets, state)
   )
 );

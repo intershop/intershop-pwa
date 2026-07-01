@@ -122,36 +122,24 @@ export const costCentersReducer = createReducer(
       ...costCentersAdapter.addOne(costCenter, state),
     };
   }),
-  on(
-    addCostCentersFromCsv,
-    (state, action): CostCentersState => ({
-      ...state,
-      loading: true,
-      importResults: [],
-      importTotal: action.payload.costCenters?.length || 0,
-    })
-  ),
-  on(
-    addCostCenterFromCsvSingleResult,
-    (state, action): CostCentersState => ({
-      ...state,
-      importResults: [...state.importResults, action.payload.importResult],
-    })
-  ),
-  on(
-    addCostCentersFromCsvComplete,
-    (state): CostCentersState => ({
-      ...state,
-      loading: false,
-    })
-  ),
-  on(
-    addCostCentersFromCsvImportTotal,
-    (state, action): CostCentersState => ({
-      ...state,
-      importTotal: action.payload.totalCostCenters,
-    })
-  ),
+  on(addCostCentersFromCsv, (state, action): CostCentersState => ({
+    ...state,
+    loading: true,
+    importResults: [],
+    importTotal: action.payload.costCenters?.length || 0,
+  })),
+  on(addCostCenterFromCsvSingleResult, (state, action): CostCentersState => ({
+    ...state,
+    importResults: [...state.importResults, action.payload.importResult],
+  })),
+  on(addCostCentersFromCsvComplete, (state): CostCentersState => ({
+    ...state,
+    loading: false,
+  })),
+  on(addCostCentersFromCsvImportTotal, (state, action): CostCentersState => ({
+    ...state,
+    importTotal: action.payload.totalCostCenters,
+  })),
   on(updateCostCenterSuccess, (state, action): CostCentersState => {
     const { costCenter } = action.payload;
 

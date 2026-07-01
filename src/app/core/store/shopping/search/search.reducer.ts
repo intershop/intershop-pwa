@@ -34,13 +34,10 @@ export const searchReducer = createReducer(
   unsetLoadingAndErrorOn(suggestSearchSuccess),
   setErrorOn(suggestSearchFail),
   on(removeSuggestions, (state): SearchState => ({ ...state, suggestions: undefined })),
-  on(
-    suggestSearchSuccess,
-    (state, action): SearchState => ({
-      ...state,
-      suggestions: action.payload.suggestions,
-    })
-  ),
+  on(suggestSearchSuccess, (state, action): SearchState => ({
+    ...state,
+    suggestions: action.payload.suggestions,
+  })),
   on(addSearchTermToSuggestion, (state, action): SearchState => {
     const newSearchTerms = state._searchTerms.includes(action.payload.searchTerm)
       ? [...state._searchTerms]

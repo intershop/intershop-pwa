@@ -18,8 +18,7 @@ import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.mod
 import { ScriptLoaderService } from 'ish-core/utils/script-loader/script-loader.service';
 
 export type ConcardisErrorMessageType =
-  | { properties: { key: string; code: number; message: string; messageKey: string }[] }
-  | string;
+  { properties: { key: string; code: number; message: string; messageKey: string }[] } | string;
 
 @Component({
   selector: 'ish-payment-concardis',

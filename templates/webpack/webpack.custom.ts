@@ -494,7 +494,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
         const regex = /@import '(.*?)'/g;
         const content = fs.readFileSync(scssPath, { encoding: 'utf-8' });
-        for (let match: RegExpExecArray; (match = regex.exec(content)); ) {
+        for (let match: RegExpExecArray; (match = regex.exec(content));) {
           paths.push(...traverseStyleFile(match[1]));
         }
 

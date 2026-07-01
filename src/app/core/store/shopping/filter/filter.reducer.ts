@@ -21,20 +21,14 @@ const initialState: FilterState = {
 export const filterReducer = createReducer(
   initialState,
   on(loadFilterForCategory, loadFilterForSearch, (): FilterState => ({ ...initialState })),
-  on(
-    loadFilterSuccess,
-    (state, action): FilterState => ({
-      ...state,
-      availableFilter: action.payload.filterNavigation,
-    })
-  ),
-  on(
-    loadFilterFail,
-    (state): FilterState => ({
-      ...state,
-      availableFilter: undefined,
-    })
-  ),
+  on(loadFilterSuccess, (state, action): FilterState => ({
+    ...state,
+    availableFilter: action.payload.filterNavigation,
+  })),
+  on(loadFilterFail, (state): FilterState => ({
+    ...state,
+    availableFilter: undefined,
+  })),
   on(applyFilterSuccess, (state, action): FilterState => {
     const { availableFilter } = action.payload;
     return {

@@ -40,29 +40,23 @@ export const productNotificationReducer = createReducer(
     productNotificationsApiActions.updateProductNotificationSuccess,
     productNotificationsApiActions.deleteProductNotificationSuccess
   ),
-  on(
-    productNotificationsApiActions.loadProductNotificationsSuccess,
-    (state, action): ProductNotificationState =>
-      /**
-       * Product notifications can be deleted on server side when the notification requirements
-       * are met and the notification email was sent. Therefore, all product notifications
-       * have to be removed from the state which are not returned from the service before they
-       * are loaded, displayed or used. If setAll would be used, the list of notifications would
-       * always be empty at first and only filled when the REST request has finished.
-       */
-      productNotificationAdapter.upsertMany(action.payload.productNotifications, {
-        ...productNotificationAdapter.removeMany(entity => entity.type === action.payload.type, state),
-      })
+  on(productNotificationsApiActions.loadProductNotificationsSuccess, (state, action): ProductNotificationState =>
+    /**
+     * Product notifications can be deleted on server side when the notification requirements
+     * are met and the notification email was sent. Therefore, all product notifications
+     * have to be removed from the state which are not returned from the service before they
+     * are loaded, displayed or used. If setAll would be used, the list of notifications would
+     * always be empty at first and only filled when the REST request has finished.
+     */
+    productNotificationAdapter.upsertMany(action.payload.productNotifications, {
+      ...productNotificationAdapter.removeMany(entity => entity.type === action.payload.type, state),
+    })
   ),
-  on(
-    productNotificationsApiActions.createProductNotificationSuccess,
-    (state, action): ProductNotificationState =>
-      productNotificationAdapter.addOne(action.payload.productNotification, state)
+  on(productNotificationsApiActions.createProductNotificationSuccess, (state, action): ProductNotificationState =>
+    productNotificationAdapter.addOne(action.payload.productNotification, state)
   ),
-  on(
-    productNotificationsApiActions.updateProductNotificationSuccess,
-    (state, action): ProductNotificationState =>
-      productNotificationAdapter.upsertOne(action.payload.productNotification, state)
+  on(productNotificationsApiActions.updateProductNotificationSuccess, (state, action): ProductNotificationState =>
+    productNotificationAdapter.upsertOne(action.payload.productNotification, state)
   ),
   on(productNotificationsApiActions.deleteProductNotificationSuccess, (state, action): ProductNotificationState => {
     const id = action.payload.productNotificationId;
