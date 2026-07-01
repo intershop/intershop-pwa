@@ -6,6 +6,7 @@ import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CustomFields, CustomFieldsComponentInput } from 'ish-core/models/custom-field/custom-field.model';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 interface ComponentState {
   form: FormGroup;
@@ -53,6 +54,7 @@ export class CustomFieldsFormlyComponent extends RxState<ComponentState> impleme
     this.connect(
       'fields',
       this.select('customFields').pipe(
+        whenTruthy(),
         switchMap(fields =>
           combineLatest(
             fields.map(field =>

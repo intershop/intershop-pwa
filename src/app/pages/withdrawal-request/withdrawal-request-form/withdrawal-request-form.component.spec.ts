@@ -57,6 +57,23 @@ describe('Withdrawal Request Form Component', () => {
     });
   });
 
+  describe('search mode with orderData', () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput('orderData', {
+        orderDocumentNumber: '99999',
+        orderEmail: 'prefilled@example.com',
+      });
+      fixture.detectChanges();
+    });
+
+    it('should pre-fill model with orderData when provided', () => {
+      expect(component.model).toMatchObject({
+        orderDocumentNumber: '99999',
+        orderEmail: 'prefilled@example.com',
+      });
+    });
+  });
+
   describe('request mode (with withdrawal input)', () => {
     const withdrawal = {
       id: 'w1',
@@ -65,7 +82,7 @@ describe('Withdrawal Request Form Component', () => {
     } as Withdrawal;
 
     beforeEach(() => {
-      component.withdrawal = withdrawal;
+      fixture.componentRef.setInput('withdrawal', withdrawal);
       fixture.detectChanges();
     });
 
@@ -116,7 +133,7 @@ describe('Withdrawal Request Form Component', () => {
         orderDocumentNumber: 'ORDER-123',
         orderEmail: 'test@example.com',
       } as Withdrawal;
-      component.withdrawal = withdrawal;
+      fixture.componentRef.setInput('withdrawal', withdrawal);
       fixture.detectChanges();
 
       const spy = jest.spyOn(component.submitWithdrawal, 'emit');

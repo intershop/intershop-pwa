@@ -199,6 +199,44 @@ describe('Icm Error Mapper Interceptor', () => {
     );
   });
 
+  it('should convert ICM messages format with single message (new ADR, no causes) to simplified format', done => {
+    http.get('some').subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`
+          {
+            "errors": [
+              {
+                "code": "intershop.withdrawal.order.not_found.error",
+                "level": "ERROR",
+                "message": "The order could not be found.",
+                "status": "404",
+              },
+            ],
+            "message": "<div>The order could not be found.</div>",
+            "name": "HttpErrorResponse",
+            "status": 404,
+          }
+        `);
+        done();
+      },
+    });
+
+    httpController.expectOne('some').flush(
+      {
+        messages: [
+          {
+            code: 'intershop.withdrawal.order.not_found.error',
+            message: 'The order could not be found.',
+            level: 'ERROR',
+            status: '404',
+          },
+        ],
+      },
+      { status: 404, statusText: 'Not Found' }
+    );
+  });
+
   it('should convert ICM errors format to simplified format', done => {
     http.get('some').subscribe({
       next: fail,

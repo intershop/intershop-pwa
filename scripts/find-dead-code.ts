@@ -9,6 +9,16 @@ const fileExceptionsRegex = /\/src\/environments\/|.*\.production\.ts|\/server\.
 
 const classMethodCheckRegex = /.*(Mapper|Helper|Facade|Service|State)$/;
 
+const signalBasedFunctions = new Set([
+  'input',
+  'output',
+  'viewChild',
+  'viewChildren',
+  'contentChild',
+  'contentChildren',
+  'model',
+]);
+
 const project = new Project({ tsConfigFilePath: 'tsconfig.all.json' });
 
 const rootDirectory = `${project.getRootDirectories()[0].getPath()}/`;
@@ -315,11 +325,16 @@ function checkComponent(componentClass: ClassDeclaration, template: string) {
         }
         return;
       }
-      if (
-        ['Input', 'Output', 'ViewChild', 'ViewChildren'].some(decorator =>
-          member.getDecorators().some(d => d.getName() === decorator)
-        )
-      ) {
+      const isDecoratorBased = ['Input', 'Output', 'ViewChild', 'ViewChildren'].some(decorator =>
+        member.getDecorators().some(d => d.getName() === decorator)
+      );
+      const initializer = member.getInitializer();
+      const isSignalBased =
+        Node.isCallExpression(initializer) &&
+        Node.isIdentifier(initializer.getExpression()) &&
+        signalBasedFunctions.has(initializer.getExpression().getText());
+
+      if (isDecoratorBased || isSignalBased) {
         if (!usedOnComponentTemplate(template, name) && member.findReferencesAsNodes()?.length === 0) {
           logError(`${printRef(member)}: ${name} is not used and should be removed.`);
         }

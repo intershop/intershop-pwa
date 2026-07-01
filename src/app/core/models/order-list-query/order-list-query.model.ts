@@ -18,7 +18,8 @@ export type OrderIncludeType =
   | 'lineItems_warranty'
   | 'payments'
   | 'payments_paymentInstrument'
-  | 'payments_paymentMethod';
+  | 'payments_paymentMethod'
+  | 'withdrawal';
 
 export interface OrderListQuery {
   limit: number;

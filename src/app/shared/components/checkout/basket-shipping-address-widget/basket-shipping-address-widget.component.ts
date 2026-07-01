@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core/lib/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 

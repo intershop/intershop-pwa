@@ -305,6 +305,9 @@
   "account.orderdetails.order_status.label": "Statut de la commande",
   "account.orderdetails.print_link.text": "Imprimer",
   "account.orderdetails.recurring_order.info": "Cette commande a été créée sur la base d’une <a href=\"{{link}}\" >commande périodique</a>.",
+  "account.orderdetails.withdrawal.link": "Se rétracter du contrat",
+  "account.orderdetails.withdrawal_received_on.label": "Rétractation reçue le",
+  "account.orderdetails.withdrawal_status.label": "Statut de rétractation",
   "account.orderlist.no_orders_message": "Actuellement il n’y a aucune commande.",
   "account.orderlist.no_placed_orders_message": "Vous n’avez pas encore passé de commande.",
   "account.orderlist.table.buyer": "Acheteur",
@@ -714,7 +717,7 @@
   "account.withdrawal.form.request.order_username.error": "Veuillez saisir votre nom.",
   "account.withdrawal.form.request.order_username.label": "Nom (prénom et nom de famille)",
   "account.withdrawal.form.search.button.label": "Rechercher",
-  "account.withdrawal.form.search.heading": "Rechercher votre commande",
+  "account.withdrawal.form.search.heading": "Trouver votre commande",
   "account.withdrawal.form.search.order_email.extrainfo.message": "Utiliser l’adresse courriel de l’adresse de facturation",
   "account.withdrawal.form.search.order_email.label": "Adresse courriel",
   "account.withdrawal.form.search.order_number.error": "Veuillez saisir votre numéro de commande.",
@@ -1586,5 +1589,7 @@
   "wishlist.table.header.item": "Description de l’article",
   "wishlist.table.header.price": "Prix",
   "wishlist.table.options.move_to_another_wishlist": "Déplacer vers une autre liste",
-  "wishlist.table.options.remove": "Supprimer"
+  "wishlist.table.options.remove": "Supprimer",
+  "withdrawal.status.label.approved": "Approuvée",
+  "withdrawal.status.label.received": "Reçue"
 }

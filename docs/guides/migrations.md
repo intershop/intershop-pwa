@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 11.1.0 to 11.2.0
+
+**Extended Withdrawal functionality**
+
+On the Order Detail Page in the My Account area, withdrawal information is now displayed for orders that have been withdrawn.
+In addition, for orders that are still eligible for withdrawal, a link to the withdrawal form is now shown on the Order Detail Page.
+This new feature is available only in combination with Intershop Commerce Management 14.4.0 or later.
+
 ## From 11.0.0 to 11.1.0
 
 **New footer styling**
