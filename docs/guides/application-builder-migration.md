@@ -34,6 +34,21 @@ npm run compare:application-builder
 Do not treat direct `ng run intershop-pwa:...` build invocations as the supported migration API.
 They bypass wrapper behavior and can produce artifacts that differ from `npm run build`.
 
+## CI Build Coverage
+
+CI should keep using the existing workflow jobs and build steps.
+Do not add a separate application-builder workflow only for this migration.
+
+The existing build commands are the application-builder gate:
+
+- `.github/workflows/development.yml` runs `npm run build -- --configuration=b2b,production`.
+- `.github/workflows/integration.yml` runs `npm run build:multi`, which expands to `npm run build -- --configuration=<theme>,production` for each active theme.
+- `.github/workflows/lighthouse-accessibility.yml` runs `npm run build`.
+- `.github/workflows/windows.yml` runs `npm run build -- --configuration=b2b,development` through the developer workflow script.
+
+Webpack checks must stay explicit legacy or fallback invocations, such as `build:webpack` or `serve:webpack`.
+They must not replace the wrapper commands above.
+
 The standard Angular development server is wired to a browser-only application-builder target:
 
 ```bash
@@ -43,6 +58,14 @@ ng serve --configuration=b2c
 
 Use `npm run dev:ssr:b2b` or `npm run dev:ssr:b2c` when developing the SSR path.
 Use `npm run serve:webpack` only when you explicitly need the legacy custom Webpack dev server.
+
+Serve multi-build output by pointing the application-builder server at a theme output:
+
+```bash
+npm run build:multi
+npm run serve:application --browser-folder=dist/b2b/browser --server-entry=dist/b2b/server
+npm run serve:application --port=4300 --browser-folder=dist/b2c/browser --server-entry=dist/b2c/server
+```
 
 ## Wrapper Responsibilities
 
