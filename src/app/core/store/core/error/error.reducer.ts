@@ -16,15 +16,9 @@ const initialState: ErrorState = {
 
 export const errorReducer = createReducer(
   initialState,
-  on(
-    serverError,
-    businessError,
-    communicationTimeoutError,
-    serverConfigError,
-    (state, action): ErrorState => ({
-      ...state,
-      current: action.payload.error,
-      type: action.type,
-    })
-  )
+  on(serverError, businessError, communicationTimeoutError, serverConfigError, (state, action): ErrorState => ({
+    ...state,
+    current: action.payload.error,
+    type: action.type,
+  }))
 );

@@ -15,10 +15,7 @@ interface DesignViewMessage<T = ToDVMessageType> {
 }
 
 type FromDVMessageType =
-  | 'dv-clientHighlightPagelet'
-  | 'dv-clientPreviewPagelet'
-  | 'dv-clientRefresh'
-  | 'dv-clientScrollToPagelet';
+  'dv-clientHighlightPagelet' | 'dv-clientPreviewPagelet' | 'dv-clientRefresh' | 'dv-clientScrollToPagelet';
 
 type ToDVMessageType =
   | 'dv-clientAction'

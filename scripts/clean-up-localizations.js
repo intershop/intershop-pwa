@@ -39,7 +39,7 @@ filesToBeSearched.forEach(filePath => {
   const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
   if (fileContent.includes('keep-localization-pattern:')) {
     const regex = /keep-localization-pattern:(.*)/g;
-    for (let match; (match = regex.exec(fileContent)); ) {
+    for (let match; (match = regex.exec(fileContent));) {
       const keeper = match[1].replace('-->', '').replace('*/', '').trim();
       const regex = new RegExp(keeper);
       console.log(filePath, regex);

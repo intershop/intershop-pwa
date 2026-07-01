@@ -226,40 +226,31 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(
-    updateBasketItemSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      basket: {
-        ...state.basket,
-        lineItems: state.basket.lineItems.map(item =>
-          item.id === action.payload.lineItem.id ? action.payload.lineItem : item
-        ),
-      },
-      info: action.payload.info,
-      validationResults: initialValidationResults,
-    })
-  ),
-  on(
-    deleteBasketItemSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
-      info: action.payload.info,
-      validationResults: initialValidationResults,
-    })
-  ),
-  on(
-    addItemsToBasketSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
-      info: action.payload.info,
-      error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
-      lastTimeProductAdded: new Date().getTime(),
-      submittedBasket: undefined,
-    })
-  ),
+  on(updateBasketItemSuccess, (state, action): BasketState => ({
+    ...state,
+    basket: {
+      ...state.basket,
+      lineItems: state.basket.lineItems.map(item =>
+        item.id === action.payload.lineItem.id ? action.payload.lineItem : item
+      ),
+    },
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(deleteBasketItemSuccess, (state, action): BasketState => ({
+    ...state,
+    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(addItemsToBasketSuccess, (state, action): BasketState => ({
+    ...state,
+    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems ?? [], 'id') },
+    info: action.payload.info,
+    error: { name: 'HttpErrorResponse' as const, errors: action.payload.errors },
+    lastTimeProductAdded: new Date().getTime(),
+    submittedBasket: undefined,
+  })),
   on(
     setBasketPaymentSuccess,
     createBasketPaymentSuccess,
@@ -286,56 +277,38 @@ export const basketReducer = createReducer(
       validationResults: validation?.results,
     };
   }),
-  on(
-    loadBasketEligibleAddressesSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      eligibleAddresses: action.payload.addresses,
-    })
-  ),
-  on(
-    createBasketAddressSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      eligibleAddresses: state.eligibleAddresses
-        ? [...state.eligibleAddresses, action.payload.address]
-        : [action.payload.address],
-    })
-  ),
-  on(
-    loadBasketEligibleShippingMethodsSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      eligibleShippingMethods: action.payload.shippingMethods,
-    })
-  ),
-  on(
-    loadBasketEligiblePaymentMethodsSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      eligiblePaymentMethods: action.payload.paymentMethods,
-    })
-  ),
-  on(
-    updateConcardisCvcLastUpdatedSuccess,
-    (state, action): BasketState => ({
-      ...state,
-      basket: {
-        ...state.basket,
-        payment: {
-          ...state.basket.payment,
-          paymentInstrument: action.payload.paymentInstrument,
-        },
+  on(loadBasketEligibleAddressesSuccess, (state, action): BasketState => ({
+    ...state,
+    eligibleAddresses: action.payload.addresses,
+  })),
+  on(createBasketAddressSuccess, (state, action): BasketState => ({
+    ...state,
+    eligibleAddresses: state.eligibleAddresses
+      ? [...state.eligibleAddresses, action.payload.address]
+      : [action.payload.address],
+  })),
+  on(loadBasketEligibleShippingMethodsSuccess, (state, action): BasketState => ({
+    ...state,
+    eligibleShippingMethods: action.payload.shippingMethods,
+  })),
+  on(loadBasketEligiblePaymentMethodsSuccess, (state, action): BasketState => ({
+    ...state,
+    eligiblePaymentMethods: action.payload.paymentMethods,
+  })),
+  on(updateConcardisCvcLastUpdatedSuccess, (state, action): BasketState => ({
+    ...state,
+    basket: {
+      ...state.basket,
+      payment: {
+        ...state.basket.payment,
+        paymentInstrument: action.payload.paymentInstrument,
       },
-    })
-  ),
-  on(
-    addPromotionCodeToBasketSuccess,
-    (state): BasketState => ({
-      ...state,
-      promotionError: undefined,
-    })
-  ),
+    },
+  })),
+  on(addPromotionCodeToBasketSuccess, (state): BasketState => ({
+    ...state,
+    promotionError: undefined,
+  })),
 
   on(addPromotionCodeToBasketFail, (state, action): BasketState => {
     const { error } = action.payload;
@@ -347,32 +320,23 @@ export const basketReducer = createReducer(
   }),
 
   on(createOrderSuccess, (): BasketState => initialState),
-  on(
-    submitBasketSuccess,
-    (state): BasketState => ({
-      ...state,
-      submittedBasket: state.basket,
-      basket: undefined,
-      info: undefined,
-      promotionError: undefined,
-      validationResults: initialValidationResults,
-    })
-  ),
-  on(
-    loadBasketFail,
-    (state): BasketState => ({
-      ...state,
-      basket: undefined,
-    })
-  ),
-  on(
-    resetBasketErrors,
-    (state): BasketState => ({
-      ...state,
-      error: undefined,
-      info: undefined,
-      promotionError: undefined,
-      validationResults: initialValidationResults,
-    })
-  )
+  on(submitBasketSuccess, (state): BasketState => ({
+    ...state,
+    submittedBasket: state.basket,
+    basket: undefined,
+    info: undefined,
+    promotionError: undefined,
+    validationResults: initialValidationResults,
+  })),
+  on(loadBasketFail, (state): BasketState => ({
+    ...state,
+    basket: undefined,
+  })),
+  on(resetBasketErrors, (state): BasketState => ({
+    ...state,
+    error: undefined,
+    info: undefined,
+    promotionError: undefined,
+    validationResults: initialValidationResults,
+  }))
 );

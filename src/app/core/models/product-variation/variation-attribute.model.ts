@@ -7,8 +7,4 @@ export interface VariationAttribute {
 }
 
 export type VariationAttributeType =
-  | 'colorCode'
-  | 'default'
-  | 'defaultAndColorCode'
-  | 'defaultAndSwatchImage'
-  | 'swatchImage';
+  'colorCode' | 'default' | 'defaultAndColorCode' | 'defaultAndSwatchImage' | 'swatchImage';

@@ -97,7 +97,7 @@ export class PWATranslateCompiler implements TranslateCompiler {
       // construct map for looking up case templates for incoming values
       const casesMap: Record<string, string> = {};
       let defaultCase: string;
-      for (let cm: RegExpExecArray; (cm = PWATranslateCompiler.CASE_REGEX.exec(cases)); ) {
+      for (let cm: RegExpExecArray; (cm = PWATranslateCompiler.CASE_REGEX.exec(cases));) {
         const c = cm[1];
         if (c.startsWith('=')) {
           casesMap[c.substring(1)] = cm[2];

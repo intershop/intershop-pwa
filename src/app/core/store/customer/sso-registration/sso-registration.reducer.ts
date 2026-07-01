@@ -18,19 +18,13 @@ const initialState: SsoRegistrationState = {
 
 export const ssoRegistrationReducer = createReducer(
   initialState,
-  on(
-    registerSuccess,
-    (state: SsoRegistrationState): SsoRegistrationState => ({
-      ...state,
-      registered: true,
-    })
-  ),
-  on(
-    registerFailure,
-    (state: SsoRegistrationState, { payload: { error } }): SsoRegistrationState => ({
-      ...state,
-      error,
-    })
-  ),
+  on(registerSuccess, (state: SsoRegistrationState): SsoRegistrationState => ({
+    ...state,
+    registered: true,
+  })),
+  on(registerFailure, (state: SsoRegistrationState, { payload: { error } }): SsoRegistrationState => ({
+    ...state,
+    error,
+  })),
   on(cancelRegistration, (state: SsoRegistrationState): SsoRegistrationState => ({ ...state, cancelled: true }))
 );

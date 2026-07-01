@@ -5,13 +5,7 @@ import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
 
 type QuoteColumnsType =
-  | 'actions'
-  | 'creationDate'
-  | 'displayName'
-  | 'expirationDate'
-  | 'lineItems'
-  | 'quoteNo'
-  | 'status';
+  'actions' | 'creationDate' | 'displayName' | 'expirationDate' | 'lineItems' | 'quoteNo' | 'status';
 
 /**
  * The Quote List Component displays a list of quotes.

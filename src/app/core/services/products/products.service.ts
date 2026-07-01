@@ -226,13 +226,11 @@ export class ProductsService implements ProductsServiceInterface {
         withLatestFrom(
           this.appFacade.serverSetting$<boolean>('preferences.ChannelPreferences.EnableAdvancedVariationHandling')
         ),
-        map(
-          ([{ products, sortableAttributes, total }, advancedVariationHandling]): SearchResponse => ({
-            products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
-            sortableAttributes,
-            total,
-          })
-        )
+        map(([{ products, sortableAttributes, total }, advancedVariationHandling]): SearchResponse => ({
+          products: params.has('MasterSKU') ? products : this.postProcessMasters(products, advancedVariationHandling),
+          sortableAttributes,
+          total,
+        }))
       );
   }
 

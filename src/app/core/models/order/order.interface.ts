@@ -15,10 +15,7 @@ import { WithdrawalInfo } from 'ish-core/models/withdrawal-info/withdrawal-info.
 export type OrderCreationStatus = 'COMPLETED' | 'CONTINUE' | 'ROLLED_BACK' | 'STOPPED';
 
 export type OrderStopActionReason =
-  | 'paypal_wallet_initialized'
-  | 'recurring.order'
-  | 'redirect_urls_required'
-  | 'waiting_for_pending_payments';
+  'paypal_wallet_initialized' | 'recurring.order' | 'redirect_urls_required' | 'waiting_for_pending_payments';
 
 export interface OrderBaseData extends BasketBaseData {
   documentNumber: string;

@@ -15,8 +15,7 @@ const initialState: ProductPricesState = productPriceAdapter.getInitialState({})
 
 export const productPricesReducer = createReducer(
   initialState,
-  on(
-    loadProductPricesSuccess,
-    (state, action): ProductPricesState => productPriceAdapter.upsertMany(action.payload.prices, state)
+  on(loadProductPricesSuccess, (state, action): ProductPricesState =>
+    productPriceAdapter.upsertMany(action.payload.prices, state)
   )
 );
