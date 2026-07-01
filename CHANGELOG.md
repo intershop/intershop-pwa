@@ -7,6 +7,23 @@ kb_everyone
 
 # Changelog
 
+## [11.2.0](https://github.com/intershop/intershop-pwa/releases/tag/11.2.0) (2026-07-01)
+
+> [!NOTE]
+> Intershop PWA 11.2.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.4.0.
+> It will work with all versions from ICM 14.4.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 11.2.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.13.0 for PWA 11.2.0 deployments.
+
+### Features
+
+- show withdrawal information on order detail page (#2107) ([4e5ae51](https://github.com/intershop/intershop-pwa/commit/4e5ae51))
+
 ## [11.1.0](https://github.com/intershop/intershop-pwa/releases/tag/11.1.0) (2026-05-29)
 
 > [!NOTE]
