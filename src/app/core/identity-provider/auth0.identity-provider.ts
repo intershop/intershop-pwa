@@ -253,14 +253,25 @@ export class Auth0IdentityProvider implements IdentityProvider {
       return this.apiTokenService.intercept(req, next);
     }
 
-    const newRequest =
+    if (
       this.oauthService.getIdToken() &&
       !req.url.endsWith('users/processtoken') &&
       !req.headers.has(ApiService.TOKEN_HEADER_KEY)
-        ? req.clone({
-            headers: req.headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `Bearer ${this.oauthService.getIdToken()}`),
-          })
-        : req;
-    return next.handle(newRequest);
+    ) {
+      let headers = req.headers;
+
+      // move existing CAPTCHA authorization to X-Captcha-Token header
+      const existingAuth = headers.get(ApiService.AUTHORIZATION_HEADER_KEY);
+      if (existingAuth?.startsWith('CAPTCHA ')) {
+        headers = headers.set('X-Captcha-Token', existingAuth).delete(ApiService.AUTHORIZATION_HEADER_KEY);
+      }
+
+      // set Bearer token as Authorization header
+      headers = headers.set(ApiService.AUTHORIZATION_HEADER_KEY, `Bearer ${this.oauthService.getIdToken()}`);
+
+      return next.handle(req.clone({ headers }));
+    }
+
+    return next.handle(req);
   }
 }
