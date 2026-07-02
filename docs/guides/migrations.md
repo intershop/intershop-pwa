@@ -7,7 +7,7 @@ kb_sync_latest_only
 
 # Migrations
 
-## From 11.1.0 to 12.0.0
+## From 11.2.0 to 12.0.0
 
 **Swiper 12 upgrade**
 
@@ -55,6 +55,14 @@ The order template and wishlist selection modals have been reworked for a more c
 
 - The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
 - The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
+
+## From 11.1.0 to 11.2.0
+
+**Extended Withdrawal functionality**
+
+On the Order Detail Page in the My Account area, withdrawal information is now displayed for orders that have been withdrawn.
+In addition, for orders that are still eligible for withdrawal, a link to the withdrawal form is now shown on the Order Detail Page.
+This new feature is available only in combination with Intershop Commerce Management 14.4.0 or later.
 
 ## From 11.0.0 to 11.1.0
 

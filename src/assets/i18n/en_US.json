@@ -306,6 +306,9 @@
   "account.orderdetails.order_status.label": "Order status",
   "account.orderdetails.print_link.text": "Print",
   "account.orderdetails.recurring_order.info": "This order has been created based on a <a href=\"{{link}}\" >recurring order</a>.",
+  "account.orderdetails.withdrawal.link": "Withdraw from contract",
+  "account.orderdetails.withdrawal_received_on.label": "Withdrawal received on",
+  "account.orderdetails.withdrawal_status.label": "Withdrawal status",
   "account.orderlist.no_orders_message": "Currently there are no orders.",
   "account.orderlist.no_placed_orders_message": "You have not placed an order yet.",
   "account.orderlist.table.buyer": "Buyer",
@@ -716,7 +719,7 @@
   "account.withdrawal.form.request.order_username.error": "Please enter your name.",
   "account.withdrawal.form.request.order_username.label": "Name (first & last)",
   "account.withdrawal.form.search.button.label": "Search",
-  "account.withdrawal.form.search.heading": "Search your order",
+  "account.withdrawal.form.search.heading": "Find your order",
   "account.withdrawal.form.search.order_email.extrainfo.message": "Use e-mail address from invoice address",
   "account.withdrawal.form.search.order_email.label": "E-mail address",
   "account.withdrawal.form.search.order_number.error": "Please enter your order number.",
@@ -1594,5 +1597,7 @@
   "wishlist.table.header.item": "Item description",
   "wishlist.table.header.price": "Price",
   "wishlist.table.options.move_to_another_wishlist": "Move to other list",
-  "wishlist.table.options.remove": "Remove"
+  "wishlist.table.options.remove": "Remove",
+  "withdrawal.status.label.approved": "Approved",
+  "withdrawal.status.label.received": "Received"
 }

@@ -11,6 +11,7 @@ import { Order } from 'ish-core/models/order/order.model';
 @Component({
   selector: 'ish-account-order',
   templateUrl: './account-order.component.html',
+  styleUrl: './account-order.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderComponent {

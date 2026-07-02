@@ -1,0 +1,24 @@
+@import 'variables';
+@import 'bootstrap/scss/mixins';
+
+.dl-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 55% 1fr;
+  }
+
+  dt {
+    padding-right: $space-default * 2;
+    white-space: nowrap;
+  }
+
+  dd {
+    white-space: nowrap;
+
+    @include media-breakpoint-down(sm) {
+      white-space: normal;
+    }
+  }
+}
