@@ -99,18 +99,22 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   }
 
   submitForm() {
-    if (this.form.valid) {
-      // build address from form data and send it to the parent
-      let formAddress: Address = this.form.value.address;
-      if (this.address) {
-        // update form values in the original address
-        formAddress = { ...this.address, mainDivisionCode: '', ...formAddress };
-      }
-      if (this.extension) {
-        formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
-      }
-      this.save.emit(formAddress);
+    if (this.form.invalid) {
+      this.form.get('address')?.updateValueAndValidity();
+      this.extensionForm.updateValueAndValidity();
+      return;
     }
+
+    // build address from form data and send it to the parent
+    let formAddress: Address = this.form.value.address;
+    if (this.address) {
+      // update form values in the original address
+      formAddress = { ...this.address, mainDivisionCode: '', ...formAddress };
+    }
+    if (this.extension) {
+      formAddress = { ...formAddress, email: this.extensionForm.get('email')?.value };
+    }
+    this.save.emit(formAddress);
   }
 
   emitCancelForm() {
