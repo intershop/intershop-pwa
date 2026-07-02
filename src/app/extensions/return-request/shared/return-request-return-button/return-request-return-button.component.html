@@ -1,0 +1,13 @@
+@if (showButton()) {
+  <div class="text-right">
+    <button class="btn btn-secondary" type="button" (click)="openModal()">
+      {{ 'toolineo.account.return_request.btn.label' | translate }}
+    </button>
+    <ish-return-request-modal
+      [isGuest]="isGuest"
+      [isOpenModal]="isModalOpen"
+      [order]="order"
+      (closeModal)="onModalClose()"
+    />
+  </div>
+}

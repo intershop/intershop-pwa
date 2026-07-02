@@ -164,6 +164,8 @@
       }
     </ish-info-box>
   </div>
+  <ish-lazy-return-request-return-button [order]="order" />
+
   <!-- Line Items -->
   @if (order?.lineItems?.length) {
     <ish-line-item-list lineItemViewType="simple" [editable]="false" [lineItems]="order.lineItems" />

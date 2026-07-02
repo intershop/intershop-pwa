@@ -1,0 +1,60 @@
+@if (returnableItems$ | async; as returnableItems) {
+  @if (returnableItems?.length) {
+    <ish-modal-dialog
+      #returnRequestDialog
+      [options]="{
+        titleText: 'toolineo.account.return_request.modal.title' | translate,
+        size: 'xl',
+      }"
+      (closed)="hideModal()"
+    >
+      <div class="d-flex justify-content-between mb-2">
+        <div class="order-date">
+          <span class="h4">{{ 'toolineo.account.return_request.modal.orde_date' | translate }}</span>
+          {{ order.creationDate | ishDate }}
+        </div>
+        <div class="order-number">
+          <span class="h4">{{ 'toolineo.account.return_request.modal.orde_number' | translate }}</span>
+          {{ order.documentNo }}
+        </div>
+      </div>
+      <form [formGroup]="form" (submit)="submit()">
+        <label>
+          <input formControlName="checkAll" type="checkbox" />{{
+            'toolineo.account.return_request.modal.form.check_all_label' | translate
+          }}</label
+        >
+        <ish-returnable-items
+          [form]="form"
+          [returnableItems]="returnableItems"
+          (itemsUpdated)="onItemsUpdate($event)"
+          (quantityUpdated)="onQuantityUpdate($event)"
+        />
+        <div class="form-group">
+          <label for="comment">
+            <span class="h4">{{ 'toolineo.account.return_request.modal.form.comment_label' | translate }}<br /></span>
+            <span class="font-weight-norma">{{
+              'toolineo.account.return_request.modal.form.comment_sub_label' | translate
+            }}</span>
+          </label>
+          <textarea class="form-control" formControlName="comment" rows="3"></textarea>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <h3 class="d-inline">{{ 'toolineo.account.return_request.modal.summary.title' | translate }}</h3>
+            <span class="ms-2"
+              >{{ selectedQuantity }} {{ 'toolineo.account.return_request.modal.summary.items' | translate }}</span
+            >
+          </div>
+          <div class="col-6">
+            <button class="btn btn-primary float-end" type="submit" [disabled]="form.invalid || selectedQuantity === 0">
+              {{ 'toolineo.account.return_request.modal.form.btn.label' | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </ish-modal-dialog>
+  } @else {
+    <h2 class="text-center">No Returnable Items found</h2>
+  }
+}

@@ -1,0 +1,39 @@
+@if (orders.length) {
+  @for (id of orderIds; track id) {
+    <h2 class="bg-light p-2">
+      {{ 'toolineo.account.return_overview.tab.content.order_from' | translate: { '0': id } }}
+      {{ groupOrders[id][0].creationDate | ishDate }}
+    </h2>
+    @if (groupOrders[id]; as items) {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.return' | translate }}</th>
+            <th scope="col">
+              {{ 'toolineo.account.return_overview.tab.content.column.created_on' | translate }}
+            </th>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.article' | translate }}</th>
+            <th scope="col">{{ 'toolineo.account.return_overview.tab.content.column.status' | translate }}</th>
+            <!-- <th scope="col">&nbsp;</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items; track item) {
+            <tr>
+              <th scope="row">
+                <a [routerLink]="item.rmaNumber">{{ item.rmaNumber }}</a>
+              </th>
+              <td>{{ item.creationDate | ishDate }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.status }}</td>
+              <!-- TODO: display document link only when it's available
+              <td>{{ 'toolineo.account.return_overview.tab.content.download_return_label' | translate }}</td> -->
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+} @else {
+  <p class="text-center font-weight-bold">{{ 'toolineo.account.return_overview.no_result_found' | translate }}</p>
+}
