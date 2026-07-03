@@ -82,7 +82,9 @@ export class DirectOrderComponent implements OnInit, AfterViewInit {
         },
         validation: {
           messages: {
-            validProduct: () => this.translate.get('quickorder.page.error.invalid.product', { 0: this.model.sku }),
+            // the message keeps showing the SKU that previously failed while the user is typing
+            validProduct: () =>
+              this.translate.get('quickorder.page.error.invalid.product', { 0: this.context.get('sku') }),
           },
         },
       },
