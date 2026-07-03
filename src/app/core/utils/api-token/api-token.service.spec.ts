@@ -14,8 +14,9 @@ import {
   CustomerStoreModule,
 } from 'ish-core/store/customer/customer-store.module';
 import { loadOrderSuccess, selectOrder } from 'ish-core/store/customer/orders';
-import { loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
+import { loginUserFail, loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { ApiTokenCookie, ApiTokenService } from './api-token.service';
 
@@ -193,6 +194,20 @@ describe('Api Token Service', () => {
 
           done();
         });
+      });
+
+      it('should remove the invalid apiToken cookie when the login by apiToken fails for a non anonymous user', done => {
+        when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+        injectServices();
+
+        apiTokenService.restore$().subscribe(restored => {
+          expect(restored).toBeFalse();
+          verify(cookieServiceMock.remove('apiToken', anything())).once();
+
+          done();
+        });
+
+        store.dispatch(loginUserFail({ error: makeHttpError({ status: 401 }) }));
       });
 
       it('should react on no state state changes when types list is not available', done => {

@@ -44,6 +44,7 @@ import {
   fetchAnonymousUserToken,
   getLoggedInUser,
   getUserAuthorized,
+  getUserLoading,
   loadUserByAPIToken,
 } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -192,9 +193,33 @@ export class ApiTokenService {
                 );
               } else {
                 this.store.dispatch(loadUserByAPIToken({ apiToken: cookie.apiToken }));
-                // wait until user is logged in
+                // wait until the login attempt is finished; a successful login is detected via the authorized flag, a
+                // failed login as soon as the user loading flag turns off. The (invalid) apiToken cookie is only removed
+                // once the login attempt has actually finished unsuccessfully - the 5s timer is a pure timeout fallback
+                // that must not touch a still-pending login.
                 return race(
-                  this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
+                  this.store.pipe(
+                    select(getUserAuthorized),
+                    whenTruthy(),
+                    take(1),
+                    map(() => true)
+                  ),
+                  this.store.pipe(
+                    select(getUserLoading),
+                    pairwise(),
+                    filter(([previous, current]) => previous && !current),
+                    take(1),
+                    withLatestFrom(this.store.pipe(select(getUserAuthorized))),
+                    map(([, authorized]) => !!authorized),
+                    tap(authorized => {
+                      // the apiToken cookie is invalid, the user could not be logged in.
+                      // remove the stale cookie and apiToken and continue as anonymous user instead.
+                      if (!authorized) {
+                        this.cookiesService.remove('apiToken', { path: '/' });
+                        this.removeApiToken();
+                      }
+                    })
+                  ),
                   timer(5000).pipe(map(() => false))
                 );
               }
@@ -271,10 +296,15 @@ export class ApiTokenService {
   }
 
   /**
-   * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
+   * removes the invalid cookie first, then removes the apiToken from the service and informs cookieVanishes$ listeners
+   * that the cookie is not working as expected
    */
-  private invalidateApiToken() {
+  invalidateApiToken() {
     const cookie = this.parseCookie();
+
+    if (cookie) {
+      this.cookiesService.remove('apiToken', { path: '/' });
+    }
 
     this.removeApiToken();
 

@@ -127,6 +127,7 @@ describe('User Effects', () => {
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(apiTokenServiceMock.getApiToken$()).thenReturn(of(undefined));
     when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({

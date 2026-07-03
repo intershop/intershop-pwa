@@ -4,10 +4,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from, merge } from 'rxjs';
+import { combineLatest, from, merge } from 'rxjs';
 import {
   concatMap,
   delay,
+  distinctUntilChanged,
   exhaustMap,
   filter,
   map,
@@ -303,14 +304,17 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no user apiToken cookie.
-   * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from an to 'undefined').
+   * This effect emits the 'personalizationStatusDetermined' action once the personalization status is settled, i.e. as soon
+   * as a PGID is available or there is no user apiToken cookie. It re-evaluates on both PGID and apiToken changes, so the status
+   * is also determined when an invalid apiToken (and its cookie) is removed - e.g. after a failed login by API token.
+   * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from and to 'undefined').
    */
   determinePersonalizationStatus$ = createEffect(() => {
     const pgid$ = this.store.pipe(select(getPGID));
 
-    const determined$ = pgid$.pipe(
-      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+    const determined$ = combineLatest([pgid$, this.apiTokenService.getApiToken$()]).pipe(
+      map(([pgid]) => !this.apiTokenService.hasUserApiTokenCookie() || !!pgid),
+      distinctUntilChanged(),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())
