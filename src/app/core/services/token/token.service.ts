@@ -117,7 +117,7 @@ export class TokenService {
             from(this.oAuthService.refreshToken()).pipe(
               catchError(error => {
                 console.warn('Error refreshing token, clearing session:', error);
-                this.apiTokenService.removeApiToken();
+                this.apiTokenService.invalidateApiToken();
                 return EMPTY;
               })
             )
