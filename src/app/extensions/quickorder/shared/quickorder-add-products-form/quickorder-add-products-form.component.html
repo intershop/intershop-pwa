@@ -3,7 +3,7 @@
   ishFormSubmit
   [attr.aria-label]="'quickorder.page.form.label' | translate"
   [formGroup]="quickOrderForm"
-  (ngSubmit)="onAddProducts()"
+  (ngSubmit)="onAddProducts(quickOrderIDForm)"
 >
   <div class="list-header d-sm-flex">
     <div class="col-md-8 list-header-item no-seperator">{{ 'quickorder.page.product.id' | translate }}</div>
