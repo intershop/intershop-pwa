@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { Store, select } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import {
   debounceTime,
@@ -62,6 +62,10 @@ function isDuplicateForNonSearch<T extends ListingDistinctData>(previous: T, cur
   const currentType = current.id?.type || current.type;
 
   return previousType !== 'search' && currentType !== 'search' && isEqual(previous, current);
+}
+
+function isDuplicateForNonSearchAction(previous: Action, current: Action) {
+  return previous.type !== searchProducts.type && current.type !== searchProducts.type && isEqual(previous, current);
 }
 
 @Injectable()
@@ -204,7 +208,8 @@ export class ProductListingEffects {
           }
         }
       }),
-      whenTruthy()
+      whenTruthy(),
+      distinctUntilChanged(isDuplicateForNonSearchAction)
     )
   );
 

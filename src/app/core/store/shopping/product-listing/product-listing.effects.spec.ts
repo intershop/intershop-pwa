@@ -144,6 +144,20 @@ describe('Product Listing Effects', () => {
           uniqueId: "cat"
       `);
     }));
+
+    it('should keep category requests deduplicated when repeated', fakeAsync(() => {
+      store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+      tick(5);
+      store$.reset();
+
+      store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+      tick(5);
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"category","value":"cat"}
+      `);
+    }));
   });
 
   describe('action triggering with filters', () => {
