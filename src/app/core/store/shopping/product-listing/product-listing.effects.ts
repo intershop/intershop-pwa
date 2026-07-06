@@ -45,6 +45,18 @@ import {
 } from './product-listing.actions';
 import { getProductListingViewType } from './product-listing.selectors';
 
+interface ListingDistinctData {
+  id?: { type?: string };
+  type?: string;
+}
+
+function isDuplicateForNonSearch<T extends ListingDistinctData>(previous: T, current: T) {
+  const previousType = previous.id?.type || previous.type;
+  const currentType = current.id?.type || current.type;
+
+  return previousType !== 'search' && currentType !== 'search' && isEqual(previous, current);
+}
+
 @Injectable()
 export class ProductListingEffects {
   constructor(
@@ -156,7 +168,7 @@ export class ProductListingEffects {
           )
         );
       }),
-      distinctUntilChanged(isEqual),
+      distinctUntilChanged(isDuplicateForNonSearch),
       // prevent an unnecessary loadMoreProductsForParamsAction in case a new search is triggered and a query parameter like a filter had been previously been set
       debounceTime(1),
       map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
@@ -167,7 +179,7 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
-      distinctUntilChanged(isEqual),
+      distinctUntilChanged(isDuplicateForNonSearch),
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
@@ -185,8 +197,7 @@ export class ProductListingEffects {
           }
         }
       }),
-      whenTruthy(),
-      distinctUntilChanged(isEqual)
+      whenTruthy()
     )
   );
 
@@ -195,8 +206,8 @@ export class ProductListingEffects {
       ofType(loadMoreProductsForParams),
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
+      distinctUntilChanged(isDuplicateForNonSearch),
       concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
-      distinctUntilChanged(isEqual),
 
       // TODO: (Sparque handling) temporary solution until the category navigation will be handled by Sparque
       concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),

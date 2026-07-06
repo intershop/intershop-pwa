@@ -98,6 +98,31 @@ describe('Product Listing Effects', () => {
       `);
     }));
 
+    it('should fire all necessary actions when searching for the same term twice', fakeAsync(() => {
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
+      tick(5);
+      store$.reset();
+
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
+      tick(5);
+
+      expect(store$.actionsArray()).toMatchInlineSnapshot(`
+        [Product Listing] Load More Products:
+          id: {"type":"search","value":"term"}
+        [Product Listing Internal] Load More Products For Params:
+          id: {"type":"search","value":"term"}
+          filters: undefined
+          sorting: "name-asc"
+          page: undefined
+        [Search Internal] Search Products:
+          searchTerm: "term"
+          page: undefined
+          sorting: "name-asc"
+        [Filter Internal] Load Filter for Search:
+          searchTerm: "term"
+      `);
+    }));
+
     it('should fire all necessary actions for family page', fakeAsync(() => {
       store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
 
