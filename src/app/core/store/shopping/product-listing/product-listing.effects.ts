@@ -45,11 +45,18 @@ import {
 } from './product-listing.actions';
 import { getProductListingViewType } from './product-listing.selectors';
 
+/**
+ * Shape used for deduplication comparisons in product-listing effect streams.
+ */
 interface ListingDistinctData {
   id?: { type?: string };
   type?: string;
 }
 
+/**
+ * Treat requests as duplicates for non-search listing types only.
+ * Search requests are intentionally excluded so repeated identical searches are re-dispatched.
+ */
 function isDuplicateForNonSearch<T extends ListingDistinctData>(previous: T, current: T) {
   const previousType = previous.id?.type || previous.type;
   const currentType = current.id?.type || current.type;
