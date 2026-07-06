@@ -113,5 +113,8 @@ export const orderTemplateReducer = createReducer(
       ...state,
       selected: id,
     };
-  })
+  }),
+  on(loadOrderTemplates, (state): OrderTemplateState =>
+    orderTemplateAdapter.removeAll({ ...state, selected: undefined })
+  )
 );

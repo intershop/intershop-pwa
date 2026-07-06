@@ -28,7 +28,7 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope<WishlistListElementData | WishlistData>(),
+          unpackEnvelope<WishlistData | WishlistListElementData>(),
           switchMap(wishlistData => {
             if (wishlistData.length === 0 || 'attributes' in wishlistData[0]) {
               return of(this.wishlistMapper.fromListData(wishlistData as WishlistListElementData[]));

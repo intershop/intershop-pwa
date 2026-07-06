@@ -94,7 +94,7 @@ describe('Wishlist Widget Component', () => {
     describe('strategy "all"', () => {
       it('should load details for all wishlists', () => {
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'all';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl1', 'wl2', 'wl3']))).once();
@@ -107,7 +107,7 @@ describe('Wishlist Widget Component', () => {
         ];
         wishlists$.next(wlWithItems);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'all';
         fixture.detectChanges();
         component.productSKUs$.subscribe(skus => {
@@ -120,7 +120,7 @@ describe('Wishlist Widget Component', () => {
     describe('strategy "preferred"', () => {
       it('should load details only for the preferred wishlist', () => {
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(deepEqual(['wl2']))).once();
@@ -136,7 +136,7 @@ describe('Wishlist Widget Component', () => {
           },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(anything())).never();
@@ -152,7 +152,7 @@ describe('Wishlist Widget Component', () => {
           },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         component.productSKUs$.subscribe(skus => {
@@ -167,7 +167,7 @@ describe('Wishlist Widget Component', () => {
           { ...wl3, items: [{ sku: 'sku-latest', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }] },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         component.productSKUs$.subscribe(skus => {
@@ -182,7 +182,7 @@ describe('Wishlist Widget Component', () => {
           { ...wl3, preferred: false },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'preferred';
         fixture.detectChanges();
         // wl3 has the highest creationDate (300)
@@ -193,7 +193,7 @@ describe('Wishlist Widget Component', () => {
     describe('strategy "latest"', () => {
       it('should load details only for the latest wishlist', () => {
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
         // wl3 has the highest creationDate (300)
@@ -205,7 +205,7 @@ describe('Wishlist Widget Component', () => {
           { ...wl3, itemsCount: 1, items: [{ sku: 'sku1', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }] },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
         verify(wishlistFacadeMock.loadWishlistDetails(anything())).never();
@@ -217,7 +217,7 @@ describe('Wishlist Widget Component', () => {
           { ...wl3, items: [{ sku: 'sku-latest', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }] },
         ]);
         (
-          component as unknown as { wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' }
+          component as unknown as { wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' }
         ).wishlistSelectionStrategy = 'latest';
         fixture.detectChanges();
         component.productSKUs$.subscribe(skus => {

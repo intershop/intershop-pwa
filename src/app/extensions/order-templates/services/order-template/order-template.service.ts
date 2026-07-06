@@ -23,7 +23,7 @@ export class OrderTemplateService {
    */
   getOrderTemplates(): Observable<OrderTemplate[]> {
     return this.apiService.get(`customers/-/users/-/wishlists`).pipe(
-      unpackEnvelope<OrderTemplateListElementData | OrderTemplateData>(),
+      unpackEnvelope<OrderTemplateData | OrderTemplateListElementData>(),
       switchMap(orderTemplateData => {
         if (orderTemplateData.length === 0 || 'attributes' in orderTemplateData[0]) {
           return of(this.orderTemplateMapper.fromListData(orderTemplateData as OrderTemplateListElementData[]));

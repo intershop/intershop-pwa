@@ -65,7 +65,7 @@ export class OrderTemplatesFacade {
     this.store.dispatch(loadOrderTemplateDetails({ orderTemplateId }));
   }
 
-  addOrderTemplate(orderTemplate: OrderTemplateHeader): void | HttpError {
+  addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {
     this.store.dispatch(createOrderTemplate({ orderTemplate }));
   }
 

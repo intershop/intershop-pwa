@@ -25,10 +25,15 @@ export class AccountOrderTemplateListComponent {
     }
     this.orderTemplateList = value;
     this.orderTemplateList?.forEach(template => {
-      if (template.items?.length === template.itemsCount) {
+      if (!this.requestedOrderTemplates.has(template.id)) {
+        this.requestedOrderTemplates.add(template.id);
+        if (template.items?.length !== template.itemsCount) {
+          this.orderTemplatesFacade.loadOrderTemplateDetails(template.id);
+        } else {
+          this.loadedOrderTemplates.add(template.id);
+        }
+      } else if (template.items?.length === template.itemsCount) {
         this.loadedOrderTemplates.add(template.id);
-      } else {
-        this.orderTemplatesFacade.loadOrderTemplateDetails(template.id);
       }
     });
   }
@@ -38,6 +43,7 @@ export class AccountOrderTemplateListComponent {
   }
 
   private orderTemplateList: OrderTemplate[];
+  private requestedOrderTemplates = new Set<string>();
   private loadedOrderTemplates = new Set<string>();
 
   constructor(

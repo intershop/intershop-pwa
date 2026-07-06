@@ -24,7 +24,7 @@ export class WishlistWidgetComponent implements OnInit {
   productSKUs$: Observable<string[]>;
   tileConfiguration: Partial<ProductContextDisplayProperties>;
   private loadingWishlistDetails = false;
-  private wishlistSelectionStrategy: 'all' | 'preferred' | 'latest' = 'all';
+  private wishlistSelectionStrategy: 'all' | 'latest' | 'preferred' = 'all';
 
   constructor(
     private wishlistsFacade: WishlistsFacade,
