@@ -1,9 +1,10 @@
 import { APP_BASE_HREF } from '@angular/common';
+import { HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
@@ -158,5 +159,70 @@ describe('Auth0 Identity Provider', () => {
       verify(apiTokenService.removeApiToken()).once();
       expect(router.url).not.toContain('/account');
     }));
+  });
+
+  describe('intercept', () => {
+    let handler: HttpHandler;
+
+    class MockHandler extends HttpHandler {
+      handle = () => EMPTY;
+    }
+
+    beforeEach(() => {
+      handler = mock(MockHandler);
+    });
+
+    it('should set Bearer token as Authorization header when user is logged in via SSO', () => {
+      const req = new HttpRequest('GET', 'https://example.com/api/resource');
+
+      auth0IdentityProvider.intercept(req, instance(handler));
+
+      const interceptedReq = capture(handler.handle).last()[0] as HttpRequest<unknown>;
+      expect(interceptedReq.headers.get('Authorization')).toBe(`Bearer ${idToken}`);
+    });
+
+    it('should delegate to apiTokenService when no ID token is available', () => {
+      when(oAuthService.getIdToken()).thenReturn(undefined);
+      const req = new HttpRequest('GET', 'https://example.com/api/resource');
+
+      auth0IdentityProvider.intercept(req, instance(handler));
+
+      verify(apiTokenService.intercept(anything(), anything())).once();
+    });
+
+    it('should move CAPTCHA Authorization header to X-Captcha-Token and set Bearer token', () => {
+      const captchaValue = 'CAPTCHA recaptcha_token=abc123 action=contact';
+      const req = new HttpRequest('GET', 'https://example.com/api/resource', {
+        headers: new HttpHeaders().set('Authorization', captchaValue),
+      });
+
+      auth0IdentityProvider.intercept(req, instance(handler));
+
+      const interceptedReq = capture(handler.handle).last()[0] as HttpRequest<unknown>;
+      expect(interceptedReq.headers.get('Authorization')).toBe(`Bearer ${idToken}`);
+      expect(interceptedReq.headers.get('X-Captcha-Token')).toBe(captchaValue);
+    });
+
+    it('should move CAPTCHA V2 Authorization header to X-Captcha-Token and set Bearer token', () => {
+      const captchaValue = 'CAPTCHA g-recaptcha-response=token123 foo=bar';
+      const req = new HttpRequest('GET', 'https://example.com/api/resource', {
+        headers: new HttpHeaders().set('Authorization', captchaValue),
+      });
+
+      auth0IdentityProvider.intercept(req, instance(handler));
+
+      const interceptedReq = capture(handler.handle).last()[0] as HttpRequest<unknown>;
+      expect(interceptedReq.headers.get('Authorization')).toBe(`Bearer ${idToken}`);
+      expect(interceptedReq.headers.get('X-Captcha-Token')).toBe(captchaValue);
+    });
+
+    it('should not modify request for processtoken endpoint', () => {
+      const req = new HttpRequest('POST', 'https://example.com/api/users/processtoken', {});
+
+      auth0IdentityProvider.intercept(req, instance(handler));
+
+      const interceptedReq = capture(handler.handle).last()[0] as HttpRequest<unknown>;
+      expect(interceptedReq.headers.has('Authorization')).toBeFalse();
+    });
   });
 });
