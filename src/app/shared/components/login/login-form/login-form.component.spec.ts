@@ -2,9 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -15,9 +17,12 @@ describe('Login Form Component', () => {
   let fixture: ComponentFixture<LoginFormComponent>;
   let element: HTMLElement;
   let accountFacade: AccountFacade;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
+    appFacade = mock(AppFacade);
+    when(appFacade.serverSetting$(anyString())).thenReturn(of('email'));
 
     await TestBed.configureTestingModule({
       declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent)],
@@ -26,6 +31,10 @@ describe('Login Form Component', () => {
         {
           provide: AccountFacade,
           useFactory: () => instance(accountFacade),
+        },
+        {
+          provide: AppFacade,
+          useFactory: () => instance(appFacade),
         },
         provideRouter([]),
         provideTranslateService(),

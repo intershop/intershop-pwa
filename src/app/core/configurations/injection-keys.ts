@@ -9,13 +9,6 @@ import { createEnvironmentInjectionToken } from 'ish-core/utils/injection';
 export const API_MOCK_PATHS = createEnvironmentInjectionToken('apiMockPaths');
 
 /**
- * If 'username' login name is used for registration, if 'email' the email is used as login name (default: 'email')
- */
-export const USER_REGISTRATION_LOGIN_TYPE = new InjectionToken<string>('userRegistrationLoginType', {
-  factory: () => 'email',
-});
-
-/**
  * The maximum subcategories level depth rendered in the main navigation
  */
 export const MAIN_NAVIGATION_MAX_SUB_CATEGORIES_DEPTH = createEnvironmentInjectionToken(

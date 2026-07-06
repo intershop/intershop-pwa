@@ -10,7 +10,10 @@ export interface User {
   phoneMobile?: string;
   fax?: string;
   email: string;
+
+  // necessary for registration form with loginType = 'username'
   login?: string;
+  password?: string;
 
   preferredInvoiceToAddressUrn?: string;
   preferredShipToAddressUrn?: string;
