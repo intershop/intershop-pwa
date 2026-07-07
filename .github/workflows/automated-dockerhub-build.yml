@@ -50,7 +50,7 @@ jobs:
       # See https://github.com/docker/metadata-action
       - name: Generate Docker image tags (ssr)
         id: meta_ssr
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.DOCKER_SSR_REPOSITORY_NAME }}
           tags: |
@@ -58,21 +58,23 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
             # map git tag 1.2.3 to docker tag release-1.2.3
             type=ref,event=tag,prefix=release-
+            # ensure test branch runs always produce at least one tag
+            type=sha,prefix=test-,enable=${{ github.ref_type == 'branch' && github.ref_name != 'develop' }}
 
       # Configure Docker Buildx.
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       # Log in to Docker Hub with credentials stored in GitHub Secrets.
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build, tag, and push the SSR Docker image
       - name: Build and tag SSR Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ steps.paths_ssr.outputs.build_path }}
           file: ${{ steps.paths_ssr.outputs.dockerfile_path }}
@@ -92,7 +94,7 @@ jobs:
       # See https://github.com/docker/metadata-action
       - name: Generate Docker image tags (nginx)
         id: meta_nginx
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.DOCKER_NGINX_REPOSITORY_NAME }}
           tags: |
@@ -100,21 +102,23 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
             # map git tag 1.2.3 to docker tag release-1.2.3
             type=ref,event=tag,prefix=release-
+            # ensure test branch runs always produce at least one tag
+            type=sha,prefix=test-,enable=${{ github.ref_type == 'branch' && github.ref_name != 'develop' }}
 
       # Configure Docker Buildx.
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       # Log in to Docker Hub with credentials stored in GitHub Secrets.
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build, tag, and push the nginx Docker image
       - name: Build and tag nginx Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./${{ env.DOCKER_NGINX_CONTEXT_PATH }}
           file: ${{ env.DOCKER_NGINX_DOCKERFILE_PATH }}
