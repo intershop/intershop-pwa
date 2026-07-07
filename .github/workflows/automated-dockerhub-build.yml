@@ -74,7 +74,7 @@ jobs:
 
       # Build, tag, and push the SSR Docker image
       - name: Build and tag SSR Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ${{ steps.paths_ssr.outputs.build_path }}
           file: ${{ steps.paths_ssr.outputs.dockerfile_path }}
@@ -118,7 +118,7 @@ jobs:
 
       # Build, tag, and push the nginx Docker image
       - name: Build and tag nginx Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./${{ env.DOCKER_NGINX_CONTEXT_PATH }}
           file: ${{ env.DOCKER_NGINX_DOCKERFILE_PATH }}
