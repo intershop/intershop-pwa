@@ -58,6 +58,7 @@
     "matrix:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-matrix.ts",
     "serve:application": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts",
     "serve:application:dev": "npm run serve:application -- --live-reload",
+    "serve:application-dev": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-dev-server.ts",
     "serve:application-builder": "ts-node --project tsconfig.scripts.json scripts/build/application-builder-serve.ts --port=4200",
     "serve:webpack": "ng run intershop-pwa:serve-webpack",
     "build": "npm run build:application --",
