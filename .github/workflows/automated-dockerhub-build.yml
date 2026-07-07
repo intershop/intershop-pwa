@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - develop
+      - feature/migrate-dockerhub-autobuild
     tags:
       - '[0-9]+.[0-9]+.[0-9]+-[0-9A-Za-z.-]+'
 
@@ -75,7 +76,7 @@ jobs:
         with:
           context: ${{ steps.paths_ssr.outputs.build_path }}
           file: ${{ steps.paths_ssr.outputs.dockerfile_path }}
-          push: true
+          push: false
           tags: ${{ steps.meta_ssr.outputs.tags }}
 
   build_nginx:
@@ -117,5 +118,5 @@ jobs:
         with:
           context: ./${{ env.DOCKER_NGINX_CONTEXT_PATH }}
           file: ${{ env.DOCKER_NGINX_DOCKERFILE_PATH }}
-          push: true
+          push: false
           tags: ${{ steps.meta_nginx.outputs.tags }}
