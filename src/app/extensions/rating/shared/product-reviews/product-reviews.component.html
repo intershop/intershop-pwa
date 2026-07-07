@@ -65,9 +65,13 @@
     </div>
     <div class="col-md-9">
       <div class="review-item-header-title">
-        @for (fill of getStars(review.rating); track $index) {
-          <ish-product-rating-star [filled]="fill" />
-        }
+        <ngb-rating
+          [attr.aria-label]="'product.review.rating.score' | translate: { '0': review.rating }"
+          [disabled]="true"
+          [max]="5"
+          [rate]="review.rating"
+          [starTemplate]="starTemplate"
+        />
         <span class="ps-1">{{ review.title }}</span>
       </div>
       <div class="review-item-text">{{ review.content }}</div>
@@ -107,3 +111,11 @@
     <ish-loading />
   </div>
 }
+
+<ng-template #starTemplate let-fill="fill">
+  @if (fill === 100) {
+    <i aria-hidden="true" class="bi bi-star-fill"></i>
+  } @else {
+    <i aria-hidden="true" class="bi bi-star"></i>
+  }
+</ng-template>

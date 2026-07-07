@@ -1330,7 +1330,6 @@
   "product.review.rating.error.required": "Cliquez sur les étoiles pour évaluer le produit.",
   "product.review.rating.label": "Évaluation",
   "product.review.rating.score": "Évaluation du produit : {{0}} sur 5 étoiles.",
-  "product.review.rating.tooltip": "{{0, plural, one{# étoile} other{# étoiles}}}",
   "product.review.status.new.text": "Votre avis est en cours d’approbation. Les autres utilisateurs ne pourront pas voir votre avis tant qu’il n’aura pas été approuvé.",
   "product.review.status.rejected.text": "Votre avis a été rejeté par l’administrateur du magasin. Vous pouvez supprimer ce commentaire et en rédiger un nouveau.",
   "product.review.title.error.required": "Veuillez saisir un titre pour votre avis.",
