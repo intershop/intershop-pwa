@@ -390,6 +390,7 @@
   "account.profile.update.link": "Modifier {{0}}",
   "account.profile.update_company_profile.message": "Vos informations de l’entreprise ont été mises à jour.",
   "account.profile.update_email.message": "Votre adresse courriel a été mise à jour. Nous vous avons envoyé un courriel de confirmation à {{0}}.",
+  "account.profile.update_username.message": "Your username has been updated. We have sent you a confirmation e-mail to {{0}}.",
   "account.profile.update_password.message": "Votre mot de passe a été mis à jour.",
   "account.profile.update_profile.message": "Les données de votre profil ont été mises à jour.",
   "account.punchout.configuration.back_to_list": "Retour à la liste des utilisateurs",

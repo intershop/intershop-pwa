@@ -1,0 +1,46 @@
+<h1>{{ 'account.update_email.heading' | translate }}</h1>
+
+<!-- Error message -->
+<ish-error-message [error]="error" />
+
+<div class="row">
+  <div class="col-md-10 col-xl-8">
+    <div class="section">
+      <form
+        #form="ngForm"
+        class="form-horizontal"
+        ishFormSubmit
+        novalidate
+        [formGroup]="accountProfileUsernameForm"
+        (ngSubmit)="submit()"
+      >
+        <div class="row form-group">
+          <div class="col-md-4 col-form-label">{{ 'account.update_username.label' | translate }}</div>
+          @if (currentUser) {
+            <div class="col-md-8 col-form-label">{{ currentUser.login }}</div>
+          }
+        </div>
+
+        <formly-form [fields]="fields" [form]="accountProfileUsernameForm" [model]="model" />
+
+        <div class="row">
+          <div class="offset-md-4 col-md-8">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              [disabled]="accountProfileUsernameForm.invalid && form.submitted"
+            >
+              {{ 'account.update.button.label' | translate }}
+            </button>
+            <a class="btn btn-secondary" routerLink="/account/profile">{{ 'account.cancel.link' | translate }}</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<h2 class="form-text">{{ 'account.help.heading' | translate }}</h2>
+<p class="form-text">
+  {{ 'account.update_username.question.text' | translate }}<br />{{ 'account.update_username.answer.text' | translate }}
+</p>

@@ -10,6 +10,19 @@ import { fetchUserNewsletterGuard } from './fetch-user-newsletter.guard';
 const routes: Routes = [
   { path: '', canActivate: [fetchUserNewsletterGuard], component: AccountProfilePageComponent },
   {
+    path: 'username',
+    data: {
+      breadcrumbData: [
+        { key: 'account.profile.link', link: '/account/profile' },
+        { key: 'account.update_username.breadcrumb' },
+      ],
+    },
+    loadChildren: () =>
+      import('../account-profile-username/account-profile-username-page.module').then(
+        m => m.AccountProfileUsernamePageModule
+      ),
+  },
+  {
     path: 'email',
     data: {
       breadcrumbData: [

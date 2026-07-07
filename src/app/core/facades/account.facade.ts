@@ -143,6 +143,16 @@ export class AccountFacade {
     );
   }
 
+  updateUserName(user: User, credentials: Credentials) {
+    this.store.dispatch(
+      updateUser({
+        user,
+        credentials,
+        successMessage: { message: 'account.profile.update_username.message', messageParams: { 0: user.email } },
+      })
+    );
+  }
+
   updateUserPassword(data: { password: string; currentPassword: string }) {
     this.store.dispatch(updateUserPassword(data));
   }
