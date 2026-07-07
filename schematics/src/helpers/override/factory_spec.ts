@@ -113,6 +113,18 @@ describe('override Schematic', () => {
     );
   });
 
+  it('should not persist application builder replacements in angular.json', async () => {
+    const angularJson = appTree.readContent('/angular.json');
+
+    const tree = await runOverride({
+      from: 'src/app/foo/dummy/dummy.component.ts',
+      theme: 'all',
+      ts: true,
+    });
+
+    expect(tree.readContent('/angular.json')).toEqual(angularJson);
+  });
+
   it('should throw an error if html override is specified on a non-component', async done => {
     await runOverride({ from: 'core/services/dummy/dummy.service.ts', theme: 'all', html: true }).catch(err => {
       expect(err).toMatchInlineSnapshot(`[Error: Template and Style overrides only work on components.]`);
@@ -136,6 +148,7 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
         "/src/app/foo/dummy/dummy.component.all.html",
+        "/src/app/foo/dummy/dummy.component.all.ts",
       ]
     `);
 
@@ -152,6 +165,7 @@ describe('override Schematic', () => {
         "/src/app/foo/foobar/foobar.component.spec.ts",
         "/src/app/foo/foobar/foobar.component.ts",
         "/src/app/foo/foobar/foobar.component.all.scss",
+        "/src/app/foo/foobar/foobar.component.all.ts",
       ]
     `);
 
@@ -166,16 +180,16 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.scss",
         "/src/app/foo/dummy/dummy.component.all.scss",
+        "/src/app/foo/dummy/dummy.component.all.ts",
       ]
     `);
 
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
-    expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeTrue();
+    expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeFalse();
     const dummyComponent = appTree.readContent('/src/app/foo/dummy/dummy.component.ts');
     expect(componentDecorator(dummyComponent)).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', styleUrls: ['./dummy.component.scss'], })"`
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', })"`
     );
   });
 
@@ -191,8 +205,8 @@ describe('override Schematic', () => {
       ]
     `);
 
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toEqual(
-      appTree.readContent('/src/app/foo/dummy/dummy.component.ts')
+    expect(componentDecorator(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts'))).toMatchInlineSnapshot(
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', })"`
     );
   });
 
@@ -219,8 +233,10 @@ describe('override Schematic', () => {
 
     expect(appTree.exists('/src/app/foo/foobar/foobar.component.all.scss')).toBeTrue();
     expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toEqual(
-      appTree.readContent('/src/app/foo/foobar/foobar.component.ts')
+    expect(
+      componentDecorator(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts'))
+    ).toMatchInlineSnapshot(
+      `"@Component({ selector: 'ish-foobar', standalone: false, templateUrl: './foobar.component.all.html', styleUrls: ['./foobar.component.all.scss'], })"`
     );
   });
 
@@ -239,7 +255,6 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
         "/src/app/foo/dummy/dummy.component.all.html",
-        "/src/app/foo/dummy/dummy.component.scss",
         "/src/app/foo/dummy/dummy.component.all.scss",
         "/src/app/foo/dummy/dummy.component.all.ts",
       ]
@@ -247,8 +262,8 @@ describe('override Schematic', () => {
 
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
     expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toEqual(
-      appTree.readContent('/src/app/foo/dummy/dummy.component.ts')
+    expect(componentDecorator(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts'))).toMatchInlineSnapshot(
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.all.html', styleUrls: ['./dummy.component.all.scss'], })"`
     );
   });
 
