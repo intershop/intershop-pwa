@@ -52,6 +52,8 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.DOCKER_SSR_REPOSITORY_NAME }}
+          flavor: |
+            latest=false
           tags: |
             # set latest tag for develop branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
@@ -96,6 +98,8 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.DOCKER_NGINX_REPOSITORY_NAME }}
+          flavor: |
+            latest=false
           tags: |
             # set latest tag for develop branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
