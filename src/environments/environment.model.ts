@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-union-types */
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
@@ -27,33 +28,32 @@ export interface Environment {
 
   /* FEATURE TOGGLES */
   features: (
-    | 'addressDoctor'
-    | 'businessCustomerRegistration'
     | 'compare'
     | 'contactUs'
-    | 'copilot'
-    | 'costCenters'
     | 'extraConfiguration'
-    | 'guestCheckout'
-    | 'legacyEncoding'
-    /* B2B features */
-    | 'maps'
-    | 'orderTemplates'
     | 'productNotifications'
-    | 'punchout'
-    | 'quickorder'
-    | 'quoting'
-    /* B2C features */
     | 'rating'
     | 'recently'
-    /* ICM compatibility - a.o. to be used with the ICMCompatibilityInterceptor */
-    // | 'messageToMerchant'
     | 'saveLanguageSelection'
-    /* Third-party Integrations */
     | 'stickyHeader'
     | 'storeLocator'
-    | 'tracking'
+    /* B2B features */
+    | 'businessCustomerRegistration'
+    | 'costCenters'
+    | 'orderTemplates'
+    | 'punchout'
+    | 'quoting'
+    | 'quickorder'
+    /* B2C features */
+    | 'guestCheckout'
     | 'wishlists'
+    /* ICM compatibility - a.o. to be used with the ICMCompatibilityInterceptor */
+    | 'legacyEncoding'
+    /* Third-party Integrations */
+    | 'addressDoctor'
+    | 'copilot'
+    | 'maps'
+    | 'tracking'
   )[];
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
