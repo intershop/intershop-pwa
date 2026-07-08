@@ -524,6 +524,13 @@ function writeDryRunOutput(
 }
 
 async function run() {
+  console.log(`****************************************************************************************
+This is a simple server for use in testing or debugging Angular applications locally.
+It hasn't been reviewed for security issues.
+
+DON'T USE IT FOR PRODUCTION!
+****************************************************************************************`);
+
   const workspace = readWorkspace();
   const projectName = getDefaultProjectName(workspace);
   const parsedArgs = parseArgs(process.argv.slice(2));

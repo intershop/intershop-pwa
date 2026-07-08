@@ -68,8 +68,8 @@
     "serve": "npm run serve:application --",
     "start": "npm-run-all build serve",
     "dev:ssr": "npm run dev:ssr:b2b",
-    "dev:ssr:b2b": "npm-run-all --parallel build:watch:b2b serve:application:dev",
-    "dev:ssr:b2c": "npm-run-all --parallel build:watch:b2c serve:application:dev",
+    "dev:ssr:b2b": "npm-run-all --parallel \"build:watch:b2b -- --purge-css\" serve:application:dev",
+    "dev:ssr:b2c": "npm-run-all --parallel \"build:watch:b2c -- --purge-css\" serve:application:dev",
     "dev:ssr:webpack": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js",
     "audit": "better-npm-audit audit"

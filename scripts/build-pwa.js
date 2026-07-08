@@ -34,6 +34,7 @@ function getOutputBasePath(outputPath) {
 function splitBuildArgs(args) {
   const remainingArgs = [];
   let outputPath;
+  let purgeCss = /^(true|1|on|yes)$/i.test(process.env.npm_config_purge_css || '');
 
   for (let index = 0; index < args.length; index++) {
     const arg = args[index];
@@ -43,6 +44,8 @@ function splitBuildArgs(args) {
       index++;
     } else if (arg.startsWith('--output-path=')) {
       outputPath = arg.split('=')[1];
+    } else if (arg === '--purge-css') {
+      purgeCss = true;
     } else {
       remainingArgs.push(arg);
     }
@@ -50,6 +53,7 @@ function splitBuildArgs(args) {
 
   return {
     outputBasePath: getOutputBasePath(outputPath),
+    purgeCss,
     remainingArgs,
   };
 }
@@ -81,7 +85,7 @@ const processArgs = process.argv.slice(2);
 const client = processArgs.includes('client') || !processArgs.includes('server');
 const server = processArgs.includes('server') || !processArgs.includes('client');
 const buildArgs = processArgs.filter(arg => arg !== 'client' && arg !== 'server');
-const { outputBasePath, remainingArgs } = splitBuildArgs(buildArgs);
+const { outputBasePath, purgeCss, remainingArgs } = splitBuildArgs(buildArgs);
 
 if (!client && !server) {
   process.exit(0);
@@ -104,6 +108,7 @@ const result = spawnSync(
     env: {
       ...process.env,
       APPLICATION_BUILDER_OUTPUT_BASE_PATH: outputBasePath,
+      ...(purgeCss ? { APPLICATION_BUILDER_PURGE_CSS: 'true' } : {}),
       APPLICATION_BUILDER_RUNNER_LABEL: 'build',
       APPLICATION_BUILDER_VERSION_LABEL: 'application-builder',
     },

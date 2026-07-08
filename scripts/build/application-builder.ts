@@ -169,7 +169,7 @@ let activeFilesTemplateContentCache: string | undefined;
 const requireFromCurrentFile = createRequire(__filename);
 
 function getPurgeCssMode(production: boolean): 'disabled' | 'safe' | 'strict' {
-  if (!production) {
+  if (!production && !isPurgeCssEnabledForDevelopment() && !getEnvironmentFlag('APPLICATION_BUILDER_PURGE_CSS')) {
     return 'disabled';
   }
 
@@ -179,6 +179,10 @@ function getPurgeCssMode(production: boolean): 'disabled' | 'safe' | 'strict' {
   }
 
   return value === 'safe' ? 'safe' : 'strict';
+}
+
+function isPurgeCssEnabledForDevelopment(): boolean {
+  return getNpmConfigFlag('purge-css') || process.argv.includes('--purge-css');
 }
 
 function readJsonFile<T>(path: string): T {
@@ -250,7 +254,11 @@ function getConfigurationArgument(args: string[]): { configuration?: string; rem
     } else if (arg.startsWith('-c=')) {
       configuration = normalizeConfigurationArgument(arg.split('=')[1]);
     } else {
-      remainingArgs.push(arg);
+      if (arg === '--purge-css') {
+        process.env.APPLICATION_BUILDER_PURGE_CSS = 'true';
+      } else {
+        remainingArgs.push(arg);
+      }
     }
   }
 
