@@ -8,7 +8,7 @@ COPY package.json package-lock.json /workspace/
 RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.application-spike.json tsconfig.scripts.json tsconfig.json tsconfig.server.json ngsw-config.json angular.json eslint.config.mjs /workspace/
+COPY tsconfig.app.json tsconfig.application-builder.json tsconfig.scripts.json tsconfig.json tsconfig.server.json ngsw-config.json angular.json eslint.config.mjs /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
@@ -18,7 +18,6 @@ COPY server.ts babel.config.js /workspace/
 RUN npm run postinstall
 ARG serviceWorker
 RUN node schematics/customization/service-worker ${serviceWorker} || true
-COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=

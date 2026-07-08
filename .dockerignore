@@ -146,7 +146,6 @@ azure-pipelines*
 src/assets/mock-data
 
 templates
-!templates/webpack
 
 scripts
 !scripts/
