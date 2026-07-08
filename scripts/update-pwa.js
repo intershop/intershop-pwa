@@ -73,11 +73,9 @@ const coreLibs = [
   '@angular/core',
   '@ngrx/store',
   '@angular/ssr',
-  '@angular-builders/custom-webpack',
   '@rx-angular/state',
   '@phenomnomnominal/tsquery',
   '@types/node',
-  '@types/webpack',
   ...angularCoreDependencies,
 ].map(lib => (pinned[lib] ? lib + '@' + pinned[lib] : lib));
 

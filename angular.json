@@ -18,12 +18,8 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -379,12 +375,8 @@
           }
         },
         "server": {
-          "builder": "@angular-builders/custom-webpack:server",
+          "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/server",
             "main": "server.ts",
             "optimization": true,
@@ -421,7 +413,7 @@
           }
         },
         "serve-webpack": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "intershop-pwa:build"
           },
@@ -453,12 +445,8 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/organization-management",
             "index": "projects/organization-management/src/index.html",
             "main": "projects/organization-management/src/main.ts",
@@ -483,7 +471,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "organization-management:build"
           }
@@ -500,12 +488,8 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/requisition-management",
             "index": "projects/requisition-management/src/index.html",
             "main": "projects/requisition-management/src/main.ts",
@@ -530,7 +514,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "requisition-management:build"
           }

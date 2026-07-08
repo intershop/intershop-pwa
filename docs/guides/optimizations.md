@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## NGINX Optimizations
 
 - [NGINX Optimizations](#nginx-optimizations)
-- [Custom Webpack Build](#custom-webpack-build)
+- [Application Builder](#application-builder)
 - [PurgeCSS](#purgecss)
   - [Safelisting](#safelisting)
   - [Development](#development)
@@ -26,10 +26,10 @@ The configuration of the module is described in [Guide - Building and Running NG
 > [!NOTE]
 > Brotli compression is typically only used over HTTPS connections. This is because most modern web browsers only advertise support for Brotli encoding to servers when the connection is secure (HTTPS).
 
-## Custom Webpack Build
+## Application Builder
 
 The PWA uses a customized webpack build, that allows for additional optimizations.
-The build can be customized in the file [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts).
+The application-builder pipeline is customized in [`application-builder.ts`](../../scripts/build/application-builder.ts).
 
 If the PWA is built using `production` configuration (either by building with `--configuration=<other>,production` or by building the Docker image with `--build-arg configuration=<other>,production`), the following optimizations are applied:
 
@@ -58,7 +58,7 @@ Also style selectors that are dynamically generated would not be found.
 To solve this problem, PurgeCSS provides different [options for safelisting](https://purgecss.com/safelisting.html) specific styles.
 This can either be done in the plugin configuration or directly in your SCSS/CSS files with special comments.
 
-The PurgeCSS plugin configuration can be found in the project’s [`webpack.custom.ts`](https://github.com/intershop/intershop-pwa/blob/3.1.0/templates/webpack/webpack.custom.ts#L231-L246).
+The PurgeCSS configuration can be found in the project’s [`application-builder.ts`](../../scripts/build/application-builder.ts).
 This method is used and recommended to include required styles of the third-party libraries used, which would otherwise be purged.
 For the different [configuration options](https://purgecss.com/configuration.html), refer to the PurgeCSS documentation.
 
