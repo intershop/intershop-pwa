@@ -7,9 +7,10 @@ import robots from 'express-robots-txt';
 import * as fs from 'fs';
 import { createServer } from 'http';
 import { hostname } from 'os';
-import { join, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 import * as client from 'prom-client';
 import { getGlobalDispatcher, install, interceptors, setGlobalDispatcher } from 'undici';
+import { fileURLToPath } from 'url';
 import { writeHeapSnapshot } from 'v8';
 import 'zone.js/node';
 
@@ -129,7 +130,14 @@ const DEPLOY_URL = getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const BROWSER_FOLDER = resolve(process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser'));
+const SERVER_FOLDER = dirname(fileURLToPath(import.meta.url));
+
+const THEMED_BROWSER_FOLDER = resolve(SERVER_FOLDER, '..', 'browser');
+
+const BROWSER_FOLDER = resolve(
+  process.env.BROWSER_FOLDER ||
+    (fs.existsSync(THEMED_BROWSER_FOLDER) ? THEMED_BROWSER_FOLDER : join(process.cwd(), 'dist', 'browser'))
+);
 
 const APPLICATION_BUILDER_LIVE_RELOAD = /^(on|1|true|yes)$/i.test(process.env.APPLICATION_BUILDER_LIVE_RELOAD || '');
 

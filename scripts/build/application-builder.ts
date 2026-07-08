@@ -1492,6 +1492,7 @@ async function createArchitectWorkspace(
   }
 
   architectWorkspace.extensions.cli = workspace.cli as json.JsonValue;
+  projectDefinition.extensions.cli = workspace.cli as json.JsonValue;
   projectDefinition.targets.set(RUNNER_CONSTANTS.spikeTarget, {
     builder: temporaryTarget.builder,
     configurations: {},
