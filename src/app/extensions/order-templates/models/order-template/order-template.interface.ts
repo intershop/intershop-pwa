@@ -11,8 +11,8 @@ export interface OrderTemplateData extends OrderTemplateHeader {
 }
 
 export interface OrderTemplateListElementData {
+  itemId: string;
   attributes: Attribute[];
   title?: string;
   uri?: string;
-  itemId: string;
 }

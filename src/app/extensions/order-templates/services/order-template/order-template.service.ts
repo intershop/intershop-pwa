@@ -29,8 +29,10 @@ export class OrderTemplateService {
           return of(this.orderTemplateMapper.fromListData(orderTemplateData as OrderTemplateListElementData[]));
         }
         // legacy data format with uri only in the list response -> get each order template separately to get all data
-        const data = orderTemplateData as OrderTemplateData[];
-        const obsArray = data.map(d => this.getOrderTemplate(this.orderTemplateMapper.fromDataToId(d)));
+        // TODO: remove in case ICM version < 14.2.0 will not supported anymore
+        const obsArray = orderTemplateData.map((d: OrderTemplateData) =>
+          this.getOrderTemplate(this.orderTemplateMapper.fromDataToId(d))
+        );
         return obsArray.length ? forkJoin(obsArray) : of([]);
       })
     );
