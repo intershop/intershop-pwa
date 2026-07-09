@@ -37,28 +37,27 @@ describe('Account Profile Username Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display 3 input fields for email, emailConfirmation and password', () => {
+  it('should display 2 input fields for login and password', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('formly-group formly-group formly-field')).toHaveLength(3);
+    expect(element.querySelectorAll('formly-group formly-group formly-field')).toHaveLength(2);
   });
 
-  it('should emit updateEmail event if form is valid', () => {
-    const eventEmitter$ = spy(component.updateEmail);
+  it('should emit updateUserName event if form is valid', () => {
+    const eventEmitter$ = spy(component.updateUserName);
     fixture.detectChanges();
 
-    const form = component.form as UntypedFormGroup;
+    const form = component.accountProfileUsernameForm as UntypedFormGroup;
 
-    form.get('email').setValue('patricia@test.intershop.de');
-    form.get('emailConfirmation').setValue('patricia@test.intershop.de');
+    form.get('login').setValue('newusername');
     form.get('currentPassword').setValue('!InterShop00!');
     component.submit();
 
     verify(eventEmitter$.emit(anything())).once();
   });
 
-  it('should not emit updateEmail event if form is invalid', () => {
-    const eventEmitter$ = spy(component.updateEmail);
+  it('should not emit updateUserName event if form is invalid', () => {
+    const eventEmitter$ = spy(component.updateUserName);
     fixture.detectChanges();
 
     component.submit();

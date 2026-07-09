@@ -3,7 +3,11 @@
 @if (success$ | async) {
   <p>{{ 'account.send_password.message' | translate }}</p>
 } @else {
-  <p [ishServerHtml]="'account.forgotdata.password_retrieval_info.text' | translate"></p>
+  @if (('preferences.UserCredentialPreferences.UserRegistrationLoginType' | ishServerSetting) === 'email') {
+    <p [ishServerHtml]="'account.forgotdata.password_retrieval_info.text' | translate"></p>
+  } @else {
+    <p [ishServerHtml]="'account.forgotdata.password_retrieval_info_username.text' | translate"></p>
+  }
   <ish-error-message [error]="error$ | async" />
   <div class="row">
     <div class="col-md-10 col-lg-8 col-xl-6">

@@ -160,7 +160,7 @@ export class UserService {
                       userId: body.userId,
                     }),
                 address: customerAddress,
-                credentials: { ...body.credentials },
+                credentials: body.credentials,
                 preferredLanguage: currentLocale,
               }
         )

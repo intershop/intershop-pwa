@@ -16,6 +16,9 @@ describe('Request Reminder Form Component', () => {
   beforeEach(async () => {
     const mockAppFacade = mock(AppFacade);
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
+    when(
+      mockAppFacade.serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+    ).thenReturn(of('email'));
 
     await TestBed.configureTestingModule({
       declarations: [RequestReminderFormComponent],

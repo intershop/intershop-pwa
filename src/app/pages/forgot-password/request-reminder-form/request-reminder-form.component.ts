@@ -32,13 +32,14 @@ export class RequestReminderFormComponent implements OnInit {
     this.fields$ = combineLatest([
       this.appFacade.serverSetting$<boolean>('captcha.forgotPassword'),
       this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+      this.appFacade.serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType'),
     ]).pipe(
-      map(([isCaptchaV2, isCaptchaTopicEnabled]) => [
+      map(([isCaptchaV2, isCaptchaTopicEnabled, loginType]) => [
         {
           key: 'email',
-          type: 'ish-email-field',
+          type: loginType === 'email' ? 'ish-email-field' : 'ish-text-input-field',
           props: {
-            label: 'account.forgotdata.email.label',
+            label: loginType === 'email' ? 'account.forgotdata.email.label' : 'account.register.username.label',
             hideRequiredMarker: true,
             required: true,
           },

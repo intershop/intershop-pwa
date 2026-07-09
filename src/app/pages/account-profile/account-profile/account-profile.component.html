@@ -1,32 +1,6 @@
 <h1>{{ 'account.profile.heading' | translate }}</h1>
 
-@if ((loginType$ | async) === 'email') {
-  <!-- Email -->
-  <div class="row section">
-    <div class="col-10 col-lg-8">
-      <h2 class="h3">{{ 'account.profile.email.heading' | translate }}</h2>
-      <div class="row">
-        <div class="col-md-12">
-          <dl class="row dl-horizontal dl-separator">
-            <dt class="col-md-4">{{ 'account.profile.email.label' | translate }}</dt>
-            <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div class="col-2 col-lg-4">
-      <a
-        *ishIdentityProviderCapability="'editEmail'"
-        class="btn-tool"
-        data-testing-id="edit-email"
-        routerLink="/account/profile/email"
-        [title]="'account.profile.update.link' | translate: { '0': 'account.profile.email.heading' | translate }"
-      >
-        <i class="bi bi-pencil-fill"></i>
-      </a>
-    </div>
-  </div>
-} @else {
+@if (('preferences.UserCredentialPreferences.UserRegistrationLoginType' | ishServerSetting) !== 'email') {
   <!-- Username -->
   <div class="row section">
     <div class="col-10 col-lg-8">
@@ -52,6 +26,32 @@
     </div>
   </div>
 }
+
+<!-- Email -->
+<div class="row section">
+  <div class="col-10 col-lg-8">
+    <h2 class="h3">{{ 'account.profile.email.heading' | translate }}</h2>
+    <div class="row">
+      <div class="col-md-12">
+        <dl class="row dl-horizontal dl-separator">
+          <dt class="col-md-4">{{ 'account.profile.email.label' | translate }}</dt>
+          <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-2 col-lg-4">
+    <a
+      *ishIdentityProviderCapability="'editEmail'"
+      class="btn-tool"
+      data-testing-id="edit-email"
+      routerLink="/account/profile/email"
+      [title]="'account.profile.update.link' | translate: { '0': 'account.profile.email.heading' | translate }"
+    >
+      <i class="bi bi-pencil-fill"></i>
+    </a>
+  </div>
+</div>
 
 <!-- Password -->
 <div *ishIdentityProviderCapability="'editPassword'" class="row section">
@@ -90,6 +90,11 @@
           <dd class="col-md-8" data-testing-id="name-field">
             {{ user.title ? user.title + ' ' : '' }}{{ user.firstName }} {{ user.lastName }}
           </dd>
+          <!-- Email -->
+          @if (('preferences.UserCredentialPreferences.UserRegistrationLoginType' | ishServerSetting) !== 'email') {
+            <dt class="col-md-4">{{ 'account.profile.email.label' | translate }}</dt>
+            <dd class="col-md-8" data-testing-id="email-field">{{ user.email }}</dd>
+          }
           <!-- Phone -->
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="phone-field">{{ user.phoneHome }}</dd>

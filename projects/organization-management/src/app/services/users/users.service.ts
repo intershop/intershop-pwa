@@ -95,12 +95,16 @@ export class UsersService {
             ],
           })
           .pipe(
-            concatMap(() =>
-              this.setUserRoles(user.email, user.roleIDs).pipe(
+            withLatestFrom(
+              this.appFacade.serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+            ),
+            concatMap(([, loginType]) =>
+              this.setUserRoles(loginType === 'email' ? user.email : user.login, user.roleIDs).pipe(
                 concatMap(roleIDs =>
-                  forkJoin([this.setUserBudget(user.email, user.userBudget), this.getUser(user.email)]).pipe(
-                    map(([userBudget, newUser]) => ({ ...newUser, userBudget, roleIDs }))
-                  )
+                  forkJoin([
+                    this.setUserBudget(loginType === 'email' ? user.email : user.login, user.userBudget),
+                    this.getUser(loginType === 'email' ? user.email : user.login),
+                  ]).pipe(map(([userBudget, newUser]) => ({ ...newUser, userBudget, roleIDs })))
                 )
               )
             )

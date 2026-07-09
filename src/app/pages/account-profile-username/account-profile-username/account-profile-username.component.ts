@@ -75,11 +75,10 @@ export class AccountProfileUsernameComponent implements OnInit {
   submit() {
     if (this.accountProfileUsernameForm.valid) {
       const username = this.accountProfileUsernameForm.get('login').value;
-
       this.updateUserName.emit({
         user: { ...this.currentUser, login: username },
         credentials: {
-          login: this.currentUser.login,
+          login: username,
           password: this.accountProfileUsernameForm.get('currentPassword').value,
         },
       });

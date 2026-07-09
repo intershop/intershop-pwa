@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
@@ -22,6 +23,7 @@ describe('Request Reminder Component', () => {
         MockComponent(ErrorMessageComponent),
         MockComponent(RequestReminderFormComponent),
         MockDirective(ServerHtmlDirective),
+        MockPipe(ServerSettingPipe),
         RequestReminderComponent,
       ],
       imports: [TranslatePipe],
