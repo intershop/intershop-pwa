@@ -476,7 +476,7 @@ export function app() {
       return 'no-store';
     }
 
-    if (/\.[0-9a-f]{16,}\./.test(path)) {
+    if (/(?:\.[0-9a-f]{16,}\.|-[A-Z2-7]{8}\.|[?&][0-9a-f]{7,}(?:[&=]|$))/.test(path)) {
       // file was output-hashed -> 1y
       return 'public, max-age=31557600';
     } else {
@@ -595,7 +595,7 @@ export function app() {
     // find last baseHref parameter
     const regex = /baseHref=([^;?#]*)/g;
     let baseHref = '/';
-    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
+    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
 
