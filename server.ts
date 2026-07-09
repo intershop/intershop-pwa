@@ -595,7 +595,7 @@ export function app() {
     // find last baseHref parameter
     const regex = /baseHref=([^;?#]*)/g;
     let baseHref = '/';
-    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
+    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
 
