@@ -22,8 +22,8 @@ export class UserProfileFormComponent implements OnInit {
 
   fields: FormlyFieldConfig[];
   model: Partial<B2bUser>;
-  loginType: string;
 
+  private loginType: string;
   private destroyRef = inject(DestroyRef);
 
   constructor(private appFacade: AppFacade) {}

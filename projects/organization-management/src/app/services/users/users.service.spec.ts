@@ -30,6 +30,7 @@ describe('Users Service', () => {
     when(apiService.put(anyString(), anything())).thenReturn(of({}));
     when(apiService.encodeResourceId(anything())).thenCall(id => id);
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.serverSetting$(anyString())).thenReturn(of('email'));
 
     TestBed.configureTestingModule({
       providers: [
