@@ -13,38 +13,12 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
   selector: 'ish-account-order-template-list',
   standalone: false,
   templateUrl: './account-order-template-list.component.html',
-  styleUrls: ['./account-order-template-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderTemplateListComponent {
+  /** The list of order templates of the customer. */
+  @Input() orderTemplates: OrderTemplate[];
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
-
-  @Input() set orderTemplates(value: OrderTemplate[]) {
-    if (this.orderTemplateList === value) {
-      return;
-    }
-    this.orderTemplateList = value;
-    this.orderTemplateList?.forEach(template => {
-      if (!this.requestedOrderTemplates.has(template.id)) {
-        this.requestedOrderTemplates.add(template.id);
-        if (template.items?.length !== template.itemsCount) {
-          this.orderTemplatesFacade.loadOrderTemplateDetails(template.id);
-        } else {
-          this.loadedOrderTemplates.add(template.id);
-        }
-      } else if (template.items?.length === template.itemsCount) {
-        this.loadedOrderTemplates.add(template.id);
-      }
-    });
-  }
-
-  get orderTemplates(): OrderTemplate[] {
-    return this.orderTemplateList;
-  }
-
-  private orderTemplateList: OrderTemplate[];
-  private requestedOrderTemplates = new Set<string>();
-  private loadedOrderTemplates = new Set<string>();
 
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
@@ -64,11 +38,11 @@ export class AccountOrderTemplateListComponent {
     modal.show(orderTemplate.id);
   }
 
-  orderTemplateLoaded(orderTemplateId: string) {
-    return this.loadedOrderTemplates.has(orderTemplateId);
+  orderTemplateLoaded(orderTemplate: OrderTemplate): boolean {
+    return orderTemplate.items?.length === orderTemplate.itemsCount;
   }
 
   getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
+    return template.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
   }
 }

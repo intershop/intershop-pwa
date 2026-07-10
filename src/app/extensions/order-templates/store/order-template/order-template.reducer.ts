@@ -16,8 +16,6 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
-  loadOrderTemplateDetailsFail,
-  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
@@ -70,7 +68,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
-    loadOrderTemplateDetailsFail,
+    orderTemplatesApiActions.loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail
   ),
@@ -78,7 +76,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
-    loadOrderTemplateDetailsFail,
+    orderTemplatesApiActions.loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail,
     (state: OrderTemplateState): OrderTemplateState => ({
@@ -88,12 +86,14 @@ export const orderTemplateReducer = createReducer(
   ),
   on(loadOrderTemplatesSuccess, (state, action): OrderTemplateState => {
     const { orderTemplates } = action.payload;
-    return orderTemplateAdapter.setAll(orderTemplates, state);
+    // merge the list headers into the existing entities to preserve already loaded item details
+    const merged = orderTemplates.map(orderTemplate => ({ ...state.entities[orderTemplate.id], ...orderTemplate }));
+    return orderTemplateAdapter.setAll(merged, state);
   }),
   on(
     addProductToOrderTemplateSuccess,
     createOrderTemplateSuccess,
-    loadOrderTemplateDetailsSuccess,
+    orderTemplatesApiActions.loadOrderTemplateDetailsSuccess,
     removeItemFromOrderTemplateSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     updateOrderTemplateSuccess,
@@ -113,8 +113,5 @@ export const orderTemplateReducer = createReducer(
       ...state,
       selected: id,
     };
-  }),
-  on(loadOrderTemplates, (state): OrderTemplateState =>
-    orderTemplateAdapter.removeAll({ ...state, selected: undefined })
-  )
+  })
 );

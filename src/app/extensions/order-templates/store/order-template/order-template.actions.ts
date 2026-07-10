@@ -5,7 +5,11 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
-export const loadOrderTemplates = createAction('[Order Templates] Load Order Templates');
+export const loadOrderTemplates = createAction(
+  '[Order Templates] Load Order Templates',
+  // optional payload so `loadOrderTemplates()` stays valid; undefined `amount` preloads all details
+  (args: { amount?: number } = {}) => ({ payload: { ...args } })
+);
 
 export const loadOrderTemplatesSuccess = createAction(
   '[Order Templates API] Load Order Templates Success',
@@ -13,21 +17,6 @@ export const loadOrderTemplatesSuccess = createAction(
 );
 
 export const loadOrderTemplatesFail = createAction('[Order Templates API] Load Order Templates Fail', httpError());
-
-export const loadOrderTemplateDetails = createAction(
-  '[Order Templates] Load Order Template Details',
-  payload<{ orderTemplateId: string }>()
-);
-
-export const loadOrderTemplateDetailsSuccess = createAction(
-  '[Order Templates API] Load Order Template Details Success',
-  payload<{ orderTemplate: OrderTemplate }>()
-);
-
-export const loadOrderTemplateDetailsFail = createAction(
-  '[Order Templates API] Load Order Template Details Fail',
-  httpError()
-);
 
 export const createOrderTemplate = createAction(
   '[Order Templates] Create Order Template',
@@ -113,6 +102,7 @@ export const selectOrderTemplate = createAction(
 export const orderTemplatesActions = createActionGroup({
   source: 'Order Templates',
   events: {
+    'Load Order Template Details': payload<{ orderTemplateId: string }>(),
     'Create Order Template from Line Items': payload<{ orderTemplate: OrderTemplateHeader; lineItems: LineItem[] }>(),
   },
 });
@@ -120,6 +110,8 @@ export const orderTemplatesActions = createActionGroup({
 export const orderTemplatesApiActions = createActionGroup({
   source: 'Order Templates API',
   events: {
+    'Load Order Template Details Success': payload<{ orderTemplate: OrderTemplate }>(),
+    'Load Order Template Details Fail': httpError<{}>(),
     'Create Order Template from Line Items Success': payload<{ orderTemplate: OrderTemplate }>(),
     'Create Order Template from Line Items Fail': httpError<{}>(),
   },

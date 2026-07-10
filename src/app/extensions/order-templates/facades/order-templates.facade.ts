@@ -18,7 +18,6 @@ import {
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
   getSelectedOrderTemplateOutOfStockItems,
-  loadOrderTemplateDetails,
   loadOrderTemplates,
   moveItemToOrderTemplate,
   orderTemplatesActions,
@@ -57,12 +56,11 @@ export class OrderTemplatesFacade {
     );
   }
 
-  loadOrderTemplates() {
-    this.store.dispatch(loadOrderTemplates());
-  }
-
-  loadOrderTemplateDetails(orderTemplateId: string) {
-    this.store.dispatch(loadOrderTemplateDetails({ orderTemplateId }));
+  /** Loads the order templates and preloads their item details:
+   *  omit `preloadDetailsCount` for all, pass `0` for none, or a number for the first n templates.
+   */
+  loadOrderTemplates(preloadDetailsCount?: number) {
+    this.store.dispatch(loadOrderTemplates({ amount: preloadDetailsCount }));
   }
 
   addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {

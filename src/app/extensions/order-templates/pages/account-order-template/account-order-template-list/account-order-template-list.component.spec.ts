@@ -1,16 +1,16 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective, MockPipe } from 'ng-mocks';
+import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
-import { OrderTemplateItem } from '../../../models/order-template/order-template.model';
 
 import { AccountOrderTemplateListComponent } from './account-order-template-list.component';
 
@@ -55,14 +55,19 @@ describe('Account Order Template List Component', () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [AccountOrderTemplateListComponent, MockDirective(ProductContextDirective), MockPipe(DatePipe)],
+      declarations: [
+        AccountOrderTemplateListComponent,
+        MockComponent(ModalDialogComponent),
+        MockComponent(ProductAddToBasketComponent),
+        MockDirective(ProductContextDirective),
+        MockPipe(DatePipe),
+      ],
       imports: [CdkTableModule, RouterModule, TranslatePipe],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideRouter([]),
         provideTranslateService(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -99,36 +104,10 @@ describe('Account Order Template List Component', () => {
     verify(orderTemplatesFacade.deleteOrderTemplate('deleteId')).once();
   });
 
-  it('should call facade loadOrderTemplateDetails for templates without loaded items', () => {
-    when(orderTemplatesFacade.loadOrderTemplateDetails(anything())).thenReturn();
-
-    const templatesWithoutItems = [
-      {
-        title: 'testing order template',
-        id: '.SKsEQAE4FIAAAFuNiUBWx0d',
-        itemsCount: 2,
-        public: false,
-        items: [] as OrderTemplateItem[],
-      },
-    ];
-
-    component.orderTemplates = templatesWithoutItems;
-
-    verify(orderTemplatesFacade.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d')).once();
-  });
-
-  it('should not call facade loadOrderTemplateDetails for templates with all items loaded', () => {
-    when(orderTemplatesFacade.loadOrderTemplateDetails(anything())).thenReturn();
-
-    component.orderTemplates = orderTemplateDetails;
-
-    verify(orderTemplatesFacade.loadOrderTemplateDetails('.SKsEQAE4FIAAAFuNiUBWx0d')).never();
-  });
-
   it('should report template as loaded when items match itemsCount', () => {
     component.orderTemplates = orderTemplateDetails;
 
-    expect(component.orderTemplateLoaded('.SKsEQAE4FIAAAFuNiUBWx0d')).toBeTrue();
+    expect(component.orderTemplateLoaded(orderTemplateDetails[0])).toBeTrue();
   });
 
   it('should return parts for a given template', () => {

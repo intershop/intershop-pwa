@@ -81,6 +81,15 @@ describe('Select Order Template Modal Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should load the order templates without their details when the modal is shown', () => {
+    fixture.detectChanges();
+    verify(orderTemplateFacadeMock.loadOrderTemplates(0)).never();
+
+    component.show();
+
+    verify(orderTemplateFacadeMock.loadOrderTemplates(0)).once();
+  });
+
   it('should emit correct object on form submit with known order template', fakeAsync(() => {
     startup();
 

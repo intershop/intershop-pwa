@@ -32,9 +32,6 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
-  loadOrderTemplateDetails,
-  loadOrderTemplateDetailsFail,
-  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
@@ -66,11 +63,19 @@ export class OrderTemplateEffects {
   loadOrderTemplates$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrderTemplates),
+      mapToPayloadProperty('amount'),
       concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
       filter(([, authorized]) => authorized),
-      switchMap(() =>
+      switchMap(([amount]) =>
         this.orderTemplateService.getOrderTemplates().pipe(
-          map(orderTemplates => loadOrderTemplatesSuccess({ orderTemplates })),
+          // preload the item details (containing the SKUs) of the requested templates
+          // `amount` undefined -> all templates (default), `amount` 0 -> none, `amount` n -> the first n templates
+          mergeMap(orderTemplates => [
+            loadOrderTemplatesSuccess({ orderTemplates }),
+            ...(amount === undefined ? orderTemplates : orderTemplates.slice(0, amount)).map(orderTemplate =>
+              orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplate.id })
+            ),
+          ]),
           mapErrorToAction(loadOrderTemplatesFail)
         )
       )
@@ -79,12 +84,12 @@ export class OrderTemplateEffects {
 
   loadOrderTemplateDetails$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadOrderTemplateDetails),
+      ofType(orderTemplatesActions.loadOrderTemplateDetails),
       mapToPayloadProperty('orderTemplateId'),
       mergeMap(orderTemplateId =>
         this.orderTemplateService.getOrderTemplate(orderTemplateId).pipe(
-          map(orderTemplate => loadOrderTemplateDetailsSuccess({ orderTemplate })),
-          mapErrorToAction(loadOrderTemplateDetailsFail)
+          map(orderTemplate => orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate })),
+          mapErrorToAction(orderTemplatesApiActions.loadOrderTemplateDetailsFail)
         )
       )
     )
@@ -280,6 +285,18 @@ export class OrderTemplateEffects {
       select(selectRouteParam('orderTemplateName')),
       distinctCompareWith(this.store.pipe(select(getSelectedOrderTemplateId))),
       map(id => selectOrderTemplate({ id }))
+    )
+  );
+
+  /**
+   * Loads the details of the selected order template, e.g. when the detail page is opened
+   */
+  loadSelectedOrderTemplateDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(selectOrderTemplate),
+      mapToPayloadProperty('id'),
+      whenTruthy(),
+      map(id => orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: id }))
     )
   );
 

@@ -13,12 +13,11 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
-  loadOrderTemplateDetails,
-  loadOrderTemplateDetailsFail,
-  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
+  orderTemplatesActions,
+  orderTemplatesApiActions,
   selectOrderTemplate,
   updateOrderTemplate,
   updateOrderTemplateFail,
@@ -294,7 +293,9 @@ describe('Order Template Selectors', () => {
 
   describe('loading order template details', () => {
     describe('LoadOrderTemplateDetails', () => {
-      const loadOrderTemplateDetailsAction = loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      const loadOrderTemplateDetailsAction = orderTemplatesActions.loadOrderTemplateDetails({
+        orderTemplateId: orderTemplates[0].id,
+      });
 
       beforeEach(() => {
         store$.dispatch(loadOrderTemplateDetailsAction);
@@ -306,7 +307,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('LoadOrderTemplateDetailsSuccess', () => {
-      const loadOrderTemplateDetailsSuccessAction = loadOrderTemplateDetailsSuccess({
+      const loadOrderTemplateDetailsSuccessAction = orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({
         orderTemplate: orderTemplates[0],
       });
 
@@ -324,7 +325,7 @@ describe('Order Template Selectors', () => {
     });
 
     describe('LoadOrderTemplateDetailsFail', () => {
-      const loadOrderTemplateDetailsFailAction = loadOrderTemplateDetailsFail({
+      const loadOrderTemplateDetailsFailAction = orderTemplatesApiActions.loadOrderTemplateDetailsFail({
         error: makeHttpError({ message: 'invalid' }),
       });
 

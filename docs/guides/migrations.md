@@ -25,7 +25,7 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 
 The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
 By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
-For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
+For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production host names (see [SSR Startup](./ssr-startup.md)).
 Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 
 > `URL with hostname "abc.xyz.com" is not allowed.`
@@ -112,6 +112,9 @@ This parameter determines which products the widget displays:
 
 For the order template overview page, the order template details request is still required.
 However, these details are now loaded asynchronously and are no longer needed for the initial display of the order template list.
+
+As order templates are no longer fetched centrally after login, each consumer is now responsible for triggering the load itself.
+If you display or use order templates in custom components, make sure to load them there (for example via `OrderTemplatesFacade.loadOrderTemplates()`).
 
 **Replace `ProductRatingStarComponent` with `NgbRating`**
 

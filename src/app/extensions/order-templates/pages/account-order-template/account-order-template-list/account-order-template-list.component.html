@@ -16,14 +16,16 @@
           cdk-cell
           [attr.data-label]="'account.order_template.list.table.template' | translate"
         >
-          <a
-            class="order-template-link"
-            data-testing-id="order-template-list-title"
-            [class.disabled]="!orderTemplateLoaded(orderTemplate.id)"
-            [routerLink]="orderTemplateLoaded(orderTemplate.id) ? '/account/order-templates/' + orderTemplate.id : null"
-          >
-            {{ orderTemplate.title }}
-          </a>
+          @if (orderTemplateLoaded(orderTemplate)) {
+            <a
+              data-testing-id="order-template-list-title"
+              [routerLink]="'/account/order-templates/' + orderTemplate.id"
+            >
+              {{ orderTemplate.title }}
+            </a>
+          } @else {
+            <span data-testing-id="order-template-list-title">{{ orderTemplate.title }}</span>
+          }
         </td>
       </ng-container>
       <!-- Creation date -->
@@ -56,7 +58,7 @@
       <ng-container cdkColumnDef="actions">
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-template-actions" scope="col"></th>
         <td *cdkCellDef="let orderTemplate" cdk-cell class="column-price">
-          @if (orderTemplateLoaded(orderTemplate.id)) {
+          @if (orderTemplateLoaded(orderTemplate)) {
             <a class="btn-tool d-inline-flex align-top">
               <ish-product-add-to-basket
                 cssClass="btn-link p-0"

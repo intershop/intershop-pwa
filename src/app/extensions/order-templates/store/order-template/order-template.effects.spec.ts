@@ -30,9 +30,6 @@ import {
   deleteOrderTemplate,
   deleteOrderTemplateFail,
   deleteOrderTemplateSuccess,
-  loadOrderTemplateDetails,
-  loadOrderTemplateDetailsFail,
-  loadOrderTemplateDetailsSuccess,
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
@@ -102,7 +99,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should call the OrderTemplateService for loadOrderTemplate', done => {
-      const action = loadOrderTemplates();
+      const action = loadOrderTemplates({ amount: 0 });
       actions$ = of(action);
 
       effects.loadOrderTemplates$.subscribe(() => {
@@ -112,7 +109,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should map to actions of type LoadOrderTemplatesSuccess', () => {
-      const action = loadOrderTemplates();
+      const action = loadOrderTemplates({ amount: 0 });
       const completion = loadOrderTemplatesSuccess({
         orderTemplates,
       });
@@ -122,10 +119,31 @@ describe('Order Template Effects', () => {
       expect(effects.loadOrderTemplates$).toBeObservable(expected$);
     });
 
+    it('should preload the details of the first `amount` templates', () => {
+      const action = loadOrderTemplates({ amount: 1 });
+      const success = loadOrderTemplatesSuccess({ orderTemplates });
+      const details = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cd)', { c: success, d: details });
+
+      expect(effects.loadOrderTemplates$).toBeObservable(expected$);
+    });
+
+    it('should preload the details of all templates by default', () => {
+      const action = loadOrderTemplates({});
+      const success = loadOrderTemplatesSuccess({ orderTemplates });
+      const details1 = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      const details2 = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[1].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(cde)', { c: success, d: details1, e: details2 });
+
+      expect(effects.loadOrderTemplates$).toBeObservable(expected$);
+    });
+
     it('should map failed calls to actions of type LoadOrderTemplateFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(throwError(() => error));
-      const action = loadOrderTemplates();
+      const action = loadOrderTemplates({ amount: 0 });
       const completion = loadOrderTemplatesFail({
         error,
       });
@@ -142,7 +160,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should not emit any actions when user is not authorized', () => {
-      const action = loadOrderTemplates();
+      const action = loadOrderTemplates({});
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('------');
 
@@ -158,7 +176,7 @@ describe('Order Template Effects', () => {
     });
 
     it('should call the OrderTemplateService for getOrderTemplate', done => {
-      const action = loadOrderTemplateDetails({ orderTemplateId });
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
       actions$ = of(action);
 
       effects.loadOrderTemplateDetails$.subscribe(() => {
@@ -168,8 +186,8 @@ describe('Order Template Effects', () => {
     });
 
     it('should map to actions of type LoadOrderTemplateDetailsSuccess', () => {
-      const action = loadOrderTemplateDetails({ orderTemplateId });
-      const completion = loadOrderTemplateDetailsSuccess({ orderTemplate: orderTemplates[0] });
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
+      const completion = orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate: orderTemplates[0] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -179,12 +197,35 @@ describe('Order Template Effects', () => {
     it('should map failed calls to actions of type LoadOrderTemplateDetailsFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(orderTemplateServiceMock.getOrderTemplate(anyString())).thenReturn(throwError(() => error));
-      const action = loadOrderTemplateDetails({ orderTemplateId });
-      const completion = loadOrderTemplateDetailsFail({ error });
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
+      const completion = orderTemplatesApiActions.loadOrderTemplateDetailsFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadOrderTemplateDetails$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadSelectedOrderTemplateDetails$', () => {
+    it('should load the details of the selected order template', () => {
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
+      const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
+    });
+
+    it('should load the details even when they are already loaded', () => {
+      store.dispatch(
+        orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate: { ...orderTemplates[0], items: [] } })
+      );
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
+      const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-c', { c: completion });
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
     });
   });
 

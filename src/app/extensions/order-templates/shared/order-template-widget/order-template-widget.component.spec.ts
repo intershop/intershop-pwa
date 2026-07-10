@@ -1,14 +1,14 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -49,6 +49,7 @@ describe('Order Template Widget Component', () => {
       declarations: [
         MockComponent(InfoBoxComponent),
         MockComponent(LoadingComponent),
+        MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         OrderTemplateWidgetComponent,
       ],
@@ -57,7 +58,6 @@ describe('Order Template Widget Component', () => {
         provideRouter([]),
         provideTranslateService(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
@@ -103,10 +103,12 @@ describe('Order Template Widget Component', () => {
     expect(element.querySelectorAll('ish-product-add-to-basket')).toHaveLength(2);
   });
 
-  it('should return parts for a given template', () => {
-    const template = orderTemplates[0];
-    const parts = component.getParts(template);
-    expect(parts).toEqual([
+  it('should trigger loading of the displayed order templates including their details on creation', () => {
+    verify(orderTemplatesFacade.loadOrderTemplates(3)).once();
+  });
+
+  it('should map the order template items to add-to-basket parts', () => {
+    expect(component.getParts(orderTemplates[0])).toEqual([
       { sku: 'SKU1', quantity: 1 },
       { sku: 'SKU2', quantity: 3 },
     ]);
