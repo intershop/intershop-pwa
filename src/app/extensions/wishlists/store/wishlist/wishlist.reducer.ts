@@ -14,9 +14,6 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
-  loadWishlistDetails,
-  loadWishlistDetailsFail,
-  loadWishlistDetailsSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -53,7 +50,7 @@ export const wishlistReducer = createReducer(
   initialState,
   setLoadingOn(
     loadWishlists,
-    loadWishlistDetails,
+    wishlistActions.loadWishlistDetails,
     wishlistActions.loadSharedWishlist,
     createWishlist,
     deleteWishlist,
@@ -63,7 +60,7 @@ export const wishlistReducer = createReducer(
   ),
   setErrorOn(
     loadWishlistsFail,
-    loadWishlistDetailsFail,
+    wishlistApiActions.loadWishlistDetailsFail,
     wishlistApiActions.loadSharedWishlistFail,
     deleteWishlistFail,
     createWishlistFail,
@@ -78,13 +75,13 @@ export const wishlistReducer = createReducer(
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
     loadWishlistsSuccess,
-    loadWishlistDetailsSuccess,
+    wishlistApiActions.loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     deleteWishlistSuccess
   ),
   on(
     loadWishlistsFail,
-    loadWishlistDetailsFail,
+    wishlistApiActions.loadWishlistDetailsFail,
     deleteWishlistFail,
     createWishlistFail,
     updateWishlistFail,
@@ -95,11 +92,13 @@ export const wishlistReducer = createReducer(
   ),
   on(loadWishlistsSuccess, (state: WishlistState, action): WishlistState => {
     const { wishlists } = action.payload;
-    return wishlistsAdapter.setAll(wishlists, state);
+    // merge the list headers into the existing entities to preserve already loaded item details
+    const merged = wishlists.map(wishlist => ({ ...state.entities[wishlist.id], ...wishlist }));
+    return wishlistsAdapter.setAll(merged, state);
   }),
   on(
     updateWishlistSuccess,
-    loadWishlistDetailsSuccess,
+    wishlistApiActions.loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,

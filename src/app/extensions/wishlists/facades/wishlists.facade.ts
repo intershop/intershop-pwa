@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
@@ -13,14 +13,13 @@ import {
   createWishlist,
   deleteWishlist,
   getAllWishlists,
+  getAllWishlistsItemsSkus,
   getPreferredWishlist,
   getSelectedWishlistDetails,
   getSharedWishlist,
+  getWishlistDetails,
   getWishlistsError,
-  getWishlistsItemsSkus,
   getWishlistsLoading,
-  loadWishlistDetails,
-  loadWishlists,
   moveItemToWishlist,
   removeItemFromWishlist,
   updateWishlist,
@@ -38,16 +37,23 @@ export class WishlistsFacade {
   wishlistError$: Observable<HttpError> = this.store.pipe(select(getWishlistsError));
   sharedWishlist$: Observable<Wishlist> = this.store.pipe(select(getSharedWishlist));
 
-  loadWishlists(): void {
-    this.store.dispatch(loadWishlists());
-  }
-
-  loadWishlistDetails(wishlistIds: string[]): void {
-    this.store.dispatch(loadWishlistDetails({ wishlistIds }));
-  }
-
-  allWishlistsItemsSkus$(wishlistIds: string[]): Observable<string[]> {
-    return this.store.pipe(select(getWishlistsItemsSkus(wishlistIds)));
+  /**
+   * Emits the unique product SKUs of wishlist items and triggers loading the item details
+   * of wishlists whose details have not been loaded yet.
+   * If a `wishlistId` is given, only that wishlist is considered, otherwise all wishlists are used.
+   */
+  wishlistItemsSkus$(wishlistId?: string): Observable<string[]> {
+    if (wishlistId) {
+      return this.store.pipe(
+        select(getWishlistDetails(wishlistId)),
+        tap(wishlist => this.loadMissingWishlistDetails(wishlist ? [wishlist] : [])),
+        map(wishlist => wishlist?.items?.map(item => item.sku) ?? [])
+      );
+    }
+    return this.wishlists$.pipe(
+      tap(wishlists => this.loadMissingWishlistDetails(wishlists)),
+      switchMap(() => this.store.pipe(select(getAllWishlistsItemsSkus)))
+    );
   }
 
   wishlistSelectOptions$(filterCurrent = true) {
@@ -109,5 +115,13 @@ export class WishlistsFacade {
 
   unshareWishlist(wishlistId: string): void {
     this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
+  }
+
+  private loadMissingWishlistDetails(wishlists: Wishlist[]): void {
+    // only wishlists without a loaded items attribute need their details fetched
+    const wishlistIds = wishlists.filter(wishlist => !wishlist.items).map(wishlist => wishlist.id);
+    if (wishlistIds.length) {
+      this.store.dispatch(wishlistActions.loadWishlistDetails({ wishlistIds }));
+    }
   }
 }

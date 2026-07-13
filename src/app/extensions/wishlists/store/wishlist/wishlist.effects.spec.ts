@@ -31,9 +31,6 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
-  loadWishlistDetails,
-  loadWishlistDetailsFail,
-  loadWishlistDetailsSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -193,7 +190,7 @@ describe('Wishlist Effects', () => {
     });
 
     it('should call the wishlistService for getWishlist', done => {
-      const action = loadWishlistDetails({ wishlistIds: [wishlistId] });
+      const action = wishlistActions.loadWishlistDetails({ wishlistIds: [wishlistId] });
       actions$ = of(action);
 
       effects.loadWishlistDetails$.subscribe(() => {
@@ -203,8 +200,8 @@ describe('Wishlist Effects', () => {
     });
 
     it('should map to actions of type LoadWishlistDetailsSuccess', () => {
-      const action = loadWishlistDetails({ wishlistIds: [wishlistId] });
-      const completion = loadWishlistDetailsSuccess({ wishlist: wishlists[0] });
+      const action = wishlistActions.loadWishlistDetails({ wishlistIds: [wishlistId] });
+      const completion = wishlistApiActions.loadWishlistDetailsSuccess({ wishlist: wishlists[0] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -214,8 +211,8 @@ describe('Wishlist Effects', () => {
     it('should map failed calls to actions of type LoadWishlistDetailsFail', () => {
       const error = makeHttpError({ message: 'invalid' });
       when(wishlistServiceMock.getWishlist(anyString())).thenReturn(throwError(() => error));
-      const action = loadWishlistDetails({ wishlistIds: [wishlistId] });
-      const completion = loadWishlistDetailsFail({ error });
+      const action = wishlistActions.loadWishlistDetails({ wishlistIds: [wishlistId] });
+      const completion = wishlistApiActions.loadWishlistDetailsFail({ error });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -286,7 +283,7 @@ describe('Wishlist Effects', () => {
       };
       const action = createWishlistSuccess({ wishlist: createdWishlist });
       const loadAll = loadWishlists();
-      const loadDetails = loadWishlistDetails({ wishlistIds: [createdWishlist.id] });
+      const loadDetails = wishlistActions.loadWishlistDetails({ wishlistIds: [createdWishlist.id] });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
@@ -397,7 +394,7 @@ describe('Wishlist Effects', () => {
       };
       const action = updateWishlistSuccess({ wishlist: updatedWishlist });
       const loadAll = loadWishlists();
-      const loadDetails = loadWishlistDetails({ wishlistIds: [updatedWishlist.id] });
+      const loadDetails = wishlistActions.loadWishlistDetails({ wishlistIds: [updatedWishlist.id] });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
@@ -591,24 +588,14 @@ describe('Wishlist Effects', () => {
     });
   });
 
-  describe('loadWishlistDetailsOnWishlistsLoaded$', () => {
-    it('should dispatch loadWishlistDetails for the selected wishlist when wishlists are loaded', () => {
-      store.dispatch(selectWishlist({ wishlistId: wishlists[0].id }));
-
-      const action = loadWishlistsSuccess({ wishlists });
-      const completion = loadWishlistDetails({ wishlistIds: [wishlists[0].id] });
+  describe('loadSelectedWishlistDetails$', () => {
+    it('should load the details of the selected wishlist', () => {
+      const action = selectWishlist({ wishlistId: wishlists[0].id });
+      const completion = wishlistActions.loadWishlistDetails({ wishlistIds: [wishlists[0].id] });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
-      expect(effects.loadWishlistDetailsOnWishlistsLoaded$).toBeObservable(expected$);
-    });
-
-    it('should not dispatch loadWishlistDetails when no wishlist is selected', () => {
-      const action = loadWishlistsSuccess({ wishlists });
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('------');
-
-      expect(effects.loadWishlistDetailsOnWishlistsLoaded$).toBeObservable(expected$);
+      expect(effects.loadSelectedWishlistDetails$).toBeObservable(expected$);
     });
   });
 

@@ -31,13 +31,13 @@ export const getWishlistDetails = (id: string) => createSelector(selectEntities,
 export const getPreferredWishlist = createSelector(getAllWishlists, entities => entities.find(e => e.preferred));
 
 /**
- * Gets all unique item SKUs from the wishlists matching the given IDs.
+ * Gets all unique items from all wishlists
+ * Returns an array of the wishlist item product SKUs
  */
-export const getWishlistsItemsSkus = (wishlistIds: string[]) =>
-  createSelectorFactory<object, string[]>(projector => resultMemoize(projector, isArrayEqual))(
-    selectEntities,
-    (entities: Record<string, Wishlist>): string[] =>
-      uniq(wishlistIds.flatMap(id => entities[id]?.items?.map(item => item.sku) ?? []))
-  );
+export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(projector =>
+  resultMemoize(projector, isArrayEqual)
+)(getAllWishlists, (wishlists: Wishlist[]): string[] =>
+  uniq(wishlists.map(wishlist => wishlist.items?.map(items => items.sku) ?? []).flat())
+);
 
 export const getSharedWishlist = createSelector(getWishlistState, (state: WishlistState) => state.sharedWishlist);

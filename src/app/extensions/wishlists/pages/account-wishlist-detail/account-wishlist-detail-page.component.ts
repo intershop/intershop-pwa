@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
@@ -19,12 +18,7 @@ export class AccountWishlistDetailPageComponent implements OnInit {
   wishlistError$: Observable<HttpError>;
   wishlistLoading$: Observable<boolean>;
 
-  constructor(
-    private wishlistsFacade: WishlistsFacade,
-    route: ActivatedRoute
-  ) {
-    this.wishlistsFacade.loadWishlistDetails([route.snapshot.paramMap.get('wishlistName')]);
-  }
+  constructor(private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
     this.wishlist$ = this.wishlistsFacade.currentWishlist$;

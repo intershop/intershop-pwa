@@ -1,12 +1,12 @@
 <div class="section">
-  @if (wishlistName === undefined) {
-    <h2 class="h3">{{ 'account.wishlists.widget.all.heading' | translate }}</h2>
-  } @else {
-    <h2 class="h3">
-      {{ 'account.wishlists.widget.single.heading' | translate: { '0': wishlistName } }}
-    </h2>
-  }
-  @if (productSKUs$ | async; as productSKUs) {
+  <h2 class="h3">
+    @if (preferredWishlist$ | async; as preferredWishlist) {
+      {{ 'account.wishlists.widget.single.heading' | translate: { '0': preferredWishlist.title } }}
+    } @else {
+      {{ 'account.wishlists.widget.all.heading' | translate }}
+    }
+  </h2>
+  @if (wishlistItemsSkus$ | async; as productSKUs) {
     @if (productSKUs.length > 0) {
       <ng-container class="section">
         <div class="product-list" data-testing-id="wishlistProductsList">

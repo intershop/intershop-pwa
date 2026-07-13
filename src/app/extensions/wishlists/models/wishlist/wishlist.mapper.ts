@@ -27,7 +27,6 @@ export class WishlistMapper {
         preferred: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'preferred'),
         public: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'public'),
         shared: AttributeHelper.getAttributeValueByAttributeName<boolean>(wishlistData.attributes, 'shared'),
-        creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(wishlistData.attributes, 'creationDate'),
       }));
     }
     return [];

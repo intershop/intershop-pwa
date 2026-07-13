@@ -103,12 +103,8 @@ The order template and wishlist selection modals have been reworked for a more c
 With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
 As a result, the wishlist overview can now be displayed using a single list request.
 
-In addition, the wishlistSelectionStrategy configuration parameter has been added to the `WishlistWidgetComponent`.
-This parameter determines which products the widget displays:
-
-- **preferred:** displays only products from the preferred wishlist
-- **latest:** displays only products from the most recently created wishlist
-- **all:** displays products from all wishlists
+In addition, the `WishlistWidgetComponent` now displays the products of the preferred wishlist.
+If no preferred wishlist exists, the products of all wishlists are displayed instead.
 
 For the order template overview page, the order template details request is still required.
 However, these details are now loaded asynchronously and are no longer needed for the initial display of the order template list.

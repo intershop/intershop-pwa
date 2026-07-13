@@ -36,9 +36,6 @@ import {
   deleteWishlist,
   deleteWishlistFail,
   deleteWishlistSuccess,
-  loadWishlistDetails,
-  loadWishlistDetailsFail,
-  loadWishlistDetailsSuccess,
   loadWishlists,
   loadWishlistsFail,
   loadWishlistsSuccess,
@@ -90,14 +87,14 @@ export class WishlistEffects {
 
   loadWishlistDetails$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadWishlistDetails),
+      ofType(wishlistActions.loadWishlistDetails),
       mapToPayloadProperty('wishlistIds'),
       mergeMap(wishlistIds =>
         from(wishlistIds).pipe(
           concatMap((wishlistId: string) =>
             this.wishlistService.getWishlist(wishlistId).pipe(
-              map(wishlist => loadWishlistDetailsSuccess({ wishlist })),
-              mapErrorToAction(loadWishlistDetailsFail)
+              map(wishlist => wishlistApiActions.loadWishlistDetailsSuccess({ wishlist })),
+              mapErrorToAction(wishlistApiActions.loadWishlistDetailsFail)
             )
           )
         )
@@ -173,7 +170,7 @@ export class WishlistEffects {
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
       filter(wishlist => wishlist?.preferred),
-      concatMap(wishlist => [loadWishlists(), loadWishlistDetails({ wishlistIds: [wishlist.id] })])
+      concatMap(wishlist => [loadWishlists(), wishlistActions.loadWishlistDetails({ wishlistIds: [wishlist.id] })])
     )
   );
 
@@ -254,12 +251,15 @@ export class WishlistEffects {
     )
   );
 
-  loadWishlistDetailsOnWishlistsLoaded$ = createEffect(() =>
+  /**
+   * Loads the details of the selected wishlist, e.g. when the detail page is opened directly.
+   */
+  loadSelectedWishlistDetails$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadWishlistsSuccess),
-      concatLatestFrom(() => this.store.pipe(select(getSelectedWishlistId))),
-      filter(([, selectedId]) => !!selectedId),
-      map(([, selectedId]) => loadWishlistDetails({ wishlistIds: [selectedId] }))
+      ofType(selectWishlist),
+      mapToPayloadProperty('wishlistId'),
+      whenTruthy(),
+      map(wishlistId => wishlistActions.loadWishlistDetails({ wishlistIds: [wishlistId] }))
     )
   );
 

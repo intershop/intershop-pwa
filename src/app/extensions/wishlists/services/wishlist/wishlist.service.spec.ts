@@ -57,7 +57,6 @@ describe('Wishlist Service', () => {
       expect(data).toMatchInlineSnapshot(`
         [
           {
-            "creationDate": undefined,
             "id": "1234",
             "itemsCount": 2,
             "preferred": true,
@@ -93,7 +92,6 @@ describe('Wishlist Service', () => {
       expect(data).toMatchInlineSnapshot(`
         [
           {
-            "creationDate": undefined,
             "id": "1234",
             "itemsCount": 2,
             "preferred": true,
@@ -129,6 +127,31 @@ describe('Wishlist Service', () => {
       verify(apiServiceMock.get(`privatecustomers/-/wishlists/5678`)).once();
       expect(data).toHaveLength(2);
       done();
+    });
+  });
+
+  it("should get a wishlist when 'getWishlist' is called", done => {
+    const wishlistId = '1234';
+
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).thenReturn(
+      of({ title: 'My Wishlist', itemsCount: 0, items: [], preferred: true } as WishlistData)
+    );
+
+    wishlistService.getWishlist(wishlistId).subscribe(data => {
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).once();
+      expect(data.id).toEqual(wishlistId);
+      expect(data.title).toEqual('My Wishlist');
+      done();
+    });
+  });
+
+  it("should return an error when 'getWishlist' is called without a wishlistId", done => {
+    wishlistService.getWishlist(undefined).subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`[Error: getWishlist() called without wishlistId]`);
+        done();
+      },
     });
   });
 
