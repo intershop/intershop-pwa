@@ -9,6 +9,7 @@ import {
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbRatingModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -186,6 +187,7 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbRatingModule,
   NgSelectModule,
   OrderTemplatesExportsModule,
   PipesModule,

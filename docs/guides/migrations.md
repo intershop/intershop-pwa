@@ -98,6 +98,11 @@ The order template and wishlist selection modals have been reworked for a more c
 - The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
 - The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
 
+**Replace `ProductRatingStarComponent` with `NgbRating`**
+
+The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
+If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
+
 ## From 11.1.0 to 11.2.0
 
 **Extended Withdrawal functionality**

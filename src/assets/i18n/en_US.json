@@ -1330,7 +1330,6 @@
   "product.review.rating.error.required": "Click stars to rate the product.",
   "product.review.rating.label": "Rating",
   "product.review.rating.score": "Product rating: {{0}} out of 5 stars.",
-  "product.review.rating.tooltip": "{{0, plural, one{# star} other{# stars}}}",
   "product.review.status.new.text": "Your review is currently being checked. Other users will not be able to see your review until it will have been approved.",
   "product.review.status.rejected.text": "Your review has been rejected by the shop administrator. You can delete your review and write a new one if you like.",
   "product.review.title.error.required": "Please enter a review title.",

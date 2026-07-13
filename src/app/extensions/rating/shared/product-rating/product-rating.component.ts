@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { range } from 'lodash-es';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
@@ -20,18 +19,14 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 export class ProductRatingComponent implements OnInit {
   @Input() hideNumberOfReviews = false;
 
-  stars$: Observable<('empty' | 'full' | 'half')[]>;
-  rating$: Observable<number>;
+  rating$: Observable<{ value: number }>;
   numberOfReviews$: Observable<number>;
   isVariationMaster$: Observable<boolean>;
 
   constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.rating$ = this.context.select('product', 'roundedAverageRating').pipe(filter(x => typeof x === 'number'));
-    this.stars$ = this.rating$.pipe(
-      map(rate => range(1, 6).map(index => (index <= rate ? 'full' : index - 0.5 === rate ? 'half' : 'empty')))
-    );
+    this.rating$ = this.context.select('product', 'roundedAverageRating').pipe(map(r => ({ value: r ?? 0 })));
     this.numberOfReviews$ = this.context.select('product', 'numberOfReviews');
     this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }

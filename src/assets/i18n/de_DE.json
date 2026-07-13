@@ -1330,7 +1330,6 @@
   "product.review.rating.error.required": "Klicken Sie zum Bewerten auf die Sterne.",
   "product.review.rating.label": "Bewertung",
   "product.review.rating.score": "Produktbewertung: {{0}} von 5 Sternen.",
-  "product.review.rating.tooltip": "{{0, plural, one{# Stern} other{# Sterne}}}",
   "product.review.status.new.text": "Ihr Kommentar wird geprüft. Andere Benutzer können Ihre Bewertung erst sehen, wenn sie genehmigt wurde.",
   "product.review.status.rejected.text": "Ihr Kommentar wurde vom Shop-Administrator zurückgewiesen. Sie können die Bewertung löschen und eine neue verfassen, wenn Sie möchten.",
   "product.review.title.error.required": "Bitte geben Sie einen Titel für Ihre Bewertung ein.",
