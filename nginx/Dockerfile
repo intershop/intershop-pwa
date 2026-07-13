@@ -5,7 +5,7 @@
 # To disable and use the original Ubuntu repos: --build-arg UBUNTU_MIRROR=
 ARG UBUNTU_MIRROR=http://azure.archive.ubuntu.com/ubuntu/
 
-FROM openresty/openresty:1.29.2.3-2-jammy AS buildstep
+FROM openresty/openresty:1.31.1.1-1-jammy AS buildstep
 ARG UBUNTU_MIRROR
 RUN if [ -n "$UBUNTU_MIRROR" ]; then \
     if [ -f /etc/apt/sources.list ]; then \
@@ -21,19 +21,19 @@ RUN if [ -n "$UBUNTU_MIRROR" ]; then \
   && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
 
 WORKDIR /app
-RUN wget -q https://nginx.org/download/nginx-1.29.2.tar.gz \
-  && echo "5669e3c29d49bf7f6eb577275b86efe4504cf81af885c58a1ed7d2e7b8492437  nginx-1.29.2.tar.gz" | sha256sum -c - \
-  && tar -zxf nginx-1.29.2.tar.gz \
+RUN wget -q https://nginx.org/download/nginx-1.31.1.tar.gz \
+  && echo "9fcaaeb8f22544b09a19a761f3412c4112215422401634bebdd1296a403cc4bc  nginx-1.31.1.tar.gz" | sha256sum -c - \
+  && tar -zxf nginx-1.31.1.tar.gz \
   && git clone https://github.com/google/ngx_brotli \
   && cd ngx_brotli \
   && git checkout a71f9312c2deb28875acc7bacfdd5695a111aa53 \
   && git submodule update --init --recursive \
   && cd .. \
-  && cd nginx-1.29.2 \
+  && cd nginx-1.31.1 \
   && ./configure --prefix=/usr/local/openresty/nginx --with-cc-opt='-O2 -DNGX_LUA_ABORT_AT_PANIC -I/usr/local/openresty/pcre/include -I/usr/local/openresty/openssl/include' --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L/usr/local/openresty/pcre/lib -L/usr/local/openresty/openssl/lib -Wl,-rpath,/usr/local/openresty/pcre/lib:/usr/local/openresty/openssl/lib' --with-pcre --with-file-aio --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_geoip_module=dynamic --with-http_gunzip_module --with-http_gzip_static_module --with-http_image_filter_module=dynamic --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-http_xslt_module=dynamic --with-ipv6 --with-mail --with-mail_ssl_module --with-md5-asm --with-sha1-asm --with-stream --with-stream_ssl_module --with-threads --with-pcre-jit --with-stream --with-stream_ssl_preread_module --with-compat --add-dynamic-module=../ngx_brotli \
   && make modules
 
-FROM openresty/openresty:1.29.2.3-2-jammy
+FROM openresty/openresty:1.31.1.1-1-jammy
 ARG UBUNTU_MIRROR
 RUN if [ -n "$UBUNTU_MIRROR" ]; then \
     if [ -f /etc/apt/sources.list ]; then \
@@ -74,8 +74,8 @@ RUN chmod 700 /cache_clearer.sh
 COPY --from=hairyhenderson/gomplate:v5.0.0 /gomplate /gomplate
 RUN chmod 700 /gomplate
 COPY --from=nginx/nginx-prometheus-exporter:1.5.1 /usr/bin/nginx-prometheus-exporter /nginx-prometheus-exporter
-COPY --from=buildstep /app/nginx-1.29.2/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
-COPY --from=buildstep /app/nginx-1.29.2/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/nginx-1.31.1/objs/ngx_http_brotli_static_module.so /etc/nginx/modules/
+COPY --from=buildstep /app/nginx-1.31.1/objs/ngx_http_brotli_filter_module.so /etc/nginx/modules/
 ENV CACHE=on
 ENV COMPRESSION=on
 ENV DEVICE_DETECTION=on
