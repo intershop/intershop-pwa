@@ -1,6 +1,6 @@
 # This workflow builds the Docker images using Docker Buildx
 # and pushes it to Docker Hub upon pushes to the develop branch or release source tags.
-name: Build Dockerhub Images
+name: Docker Hub Images
 
 on:
   # This will run the workflow on pushes to develop and numeric version tags.
@@ -15,31 +15,24 @@ env:
 
   # DOCKER_SSR_CONTEXT_PATH should be set to the build context for the SSR image.
   DOCKER_SSR_CONTEXT_PATH: .
-
   # DOCKER_SSR_DOCKERFILE_PATH should be set to the Dockerfile location for the SSR image.
   DOCKER_SSR_DOCKERFILE_PATH: Dockerfile
-
   # DOCKER_SSR_REPOSITORY_NAME should be set to the name of the Docker Hub repository where the SSR image will be pushed to.
   DOCKER_SSR_REPOSITORY_NAME: intershophub/intershop-pwa-ssr
 
-  # NGINX image build context and Dockerfile location.
+  # DOCKER_NGINX_CONTEXT_PATH should be set to the build context for the NGINX image.
   DOCKER_NGINX_CONTEXT_PATH: nginx
+  # DOCKER_NGINX_DOCKERFILE_PATH should be set to the Dockerfile location for the NGINX image.
   DOCKER_NGINX_DOCKERFILE_PATH: nginx/Dockerfile
-
-  # Docker Hub repository for the nginx image.
+  # DOCKER_NGINX_REPOSITORY_NAME should be set to the name of the Docker Hub repository where the NGINX image will be pushed to.
   DOCKER_NGINX_REPOSITORY_NAME: intershophub/intershop-pwa-nginx
 
 jobs:
   build_ssr:
+    name: Build and push `ssr` image
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up SSR paths
-        id: paths_ssr
-        run: |
-          echo "build_path=./${{ env.DOCKER_SSR_CONTEXT_PATH }}" >> $GITHUB_OUTPUT
-          echo "dockerfile_path=${{ env.DOCKER_SSR_DOCKERFILE_PATH }}" >> $GITHUB_OUTPUT
-
       - name: Checkout repository
         uses: actions/checkout@v6
 
@@ -47,7 +40,7 @@ jobs:
       # The configuration here will push the `develop` branch as `latest`
       # and map source tags like `1.2.3` to image tags like `release-1.2.3`.
       # See https://github.com/docker/metadata-action
-      - name: Generate Docker image tags (ssr)
+      - name: Generate Docker image tag
         id: meta_ssr
         uses: docker/metadata-action@v6
         with:
@@ -59,8 +52,6 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
             # map git tag 1.2.3 to docker tag release-1.2.3
             type=ref,event=tag,prefix=release-
-            # ensure test branch runs always produce at least one tag
-            type=sha,prefix=test-,enable=${{ github.ref_type == 'branch' && github.ref_name != 'develop' }}
 
       # Configure Docker Buildx.
       - name: Set up Docker Buildx
@@ -74,15 +65,16 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build, tag, and push the SSR Docker image
-      - name: Build and tag SSR Docker image
+      - name: Build and tag Docker image
         uses: docker/build-push-action@v7
         with:
-          context: ${{ steps.paths_ssr.outputs.build_path }}
-          file: ${{ steps.paths_ssr.outputs.dockerfile_path }}
+          context: ./${{ env.DOCKER_SSR_CONTEXT_PATH }}
+          file: ${{ env.DOCKER_SSR_DOCKERFILE_PATH }}
           push: true
           tags: ${{ steps.meta_ssr.outputs.tags }}
 
   build_nginx:
+    name: Build and push `nginx` image
     runs-on: ubuntu-latest
 
     steps:
@@ -93,7 +85,7 @@ jobs:
       # The configuration here will push the `develop` branch as `latest`
       # and map source tags like `1.2.3` to image tags like `release-1.2.3`.
       # See https://github.com/docker/metadata-action
-      - name: Generate Docker image tags (nginx)
+      - name: Generate Docker image tag
         id: meta_nginx
         uses: docker/metadata-action@v6
         with:
@@ -105,8 +97,6 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'develop') }}
             # map git tag 1.2.3 to docker tag release-1.2.3
             type=ref,event=tag,prefix=release-
-            # ensure test branch runs always produce at least one tag
-            type=sha,prefix=test-,enable=${{ github.ref_type == 'branch' && github.ref_name != 'develop' }}
 
       # Configure Docker Buildx.
       - name: Set up Docker Buildx
@@ -120,7 +110,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build, tag, and push the nginx Docker image
-      - name: Build and tag nginx Docker image
+      - name: Build and tag Docker image
         uses: docker/build-push-action@v7
         with:
           context: ./${{ env.DOCKER_NGINX_CONTEXT_PATH }}
