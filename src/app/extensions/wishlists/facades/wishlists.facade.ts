@@ -43,15 +43,16 @@ export class WishlistsFacade {
    * If a `wishlistId` is given, only that wishlist is considered, otherwise all wishlists are used.
    */
   wishlistItemsSkus$(wishlistId?: string): Observable<string[]> {
+    const requestedDetails = new Set<string>();
     if (wishlistId) {
       return this.store.pipe(
         select(getWishlistDetails(wishlistId)),
-        tap(wishlist => this.loadMissingWishlistDetails(wishlist ? [wishlist] : [])),
+        tap(wishlist => this.loadMissingWishlistDetails(wishlist ? [wishlist] : [], requestedDetails)),
         map(wishlist => wishlist?.items?.map(item => item.sku) ?? [])
       );
     }
     return this.wishlists$.pipe(
-      tap(wishlists => this.loadMissingWishlistDetails(wishlists)),
+      tap(wishlists => this.loadMissingWishlistDetails(wishlists, requestedDetails)),
       switchMap(() => this.store.pipe(select(getAllWishlistsItemsSkus)))
     );
   }
@@ -117,11 +118,13 @@ export class WishlistsFacade {
     this.store.dispatch(wishlistActions.unshareWishlist({ wishlistId }));
   }
 
-  private loadMissingWishlistDetails(wishlists: Wishlist[]): void {
+  private loadMissingWishlistDetails(wishlists: Wishlist[], requestedDetails: Set<string>): void {
     // only wishlists without a loaded items attribute need their details fetched
-    const wishlistIds = wishlists.filter(wishlist => !wishlist.items).map(wishlist => wishlist.id);
-    if (wishlistIds.length) {
-      this.store.dispatch(wishlistActions.loadWishlistDetails({ wishlistIds }));
-    }
+    wishlists
+      .filter(wishlist => !wishlist.items && !requestedDetails.has(wishlist.id))
+      .forEach(wishlist => {
+        requestedDetails.add(wishlist.id);
+        this.store.dispatch(wishlistActions.loadWishlistDetails({ wishlistId: wishlist.id }));
+      });
   }
 }

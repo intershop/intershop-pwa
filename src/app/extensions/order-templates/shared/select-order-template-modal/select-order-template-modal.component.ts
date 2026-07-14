@@ -106,9 +106,6 @@ export class SelectOrderTemplateModalComponent implements OnInit {
 
   /** open modal */
   show() {
-    // load order templates without their item details for the selection list
-    this.orderTemplatesFacade.loadOrderTemplates(0);
-
     this.showForm = true;
     this.modalDialog.show();
 

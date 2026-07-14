@@ -38,10 +38,6 @@ export class AccountOrderTemplateListComponent {
     modal.show(orderTemplate.id);
   }
 
-  orderTemplateLoaded(orderTemplate: OrderTemplate): boolean {
-    return orderTemplate.items?.length === orderTemplate.itemsCount;
-  }
-
   getParts(template: OrderTemplate): SkuQuantityType[] {
     return template.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
   }

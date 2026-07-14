@@ -46,7 +46,7 @@ describe('Wishlists Facade', () => {
       store.overrideSelector(getAllWishlists, [loadedWishlist, headerWishlist]);
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       facade.wishlistItemsSkus$().subscribe(() => {
-        expect(dispatchSpy).toHaveBeenCalledWith(wishlistActions.loadWishlistDetails({ wishlistIds: ['header'] }));
+        expect(dispatchSpy).toHaveBeenCalledWith(wishlistActions.loadWishlistDetails({ wishlistId: 'header' }));
         done();
       });
     });
@@ -89,7 +89,7 @@ describe('Wishlists Facade', () => {
       setWishlists([headerWishlist]);
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       facade.wishlistItemsSkus$('header').subscribe(() => {
-        expect(dispatchSpy).toHaveBeenCalledWith(wishlistActions.loadWishlistDetails({ wishlistIds: ['header'] }));
+        expect(dispatchSpy).toHaveBeenCalledWith(wishlistActions.loadWishlistDetails({ wishlistId: 'header' }));
         done();
       });
     });

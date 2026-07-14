@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -18,7 +18,6 @@ import {
   getOrderTemplateLoading,
   getSelectedOrderTemplateDetails,
   getSelectedOrderTemplateOutOfStockItems,
-  loadOrderTemplates,
   moveItemToOrderTemplate,
   orderTemplatesActions,
   removeItemFromOrderTemplate,
@@ -56,11 +55,23 @@ export class OrderTemplatesFacade {
     );
   }
 
-  /** Loads the order templates and preloads their item details:
-   *  omit `preloadDetailsCount` for all, pass `0` for none, or a number for the first n templates.
+  /**
+   * Emits the first `count` order templates (all if `count` is omitted).
+   * Triggers loading the item details of those whose details have not been loaded yet.
    */
-  loadOrderTemplates(preloadDetailsCount?: number) {
-    this.store.dispatch(loadOrderTemplates({ amount: preloadDetailsCount }));
+  orderTemplatesWithDetails$(count?: number): Observable<OrderTemplate[]> {
+    const requestedDetails = new Set<string>();
+    return this.orderTemplates$.pipe(
+      map(orderTemplates => (count === undefined ? orderTemplates : orderTemplates.slice(0, count))),
+      tap(orderTemplates =>
+        orderTemplates
+          .filter(orderTemplate => !orderTemplate.items && !requestedDetails.has(orderTemplate.id))
+          .forEach(orderTemplate => {
+            requestedDetails.add(orderTemplate.id);
+            this.store.dispatch(orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplate.id }));
+          })
+      )
+    );
   }
 
   addOrderTemplate(orderTemplate: OrderTemplateHeader): HttpError | void {

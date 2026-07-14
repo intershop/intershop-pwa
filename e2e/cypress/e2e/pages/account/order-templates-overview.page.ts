@@ -16,7 +16,7 @@ export class OrderTemplatesOverviewPage {
   addOrderTemplateToCart(name: string) {
     cy.contains('[data-testing-id="order-template-list-title"]', name)
       .closest('[data-testing-id="order-template-list-item"]')
-      .find('button[data-testing-id="addToCartButton"]')
+      .find('[data-testing-id="addToCartButton"]')
       .click();
   }
 

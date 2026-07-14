@@ -5,11 +5,7 @@ import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
-export const loadOrderTemplates = createAction(
-  '[Order Templates] Load Order Templates',
-  // optional payload so `loadOrderTemplates()` stays valid; undefined `amount` preloads all details
-  (args: { amount?: number } = {}) => ({ payload: { ...args } })
-);
+export const loadOrderTemplates = createAction('[Order Templates Internal] Load Order Templates');
 
 export const loadOrderTemplatesSuccess = createAction(
   '[Order Templates API] Load Order Templates Success',

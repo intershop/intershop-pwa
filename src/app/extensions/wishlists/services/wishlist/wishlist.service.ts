@@ -34,6 +34,7 @@ export class WishlistService {
               return of(this.wishlistMapper.fromListData(wishlistData as WishlistListElementData[]));
             }
             // legacy data format with uri only in the list response -> get each wishlist separately to get all data
+            // TODO: remove once ICM versions < 14.2.0 are no longer supported
             const data = wishlistData as WishlistData[];
             const obsArray = data.map(d => this.getWishlist(this.wishlistMapper.fromDataToId(d)));
             return obsArray.length ? forkJoin(obsArray) : of([]);

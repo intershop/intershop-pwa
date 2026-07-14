@@ -25,11 +25,14 @@ export class OrderTemplateService {
     return this.apiService.get(`customers/-/users/-/wishlists`).pipe(
       unpackEnvelope<OrderTemplateData | OrderTemplateListElementData>(),
       switchMap(orderTemplateData => {
+        // ICM 14.2.0+ returns the list attributes directly, so only the list data is fetched after login
+        // and item details are loaded on demand by the consuming components/pages
         if (orderTemplateData.length === 0 || 'attributes' in orderTemplateData[0]) {
           return of(this.orderTemplateMapper.fromListData(orderTemplateData as OrderTemplateListElementData[]));
         }
-        // legacy data format with uri only in the list response -> get each order template separately to get all data
-        // TODO: remove in case ICM version < 14.2.0 will not supported anymore
+        // legacy data format (ICM < 14.2.0) with uri only in the list response
+        // -> get each order template separately, i.e. all data is still fetched after login
+        // TODO: remove once ICM versions < 14.2.0 are no longer supported
         const obsArray = orderTemplateData.map((d: OrderTemplateData) =>
           this.getOrderTemplate(this.orderTemplateMapper.fromDataToId(d))
         );

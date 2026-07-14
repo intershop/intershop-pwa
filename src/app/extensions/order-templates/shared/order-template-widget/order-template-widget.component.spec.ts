@@ -3,7 +3,7 @@ import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
-import { instance, mock, verify, when } from 'ts-mockito';
+import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
@@ -41,7 +41,7 @@ describe('Order Template Widget Component', () => {
 
   beforeEach(async () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
-    when(orderTemplatesFacade.orderTemplates$).thenReturn(of(orderTemplates));
+    when(orderTemplatesFacade.orderTemplatesWithDetails$(anything())).thenReturn(of(orderTemplates));
     when(orderTemplatesFacade.orderTemplateLoading$).thenReturn(of(false));
 
     await TestBed.configureTestingModule({
@@ -85,26 +85,14 @@ describe('Order Template Widget Component', () => {
     expect(element.querySelector('.loading-container').textContent).toContain('order template 2');
   });
 
-  it('should limit displayed order templates to 3', () => {
-    const manyTemplates = [
-      { id: '1', title: 'template 1', itemsCount: 0, items: [] },
-      { id: '2', title: 'template 2', itemsCount: 0, items: [] },
-      { id: '3', title: 'template 3', itemsCount: 0, items: [] },
-      { id: '4', title: 'template 4', itemsCount: 0, items: [] },
-    ] as OrderTemplate[];
-    when(orderTemplatesFacade.orderTemplates$).thenReturn(of(manyTemplates));
-    fixture.detectChanges();
-    expect(element.querySelectorAll('ish-product-add-to-basket')).toHaveLength(0);
-    expect(element.querySelector('.loading-container').textContent).not.toContain('template 4');
-  });
-
   it('should render add to cart button for templates with items', () => {
     fixture.detectChanges();
     expect(element.querySelectorAll('ish-product-add-to-basket')).toHaveLength(2);
   });
 
-  it('should trigger loading of the displayed order templates including their details on creation', () => {
-    verify(orderTemplatesFacade.loadOrderTemplates(3)).once();
+  it('should trigger loading of the details of the displayed order templates on init', () => {
+    fixture.detectChanges();
+    verify(orderTemplatesFacade.orderTemplatesWithDetails$(3)).once();
   });
 
   it('should map the order template items to add-to-basket parts', () => {

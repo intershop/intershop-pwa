@@ -11,7 +11,7 @@
             @for (orderTemplate of orderTemplates; track orderTemplate.id) {
               <div class="mb-2">
                 <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
-                @if (orderTemplate.itemsCount) {
+                @if (orderTemplate.items?.length) {
                   <span class="align-top float-end">
                     <ish-product-add-to-basket
                       cssClass="p-0 mb-0"

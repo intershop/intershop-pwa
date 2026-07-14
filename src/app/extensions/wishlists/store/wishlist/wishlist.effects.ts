@@ -5,7 +5,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import { concatMap, debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
@@ -88,15 +88,11 @@ export class WishlistEffects {
   loadWishlistDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(wishlistActions.loadWishlistDetails),
-      mapToPayloadProperty('wishlistIds'),
-      mergeMap(wishlistIds =>
-        from(wishlistIds).pipe(
-          concatMap((wishlistId: string) =>
-            this.wishlistService.getWishlist(wishlistId).pipe(
-              map(wishlist => wishlistApiActions.loadWishlistDetailsSuccess({ wishlist })),
-              mapErrorToAction(wishlistApiActions.loadWishlistDetailsFail)
-            )
-          )
+      mapToPayloadProperty('wishlistId'),
+      mergeMap(wishlistId =>
+        this.wishlistService.getWishlist(wishlistId).pipe(
+          map(wishlist => wishlistApiActions.loadWishlistDetailsSuccess({ wishlist })),
+          mapErrorToAction(wishlistApiActions.loadWishlistDetailsFail)
         )
       )
     )
@@ -170,7 +166,7 @@ export class WishlistEffects {
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
       filter(wishlist => wishlist?.preferred),
-      concatMap(wishlist => [loadWishlists(), wishlistActions.loadWishlistDetails({ wishlistIds: [wishlist.id] })])
+      concatMap(wishlist => [loadWishlists(), wishlistActions.loadWishlistDetails({ wishlistId: wishlist.id })])
     )
   );
 
@@ -259,7 +255,7 @@ export class WishlistEffects {
       ofType(selectWishlist),
       mapToPayloadProperty('wishlistId'),
       whenTruthy(),
-      map(wishlistId => wishlistActions.loadWishlistDetails({ wishlistIds: [wishlistId] }))
+      map(wishlistId => wishlistActions.loadWishlistDetails({ wishlistId }))
     )
   );
 

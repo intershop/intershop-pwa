@@ -80,7 +80,7 @@ export const selectWishlist = createAction('[Wishlist Internal] Select Wishlist'
 export const wishlistActions = createActionGroup({
   source: 'Wishlist',
   events: {
-    'Load Wishlist Details': payload<{ wishlistIds: string[] }>(),
+    'Load Wishlist Details': payload<{ wishlistId: string }>(),
     'Share Wishlist': payload<{ wishlistId: string; wishlistSharing: WishlistSharing }>(),
     'Unshare Wishlist': payload<{ wishlistId: string }>(),
     'Load Shared Wishlist': payload<{ wishlistId: string; owner: string; secureCode: string }>(),

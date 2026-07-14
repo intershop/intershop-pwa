@@ -6,15 +6,15 @@
       {{ 'account.wishlists.widget.all.heading' | translate }}
     }
   </h2>
-  @if (wishlistItemsSkus$ | async; as productSKUs) {
-    @if (productSKUs.length > 0) {
+  @if (wishlistItemsSkus$ | async; as wishlistItemsSkus) {
+    @if (wishlistItemsSkus.length > 0) {
       <ng-container class="section">
         <div class="product-list" data-testing-id="wishlistProductsList">
           <ish-products-list
             listItemStyle="tile"
             listStyle="carousel"
             [listItemConfiguration]="tileConfiguration"
-            [productSKUs]="productSKUs"
+            [productSKUs]="wishlistItemsSkus"
           />
         </div>
       </ng-container>

@@ -4,7 +4,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, filter, last, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, debounceTime, filter, last, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
@@ -60,22 +60,23 @@ export class OrderTemplateEffects {
     private store: Store
   ) {}
 
+  loadOrderTemplatesAfterLogin$ = createEffect(() =>
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      debounceTime(1000),
+      map(() => loadOrderTemplates())
+    )
+  );
+
   loadOrderTemplates$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrderTemplates),
-      mapToPayloadProperty('amount'),
       concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
       filter(([, authorized]) => authorized),
-      switchMap(([amount]) =>
+      switchMap(() =>
         this.orderTemplateService.getOrderTemplates().pipe(
-          // preload the item details (containing the SKUs) of the requested templates
-          // `amount` undefined -> all templates (default), `amount` 0 -> none, `amount` n -> the first n templates
-          mergeMap(orderTemplates => [
-            loadOrderTemplatesSuccess({ orderTemplates }),
-            ...(amount === undefined ? orderTemplates : orderTemplates.slice(0, amount)).map(orderTemplate =>
-              orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplate.id })
-            ),
-          ]),
+          map(orderTemplates => loadOrderTemplatesSuccess({ orderTemplates })),
           mapErrorToAction(loadOrderTemplatesFail)
         )
       )

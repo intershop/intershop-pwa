@@ -104,12 +104,6 @@ describe('Account Order Template List Component', () => {
     verify(orderTemplatesFacade.deleteOrderTemplate('deleteId')).once();
   });
 
-  it('should report template as loaded when items match itemsCount', () => {
-    component.orderTemplates = orderTemplateDetails;
-
-    expect(component.orderTemplateLoaded(orderTemplateDetails[0])).toBeTrue();
-  });
-
   it('should return parts for a given template', () => {
     const template = orderTemplateDetails[0];
 
