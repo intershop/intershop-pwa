@@ -15,11 +15,12 @@ permissions:
 
 jobs:
   CLAAssistant:
+    name: CLA Assistant
     runs-on: ubuntu-latest
     steps:
-      - name: Generate Token
-        id: generate-token
+      - name: Create GitHub App Token
         uses: actions/create-github-app-token@v3
+        id: create-token
         with:
           client-id: ${{ secrets.CLA_APP_CLIENT_ID }}
           private-key: ${{ secrets.CLA_APP_PRIVATE_KEY }}
@@ -31,9 +32,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # The below token should have repo scope. It must be manually added by you in the repository's secret.
-          # Here it is populated with the GitHub App installation token generated in the previous step.
+          # Here it is populated with the GitHub App installation token created in the previous step.
           # This token is required only if you have configured to store the signatures in a remote repository/organization.
-          PERSONAL_ACCESS_TOKEN: ${{ steps.generate-token.outputs.token }}
+          PERSONAL_ACCESS_TOKEN: ${{ steps.create-token.outputs.token }}
         with:
           path-to-signatures: 'pwa/version1/cla.json'
           path-to-document: 'https://github.com/intershop/intershop-pwa/blob/develop/INTERSHOP_CLA.md' # e.g. a CLA or a DCO document
