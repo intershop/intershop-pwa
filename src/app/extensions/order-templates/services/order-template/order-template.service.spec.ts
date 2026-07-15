@@ -2,9 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
-import { OrderTemplateData, OrderTemplateListElementData } from '../../models/order-template/order-template.interface';
+import { OrderTemplateData } from '../../models/order-template/order-template.interface';
 import { OrderTemplate, OrderTemplateHeader } from '../../models/order-template/order-template.model';
 
 import { OrderTemplateService } from './order-template.service';
@@ -30,9 +31,7 @@ describe('Order Template Service', () => {
   it("should get order templates when 'getOrderTemplates' is called with list element data", done => {
     when(apiServiceMock.get(`customers/-/users/-/wishlists`)).thenReturn(
       of({
-        elements: [
-          { itemId: '1234', title: 'My Template', attributes: [{ name: 'itemsCount', value: 2 }] },
-        ] as OrderTemplateListElementData[],
+        elements: [{ itemId: '1234', title: 'My Template', attributes: [{ name: 'itemsCount', value: 2 }] }] as Link[],
       })
     );
 

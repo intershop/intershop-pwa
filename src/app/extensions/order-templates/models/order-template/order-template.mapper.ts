@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Link } from 'ish-core/models/link/link.model';
 
-import { OrderTemplateData, OrderTemplateListElementData } from './order-template.interface';
+import { OrderTemplateData } from './order-template.interface';
 import { OrderTemplate, OrderTemplateItem } from './order-template.model';
 
 @Injectable({ providedIn: 'root' })
@@ -51,19 +52,16 @@ export class OrderTemplateMapper {
     }
   }
 
-  fromListData(orderTemplateListElementsData: OrderTemplateListElementData[]): OrderTemplate[] {
-    if (!orderTemplateListElementsData) {
+  fromListData(orderTemplateLinks: Link[]): OrderTemplate[] {
+    if (!orderTemplateLinks) {
       return [];
     }
-    return orderTemplateListElementsData.map(orderTemplateListElementData => ({
-      id: orderTemplateListElementData.itemId,
-      title: orderTemplateListElementData.title,
-      itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(
-        orderTemplateListElementData.attributes,
-        'itemsCount'
-      ),
+    return orderTemplateLinks.map(orderTemplateLink => ({
+      id: orderTemplateLink.itemId,
+      title: orderTemplateLink.title,
+      itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(orderTemplateLink.attributes, 'itemsCount'),
       creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(
-        orderTemplateListElementData.attributes,
+        orderTemplateLink.attributes,
         'creationDate'
       ),
     }));

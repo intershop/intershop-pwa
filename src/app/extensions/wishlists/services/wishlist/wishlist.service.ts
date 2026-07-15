@@ -3,10 +3,11 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
-import { WishlistData, WishlistListElementData } from '../../models/wishlist/wishlist.interface';
+import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { WishlistMapper } from '../../models/wishlist/wishlist.mapper';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
@@ -28,10 +29,10 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope<WishlistData | WishlistListElementData>(),
+          unpackEnvelope<Link | WishlistData>(),
           switchMap(wishlistData => {
             if (wishlistData.length === 0 || 'attributes' in wishlistData[0]) {
-              return of(this.wishlistMapper.fromListData(wishlistData as WishlistListElementData[]));
+              return of(this.wishlistMapper.fromListData(wishlistData as Link[]));
             }
             // legacy data format with uri only in the list response -> get each wishlist separately to get all data
             // TODO: remove once ICM versions < 14.2.0 are no longer supported

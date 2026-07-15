@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WishlistData, WishlistListElementData } from './wishlist.interface';
+import { Link } from 'ish-core/models/link/link.model';
+
+import { WishlistData } from './wishlist.interface';
 import { WishlistMapper } from './wishlist.mapper';
 import { Wishlist } from './wishlist.model';
 
@@ -56,7 +58,7 @@ describe('Wishlist Mapper', () => {
     });
 
     it('should map incoming list data to wishlist model data without items', () => {
-      const wishlistsData: WishlistListElementData[] = [
+      const wishlistsData = [
         {
           itemId: '1234',
           title: 'wishlist title',
@@ -66,7 +68,7 @@ describe('Wishlist Mapper', () => {
             { name: 'public', value: false },
             { name: 'shared', value: true },
           ],
-        },
+        } as Link,
       ];
 
       const mapped = wishlistMapper.fromListData(wishlistsData);

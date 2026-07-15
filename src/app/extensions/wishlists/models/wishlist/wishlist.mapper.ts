@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Link } from 'ish-core/models/link/link.model';
 
-import { WishlistData, WishlistListElementData } from './wishlist.interface';
+import { WishlistData } from './wishlist.interface';
 import { Wishlist, WishlistItem } from './wishlist.model';
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +19,7 @@ export class WishlistMapper {
     }
   }
 
-  fromListData(wishlistsData: WishlistListElementData[]): Wishlist[] {
+  fromListData(wishlistsData: Link[]): Wishlist[] {
     if (wishlistsData) {
       return wishlistsData.map(wishlistData => ({
         id: wishlistData.itemId,

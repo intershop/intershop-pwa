@@ -3,10 +3,11 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
-import { WishlistData, WishlistListElementData } from '../../models/wishlist/wishlist.interface';
+import { WishlistData } from '../../models/wishlist/wishlist.interface';
 import { Wishlist, WishlistHeader } from '../../models/wishlist/wishlist.model';
 
 import { WishlistService } from './wishlist.service';
@@ -48,7 +49,7 @@ describe('Wishlist Service', () => {
               { name: 'preferred', value: true },
             ],
           },
-        ] as WishlistListElementData[],
+        ] as Link[],
       })
     );
 
@@ -83,7 +84,7 @@ describe('Wishlist Service', () => {
               { name: 'preferred', value: true },
             ],
           },
-        ] as WishlistListElementData[],
+        ] as Link[],
       })
     );
 

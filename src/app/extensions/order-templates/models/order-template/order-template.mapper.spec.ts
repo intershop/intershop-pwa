@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OrderTemplateData, OrderTemplateListElementData } from './order-template.interface';
+import { Link } from 'ish-core/models/link/link.model';
+
+import { OrderTemplateData } from './order-template.interface';
 import { OrderTemplateMapper } from './order-template.mapper';
 import { OrderTemplate } from './order-template.model';
 
@@ -71,7 +73,7 @@ describe('Order Template Mapper', () => {
     });
 
     it('should map list element data to order template array', () => {
-      const listData: OrderTemplateListElementData[] = [
+      const listData = [
         {
           itemId: '1234',
           title: 'My Template',
@@ -85,7 +87,7 @@ describe('Order Template Mapper', () => {
           title: 'Second Template',
           attributes: [{ name: 'itemsCount', value: 0 }],
         },
-      ];
+      ] as Link[];
 
       const mapped = orderTemplateMapper.fromListData(listData);
 
