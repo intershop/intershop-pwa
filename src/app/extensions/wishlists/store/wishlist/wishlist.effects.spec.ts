@@ -12,7 +12,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -592,8 +592,16 @@ describe('Wishlist Effects', () => {
     it('should load the details of the selected wishlist', () => {
       const action = selectWishlist({ wishlistId: wishlists[0].id });
       const completion = wishlistActions.loadWishlistDetails({ wishlistId: wishlists[0].id });
-      actions$ = hot('-a-a-a', { a: action });
+      actions$ = hot('pa-a-a', { p: personalizationStatusDetermined(), a: action });
       const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadSelectedWishlistDetails$).toBeObservable(expected$);
+    });
+
+    it('should wait for the personalization status before loading the details', () => {
+      const action = selectWishlist({ wishlistId: wishlists[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('--');
 
       expect(effects.loadSelectedWishlistDetails$).toBeObservable(expected$);
     });

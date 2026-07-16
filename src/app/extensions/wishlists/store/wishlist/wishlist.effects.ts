@@ -6,14 +6,15 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { concatMap, debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
+  delayUntil,
   distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
@@ -66,7 +67,7 @@ export class WishlistEffects {
     this.store.pipe(
       select(getUserAuthorized),
       whenTruthy(),
-      debounceTime(1000),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       map(() => loadWishlists())
     )
   );
@@ -253,6 +254,7 @@ export class WishlistEffects {
   loadSelectedWishlistDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(selectWishlist),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('wishlistId'),
       whenTruthy(),
       map(wishlistId => wishlistActions.loadWishlistDetails({ wishlistId }))

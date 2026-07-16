@@ -4,13 +4,14 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { concat } from 'rxjs';
-import { concatMap, debounceTime, filter, last, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, last, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
+  delayUntil,
   distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
@@ -64,7 +65,7 @@ export class OrderTemplateEffects {
     this.store.pipe(
       select(getUserAuthorized),
       whenTruthy(),
-      debounceTime(1000),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       map(() => loadOrderTemplates())
     )
   );
@@ -295,6 +296,7 @@ export class OrderTemplateEffects {
   loadSelectedOrderTemplateDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(selectOrderTemplate),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('id'),
       whenTruthy(),
       map(id => orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: id }))

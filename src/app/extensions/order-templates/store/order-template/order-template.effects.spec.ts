@@ -11,7 +11,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -189,8 +189,8 @@ describe('Order Template Effects', () => {
     it('should load the details of the selected order template', () => {
       const action = selectOrderTemplate({ id: orderTemplates[0].id });
       const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-p-a', { p: personalizationStatusDetermined(), a: action });
+      const expected$ = cold('---c', { c: completion });
 
       expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
     });
@@ -201,8 +201,16 @@ describe('Order Template Effects', () => {
       );
       const action = selectOrderTemplate({ id: orderTemplates[0].id });
       const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-p-a', { p: personalizationStatusDetermined(), a: action });
+      const expected$ = cold('---c', { c: completion });
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
+    });
+
+    it('should wait for the personalization status before loading the details', () => {
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      const expected$ = cold('--');
 
       expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
     });
@@ -742,7 +750,8 @@ describe('Order Template Effects', () => {
     beforeEach(() => {
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(of(orderTemplates));
     });
-    it('should call OrderTemplatesService after login action was dispatched', done => {
+    it('should call OrderTemplatesService after login once the personalization status is determined', done => {
+      actions$ = of(personalizationStatusDetermined());
       effects.loadOrderTemplatesAfterLogin$.subscribe(action => {
         expect(action.type).toEqual(loadOrderTemplates.type);
         done();

@@ -51,6 +51,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplate,
     deleteOrderTemplate,
     loadOrderTemplates,
+    orderTemplatesActions.loadOrderTemplateDetails,
     orderTemplatesActions.createOrderTemplateFromLineItems,
     updateOrderTemplate
   ),
@@ -59,6 +60,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateSuccess,
     deleteOrderTemplateSuccess,
     loadOrderTemplatesSuccess,
+    orderTemplatesActions.loadOrderTemplateDetails,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     removeItemFromOrderTemplateSuccess,
     updateOrderTemplateSuccess
@@ -81,7 +83,7 @@ export const orderTemplateReducer = createReducer(
     updateOrderTemplateFail,
     (state: OrderTemplateState): OrderTemplateState => ({
       ...state,
-      selected: undefined as string,
+      selected: undefined,
     })
   ),
   on(loadOrderTemplatesSuccess, (state, action): OrderTemplateState => {

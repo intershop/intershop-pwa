@@ -87,7 +87,7 @@ export const wishlistReducer = createReducer(
     updateWishlistFail,
     (state: WishlistState): WishlistState => ({
       ...state,
-      selected: undefined as string,
+      selected: undefined,
     })
   ),
   on(loadWishlistsSuccess, (state: WishlistState, action): WishlistState => {
