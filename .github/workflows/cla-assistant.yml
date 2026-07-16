@@ -31,7 +31,7 @@ jobs:
         uses: contributor-assistant/github-action@v2.6.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # The below token should have repo scope. It must be manually added by you in the repository's secret.
+          # The below token should have repo scope. You must manually add it in the repository's secret.
           # Here it is populated with the GitHub App installation token created in the previous step.
           # This token is required only if you have configured to store the signatures in a remote repository/organization.
           PERSONAL_ACCESS_TOKEN: ${{ steps.create-token.outputs.token }}
@@ -42,7 +42,7 @@ jobs:
           branch: 'main'
           #allowlist: user1,bot*
 
-          # The followings are the optional inputs. If the optional inputs are not given, then default values will be taken.
+          # The following are the optional inputs. If the optional inputs are not provided, the default values are used.
           remote-organization-name: intershop # Enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository).
           remote-repository-name: intershop-signatures # Enter the  remote repository name where the signatures should be stored (Default is storing the signatures in the same repository).
           #create-file-commit-message: 'For example: Creating file for storing CLA Signatures'
@@ -50,5 +50,5 @@ jobs:
           #custom-notsigned-prcomment: 'pull request comment with Introductory message to ask new contributors to sign'
           #custom-pr-sign-comment: 'The signature to be committed in order to sign the CLA'
           #custom-allsigned-prcomment: 'pull request comment when all contributors has signed, defaults to **CLA Assistant Lite bot** All Contributors have signed the CLA.'
-          #lock-pullrequest-aftermerge: false - If you don't want this bot to automatically lock the pull request after merging (default - true).
+          #lock-pullrequest-aftermerge: false - If you do not want this bot to automatically lock the pull request after merging (default - true).
           #use-dco-flag: true - If you are using DCO instead of CLA.

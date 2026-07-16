@@ -9,7 +9,7 @@ kb_everyone
 
 Thank you for your interest in the Intershop PWA project.
 
-We look forward to any kind of contribution.
+We welcome all kinds of contributions.
 
 ## Code of Conduct
 
@@ -33,7 +33,7 @@ Your signature will be recorded automatically. You only need to sign once.
 
 For questions, contact pwa@intershop.de.
 
-## Contribution process
+## Contribution Process
 
 1. Fork the repository
 2. Use the `develop` branch for your edits
@@ -44,8 +44,9 @@ For questions, contact pwa@intershop.de.
 7. Add all relevant information
 8. Reference the resolved issue
 9. Wait for the review
-10. PR is approved, denied (with explanation) or sent back for further information
-11. We respond to pull requests, issues, feedback, and other community interactions as quickly as possible. However, we cannot guarantee a particular response time for every inquiry.
+10. PR is approved, denied (with explanation), or sent back for further information
+
+We respond to pull requests, issues, feedback, and other community interactions as quickly as possible. However, we cannot guarantee a particular response time for every inquiry.
 
 ## Commit Message Guidelines
 
@@ -55,4 +56,4 @@ The project uses the commit message linter [commitlint](https://github.com/conve
 
 The [commitizen](https://github.com/commitizen/cz-cli) wizard is also available to help you fill out all required commit information.
 
-Install it with `npm install commitizen -g`. Use `git cz` to commit.
+Install it with `npm install commitizen -g` and use `git cz` to commit.

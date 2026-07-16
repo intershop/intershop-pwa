@@ -7,23 +7,23 @@ kb_guide
 
 # Intershop Contributor License Agreement
 
-Thank you for your interest in contributing to our open source software project ("project PWA storefront" or just "project") made available by Intershop Communications AG ("ISH"). This contributor license agreement ("agreement") sets out the terms governing any source code, object code, bug fixes, configuration changes, tools, specifications, documentation, data, materials, feedback, information or other works of authorship that you submit or have submitted, in any form and in any manner, to ISH in respect of the project PWA storefront (collectively "Contributions").
+Thank you for your interest in contributing to our open-source software project ("project PWA storefront" or just "project") made available by Intershop Communications AG ("ISH"). This contributor license agreement ("agreement") sets out the terms governing any source code, object code, bug fixes, configuration changes, tools, specifications, documentation, data, materials, feedback, information or other works of authorship that you submit or have submitted, in any form and in any manner, to ISH with respect to the project PWA storefront (collectively "Contributions").
 
 By signing this agreement, you agree that the following terms apply to all of your Contributions to the project. Except for the licenses granted in this agreement, you retain all of your right, title, and interest in and to your Contributions. You are aware that the project is also covered by the MIT License.
 
-## Contributions and copyright license
+## Contributions and Copyright License
 
-You hereby agree to contribute your works and developments with respect to the ISH PWA storefront project. You hereby grant, and agree to grant, to ISH a non-exclusive, perpetual, irrevocable, worldwide, fully paid, royalty-free, transferable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, and distribute your Contributions and such derivative works, with the right to sublicense the foregoing rights to multiple tiers of sub-licensees.
+You hereby agree to contribute your works and developments with respect to the ISH PWA storefront project. You hereby grant, and agree to grant, to ISH a non-exclusive, perpetual, irrevocable, worldwide, fully paid, royalty-free, transferable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, and distribute your Contributions and such derivative works, with the right to sublicense the foregoing rights to multiple tiers of sublicensees.
 
-## Moral rights
+## Moral Rights
 
-To the fullest extent permitted under applicable law, you will hereby waive and agree not to assert all of your moral rights in or relating to your Contributions for the benefit of ISH, its assigns, and their respective direct and indirect sub-licensees.
+To the fullest extent permitted under applicable law, you will hereby waive and agree not to assert all of your moral rights in or relating to your Contributions for the benefit of ISH, its assigns, and their respective direct and indirect sublicensees.
 
 ## Claims
 
 You hereby grant, and agree to grant, to ISH the right to claim copyright or license infringements of your Contributions alone or by combination of your Contributions with the results of the project.
 
-## Third party content/rights
+## Third-Party Content/Rights
 
 If your contribution includes or is based on any source code, object code, bug fixes, configuration changes, tools, specifications, documentation, data, materials, feedback, information, or other works of authorship that were not authored by you ("Third Party Content"), or if you are aware of any third party intellectual property rights associated with your Contribution ("Third Party Rights"), then you agree to include with the submission of your Contribution full details respecting such Third Party Content and Third Party Rights. This information duty includes the identification of which aspects of your Contribution contain Third Party Content or are associated with Third Party Rights, the owner/author of the Third Party Content and Third Party Rights, where you obtained the Third Party Content and any applicable third party license terms or restrictions respecting the Third Party Content and Third Party Rights.
 
@@ -31,15 +31,15 @@ If your contribution includes or is based on any source code, object code, bug f
 
 You represent that you are the sole author of your Contributions and are legally entitled to grant the foregoing licenses and waivers in respect of the Contributions, except the Third Party Content and Third Party Rights identified by you in accordance with this agreement.
 
-## Behavior standards
+## Behavior Standards
 
-You agree and accept as a contributor in our project the following behavior standards:
+You agree and accept as a contributor to our project the following behavior standards:
 
 - using welcoming and acceptable language
 - being respectful of differing viewpoints and experiences
 - gracefully accepting constructive criticism
 - focusing on what is best for the project
-- showing empathy towards other contributors
+- showing empathy toward other contributors
 
 For example, the following behaviors are unacceptable by contributors:
 
@@ -47,13 +47,13 @@ For example, the following behaviors are unacceptable by contributors:
 - trolling, insulting or derogatory comments, and personal or political attacks
 - public or private harassment
 - publishing others' private information, such as a physical or electronic address or other personal data that will be provided during the project on the platform
-- other conduct which could reasonably be considered inappropriate in a professional environment.
+- other conduct that could reasonably be considered inappropriate in a professional environment.
 
 ## Disclaimer
 
-Your Contributions are provided "as is" without warranties or conditions of any kind, either express or implied, including, without limitation any warranties or conditions of title, non-infringement, merchantability or fitness for a particular purpose. In no event shall you be liable for any claim, damages or other liability arising from or in connection with your Contributions.
+Your Contributions are provided "as is" without warranties or conditions of any kind, either express or implied, including, without limitation, any warranties or conditions of title, non-infringement, merchantability or fitness for a particular purpose. In no event shall you be liable for any claim, damages or other liability arising from or in connection with your Contributions.
 
-## No obligation of use or incorporation
+## No Obligation of Use or Incorporation
 
 You acknowledge that ISH is in no event obligated to use or incorporate your Contributions into the ISH PWA storefront. The decision to use or incorporate your Contributions will be made at the sole discretion of ISH.
 
