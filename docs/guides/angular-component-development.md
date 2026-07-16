@@ -14,6 +14,7 @@ kb_sync_latest_only
 - [Use Property Binding to Bind Dynamic Values to Attributes or Properties](#use-property-binding-to-bind-dynamic-values-to-attributes-or-properties)
 - [Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead](#do-not-unsubscribe-use-the-takeuntildestroyed-operator-instead)
 - [Avoid Duplicate Subscriptions in Templates](#avoid-duplicate-subscriptions-in-templates)
+- [Flatten Nested `@if` Blocks](#flatten-nested-if-blocks)
 - [Use `OnPush` Change Detection if Possible](#use-onpush-change-detection-if-possible)
 - [DOM Manipulations](#dom-manipulations)
 - [Split Components When Necessary](#split-components-when-necessary)
@@ -122,6 +123,27 @@ Declare the `@let` in the nearest shared parent scope, before its first use.
 ```
 
 Duplicate `| async` occurrences in mutually exclusive `@if`/`@else` branches or in separate `@switch` cases are already only subscribed once at runtime, so hoisting them is a readability choice rather than a subscription reduction.
+
+## Flatten Nested `@if` Blocks
+
+`@let` is also useful to flatten nested `@if` blocks that only exist to unwrap and null-check an async value.
+Note that the resolved value can be `null`, so use optional chaining when accessing its properties:
+
+:warning: **Pattern to avoid**
+
+```html
+@if (products$ | async; as products) { @if (products.length) {
+<!-- ... -->
+} }
+```
+
+:heavy_check_mark: **Correct pattern**
+
+```html
+@let products = products$ | async; @if (products?.length) {
+<!-- ... -->
+}
+```
 
 ## Use `OnPush` Change Detection if Possible
 

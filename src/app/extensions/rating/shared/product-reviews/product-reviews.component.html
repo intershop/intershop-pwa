@@ -37,16 +37,13 @@
 <!-- display the list of reviews -->
 <div class="section pb-4" data-testing-id="product-review-list">
   <h3>{{ 'product.reviews.recent_reviews.heading' | translate }}</h3>
-  @if (recentProductReviews$ | async; as recentProductReviews) {
-    @if (recentProductReviews?.length) {
-      <div>
-        @for (review of recentProductReviews; track review.id) {
-          <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
-        }
-      </div>
-    } @else {
-      {{ 'product.reviews.no_reviews_yet.text' | translate }}
-    }
+  @let recentProductReviews = recentProductReviews$ | async;
+  @if (recentProductReviews?.length) {
+    <div>
+      @for (review of recentProductReviews; track review.id) {
+        <ng-container *ngTemplateOutlet="reviewItem; context: { review: review }" />
+      }
+    </div>
   } @else {
     {{ 'product.reviews.no_reviews_yet.text' | translate }}
   }
