@@ -152,7 +152,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
   // set production mode, service-worker, ngrx runtime checks
   const serviceWorker = !!angularJsonConfig.serviceWorker;
-  const ngrxRuntimeChecks = !!process.env.TESTING || !production;
+  const ngrxRuntimeChecks = process.env.TESTING === 'true' || !production;
   config.plugins.push(
     new DefinePlugin({
       PWA_VERSION: JSON.stringify(
@@ -267,7 +267,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       };
     }
 
-    if (!process.env.TESTING) {
+    if (!(process.env.TESTING === 'true')) {
       logger.log('setting up data-testing-id removal');
       // remove testing ids when loading html files
       config.module.rules.push({
