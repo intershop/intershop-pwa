@@ -101,6 +101,93 @@
             "b2c": {}
           }
         },
+        "build-esbuild": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/esbuild",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["src/polyfills.ts"],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets",
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/themes/b2b/img/",
+                "output": "/"
+              }
+            ],
+            "styles": ["src/styles/themes/b2b/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/b2b"]
+            },
+            "sourceMap": true,
+            "allowedCommonJsDependencies": ["localforage"],
+            "define": {
+              "PWA_VERSION": "\"11.2.0 esbuild phase 1\"",
+              "PRODUCTION_MODE": "false",
+              "SERVICE_WORKER": "false",
+              "NGRX_RUNTIME_CHECKS": "true",
+              "THEME": "\"b2b\"",
+              "SSR": "false"
+            },
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.b2b.ts"
+              }
+            ]
+          },
+          "defaultConfiguration": "b2b,production",
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "define": {
+                "PWA_VERSION": "\"11.2.0 esbuild phase 1\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "false"
+              },
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.6mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                },
+                {
+                  "replace": "src/app/core/store/store-devtools.module.ts",
+                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "tsConfig": "tsconfig.app-no-checks.json",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            },
+            "b2b": {}
+          }
+        },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
@@ -119,6 +206,24 @@
             },
             "b2c": {
               "buildTarget": "intershop-pwa:build:b2c"
+            }
+          }
+        },
+        "serve-esbuild": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "intershop-pwa:build-esbuild"
+          },
+          "defaultConfiguration": "b2b,development",
+          "configurations": {
+            "production": {
+              "buildTarget": "intershop-pwa:build-esbuild:production"
+            },
+            "development": {
+              "buildTarget": "intershop-pwa:build-esbuild:development"
+            },
+            "b2b": {
+              "buildTarget": "intershop-pwa:build-esbuild:b2b"
             }
           }
         },
