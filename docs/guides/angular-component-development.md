@@ -13,6 +13,7 @@ kb_sync_latest_only
 - [Put as Little Logic Into `constructor` as Possible - Use `ngOnInit`](#put-as-little-logic-into-constructor-as-possible---use-ngoninit)
 - [Use Property Binding to Bind Dynamic Values to Attributes or Properties](#use-property-binding-to-bind-dynamic-values-to-attributes-or-properties)
 - [Do Not Unsubscribe, Use the takeUntilDestroyed Operator Instead](#do-not-unsubscribe-use-the-takeuntildestroyed-operator-instead)
+- [Avoid Duplicate Subscriptions in Templates](#avoid-duplicate-subscriptions-in-templates)
 - [Use `OnPush` Change Detection if Possible](#use-onpush-change-detection-if-possible)
 - [DOM Manipulations](#dom-manipulations)
 - [Split Components When Necessary](#split-components-when-necessary)
@@ -92,6 +93,35 @@ export class AnyComponent implements OnInit {
 ```
 
 The ESLint rule `rxjs-angular/prefer-takeuntil` enforces the usage of `takeUntilDestroyed` when subscribing in an Angular artifact.
+
+## Avoid Duplicate Subscriptions in Templates
+
+Each `| async` in a template creates its own subscription.
+If the same observable is piped through `async` more than once in positions that are rendered at the same time, it is subscribed multiple times unnecessarily.
+Use the Angular `@let` declaration to resolve the value once and reuse it.
+
+Declare the `@let` in the nearest shared parent scope, before its first use.
+
+:warning: **Pattern to avoid**
+
+```html
+@if (basket$ | async) {
+<ish-basket-summary [basket]="basket$ | async" />
+} @if (basket$ | async; as basket) {
+<span>{{ basket.itemsCount }}</span>
+}
+```
+
+:heavy_check_mark: **Correct pattern**
+
+```html
+@let basket = basket$ | async; @if (basket) {
+<ish-basket-summary [basket]="basket" />
+<span>{{ basket.itemsCount }}</span>
+}
+```
+
+Duplicate `| async` occurrences in mutually exclusive `@if`/`@else` branches or in separate `@switch` cases are already only subscribed once at runtime, so hoisting them is a readability choice rather than a subscription reduction.
 
 ## Use `OnPush` Change Detection if Possible
 

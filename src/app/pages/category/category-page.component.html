@@ -1,10 +1,11 @@
 @if (category$ | async; as category) {
+  @let deviceType = deviceType$ | async;
   <!-- category with subcategories -->
   @if (category.hasChildren) {
-    <ish-category-categories [category]="category" [deviceType]="deviceType$ | async" />
+    <ish-category-categories [category]="category" [deviceType]="deviceType" />
   } @else {
     @if (category.hasOnlineProducts) {
-      <ish-category-products [category]="category" [deviceType]="deviceType$ | async" />
+      <ish-category-products [category]="category" [deviceType]="deviceType" />
     }
   }
   <!-- category with products -->

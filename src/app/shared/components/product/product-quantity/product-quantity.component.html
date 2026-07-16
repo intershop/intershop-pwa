@@ -1,5 +1,6 @@
 @if (visible$ | async) {
-  <div class="quantity-input" [ngClass]="{ 'has-error': hasQuantityError$ | async }">
+  @let hasQuantityError = hasQuantityError$ | async;
+  <div class="quantity-input" [ngClass]="{ 'has-error': hasQuantityError }">
     @switch (type) {
       @case ('select') {
         <select
@@ -23,7 +24,7 @@
           pattern="[0-9]*"
           type="number"
           [attr.aria-describedby]="ariaDescribedByIds$ | async"
-          [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+          [attr.aria-invalid]="hasQuantityError ? 'true' : undefined"
           [attr.aria-label]="'product.quantity.aria_label' | translate"
           [id]="elementId"
           [max]="max$ | async"
@@ -62,7 +63,7 @@
             pattern="[0-9]*"
             type="number"
             [attr.aria-describedby]="ariaDescribedByIds$ | async"
-            [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+            [attr.aria-invalid]="hasQuantityError ? 'true' : undefined"
             [attr.aria-label]="'product.quantity.aria_label' | translate"
             [id]="elementId"
             [max]="max$ | async"
@@ -75,7 +76,7 @@
         </div>
       }
     }
-    @if (hasQuantityError$ | async) {
+    @if (hasQuantityError) {
       <small class="validation-message" [id]="elementId + '-validation-error'">{{ quantityError$ | async }}</small>
     }
   </div>

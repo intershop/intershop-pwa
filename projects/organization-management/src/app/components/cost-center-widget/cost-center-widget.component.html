@@ -2,22 +2,19 @@
   <div class="loading-container">
     @if ((loading$ | async) !== true) {
       <div>
-        @if (costCenters$ | async; as costCenters) {
-          @if (costCenters.length) {
-            @for (cc of costCenters$ | async; track cc.id) {
-              <div class="row mt-0 mb-3">
-                <div class="col-12 col-md-5">
-                  <a [routerLink]="['/account/organization/cost-centers/', cc.id]">
-                    {{ cc.costCenterId }} {{ cc.name }}
-                  </a>
-                </div>
-                <div class="col-12 col-md-7">
-                  <ish-cost-center-budget progressBarClass="background-inverse" [costCenter]="cc" />
-                </div>
+        @let costCenters = costCenters$ | async;
+        @if (costCenters?.length) {
+          @for (cc of costCenters; track cc.id) {
+            <div class="row mt-0 mb-3">
+              <div class="col-12 col-md-5">
+                <a [routerLink]="['/account/organization/cost-centers/', cc.id]">
+                  {{ cc.costCenterId }} {{ cc.name }}
+                </a>
               </div>
-            }
-          } @else {
-            <div class="pb-3">{{ 'account.costcenter.widget.noitems' | translate }}</div>
+              <div class="col-12 col-md-7">
+                <ish-cost-center-budget progressBarClass="background-inverse" [costCenter]="cc" />
+              </div>
+            </div>
           }
         } @else {
           <div class="pb-3">{{ 'account.costcenter.widget.noitems' | translate }}</div>

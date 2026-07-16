@@ -2,23 +2,20 @@
   <ish-content-include includeId="include.basket.base.top.pagelet2-Include" />
 </div>
 
+@let basketError = basketError$ | async;
+@let basketLoading = basketLoading$ | async;
 @if (basket$ | async; as basket) {
   @if (basket.lineItems.length) {
-    <ish-shopping-basket
-      [basket]="basket"
-      [error]="basketError$ | async"
-      [loading]="basketLoading$ | async"
-      (nextStep)="nextStep()"
-    />
+    <ish-shopping-basket [basket]="basket" [error]="basketError" [loading]="basketLoading" (nextStep)="nextStep()" />
   } @else {
-    <ish-shopping-basket-empty [error]="basketError$ | async" />
-    @if (basketLoading$ | async) {
+    <ish-shopping-basket-empty [error]="basketError" />
+    @if (basketLoading) {
       <ish-loading />
     }
   }
 } @else {
-  <ish-shopping-basket-empty [error]="basketError$ | async" />
-  @if (basketLoading$ | async) {
+  <ish-shopping-basket-empty [error]="basketError" />
+  @if (basketLoading) {
     <ish-loading />
   }
 }

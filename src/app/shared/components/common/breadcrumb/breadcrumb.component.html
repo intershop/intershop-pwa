@@ -7,13 +7,14 @@
   [ngStyle]="dividerStyle"
 >
   <ol class="breadcrumb">
+    @let trail = trail$ | async;
     @if (showHome) {
       <li class="breadcrumb-item">
         <a rel="home" routerLink="/home">{{ 'common.home.link' | translate }}</a>
       </li>
     }
     @if (account) {
-      @if ((trail$ | async)?.length) {
+      @if (trail?.length) {
         <li class="breadcrumb-item">
           <a routerLink="/account">{{ 'account.my_account.link' | translate }}</a>
         </li>
@@ -23,7 +24,7 @@
         </li>
       }
     }
-    @for (item of trail$ | async; track $index; let last = $last) {
+    @for (item of trail; track $index; let last = $last) {
       <li
         class="breadcrumb-item"
         [attr.aria-current]="last && !item.link ? 'page' : null"

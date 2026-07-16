@@ -2,6 +2,8 @@
   <a id="product-list-top" title="top"></a>
 }
 @if (productListingView$ | async; as listing) {
+  @let sortBy = sortBy$ | async;
+  @let viewType = viewType$ | async;
   @if (isEndlessScrolling) {
     <div
       infiniteScroll
@@ -14,11 +16,11 @@
       <ish-product-list-toolbar
         [fragmentOnRouting]="fragmentOnRouting"
         [itemCount]="listing.itemCount"
-        [sortBy]="sortBy$ | async"
+        [sortBy]="sortBy"
         [sortableAttributes]="listing.sortableAttributes"
-        [viewType]="viewType$ | async"
+        [viewType]="viewType"
       />
-      <ish-product-list [categoryId]="categoryId" [products]="listing.products()" [viewType]="viewType$ | async" />
+      <ish-product-list [categoryId]="categoryId" [products]="listing.products()" [viewType]="viewType" />
       <div class="row justify-content-center">
         @if (!listing.allPagesAvailable()) {
           <ish-product-list-paging
@@ -40,16 +42,16 @@
             [isPaging]="true"
             [itemCount]="listing.itemCount"
             [pageIndices]="listing.pageIndices(currentPage)"
-            [sortBy]="sortBy$ | async"
+            [sortBy]="sortBy"
             [sortableAttributes]="listing.sortableAttributes"
-            [viewType]="viewType$ | async"
+            [viewType]="viewType"
           />
         </ng-template>
         <ng-container *ngTemplateOutlet="pagingToolbar" />
         <ish-product-list
           [categoryId]="categoryId"
           [products]="listing.productsOfPage(currentPage)"
-          [viewType]="viewType$ | async"
+          [viewType]="viewType"
         />
         @if (listingLoading$ | async) {
           <ish-loading [standalone]="true" />

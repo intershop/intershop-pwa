@@ -6,6 +6,7 @@
   }"
 >
   @if (inventoryLoaded$ | async) {
+    @let userEmail = userEmail$ | async;
     @if (productNotification$ | async; as productNotification) {
       <form
         #form="ngForm"
@@ -20,7 +21,7 @@
           <ish-product-notification-edit-form
             [form]="productNotificationForm"
             [productNotification]="productNotification"
-            [userEmail]="userEmail$ | async"
+            [userEmail]="userEmail"
           />
         </div>
         <div class="modal-footer">
@@ -41,7 +42,7 @@
       <form body ishFormSubmit novalidate [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
         <div class="modal-body">
           <ish-product-image imageType="L" />
-          <ish-product-notification-edit-form [form]="productNotificationForm" [userEmail]="userEmail$ | async" />
+          <ish-product-notification-edit-form [form]="productNotificationForm" [userEmail]="userEmail" />
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary" type="submit">
