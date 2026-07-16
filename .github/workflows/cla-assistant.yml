@@ -37,7 +37,7 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ steps.create-token.outputs.token }}
         with:
           path-to-signatures: 'pwa/version1/cla.json'
-          path-to-document: 'https://github.com/intershop/intershop-pwa/blob/develop/INTERSHOP_CLA.md' # e.g. a CLA or a DCO document
+          path-to-document: 'https://github.com/intershop/intershop-pwa/blob/12.0.0/INTERSHOP_CLA.md' # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: 'main'
           #allowlist: user1,bot*
