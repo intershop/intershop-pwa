@@ -1,0 +1,27 @@
+FROM node:22.22.0-alpine AS build
+
+ENV CI=true
+ENV NODE_OPTIONS=--max-old-space-size=8192
+
+WORKDIR /workspace
+
+COPY package.json package-lock.json ./
+RUN npm ci --prefer-offline --no-audit --ignore-scripts
+RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
+
+COPY . .
+RUN npm run postinstall
+RUN npm run build:ssr:esbuild
+
+FROM node:22.22.0-alpine
+
+ENV LOGLEVEL=error
+ENV NODE_ENV=production
+
+WORKDIR /workspace
+
+COPY --from=build /workspace/dist/esbuild ./dist/esbuild
+
+EXPOSE 4200
+
+CMD ["node", "dist/esbuild/server/server.mjs"]
