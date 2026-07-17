@@ -48,11 +48,13 @@
     "build:watch": "npm run build client -- --watch",
     "build": "node scripts/build-pwa",
     "build:esbuild": "ng run intershop-pwa:build-esbuild",
+    "build:ssr:esbuild": "ng run intershop-pwa:build-esbuild:production,ssr",
     "build:multi": "node scripts/build-multi-pwa",
     "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
     "start:esbuild": "ng run intershop-pwa:serve-esbuild",
+    "start:ssr:esbuild": "node dist/esbuild/server/server.mjs",
     "dev:ssr": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js",
     "audit": "better-npm-audit audit"

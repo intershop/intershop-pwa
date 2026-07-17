@@ -129,6 +129,8 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
+const INDEX_FILE = process.env.INDEX_FILE || join(BROWSER_FOLDER, 'index.html');
+
 // The Express app is exported so that it can be used by serverless Functions.
 // eslint-disable-next-line complexity
 export function app() {
@@ -518,7 +520,7 @@ export function app() {
     commonEngine
       .render({
         url: `${req.protocol}://${req.headers.host}${req.originalUrl}`,
-        documentFilePath: join(BROWSER_FOLDER, 'index.html'),
+        documentFilePath: INDEX_FILE,
         publicPath: BROWSER_FOLDER,
         inlineCriticalCss: false,
         providers: [
@@ -646,7 +648,7 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
   });
 }
 
-function run() {
+export function run() {
   const http = require('http');
   http.createServer(app()).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
@@ -666,11 +668,11 @@ function run() {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 declare const __non_webpack_require__: NodeJS.Require;
 
-const mainModule = __non_webpack_require__.main;
+const mainModule = typeof __non_webpack_require__ === 'undefined' ? undefined : __non_webpack_require__.main;
 
 const moduleFilename = mainModule?.filename || '';
 
-if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
+if (mainModule && (moduleFilename === __filename || moduleFilename.includes('iisnode'))) {
   run();
 }
 

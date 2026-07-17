@@ -185,6 +185,21 @@
                 }
               ]
             },
+            "ssr": {
+              "server": "src/main.server.ts",
+              "ssr": {
+                "entry": "server.esbuild.ts"
+              },
+              "tsConfig": "tsconfig.esbuild-ssr.json",
+              "define": {
+                "PWA_VERSION": "\"11.2.0 esbuild phase 2\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            },
             "b2b": {}
           }
         },
