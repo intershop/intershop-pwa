@@ -98,7 +98,7 @@ The order template and wishlist selection modals have been reworked for a more c
 - The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
 - The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
 
-**Wishlists and order template performance optimization**
+**Wishlist and order template performance optimization**
 
 With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
 As a result, the wishlist overview can now be displayed using a single list request.
