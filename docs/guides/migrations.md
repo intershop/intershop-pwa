@@ -117,6 +117,11 @@ If you display order templates in custom components, use `OrderTemplatesFacade.o
 The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
 If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
 
+**Removal of customer budget type update after registration**
+
+The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now persists the `budgetPriceType` directly (requires ICM 14.2.0).
+This also fixes the customer approval flow that broke starting with Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
+
 ## From 11.1.0 to 11.2.0
 
 **Extended Withdrawal functionality**
