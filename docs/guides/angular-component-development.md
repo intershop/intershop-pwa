@@ -97,32 +97,28 @@ The ESLint rule `rxjs-angular/prefer-takeuntil` enforces the usage of `takeUntil
 
 ## Avoid Duplicate Subscriptions in Templates
 
-Each `| async` in a template creates its own subscription.
-If the same observable is piped through `async` more than once in positions that are rendered at the same time, it is subscribed multiple times unnecessarily.
-Use the Angular `@let` declaration to resolve the value once and reuse it.
+Each `| async` pipe in a template creates its own subscription.
+If the same observable is piped through `async` more than once in positions that are rendered at the same time, the pipe subscribes multiple times unnecessarily.
+Use the Angular `@let` declaration to resolve the value once and then reuse it.
 
-Declare the `@let` in the nearest shared parent scope, before its first use.
+Declare the `@let` variable in the nearest shared parent scope, before its first use.
 
 :warning: **Pattern to avoid**
 
-```html
-@if (basket$ | async) {
-<ish-basket-summary [basket]="basket$ | async" />
-} @if (basket$ | async; as basket) {
-<span>{{ basket.itemsCount }}</span>
-}
+```text
+@if (!!(error$ | async) === false) { ... }
+<ish-error-message [error]="error$ | async" />
 ```
 
 :heavy_check_mark: **Correct pattern**
 
-```html
-@let basket = basket$ | async; @if (basket) {
-<ish-basket-summary [basket]="basket" />
-<span>{{ basket.itemsCount }}</span>
-}
+```text
+@let error = error$ | async;
+@if (!!error === false) { ... }
+<ish-error-message [error]="error" />
 ```
 
-Duplicate `| async` occurrences in mutually exclusive `@if`/`@else` branches or in separate `@switch` cases are already only subscribed once at runtime, so hoisting them is a readability choice rather than a subscription reduction.
+Multiple `| async` pipes in mutually exclusive `@if`/`@else` branches or in separate `@switch` cases are already only subscribed once at runtime, so hoisting them is a readability choice rather than a subscription optimization.
 
 ## Flatten Nested `@if` Blocks
 
@@ -131,16 +127,19 @@ Note that the resolved value can be `null`, so use optional chaining when access
 
 :warning: **Pattern to avoid**
 
-```html
-@if (products$ | async; as products) { @if (products.length) {
-<!-- ... -->
-} }
+```text
+@if (products$ | async; as products) {
+  @if (products.length) {
+  <!-- ... -->
+  }
+}
 ```
 
 :heavy_check_mark: **Correct pattern**
 
-```html
-@let products = products$ | async; @if (products?.length) {
+```text
+@let products = products$ | async;
+@if (products?.length) {
 <!-- ... -->
 }
 ```
