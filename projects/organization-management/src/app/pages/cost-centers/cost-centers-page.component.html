@@ -21,7 +21,7 @@
     @if (costCenters.length > 0) {
       <table
         cdk-table
-        class="table table-lg mobile-optimized"
+        class="table table-lg mobile-optimized mb-4"
         data-testing-id="costCenter-list"
         [dataSource]="costCenters"
       >
@@ -146,15 +146,17 @@
     @if (pagingInfo$ | async; as paging) {
       @if (paging.total > pageSize) {
         <div class="row">
-          <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3 mx-3">
-            <span class="text-nowrap">{{
-              'account.costcenter.paging.items.label' | translate: { '0': paging.total }
-            }}</span>
-            <ish-paging
-              [currentPage]="pageNumber$ | async"
-              [lastPage]="getTotalPages(paging.total)"
-              (goToPage)="loadMoreCostCenters($event)"
-            />
+          <div class="col">
+            <div class="d-flex align-items-center flex-wrap justify-content-between mb-3">
+              <span class="text-nowrap">{{
+                'account.costcenter.paging.items.label' | translate: { '0': paging.total }
+              }}</span>
+              <ish-paging
+                [currentPage]="pageNumber$ | async"
+                [lastPage]="getTotalPages(paging.total)"
+                (goToPage)="loadMoreCostCenters($event)"
+              />
+            </div>
           </div>
         </div>
       }

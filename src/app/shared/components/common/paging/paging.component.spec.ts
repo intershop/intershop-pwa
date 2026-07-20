@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { spy, verify } from 'ts-mockito';
+import { of } from 'rxjs';
+import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
+
+import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { PagingComponent } from './paging.component';
 
@@ -10,12 +14,16 @@ describe('Paging Component', () => {
   let component: PagingComponent;
   let fixture: ComponentFixture<PagingComponent>;
   let element: HTMLElement;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
+    when(appFacade.deviceType$).thenReturn(of('desktop'));
+
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
+      imports: [NgbPaginationModule, TranslatePipe],
       declarations: [PagingComponent],
-      providers: [provideTranslateService()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 
@@ -38,57 +46,39 @@ describe('Paging Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display paging navigation links if current page = 1', () => {
-    component.ngOnChanges();
+  it('should render an ngb-pagination with the current page marked active', () => {
+    component.currentPage = 3;
     fixture.detectChanges();
 
-    expect(JSON.stringify(component.pageIndices)).toMatchInlineSnapshot(`"[1,2,3,4,5,6,-1,10]"`);
-    expect(element.querySelectorAll('button.btn')).toHaveLength(2);
-    expect(element.querySelectorAll('[data-testing-id=paging-link] a')).toHaveLength(7);
-    expect(element.innerHTML).toContain('...');
+    expect(element.querySelector('ngb-pagination')).toBeTruthy();
+    expect(element.querySelector('.page-item.active .page-link')?.textContent?.trim()).toBe('3');
   });
 
-  it('should display paging navigation links if current page = last page', () => {
+  it('should disable the previous button on the first page', () => {
+    component.currentPage = 1;
+    fixture.detectChanges();
+
+    const items = element.querySelectorAll('.pagination .page-item');
+    expect(items[0].classList).toContain('disabled');
+    expect(items[items.length - 1].classList).not.toContain('disabled');
+  });
+
+  it('should disable the next button on the last page', () => {
     component.currentPage = 10;
-    component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(JSON.stringify(component.pageIndices)).toMatchInlineSnapshot(`"[1,-1,5,6,7,8,9,10]"`);
-    expect(element.querySelectorAll('button.btn')).toHaveLength(2);
-    expect(element.querySelectorAll('[data-testing-id=paging-link] a')).toHaveLength(7);
-    expect(element.innerHTML).toContain('...');
+    const items = element.querySelectorAll('.pagination .page-item');
+    expect(items[0].classList).not.toContain('disabled');
+    expect(items[items.length - 1].classList).toContain('disabled');
   });
 
-  it('should display paging navigation links if current page is in the center', () => {
-    component.currentPage = 5;
-    component.ngOnChanges();
-    fixture.detectChanges();
-
-    expect(JSON.stringify(component.pageIndices)).toMatchInlineSnapshot(`"[1,-1,3,4,5,6,7,-1,10]"`);
-    expect(element.querySelectorAll('[data-testing-id=paging-link] a')).toHaveLength(7);
-    expect(element.innerHTML).toContain('...');
-  });
-
-  it('should navigate to the next page if the next button is clicked', () => {
-    component.ngOnChanges();
-    fixture.detectChanges();
-
+  it('should emit goToPage with the requested page when setPage is called', () => {
     const emitter = spy(component.goToPage);
 
-    (element.querySelector('button[data-testing-id="paging-next-button"]') as HTMLElement).click();
+    component.setPage(2);
 
-    verify(emitter.emit(2)).once();
-  });
-
-  it('should navigate to the previous page if the previous button is clicked', () => {
-    component.currentPage = 5;
-    component.ngOnChanges();
-    fixture.detectChanges();
-
-    const emitter = spy(component.goToPage);
-
-    (element.querySelector('button[data-testing-id="paging-previous-button"]') as HTMLElement).click();
-
-    verify(emitter.emit(4)).once();
+    verify(emitter.emit(anything())).once();
+    const [arg] = capture(emitter.emit).last();
+    expect(arg).toMatchInlineSnapshot(`2`);
   });
 });

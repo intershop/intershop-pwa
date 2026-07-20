@@ -28,15 +28,17 @@
 @let paging = pagingInfo$ | async;
 @if (paging?.total > pageSize) {
   <div class="row">
-    <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3 mx-3">
-      <span class="text-nowrap">{{
-        'account.order_history.paging.items.label' | translate: { '0': paging.total }
-      }}</span>
-      <ish-paging
-        [currentPage]="pageNumber$ | async"
-        [lastPage]="getTotalPages(paging.total)"
-        (goToPage)="loadMoreOrders($event)"
-      />
+    <div class="col">
+      <div class="d-flex align-items-center flex-wrap justify-content-between mb-3">
+        <span class="text-nowrap">{{
+          'account.order_history.paging.items.label' | translate: { '0': paging.total }
+        }}</span>
+        <ish-paging
+          [currentPage]="pageNumber$ | async"
+          [lastPage]="getTotalPages(paging.total)"
+          (goToPage)="loadMoreOrders($event)"
+        />
+      </div>
     </div>
   </div>
 }
