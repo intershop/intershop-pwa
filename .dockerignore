@@ -146,9 +146,12 @@ azure-pipelines*
 src/assets/mock-data
 
 templates
-!templates/webpack
 
 scripts
+!scripts/
+scripts/*
+!scripts/build/
+!scripts/build/**
 !scripts/build*pwa.js
 !scripts/init-development-environment.js
 !scripts/compile-docker-scripts.js

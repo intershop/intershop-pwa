@@ -1,5 +1,6 @@
 const { sync: spawnSync } = require('cross-spawn');
-const { readFileSync, writeFileSync } = require('fs');
+const { readdirSync, readFileSync, statSync, writeFileSync } = require('fs');
+const { basename, join } = require('path');
 
 const configurations = (
   process.env.npm_config_active_themes || JSON.parse(readFileSync('package.json')).config['active-themes']
@@ -7,40 +8,62 @@ const configurations = (
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
 
-const clientBuilds = [];
-const serverBuilds = [];
-
 const processArgs = process.argv.slice(2);
-const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join(' ');
+const extraArgs = processArgs.filter(arg => arg !== 'client' && arg !== 'server');
 
-if (processArgs.includes('client') || !processArgs.includes('server'))
-  clientBuilds.push(
-    ...configurations.map(({ theme }) =>
-      `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
-    )
+if (processArgs.includes('client') || processArgs.includes('server')) {
+  console.warn('Application builder creates browser and server bundles in a single build.');
+}
+
+const builds = configurations.map(({ theme }) =>
+  [
+    'build',
+    `--configuration=${theme},production`,
+    '--',
+    `--output-path=dist/${theme}`,
+    '--progress=false',
+    ...extraArgs,
+  ].join(' ')
+);
+
+function hasThemeSpecificResourceOverride(folder = process.cwd()) {
+  const ignoredFolders = new Set(['.angular', '.git', 'dist', 'node_modules']);
+  const activeThemes = configurations.map(({ theme }) => theme);
+  const resourceOverrideExtensions = ['.html', '.scss'];
+
+  for (const entry of readdirSync(folder)) {
+    if (ignoredFolders.has(entry)) {
+      continue;
+    }
+
+    const path = join(folder, entry);
+    const stat = statSync(path);
+    if (stat.isDirectory()) {
+      if (hasThemeSpecificResourceOverride(path)) {
+        return true;
+      }
+    } else if (
+      resourceOverrideExtensions.some(extension => entry.endsWith(extension)) &&
+      activeThemes.some(theme => basename(entry).includes(`.${theme}.`))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const maxWorkers = Math.max(1, +process.env.PWA_BUILD_MAX_WORKERS || configurations.length);
+const runAllArgs = ['--silent'];
+if (maxWorkers > 1 && builds.length > 1 && !hasThemeSpecificResourceOverride()) {
+  runAllArgs.push('--parallel', '--max-parallel', `${maxWorkers}`);
+} else if (maxWorkers > 1 && builds.length > 1) {
+  console.warn(
+    'Application builder multi compile runs sequentially because theme-specific resource overrides are not parallel-safe.'
   );
-
-if (processArgs.includes('server') || !processArgs.includes('client'))
-  serverBuilds.push(
-    ...configurations.map(({ theme }) =>
-      `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
-    )
-  );
-
-const cores = +process.env.PWA_BUILD_MAX_WORKERS || Math.round(require('os').cpus().length / 3) || 1;
-const parallel = cores === 1 ? [] : ['--max-parallel', cores, '--parallel'];
-if (parallel.length) {
-  console.log(`Using ${cores} cores for multi compile.`);
 }
 
-// Run client builds first, then server builds (server builds may depend on browser build artifacts)
-let result = { status: 0 };
-if (clientBuilds.length) {
-  result = spawnSync('npm-run-all', ['--silent', ...parallel, ...clientBuilds], { stdio: 'inherit' });
-}
-if (result.status === 0 && serverBuilds.length) {
-  result = spawnSync('npm-run-all', ['--silent', ...parallel, ...serverBuilds], { stdio: 'inherit' });
-}
+const result = spawnSync('npm-run-all', [...runAllArgs, ...builds], { stdio: 'inherit' });
 if (result.status !== 0) {
   process.exit(result.status);
 }
