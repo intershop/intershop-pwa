@@ -30,6 +30,7 @@ export default defineConfig([
   cspellESLintPluginRecommended,
   globalIgnores([
     '**/node_modules',
+    '.angular/**/*',
     'src/polyfills.ts',
     'src/environments/environment.development.ts',
     'dist/**/*',
