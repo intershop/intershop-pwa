@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -18,21 +19,19 @@ export class CategoryProductsComponent implements OnInit, OnChanges {
 
   isCollapsed = false;
 
+  constructor(private scroller: ViewportScroller) {}
+
   ngOnInit() {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   ngOnChanges() {
-    if (!SSR) {
-      window.scroll(0, 0);
-    }
+    this.scroller.scrollToPosition([0, 0]);
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   toggle() {
     this.isCollapsed = !this.isCollapsed;
-    if (!SSR) {
-      window.scroll(0, 0);
-    }
+    this.scroller.scrollToPosition([0, 0]);
   }
 }

@@ -1,6 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -8,6 +7,7 @@ import {
   Input,
   NgModule,
   OnInit,
+  afterNextRender,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -35,7 +35,7 @@ import {
   templateUrl: './captcha-v3.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaptchaV3Component implements OnInit, AfterViewInit {
+export class CaptchaV3Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;
 
   private tokenReady = false;
@@ -45,40 +45,36 @@ export class CaptchaV3Component implements OnInit, AfterViewInit {
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private recaptchaV3Service: ReCaptchaV3Service
-  ) {}
+  ) {
+    afterNextRender(() => {
+      const formElement = this.elementRef.nativeElement.closest('form');
+      if (!formElement) {
+        return;
+      }
+
+      // Intercept form submit in capture phase: block until a fresh reCAPTCHA token is obtained,
+      // then re-trigger the submit so Angular's (ngSubmit) fires with the token in place.
+      let pendingSubmitter: HTMLElement;
+      fromEvent<SubmitEvent>(formElement, 'submit', { capture: true })
+        .pipe(
+          filter(event => this.interceptSubmit(event)),
+          tap(event => {
+            pendingSubmitter = event.submitter;
+            event.preventDefault();
+            event.stopPropagation();
+          }),
+          exhaustMap(() => this.requestToken()),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe(token => {
+          this.applyTokenAndResubmit(token, formElement, pendingSubmitter);
+          pendingSubmitter = undefined;
+        });
+    });
+  }
 
   ngOnInit() {
     this.parentForm.get('captchaAction').setValidators([Validators.required]);
-  }
-
-  ngAfterViewInit() {
-    if (SSR) {
-      return;
-    }
-
-    const formElement = this.elementRef.nativeElement.closest('form');
-    if (!formElement) {
-      return;
-    }
-
-    // Intercept form submit in capture phase: block until a fresh reCAPTCHA token is obtained,
-    // then re-trigger the submit so Angular's (ngSubmit) fires with the token in place.
-    let pendingSubmitter: HTMLElement;
-    fromEvent<SubmitEvent>(formElement, 'submit', { capture: true })
-      .pipe(
-        filter(event => this.interceptSubmit(event)),
-        tap(event => {
-          pendingSubmitter = event.submitter;
-          event.preventDefault();
-          event.stopPropagation();
-        }),
-        exhaustMap(() => this.requestToken()),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(token => {
-        this.applyTokenAndResubmit(token, formElement, pendingSubmitter);
-        pendingSubmitter = undefined;
-      });
   }
 
   private interceptSubmit(_event: SubmitEvent): boolean {
