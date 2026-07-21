@@ -117,6 +117,13 @@ If you display order templates in custom components, use `OrderTemplatesFacade.o
 The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
 If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
 
+**Hot Module Replacement (HMR) in development**
+
+HMR has been enabled for the `serve` targets in `angular.json` via `"hmr": true`.
+Running `ng serve` now applies style changes (global and component SCSS) in place without a full page reload, preserving the current application state.
+Template and TypeScript changes still trigger a full live-reload as before.
+The setting only affects the development `serve` configuration and has no impact on production builds or SSR.
+
 ## From 11.1.0 to 11.2.0
 
 **Extended Withdrawal functionality**

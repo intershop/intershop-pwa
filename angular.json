@@ -112,7 +112,8 @@
               "buildTarget": "intershop-pwa:build:production"
             },
             "development": {
-              "buildTarget": "intershop-pwa:build:development"
+              "buildTarget": "intershop-pwa:build:development",
+              "hmr": true
             },
             "b2b": {
               "buildTarget": "intershop-pwa:build:b2b"
@@ -226,7 +227,8 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "organization-management:build"
+            "buildTarget": "organization-management:build",
+            "hmr": true
           }
         }
       }
@@ -273,7 +275,8 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "requisition-management:build"
+            "buildTarget": "requisition-management:build",
+            "hmr": true
           }
         }
       }
