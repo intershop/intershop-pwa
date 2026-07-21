@@ -16,14 +16,14 @@ const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join
 if (processArgs.includes('client') || !processArgs.includes('server'))
   clientBuilds.push(
     ...configurations.map(({ theme }) =>
-      `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
+      `build:webpack client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
     )
   );
 
 if (processArgs.includes('server') || !processArgs.includes('client'))
   serverBuilds.push(
     ...configurations.map(({ theme }) =>
-      `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
+      `build:webpack server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
     )
   );
 

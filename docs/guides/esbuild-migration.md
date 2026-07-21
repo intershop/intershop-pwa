@@ -9,49 +9,49 @@ kb_sync_latest_only
 
 ## Current Scope
 
-The migration provides separate esbuild browser and server-side rendering targets based on the Angular `application` and `dev-server` builders.
+The standard browser and server-side rendering targets use the Angular `application` and `dev-server` builders with esbuild.
 
 The current scope intentionally does not migrate custom webpack features.
 It covers the B2B application only.
 Service workers remain disabled for the esbuild targets.
-Webpack compatibility is not a goal.
+Webpack is temporarily available through explicitly named backup targets for comparison, but compatibility is not a migration goal.
 
 ## Build and Serve
 
 Build the development configuration:
 
 ```bash
-npx ng run intershop-pwa:build-esbuild:development
+npx ng build --configuration=b2b,development
 ```
 
 Start the development server:
 
 ```bash
-npm run start:esbuild
+npm run ng -- serve
 ```
 
 Build the production configuration:
 
 ```bash
-npm run build:esbuild
+npm run build:client
 ```
 
 Serve the production configuration with the Angular development server:
 
 ```bash
-npx ng run intershop-pwa:serve-esbuild:production
+npx ng serve --configuration=b2b,production
 ```
 
 Build the production configuration with server-side rendering:
 
 ```bash
-npm run build:ssr:esbuild
+npm run build
 ```
 
 Start the generated server-side rendering build:
 
 ```bash
-npm run start:ssr:esbuild
+npm run serve
 ```
 
 Browser output is written to `dist/esbuild/browser` and server output to `dist/esbuild/server`.
@@ -61,6 +61,8 @@ To serve the generated files with SPA fallback, run:
 ```bash
 npx serve -s dist/esbuild/browser -l 4200
 ```
+
+The previous Webpack builds remain available temporarily through `npm run build:webpack`, `npm run build:multi:webpack`, `npm run serve:webpack`, and the Angular targets ending in `-webpack`.
 
 ## Implemented Compatibility Changes
 

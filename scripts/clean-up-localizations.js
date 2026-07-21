@@ -16,7 +16,7 @@ const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_c
 if (doBuild) {
   // perform a build with sourcemaps and use those files
   execSync('git clean -xdf dist', { stdio: 'inherit' });
-  execSync('npm run build:multi client -- --source-map', { stdio: 'inherit' });
+  execSync('npm run build:multi:webpack client -- --source-map', { stdio: 'inherit' });
 
   filesToBeSearched = _.flatten(
     globSync('dist/**/active-files.json').map(activeFilesPath => {

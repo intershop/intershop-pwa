@@ -101,9 +101,9 @@ To run the PWA with multiple channels you can use the nginx docker image supplie
 
 In general, the deployment artifacts of the Intershop PWA are generated to the _dist_ folder of the project.
 Use `npm run build` to generate an Angular SSR enabled version.
-On the server the _dist/server.js_ script has to be executed with `node`.
-Alternatively, you can use `npm run build client` to get an application using browser rendering.
-All the files under `dist/browser` have to be served statically.
+Start the generated server with `npm run serve`.
+Alternatively, you can use `npm run build:client` to get an application using browser rendering.
+All the files under `dist/esbuild/browser` have to be served statically.
 The server has to be configured for fallback routing,
 see [Server Configuration in Angular Docs](https://angular.dev/tools/cli/deployment#server-configuration).
 

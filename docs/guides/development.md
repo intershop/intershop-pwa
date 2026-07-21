@@ -193,7 +193,7 @@ If necessary, it can be adjusted to even higher values.
 
 ## Parallelism
 
-The parallelism of `npm run test` and `npm run build:multi` can be customized with environment variables.
+The parallelism of `npm run test` and `npm run build:multi:webpack` can be customized with environment variables.
 
 The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
 

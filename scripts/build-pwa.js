@@ -18,7 +18,7 @@ function removeServiceWorkerCacheCheck(args) {
     outputPath = outputPathArg.split('=')[1];
   } else {
     // get default outputPath from angular.json
-    outputPath = angularJson.projects[defaultProject].architect.build.options.outputPath;
+    outputPath = angularJson.projects[defaultProject].architect['build-webpack'].options.outputPath;
   }
 
   const serviceWorkerScript = path.join(outputPath, 'ngsw-worker.js');
@@ -37,30 +37,20 @@ if (configuration === 'true') {
   process.exit(1);
 }
 
-let configString = '';
-
-if (configuration) {
-  configString = '-c ' + configuration;
-}
-
 const processArgs = process.argv.slice(2);
 const client = processArgs.includes('client') || !processArgs.includes('server');
 const server = processArgs.includes('server') || !processArgs.includes('client');
 const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
 
 if (client) {
-  execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
-    stdio: 'inherit',
-  });
+  const buildTarget = `${defaultProject}:build-webpack${configuration ? `:${configuration}` : ''}`;
+  execSync(`npm run ng -- run ${buildTarget} ${remainingArgs.join(' ')}`, { stdio: 'inherit' });
   removeServiceWorkerCacheCheck(remainingArgs);
 }
 
-if (configuration) {
-  configString = ':' + configuration;
-}
-
 if (server) {
-  execSync(`npm run ng -- run ${defaultProject}:server${configString} ${remainingArgs.join(' ')}`, {
+  const configString = configuration ? `:${configuration}` : '';
+  execSync(`npm run ng -- run ${defaultProject}:server-webpack${configString} ${remainingArgs.join(' ')}`, {
     stdio: 'inherit',
   });
 }

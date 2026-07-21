@@ -11,7 +11,7 @@ RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 
 COPY . .
 RUN npm run postinstall
-RUN npm run build:ssr:esbuild
+RUN npm run build
 
 FROM node:22.22.0-alpine
 

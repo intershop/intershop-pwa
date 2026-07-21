@@ -27,22 +27,22 @@ for (const project in angularJson.projects) {
 }
 
 const architect = angularJson.projects[project].architect;
-architect.build.configurations[theme] = {};
-architect.serve.configurations[theme] = {
-  buildTarget: 'intershop-pwa:build:' + theme,
+architect['build-webpack'].configurations[theme] = {};
+architect['serve-webpack'].configurations[theme] = {
+  buildTarget: 'intershop-pwa:build-webpack:' + theme,
 };
-architect.server.configurations[theme] = {};
-architect['serve-ssr'].configurations[theme] = {
-  buildTarget: `intershop-pwa:build:${theme},development`,
-  serverTarget: `intershop-pwa:server:${theme},development`,
+architect['server-webpack'].configurations[theme] = {};
+architect['serve-ssr-webpack'].configurations[theme] = {
+  buildTarget: `intershop-pwa:build-webpack:${theme},development`,
+  serverTarget: `intershop-pwa:server-webpack:${theme},development`,
 };
 
 if (setDefault) {
   console.log('setting', theme, 'as default for targets');
-  architect.build.defaultConfiguration = theme + ',production';
-  architect.serve.defaultConfiguration = theme + ',development';
-  architect.server.defaultConfiguration = theme + ',production';
-  architect['serve-ssr'].defaultConfiguration = theme;
+  architect['build-webpack'].defaultConfiguration = theme + ',production';
+  architect['serve-webpack'].defaultConfiguration = theme + ',development';
+  architect['server-webpack'].defaultConfiguration = theme + ',production';
+  architect['serve-ssr-webpack'].defaultConfiguration = theme;
 }
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
