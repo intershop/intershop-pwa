@@ -39,14 +39,14 @@ export class WishlistWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.preferredWishlist$ = this.wishlistsFacade.preferredWishlist$;
-    this.wishlistItemsSkus$ = this.shoppingFacade.excludeFailedProducts$(this.extractProductSKUsFromWishlists$());
+    this.wishlistItemsSkus$ = this.shoppingFacade.excludeFailedProducts$(this.extractProductSkusFromWishlists$());
   }
 
   /**
    * Returns an observable of unique product SKUs to display.
    * If a preferred wishlist exists, only its products are shown, otherwise the products of all wishlists.
    */
-  private extractProductSKUsFromWishlists$(): Observable<string[]> {
+  private extractProductSkusFromWishlists$(): Observable<string[]> {
     return this.wishlistsFacade.preferredWishlist$.pipe(
       switchMap(preferredWishlist => this.wishlistsFacade.wishlistItemsSkus$(preferredWishlist?.id))
     );
