@@ -163,7 +163,7 @@ When using Angular, avoid accessing or changing the DOM directly, as this may le
 
 If you need to manipulate the DOM, use the multiple DOM manipulation methods of the Angular Renderer2 API or the PWA [DomService](../../src/app/core/utils/dom/dom.service.ts) or other Angular techniques.
 
-## 	Component Splitting
+## Component Splitting
 
 Consider splitting one into multiple components when:
 
