@@ -98,6 +98,20 @@ The order template and wishlist selection modals have been reworked for a more c
 - The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
 - The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
 
+**Wishlist and order template performance optimization**
+
+With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
+As a result, the wishlist overview can now be displayed using a single list request.
+
+In addition, the `WishlistWidgetComponent` now displays the products of the preferred wishlist.
+If no preferred wishlist exists, the products of all wishlists are displayed instead.
+
+For the order template overview page, the order template details request is still necessary.
+However, these details are now loaded asynchronously and are no longer required for the initial display of the order template list.
+
+Each consumer only triggers the load of the details it actually needs.
+If you display order templates in custom components, use `OrderTemplatesFacade.orderTemplatesWithDetails$(count?)` to retrieve the list and lazily load the item details of the first `count` templates (or all templates if `count` is omitted).
+
 **Replace `ProductRatingStarComponent` with `NgbRating`**
 
 The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.

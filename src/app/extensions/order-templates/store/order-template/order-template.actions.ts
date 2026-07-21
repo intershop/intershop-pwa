@@ -98,6 +98,7 @@ export const selectOrderTemplate = createAction(
 export const orderTemplatesActions = createActionGroup({
   source: 'Order Templates',
   events: {
+    'Load Order Template Details': payload<{ orderTemplateId: string }>(),
     'Create Order Template from Line Items': payload<{ orderTemplate: OrderTemplateHeader; lineItems: LineItem[] }>(),
   },
 });
@@ -105,6 +106,8 @@ export const orderTemplatesActions = createActionGroup({
 export const orderTemplatesApiActions = createActionGroup({
   source: 'Order Templates API',
   events: {
+    'Load Order Template Details Success': payload<{ orderTemplate: OrderTemplate }>(),
+    'Load Order Template Details Fail': httpError<{}>(),
     'Create Order Template from Line Items Success': payload<{ orderTemplate: OrderTemplate }>(),
     'Create Order Template from Line Items Fail': httpError<{}>(),
   },

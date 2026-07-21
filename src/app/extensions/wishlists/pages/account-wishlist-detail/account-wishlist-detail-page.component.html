@@ -69,6 +69,7 @@
               [currentWishlist]="wishlist"
               [sku]="item.sku"
               [wishlistItemData]="item"
+              (moveClicked)="showMoveDialog($event)"
             />
           </div>
         }
@@ -87,6 +88,9 @@
     [wishlist]="wishlist"
     (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
   />
+  <ng-container ishProductContext [sku]="moveItem?.sku">
+    <ish-select-wishlist-modal #moveDialog addMoveProduct="move" (submitEmitter)="moveItemToOtherWishlist($event)" />
+  </ng-container>
 }
 
 <a routerLink="/account/wishlists">{{ 'account.wishlist.searchform.return.link' | translate }}</a>

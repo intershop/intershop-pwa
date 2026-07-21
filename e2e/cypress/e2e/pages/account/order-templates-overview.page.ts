@@ -13,10 +13,8 @@ export class OrderTemplatesOverviewPage {
     cy.get('[data-testing-id="order-template-dialog-submit"]').click();
   }
 
-  addOrderTemplateToCart(id: string) {
-    this.orderTemplatesArray
-      .find('a')
-      .contains(id)
+  addOrderTemplateToCart(name: string) {
+    cy.contains('[data-testing-id="order-template-list-title"]', name)
       .closest('[data-testing-id="order-template-list-item"]')
       .find('[data-testing-id="addToCartButton"]')
       .click();

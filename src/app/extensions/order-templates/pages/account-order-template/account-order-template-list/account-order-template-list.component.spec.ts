@@ -8,6 +8,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
@@ -57,6 +58,7 @@ describe('Account Order Template List Component', () => {
       declarations: [
         AccountOrderTemplateListComponent,
         MockComponent(ModalDialogComponent),
+        MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
       ],
@@ -100,5 +102,21 @@ describe('Account Order Template List Component', () => {
     component.delete('deleteId');
 
     verify(orderTemplatesFacade.deleteOrderTemplate('deleteId')).once();
+  });
+
+  it('should return parts for a given template', () => {
+    const template = orderTemplateDetails[0];
+
+    const parts = component.getParts(template);
+
+    expect(parts).toEqual([{ sku: '1234', quantity: 1 }]);
+  });
+
+  it('should return empty array for template without items', () => {
+    const template = orderTemplateDetails[1];
+
+    const parts = component.getParts(template);
+
+    expect(parts).toBeEmpty();
   });
 });

@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
-import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+
+const MAX_DISPLAYED_ORDER_TEMPLATES = 3;
 
 @Component({
   selector: 'ish-order-template-widget',
@@ -24,13 +24,10 @@ export class OrderTemplateWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.facade.orderTemplateLoading$;
-    this.orderTemplates$ = this.facade.orderTemplates$.pipe(
-      whenTruthy(),
-      map(orderTemplates => orderTemplates.slice(0, 3))
-    );
+    this.orderTemplates$ = this.facade.orderTemplatesWithDetails$(MAX_DISPLAYED_ORDER_TEMPLATES);
   }
 
-  getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+  getParts(orderTemplate: OrderTemplate): SkuQuantityType[] {
+    return orderTemplate.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
   }
 }

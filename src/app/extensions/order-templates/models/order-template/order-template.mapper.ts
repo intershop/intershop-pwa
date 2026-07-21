@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
+import { Link } from 'ish-core/models/link/link.model';
 
 import { OrderTemplateData } from './order-template.interface';
 import { OrderTemplate, OrderTemplateItem } from './order-template.model';
@@ -17,6 +18,7 @@ export class OrderTemplateMapper {
       return;
     }
   }
+
   fromData(orderTemplateData: OrderTemplateData, orderTemplateId: string): OrderTemplate {
     if (orderTemplateData) {
       let items: OrderTemplateItem[];
@@ -50,6 +52,28 @@ export class OrderTemplateMapper {
     }
   }
 
+  fromListData(orderTemplateLinks: Link[]): OrderTemplate[] {
+    if (!orderTemplateLinks) {
+      return [];
+    }
+    return orderTemplateLinks.map(orderTemplateLink => ({
+      id: orderTemplateLink.itemId,
+      title: orderTemplateLink.title,
+      itemsCount: AttributeHelper.getAttributeValueByAttributeName<number>(orderTemplateLink.attributes, 'itemsCount'),
+      creationDate: AttributeHelper.getAttributeValueByAttributeName<number>(
+        orderTemplateLink.attributes,
+        'creationDate'
+      ),
+    }));
+  }
+
+  /**
+   * extract ID from URI
+   */
+  fromDataToId(orderTemplateData: OrderTemplateData): string {
+    return orderTemplateData ? OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri) : undefined;
+  }
+
   fromUpdate(orderTemplate: OrderTemplate, id: string): OrderTemplate {
     if (orderTemplate && id) {
       return {
@@ -58,12 +82,5 @@ export class OrderTemplateMapper {
         creationDate: orderTemplate.creationDate,
       };
     }
-  }
-
-  /**
-   * extract ID from URI
-   */
-  fromDataToId(orderTemplateData: OrderTemplateData): string {
-    return orderTemplateData ? OrderTemplateMapper.parseIdFromURI(orderTemplateData.uri) : undefined;
   }
 }

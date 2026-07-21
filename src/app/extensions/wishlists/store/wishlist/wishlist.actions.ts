@@ -80,6 +80,7 @@ export const selectWishlist = createAction('[Wishlist Internal] Select Wishlist'
 export const wishlistActions = createActionGroup({
   source: 'Wishlist',
   events: {
+    'Load Wishlist Details': payload<{ wishlistId: string }>(),
     'Share Wishlist': payload<{ wishlistId: string; wishlistSharing: WishlistSharing }>(),
     'Unshare Wishlist': payload<{ wishlistId: string }>(),
     'Load Shared Wishlist': payload<{ wishlistId: string; owner: string; secureCode: string }>(),
@@ -89,6 +90,8 @@ export const wishlistActions = createActionGroup({
 export const wishlistApiActions = createActionGroup({
   source: 'Wishlist API',
   events: {
+    'Load Wishlist Details Success': payload<{ wishlist: Wishlist }>(),
+    'Load Wishlist Details Fail': httpError<{}>(),
     'Share Wishlist Success': payload<{ wishlistSharingResponse: WishlistSharingResponse }>(),
     'Share Wishlist Fail': httpError<{}>(),
     'Unshare Wishlist Success': payload<{ wishlistId: string }>(),

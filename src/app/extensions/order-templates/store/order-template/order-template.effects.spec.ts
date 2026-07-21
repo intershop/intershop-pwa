@@ -11,7 +11,7 @@ import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -130,6 +130,89 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadOrderTemplates$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadOrderTemplates$ when not authorized', () => {
+    beforeEach(() => {
+      when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(of(orderTemplates));
+    });
+
+    it('should not emit any actions when user is not authorized', () => {
+      const action = loadOrderTemplates();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('------');
+
+      expect(effects.loadOrderTemplates$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadOrderTemplateDetails$', () => {
+    const orderTemplateId = '.SKsEQAE4FIAAAFuNiUBWx0d';
+
+    beforeEach(() => {
+      when(orderTemplateServiceMock.getOrderTemplate(anyString())).thenReturn(of(orderTemplates[0]));
+    });
+
+    it('should call the OrderTemplateService for getOrderTemplate', done => {
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
+      actions$ = of(action);
+
+      effects.loadOrderTemplateDetails$.subscribe(() => {
+        verify(orderTemplateServiceMock.getOrderTemplate(orderTemplateId)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type LoadOrderTemplateDetailsSuccess', () => {
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
+      const completion = orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate: orderTemplates[0] });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrderTemplateDetails$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type LoadOrderTemplateDetailsFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(orderTemplateServiceMock.getOrderTemplate(anyString())).thenReturn(throwError(() => error));
+      const action = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId });
+      const completion = orderTemplatesApiActions.loadOrderTemplateDetailsFail({ error });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadOrderTemplateDetails$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadSelectedOrderTemplateDetails$', () => {
+    it('should load the details of the selected order template', () => {
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
+      const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-p-a', { p: personalizationStatusDetermined(), a: action });
+      const expected$ = cold('---c', { c: completion });
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
+    });
+
+    it('should load the details even when they are already loaded', () => {
+      store.dispatch(
+        orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate: { ...orderTemplates[0], items: [] } })
+      );
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
+      const completion = orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: orderTemplates[0].id });
+      actions$ = hot('-p-a', { p: personalizationStatusDetermined(), a: action });
+      const expected$ = cold('---c', { c: completion });
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
+    });
+
+    it('should wait for the personalization status before loading the details', () => {
+      const action = selectOrderTemplate({ id: orderTemplates[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('--');
+
+      expect(effects.loadSelectedOrderTemplateDetails$).toBeObservable(expected$);
     });
   });
 
@@ -278,6 +361,42 @@ describe('Order Template Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.createOrderTemplateFromLineItems$).toBeObservable(expected$);
+    });
+
+    it('should filter out free gift line items when creating order template from line items', done => {
+      const lineItemsWithFreeGift = [
+        { productSKU: 'sku1', quantity: { value: 65 }, isFreeGift: false } as LineItem,
+        { productSKU: 'sku2', quantity: { value: 10 }, isFreeGift: true } as LineItem,
+      ];
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems: lineItemsWithFreeGift,
+      });
+      actions$ = of(action);
+
+      effects.createOrderTemplateFromLineItems$.subscribe(() => {
+        verify(orderTemplateServiceMock.addProductToOrderTemplate(orderTemplateData[0].id, 'sku1', 65)).once();
+        verify(orderTemplateServiceMock.addProductToOrderTemplate(orderTemplateData[0].id, 'sku2', 10)).never();
+        done();
+      });
+    });
+
+    it('should add all non-free-gift line items to the order template', done => {
+      const multipleLineItems = [
+        { productSKU: 'sku1', quantity: { value: 5 } } as LineItem,
+        { productSKU: 'sku2', quantity: { value: 10 } } as LineItem,
+      ];
+      const action = orderTemplatesActions.createOrderTemplateFromLineItems({
+        orderTemplate: orderTemplateHeader,
+        lineItems: multipleLineItems,
+      });
+      actions$ = of(action);
+
+      effects.createOrderTemplateFromLineItems$.subscribe(() => {
+        verify(orderTemplateServiceMock.addProductToOrderTemplate(orderTemplateData[0].id, 'sku1', 5)).once();
+        verify(orderTemplateServiceMock.addProductToOrderTemplate(orderTemplateData[0].id, 'sku2', 10)).once();
+        done();
+      });
     });
   });
 
@@ -631,7 +750,8 @@ describe('Order Template Effects', () => {
     beforeEach(() => {
       when(orderTemplateServiceMock.getOrderTemplates()).thenReturn(of(orderTemplates));
     });
-    it('should call OrderTemplatesService after login action was dispatched', done => {
+    it('should call OrderTemplatesService after login once the personalization status is determined', done => {
+      actions$ = of(personalizationStatusDetermined());
       effects.loadOrderTemplatesAfterLogin$.subscribe(action => {
         expect(action.type).toEqual(loadOrderTemplates.type);
         done();

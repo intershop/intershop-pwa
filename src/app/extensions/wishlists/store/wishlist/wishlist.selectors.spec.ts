@@ -352,13 +352,17 @@ describe('Wishlist Selectors', () => {
     });
   });
 
-  describe('Get All Wishlists Items SKUs', () => {
+  describe('getAllWishlistsItemsSkus', () => {
     beforeEach(() => {
       store$.dispatch(loadWishlistsSuccess({ wishlists }));
     });
 
-    it('should return correct amount of unique product SKUs', () => {
-      expect(getAllWishlistsItemsSkus(store$.state).sort()).toEqual(['1929544', '1929545', '4729529']);
+    it('should return the unique SKUs of all wishlist items', () => {
+      expect(getAllWishlistsItemsSkus(store$.state)).toEqual(['1929545', '1929544', '4729529']);
+    });
+
+    it('should deduplicate SKUs that appear in multiple wishlists', () => {
+      expect(getAllWishlistsItemsSkus(store$.state).filter(sku => sku === '1929544')).toHaveLength(1);
     });
   });
 });

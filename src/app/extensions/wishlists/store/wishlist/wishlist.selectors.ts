@@ -37,7 +37,7 @@ export const getPreferredWishlist = createSelector(getAllWishlists, entities => 
 export const getAllWishlistsItemsSkus = createSelectorFactory<object, string[]>(projector =>
   resultMemoize(projector, isArrayEqual)
 )(getAllWishlists, (wishlists: Wishlist[]): string[] =>
-  uniq(wishlists.map(wishlist => wishlist.items.map(items => items.sku)).flat())
+  uniq(wishlists.map(wishlist => wishlist.items?.map(items => items.sku) ?? []).flat())
 );
 
 export const getSharedWishlist = createSelector(getWishlistState, (state: WishlistState) => state.sharedWishlist);

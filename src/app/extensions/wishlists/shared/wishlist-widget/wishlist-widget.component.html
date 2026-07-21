@@ -1,14 +1,20 @@
 <div class="section">
-  <h2 class="h3">{{ 'account.wishlists.widget.heading' | translate }}</h2>
-  @if (allWishlistsItemsSkus$ | async; as wishlistsItemsSkus) {
-    @if (wishlistsItemsSkus.length > 0) {
+  <h2 class="h3">
+    @if (preferredWishlist$ | async; as preferredWishlist) {
+      {{ 'account.wishlists.widget.single.heading' | translate: { '0': preferredWishlist.title } }}
+    } @else {
+      {{ 'account.wishlists.widget.all.heading' | translate }}
+    }
+  </h2>
+  @if (wishlistItemsSkus$ | async; as wishlistItemsSkus) {
+    @if (wishlistItemsSkus.length > 0) {
       <ng-container class="section">
         <div class="product-list" data-testing-id="wishlistProductsList">
           <ish-products-list
             listItemStyle="tile"
             listStyle="carousel"
             [listItemConfiguration]="tileConfiguration"
-            [productSKUs]="wishlistsItemsSkus"
+            [productSKUs]="wishlistItemsSkus"
           />
         </div>
       </ng-container>

@@ -16,9 +16,7 @@ type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'titl
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderTemplateListComponent {
-  /**
-   * The list of order templates of the customer.
-   */
+  /** The list of order templates of the customer. */
   @Input() orderTemplates: OrderTemplate[];
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
@@ -41,6 +39,6 @@ export class AccountOrderTemplateListComponent {
   }
 
   getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+    return template.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
   }
 }

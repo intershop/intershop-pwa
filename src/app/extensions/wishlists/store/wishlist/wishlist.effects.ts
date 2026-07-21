@@ -6,14 +6,15 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { debounceTime, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { concatMap, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { businessError } from 'ish-core/store/core/error';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
+  delayUntil,
   distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
@@ -62,6 +63,15 @@ export class WishlistEffects {
     @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
 
+  loadWishlistsAfterLogin$ = createEffect(() =>
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
+      map(() => loadWishlists())
+    )
+  );
+
   loadWishlists$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadWishlists),
@@ -71,6 +81,19 @@ export class WishlistEffects {
         this.wishlistService.getWishlists().pipe(
           map(wishlists => loadWishlistsSuccess({ wishlists })),
           mapErrorToAction(loadWishlistsFail)
+        )
+      )
+    )
+  );
+
+  loadWishlistDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(wishlistActions.loadWishlistDetails),
+      mapToPayloadProperty('wishlistId'),
+      mergeMap(wishlistId =>
+        this.wishlistService.getWishlist(wishlistId).pipe(
+          map(wishlist => wishlistApiActions.loadWishlistDetailsSuccess({ wishlist })),
+          mapErrorToAction(wishlistApiActions.loadWishlistDetailsFail)
         )
       )
     )
@@ -144,7 +167,7 @@ export class WishlistEffects {
       ofType(updateWishlistSuccess, createWishlistSuccess),
       mapToPayloadProperty('wishlist'),
       filter(wishlist => wishlist?.preferred),
-      map(() => loadWishlists())
+      concatMap(wishlist => [loadWishlists(), wishlistActions.loadWishlistDetails({ wishlistId: wishlist.id })])
     )
   );
 
@@ -226,14 +249,15 @@ export class WishlistEffects {
   );
 
   /**
-   * Trigger LoadWishlists action after LoginUserSuccess.
+   * Loads the details of the selected wishlist, e.g. when the detail page is opened directly.
    */
-  loadWishlistsAfterLogin$ = createEffect(() =>
-    this.store.pipe(
-      select(getUserAuthorized),
+  loadSelectedWishlistDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(selectWishlist),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
+      mapToPayloadProperty('wishlistId'),
       whenTruthy(),
-      debounceTime(1000),
-      map(() => loadWishlists())
+      map(wishlistId => wishlistActions.loadWishlistDetails({ wishlistId }))
     )
   );
 

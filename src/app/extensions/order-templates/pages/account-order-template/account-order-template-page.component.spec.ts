@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -18,6 +19,7 @@ describe('Account Order Template Page Component', () => {
 
   beforeEach(async () => {
     const orderTemplatesFacade = mock(OrderTemplatesFacade);
+    when(orderTemplatesFacade.orderTemplatesWithDetails$()).thenReturn(of([]));
 
     await TestBed.configureTestingModule({
       imports: [TranslatePipe],
