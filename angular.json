@@ -107,7 +107,7 @@
             "outputPath": "dist/esbuild",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
