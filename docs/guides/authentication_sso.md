@@ -20,7 +20,7 @@ After setting up the ICM side with the identity provider, an implementation for 
 
 The Intershop PWA contains a working example implementation for SSO with [Auth0](https://auth0.com/) that can be used for B2B and B2C.
 
-For development purposes the configuration can be added to the Angular CLI environment files:
+For development purposes the configuration can be added to the Angular CLI `environment.ts` files:
 
 ```typescript
   identityProvider: 'Auth0',
@@ -36,6 +36,8 @@ For development purposes the configuration can be added to the Angular CLI envir
 For production, this configuration should be provided to the SSR process via environment variables (see [Building and Running Server-Side Rendering][ssr-startup]).
 The usage of identity providers can also be set in the multi-channel configuration (see [Building and Running nginx Docker Image][nginx-startup]).
 
+Example for the Auth0 identity provider configuration via `docker-compose.yaml` file:
+
 ```yaml
 pwa:
   environment:
@@ -45,6 +47,19 @@ pwa:
         type: auth0
         domain: some-domain.auth0.com
         clientID: ASDF12345
+```
+
+Example for the Auth0 identity provider configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+
+```yaml
+environment:
+  - name: IDENTITY_PROVIDER
+    value: 'Auth0'
+  - name: IDENTITY_PROVIDERS
+    value: |
+      {
+        "Auth0": {"type": "auth0", "domain": "some-domain.auth0.com", "clientID": "ASDF12345"}
+      }
 ```
 
 ## SSO with Auth0 for PWA
@@ -72,6 +87,23 @@ Use the configuration fields `domain` and `clientID` for configuring the provide
 | SSO                     | /forgotPassword/updatePassword | Redirect to SSO provider    |
 
 ## Further References
+
+Example for an Auth0 identity provider configuration via [ICM Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/icm-as):
+
+```yaml
+icm-as:
+  environment:
+    ISH_ENV_IDENTITYPROVIDER: |
+      intershop.identityProvider.remote = supported,
+      intershop.authentication.identityprovider.localICM.type=local,
+      intershop.authentication.identityprovider.auth0.type=oidc,
+      intershop.authentication.identityprovider.auth0.name=Auth0 SSO ICM,
+      intershop.authentication.identityprovider.auth0.configuration={"issuer": "https://some-domain.auth0.com"",""client_id": "ASDF12345"",""client_secret": "53CR37"},
+      intershop.authentication.inSPIRED-inTRONICS-Anonymous.externalname=inTRONICS,
+      intershop.authentication.inSPIRED-inTRONICS-Anonymous.identityproviders=auth0"," localICM,
+      intershop.authentication.inSPIRED-inTRONICS_Business-Anonymous.externalname=inTRONICS-b2b,
+      intershop.authentication.inSPIRED-inTRONICS_Business-Anonymous.identityproviders=auth0"," localICM
+```
 
 - PWA
   - [Concept - Authentication](../concepts/authentication.md)
