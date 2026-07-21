@@ -22,7 +22,7 @@
                   data-testing-id="move-wishlist"
                   type="button"
                   [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
-                  (click)="moveDialog.show()"
+                  (click)="emitMoveClicked()"
                 >
                   <i class="bi bi-arrows-move"></i>
                 </button>
@@ -56,10 +56,4 @@
       </div>
     </div>
   </div>
-
-  <ish-select-wishlist-modal
-    #moveDialog
-    addMoveProduct="move"
-    (submitEmitter)="moveItemToOtherWishlist(wishlistItemData.sku, $event)"
-  />
 </ng-container>

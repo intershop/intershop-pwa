@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { instance, mock } from 'ts-mockito';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 
@@ -13,15 +14,16 @@ describe('Account Wishlist Detail Page Component', () => {
   let component: AccountWishlistDetailPageComponent;
   let fixture: ComponentFixture<AccountWishlistDetailPageComponent>;
   let element: HTMLElement;
+  let wishlistsFacade: WishlistsFacade;
 
   beforeEach(async () => {
+    wishlistsFacade = mock(WishlistsFacade);
+    when(wishlistsFacade.currentWishlist$).thenReturn(of(undefined));
+
     await TestBed.configureTestingModule({
       imports: [TranslatePipe],
       declarations: [AccountWishlistDetailPageComponent, MockComponent(ErrorMessageComponent)],
-      providers: [
-        { provide: WishlistsFacade, useFactory: () => instance(mock(WishlistsFacade)) },
-        provideTranslateService(),
-      ],
+      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistsFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 
