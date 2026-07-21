@@ -1,4 +1,5 @@
 <div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
+  @let inputSearchTerm = inputSearchTerms$ | async;
   <input
     #searchInput
     autocomplete="off"
@@ -7,7 +8,7 @@
     type="search"
     [attr.aria-label]="'search.searchbox.label' | translate"
     [placeholder]="configuration?.placeholder || ''"
-    [value]="(inputSearchTerms$ | async) ?? ''"
+    [value]="inputSearchTerm ?? ''"
     (focus)="handleFocus(true)"
     (input)="handleInput($event.target)"
     (keydown.enter)="submitSearch(searchInput.value)"
@@ -78,15 +79,17 @@
         </div>
       </div>
     } @else {
-      @if ((hasMinimumCharCount$ | async) || (searchedTerms$ | async)) {
+      @let hasMinCharCount = hasMinimumCharCount$ | async;
+      @let searchedTerms = searchedTerms$ | async;
+      @if (hasMinCharCount || searchedTerms) {
         <div aria-live="polite" class="search-suggest-container">
-          @if (hasMinimumCharCount$ | async) {
+          @if (hasMinCharCount) {
             <div class="col-12">
               <div class="d-flex justify-content-start headline">{{ 'suggest.no_results.headline' | translate }}</div>
               <p>{{ 'suggest.no_results.text' | translate }}</p>
             </div>
           }
-          @if (searchedTerms$ | async) {
+          @if (searchedTerms) {
             <div class="col-12">
               <ish-suggest-search-terms
                 [inputTerms$]="inputSearchTerms$"
@@ -117,7 +120,7 @@
 
   <div class="buttons">
     <!-- Clear input button -->
-    @if (inputSearchTerms$ | async) {
+    @if (inputSearchTerm) {
       <button
         class="btn btn-reset"
         name="reset"

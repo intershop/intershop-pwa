@@ -1,8 +1,9 @@
 @if ((visible$ | async) && (editMode$ | async); as editMode) {
   <div class="section" data-testing-id="basket-custom-fields">
+    @let customFields = customFields$ | async;
     <h2 class="h3">{{ 'shopping_cart.custom_fields.heading' | translate }}</h2>
     @if (collapsed) {
-      <ish-custom-fields-view [fields]="customFields$ | async" />
+      <ish-custom-fields-view [fields]="customFields" />
     }
     <button
       aria-controls="basket-custom-fields-input"
@@ -22,7 +23,7 @@
     </button>
     <div id="basket-custom-fields-input" [ngbCollapse]="collapsed">
       <form [formGroup]="form" (ngSubmit)="submit()">
-        <ish-custom-fields-formly [fields]="customFields$ | async" [form]="form" />
+        <ish-custom-fields-formly [fields]="customFields" [form]="form" />
         <div class="row">
           <div class="col-12 offset-md-4 col-md-8">
             <button class="btn btn-primary" type="submit">

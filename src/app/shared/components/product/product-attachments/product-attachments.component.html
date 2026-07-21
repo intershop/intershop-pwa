@@ -1,17 +1,16 @@
-@if (attachments$ | async; as attachments) {
-  @if (attachments?.length) {
-    <div class="product-attachments">
-      @for (attachment of attachments; track attachment.key) {
-        <div class="product-attachment">
-          <strong>{{ attachment.name }}</strong>
-          <a class="download-link" rel="enclosure" [href]="attachment.url">{{
-            'product.attachments.download.link' | translate
-          }}</a>
-          @if (attachment.description) {
-            <p class="product-attachment-description">{{ attachment.description }}</p>
-          }
-        </div>
-      }
-    </div>
-  }
+@let attachments = attachments$ | async;
+@if (attachments?.length) {
+  <div class="product-attachments">
+    @for (attachment of attachments; track attachment.key) {
+      <div class="product-attachment">
+        <strong>{{ attachment.name }}</strong>
+        <a class="download-link" rel="enclosure" [href]="attachment.url">{{
+          'product.attachments.download.link' | translate
+        }}</a>
+        @if (attachment.description) {
+          <p class="product-attachment-description">{{ attachment.description }}</p>
+        }
+      </div>
+    }
+  </div>
 }

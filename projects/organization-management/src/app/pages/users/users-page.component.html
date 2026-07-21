@@ -6,7 +6,8 @@
     <ish-budget-info [suffix]="'account.organization.budget_price_type.admin.info'" />
   </div>
   <div class="ms-auto py-2">
-    @if (!!(error$ | async) === false) {
+    @let error = error$ | async;
+    @if (!!error === false) {
       <a class="btn btn-secondary" data-testing-id="add-user-link" routerLink="create">{{
         'account.user.list.link.add_user' | translate
       }}</a>
@@ -14,7 +15,7 @@
   </div>
 </div>
 
-<ish-error-message [error]="error$ | async" />
+<ish-error-message [error]="error" />
 
 <div class="section">
   <div class="list-body" data-testing-id="user-list">

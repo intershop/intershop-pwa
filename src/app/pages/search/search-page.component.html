@@ -1,14 +1,15 @@
 @if (searchTerm$ | async; as searchTerm) {
+  @let searchLoading = searchLoading$ | async;
   <!-- search result with products -->
   @if ((numberOfItems$ | async) || (filterParams$ | async)) {
     <ish-search-result [deviceType]="deviceType$ | async" [searchTerm]="searchTerm" />
   } @else {
-    @if ((searchLoading$ | async) === false) {
+    @if (searchLoading === false) {
       <ish-search-no-result [searchTerm]="searchTerm" />
     }
   }
   <!-- empty search result -->
-  @if (searchLoading$ | async) {
+  @if (searchLoading) {
     <ish-loading />
   }
 }

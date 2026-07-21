@@ -4,10 +4,12 @@
   </h1>
 
   <div class="row">
+    @let basketError = basketError$ | async;
+    @let basket = basket$ | async;
     <!-- Messages -->
     <div class="col-md-12">
-      @if (basketError$ | async; as error) {
-        <ish-basket-error-message [error]="error" />
+      @if (basketError) {
+        <ish-basket-error-message [error]="basketError" />
       }
       <ish-basket-validation-results />
     </div>
@@ -17,7 +19,7 @@
         <div class="section">
           @if (shippingMethods.length) {
             <div class="shipping-methods">
-              @if ((basketError$ | async) === undefined && nextDisabled) {
+              @if (basketError === undefined && nextDisabled) {
                 <div class="alert alert-danger" role="alert">
                   {{ 'checkout.shipping_method.no_Selection.error' | translate }}
                 </div>
@@ -31,18 +33,18 @@
           }
         </div>
         @if (isDesiredDeliveryDate$ | async) {
-          <ish-basket-desired-delivery-date [basket]="basket$ | async" />
+          <ish-basket-desired-delivery-date [basket]="basket" />
         }
         @if (isBusinessCustomer$ | async) {
-          <ish-basket-order-reference [basket]="basket$ | async" />
+          <ish-basket-order-reference [basket]="basket" />
         }
         @if ('shipping.messageToMerchant' | ishServerSetting) {
-          <ish-basket-merchant-message [basket]="basket$ | async" />
+          <ish-basket-merchant-message [basket]="basket" />
         }
       </div>
     }
     <!-- basket summary -->
-    @if (basket$ | async; as basket) {
+    @if (basket) {
       <div class="col-md-12 col-lg-4 order-summary">
         <h2>{{ 'checkout.order_details.heading' | translate }}</h2>
         <ish-basket-address-summary [basket]="basket" />

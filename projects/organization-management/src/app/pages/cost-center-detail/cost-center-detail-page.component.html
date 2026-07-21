@@ -1,5 +1,6 @@
 @if (costCenter$ | async; as costCenter) {
   <div>
+    @let isEditable = isEditable$ | async;
     <h1>{{ costCenter.name }}</h1>
 
     <ish-error-message [error]="costCentersError$ | async" />
@@ -35,7 +36,7 @@
         </div>
       </div>
 
-      @if (isEditable$ | async) {
+      @if (isEditable) {
         <div class="col-2 col-lg-4 mt-2">
           <a
             class="btn-tool"
@@ -60,14 +61,14 @@
 
     <h2 class="h3">
       {{ 'account.costcenter.details.buyers.list.title' | translate }}
-      @if (isEditable$ | async) {
+      @if (isEditable) {
         <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers" routerLink="buyers">{{
           'account.costcenter.details.buyers.action.add' | translate
         }}</a>
       }
     </h2>
 
-    <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable$ | async" />
+    <ish-cost-center-users-list [costCenter]="costCenter" [isEditable]="isEditable" />
   </div>
 }
 
