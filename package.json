@@ -53,7 +53,7 @@
     "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
     "serve": "node dist/server/main.js",
     "start": "npm-run-all build serve",
-    "start:esbuild": "ng run intershop-pwa:serve-esbuild",
+    "start:esbuild": "ng serve",
     "start:ssr:esbuild": "node dist/esbuild/server/server.mjs",
     "dev:ssr": "ng run intershop-pwa:serve-ssr",
     "xliff": "node scripts/convert-to-xliff.js",
