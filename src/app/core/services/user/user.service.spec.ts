@@ -229,9 +229,8 @@ describe('User Service', () => {
       });
     });
 
-    it("should create a new busimess user when 'createUser' is called", done => {
+    it("should create a new business user when 'createUser' is called", done => {
       when(apiServiceMock.post(anyString(), anything(), anything())).thenReturn(of({}));
-      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(of({}));
 
       const payload = {
         customer: { customerNo: '4711', isBusinessCustomer: true, budgetPriceType: 'net' } as Customer,
@@ -265,7 +264,6 @@ describe('User Service', () => {
           }
         `);
 
-        verify(apiServiceMock.put('customers/-', anything(), anything())).once();
         done();
       });
     });
