@@ -18,7 +18,7 @@ This guide explains how to configure the PWA to serve files from the `/.well-kno
 
 ## Apple App Site Association
 
-> The AASA (short for apple-app-site-association) is a file that lives on your website and associates your website domain with your native app (see [Apple App Site Association (AASA)](https://www.grovs.io/glossary/apple-app-site-association)).
+The AASA (short for apple-app-site-association) is a file that lives on your website and associates your website domain with your native app.
 
 A detailed guide on how to create the `apple-app-site-association` file can be found at [Apple Developer: Supporting Associated Domains](https://developer.apple.com/documentation/xcode/supporting-associated-domains).
 

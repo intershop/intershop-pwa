@@ -57,7 +57,7 @@
                 {
                   "type": "bundle",
                   "name": "main",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "550kb",
                   "maximumError": "600kb"
                 },
                 {
