@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
@@ -21,9 +23,20 @@ export class UserProfileFormComponent implements OnInit {
   fields: FormlyFieldConfig[];
   model: Partial<B2bUser>;
 
+  private loginType: string;
+  private destroyRef = inject(DestroyRef);
+
+  constructor(private appFacade: AppFacade) {}
+
   ngOnInit() {
     this.model = this.getModel(this.user);
-    this.fields = this.getFields();
+    this.appFacade
+      .serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(loginType => {
+        this.loginType = loginType;
+        this.fields = this.getFields();
+      });
   }
 
   private getModel(user: B2bUser) {
@@ -47,6 +60,26 @@ export class UserProfileFormComponent implements OnInit {
           {
             type: '#lastName',
           },
+          this.loginType !== 'email'
+            ? {
+                key: 'login',
+                type: 'ish-text-input-field',
+                props: {
+                  postWrappers: [{ wrapper: 'description', index: -1 }],
+                  type: 'text',
+                  label: 'account.register.username.label',
+                  required: true,
+                  customDescription: {
+                    key: 'account.register.username.extrainfo.message',
+                  },
+                },
+                validation: {
+                  messages: {
+                    required: 'account.login.username.error.required',
+                  },
+                },
+              }
+            : {},
           !this.user
             ? {
                 key: 'email',

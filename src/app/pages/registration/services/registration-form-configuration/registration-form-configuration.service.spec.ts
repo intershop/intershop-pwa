@@ -24,6 +24,9 @@ describe('Registration Form Configuration Service', () => {
     accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
     when(appFacade.serverSetting$(anyString())).thenReturn(of(true));
+    when(
+      appFacade.serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+    ).thenReturn(of('email'));
     fieldLibrary = mock(FieldLibrary);
     when(fieldLibrary.getConfigurationGroup('companyInfo')).thenReturn([
       {
@@ -70,7 +73,12 @@ describe('Registration Form Configuration Service', () => {
   });
 
   describe('with sso', () => {
-    const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: true, userId: 'uid' };
+    const registrationConfig: RegistrationConfigType = {
+      businessCustomer: true,
+      sso: true,
+      userId: 'uid',
+      loginType: 'email',
+    };
 
     it('should return right fields when calling getRegistrationConfig', () => {
       const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
@@ -102,7 +110,7 @@ describe('Registration Form Configuration Service', () => {
 
   describe('without sso', () => {
     describe('business customer', () => {
-      const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false };
+      const registrationConfig: RegistrationConfigType = { businessCustomer: true, sso: false, loginType: 'email' };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
         const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
@@ -138,7 +146,7 @@ describe('Registration Form Configuration Service', () => {
       });
     });
     describe('non-business customer', () => {
-      const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false };
+      const registrationConfig: RegistrationConfigType = { businessCustomer: false, sso: false, loginType: 'email' };
 
       it('should return the right fields when calling getRegistrationConfig', () => {
         const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
@@ -165,6 +173,84 @@ describe('Registration Form Configuration Service', () => {
         `);
       });
     });
+
+    describe('loginType username', () => {
+      describe('business customer', () => {
+        const registrationConfig: RegistrationConfigType = {
+          businessCustomer: true,
+          sso: false,
+          loginType: 'username',
+        };
+
+        it('should return the right fields with additional userName field', () => {
+          const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
+          expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
+            [
+              [
+                "userName",
+                "login",
+                "loginConfirmation",
+                "password",
+                "passwordConfirmation",
+              ],
+              [
+                "companyName1",
+                "companyName2",
+                "taxationID",
+              ],
+              [
+                "budgetPriceType",
+              ],
+              [
+                "title",
+                "firstName",
+                "lastName",
+                "phoneHome",
+              ],
+              [],
+              [
+                "termsAndConditions",
+                "newsletterSubscription",
+              ],
+            ]
+          `);
+        });
+      });
+
+      describe('non-business customer', () => {
+        const registrationConfig: RegistrationConfigType = {
+          businessCustomer: false,
+          sso: false,
+          loginType: 'username',
+        };
+
+        it('should return the right fields with additional userName field', () => {
+          const fieldConfig = registrationConfigurationService.getFields(registrationConfig);
+          expect(extractKeys(fieldConfig)).toMatchInlineSnapshot(`
+            [
+              [
+                "userName",
+                "login",
+                "loginConfirmation",
+                "password",
+                "passwordConfirmation",
+              ],
+              [
+                "title",
+                "firstName",
+                "lastName",
+                "phoneHome",
+              ],
+              [],
+              [
+                "termsAndConditions",
+                "newsletterSubscription",
+              ],
+            ]
+          `);
+        });
+      });
+    });
   });
 
   describe('extractConfig', () => {
@@ -178,6 +264,7 @@ describe('Registration Form Configuration Service', () => {
         {
           "businessCustomer": false,
           "cancelUrl": undefined,
+          "loginType": "email",
           "sso": false,
           "userId": undefined,
         }
@@ -195,6 +282,7 @@ describe('Registration Form Configuration Service', () => {
         {
           "businessCustomer": true,
           "cancelUrl": "/checkout",
+          "loginType": "email",
           "sso": true,
           "userId": "uid",
         }

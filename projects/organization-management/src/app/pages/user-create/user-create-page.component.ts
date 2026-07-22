@@ -51,6 +51,7 @@ export class UserCreatePageComponent implements OnInit {
         firstName: formValue.profile.firstName,
         lastName: formValue.profile.lastName,
         email: formValue.profile.email,
+        login: formValue.profile.login,
         active: formValue.profile.active,
         phoneHome: formValue.profile.phoneHome,
         birthday: formValue.profile.birthday === '' ? undefined : formValue.birthday,

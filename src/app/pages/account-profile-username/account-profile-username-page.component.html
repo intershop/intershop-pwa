@@ -1,0 +1,9 @@
+<ish-account-profile-username
+  [currentUser]="currentUser$ | async"
+  [error]="userError$ | async"
+  (updateUserName)="updateUserName($event)"
+/>
+
+@if (userLoading$ | async) {
+  <ish-loading />
+}

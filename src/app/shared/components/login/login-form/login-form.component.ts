@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { InjectSingle } from 'ish-core/utils/injection';
 
 /**
  * The Login Form Page Container displays a login form using the {@link LoginFormComponent} and signs the user in
@@ -38,15 +38,23 @@ export class LoginFormComponent implements OnInit {
   form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[];
 
+  private loginType: string;
+  private destroyRef = inject(DestroyRef);
+
   constructor(
-    @Inject(USER_REGISTRATION_LOGIN_TYPE) private loginType: InjectSingle<typeof USER_REGISTRATION_LOGIN_TYPE>,
+    private appFacade: AppFacade,
     private accountFacade: AccountFacade
   ) {}
 
   ngOnInit() {
+    this.appFacade
+      .serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(loginType => {
+        this.loginType = loginType;
+        this.fields = this.getFields();
+      });
     this.loginError$ = this.accountFacade.userError$;
-
-    this.fields = this.getFields();
   }
 
   private getFields() {

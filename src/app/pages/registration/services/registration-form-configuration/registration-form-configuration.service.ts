@@ -25,12 +25,14 @@ export interface RegistrationConfigType {
   sso?: boolean;
   userId?: string;
   cancelUrl?: string;
+  loginType: string;
 }
 
 @Injectable()
 export class RegistrationFormConfigurationService {
   private isApprovalServiceRunning = true;
   private isCaptchaRequired = true;
+  private loginType = 'email';
 
   constructor(
     private accountFacade: AccountFacade,
@@ -44,11 +46,13 @@ export class RegistrationFormConfigurationService {
       this.appFacade.serverSetting$<boolean>('services.OrderApprovalServiceDefinition.runnable'),
       this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
       this.appFacade.serverSetting$<boolean>('captcha.register'),
+      this.appFacade.serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType'),
     ])
       .pipe(takeUntilDestroyed())
-      .subscribe(([isApprovalServiceRunning, isCaptchaV2, isCaptchaTopicEnabled]) => {
+      .subscribe(([isApprovalServiceRunning, isCaptchaV2, isCaptchaTopicEnabled, loginType]) => {
         this.isApprovalServiceRunning = isApprovalServiceRunning;
         this.isCaptchaRequired = isCaptchaV2 && isCaptchaTopicEnabled;
+        this.loginType = loginType;
       });
   }
 
@@ -58,6 +62,7 @@ export class RegistrationFormConfigurationService {
       userId: route.queryParams.userid,
       businessCustomer: this.featureToggle.enabled('businessCustomerRegistration'),
       cancelUrl: route.queryParams.cancelUrl,
+      loginType: this.loginType,
     };
   }
 
@@ -77,7 +82,7 @@ export class RegistrationFormConfigurationService {
           subheading: 'account.register.message',
         },
       },
-      ...(!registrationConfig.sso ? this.getCredentialsConfig() : []),
+      ...(!registrationConfig.sso ? this.getCredentialsConfig(registrationConfig.loginType) : []),
       ...(registrationConfig.businessCustomer
         ? [...this.getCompanyInfoConfig(), ...this.getCustomerPreferencesConfig()]
         : []),
@@ -197,10 +202,13 @@ export class RegistrationFormConfigurationService {
         email: formValue.login,
         phoneHome: formValue.phoneHome,
         birthday: formValue.birthday === '' ? undefined : formValue.birthday,
+        ...(registrationConfig.loginType === 'username'
+          ? { login: formValue.userName, password: formValue.password }
+          : {}),
       };
 
       const credentials: Credentials = {
-        login: formValue.login,
+        login: registrationConfig.loginType === 'email' ? formValue.login : formValue.userName,
         password: formValue.password,
       };
 
@@ -260,15 +268,17 @@ export class RegistrationFormConfigurationService {
     );
   }
 
-  private getCredentialsConfig(): FormlyFieldConfig[] {
+  private getCredentialsConfig(loginType: string): FormlyFieldConfig[] {
+    const prefix = `account.register.${loginType === 'username' ? 'username_email_password' : 'email_password'}`;
+
     return [
       {
         type: 'ish-registration-heading-field',
 
         props: {
           headingSize: 'h2',
-          heading: 'account.register.email_password.heading',
-          subheading: 'account.register.email_password.message',
+          heading: `${prefix}.heading`,
+          subheading: `${prefix}.message`,
           showRequiredInfo: true,
         },
       },
@@ -277,7 +287,7 @@ export class RegistrationFormConfigurationService {
         props: {
           fieldsetClass: 'row',
           childClass: 'col-md-10 col-lg-8 col-xl-6',
-          legend: 'account.register.email_password.heading',
+          legend: `${prefix}.heading`,
         },
         validators: {
           validation: [
@@ -286,6 +296,28 @@ export class RegistrationFormConfigurationService {
           ],
         },
         fieldGroup: [
+          ...(loginType === 'username'
+            ? [
+                {
+                  key: 'userName',
+                  type: 'ish-text-input-field',
+                  props: {
+                    postWrappers: [{ wrapper: 'description', index: -1 }],
+                    type: 'text',
+                    label: 'account.register.username.label',
+                    required: true,
+                    customDescription: {
+                      key: 'account.register.username.extrainfo.message',
+                    },
+                  },
+                  validation: {
+                    messages: {
+                      required: 'account.login.username.error.required',
+                    },
+                  },
+                },
+              ]
+            : []),
           {
             key: 'login',
             type: 'ish-email-field',

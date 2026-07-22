@@ -35,12 +35,12 @@ import { whenTruthy } from 'ish-core/utils/operators';
 // request data type for create user
 interface CreatePrivateCustomerType extends CustomerData {
   address: Address;
-  credentials: Credentials;
+  credentials?: Credentials;
 }
 
 interface CreateBusinessCustomerType extends Customer {
   address: Address;
-  credentials: Credentials;
+  credentials?: Credentials;
   user: User;
   type: CustomerType;
 }

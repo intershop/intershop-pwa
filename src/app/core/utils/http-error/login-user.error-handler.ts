@@ -1,18 +1,26 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { USER_REGISTRATION_LOGIN_TYPE } from 'ish-core/configurations/injection-keys';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { SpecialHttpErrorHandler } from 'ish-core/interceptors/icm-error-mapper.interceptor';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { InjectSingle } from 'ish-core/utils/injection';
 
 /* eslint-disable @typescript-eslint/no-restricted-types */
 
 @Injectable()
 export class LoginUserErrorHandler implements SpecialHttpErrorHandler {
-  constructor(
-    @Inject(USER_REGISTRATION_LOGIN_TYPE) public loginType: InjectSingle<typeof USER_REGISTRATION_LOGIN_TYPE>
-  ) {}
+  private loginType: string;
+  private destroyRef = inject(DestroyRef);
+
+  constructor(appFacade: AppFacade) {
+    appFacade
+      .serverSetting$<string>('preferences.UserCredentialPreferences.UserRegistrationLoginType')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(loginType => {
+        this.loginType = loginType;
+      });
+  }
 
   test(error: HttpErrorResponse): boolean {
     return (error.status === 401 || error.status === 403) && error.url.includes('token');
