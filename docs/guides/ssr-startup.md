@@ -22,12 +22,12 @@ kb_sync_latest_only
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
 Afterward, you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
-All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
+The current esbuild target builds the B2B theme.
+Builds for multiple or customized themes temporarily remain available through the explicitly named Webpack backup commands described below.
 
 ## Building Multiple Themes
 
-The `package.json` property `config.active-themes` determines which themes should be built when running `npm run build:multi`.
+The `package.json` property `config.active-themes` determines which themes should be built when running `npm run build:multi:webpack`.
 This will build server and client bundles for all active themes and supply them in the `dist` folder.
 The SSR process for each theme can be run individually using the generated scripts `dist/<theme>/run-standalone`.
 
@@ -54,36 +54,36 @@ If the format is _switch_, the property is switched on by supplying `on`, `1`, `
 All parameters are **case-sensitive**.
 Make sure to use them as written in the table below.
 
-|                     | parameter             | format               | comment                                                                                                                                                           |
-| ------------------- | --------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **SSR Specific**    | PORT                  | number               | Port for running the application                                                                                                                                  |
-|                     | CONCURRENCY_SSR       | number \| max        | Concurrency for SSR instances per theme (default: 2)                                                                                                              |
-|                     | CACHE_ICM_CALLS       | recommended \| JSON  | Enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)                                                                         |
-|                     | ALLOWED_HOSTS         | comma-separated list | Additional hostnames the SSR server accepts besides `localhost` (which is always allowed). Set to your public hostname(s), e.g., `shop.example.com,*.example.com` |
-| **General**         | ICM_BASE_URL          | string               | Sets the base URL for ICM                                                                                                                                         |
-|                     | ICM_BASE_URL_SSR      | string               | Sets the base URL for the ICM used in SSR for Kubernetes internal backend request routing (optional)                                                              |
-|                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                                                                                     |
-|                     | ICM_APPLICATION       | string               | Overrides the default application                                                                                                                                 |
-|                     | FEATURES              | comma-separated list | Overrides active features                                                                                                                                         |
-|                     | THEME                 | string               | Overrides the default theme                                                                                                                                       |
-|                     | MULTI_SITE_LOCALE_MAP | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md)                                                                      |
-|                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                                                                                              |
-| **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                                                                                          |
-|                     | LOGLEVEL              | string               | Log level: `trace`, `debug`, `info`, `warn`, `error`, `fatal` (default: `error`)                                                                                  |
-|                     | LOGFORMAT             | string               | Log format: `json` (ECS-compatible) or `text` (default: `json`)                                                                                                   |
-|                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                                                                                                  |
-| **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in the [Hybrid Approach][concept-hybrid]                                                                                              |
-|                     | SSR_HYBRID_BACKEND    | URL                  | When running in K8S, this contains the ICM WA service URL. For none-K8S you can use ICM_BASE_URL                                                                  |
-|                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                                                                                      |
-| **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                                                                                      |
-|                     | GMA_KEY               | string               | API key for Google Maps                                                                                                                                           |
-|                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                                                                                        |
-|                     | METRICS_DETAIL_LEVEL  | string               | `DEFAULT` or `DETAILED` - see [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)                                                                    |
-|                     | IDENTITY_PROVIDER     | string               | ID of the default identity provider if other than `ICM`                                                                                                           |
-|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                                                                                          |
-|                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with `url`, `login`, `password` and `maxResultCount`                                                                              |
-|                     | COPILOT               | JSON                 | Configuration of Intershop Copilot for Buyers                                                                                                                     |
-|                     | ALLOW_H2              | switch               | Enables HTTP/2 support via Fetch API for REST requests done by the SSR, e.g., to ICM or SPARQUE                                                                   |
+|                     | parameter             | format               | comment                                                                                                                                                             |
+| ------------------- | --------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SSR Specific**    | PORT                  | number               | Port for running the application                                                                                                                                    |
+|                     | CONCURRENCY_SSR       | number \| max        | Concurrency for SSR instances per theme (default: 2)                                                                                                                |
+|                     | CACHE_ICM_CALLS       | recommended \| JSON  | Enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)                                                                           |
+|                     | ALLOWED_HOSTS         | comma-separated list | Additional host names the SSR server accepts besides `localhost` (which is always allowed). Set to your public host name(s), e.g., `shop.example.com,*.example.com` |
+| **General**         | ICM_BASE_URL          | string               | Sets the base URL for ICM                                                                                                                                           |
+|                     | ICM_BASE_URL_SSR      | string               | Sets the base URL for the ICM used in SSR for Kubernetes internal backend request routing (optional)                                                                |
+|                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                                                                                       |
+|                     | ICM_APPLICATION       | string               | Overrides the default application                                                                                                                                   |
+|                     | FEATURES              | comma-separated list | Overrides active features                                                                                                                                           |
+|                     | THEME                 | string               | Overrides the default theme                                                                                                                                         |
+|                     | MULTI_SITE_LOCALE_MAP | JSON \| false        | Used to map locales to [url modification parameters](../guides/multi-site-configurations.md)                                                                        |
+|                     | DEPLOY_URL            | string               | Set a [Deploy URL][concept-deploy-url] (default `/`)                                                                                                                |
+| **Debug** :warning: | TRUST_ICM             | any                  | Use this if ICM is deployed with an insecure certificate                                                                                                            |
+|                     | LOGLEVEL              | string               | Log level: `trace`, `debug`, `info`, `warn`, `error`, `fatal` (default: `error`)                                                                                    |
+|                     | LOGFORMAT             | string               | Log format: `json` (ECS-compatible) or `text` (default: `json`)                                                                                                     |
+|                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                                                                                                    |
+| **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in the [Hybrid Approach][concept-hybrid]                                                                                                |
+|                     | SSR_HYBRID_BACKEND    | URL                  | When running in K8S, this contains the ICM WA service URL. For none-K8S you can use ICM_BASE_URL                                                                    |
+|                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                                                                                        |
+| **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                                                                                        |
+|                     | GMA_KEY               | string               | API key for Google Maps                                                                                                                                             |
+|                     | PROMETHEUS            | switch               | Exposes Prometheus metrics                                                                                                                                          |
+|                     | METRICS_DETAIL_LEVEL  | string               | `DEFAULT` or `DETAILED` - see [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)                                                                      |
+|                     | IDENTITY_PROVIDER     | string               | ID of the default identity provider if other than `ICM`                                                                                                             |
+|                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                                                                                            |
+|                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with `url`, `login`, `password` and `maxResultCount`                                                                                |
+|                     | COPILOT               | JSON                 | Configuration of Intershop Copilot for Buyers                                                                                                                       |
+|                     | ALLOW_H2              | switch               | Enables HTTP/2 support via Fetch API for REST requests done by the SSR, e.g., to ICM or SPARQUE                                                                     |
 
 > [!IMPORTANT]
 > For production deployments, set `ALLOWED_HOSTS` to the public hostname(s) under which the PWA is served (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
@@ -111,7 +111,7 @@ npm run dev:ssr -- --ssl
 The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
-ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+ng serve --configuration=ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
 ```
 
 ## Local ICM Cache

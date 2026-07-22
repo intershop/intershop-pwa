@@ -5,6 +5,7 @@ services:
     image: intershophub/intershop-pwa-ssr
     build:
       context: ../../.
+      dockerfile: .github/lighthouse/Dockerfile.esbuild
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
 

@@ -45,7 +45,7 @@ jobs:
         run: node schematics/customization/service-worker false
 
       - name: Build SSR
-        run: npm run build:multi
+        run: npm run build:multi:webpack
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v6

@@ -17,7 +17,7 @@
       "sourceRoot": "src",
       "prefix": "ish",
       "architect": {
-        "build": {
+        "build-webpack": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
@@ -101,8 +101,110 @@
             "b2c": {}
           }
         },
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/esbuild",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets",
+              {
+                "glob": "favicon.ico",
+                "input": "src/assets/themes/b2b/img/",
+                "output": "/"
+              }
+            ],
+            "styles": ["src/styles/themes/b2b/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/b2b"]
+            },
+            "sourceMap": true,
+            "allowedCommonJsDependencies": ["localforage"],
+            "define": {
+              "PWA_VERSION": "\"11.2.0 esbuild phase 1\"",
+              "PRODUCTION_MODE": "false",
+              "SERVICE_WORKER": "false",
+              "NGRX_RUNTIME_CHECKS": "true",
+              "THEME": "\"b2b\"",
+              "SSR": "false"
+            },
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.b2b.ts"
+              }
+            ]
+          },
+          "defaultConfiguration": "b2b,production",
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "namedChunks": false,
+              "extractLicenses": true,
+              "define": {
+                "PWA_VERSION": "\"11.2.0 esbuild phase 1\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "false"
+              },
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1.6mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                },
+                {
+                  "replace": "src/app/core/store/store-devtools.module.ts",
+                  "with": "src/app/core/store/store-devtools.module.production.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "tsConfig": "tsconfig.app-no-checks.json",
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            },
+            "ssr": {
+              "server": "src/main.server.ts",
+              "ssr": {
+                "entry": "server.esbuild.ts"
+              },
+              "tsConfig": "tsconfig.esbuild-ssr.json",
+              "define": {
+                "PWA_VERSION": "\"11.2.0 esbuild phase 2\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            },
+            "b2b": {}
+          }
+        },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "intershop-pwa:build"
           },
@@ -117,8 +219,29 @@
             "b2b": {
               "buildTarget": "intershop-pwa:build:b2b"
             },
+            "ssr": {
+              "buildTarget": "intershop-pwa:build:b2b,development,ssr"
+            }
+          }
+        },
+        "serve-webpack": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "buildTarget": "intershop-pwa:build-webpack"
+          },
+          "defaultConfiguration": "b2b,development",
+          "configurations": {
+            "production": {
+              "buildTarget": "intershop-pwa:build-webpack:production"
+            },
+            "development": {
+              "buildTarget": "intershop-pwa:build-webpack:development"
+            },
+            "b2b": {
+              "buildTarget": "intershop-pwa:build-webpack:b2b"
+            },
             "b2c": {
-              "buildTarget": "intershop-pwa:build:b2c"
+              "buildTarget": "intershop-pwa:build-webpack:b2c"
             }
           }
         },
@@ -140,7 +263,7 @@
             ]
           }
         },
-        "server": {
+        "server-webpack": {
           "builder": "@angular-builders/custom-webpack:server",
           "options": {
             "customWebpackConfig": {
@@ -164,21 +287,21 @@
             "b2c": {}
           }
         },
-        "serve-ssr": {
+        "serve-ssr-webpack": {
           "builder": "@angular-devkit/build-angular:ssr-dev-server",
           "options": {
-            "browserTarget": "intershop-pwa:build",
-            "serverTarget": "intershop-pwa:server"
+            "browserTarget": "intershop-pwa:build-webpack",
+            "serverTarget": "intershop-pwa:server-webpack"
           },
           "defaultConfiguration": "b2b",
           "configurations": {
             "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b,development",
-              "serverTarget": "intershop-pwa:server:b2b,development"
+              "browserTarget": "intershop-pwa:build-webpack:b2b,development",
+              "serverTarget": "intershop-pwa:server-webpack:b2b,development"
             },
             "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c,development",
-              "serverTarget": "intershop-pwa:server:b2c,development"
+              "browserTarget": "intershop-pwa:build-webpack:b2c,development",
+              "serverTarget": "intershop-pwa:server-webpack:b2c,development"
             }
           }
         }

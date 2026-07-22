@@ -5,7 +5,7 @@ const { globSync } = require('glob');
 const fs = require('fs');
 
 if (!fs.existsSync('src/ssr/server-scripts/ecosystem-ports.json')) {
-  console.error('ecosystem-ports.json not found. You have to execute "npm run build:multi" before.');
+  console.error('ecosystem-ports.json not found. You have to execute "npm run build:multi:webpack" before.');
   process.exit(1);
 }
 

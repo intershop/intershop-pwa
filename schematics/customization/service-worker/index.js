@@ -13,7 +13,7 @@ console.log('setting serviceWorker to', enable);
 // replace in angular.json
 const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
 const project = Object.keys(angularJson.projects)[0];
-const build = angularJson.projects[project].architect.build;
+const build = angularJson.projects[project].architect['build-webpack'];
 
 if (build.options.serviceWorker !== undefined) {
   build.options.serviceWorker = enable;
