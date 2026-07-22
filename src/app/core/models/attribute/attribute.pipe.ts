@@ -8,24 +8,28 @@ import { formatISHDate } from 'ish-core/pipes/date.pipe';
 
 import { Attribute } from './attribute.model';
 
-@Pipe({ name: 'ishAttribute', pure: false })
+@Pipe({
+  name: 'ishAttribute',
+  pure: false,
+  standalone: false,
+})
 export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  private toDate(val: string | number | Date): string {
-    return formatISHDate(val, 'shortDate', this.translateService.currentLang);
+  private toDate(val: Date | number | string): string {
+    return formatISHDate(val, 'shortDate', this.translateService.getCurrentLang());
   }
 
   private toDecimal(val: number): string {
-    return formatNumber(val, this.translateService.currentLang);
+    return formatNumber(val, this.translateService.getCurrentLang());
   }
 
   private toCurrency(price: Price): string {
-    return formatPrice(price, this.translateService.currentLang);
+    return formatPrice(price, this.translateService.getCurrentLang());
   }
 
   transform(data: Attribute, valuesSeparator: string = ', '): string {
-    if (!this.translateService.currentLang) {
+    if (!this.translateService.getCurrentLang()) {
       return 'undefined';
     }
 
@@ -40,7 +44,7 @@ export class AttributeToStringPipe implements PipeTransform {
       case 'Boolean':
         return data.value.toString();
       case 'Date':
-        return this.toDate(data.value as string | number | Date);
+        return this.toDate(data.value as Date | number | string);
       case 'MultipleInteger':
       case 'MultipleDouble':
       case 'MultipleLong':

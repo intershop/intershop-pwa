@@ -8,7 +8,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navigation.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { FilterNavigationBadgesComponent } from 'ish-shared/components/filter/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationActionsComponent } from 'ish-shared/components/filter/filter-navigation-actions/filter-navigation-actions.component';
 import { FilterNavigationHorizontalComponent } from 'ish-shared/components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from 'ish-shared/components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
 
@@ -26,7 +26,7 @@ describe('Filter Navigation Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         FilterNavigationComponent,
-        MockComponent(FilterNavigationBadgesComponent),
+        MockComponent(FilterNavigationActionsComponent),
         MockComponent(FilterNavigationHorizontalComponent),
         MockComponent(FilterNavigationSidebarComponent),
       ],
@@ -75,7 +75,7 @@ describe('Filter Navigation Component', () => {
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
         "ish-filter-navigation-horizontal",
-        "ish-filter-navigation-badges",
+        "ish-filter-navigation-actions",
       ]
     `);
   });

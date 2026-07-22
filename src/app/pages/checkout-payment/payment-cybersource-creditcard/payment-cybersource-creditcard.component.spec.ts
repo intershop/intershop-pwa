@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -27,7 +27,8 @@ describe('Payment Cybersource Creditcard Component', () => {
         MockDirective(ShowFormFeedbackDirective),
         PaymentCybersourceCreditcardComponent,
       ],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -27,20 +27,20 @@ export function getChildOfKind<T extends ts.Node>(node: ts.Node, kind: ts.Syntax
  * Replacement for tsutils.ImportKind
  */
 export enum ImportKind {
-  /** import ... from "..." */
-  ImportDeclaration = 1,
-  /** export ... from "..." */
-  ExportFrom = 2,
-  /** require("...") */
-  Require = 4,
   /** import("...") */
   DynamicImport = 8,
+  /** export ... from "..." */
+  ExportFrom = 2,
+  /** import ... from "..." */
+  ImportDeclaration = 1,
+  /** require("...") */
+  Require = 4,
   /** All import kinds */
   All = ImportDeclaration | ExportFrom | Require | DynamicImport,
-  /** All static imports (ImportDeclaration | ExportFrom) */
-  AllStaticImports = ImportDeclaration | ExportFrom,
   /** All requires (Require | DynamicImport) */
   AllRequires = Require | DynamicImport,
+  /** All static imports (ImportDeclaration | ExportFrom) */
+  AllStaticImports = ImportDeclaration | ExportFrom,
 }
 
 /**

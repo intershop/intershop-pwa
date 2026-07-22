@@ -9,16 +9,20 @@ import { VariationAttribute } from 'ish-core/models/product-variation/variation-
  *
  * Used on a variation attribute (of type VariationAttribute), this pipe will return the corresponding display (string) value, considering the current locale for number attribute values.
  */
-@Pipe({ name: 'ishVariationAttribute', pure: false })
+@Pipe({
+  name: 'ishVariationAttribute',
+  pure: false,
+  standalone: false,
+})
 export class VariationAttributePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
   private toDecimal(val: number): string {
-    return formatNumber(val, this.translateService.currentLang);
+    return formatNumber(val, this.translateService.getCurrentLang());
   }
 
   transform(attr: VariationAttribute): string {
-    if (!this.translateService.currentLang) {
+    if (!this.translateService.getCurrentLang()) {
       return 'undefined';
     }
 

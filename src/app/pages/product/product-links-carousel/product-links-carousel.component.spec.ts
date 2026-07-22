@@ -1,13 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { forkJoin, of, switchMap } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
+import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
 import { ProductLinks } from 'ish-core/models/product-links/product-links.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
+import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductLinksCarouselComponent } from './product-links-carousel.component';
 
@@ -17,11 +21,20 @@ describe('Product Links Carousel Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
+  MockInstance.scope();
+
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [MockComponent(SwiperComponent), ProductLinksCarouselComponent],
+      declarations: [
+        MockComponent(DeferredItemComponent),
+        MockComponent(ProductItemComponent),
+        MockDirective(BrowserLazyViewDirective),
+        MockDirective(LazyLoadingContentDirective),
+        MockDirective(ProductContextDirective),
+        ProductLinksCarouselComponent,
+      ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
     }).compileComponents();
   });
@@ -39,7 +52,7 @@ describe('Product Links Carousel Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element.querySelector('swiper')).toBeTruthy();
+    expect(element.querySelector('.swiper')).toBeTruthy();
   });
 
   it('should render all product slides if stocks filtering is off', done => {

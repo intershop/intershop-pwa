@@ -51,6 +51,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplate,
     deleteOrderTemplate,
     loadOrderTemplates,
+    orderTemplatesActions.loadOrderTemplateDetails,
     orderTemplatesActions.createOrderTemplateFromLineItems,
     updateOrderTemplate
   ),
@@ -59,6 +60,7 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateSuccess,
     deleteOrderTemplateSuccess,
     loadOrderTemplatesSuccess,
+    orderTemplatesActions.loadOrderTemplateDetails,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     removeItemFromOrderTemplateSuccess,
     updateOrderTemplateSuccess
@@ -68,28 +70,32 @@ export const orderTemplateReducer = createReducer(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
+    orderTemplatesApiActions.loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail
   ),
-
   on(
     createOrderTemplateFail,
     deleteOrderTemplateFail,
     loadOrderTemplatesFail,
+    orderTemplatesApiActions.loadOrderTemplateDetailsFail,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsFail,
     updateOrderTemplateFail,
     (state: OrderTemplateState): OrderTemplateState => ({
       ...state,
-      selected: undefined as string,
+      selected: undefined,
     })
   ),
   on(loadOrderTemplatesSuccess, (state, action): OrderTemplateState => {
     const { orderTemplates } = action.payload;
-    return orderTemplateAdapter.setAll(orderTemplates, state);
+    // merge the list headers into the existing entities to preserve already loaded item details
+    const merged = orderTemplates.map(orderTemplate => ({ ...state.entities[orderTemplate.id], ...orderTemplate }));
+    return orderTemplateAdapter.setAll(merged, state);
   }),
   on(
     addProductToOrderTemplateSuccess,
     createOrderTemplateSuccess,
+    orderTemplatesApiActions.loadOrderTemplateDetailsSuccess,
     removeItemFromOrderTemplateSuccess,
     orderTemplatesApiActions.createOrderTemplateFromLineItemsSuccess,
     updateOrderTemplateSuccess,

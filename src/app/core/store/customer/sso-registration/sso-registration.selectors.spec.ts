@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Address } from 'ish-core/models/address/address.model';
-import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -13,8 +11,6 @@ import {
   getSsoRegistrationError,
   getSsoRegistrationRegistered,
 } from './sso-registration.selectors';
-
-const customer = { customerNo: 'CID', isBusinessCustomer: true } as Customer;
 
 describe('Sso Registration Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -37,12 +33,7 @@ describe('Sso Registration Selectors', () => {
   });
 
   describe('registerSuccess', () => {
-    const address = { id: 'asd', firstName: 'John' } as Address;
-    const action = registerSuccess({
-      customer,
-      address,
-      userId: 'uid',
-    });
+    const action = registerSuccess();
 
     beforeEach(() => {
       store$.dispatch(action);

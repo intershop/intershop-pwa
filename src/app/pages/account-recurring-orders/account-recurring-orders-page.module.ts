@@ -20,7 +20,7 @@ const accountRecurringOrdersPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(accountRecurringOrdersPageRoutes), NgbNavModule, SharedModule, SwitchComponent],
   declarations: [AccountRecurringOrdersPageComponent, RecurringOrderListComponent],
+  imports: [RouterModule.forChild(accountRecurringOrdersPageRoutes), NgbNavModule, SharedModule, SwitchComponent],
 })
 export class AccountRecurringOrdersPageModule {}

@@ -1,5 +1,6 @@
 <!-- Print Button -->
-@if (recurringOrder$ | async) {
+@let recurringOrder = recurringOrder$ | async;
+@if (recurringOrder) {
   <div class="float-end">
     <ul class="share-tools">
       <li>
@@ -18,7 +19,7 @@
 
 <h1>{{ 'account.recurring_order.heading' | translate }}</h1>
 
-@if (recurringOrder$ | async; as recurringOrder) {
+@if (recurringOrder) {
   <div class="section">
     <!-- Message for Inactive Orders -->
     @if (!recurringOrder.active) {
@@ -99,8 +100,8 @@
               <span>{{ 'account.recurring_order.details.expired.text' | translate }}</span>
             } @else {
               <ish-switch
-                [active]="recurringOrder.active"
                 ariaLabel="{{ 'account.recurring_order.details.switch.aria_label' | translate }}"
+                [active]="recurringOrder.active"
                 [labelActive]="'account.recurring_order.details.active.text' | translate"
                 [labelInactive]="'account.recurring_order.details.inactive.text' | translate"
                 (toggleSwitch)="switchActiveStatus($event)"

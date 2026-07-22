@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -19,9 +19,12 @@ describe('Buyers Select Component', () => {
 
     when(organizationManagementFacade.users$).thenReturn(of([]));
     await TestBed.configureTestingModule({
-      imports: [FormlyModule.forRoot(), ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [FormlyModule.forRoot(), ReactiveFormsModule, TranslatePipe],
       declarations: [BuyersSelectComponent],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

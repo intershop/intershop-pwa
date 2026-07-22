@@ -5,13 +5,7 @@ import { QuotingHelper } from '../../../models/quoting/quoting.helper';
 import { Quote, QuoteRequest, QuoteStubFromAttributes } from '../../../models/quoting/quoting.model';
 
 type QuoteColumnsType =
-  | 'quoteNo'
-  | 'displayName'
-  | 'lineItems'
-  | 'creationDate'
-  | 'expirationDate'
-  | 'status'
-  | 'actions';
+  'actions' | 'creationDate' | 'displayName' | 'expirationDate' | 'lineItems' | 'quoteNo' | 'status';
 
 /**
  * The Quote List Component displays a list of quotes.
@@ -21,6 +15,7 @@ type QuoteColumnsType =
  */
 @Component({
   selector: 'ish-quote-list',
+  standalone: false,
   templateUrl: './quote-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

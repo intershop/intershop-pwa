@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -22,7 +22,8 @@ describe('Shopping Basket Empty Component', () => {
         MockComponent(ErrorMessageComponent),
         ShoppingBasketEmptyComponent,
       ],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -12,6 +12,7 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
  */
 @Component({
   selector: 'ish-basket-cost-center-view',
+  standalone: false,
   templateUrl: './basket-cost-center-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

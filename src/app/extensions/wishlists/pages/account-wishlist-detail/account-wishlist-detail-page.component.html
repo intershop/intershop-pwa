@@ -9,8 +9,8 @@
     <button
       class="btn-tool btn-link"
       data-testing-id="wishlist-sharing"
-      type="button"
       title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
+      type="button"
       (click)="shareWishlistDialog.show()"
     >
       <i class="bi bi-share-fill"></i>
@@ -19,8 +19,8 @@
       <button
         class="btn-tool btn-link ms-3"
         data-testing-id="wishlist-stop-sharing"
-        type="button"
         title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
+        type="button"
         (click)="unshareWishlist(wishlist.id)"
       >
         <i class="bi bi-pause-fill"></i>
@@ -41,9 +41,9 @@
     <button
       class="btn btn-link details-tooltip header-note mt-1"
       placement="bottom-start"
+      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
       type="button"
       [ngbPopover]="WishlistDescription"
-      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
     >
       {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
     </button>
@@ -69,6 +69,7 @@
               [currentWishlist]="wishlist"
               [sku]="item.sku"
               [wishlistItemData]="item"
+              (moveClicked)="showMoveDialog($event)"
             />
           </div>
         }
@@ -87,6 +88,9 @@
     [wishlist]="wishlist"
     (submitWishlistSharing)="shareWishlist($event, wishlist.id)"
   />
+  <ng-container ishProductContext [sku]="moveItem?.sku">
+    <ish-select-wishlist-modal #moveDialog addMoveProduct="move" (submitEmitter)="moveItemToOtherWishlist($event)" />
+  </ng-container>
 }
 
 <a routerLink="/account/wishlists">{{ 'account.wishlist.searchform.return.link' | translate }}</a>

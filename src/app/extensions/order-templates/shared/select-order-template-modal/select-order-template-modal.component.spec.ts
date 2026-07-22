@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
@@ -47,9 +50,16 @@ describe('Select Order Template Modal Component', () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [SelectOrderTemplateFormComponent, SelectOrderTemplateModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) }],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockComponent(SelectOrderTemplateFormComponent),
+        SelectOrderTemplateModalComponent,
+      ],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -59,6 +69,7 @@ describe('Select Order Template Modal Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     when(orderTemplateFacadeMock.currentOrderTemplate$).thenReturn(of(orderTemplateDetails));
+    when(orderTemplateFacadeMock.orderTemplates$).thenReturn(of([orderTemplateDetails]));
     when(orderTemplateFacadeMock.orderTemplatesSelectOptions$(anything())).thenReturn(
       of([{ value: orderTemplateDetails.id, label: orderTemplateDetails.title }])
     );
@@ -190,13 +201,29 @@ describe('Select Order Template Modal Component', () => {
     });
 
     it('should return correct route of new order template', done => {
+      when(orderTemplateFacadeMock.orderTemplates$).thenReturn(
+        of([{ ...orderTemplateDetails, title: 'New Ordertemplate Title' }])
+      );
       startup();
       updateOrderTemplateAndNew();
 
       component.selectedOrderTemplateRoute$.subscribe(r => {
         expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
       });
-      done();
+    });
+
+    it('should wait for the created order template and not emit an "undefined" route', done => {
+      when(orderTemplateFacadeMock.orderTemplates$).thenReturn(
+        of([], [{ ...orderTemplateDetails, title: 'New Ordertemplate Title' }])
+      );
+      startup();
+      updateOrderTemplateAndNew();
+
+      component.selectedOrderTemplateRoute$.subscribe(r => {
+        expect(r).toBe('route://account/order-templates/.SKsEQAE4FIAAAFuNiUBWx0d');
+        done();
+      });
     });
   });
 });

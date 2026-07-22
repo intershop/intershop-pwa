@@ -1,5 +1,6 @@
 <div class="product-page clearfix" data-testing-id="product-detail-page" itemscope itemtype="http://schema.org/Product">
-  @if (productLoading$ | async) {
+  @let productLoading = productLoading$ | async;
+  @if (productLoading) {
     <ish-loading />
   }
   @if (product$ | async; as product) {
@@ -35,7 +36,7 @@
           />
       </div>
       -- DISABLED VIEW CONTEXT -->
-      @if ((productLoading$ | async) !== true) {
+      @if (productLoading !== true) {
         <ish-lazy-recently-viewed />
       }
       <!-- DISABLED VIEW CONTEXT --

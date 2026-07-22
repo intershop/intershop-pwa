@@ -7,9 +7,125 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 11.2.0 to 12.0.0
+
+**Angular 19 upgrade**
+
+With Intershop PWA 12.0.0, the project was updated to Angular 19 (including the Angular CLI, CDK, and SSR).
+Companion libraries have been updated to their Angular 19 compatible versions as well.
+
+In Angular 19, components, directives, and pipes are standalone by default.
+Since the PWA still relies on NgModule-based declarations, the `standalone: false` attribute had to be added to all components, directives, and pipes that are not standalone yet.
+The declaration as `standalone: true` is now the default and therefore removed from the existing standalone components.
+This additional configuration will be required for any custom or overridden components, directives, and pipes in projects too.
+
+For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3).
+
+**`ALLOWED_HOSTS` configuration for SSR**
+
+> [!IMPORTANT]
+> The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
+> By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
+> For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
+
+**ESLint Perfectionist plugin**
+
+The [`eslint-plugin-perfectionist`](https://perfectionist.dev/) plugin has been added to enforce consistent sorting of certain code constructs.
+It sorts arrays (`sort-arrays`), enums (`sort-enums`), as well as union and intersection types (`sort-union-types`, `sort-intersection-types`).
+
+**ngx-translate 17 + 18 upgrade**
+
+The package `@ngx-translate/core` has been updated to version 17 and subsequently to version 18.
+
+With version 17, the custom `FallbackMissingTranslationHandler` has been adjusted to check loaded translations via `TranslateStore`.
+In addition, the `TranslateService.currentLang` property has been replaced by the `getCurrentLang()` method.
+For all breaking changes, see the [ngx-translate Migration Guide v16 → v17](https://ngx-translate.org/v17/getting-started/migration-guide/).
+
+With version 18, `TranslateModule` has been removed.
+The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`, and the `forChild()` imports are no longer needed.
+The same applies to test setups, where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
+`TranslatePipe` and `TranslateDirective` are now standalone and have to be added directly to the `imports` of the consuming modules (or standalone components) where the `translate` pipe or directive is used.
+The element-text-as-key form of the `translate` directive (for example, `<span translate>my.key</span>`) is deprecated in version 18 and removed in version 19; use the `translate` pipe (`{{ 'my.key' | translate }}`) or the bound directive (`[translate]="'my.key'"`) instead.
+The `getCurrentLang()` method can now return `undefined`, so any custom code relying on it must handle that case.
+For all breaking changes, see the [ngx-translate Migration Guide v17 → v18](https://ngx-translate.org/getting-started/migration-guide/).
+
+**Swiper 12 upgrade**
+
+Swiper has been upgraded from version 8 to 12.
+This upgrade spans multiple major versions and includes several breaking changes:
+
+- Removal of Swiper Angular components (now using Swiper's [JavaScript API](https://swiperjs.com/swiper-api))
+- Changed module import path
+
+For further details, see the official Swiper migration guides for [v9](https://swiperjs.com/migration-guide-v9), [v10](https://swiperjs.com/migration-guide-v10), and [v11](https://swiperjs.com/migration-guide-v11).
+
+**Lazy loading with `DeferredItemComponent`**
+
+The new `DeferredItemComponent` supports `IntersectionObserver`-based lazy loading.
+It defers the rendering of projected content until the element becomes visible in the viewport.
+It is used for Swiper carousel slides but also applies to any other lazy loading scenario.
+Use `ish-deferred-item` with `ishLazyLoadingContent` for lazy loading.
+
+**Filter component changes**
+
+With the rework of the `FilterDropdownComponent` to use `ng-select` instead of `ngbDropdown` and to support multi-selection, the `FilterNavigationBadgesComponent` has been renamed to `FilterNavigationActionsComponent` (selector changed from `ish-filter-navigation-badges` to `ish-filter-navigation-actions`).
+The component now only provides a "Remove all filters" action.
+
+**Design View and preview context changes**
+
+The Design View and preview features have been reworked so that they can be used simultaneously.
+Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real preview context data from being used at the same time.
+Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for preview context data.
+
+**Modal fullscreen and scrollable styling**
+
+The custom `.modal-fullscreen` and `.modal-dialog-scrollable` SCSS overrides have been removed in favor of the native ng-bootstrap modal behavior.
+You can now use the built-in options `fullscreen: true` and `scrollable: true`, which apply standard Bootstrap styling.
+
+**Quote request selection modal**
+
+Adding a product to a quote now opens the new `SelectQuoteRequestModalComponent`.
+It lets the customer choose an existing quote request or create a new one before adding the product.
+The new quote request name is optional.
+When left empty, a new quote request is created automatically, and the ID is used as the name as before.
+
+**Order template and wishlist selection UX**
+
+The order template and wishlist selection modals have been reworked for a more consistent user experience after the introduction of the new quote request selection modal:
+
+- The name input fields for creating a new order template or wishlist now use placeholders instead of pre-filled default text.
+- The input automatically receives focus when the _new_ radio is selected, and the _new_ radio is selected when the input is clicked.
+
+**Wishlist and order template performance optimization**
+
+With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
+As a result, the wishlist overview can now be displayed using a single list request.
+
+In addition, the `WishlistWidgetComponent` now displays the products of the preferred wishlist.
+If no preferred wishlist exists, the products of all wishlists are displayed instead.
+
+For the order template overview page, the order template details request is still necessary.
+However, these details are now loaded asynchronously and are no longer required for the initial display of the order template list.
+
+Each consumer only triggers the load of the details it actually needs.
+If you display order templates in custom components, use `OrderTemplatesFacade.orderTemplatesWithDetails$(count?)` to retrieve the list and lazily load the item details of the first `count` templates (or all templates if `count` is omitted).
+
+**Replace `ProductRatingStarComponent` with `NgbRating`**
+
+The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
+If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
+
+**Removal of customer budget type update after registration**
+
+The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now directly persists the `budgetPriceType` (requires ICM 14.2.0).
+This also fixes the customer approval flow that has been broken since Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
+
 ## From 11.1.0 to 11.2.0
 
-**Extended Withdrawal functionality**
+**Extended withdrawal functionality**
 
 On the Order Detail Page in the My Account area, withdrawal information is now displayed for orders that have been withdrawn.
 In addition, for orders that are still eligible for withdrawal, a link to the withdrawal form is now shown on the Order Detail Page.

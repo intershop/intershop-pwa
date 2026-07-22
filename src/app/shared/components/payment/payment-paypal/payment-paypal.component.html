@@ -104,14 +104,15 @@
 
       <div class="row">
         <div class="offset-md-4 col-md-8">
+          @let loadingIframe = loadingIframe$ | async;
           <button
             class="btn btn-primary"
             id="card-field-submit-button"
             type="button"
             [attr.aria-label]="'checkout.button.continue.label.aria_label' | translate"
-            [disabled]="loadingIframe$ | async"
+            [disabled]="loadingIframe"
           >
-            @if ((loadingIframe$ | async) === true) {
+            @if (loadingIframe === true) {
               <i class="bi bi-arrow-clockwise spin-icon"></i>
             }
             {{ 'checkout.button.continue.label' | translate }}

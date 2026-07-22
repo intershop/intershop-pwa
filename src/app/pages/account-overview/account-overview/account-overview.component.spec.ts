@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { LazyBudgetWidgetComponent } from 'organization-management';
 import { LazyRequisitionWidgetComponent } from 'requisition-management';
@@ -42,7 +42,8 @@ describe('Account Overview Component', () => {
         MockPipe(HtmlEncodePipe),
         MockPipe(ServerSettingPipe, () => true),
       ],
-      imports: [FeatureToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting(), RoleToggleModule.forTesting(), TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 
@@ -51,7 +52,7 @@ describe('Account Overview Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('account.overview.personal_message.text', 'Hi, {{0}}.');
     component.user = user;

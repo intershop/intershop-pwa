@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { NgbModule, NgbRating } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { MockComponent } from 'ng-mocks';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
-
-import { ProductRatingStarComponent } from '../../shared/product-rating-star/product-rating-star.component';
 
 import { RatingStarsFieldComponent } from './rating-stars-field.component';
 
@@ -28,9 +27,11 @@ describe('Rating Stars Field Component', () => {
           ],
         }),
         FormlyTestingComponentsModule,
-        TranslateModule.forRoot(),
+        NgbModule,
+        TranslatePipe,
       ],
-      declarations: [MockComponent(ProductRatingStarComponent), RatingStarsFieldComponent],
+      declarations: [RatingStarsFieldComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 
@@ -68,11 +69,46 @@ describe('Rating Stars Field Component', () => {
   it('should be rendered after creation', () => {
     fixture.detectChanges();
 
-    expect(element.querySelectorAll('button')).toHaveLength(5);
+    expect(element.querySelectorAll('.bi')).toHaveLength(5);
+  });
 
-    element.querySelectorAll('button').forEach((el, key) => {
-      el.click();
-      expect(component.form.get('input').value).toEqual(key + 1);
-    });
+  it('should update the form value on rate change', () => {
+    fixture.detectChanges();
+
+    const ngbRatingDirective = fixture.debugElement.query(By.directive(NgbRating));
+    for (let i = 1; i <= 5; i++) {
+      ngbRatingDirective.triggerEventHandler('rateChange', i);
+      fixture.detectChanges();
+      expect(component.form.get('input').value).toEqual(i);
+    }
+  });
+
+  it('should initialize an empty rating with 0 so it can be changed via the keyboard', () => {
+    fixture.detectChanges();
+
+    const ngbRating = fixture.debugElement.query(By.directive(NgbRating)).componentInstance as NgbRating;
+    // regression: an empty form value must not initialize the rating with NaN, otherwise arrow keys do nothing
+    expect(ngbRating.rate).toBe(0);
+
+    ngbRating.handleKeyDown({ key: 'ArrowRight', preventDefault: jest.fn() } as unknown as KeyboardEvent);
+
+    expect(ngbRating.rate).toBe(1);
+  });
+
+  it('should reflect initial form value', () => {
+    component.testComponentInputs = {
+      fields: [
+        {
+          key: 'input',
+          type: 'ish-rating-stars-field',
+          props: { label: 'test label', required: true },
+        } as FormlyFieldConfig,
+      ],
+      form: new FormGroup({}),
+      model: { input: 3 },
+    };
+    fixture.detectChanges();
+
+    expect(element.querySelectorAll('.bi-star-fill')).toHaveLength(3);
   });
 });

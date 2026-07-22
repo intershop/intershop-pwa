@@ -9,12 +9,13 @@ import { Wishlist } from '../../models/wishlist/wishlist.model';
 
 @Component({
   selector: 'ish-wishlists-link',
+  standalone: false,
   templateUrl: './wishlists-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
 export class WishlistsLinkComponent implements OnInit {
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
   preferredWishlist$: Observable<Wishlist>;
   routerLink$: Observable<string>;
 

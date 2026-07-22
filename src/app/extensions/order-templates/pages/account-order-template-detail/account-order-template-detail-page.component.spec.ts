@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, objectContaining, verify, when } from 'ts-mockito';
@@ -14,6 +14,7 @@ import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testin
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
+import { SelectOrderTemplateModalComponent } from '../../shared/select-order-template-modal/select-order-template-modal.component';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';
@@ -35,16 +36,20 @@ describe('Account Order Template Detail Page Component', () => {
     when(orderTemplatesFacade.currentOrderTemplate$).thenReturn(of(initial as OrderTemplate));
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [
         AccountOrderTemplateDetailPageComponent,
         InPlaceEditComponent,
         MockComponent(AccountOrderTemplateDetailLineItemComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(ProductAddToBasketComponent),
+        MockComponent(SelectOrderTemplateModalComponent),
         MockDirective(ProductContextDirective),
       ],
-      providers: [{ provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) }],
+      providers: [
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -78,6 +83,7 @@ describe('Account Order Template Detail Page Component', () => {
         [
           "ish-error-message",
           "ish-in-place-edit",
+          "ish-select-order-template-modal",
         ]
       `);
     });
@@ -93,6 +99,7 @@ describe('Account Order Template Detail Page Component', () => {
           "ish-in-place-edit",
           "ish-account-order-template-detail-line-item",
           "ish-product-add-to-basket",
+          "ish-select-order-template-modal",
         ]
       `);
     });

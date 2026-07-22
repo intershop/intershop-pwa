@@ -1,37 +1,41 @@
-@if (productSKUs$ | async; as products) {
-  @if (products.length) {
-    @if (listStyle === 'carousel') {
-      <div class="product-list">
-        <swiper [config]="swiperConfig">
+@let products = productSKUs$ | async;
+@if (products?.length) {
+  @if (listStyle === 'carousel') {
+    <div class="product-list">
+      <div #swiper class="swiper">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-wrapper">
           @for (sku of products; track $index) {
-            <ng-template let-data swiperSlide>
-              <div [ngClass]="listItemCSSClass">
-                @if (lazyFetch(data.isVisible, sku)) {
+            <div class="swiper-slide">
+              <ish-deferred-item [cssClass]="listItemCSSClass">
+                <ng-template ishLazyLoadingContent>
                   <ish-product-item
                     ishProductContext
                     [configuration]="listItemConfiguration"
                     [displayType]="listItemStyle"
                     [sku]="sku"
                   />
-                }
-              </div>
-            </ng-template>
+                </ng-template>
+              </ish-deferred-item>
+            </div>
           }
-        </swiper>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
       </div>
-    } @else {
-      <div class="product-list row">
-        @for (sku of products; track $index) {
-          <div class="product-list-item" [ngClass]="listItemCSSClass">
-            <ish-product-item
-              ishProductContext
-              [configuration]="listItemConfiguration"
-              [displayType]="listItemStyle"
-              [sku]="sku"
-            />
-          </div>
-        }
-      </div>
-    }
+    </div>
+  } @else {
+    <div class="product-list row">
+      @for (sku of products; track $index) {
+        <div class="product-list-item" [ngClass]="listItemCSSClass">
+          <ish-product-item
+            ishProductContext
+            [configuration]="listItemConfiguration"
+            [displayType]="listItemStyle"
+            [sku]="sku"
+          />
+        </div>
+      }
+    </div>
   }
 }

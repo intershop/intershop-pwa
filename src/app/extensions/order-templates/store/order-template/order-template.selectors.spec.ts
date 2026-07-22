@@ -16,6 +16,8 @@ import {
   loadOrderTemplates,
   loadOrderTemplatesFail,
   loadOrderTemplatesSuccess,
+  orderTemplatesActions,
+  orderTemplatesApiActions,
   selectOrderTemplate,
   updateOrderTemplate,
   updateOrderTemplateFail,
@@ -272,6 +274,63 @@ describe('Order Template Selectors', () => {
 
       beforeEach(() => {
         store$.dispatch(updateOrderTemplateFailAction);
+      });
+
+      it('should set loading to false', () => {
+        expect(getOrderTemplateLoading(store$.state)).toBeFalse();
+      });
+
+      it('should add the error to state', () => {
+        expect(getOrderTemplateError(store$.state)).toMatchInlineSnapshot(`
+          {
+            "message": "invalid",
+            "name": "HttpErrorResponse",
+          }
+        `);
+      });
+    });
+  });
+
+  describe('loading order template details', () => {
+    describe('LoadOrderTemplateDetails', () => {
+      const loadOrderTemplateDetailsAction = orderTemplatesActions.loadOrderTemplateDetails({
+        orderTemplateId: orderTemplates[0].id,
+      });
+
+      beforeEach(() => {
+        store$.dispatch(loadOrderTemplateDetailsAction);
+      });
+
+      it('should not set loading to true', () => {
+        expect(getOrderTemplateLoading(store$.state)).toBeFalse();
+      });
+    });
+
+    describe('LoadOrderTemplateDetailsSuccess', () => {
+      const loadOrderTemplateDetailsSuccessAction = orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({
+        orderTemplate: orderTemplates[0],
+      });
+
+      beforeEach(() => {
+        store$.dispatch(loadOrderTemplateDetailsSuccessAction);
+      });
+
+      it('should add order template to state', () => {
+        expect(getAllOrderTemplates(store$.state)).toContainEqual(orderTemplates[0]);
+      });
+
+      it('should return correct order template details for given id', () => {
+        expect(getOrderTemplateDetails(orderTemplates[0].id)(store$.state)).toEqual(orderTemplates[0]);
+      });
+    });
+
+    describe('LoadOrderTemplateDetailsFail', () => {
+      const loadOrderTemplateDetailsFailAction = orderTemplatesApiActions.loadOrderTemplateDetailsFail({
+        error: makeHttpError({ message: 'invalid' }),
+      });
+
+      beforeEach(() => {
+        store$.dispatch(loadOrderTemplateDetailsFailAction);
       });
 
       it('should set loading to false', () => {

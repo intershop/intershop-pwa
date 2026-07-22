@@ -22,6 +22,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 @Component({
   selector: 'ish-mini-basket',
+  standalone: false,
   templateUrl: './mini-basket.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,7 +34,7 @@ export class MiniBasketComponent implements OnInit {
   itemCount$: Observable<number>;
   basketLoading$: Observable<boolean>;
 
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   private basketError$: Observable<HttpError>;
   private destroyRef = inject(DestroyRef);

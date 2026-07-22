@@ -1,6 +1,6 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -42,7 +42,7 @@ describe('Cost Center Users List Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, TranslatePipe],
       declarations: [
         CostCenterUsersListComponent,
         MockComponent(CostCenterBuyerEditDialogComponent),
@@ -52,7 +52,10 @@ describe('Cost Center Users List Component', () => {
         MockDirective(ServerHtmlDirective),
         MockPipe(PricePipe),
       ],
-      providers: [{ provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) }],
+      providers: [
+        { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

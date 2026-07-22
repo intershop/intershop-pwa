@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -58,9 +58,13 @@ describe('Recurring Order List Component', () => {
   beforeEach(async () => {
     accountFacade = mock(AccountFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterModule, TranslatePipe],
       declarations: [MockComponent(ModalDialogComponent), MockPipe(DatePipe), RecurringOrderListComponent],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

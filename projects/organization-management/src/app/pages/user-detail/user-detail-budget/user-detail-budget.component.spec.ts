@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockPipe } from 'ng-mocks';
 
 import { Price } from 'ish-core/models/price/price.model';
@@ -14,11 +14,12 @@ describe('User Detail Budget Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         MockPipe(PricePipe, (price: Price) => `${price.currency} ${price.value}`),
         UserDetailBudgetComponent,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

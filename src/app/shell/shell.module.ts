@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgbCollapseModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -39,25 +39,6 @@ import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-conten
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
 @NgModule({
-  imports: [
-    AuthorizationToggleModule,
-    CommonModule,
-    CompareExportsModule,
-    DirectivesModule,
-    FeatureToggleModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
-    NgbPopoverModule,
-    PipesModule,
-    QuickorderExportsModule,
-    RoleToggleModule,
-    RouterModule,
-    SearchBoxComponent,
-    SeoExportsModule,
-    TrackingExportsModule,
-    TranslateModule,
-    WishlistsExportsModule,
-  ],
   declarations: [
     ...exportedComponents,
     BackToTopComponent,
@@ -74,6 +55,25 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     MiniBasketComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
+  ],
+  imports: [
+    AuthorizationToggleModule,
+    CommonModule,
+    CompareExportsModule,
+    DirectivesModule,
+    FeatureToggleModule,
+    NgbCollapseModule,
+    NgbDropdownModule,
+    NgbPopoverModule,
+    PipesModule,
+    QuickorderExportsModule,
+    RoleToggleModule,
+    RouterModule,
+    SearchBoxComponent,
+    SeoExportsModule,
+    TrackingExportsModule,
+    TranslatePipe,
+    WishlistsExportsModule,
   ],
   exports: [...exportedComponents],
 })

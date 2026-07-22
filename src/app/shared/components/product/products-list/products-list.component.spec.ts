@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { of } from 'rxjs';
-import { SwiperComponent } from 'swiper/angular';
 import { instance, mock, when } from 'ts-mockito';
 
+import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
+import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { ProductsListComponent } from './products-list.component';
@@ -17,13 +19,17 @@ describe('Products List Component', () => {
   let element: HTMLElement;
   let shoppingFacade: ShoppingFacade;
 
+  MockInstance.scope();
+
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
 
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(DeferredItemComponent),
         MockComponent(ProductItemComponent),
-        MockComponent(SwiperComponent),
+        MockDirective(BrowserLazyViewDirective),
+        MockDirective(LazyLoadingContentDirective),
         MockDirective(ProductContextDirective),
         ProductsListComponent,
       ],
@@ -52,7 +58,8 @@ describe('Products List Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`<div class="product-list"><swiper></swiper></div>`);
+    expect(element.querySelector('.swiper')).toBeTruthy();
+    expect(element.querySelectorAll('.swiper-slide')).toHaveLength(2);
   });
 
   it('should set displayType of product item to listItemStyle value', () => {

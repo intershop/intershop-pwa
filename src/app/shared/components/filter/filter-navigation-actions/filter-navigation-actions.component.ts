@@ -4,13 +4,13 @@ import { FilterNavigation } from 'ish-core/models/filter-navigation/filter-navig
 import { URLFormParams } from 'ish-core/utils/url-form-params';
 
 @Component({
-  selector: 'ish-filter-navigation-badges',
-  templateUrl: './filter-navigation-badges.component.html',
+  selector: 'ish-filter-navigation-actions',
+  standalone: false,
+  templateUrl: './filter-navigation-actions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FilterNavigationBadgesComponent implements OnChanges {
+export class FilterNavigationActionsComponent implements OnChanges {
   @Input({ required: true }) filterNavigation: FilterNavigation;
-  @Output() readonly applyFilter = new EventEmitter<{ searchParameter: URLFormParams }>();
   @Output() readonly clearFilters = new EventEmitter<void>();
   selected: { searchParameter: URLFormParams; displayName: string; filterName: string }[];
 
@@ -28,10 +28,6 @@ export class FilterNavigationBadgesComponent implements OnChanges {
       ],
       []
     );
-  }
-
-  apply(searchParameter: URLFormParams) {
-    this.applyFilter.emit({ searchParameter });
   }
 
   clear() {

@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -11,6 +12,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
  */
 @Component({
   selector: 'ish-search-result',
+  standalone: false,
   templateUrl: './search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,14 +31,14 @@ export class SearchResultComponent implements OnInit, OnChanges {
 
   isCollapsed = false;
 
+  constructor(private scroller: ViewportScroller) {}
+
   ngOnInit() {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!SSR) {
-      window.scroll(0, 0);
-    }
+    this.scroller.scrollToPosition([0, 0]);
     if (changes.deviceType) {
       this.isCollapsed = this.deviceType === 'mobile';
     }
@@ -44,8 +46,6 @@ export class SearchResultComponent implements OnInit, OnChanges {
 
   toggle() {
     this.isCollapsed = !this.isCollapsed;
-    if (!SSR) {
-      window.scroll(0, 0);
-    }
+    this.scroller.scrollToPosition([0, 0]);
   }
 }

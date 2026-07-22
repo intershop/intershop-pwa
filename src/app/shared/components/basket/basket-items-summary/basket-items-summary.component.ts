@@ -4,6 +4,7 @@ import { BasketView } from 'ish-core/models/basket/basket.model';
 
 @Component({
   selector: 'ish-basket-items-summary',
+  standalone: false,
   templateUrl: './basket-items-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

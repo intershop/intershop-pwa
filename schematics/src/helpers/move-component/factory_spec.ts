@@ -148,6 +148,7 @@ export class DummyTwoComponent {}
 
       @Component({
         selector: 'ish-foo',
+        standalone: false,
         templateUrl: './foo.component.html',
         changeDetection: ChangeDetectionStrategy.OnPush,
       })

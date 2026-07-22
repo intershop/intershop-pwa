@@ -6,10 +6,10 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 
 import { loadViewContextEntrypointSuccess } from './viewcontexts.actions';
 
-declare type ContentPageletEntryPointWithContext = ContentPageletEntryPoint & {
+declare type ContentPageletEntryPointWithContext = {
   viewContextId: string;
   callParameters: CallParameters;
-};
+} & ContentPageletEntryPoint;
 
 export function serializeContextSpecificViewContextId(viewContextId: string, callParameters: CallParameters) {
   const serializedParams = callParameters

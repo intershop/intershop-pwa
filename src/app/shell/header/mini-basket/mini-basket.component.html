@@ -1,3 +1,6 @@
+@let itemCount = itemCount$ | async;
+@let basketAnimation = basketAnimation$ | async;
+
 <div
   #miniBasketDropdown="ngbDropdown"
   class="quick-cart-link"
@@ -12,10 +15,10 @@
     class="btn btn-link"
     ngbDropdownToggle
     type="button"
-    [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
+    [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount }"
   >
     <i class="bi bi-cart-fill header-icon"></i>
-    <span>{{ 'shopping_cart.ministatus.items.text' | translate: { '0': itemCount$ | async } }}</span>
+    <span>{{ 'shopping_cart.ministatus.items.text' | translate: { '0': itemCount } }}</span>
     @if (itemTotal$ | async; as itemTotal) {
       <span> / </span> <span class="mini-cart-price">{{ itemTotal | ishPrice }}</span>
     }
@@ -28,14 +31,14 @@
 
 <!-- Mobile -->
 @if (view === 'small') {
-  @if (itemCount$ | async; as itemCount) {
+  @if (itemCount) {
     <a
       class="item-count-container position-relative sticky-header-icon"
       routerLink="/basket"
-      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount }"
     >
       <i class="bi bi-cart-fill header-icon"></i>
-      <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">{{ itemCount }}</span>
+      <span class="badge rounded-pill" [ngClass]="basketAnimation">{{ itemCount }}</span>
     </a>
   } @else {
     <a
@@ -44,14 +47,14 @@
       placement="bottom-end"
       tabindex="0"
       triggers="manual"
-      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount$ | async }"
+      [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount }"
       [autoClose]="'outside'"
       [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
       (click)="p.open()"
       (keyup.enter)="p.open()"
     >
       <i class="bi bi-cart-fill header-icon"></i>
-      <span class="badge rounded-pill" [ngClass]="basketAnimation$ | async">0</span>
+      <span class="badge rounded-pill" [ngClass]="basketAnimation">0</span>
     </a>
   }
 }

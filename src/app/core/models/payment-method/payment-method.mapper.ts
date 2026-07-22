@@ -67,8 +67,8 @@ export class PaymentMethodMapper {
       'ISH_FASTPAY',
       'ISH_INVOICE_TOTAL_ZERO',
       'PAYPAL_CHECKOUT',
-      'PAYPAL_EXPRESS_CHECKOUT',
       'PAYPAL_CHECKOUT_EXPRESS',
+      'PAYPAL_EXPRESS_CHECKOUT',
     ];
 
     // return only payment methods that have either payment instruments or no parameters

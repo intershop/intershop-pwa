@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { BehaviorSubject, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
@@ -66,11 +66,12 @@ describe('Payment Paypal Component', () => {
     when(router.url).thenReturn('/checkout/payment');
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [MockDirective(NgbPopover), MockDirective(PaypalErrorDirective), PaymentPaypalComponent],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: PaypalConfigService, useFactory: () => instance(paypalConfigService) },
+        provideTranslateService(),
       ],
     })
       .overrideComponent(PaymentPaypalComponent, {

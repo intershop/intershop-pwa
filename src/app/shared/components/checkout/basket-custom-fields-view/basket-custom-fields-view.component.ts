@@ -13,6 +13,7 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
  */
 @Component({
   selector: 'ish-basket-custom-fields-view',
+  standalone: false,
   templateUrl: './basket-custom-fields-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

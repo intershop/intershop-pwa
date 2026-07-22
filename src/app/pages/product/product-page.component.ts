@@ -7,6 +7,7 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
 @Component({
   selector: 'ish-product-page',
+  standalone: false,
   templateUrl: './product-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],

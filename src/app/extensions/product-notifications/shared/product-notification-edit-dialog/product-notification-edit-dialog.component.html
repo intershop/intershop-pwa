@@ -1,51 +1,58 @@
-<ng-template #modal let-selectModal>
-  <div class="modal-header">
-    <h2 class="modal-title" id="product-notification-edit-modal-title">
-      @if (product$ | async; as product) {
-        {{ product.name }}
-      }
-    </h2>
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
-  @if (productNotification$ | async; as productNotification) {
-    <form #form="ngForm" ishFormSubmit novalidate [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
-      <div class="modal-body">
-        <ish-product-image imageType="L" />
-        <ish-product-notification-edit-form
-          [form]="productNotificationForm"
-          [productNotification]="productNotification"
-          [userEmail]="userEmail$ | async"
-        />
-      </div>
-      <div class="modal-footer">
-        <button
-          class="btn btn-primary"
-          data-testing-id="product-notification-edit-dialog-edit"
-          type="submit"
-          [disabled]="productNotificationForm.invalid && form.submitted"
-        >
-          {{ 'product.notification.edit.form.update.button.label' | translate }}
-        </button>
-        <button class="btn btn-secondary" type="button" (click)="hide()">
-          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
-        </button>
-      </div>
-    </form>
-  } @else {
-    <form ishFormSubmit novalidate [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
-      <div class="modal-body">
-        <ish-product-image imageType="L" />
-        <ish-product-notification-edit-form [form]="productNotificationForm" [userEmail]="userEmail$ | async" />
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" type="submit">
-          {{ 'product.notification.edit.form.create.button.label' | translate }}
-        </button>
-        <button class="btn btn-secondary" type="button" (click)="hide()">
-          {{ 'product.notification.edit.form.cancel.button.label' | translate }}
-        </button>
-      </div>
-    </form>
+<ish-modal-dialog
+  #modal
+  [options]="{
+    titleText: (product$ | async)?.name,
+    ariaLabelledBy: 'product-notification-edit-modal-title',
+  }"
+>
+  @if (inventoryLoaded$ | async) {
+    @let userEmail = userEmail$ | async;
+    @if (productNotification$ | async; as productNotification) {
+      <form
+        #form="ngForm"
+        body
+        ishFormSubmit
+        novalidate
+        [formGroup]="productNotificationForm"
+        (ngSubmit)="submitForm()"
+      >
+        <div class="modal-body">
+          <ish-product-image imageType="L" />
+          <ish-product-notification-edit-form
+            [form]="productNotificationForm"
+            [productNotification]="productNotification"
+            [userEmail]="userEmail"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-primary"
+            data-testing-id="product-notification-edit-dialog-edit"
+            type="submit"
+            [disabled]="productNotificationForm.invalid && form.submitted"
+          >
+            {{ 'product.notification.edit.form.update.button.label' | translate }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="hide()">
+            {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+          </button>
+        </div>
+      </form>
+    } @else {
+      <form body ishFormSubmit novalidate [formGroup]="productNotificationForm" (ngSubmit)="submitForm()">
+        <div class="modal-body">
+          <ish-product-image imageType="L" />
+          <ish-product-notification-edit-form [form]="productNotificationForm" [userEmail]="userEmail" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit">
+            {{ 'product.notification.edit.form.create.button.label' | translate }}
+          </button>
+          <button class="btn btn-secondary" type="button" (click)="hide()">
+            {{ 'product.notification.edit.form.cancel.button.label' | translate }}
+          </button>
+        </div>
+      </form>
+    }
   }
-</ng-template>
+</ish-modal-dialog>

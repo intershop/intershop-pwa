@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { CostCentersFilterComponent } from './cost-centers-filter.component';
@@ -14,9 +14,9 @@ describe('Cost Centers Filter Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MockComponent(FormlyForm), ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [MockComponent(FormlyForm), ReactiveFormsModule, TranslatePipe],
       declarations: [CostCentersFilterComponent],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

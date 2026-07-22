@@ -6,9 +6,9 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Price } from 'ish-core/models/price/price.model';
 
-export type RequisitionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type RequisitionStatus = 'APPROVED' | 'PENDING' | 'REJECTED';
 
-export type RequisitionViewer = 'buyer' | 'approver';
+export type RequisitionViewer = 'approver' | 'buyer';
 
 export interface RequisitionApproval {
   status: string;

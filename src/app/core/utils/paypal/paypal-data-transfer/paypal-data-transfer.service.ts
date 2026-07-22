@@ -5,7 +5,7 @@ export interface PaypalOrderData {
   paypalOrderId?: string;
   orderId?: string;
   paymentInstrumentId?: string;
-  orderStatus?: 'SUCCESS' | 'CANCELLED' | 'ERROR';
+  orderStatus?: 'CANCELLED' | 'ERROR' | 'SUCCESS';
 }
 
 /**

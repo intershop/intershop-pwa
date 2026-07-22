@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -34,7 +34,7 @@ describe('Account Recurring Orders Page Component', () => {
         AuthorizationToggleModule.forTesting('APP_B2B_MANAGE_ORDERS'),
         NgbNavModule,
         RouterModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
       declarations: [
         AccountRecurringOrdersPageComponent,
@@ -42,7 +42,11 @@ describe('Account Recurring Orders Page Component', () => {
         MockComponent(LoadingComponent),
         MockComponent(RecurringOrderListComponent),
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

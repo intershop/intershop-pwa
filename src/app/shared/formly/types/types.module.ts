@@ -11,7 +11,7 @@ import {
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
@@ -43,18 +43,19 @@ const fieldComponents = [
   DateRangePickerFieldComponent,
   FieldsetFieldComponent,
   HtmlTextFieldComponent,
+  NumberFieldComponent,
   PasswordFieldComponent,
   PlainTextFieldComponent,
   RadioFieldComponent,
   RadioGroupFieldComponent,
+  SearchSelectFieldComponent,
   SelectFieldComponent,
   TextareaFieldComponent,
   TextInputFieldComponent,
-  SearchSelectFieldComponent,
-  NumberFieldComponent,
 ];
 
 @NgModule({
+  declarations: [...fieldComponents],
   imports: [
     CaptchaExportsModule,
     CommonModule,
@@ -65,7 +66,7 @@ const fieldComponents = [
     NgxMaskDirective,
     NgxMaskPipe,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
 
     FormlyBaseModule.forChild({
       types: [
@@ -222,13 +223,12 @@ const fieldComponents = [
       ],
     }),
   ],
+  exports: [...fieldComponents],
   providers: [
     provideNgxMask(),
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
-  declarations: [...fieldComponents],
-  exports: [...fieldComponents],
 })
 export class TypesModule {}

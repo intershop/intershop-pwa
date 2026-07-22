@@ -16,19 +16,12 @@ export const initialState: ViewconfState = {
 
 export const viewconfReducer = createReducer(
   initialState,
-  on(
-    setBreadcrumbData,
-    setBreadcrumbDataFromRouting,
-    (state, action): ViewconfState => ({
-      ...state,
-      breadcrumbData: action.payload.breadcrumbData,
-    })
-  ),
-  on(
-    setStickyHeader,
-    (state, action): ViewconfState => ({
-      ...state,
-      stickyHeader: action.payload.sticky,
-    })
-  )
+  on(setBreadcrumbData, setBreadcrumbDataFromRouting, (state, action): ViewconfState => ({
+    ...state,
+    breadcrumbData: action.payload.breadcrumbData,
+  })),
+  on(setStickyHeader, (state, action): ViewconfState => ({
+    ...state,
+    stickyHeader: action.payload.sticky,
+  }))
 );

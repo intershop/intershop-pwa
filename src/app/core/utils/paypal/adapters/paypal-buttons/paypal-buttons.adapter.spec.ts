@@ -42,7 +42,7 @@ describe('Paypal Buttons Adapter', () => {
     id: 'ISH_PAYPAL',
     serviceId: 'PayPal',
     displayName: 'PayPal',
-    capabilities: ['PaypalCheckout', 'FastCheckout'],
+    capabilities: ['FastCheckout', 'PaypalCheckout'],
     paymentInstruments: [{ id: 'test-instrument-id' }],
   } as PaymentMethod;
 

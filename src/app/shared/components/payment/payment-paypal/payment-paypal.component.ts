@@ -36,16 +36,17 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
  * based on the configured component type and current page context. It supports Buttons, Messages and CardFields.*/
 @Component({
   selector: 'ish-payment-paypal',
+  standalone: false,
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     PaypalAdaptersBuilder,
+    PaypalApplePayAdapter,
     PaypalButtonsAdapter,
     PaypalCardFieldsAdapter,
-    PaypalMessagesAdapter,
     PaypalGooglePayAdapter,
-    PaypalApplePayAdapter,
+    PaypalMessagesAdapter,
   ],
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {

@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
+
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistPreferencesDialogComponent } from './wishlist-preferences-dialog.component';
 
@@ -8,6 +13,14 @@ describe('Wishlist Preferences Dialog Component', () => {
   let component: WishlistPreferencesDialogComponent;
   let fixture: ComponentFixture<WishlistPreferencesDialogComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [MockComponent(ModalDialogComponent), WishlistPreferencesDialogComponent],
+      providers: [provideTranslateService()],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistPreferencesDialogComponent);
@@ -22,11 +35,14 @@ describe('Wishlist Preferences Dialog Component', () => {
   });
 
   it('should emit new wishlist data when submit form was called and the form was valid', () => {
-    fixture.detectChanges();
-    component.model = {
+    component.wishlist = {
+      id: '123456789',
       title: 'test wishlist',
       preferred: true,
     };
+    fixture.detectChanges();
+    component.show();
+    fixture.detectChanges();
 
     const emitter = spy(component.submitWishlist);
 

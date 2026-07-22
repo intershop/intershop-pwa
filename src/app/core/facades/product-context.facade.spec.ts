@@ -1,5 +1,5 @@
 import { TestBed, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { omit, pick } from 'lodash-es';
 import { BehaviorSubject, EMPTY, Observable, Subject, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -47,11 +47,11 @@ describe('Product Context Facade', () => {
     when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
         ProductContextFacade,
+        provideTranslateService(),
       ],
     });
 
@@ -846,7 +846,7 @@ describe('Product Context Facade', () => {
 
     class ProviderA implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(({ product: prod }) =>
@@ -866,7 +866,7 @@ describe('Product Context Facade', () => {
 
     class ProviderB implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           map(() => ({
@@ -879,7 +879,7 @@ describe('Product Context Facade', () => {
 
     class ProviderC implements ExternalDisplayPropertiesProvider {
       setup(
-        context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+        context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
       ): Observable<Partial<ProductContextDisplayProperties<false>>> {
         return context$.pipe(
           switchMap(() => someOther$),
@@ -911,7 +911,6 @@ describe('Product Context Facade', () => {
       when(appFacade.serverSetting$(anything())).thenReturn(of(undefined));
 
       TestBed.configureTestingModule({
-        imports: [TranslateModule.forRoot()],
         providers: [
           { provide: AppFacade, useFactory: () => instance(appFacade) },
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderA, multi: true },
@@ -919,6 +918,7 @@ describe('Product Context Facade', () => {
           { provide: EXTERNAL_DISPLAY_PROPERTY_PROVIDER, useClass: ProviderC, multi: true },
           { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
           ProductContextFacade,
+          provideTranslateService(),
         ],
       });
 

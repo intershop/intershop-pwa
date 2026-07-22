@@ -5,6 +5,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-product-list-manual',
+  standalone: false,
   templateUrl: './cms-product-list-manual.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

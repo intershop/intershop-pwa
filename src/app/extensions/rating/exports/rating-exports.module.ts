@@ -7,7 +7,9 @@ import { LazyProductRatingComponent } from './lazy-product-rating/lazy-product-r
 import { LazyProductReviewsComponent } from './lazy-product-reviews/lazy-product-reviews.component';
 
 @NgModule({
+  declarations: [LazyProductRatingComponent, LazyProductReviewsComponent],
   imports: [FeatureToggleModule],
+  exports: [LazyProductRatingComponent, LazyProductReviewsComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -18,7 +20,5 @@ import { LazyProductReviewsComponent } from './lazy-product-reviews/lazy-product
       multi: true,
     },
   ],
-  declarations: [LazyProductRatingComponent, LazyProductReviewsComponent],
-  exports: [LazyProductRatingComponent, LazyProductReviewsComponent],
 })
 export class RatingExportsModule {}

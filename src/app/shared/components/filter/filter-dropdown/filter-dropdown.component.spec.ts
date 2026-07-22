@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { deepEqual, spy, verify } from 'ts-mockito';
 
 import { Facet } from 'ish-core/models/facet/facet.model';
 import { Filter } from 'ish-core/models/filter/filter.model';
@@ -20,7 +24,13 @@ describe('Filter Dropdown Component', () => {
       level: 0,
     }) as Facet;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [NgSelectModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [FilterDropdownComponent],
+      providers: [provideTranslateService()],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(FilterDropdownComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
@@ -39,8 +49,48 @@ describe('Filter Dropdown Component', () => {
 
   it('should display popup when rendered', () => {
     fixture.detectChanges();
-    expect(element.querySelector('[ngbdropdowntoggle]')).toBeTruthy();
-    expect(element.querySelector('[ngbdropdownmenu]')).toBeTruthy();
-    expect(element.textContent).toContain('Color red  blue');
+    expect(element.querySelector('ng-select')).toBeTruthy();
+    expect(element.querySelector('ng-select').getAttribute('aria-label')).toEqual('Color');
+  });
+
+  it('should set isMultiSelect to false for single selection type', () => {
+    component.filterElement = {
+      ...component.filterElement,
+      selectionType: 'single',
+      facets: [facet('Color_of_Product', 'red')],
+    } as Filter;
+    component.ngOnChanges();
+    expect(component.isMultiSelect).toBeFalse();
+  });
+
+  it('should pre-select the selected facet', () => {
+    component.ngOnChanges();
+    const selected = component.selectedFacetsControl.value;
+    expect(Array.isArray(selected) ? selected : [selected]).toEqual(
+      expect.arrayContaining([expect.objectContaining({ displayName: 'blue' })])
+    );
+  });
+
+  it('should emit applyFilter when apply is called', () => {
+    const eventEmitter$ = spy(component.applyFilter);
+    const testFacet = facet('Color_of_Product', 'red');
+    component.apply(testFacet);
+    verify(eventEmitter$.emit(deepEqual({ searchParameter: { Color_of_Product: ['red'] } }))).once();
+  });
+
+  it('should emit applyFilter when single select facet changes', () => {
+    component.filterElement = {
+      ...component.filterElement,
+      selectionType: 'single',
+      facets: [facet('Color_of_Product', 'red'), facet('Color_of_Product', 'blue')],
+    } as Filter;
+
+    component.ngOnChanges();
+
+    const eventEmitter$ = spy(component.applyFilter);
+
+    component.onSingleChange(component.filterElement.facets[0]);
+
+    verify(eventEmitter$.emit(deepEqual({ searchParameter: { Color_of_Product: ['red'] } }))).once();
   });
 });

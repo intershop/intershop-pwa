@@ -83,3 +83,18 @@ Object.defineProperty(document.body.style, 'transform', {
     configurable: true,
   }),
 });
+
+// jsdom does not implement window.matchMedia which is required e.g. by Swiper
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query: string): MediaQueryList => ({
+    matches: false,
+    media: query,
+    onchange: undefined,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});

@@ -19,12 +19,13 @@ import { SelectOrderTemplateModalComponent } from '../select-order-template-moda
  */
 @Component({
   selector: 'ish-product-add-to-order-template',
+  standalone: false,
   templateUrl: './product-add-to-order-template.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 @GenerateLazyComponent()
 export class ProductAddToOrderTemplateComponent implements OnInit {
-  @Input() displayType: 'icon' | 'link' | 'animated' = 'link';
+  @Input() displayType: 'animated' | 'icon' | 'link' = 'link';
   @Input() cssClass: string;
   /**
    * hidden for screen readers

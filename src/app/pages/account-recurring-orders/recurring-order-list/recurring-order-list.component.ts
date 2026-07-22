@@ -6,17 +6,18 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 export type RecurringOrderColumnsType =
-  | 'recurringOrderNo'
+  | 'actions'
+  | 'buyer'
   | 'creationDate'
   | 'frequency'
   | 'lastOrderDate'
   | 'nextOrderDate'
-  | 'buyer'
   | 'orderTotal'
-  | 'actions';
+  | 'recurringOrderNo';
 
 @Component({
   selector: 'ish-recurring-order-list',
+  standalone: false,
   templateUrl: './recurring-order-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

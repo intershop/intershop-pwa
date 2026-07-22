@@ -15,6 +15,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
 
 @Component({
   selector: 'ish-user-roles-selection',
+  standalone: false,
   templateUrl: './user-roles-selection.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -55,7 +56,7 @@ export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit
               ...acc,
               [role.id]: this.createFormControl(
                 staticRoles.includes(role.id),
-                ['APP_B2B_OCI_USER', 'APP_B2B_CXML_USER'].includes(role.id)
+                ['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'].includes(role.id)
               ),
             }),
             {}

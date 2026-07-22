@@ -9,6 +9,7 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
 
 @Component({
   selector: 'ish-account-punchout-create-page',
+  standalone: false,
   templateUrl: './account-punchout-create-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

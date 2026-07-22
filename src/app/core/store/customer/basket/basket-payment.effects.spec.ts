@@ -241,7 +241,7 @@ describe('Basket Payment Effects', () => {
               defaultLocale: 'de_DE',
               defaultCurrency: 'EUR',
               locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
-              currencies: ['USD', 'EUR'],
+              currencies: ['EUR', 'USD'],
             },
           },
         })
@@ -975,7 +975,7 @@ describe('Basket Payment Effects', () => {
               defaultLocale: 'de_DE',
               defaultCurrency: 'EUR',
               locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
-              currencies: ['USD', 'EUR'],
+              currencies: ['EUR', 'USD'],
             },
           },
         })

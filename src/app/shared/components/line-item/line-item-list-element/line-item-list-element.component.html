@@ -172,10 +172,10 @@
     @if (!pli.isFreeGift && editable) {
       <button
         class="btn-tool btn-link"
+        title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
         type="button"
         [attr.data-id]="pli.id"
         [attr.data-testing-id]="'remove-line-item'"
-        title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
         (click)="onDeleteItem(pli.id)"
       >
         <i class="bi bi-trash-fill"></i>

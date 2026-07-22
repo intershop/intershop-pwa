@@ -108,7 +108,7 @@ while true; do
         continue
     fi
 
-    SITES_CACHEIDS=$(cat /tmp/wastatistics_output | grep  '\-Site' | awk -F ' ' '{print $2 ":" $4}')
+    SITES_CACHEIDS=$(cat /tmp/wastatistics_output | grep '\-Site' | awk -F ' ' '{if ($2 ~ /-Site$/ && $4 ~ /^[0-9]+$/) print $2 ":" $4}')
     # echo " Site - Cache IDS: $SITES_CACHEIDS"
 
     SITES_TO_CLEAR=()

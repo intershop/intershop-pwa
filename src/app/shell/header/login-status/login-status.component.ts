@@ -6,12 +6,13 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-login-status',
+  standalone: false,
   templateUrl: './login-status.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginStatusComponent implements OnInit {
   @Input() logoutOnly = false;
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   user$: Observable<User>;
 

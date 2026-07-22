@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -21,13 +21,14 @@ describe('Login Form Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [LoginFormComponent, MockComponent(ErrorMessageComponent)],
-      imports: [FormlyTestingModule, RouterModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, RouterModule, TranslatePipe],
       providers: [
         {
           provide: AccountFacade,
           useFactory: () => instance(accountFacade),
         },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

@@ -8,8 +8,8 @@ import { AddressDoctorModalComponent } from './shared/address-doctor-modal/addre
 import { AddressDoctorComponent } from './shared/address-doctor/address-doctor.component';
 
 @NgModule({
-  imports: [SharedModule],
   declarations: [AddressDoctorComponent, AddressDoctorModalComponent],
+  imports: [SharedModule],
   exports: [SharedModule],
   providers: [
     {

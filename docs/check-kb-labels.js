@@ -8,8 +8,9 @@ if (files.length === 0) {
   files = globSync('docs/**/*.md');
 }
 
-// ignore documentation overview
+// ignore documentation overview and examples folder
 files = files.filter(p => !p.endsWith(path.join('docs', 'README.md')));
+files = files.filter(p => !p.includes(path.join('docs', 'examples')));
 
 let isError = false;
 

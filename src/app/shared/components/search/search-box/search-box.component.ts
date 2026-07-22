@@ -42,18 +42,17 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
  */
 @Component({
   selector: 'ish-search-box',
-  templateUrl: './search-box.component.html',
-  standalone: true,
   imports: [
     AsyncPipe,
     NgClass,
-    TranslatePipe,
     SuggestBrandsComponent,
     SuggestCategoriesComponent,
     SuggestKeywordsComponent,
     SuggestProductsComponent,
     SuggestSearchTermsComponent,
+    TranslatePipe,
   ],
+  templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -257,7 +256,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // set CSS variable for suggest layer height on mobile devices to prevent keyboard overlay issues
   private updateMobileSuggestLayerHeight = () => {
-    if (!SSR && this.deviceType === 'mobile') {
+    if (this.deviceType === 'mobile') {
       clearTimeout(this.resizeTimeout);
 
       // timeout to wait for keyboard animation to finish

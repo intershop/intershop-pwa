@@ -6,25 +6,22 @@
   <div class="loading-container">
     @if ((loading$ | async) !== true) {
       <div class="pb-2">
-        @if (orderTemplates$ | async; as orderTemplates) {
-          @if (orderTemplates.length) {
-            @for (orderTemplate of orderTemplates; track orderTemplate.id) {
-              <div class="mb-2">
-                <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
-                @if (orderTemplate.items?.length) {
-                  <a class="align-top float-end">
-                    <ish-product-add-to-basket
-                      cssClass="p-0 mb-0"
-                      displayType="icon"
-                      ishProductContext
-                      [parts]="getParts(orderTemplate)"
-                    />
-                  </a>
-                }
-              </div>
-            }
-          } @else {
-            {{ 'account.order_template.list.no_templates.text' | translate }}
+        @let orderTemplates = orderTemplates$ | async;
+        @if (orderTemplates?.length) {
+          @for (orderTemplate of orderTemplates; track orderTemplate.id) {
+            <div class="mb-2">
+              <a [routerLink]="['/account/order-templates/', orderTemplate.id]">{{ orderTemplate.title }}</a>
+              @if (orderTemplate.items?.length) {
+                <span class="align-top float-end">
+                  <ish-product-add-to-basket
+                    cssClass="p-0 mb-0"
+                    displayType="icon"
+                    ishProductContext
+                    [parts]="getParts(orderTemplate)"
+                  />
+                </span>
+              }
+            </div>
           }
         } @else {
           {{ 'account.order_template.list.no_templates.text' | translate }}

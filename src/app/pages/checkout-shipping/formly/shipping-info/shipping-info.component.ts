@@ -6,6 +6,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
 
 @Component({
   selector: 'ish-shipping-info',
+  standalone: false,
   templateUrl: './shipping-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,18 +1,15 @@
 import { createAction } from '@ngrx/store';
 
-import { CustomerRegistrationType, SsoRegistrationType } from 'ish-core/models/customer/customer.model';
+import { SsoRegistrationType } from 'ish-core/models/customer/customer.model';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
 export const setRegistrationInfo = createAction(
-  '[SsoRegistration] Set Registration Info',
+  '[SSO Registration] Set Registration Info',
   payload<SsoRegistrationType>()
 );
 
-export const registerSuccess = createAction(
-  '[SsoRegistration API] Register SMB Customer Success',
-  payload<CustomerRegistrationType>()
-);
+export const registerSuccess = createAction('[SSO Registration API] Register Customer Success');
 
-export const registerFailure = createAction('[SsoRegistration API] Register SMB Customer Failure', httpError());
+export const registerFailure = createAction('[SSO Registration API] Register Customer Failure', httpError());
 
-export const cancelRegistration = createAction('[SsoRegistration] Cancel Registration');
+export const cancelRegistration = createAction('[SSO Registration] Cancel Registration');

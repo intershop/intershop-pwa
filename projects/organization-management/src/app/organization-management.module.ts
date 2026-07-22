@@ -18,8 +18,8 @@ import { UserRolesBadgesComponent } from './pages/users/user-roles-badges/user-r
 import { OrganizationManagementStoreModule } from './store/organization-management-store.module';
 
 const exportedComponents = [
-  BuyersSelectComponent,
   BudgetInfoComponent,
+  BuyersSelectComponent,
   CostCenterBudgetComponent,
   CostCenterBuyerEditDialogComponent,
   CostCenterFormComponent,
@@ -27,8 +27,8 @@ const exportedComponents = [
   UserBudgetComponent,
   UserBudgetFormComponent,
   UserProfileFormComponent,
-  UserRolesSelectionComponent,
   UserRolesBadgesComponent,
+  UserRolesSelectionComponent,
 ];
 
 @NgModule({

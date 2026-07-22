@@ -27,7 +27,7 @@ Using another backend is also possible as long as it provides a [compatible REST
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v18.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
+In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v19.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
 On a new request, Angular SSR pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR works in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
@@ -91,6 +91,13 @@ Read on for a step-by-step walkthrough of the initial connection request.
 6. The initial page response is displayed to the user and the Angular Client application boots up in the browser.
 
 7. Once booted up, additional REST calls are directed straight to the ICM, and the PWA acts as a single-page application. No further HTML pages are requested.
+
+> [!IMPORTANT]
+> For production deployments, set the `ALLOWED_HOSTS` environment variable on the [SSR container](../guides/ssr-startup.md) to your public hostname(s) (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
+> By default, only `localhost` is accepted, which will cause SSR to fail for requests with any other `Host` header.
+> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
 
 ## Deployment Without Nginx
 

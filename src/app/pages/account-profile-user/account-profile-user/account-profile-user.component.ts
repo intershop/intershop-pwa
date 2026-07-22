@@ -23,6 +23,7 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-account-profile-user',
+  standalone: false,
   templateUrl: './account-profile-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

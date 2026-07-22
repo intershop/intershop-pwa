@@ -2,20 +2,20 @@ import { BasketFeedbackView } from 'ish-core/models/basket-feedback/basket-feedb
 import { Basket } from 'ish-core/models/basket/basket.model';
 
 export type BasketValidationScopeType =
-  | 'Products'
-  | 'Value' // min max order values
+  | ''
   | 'Addresses'
-  | 'InvoiceAddress'
-  | 'ShippingAddress'
-  | 'Shipping'
-  | 'Payment'
-  | 'Promotion'
-  | 'CostCenter'
-  | 'Quote'
-  | 'Subscription'
   | 'All'
+  | 'CostCenter'
+  | 'InvoiceAddress'
+  | 'Payment'
+  | 'Products'
+  | 'Promotion'
+  | 'Quote'
+  | 'Shipping'
+  | 'ShippingAddress'
+  | 'Subscription'
   /* no scope: a minimum is validated */
-  | '';
+  | 'Value'; // min max order values
 
 export interface BasketValidationResultType {
   valid: boolean;

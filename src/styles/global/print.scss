@@ -58,10 +58,10 @@
 
   .swiper-slide {
     display: none;
-  }
 
-  .swiper-slide-active {
-    display: inline-block !important;
+    &.swiper-slide-active {
+      display: inline-block !important;
+    }
   }
 
   .budget-bar-used {

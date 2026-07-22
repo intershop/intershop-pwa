@@ -7,6 +7,7 @@ import { RecentlyFacade } from '../../facades/recently.facade';
 
 @Component({
   selector: 'ish-recently-page',
+  standalone: false,
   templateUrl: './recently-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

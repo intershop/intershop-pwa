@@ -8,7 +8,7 @@ import { DataRequestPageComponent } from './data-request-page.component';
 const dataRequestPageRoutes: Routes = [{ path: '**', component: DataRequestPageComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(dataRequestPageRoutes), SharedModule],
   declarations: [DataRequestPageComponent],
+  imports: [RouterModule.forChild(dataRequestPageRoutes), SharedModule],
 })
 export class DataRequestPageModule {}

@@ -25,31 +25,33 @@ import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   declarations: [AppComponent],
-  /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
+  // Order matters: AppLastRoutingModule must be last because it contains the wildcard route.
+  /* eslint-disable perfectionist/sort-arrays */
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    CoreModule,
-    ShellModule,
-    CopilotExportsModule,
     AppRoutingModule,
-    QuickorderRoutingModule,
-    QuotingRoutingModule,
-    PunchoutRoutingModule,
-    StoreLocatorRoutingModule,
-    RecentlyRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
     CompareRoutingModule,
     ContactUsRoutingModule,
+    CopilotExportsModule,
+    CoreModule,
+    PunchoutRoutingModule,
+    QuickorderRoutingModule,
+    QuotingRoutingModule,
+    RecentlyRoutingModule,
+    ShellModule,
+    StoreLocatorRoutingModule,
     WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
-  /* eslint-enable @angular-eslint/sort-ngmodule-metadata-arrays */
-  bootstrap: [AppComponent],
+  /* eslint-enable perfectionist/sort-arrays */
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
     provideClientHydration(withNoHttpTransferCache()),
   ],
+
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(transferState: TransferState) {

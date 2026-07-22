@@ -7,6 +7,7 @@ import { Quote, QuoteRequest } from '../../models/quoting/quoting.model';
 
 @Component({
   selector: 'ish-quote-list-page',
+  standalone: false,
   templateUrl: './quote-list-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

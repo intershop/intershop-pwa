@@ -15,6 +15,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Out
  */
 @Component({
   selector: 'ish-product-compare-paging',
+  standalone: false,
   templateUrl: './product-compare-paging.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

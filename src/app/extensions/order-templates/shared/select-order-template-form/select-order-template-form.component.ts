@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -12,6 +13,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
 @Component({
   selector: 'ish-select-order-template-form',
+  standalone: false,
   templateUrl: './select-order-template-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -28,6 +30,8 @@ export class SelectOrderTemplateFormComponent implements OnInit {
   singleFieldConfig: FormlyFieldConfig[];
   multipleFieldConfig$: Observable<FormlyFieldConfig[]>;
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(
     private orderTemplatesFacade: OrderTemplatesFacade,
     private translate: TranslateService
@@ -43,9 +47,9 @@ export class SelectOrderTemplateFormComponent implements OnInit {
       {
         type: 'ish-text-input-field',
         key: 'newOrderTemplate',
-        defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
         props: {
           required: true,
+          placeholder: this.translate.instant('account.order_template.new_order_template.text'),
           ariaLabel: 'account.order_template.form.name.label',
         },
         validators: {
@@ -86,6 +90,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
                 inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
+                ariaLabel: 'account.order_template.new_order_template.option.label',
               },
             },
             {
@@ -93,10 +98,27 @@ export class SelectOrderTemplateFormComponent implements OnInit {
               key: 'newOrderTemplate',
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
-              defaultValue: this.translate.instant('account.order_template.new_order_template.text'),
+              hooks: {
+                onInit: (field: FormlyFieldConfig) => {
+                  field.form
+                    .get('orderTemplate')
+                    ?.valueChanges.pipe(
+                      filter(value => value === 'new'),
+                      debounceTime(0),
+                      takeUntilDestroyed(this.destroyRef)
+                    )
+                    .subscribe(() => {
+                      field.focus = true;
+                    });
+                },
+              },
               props: {
                 required: true,
+                placeholder: this.translate.instant('account.order_template.new_order_template.text'),
                 ariaLabel: 'account.order_template.form.name.label',
+                focus: (field: FormlyFieldConfig) => {
+                  field.form.get('orderTemplate')?.setValue('new');
+                },
               },
               validators: {
                 validation: [SpecialValidators.noHtmlTags],
@@ -108,7 +130,7 @@ export class SelectOrderTemplateFormComponent implements OnInit {
                 },
               },
               expressions: {
-                'props.disabled': conf => conf.model.orderTemplate !== 'new',
+                'props.required': conf => conf.model.orderTemplate === 'new',
               },
             },
           ],

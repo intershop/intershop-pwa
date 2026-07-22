@@ -35,10 +35,12 @@ export class SsoRegistrationEffects {
               taxationID: data.companyInfo.taxationID,
             },
             userId: data.userId,
+            captcha: data.captcha,
+            captchaAction: data.captchaAction,
           })
           .pipe(
             concatMap(createUserResponse => [
-              registerSuccess,
+              registerSuccess(),
               ...(data.subscribedToNewsletter
                 ? [
                     userNewsletterActions.updateUserNewsletterSubscription({

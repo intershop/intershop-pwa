@@ -3,10 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ProductContext, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 
-type ProductContextAccessContext = ProductContext & { context: ProductContextFacade };
+type ProductContextAccessContext = { context: ProductContextFacade } & ProductContext;
 
 @Directive({
   selector: '[ishProductContextAccess]',
+  standalone: false,
 })
 export class ProductContextAccessDirective {
   @Input() ishProductContextAccessAlways = false;

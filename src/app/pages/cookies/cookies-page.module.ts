@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { CookiesModalComponent } from './cookies-modal/cookies-modal.component';
 import { cookiesPageGuard } from './cookies-page.guard';
@@ -21,7 +21,7 @@ const cookiesPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(cookiesPageRoutes), TranslateModule],
   declarations: [CookiesModalComponent],
+  imports: [CommonModule, RouterModule.forChild(cookiesPageRoutes), TranslatePipe],
 })
 export class CookiesPageModule {}

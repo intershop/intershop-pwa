@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -19,10 +19,11 @@ describe('Basket Add To Quote Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BasketAddToQuoteComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
         { provide: QuotingFacade, useFactory: () => instance(quotingFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

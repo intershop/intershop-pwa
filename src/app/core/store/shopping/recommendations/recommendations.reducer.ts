@@ -19,8 +19,7 @@ export const recommendationsReducer = createReducer(
   setLoadingOn(recommendationsActions.loadProductRecommendations),
   unsetLoadingOn(recommendationsActions.loadProductRecommendationsSuccess),
   unsetLoadingAndErrorOn(recommendationsActions.loadProductRecommendationsFail),
-  on(
-    recommendationsActions.loadProductRecommendationsSuccess,
-    (state, action): RecommendationsState => recommendationsAdapter.upsertOne(action.payload.recommendations, state)
+  on(recommendationsActions.loadProductRecommendationsSuccess, (state, action): RecommendationsState =>
+    recommendationsAdapter.upsertOne(action.payload.recommendations, state)
   )
 );

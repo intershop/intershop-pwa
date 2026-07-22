@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { FormGroupDirective } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -16,8 +17,8 @@ describe('Quickorder Add Products Form Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QuickorderAddProductsFormComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
+      imports: [FormlyTestingModule, TranslatePipe],
+      providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 
@@ -74,7 +75,7 @@ describe('Quickorder Add Products Form Component', () => {
       addProducts: [validProducts[0], invalidProducts[0], invalidProducts[1], validProducts[1], invalidProducts[2]],
     };
     component.quickOrderForm.patchValue(component.model);
-    component.onAddProducts();
+    component.onAddProducts(instance(mock(FormGroupDirective)));
 
     verify(shoppingFacade.addProductToBasket(validProducts[0].sku, validProducts[0].quantity)).once();
     verify(shoppingFacade.addProductToBasket(validProducts[1].sku, validProducts[1].quantity)).once();

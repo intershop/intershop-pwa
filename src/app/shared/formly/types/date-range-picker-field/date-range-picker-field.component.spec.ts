@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbCalendar, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
@@ -31,8 +31,9 @@ describe('Date Range Picker Field Component', () => {
           types: [{ name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent }],
         }),
         FormlyTestingComponentsModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     calendar = TestBed.inject(NgbCalendar);

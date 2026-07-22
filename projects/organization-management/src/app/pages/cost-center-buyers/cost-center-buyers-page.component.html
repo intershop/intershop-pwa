@@ -4,67 +4,67 @@
     in ICM versions lower than 7.10.38 the cost center admin is not allowed to read the list of users for the customer
     keep-localization-pattern: ^subject.has.no.permission.assigned$
   -->
-<ish-error-message [error]="error$ | async" />
+@let error = error$ | async;
+<ish-error-message [error]="error" />
 
-@if (buyers$ | async; as buyers) {
-  @if (buyers.length) {
-    <div>
-      <div class="container">
-        <div class="row list-header d-none d-md-flex">
-          <div class="col-md-2 list-header-item no-seperator">
-            <button class="btn btn-link" type="button" (click)="toggleItemSelection()">
-              @if (selectAll) {
-                {{ 'account.costcenter.details.buyers.list.header.selectall' | translate }}
-              } @else {
-                {{ 'account.costcenter.details.buyers.list.header.clearall' | translate }}
-              }
-            </button>
-          </div>
-          <div class="col-md-3 list-header-item no-seperator">
-            {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
-          </div>
-          <div class="col-md-7 list-header-item no-seperator">
-            {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
-          </div>
+@let buyers = buyers$ | async;
+@if (buyers?.length) {
+  <div>
+    <div class="container">
+      <div class="row list-header d-none d-md-flex">
+        <div class="col-md-2 list-header-item no-seperator">
+          <button class="btn btn-link" type="button" (click)="toggleItemSelection()">
+            @if (selectAll) {
+              {{ 'account.costcenter.details.buyers.list.header.selectall' | translate }}
+            } @else {
+              {{ 'account.costcenter.details.buyers.list.header.clearall' | translate }}
+            }
+          </button>
         </div>
+        <div class="col-md-3 list-header-item no-seperator">
+          {{ 'account.costcenter.details.buyers.list.header.name' | translate }}
+        </div>
+        <div class="col-md-7 list-header-item no-seperator">
+          {{ 'account.costcenter.details.buyers.list.header.orderspendlimit' | translate }}
+        </div>
+      </div>
 
-        <form #buyersForm="ngForm" novalidate [formGroup]="form" (ngSubmit)="submitForm()">
-          <div class="list-body">
-            <formly-form class="pt-1" [fields]="fields" [form]="form" [model]="model" />
-          </div>
-          <div class="row">
-            <div class="button-group w-100 gx-0 clearfix">
-              <div class="float-md-end">
-                <button
-                  class="btn btn-primary"
-                  data-testing-id="add-buyers-submit"
-                  type="submit"
-                  [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
-                >
-                  {{ 'account.costcenter.details.buyers.action.add' | translate }}
-                </button>
-                <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
-                  'account.cancel.link' | translate
-                }}</a>
-              </div>
+      <form #buyersForm="ngForm" novalidate [formGroup]="form" (ngSubmit)="submitForm()">
+        <div class="list-body">
+          <formly-form class="pt-1" [fields]="fields" [form]="form" [model]="model" />
+        </div>
+        <div class="row">
+          <div class="button-group w-100 gx-0 clearfix">
+            <div class="float-md-end">
+              <button
+                class="btn btn-primary"
+                data-testing-id="add-buyers-submit"
+                type="submit"
+                [disabled]="formDisabled || (buyersForm.submitted && form.invalid)"
+              >
+                {{ 'account.costcenter.details.buyers.action.add' | translate }}
+              </button>
+              <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
+                'account.cancel.link' | translate
+              }}</a>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  } @else {
-    @if (!!(error$ | async) === false) {
-      <p data-testing-id="empty-buyer-list">
-        {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
-      </p>
-    }
-
-    <div class="section text-end">
-      <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
-        'account.cancel.link' | translate
-      }}</a>
-    </div>
+  </div>
+} @else {
+  @if (!!error === false) {
+    <p data-testing-id="empty-buyer-list">
+      {{ 'account.costcenter.details.add.buyers.list.empty' | translate }}
+    </p>
   }
+
+  <div class="section text-end">
+    <a class="btn btn-secondary" data-testing-id="add-cost-center-buyers-cancel" routerLink="../">{{
+      'account.cancel.link' | translate
+    }}</a>
+  </div>
 }
 @if (loading$ | async) {
   <ish-loading />

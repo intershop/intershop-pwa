@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Link } from 'ish-core/models/link/link.model';
+
 import { OrderTemplateData } from './order-template.interface';
 import { OrderTemplateMapper } from './order-template.mapper';
 import { OrderTemplate } from './order-template.model';
@@ -58,6 +60,64 @@ describe('Order Template Mapper', () => {
 
       expect(mapped).toHaveProperty('id', orderTeplateId);
       expect(mapped).toHaveProperty('title', 'title');
+    });
+  });
+
+  describe('fromListData', () => {
+    it('should return empty array when input is falsy', () => {
+      expect(orderTemplateMapper.fromListData(undefined)).toBeEmpty();
+    });
+
+    it('should return empty array when input is empty', () => {
+      expect(orderTemplateMapper.fromListData([])).toBeEmpty();
+    });
+
+    it('should map list element data to order template array', () => {
+      const listData = [
+        {
+          itemId: '1234',
+          title: 'My Template',
+          attributes: [
+            { name: 'itemsCount', value: 3 },
+            { name: 'creationDate', value: 1234567890 },
+          ],
+        },
+        {
+          itemId: '5678',
+          title: 'Second Template',
+          attributes: [{ name: 'itemsCount', value: 0 }],
+        },
+      ] as Link[];
+
+      const mapped = orderTemplateMapper.fromListData(listData);
+
+      expect(mapped).toHaveLength(2);
+      expect(mapped[0]).toEqual({
+        id: '1234',
+        title: 'My Template',
+        itemsCount: 3,
+        creationDate: 1234567890,
+      });
+      expect(mapped[1]).toEqual({
+        id: '5678',
+        title: 'Second Template',
+        itemsCount: 0,
+        creationDate: undefined,
+      });
+    });
+  });
+
+  describe('fromDataToId', () => {
+    it('should return undefined when input is falsy', () => {
+      expect(orderTemplateMapper.fromDataToId(undefined)).toBeUndefined();
+    });
+
+    it('should extract id from URI in order template data', () => {
+      const data: OrderTemplateData = {
+        title: 'test',
+        uri: 'inSPIRED-inTRONICS-Site/-;loc=en_US;cur=USD/wishlists/ot1234',
+      };
+      expect(orderTemplateMapper.fromDataToId(data)).toBe('ot1234');
     });
   });
 });

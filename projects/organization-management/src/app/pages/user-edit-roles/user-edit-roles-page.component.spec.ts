@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -35,7 +35,7 @@ describe('User Edit Roles Page Component', () => {
     when(accountFacade.user$).thenReturn(of({ login: 'boss@test.intershop.de' } as User));
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(UserRolesSelectionComponent),
@@ -44,6 +44,7 @@ describe('User Edit Roles Page Component', () => {
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

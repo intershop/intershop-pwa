@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
@@ -34,9 +34,9 @@ describe('Organization Settings Company Component', () => {
     ]);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [MockComponent(ErrorMessageComponent), OrganizationSettingsCompanyComponent],
-      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }],
+      providers: [{ provide: FieldLibrary, useFactory: () => instance(fieldLibrary) }, provideTranslateService()],
     }).compileComponents();
   });
 

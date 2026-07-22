@@ -53,7 +53,7 @@ describe('B2b User Mapper', () => {
           attributes: [
             {
               name: 'roleIDs',
-              value: ['APP_B2B_COSTCENTER_OWNER', 'APP_B2B_BUYER'],
+              value: ['APP_B2B_BUYER', 'APP_B2B_COSTCENTER_OWNER'],
             },
             { name: 'firstName', value: 'Patricia' },
             { name: 'lastName', value: 'Miller' },
@@ -78,8 +78,8 @@ describe('B2b User Mapper', () => {
             "lastName": "Miller",
             "login": "pmiller@test.intershop.de",
             "roleIDs": [
-              "APP_B2B_COSTCENTER_OWNER",
               "APP_B2B_BUYER",
+              "APP_B2B_COSTCENTER_OWNER",
             ],
             "userBudget": {
               "budget": {

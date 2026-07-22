@@ -6,11 +6,12 @@ import { RecurringOrder } from 'ish-core/models/recurring-order/recurring-order.
 
 @Component({
   selector: 'ish-checkout-receipt',
+  standalone: false,
   templateUrl: './checkout-receipt.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutReceiptComponent {
-  @Input({ required: true }) order: Order | RecurringOrder | Basket;
+  @Input({ required: true }) order: Basket | Order | RecurringOrder;
 
   hasCustomFields(): boolean {
     return this.order?.customFields && Object.keys(this.order.customFields).length > 0;

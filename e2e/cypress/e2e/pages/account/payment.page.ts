@@ -22,7 +22,7 @@ export class PaymentPage {
     cy.visit('/account/payment');
   }
 
-  selectPayment(payment: 'INVOICE' | 'CASH_ON_DELIVERY' | 'CASH_IN_ADVANCE') {
+  selectPayment(payment: 'CASH_IN_ADVANCE' | 'CASH_ON_DELIVERY' | 'INVOICE') {
     cy.get(this.tag).find(`#paymentOption_ISH_${payment}`).check();
     cy.wait(1500);
     waitLoadingEnd();

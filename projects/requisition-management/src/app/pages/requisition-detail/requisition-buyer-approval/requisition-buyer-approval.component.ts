@@ -10,6 +10,7 @@ import { Requisition } from '../../../models/requisition/requisition.model';
  */
 @Component({
   selector: 'ish-requisition-buyer-approval',
+  standalone: false,
   templateUrl: './requisition-buyer-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -7,6 +7,99 @@ kb_everyone
 
 # Changelog
 
+## [12.0.0](https://github.com/intershop/intershop-pwa/releases/tag/12.0.0) (2026-07-22)
+
+> [!NOTE]
+> Intershop PWA 12.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.4.0.
+> It will work with all versions from ICM 14.4.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 12.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.13.0 for PWA 12.0.0 deployments.
+
+> [!IMPORTANT]
+> For production deployments, set `ALLOWED_HOSTS` to the public hostname(s) under which the PWA is served (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
+> When unset, only `localhost` is accepted.
+> Restricting the allowed hosts ensures that only requests with a trusted `Host` header are rendered server-side.
+> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
+
+### Features
+
+- add CMS include at the top of the registration page (#2108) ([4950363](https://github.com/intershop/intershop-pwa/commit/4950363))
+- add Contributor License Agreement (CLA) Assistant workflow (#2096) ([0e95b64](https://github.com/intershop/intershop-pwa/commit/0e95b64))
+- improve new-entry input UX in order template and wishlist select modals (#2105) ([2fd6728](https://github.com/intershop/intershop-pwa/commit/2fd6728))
+- select quote when adding a product to one of many quotes (#2105) ([3883552](https://github.com/intershop/intershop-pwa/commit/3883552))
+- independent support for Design View and preview context (#2089) ([95ec1ac](https://github.com/intershop/intershop-pwa/commit/95ec1ac))
+- improve customization options for modal dialogs ([1ace514](https://github.com/intershop/intershop-pwa/commit/1ace514))
+- use `ng-select` for product filter dropdown component (#2090) ([9264590](https://github.com/intershop/intershop-pwa/commit/9264590))
+- introduce `DeferredItemComponent` for lazy loading used with new Swiper integration (#2078) ([86f0080](https://github.com/intershop/intershop-pwa/commit/86f0080))
+- **Bootstrap:** replace `ProductRatingStarComponent` with `NgbRating` (#2126) ([cf69f64](https://github.com/intershop/intershop-pwa/commit/cf69f64))
+- **Bootstrap:** refactor breadcrumb component to be closer to the Bootstrap breadcrumb (#2109) ([b5537c6](https://github.com/intershop/intershop-pwa/commit/b5537c6))
+- **SSR:** set `ALLOWED_HOSTS` for production mode in Angular 19 SSR (#2094) ([87f178b](https://github.com/intershop/intershop-pwa/commit/87f178b))
+
+### Bug Fixes
+
+- display customer approval message after registration (#2132) ([93d5acd](https://github.com/intershop/intershop-pwa/commit/93d5acd))
+- handling of environment switch `TESTING` to be evaluated correctly ([111d01b](https://github.com/intershop/intershop-pwa/commit/111d01b))
+- validation display in address fields ([b3c4b93](https://github.com/intershop/intershop-pwa/commit/b3c4b93))
+- error message in quick order forms ([4e49b2d](https://github.com/intershop/intershop-pwa/commit/4e49b2d))
+- empty placeholder of ng-select form field ([72a990e](https://github.com/intershop/intershop-pwa/commit/72a990e))
+- support SSO authentication together with Captcha by using `X-Captcha-Token` header (#2122) ([e9985e8](https://github.com/intershop/intershop-pwa/commit/e9985e8))
+- fix SSO continue registration process (#483) ([1dc1364](https://github.com/intershop/intershop-pwa/commit/1dc1364))
+- move order template item to a new order template (#1666, #2120) ([c079274](https://github.com/intershop/intershop-pwa/commit/c079274))
+- ok button and link on move order template confirmation dialog (#2120) ([94e5197](https://github.com/intershop/intershop-pwa/commit/94e5197))
+- set focus to the 1st invalid element after form submit ([99b3e63](https://github.com/intershop/intershop-pwa/commit/99b3e63))
+- fix link to newly created list ([1c762a7](https://github.com/intershop/intershop-pwa/commit/1c762a7))
+- route product master variation filtering to ICM search service instead of SPARQUE (#2116) ([484e78d](https://github.com/intershop/intershop-pwa/commit/484e78d))
+- prevent false-positive `missing translation` errors in SSR (#2117) ([c861699](https://github.com/intershop/intershop-pwa/commit/c861699))
+- change captcha v3 token fetching mechanism (#2112) ([7953c03](https://github.com/intershop/intershop-pwa/commit/7953c03))
+- scrollable and fullscreen modal styling (#2115) ([aee898e](https://github.com/intershop/intershop-pwa/commit/aee898e))
+- improve ApiTokenService finishing of subscriptions ([8c77f17](https://github.com/intershop/intershop-pwa/commit/8c77f17))
+- reset form directive on opening a dialog (#2113) ([400c9ea](https://github.com/intershop/intershop-pwa/commit/400c9ea))
+- improve product review caching (#2102) ([ce4e388](https://github.com/intershop/intershop-pwa/commit/ce4e388))
+- **NGINX:** bad array subscript error parsing wastatistics (#2118) ([3a71025](https://github.com/intershop/intershop-pwa/commit/3a71025))
+
+### Documentation
+
+- add Helm Chart deployment configuration examples for SSO identity provider (#2140) ([d4f6280](https://github.com/intershop/intershop-pwa/commit/d4f6280))
+- add versioning policy documentation (#2134) ([80ed077](https://github.com/intershop/intershop-pwa/commit/80ed077))
+- improve PCI DSS documentation (#2106) ([ca2c93d](https://github.com/intershop/intershop-pwa/commit/ca2c93d))
+
+### Dependencies
+
+- update `ngx-translate` to version 18 (#2094) ([0d5cfbf](https://github.com/intershop/intershop-pwa/commit/0d5cfbf))
+- update `ngx-translate` to version 17 (#2094) ([25196f3](https://github.com/intershop/intershop-pwa/commit/25196f3))
+- introduce Perfectionist ESLint rules to enforce sortings in code (#2094) ([d5eb591](https://github.com/intershop/intershop-pwa/commit/d5eb591))
+- update Angular 19 dependencies ([125d25b](https://github.com/intershop/intershop-pwa/commit/125d25b))
+- migration to Swiper 12 (#2078) ([f9b53c3](https://github.com/intershop/intershop-pwa/commit/f9b53c3))
+- **nginx:** update OpenResty version to 1.31.1.1 (#2129) ([c536b81](https://github.com/intershop/intershop-pwa/commit/c536b81))
+
+### Code Refactoring
+
+- reduction of order template and wishlist calls (#2048) ([56a2739](https://github.com/intershop/intershop-pwa/commit/56a2739))
+
+### BREAKING CHANGES
+
+- **SSR:** The `ALLOWED_HOSTS` environment variable must be set to the appropriate value for production mode when using SSR. This change may require updates to deployment configurations and environment variable settings to ensure that the application functions correctly in production environments.
+- Angular 19 upgrade including necessary migrations (see [Migrations / From 11.2.0 to 12.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1120-to-1200) for more details).
+- `ngx-translate` 17 upgrade (see [Migrations / From 11.2.0 to 12.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1120-to-1200) for more details).
+- `ngx-translate` 18 upgrade (see [Migrations / From 11.2.0 to 12.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1120-to-1200) for more details).
+- Swiper has been upgraded to version 12 (see [Migrations | From 11.1.0 to 12.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1110-to-1200) for more details).
+- Design View integration no longer works with `PreviewContextID=DESIGNVIEW` and initializing the Design View was replaced by a query parameter `DesignView` (see [Migrations / From 11.1.0 to 12.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1110-to-1200) for more details).
+- **Bootstrap:** The `ProductRatingStarComponent` was removed.
+- The order template and wishlist handling was reworked based on the improved ICM 14.2.0 `/wishlists` REST API that results in less REST calls.
+
+### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
+
+- add CMS include at the top of the registration page (#2108) - icm-as-customization-headless:4.3.0
+- reduction of order template and wishlist calls (#2048) - ICM 14.2.0
+- display customer approval message after registration (#2132) - ICM 14.2.0
+
 ## [11.2.0](https://github.com/intershop/intershop-pwa/releases/tag/11.2.0) (2026-07-01)
 
 > [!NOTE]

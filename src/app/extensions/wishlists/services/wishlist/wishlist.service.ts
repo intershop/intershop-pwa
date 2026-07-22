@@ -3,6 +3,7 @@ import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { concatMap, first, map, switchMap } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
@@ -28,9 +29,17 @@ export class WishlistService {
       first(),
       concatMap(restResource =>
         this.apiService.get(`${restResource}/-/wishlists`).pipe(
-          unpackEnvelope<WishlistData>(),
-          map(wishlistData => wishlistData.map(data => this.getWishlist(this.wishlistMapper.fromDataToId(data)))),
-          switchMap(obsArray => (obsArray.length ? forkJoin(obsArray) : of([])))
+          unpackEnvelope<Link | WishlistData>(),
+          switchMap(wishlistData => {
+            if (wishlistData.length === 0 || 'attributes' in wishlistData[0]) {
+              return of(this.wishlistMapper.fromListData(wishlistData as Link[]));
+            }
+            // legacy data format with uri only in the list response -> get each wishlist separately to get all data
+            // TODO: remove once ICM versions < 14.2.0 are no longer supported
+            const data = wishlistData as WishlistData[];
+            const obsArray = data.map(d => this.getWishlist(this.wishlistMapper.fromDataToId(d)));
+            return obsArray.length ? forkJoin(obsArray) : of([]);
+          })
         )
       )
     );
@@ -42,7 +51,7 @@ export class WishlistService {
    * @param wishlistId  The wishlist id.
    * @returns           The wishlist.
    */
-  private getWishlist(wishlistId: string): Observable<Wishlist> {
+  getWishlist(wishlistId: string): Observable<Wishlist> {
     if (!wishlistId) {
       return throwError(() => new Error('getWishlist() called without wishlistId'));
     }

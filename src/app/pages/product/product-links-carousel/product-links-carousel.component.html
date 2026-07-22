@@ -1,18 +1,26 @@
-@if (productSKUs$ | async; as productSKUs) {
-  @if (productSKUs.length) {
-    <div class="product-list-container">
-      <h2>{{ productLinkTitle }}</h2>
-      <div class="product-list">
-        <swiper [config]="swiperConfig">
+@let productSKUs = productSKUs$ | async;
+@if (productSKUs?.length) {
+  <div class="product-list-container">
+    <h2>{{ productLinkTitle }}</h2>
+    <div class="product-list">
+      <div #swiper class="swiper">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-wrapper">
           @for (sku$ of productSKUs; track sku$) {
-            <ng-template let-data swiperSlide>
-              @if (lazyFetch(data.isVisible, sku$) | async; as sku) {
-                <ish-product-item ishProductContext [sku]="sku" />
-              }
-            </ng-template>
+            <div class="swiper-slide">
+              <ish-deferred-item>
+                <ng-template ishLazyLoadingContent>
+                  @if (sku$ | async; as sku) {
+                    <ish-product-item ishProductContext [sku]="sku" />
+                  }
+                </ng-template>
+              </ish-deferred-item>
+            </div>
           }
-        </swiper>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-pagination"></div>
       </div>
     </div>
-  }
+  </div>
 }

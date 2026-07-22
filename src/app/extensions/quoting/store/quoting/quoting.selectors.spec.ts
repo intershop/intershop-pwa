@@ -14,7 +14,13 @@ import {
   loadQuotingFail,
   loadQuotingSuccess,
 } from './quoting.actions';
-import { getQuotingEntities, getQuotingEntity, getQuotingError, getQuotingLoading } from './quoting.selectors';
+import {
+  getNewQuoteRequests,
+  getQuotingEntities,
+  getQuotingEntity,
+  getQuotingError,
+  getQuotingLoading,
+} from './quoting.selectors';
 
 describe('Quoting Selectors', () => {
   let store$: StoreWithSnapshots;
@@ -121,6 +127,26 @@ describe('Quoting Selectors', () => {
         expect(getQuotingEntities(store$.state)).toBeEmpty();
         expect(getQuotingEntity('1')(store$.state)).toBeUndefined();
       });
+    });
+  });
+
+  describe('getNewQuoteRequests', () => {
+    it('should return empty array when no entities exist', () => {
+      expect(getNewQuoteRequests(store$.state)).toBeEmpty();
+    });
+
+    it('should only return non-submitted quote requests, sorted by creationDate descending', () => {
+      const quoting = [
+        { id: 'qr-old', type: 'QuoteRequest', completenessLevel: 'List', creationDate: 100 },
+        { id: 'qr-new', type: 'QuoteRequest', completenessLevel: 'List', creationDate: 300 },
+        { id: 'qr-mid', type: 'QuoteRequest', completenessLevel: 'List', creationDate: 200 },
+        { id: 'qr-submitted', type: 'QuoteRequest', completenessLevel: 'List', creationDate: 400, submittedDate: 500 },
+        { id: 'q-1', type: 'Quote', completenessLevel: 'List', creationDate: 600 },
+        { id: 'stub', type: 'QuoteRequest' },
+      ] as QuotingEntity[];
+      store$.dispatch(loadQuotingSuccess({ quoting }));
+
+      expect(getNewQuoteRequests(store$.state).map(entity => entity.id)).toEqual(['qr-new', 'qr-mid', 'qr-old']);
     });
   });
 });

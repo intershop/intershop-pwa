@@ -90,8 +90,8 @@
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="deactivate-cost-center"
-                  type="button"
                   title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
+                  type="button"
                   (click)="openConfirmationDialog(costCenter, deactivateDialog)"
                 >
                   <i class="bi bi-ban"></i>
@@ -100,8 +100,8 @@
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="activate-cost-center"
-                  type="button"
                   title="{{ 'account.costcenter.activate.button.title' | translate }}"
+                  type="button"
                   (click)="activate(costCenter)"
                 >
                   <i class="bi bi-check-circle"></i>
@@ -114,13 +114,13 @@
               <button
                 class="btn-tool btn-link"
                 data-testing-id="delete-cost-center"
-                type="button"
-                [ngClass]="{ inactive: !isDeletable(costCenter) }"
                 title="{{
                   isDeletable(costCenter)
                     ? ('account.costcenter.delete.link' | translate)
                     : ('account.costcenter.delete.disabled.icon' | translate)
                 }}"
+                type="button"
+                [ngClass]="{ inactive: !isDeletable(costCenter) }"
                 (click)="openConfirmationDialog(costCenter, deleteDialog)"
               >
                 <i class="bi bi-trash-fill"></i>

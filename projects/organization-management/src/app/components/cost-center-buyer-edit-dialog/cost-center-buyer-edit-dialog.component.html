@@ -1,14 +1,11 @@
-<ng-template #modal let-editModal>
-  <div class="modal-header">
-    <h2 class="modal-title" id="cc-buyer-edit-modal-title">{{ modalHeader | translate }}</h2>
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
-  <form #form="ngForm" ishFormSubmit [formGroup]="costCenterBuyerForm" (ngSubmit)="submitCostCenterBuyerForm()">
+<ish-modal-dialog
+  #modal
+  [options]="{ titleText: modalHeader | translate, size: 'lg', ariaLabelledBy: 'cc-buyer-edit-modal-title' }"
+>
+  <form #form="ngForm" body ishFormSubmit [formGroup]="costCenterBuyerForm" (ngSubmit)="submitCostCenterBuyerForm()">
     <div class="modal-body">
       <formly-form [fields]="fields" [form]="costCenterBuyerForm" [model]="model" />
     </div>
-
     <div class="modal-footer">
       <button
         class="btn btn-primary"
@@ -18,9 +15,9 @@
       >
         {{ 'account.costcenter.details.buyers.action.save' | translate }}
       </button>
-      <button class="btn btn-secondary" type="button" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="modal.hide()">
         {{ 'account.cancel.button.label' | translate }}
       </button>
     </div>
   </form>
-</ng-template>
+</ish-modal-dialog>

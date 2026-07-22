@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -33,11 +33,12 @@ describe('Recurring Orders Effects', () => {
     recurringOrdersServiceMock = mock(RecurringOrdersService);
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       providers: [
         { provide: RecurringOrdersService, useFactory: () => instance(recurringOrdersServiceMock) },
         provideMockActions(() => actions$),
         provideMockStore(),
+        provideTranslateService(),
         RecurringOrdersEffects,
       ],
     });

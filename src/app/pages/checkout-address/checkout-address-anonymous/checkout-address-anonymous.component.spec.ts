@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify } from 'ts-mockito';
 
@@ -39,9 +39,13 @@ describe('Checkout Address Anonymous Component', () => {
         NgbCollapseModule,
         ReactiveFormsModule,
         RouterModule,
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) }, provideRouter([])],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

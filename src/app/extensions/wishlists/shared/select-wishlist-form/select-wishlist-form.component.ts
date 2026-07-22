@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -12,6 +13,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
 
 @Component({
   selector: 'ish-select-wishlist-form',
+  standalone: false,
   templateUrl: './select-wishlist-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -31,6 +33,8 @@ export class SelectWishlistFormComponent implements OnInit {
     private wishlistFacade: WishlistsFacade
   ) {}
 
+  private destroyRef = inject(DestroyRef);
+
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
 
@@ -39,9 +43,9 @@ export class SelectWishlistFormComponent implements OnInit {
       {
         type: 'ish-text-input-field',
         key: 'newList',
-        defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
         props: {
           required: true,
+          placeholder: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
           ariaLabel: 'account.wishlists.wishlist_form.name.label',
         },
         validators: {
@@ -82,6 +86,7 @@ export class SelectWishlistFormComponent implements OnInit {
                 inputClass: 'position-static',
                 fieldClass: ' ',
                 value: 'new',
+                ariaLabel: 'account.wishlists.choose_wishlist.new_wishlist_option.label',
               },
             },
             {
@@ -89,10 +94,29 @@ export class SelectWishlistFormComponent implements OnInit {
               key: 'newList',
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
-              defaultValue: this.translate.instant('account.wishlists.choose_wishlist.new_wishlist_name.initial_value'),
+              hooks: {
+                onInit: (field: FormlyFieldConfig) => {
+                  field.form
+                    .get('wishlist')
+                    ?.valueChanges.pipe(
+                      filter(value => value === 'new'),
+                      debounceTime(0),
+                      takeUntilDestroyed(this.destroyRef)
+                    )
+                    .subscribe(() => {
+                      field.focus = true;
+                    });
+                },
+              },
               props: {
                 required: true,
+                placeholder: this.translate.instant(
+                  'account.wishlists.choose_wishlist.new_wishlist_name.initial_value'
+                ),
                 ariaLabel: 'account.wishlists.wishlist_form.name.label',
+                focus: (field: FormlyFieldConfig) => {
+                  field.form.get('wishlist')?.setValue('new');
+                },
               },
               validators: {
                 validation: [SpecialValidators.noHtmlTags],
@@ -104,7 +128,7 @@ export class SelectWishlistFormComponent implements OnInit {
                 },
               },
               expressions: {
-                'props.disabled': conf => conf.model.wishlist !== 'new',
+                'props.required': conf => conf.model.wishlist === 'new',
               },
             },
           ],

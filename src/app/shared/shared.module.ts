@@ -9,10 +9,11 @@ import {
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbRatingModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslatePipe } from '@ngx-translate/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { SwiperModule } from 'swiper/angular';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { DirectivesModule } from 'ish-core/directives.module';
@@ -91,6 +92,7 @@ import { BasketShippingAddressWidgetComponent } from './components/checkout/bask
 import { AccordionItemComponent } from './components/common/accordion-item/accordion-item.component';
 import { AccordionComponent } from './components/common/accordion/accordion.component';
 import { BreadcrumbComponent } from './components/common/breadcrumb/breadcrumb.component';
+import { DeferredItemComponent } from './components/common/deferred-item/deferred-item.component';
 import { ErrorMessageComponent } from './components/common/error-message/error-message.component';
 import { InPlaceEditComponent } from './components/common/in-place-edit/in-place-edit.component';
 import { InfoBoxComponent } from './components/common/info-box/info-box.component';
@@ -106,7 +108,7 @@ import { CustomFieldsViewComponent } from './components/custom-fields/custom-fie
 import { FilterCheckboxComponent } from './components/filter/filter-checkbox/filter-checkbox.component';
 import { FilterCollapsibleComponent } from './components/filter/filter-collapsible/filter-collapsible.component';
 import { FilterDropdownComponent } from './components/filter/filter-dropdown/filter-dropdown.component';
-import { FilterNavigationBadgesComponent } from './components/filter/filter-navigation-badges/filter-navigation-badges.component';
+import { FilterNavigationActionsComponent } from './components/filter/filter-navigation-actions/filter-navigation-actions.component';
 import { FilterNavigationHorizontalComponent } from './components/filter/filter-navigation-horizontal/filter-navigation-horizontal.component';
 import { FilterNavigationSidebarComponent } from './components/filter/filter-navigation-sidebar/filter-navigation-sidebar.component';
 import { FilterNavigationComponent } from './components/filter/filter-navigation/filter-navigation.component';
@@ -168,9 +170,9 @@ import { FormsSharedModule } from './forms/forms.module';
 const importExportModules = [
   AddressDoctorExportsModule,
   AuthorizationToggleModule,
-  CMSModule,
   CaptchaExportsModule,
   CdkTableModule,
+  CMSModule,
   CommonModule,
   CompareExportsModule,
   ContactUsExportsModule,
@@ -185,6 +187,8 @@ const importExportModules = [
   NgbDropdownModule,
   NgbModalModule,
   NgbPopoverModule,
+  NgbRatingModule,
+  NgSelectModule,
   OrderTemplatesExportsModule,
   PipesModule,
   ProductNotificationsExportsModule,
@@ -196,8 +200,7 @@ const importExportModules = [
   RecentlyExportsModule,
   RoleToggleModule,
   RouterModule,
-  SwiperModule,
-  TranslateModule,
+  TranslatePipe,
   WishlistsExportsModule,
 ];
 
@@ -229,7 +232,7 @@ const declaredComponents = [
   FilterCheckboxComponent,
   FilterCollapsibleComponent,
   FilterDropdownComponent,
-  FilterNavigationBadgesComponent,
+  FilterNavigationActionsComponent,
   FilterNavigationHorizontalComponent,
   FilterNavigationSidebarComponent,
   FilterSwatchImagesComponent,
@@ -253,13 +256,14 @@ const exportedComponents = [
   AccordionComponent,
   AccordionItemComponent,
   AddressComponent,
-  BasketCustomFieldsComponent,
   BasketAddressSummaryComponent,
   BasketApprovalInfoComponent,
   BasketBuyerComponent,
   BasketCostCenterSelectionComponent,
   BasketCostCenterViewComponent,
   BasketCostSummaryComponent,
+  BasketCustomFieldsComponent,
+  BasketCustomFieldsViewComponent,
   BasketDesiredDeliveryDateComponent,
   BasketErrorMessageComponent,
   BasketInfoComponent,
@@ -267,28 +271,32 @@ const exportedComponents = [
   BasketItemsSummaryComponent,
   BasketMerchantMessageComponent,
   BasketMerchantMessageViewComponent,
-  BasketRecurrenceSummaryComponent,
   BasketOrderReferenceComponent,
   BasketPaymentCostInfoComponent,
   BasketPromotionCodeComponent,
   BasketPromotionComponent,
+  BasketRecurrenceSummaryComponent,
   BasketShippingAddressWidgetComponent,
   BasketShippingMethodComponent,
   BasketValidationResultsComponent,
   BreadcrumbComponent,
   ClearBasketComponent,
   ConfirmLeaveModalComponent,
+  ContentDesignViewWrapperComponent,
   ContentIncludeComponent,
   ContentNavigationComponent,
   ContentPageletComponent,
-  ContentDesignViewWrapperComponent,
   ContentViewcontextComponent,
+  CustomFieldsFormlyComponent,
+  CustomFieldsViewComponent,
+  DeferredItemComponent,
   ErrorMessageComponent,
   FilterNavigationComponent,
   IdentityProviderLoginComponent,
   InfoBoxComponent,
   InfoMessageComponent,
   InPlaceEditComponent,
+  LineItemCustomFieldsComponent,
   LineItemListComponent,
   LoadingComponent,
   LoginFormComponent,
@@ -298,8 +306,8 @@ const exportedComponents = [
   OrderListComponent,
   OrderRecurrenceComponent,
   OrderWidgetComponent,
-  PaymentPaypalComponent,
   PagingComponent,
+  PaymentPaypalComponent,
   ProductAddToBasketComponent,
   ProductAttachmentsComponent,
   ProductAttributesComponent,
@@ -323,10 +331,6 @@ const exportedComponents = [
   ProductVariationSelectSwatchComponent,
   ProductWarrantyComponent,
   ProductWarrantyDetailsComponent,
-  CustomFieldsFormlyComponent,
-  LineItemCustomFieldsComponent,
-  CustomFieldsViewComponent,
-  BasketCustomFieldsViewComponent,
   PromotionDetailsComponent,
   PromotionRemoveComponent,
   SkipContentLinkComponent,
@@ -334,8 +338,8 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  imports: [...importExportModules, ...standaloneComponents],
   declarations: [...declaredComponents, ...exportedComponents],
+  imports: [...importExportModules, ...standaloneComponents],
   exports: [...exportedComponents, ...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {

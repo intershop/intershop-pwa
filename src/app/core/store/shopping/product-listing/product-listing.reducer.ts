@@ -78,13 +78,10 @@ function mergeCurrentSettings(
 
 export const productListingReducer = createReducer(
   initialState,
-  on(
-    setProductListingPageSize,
-    (state, action): ProductListingState => ({
-      ...state,
-      itemsPerPage: action.payload.itemsPerPage,
-    })
-  ),
+  on(setProductListingPageSize, (state, action): ProductListingState => ({
+    ...state,
+    itemsPerPage: action.payload.itemsPerPage,
+  })),
   on(setViewType, (state, action): ProductListingState => ({ ...state, viewType: action.payload.viewType })),
   setLoadingOn(searchProducts, loadProductsForCategory, loadProductsForFilter, loadProductsForMaster),
   unsetLoadingOn(setProductListingPages),

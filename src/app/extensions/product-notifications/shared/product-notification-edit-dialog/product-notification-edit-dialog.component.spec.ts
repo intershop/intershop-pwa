@@ -1,13 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
+import { ProductNotificationEditFormComponent } from '../product-notification-edit-form/product-notification-edit-form.component';
 
 import { ProductNotificationEditDialogComponent } from './product-notification-edit-dialog.component';
 
@@ -28,16 +35,27 @@ describe('Product Notification Edit Dialog Component', () => {
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, TranslatePipe],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockComponent(ProductImageComponent),
+        MockComponent(ProductNotificationEditFormComponent),
+        MockDirective(FormSubmitDirective),
+        ProductNotificationEditDialogComponent,
+      ],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
         { provide: ProductNotificationsFacade, useFactory: () => instance(productNotificationsFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
+    when(context.select('product')).thenReturn(of({ name: 'Test Product' } as ProductView));
     when(context.select('inventory', 'inStock')).thenReturn(of(true));
+    when(accountFacade.userEmail$).thenReturn(of('test@test.com'));
   });
 
   beforeEach(() => {
@@ -55,6 +73,7 @@ describe('Product Notification Edit Dialog Component', () => {
   describe('form submit', () => {
     beforeEach(() => {
       fb = TestBed.inject(UntypedFormBuilder);
+      fixture.detectChanges();
     });
 
     it('should emit delete product notification when alert type is delete', () => {

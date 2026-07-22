@@ -1,10 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
@@ -23,12 +27,15 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     appFacade = mock(AppFacade);
     when(appFacade.currencySymbol$(anything())).thenReturn(of('$'));
 
-    organizationManagementFacade = mock(organizationManagementFacade);
+    organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [CostCenterBuyerEditDialogComponent, MockComponent(ModalDialogComponent)],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },
+        provideTranslateService(),
       ],
     }).compileComponents();
   });
@@ -49,6 +56,7 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     });
 
     component.costCenterBuyerForm = form;
+    fixture.detectChanges();
     component.show({
       login: 'jlink@test.intershop.de',
       budget: { currency: 'USD', value: 10000 },
@@ -62,8 +70,6 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
   });
 
   it('should display all form input fields for cost center buyer update', () => {
-    fixture.detectChanges();
-
     expect(JSON.stringify(component.fields)).toContain('buyerName');
     expect(JSON.stringify(component.fields)).toContain('budgetValue');
     expect(JSON.stringify(component.fields)).toContain('budgetPeriod');

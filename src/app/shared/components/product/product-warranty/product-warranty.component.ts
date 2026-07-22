@@ -17,13 +17,14 @@ import { Warranty } from 'ish-core/models/warranty/warranty.model';
 
 @Component({
   selector: 'ish-product-warranty',
+  standalone: false,
   templateUrl: './product-warranty.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductWarrantyComponent implements OnInit {
   // preselect a warranty
   @Input() selectedWarrantySku: string;
-  @Input() viewType: 'radio' | 'select' | 'display' = 'radio';
+  @Input() viewType: 'display' | 'radio' | 'select' = 'radio';
 
   @Output() readonly submitWarranty = new EventEmitter<string>();
 
@@ -50,7 +51,7 @@ export class ProductWarrantyComponent implements OnInit {
     );
   }
 
-  updateWarranty(warranty: string | EventTarget) {
+  updateWarranty(warranty: EventTarget | string) {
     if (typeof warranty === 'string') {
       this.submitWarranty.emit(warranty);
     } else {

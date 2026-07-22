@@ -8,6 +8,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
 
 @Component({
   selector: 'ish-account-order-template-page',
+  standalone: false,
   templateUrl: './account-order-template-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -28,7 +29,7 @@ export class AccountOrderTemplatePageComponent implements OnInit {
   constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
-    this.orderTemplates$ = this.orderTemplatesFacade.orderTemplates$;
+    this.orderTemplates$ = this.orderTemplatesFacade.orderTemplatesWithDetails$();
     this.orderTemplateLoading$ = this.orderTemplatesFacade.orderTemplateLoading$;
     this.orderTemplateError$ = this.orderTemplatesFacade.orderTemplateError$;
   }

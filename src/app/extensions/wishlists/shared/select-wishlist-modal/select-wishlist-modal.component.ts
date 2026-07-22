@@ -6,18 +6,18 @@ import {
   Input,
   OnInit,
   Output,
-  TemplateRef,
   ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { filter, map, take, withLatestFrom } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 
@@ -26,6 +26,7 @@ import { WishlistsFacade } from '../../facades/wishlists.facade';
  */
 @Component({
   selector: 'ish-select-wishlist-modal',
+  standalone: false,
   templateUrl: './select-wishlist-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -49,16 +50,11 @@ export class SelectWishlistModalComponent implements OnInit {
 
   showForm: boolean;
 
-  modal: NgbModalRef;
-
   private destroyRef = inject(DestroyRef);
 
-  @ViewChild('modal') modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private wishlistsFacade: WishlistsFacade
-  ) {}
+  constructor(private wishlistsFacade: WishlistsFacade) {}
 
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistsFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
@@ -73,6 +69,8 @@ export class SelectWishlistModalComponent implements OnInit {
       }
     } else if (radioButtons.newList && this.formGroup.valid) {
       this.submitNew(radioButtons.newList);
+    } else {
+      markAsDirtyRecursive(this.formGroup);
     }
   }
 
@@ -103,14 +101,14 @@ export class SelectWishlistModalComponent implements OnInit {
 
   /** close modal */
   hide() {
-    this.modal.close();
+    this.modalDialog.hide();
     this.formGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-wishlist-modal-title' });
+    this.modalDialog.show();
 
     this.wishlistsFacade.preferredWishlist$
       .pipe(
@@ -161,7 +159,8 @@ export class SelectWishlistModalComponent implements OnInit {
     const selectedValue = this.formGroup.get('wishlist')?.value;
     if (selectedValue === 'new' || !selectedValue) {
       return this.wishlistsFacade.currentWishlist$.pipe(
-        map(currentWishlist => `route://account/wishlists/${currentWishlist?.id}`),
+        whenTruthy(),
+        map(currentWishlist => `route://account/wishlists/${currentWishlist.id}`),
         take(1)
       );
     } else {

@@ -1,7 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ContentChild,
   DestroyRef,
   EventEmitter,
   Inject,
@@ -13,52 +15,69 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroupDirective } from '@angular/forms';
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 export interface ModalOptions extends NgbModalOptions {
-  /**
-   * Modal title string.
-   */
+  /** Modal Title */
   titleText?: string;
-  /**
-   * Optional modal confirm button text.
-   */
+
+  /** Modal confirm button Label. */
   confirmText?: string;
-  /**
-   * Optional modal confirm button disabled.
-   */
+
+  /** Modal confirm button disabled. */
   confirmDisabled?: boolean;
-  /**
-   * Optional modal reject button text.
-   */
+
+  /** Modal reject button Label. */
   rejectText?: string;
-  /**
-   * Optional icon properties to display an icon in front of the title, e.g. 'exclamation-triangle-fill',
-   */
+
+  /** Icon properties to display an icon in front of the title, e.g. 'exclamation-triangle-fill' */
   icon?: string;
-  /**
-   * Optional icon styling classes, e.g. iconClass: 'text-warning pe-2'
-   */
+
+  /**  Icon styling classes, e.g. iconClass: 'text-warning pe-2' */
   iconClass?: string;
 }
 
 /**
- * The Modal Dialog Component displays a generic (ng-bootstrap) modal, that shows a custom title and custom content.
- * It provides an optional footer that includes confirm and reject buttons.
- * It is possible to pass any data on show.
- * The also provided confirmed output emitter will return the previously passed data if the modal gets confirmed.
+ * The Modal Dialog Component displays a generic (ng-bootstrap) modal.
+ * It supports two mutually exclusive usage modes:
  *
- * @see https://ng-bootstrap.github.io/#/components/modal/api#NgbModal
+ * **Mode 1 – Options-driven (simple):**
+ * The dialog header (title, icon, close button) and footer (confirm/reject buttons) are rendered
+ * automatically based on the `[options]` input. Provide your content as plain `ng-content`,
+ * which will be placed inside the modal body.
  *
  * @example
- * <ish-modal-dialog [options]="options" (confirmed)="onConfirmed($event)">
- *   Dummy content
+ * <ish-modal-dialog [options]="{ titleText: 'Confirm', confirmText: 'OK', rejectText: 'Cancel' }"
+ *                   (confirmed)="onConfirmed($event)">
+ *   <p>Are you sure?</p>
  * </ish-modal-dialog>
+ *
+ * ---
+ *
+ * **Mode 2 – Custom sections (advanced):**
+ * For full control, project elements with a `header` and/or `body` attribute.
+ * When provided, these replace the corresponding options-driven sections entirely.
+ *
+ * - `[header]` replaces the entire modal header (title, icon, close button).
+ * - `[body]` replaces the entire modal body AND footer (you must provide your own buttons).
+ *
+ * @example
+ * <!-- Custom body (including footer), options-driven header -->
+ * <ish-modal-dialog [options]="{ titleText: 'Info' }">
+ *   <div body>
+ *     <div class="modal-body">Full control over body and footer.</div>
+ *     <div class="modal-footer"><button (click)="doSomething()">Custom Action</button></div>
+ *   </div>
+ * </ish-modal-dialog>
+ *
+ * @see https://ng-bootstrap.github.io/#/components/modal/api#NgbModal
  */
 @Component({
   selector: 'ish-modal-dialog',
+  standalone: false,
   templateUrl: './modal-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -72,6 +91,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
   @Output() readonly shown = new EventEmitter<T>();
 
   @ViewChild('template') modalDialogTemplate: TemplateRef<unknown>;
+  @ContentChild(FormGroupDirective) private formDirective: FormGroupDirective;
 
   // visible-for-testing
   ngbModalRef: NgbModalRef;
@@ -86,6 +106,7 @@ export class ModalDialogComponent<T> implements OnDestroy {
 
   constructor(
     private ngbModal: NgbModal,
+    private cdRef: ChangeDetectorRef,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
@@ -94,10 +115,14 @@ export class ModalDialogComponent<T> implements OnDestroy {
    */
   show(data?: T) {
     this.data = data ? data : undefined;
+    // Reset the form's submitted state so validation errors don't persist across modal open/close cycles.
+    this.formDirective?.resetForm();
+    // Mark for check to ensure that the modal is rendered with the latest data (this became necessary with ngx-translate v18 with its pipe now being pure).
+    this.cdRef.markForCheck();
 
     this.ngbModalRef = this.ngbModal.open(this.modalDialogTemplate, {
       ...this.options,
-      ariaLabelledBy: `modal-title-${this.uuid}`,
+      ariaLabelledBy: this.options.titleText ? `modal-title-${this.uuid}` : this.options.ariaLabelledBy,
     });
 
     race(this.ngbModalRef.dismissed, this.hide$)

@@ -13,9 +13,13 @@
 // import Angular Toastr bootstrap styles
 @import 'ngx-toastr/toastr-bs5-alert';
 
-// import Swiper default theme
-@import 'swiper/scss';
-@import 'swiper/scss/pagination';
+// import Swiper styles
+@import 'swiper/css';
+@import 'swiper/css/a11y';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+// import ng-select styles
 @import '@ng-select/ng-select/scss/default.theme';
 
 // STYLING COMPATIBILITY LAYER
@@ -56,6 +60,7 @@
 @import 'components/common/video';
 @import 'components/carousel/carousel';
 @import 'components/cookies';
+@import 'components/rating';
 @import 'pages/homepage/homepage';
 @import 'pages/errorpage/errorpage';
 @import 'pages/category/product-list';

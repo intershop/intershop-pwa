@@ -20,6 +20,7 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
  */
 @Component({
   selector: 'ish-date-picker-field',
+  standalone: false,
   templateUrl: './date-picker-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -63,7 +64,7 @@ export class DatePickerFieldComponent extends FieldType<FieldTypeConfig> {
     );
   }
 
-  private toObservableNumber(daysType: 'minDays' | 'maxDays') {
+  private toObservableNumber(daysType: 'maxDays' | 'minDays') {
     const days = daysType === 'minDays' ? this.props.minDays : this.props.maxDays;
     const days$ = isObservable(days) ? days : of(days);
     return days$.pipe(map(daysLoc => (typeof daysLoc === 'number' ? daysLoc : undefined)));

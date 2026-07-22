@@ -13,11 +13,12 @@ import { BreadcrumbItem } from 'ish-core/models/breadcrumb-item/breadcrumb-item.
  */
 @Component({
   selector: 'ish-breadcrumb',
+  standalone: false,
   templateUrl: './breadcrumb.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbComponent implements OnInit {
-  @Input() separator = '/';
+  @Input() separator: string;
   @Input() showHome = true;
   @Input() account: boolean;
 
@@ -27,5 +28,18 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit() {
     this.trail$ = this.appFacade.breadcrumbData$;
+  }
+
+  /**
+   * Bootstrap divider override. A provided separator (including an empty string to remove the divider)
+   * sets the '--bs-breadcrumb-divider' custom property; otherwise the Bootstrap default is used.
+   */
+  get dividerStyle(): Record<string, string> {
+    if (typeof this.separator !== 'string') {
+      return {};
+    }
+    // escape backslashes and single quotes so the value stays a valid quoted CSS string
+    const escaped = this.separator.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    return { '--bs-breadcrumb-divider': `'${escaped}'` };
   }
 }

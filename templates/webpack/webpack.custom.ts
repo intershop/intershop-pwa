@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import { flattenDeep } from 'lodash';
 import { basename, dirname, join, normalize, resolve } from 'path';
 import * as ts from 'typescript';
-import { Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
+import { Compiler, Configuration, DefinePlugin, WebpackPluginInstance } from 'webpack';
 
 /* eslint-disable no-console, @typescript-eslint/no-require-imports, @typescript-eslint/naming-convention */
 
@@ -35,12 +35,12 @@ class Logger {
 
 let logger: Logger;
 
-type AngularPlugin = WebpackPluginInstance & {
+type AngularPlugin = {
   options: {
     directTemplateLoading: boolean;
     fileReplacements: Record<string, string>;
   };
-};
+} & WebpackPluginInstance;
 
 function crawlFiles(folder: string, callback: (files: string[]) => void) {
   if (fs.statSync(folder).isDirectory() && !['node_modules', '.git'].some(baseName => folder.endsWith(baseName))) {
@@ -150,16 +150,9 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
-  if (angularCompilerPlugin.options.directTemplateLoading) {
-    // deactivate directTemplateLoading so that webpack loads html files
-    angularCompilerPlugin.options.directTemplateLoading = false;
-
-    logger.log('deactivated directTemplateLoading');
-  }
-
   // set production mode, service-worker, ngrx runtime checks
   const serviceWorker = !!angularJsonConfig.serviceWorker;
-  const ngrxRuntimeChecks = !!process.env.TESTING || !production;
+  const ngrxRuntimeChecks = process.env.TESTING === 'true' || !production;
   config.plugins.push(
     new DefinePlugin({
       PWA_VERSION: JSON.stringify(
@@ -179,7 +172,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   if (targetOptions.target === 'server') {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
-    (config.resolve.alias as Record<string, string | false>)['elastic-apm-node'] = false;
+    (config.resolve.alias as Record<string, false | string>)['elastic-apm-node'] = false;
   }
 
   logger.log('setting production:', production);
@@ -274,7 +267,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       };
     }
 
-    if (!process.env.TESTING) {
+    if (!(process.env.TESTING === 'true')) {
       logger.log('setting up data-testing-id removal');
       // remove testing ids when loading html files
       config.module.rules.push({
@@ -357,8 +350,42 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   const noOfReplacements = Object.keys(angularCompilerPlugin.options.fileReplacements).length;
   logger.log(`using ${noOfReplacements} replacement${noOfReplacements === 1 ? '' : 's'} for "${theme}"`);
 
+  // HTML: Patch inputFileSystem for template reads by the Angular compiler.
+  // In Angular 19+, disabling directTemplateLoading breaks standalone component type-checking,
+  // so it must stay enabled. This means templates are read directly via inputFileSystem (bypassing
+  // webpack loaders), requiring us to intercept at the file system level instead of using file-replace-loader.
+  const htmlReplacements: Record<string, string> = {};
+  for (const [key, value] of Object.entries(angularCompilerPlugin.options.fileReplacements)) {
+    if (key.endsWith('.html')) {
+      htmlReplacements[normalize(key)] = normalize(value);
+    }
+  }
+  if (Object.keys(htmlReplacements).length) {
+    config.plugins.push({
+      apply(compiler: Compiler) {
+        compiler.hooks.afterEnvironment.tap('ThemeFileReplacementPlugin', () => {
+          const inputFS = compiler.inputFileSystem;
+          const origReadFileSync = inputFS.readFileSync.bind(inputFS);
+          inputFS.readFileSync = function (filePath: string) {
+            const replacement = htmlReplacements[normalize(filePath)];
+            return origReadFileSync(replacement ?? filePath);
+          } as typeof inputFS.readFileSync;
+        });
+
+        // Watch HTML replacement files so changes trigger recompilation
+        compiler.hooks.afterCompile.tap('ThemeFileReplacementPlugin', compilation => {
+          for (const replacement of Object.values(htmlReplacements)) {
+            compilation.fileDependencies.add(replacement);
+          }
+        });
+      },
+    });
+  }
+
+  // SCSS: Use file-replace-loader to swap component styles at load time.
+  // SCSS files go through webpack's loader pipeline, so this works reliably with watch mode.
   config.module.rules.push({
-    test: /\.component\.(html|scss)$/,
+    test: /\.component\.scss$/,
     loader: 'file-replace-loader',
     options: {
       condition: 'always',
@@ -396,6 +423,38 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       obj[key] = (obj[key] as string).replace(cacheDir, join(cacheDir, theme));
     }
   );
+
+  // silence Sass @import deprecation warnings (cannot migrate to @use while Bootstrap uses @import)
+  const patchSassLoader = (rules: unknown[]) => {
+    for (const rule of rules) {
+      if (!rule || typeof rule !== 'object') {
+        continue;
+      }
+      const r = rule as Record<string, unknown>;
+      if (Array.isArray(r.rules)) {
+        patchSassLoader(r.rules);
+      }
+      if (Array.isArray(r.use)) {
+        for (const entry of r.use) {
+          if (entry && typeof entry === 'object' && 'loader' in entry) {
+            const loaderEntry = entry as { loader: string; options?: { sassOptions?(...args: unknown[]): object } };
+            if (typeof loaderEntry.loader === 'string' && loaderEntry.loader.includes('sass-loader')) {
+              const origFn = loaderEntry.options?.sassOptions;
+              if (typeof origFn === 'function') {
+                loaderEntry.options.sassOptions = ctx => ({
+                  ...origFn(ctx),
+                  silenceDeprecations: ['import'],
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+  if (config.module?.rules) {
+    patchSassLoader(config.module.rules);
+  }
 
   if (angularJsonConfig.tsConfig.endsWith('tsconfig.app-no-checks.json')) {
     logger.warn('using tsconfig without compile checks');
@@ -435,7 +494,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
 
         const regex = /@import '(.*?)'/g;
         const content = fs.readFileSync(scssPath, { encoding: 'utf-8' });
-        for (let match: RegExpExecArray; (match = regex.exec(content)); ) {
+        for (let match: RegExpExecArray; (match = regex.exec(content));) {
           paths.push(...traverseStyleFile(match[1]));
         }
 

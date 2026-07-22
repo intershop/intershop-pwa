@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
@@ -51,9 +54,16 @@ describe('Select Wishlist Modal Component', () => {
     wishlistFacadeMock = mock(WishlistsFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [SelectWishlistFormComponent, SelectWishlistModalComponent],
-      imports: [FormlyTestingModule, TranslateModule.forRoot()],
-      providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) }],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockComponent(SelectWishlistFormComponent),
+        SelectWishlistModalComponent,
+      ],
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      providers: [
+        { provide: WishlistsFacade, useFactory: () => instance(wishlistFacadeMock) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -229,6 +239,18 @@ describe('Select Wishlist Modal Component', () => {
           id: 'newList',
         } as Wishlist)
       );
+
+      component.selectedWishlistRoute$.subscribe(r => {
+        expect(r).toBe('route://account/wishlists/newList');
+        done();
+      });
+    });
+
+    it('should wait for the created wishlist and not emit an "undefined" route', done => {
+      startup();
+      updateWishlistAndNewList();
+
+      when(wishlistFacadeMock.currentWishlist$).thenReturn(of(undefined, { id: 'newList' } as Wishlist));
 
       component.selectedWishlistRoute$.subscribe(r => {
         expect(r).toBe('route://account/wishlists/newList');

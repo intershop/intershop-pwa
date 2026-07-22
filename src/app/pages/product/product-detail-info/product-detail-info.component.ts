@@ -8,6 +8,7 @@ import { ProductHelper } from 'ish-core/models/product/product.helper';
 
 @Component({
   selector: 'ish-product-detail-info',
+  standalone: false,
   templateUrl: './product-detail-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

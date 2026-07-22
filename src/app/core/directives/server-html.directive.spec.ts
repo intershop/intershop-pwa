@@ -2,7 +2,7 @@ import { APP_BASE_HREF, Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -18,6 +18,7 @@ describe('Server Html Directive', () => {
       when(appFacade.icmBaseUrl).thenReturn('http://example.org');
 
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -60,6 +61,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -109,6 +111,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="html"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -140,6 +143,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -147,11 +151,12 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslateModule.forRoot()],
+        imports: [TranslatePipe],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           provideRouter([{ path: '**', component: TestComponent }]),
+          provideTranslateService(),
         ],
       }).compileComponents();
 
@@ -186,6 +191,7 @@ describe('Server Html Directive', () => {
 
     beforeEach(() => {
       @Component({
+        standalone: false,
         template: ` <div [ishServerHtml]="'get.help.at' | translate: { '0': 'page://page.helpdesk' }"></div> `,
         changeDetection: ChangeDetectionStrategy.OnPush,
       })
@@ -193,11 +199,12 @@ describe('Server Html Directive', () => {
 
       TestBed.configureTestingModule({
         declarations: [ServerHtmlDirective, TestComponent],
-        imports: [TranslateModule.forRoot()],
+        imports: [TranslatePipe],
         providers: [
           { provide: APP_BASE_HREF, useValue: '/americas' },
           { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
           provideRouter([{ path: '**', component: TestComponent }]),
+          provideTranslateService(),
         ],
       }).compileComponents();
 

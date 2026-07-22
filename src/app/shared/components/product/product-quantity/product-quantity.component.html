@@ -1,5 +1,6 @@
 @if (visible$ | async) {
-  <div class="quantity-input" [ngClass]="{ 'has-error': hasQuantityError$ | async }">
+  @let hasQuantityError = hasQuantityError$ | async;
+  <div class="quantity-input" [ngClass]="{ 'has-error': hasQuantityError }">
     @switch (type) {
       @case ('select') {
         <select
@@ -23,7 +24,7 @@
           pattern="[0-9]*"
           type="number"
           [attr.aria-describedby]="ariaDescribedByIds$ | async"
-          [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+          [attr.aria-invalid]="hasQuantityError ? 'true' : undefined"
           [attr.aria-label]="'product.quantity.aria_label' | translate"
           [id]="elementId"
           [max]="max$ | async"
@@ -39,24 +40,22 @@
           <button
             class="btn btn-link decrease-button"
             tabindex="-1"
-            translate
             type="button"
             [attr.data-testing-id]="'decrease-quantity-' + elementId"
             [disabled]="cannotDecrease$ | async"
             (click)="decrease()"
           >
-            product.quantity.decrease.text
+            {{ 'product.quantity.decrease.text' | translate }}
           </button>
           <button
             class="btn btn-link increase-button"
             tabindex="-1"
-            translate
             type="button"
             [attr.data-testing-id]="'increase-quantity-' + elementId"
             [disabled]="cannotIncrease$ | async"
             (click)="increase()"
           >
-            product.quantity.increase.text
+            {{ 'product.quantity.increase.text' | translate }}
           </button>
           <input
             class="form-control text-center"
@@ -64,7 +63,7 @@
             pattern="[0-9]*"
             type="number"
             [attr.aria-describedby]="ariaDescribedByIds$ | async"
-            [attr.aria-invalid]="(hasQuantityError$ | async) ? 'true' : undefined"
+            [attr.aria-invalid]="hasQuantityError ? 'true' : undefined"
             [attr.aria-label]="'product.quantity.aria_label' | translate"
             [id]="elementId"
             [max]="max$ | async"
@@ -77,7 +76,7 @@
         </div>
       }
     }
-    @if (hasQuantityError$ | async) {
+    @if (hasQuantityError) {
       <small class="validation-message" [id]="elementId + '-validation-error'">{{ quantityError$ | async }}</small>
     }
   </div>

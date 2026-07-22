@@ -6,6 +6,7 @@ import { B2bRole } from '../../../models/b2b-role/b2b-role.model';
 
 @Component({
   selector: 'ish-user-roles-badges',
+  standalone: false,
   templateUrl: './user-roles-badges.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha-2';
 import { Observable } from 'rxjs';
 
@@ -15,6 +15,7 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
  */
 @Component({
   selector: 'ish-captcha-v2',
+  standalone: false,
   templateUrl: './captcha-v2.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -47,6 +48,6 @@ export class CaptchaV2Component implements OnInit {
 
 @NgModule({
   declarations: [CaptchaV2Component],
-  imports: [CommonModule, RecaptchaModule, TranslateModule],
+  imports: [CommonModule, RecaptchaModule, TranslatePipe],
 })
 export class CaptchaV2ComponentModule {}

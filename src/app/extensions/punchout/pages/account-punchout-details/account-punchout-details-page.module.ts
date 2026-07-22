@@ -19,7 +19,7 @@ const accountPunchoutDetailsPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [PunchoutModule, RouterModule.forChild(accountPunchoutDetailsPageRoutes)],
   declarations: [AccountPunchoutDetailsPageComponent],
+  imports: [PunchoutModule, RouterModule.forChild(accountPunchoutDetailsPageRoutes)],
 })
 export class AccountPunchoutDetailsPageModule {}

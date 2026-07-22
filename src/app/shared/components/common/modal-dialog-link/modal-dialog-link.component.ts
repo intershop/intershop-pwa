@@ -24,6 +24,7 @@ import { ModalDialogComponent, ModalOptions } from 'ish-shared/components/common
  */
 @Component({
   selector: 'ish-modal-dialog-link',
+  standalone: false,
   templateUrl: './modal-dialog-link.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

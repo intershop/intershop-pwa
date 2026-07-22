@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockDirective } from 'ng-mocks';
 import { RECAPTCHA_V3_SITE_KEY, ReCaptchaV3Service, RecaptchaLoaderService } from 'ng-recaptcha-2';
 import { of } from 'rxjs';
@@ -29,7 +29,6 @@ describe('Lazy Captcha Component', () => {
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
-    when(appFacade.appBecameStable$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
       providers: [
@@ -40,12 +39,13 @@ describe('Lazy Captcha Component', () => {
       .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
         set: {
-          imports: [TranslateModule.forRoot()],
+          imports: [TranslatePipe],
           declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
           providers: [
             { provide: RECAPTCHA_V3_SITE_KEY, useValue: 'captchaSiteKeyQWERTY' },
             { provide: ReCaptchaV3Service },
             { provide: RecaptchaLoaderService },
+            provideTranslateService(),
           ],
         },
       })

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -57,8 +57,9 @@ describe('Shopping Basket Component', () => {
         AuthorizationToggleModule.forTesting(),
         FeatureToggleModule.forTesting(),
         RoleToggleModule.forTesting(),
-        TranslateModule.forRoot(),
+        TranslatePipe,
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

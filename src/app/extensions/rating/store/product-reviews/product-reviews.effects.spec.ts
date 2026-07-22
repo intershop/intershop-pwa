@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
-import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadProduct } from 'ish-core/store/shopping/products';
@@ -55,13 +55,12 @@ describe('Product Reviews Effects', () => {
   });
 
   describe('loadProductReviews$', () => {
-    it('should not dispatch actions when encountering loadProductReviews', done => {
+    it('should call the service with sku when encountering loadProductReviews', done => {
       const action = loadProductReviews({ sku: '123' });
       actions$ = of(action);
 
       effects.loadProductReviews$.subscribe(() => {
-        const sku = capture(reviewsServiceMock.getProductReviews);
-        expect(sku).toEqual(sku);
+        verify(reviewsServiceMock.getProductReviews('123')).once();
         done();
       });
     });

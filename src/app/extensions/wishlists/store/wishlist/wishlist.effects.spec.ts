@@ -3,7 +3,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -12,7 +12,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { loginUserSuccess } from 'ish-core/store/customer/user';
+import { loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
 
@@ -82,7 +82,7 @@ describe('Wishlist Effects', () => {
       imports: [
         CoreStoreModule.forTesting(['router']),
         CustomerStoreModule.forTesting('user'),
-        TranslateModule.forRoot(),
+        TranslatePipe,
         WishlistsStoreModule.forTesting('wishlists'),
       ],
       providers: [
@@ -90,6 +90,7 @@ describe('Wishlist Effects', () => {
         { provide: WishlistService, useFactory: () => instance(wishlistServiceMock) },
         provideMockActions(() => actions$),
         provideRouter([{ path: 'account/wishlists/:wishlistName', children: [] }]),
+        provideTranslateService(),
         WishlistEffects,
       ],
     });
@@ -137,6 +138,85 @@ describe('Wishlist Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadWishlists$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadWishlists$', () => {
+    beforeEach(() => {
+      store.dispatch(loginUserSuccess({ customer }));
+      when(wishlistServiceMock.getWishlists()).thenReturn(of(wishlists));
+    });
+
+    it('should call the wishlistService for loadWishlists', done => {
+      const action = loadWishlists();
+      actions$ = of(action);
+
+      effects.loadWishlists$.subscribe(() => {
+        verify(wishlistServiceMock.getWishlists()).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type LoadWishlistsSuccess', () => {
+      const action = loadWishlists();
+      const completion = loadWishlistsSuccess({
+        wishlists,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlists$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type LoadWishlistsFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.getWishlists()).thenReturn(throwError(() => error));
+      const action = loadWishlists();
+      const completion = loadWishlistsFail({
+        error,
+      });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlists$).toBeObservable(expected$);
+    });
+  });
+
+  describe('loadWishlistDetails$', () => {
+    const wishlistId = '.SKsEQAE4FIAAAFuNiUBWx0d';
+
+    beforeEach(() => {
+      when(wishlistServiceMock.getWishlist(anyString())).thenReturn(of(wishlists[0]));
+    });
+
+    it('should call the wishlistService for getWishlist', done => {
+      const action = wishlistActions.loadWishlistDetails({ wishlistId });
+      actions$ = of(action);
+
+      effects.loadWishlistDetails$.subscribe(() => {
+        verify(wishlistServiceMock.getWishlist(wishlistId)).once();
+        done();
+      });
+    });
+
+    it('should map to actions of type LoadWishlistDetailsSuccess', () => {
+      const action = wishlistActions.loadWishlistDetails({ wishlistId });
+      const completion = wishlistApiActions.loadWishlistDetailsSuccess({ wishlist: wishlists[0] });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlistDetails$).toBeObservable(expected$);
+    });
+
+    it('should map failed calls to actions of type LoadWishlistDetailsFail', () => {
+      const error = makeHttpError({ message: 'invalid' });
+      when(wishlistServiceMock.getWishlist(anyString())).thenReturn(throwError(() => error));
+      const action = wishlistActions.loadWishlistDetails({ wishlistId });
+      const completion = wishlistApiActions.loadWishlistDetailsFail({ error });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.loadWishlistDetails$).toBeObservable(expected$);
     });
   });
 
@@ -194,7 +274,7 @@ describe('Wishlist Effects', () => {
       expect(effects.createWishlist$).toBeObservable(expected$);
     });
 
-    it('should map to action of type LoadWishlists if the wishlist is created as preferred', () => {
+    it('should map to action of type LoadWishlistDetails if the wishlist is created as preferred', () => {
       const createdWishlist: Wishlist = {
         id: '1234',
         title: 'title',
@@ -202,9 +282,10 @@ describe('Wishlist Effects', () => {
         public: false,
       };
       const action = createWishlistSuccess({ wishlist: createdWishlist });
-      const completion = loadWishlists();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const loadAll = loadWishlists();
+      const loadDetails = wishlistActions.loadWishlistDetails({ wishlistId: createdWishlist.id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
       expect(effects.reloadWishlists$).toBeObservable(expected$);
     });
@@ -304,7 +385,7 @@ describe('Wishlist Effects', () => {
       expect(effects.updateWishlist$).toBeObservable(expected$);
     });
 
-    it('should map to action of type LoadWishlists if the wishlist is updated as preferred', () => {
+    it('should map to action of type LoadWishlistDetails if the wishlist is updated as preferred', () => {
       const updatedWishlist: Wishlist = {
         id: '1234',
         title: 'title',
@@ -312,9 +393,10 @@ describe('Wishlist Effects', () => {
         public: false,
       };
       const action = updateWishlistSuccess({ wishlist: updatedWishlist });
-      const completion = loadWishlists();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
+      const loadAll = loadWishlists();
+      const loadDetails = wishlistActions.loadWishlistDetails({ wishlistId: updatedWishlist.id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('-(lc)', { l: loadAll, c: loadDetails });
 
       expect(effects.reloadWishlists$).toBeObservable(expected$);
     });
@@ -506,17 +588,22 @@ describe('Wishlist Effects', () => {
     });
   });
 
-  describe('loadWishlistsAfterLogin$', () => {
-    beforeEach(() => {
-      when(wishlistServiceMock.getWishlists()).thenReturn(of(wishlists));
-    });
-    it('should call WishlistsService after login action was dispatched', done => {
-      effects.loadWishlistsAfterLogin$.subscribe(action => {
-        expect(action.type).toEqual(loadWishlists.type);
-        done();
-      });
+  describe('loadSelectedWishlistDetails$', () => {
+    it('should load the details of the selected wishlist', () => {
+      const action = selectWishlist({ wishlistId: wishlists[0].id });
+      const completion = wishlistActions.loadWishlistDetails({ wishlistId: wishlists[0].id });
+      actions$ = hot('pa-a-a', { p: personalizationStatusDetermined(), a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
-      store.dispatch(loginUserSuccess({ customer }));
+      expect(effects.loadSelectedWishlistDetails$).toBeObservable(expected$);
+    });
+
+    it('should wait for the personalization status before loading the details', () => {
+      const action = selectWishlist({ wishlistId: wishlists[0].id });
+      actions$ = hot('-a', { a: action });
+      const expected$ = cold('--');
+
+      expect(effects.loadSelectedWishlistDetails$).toBeObservable(expected$);
     });
   });
 

@@ -6,6 +6,7 @@ import { User } from 'ish-core/models/user/user.model';
 
 @Component({
   selector: 'ish-requisition-management-root',
+  standalone: false,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

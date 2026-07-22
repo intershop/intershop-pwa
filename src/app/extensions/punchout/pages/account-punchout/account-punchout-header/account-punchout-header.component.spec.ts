@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
@@ -16,13 +16,13 @@ describe('Account Punchout Header Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule, RouterModule, TranslateModule.forRoot()],
+      imports: [NgbNavModule, RouterModule, TranslatePipe],
       declarations: [
         AccountPunchoutHeaderComponent,
         MockComponent(ErrorMessageComponent),
         MockComponent(InfoMessageComponent),
       ],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 
@@ -34,7 +34,7 @@ describe('Account Punchout Header Component', () => {
     component.punchoutTypes = ['oci', 'cxml'];
     component.selectedType = 'cxml';
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('account.punchout.type.text', '{{0}}');
   });

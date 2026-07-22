@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
@@ -18,7 +18,8 @@ describe('Payment Payone Creditcard Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MockComponent(PaymentSaveCheckboxComponent), PaymentPayoneCreditcardComponent],
-      imports: [ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, TranslatePipe],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

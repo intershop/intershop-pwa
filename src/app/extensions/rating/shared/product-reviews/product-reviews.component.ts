@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { range } from 'lodash-es';
 import { Observable, combineLatest, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -10,10 +9,10 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
-import { RatingFilledType } from '../product-rating-star/product-rating-star.component';
 
 @Component({
   selector: 'ish-product-reviews',
+  standalone: false,
   templateUrl: './product-reviews.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -51,10 +50,6 @@ export class ProductReviewsComponent implements OnInit, OnDestroy {
 
     this.error$ = this.productReviewsFacade.productReviewsError$;
     this.loading$ = this.productReviewsFacade.productReviewsLoading$;
-  }
-
-  getStars(rating: number): RatingFilledType[] {
-    return range(1, 6).map(index => (index <= rating ? 'full' : 'empty'));
   }
 
   deleteReview(review: ProductReview) {

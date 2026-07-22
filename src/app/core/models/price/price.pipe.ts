@@ -14,7 +14,11 @@ export function formatPrice(price: Price, lang: string): string {
   return symbol ? formatCurrency(price.value, lang, symbol) : price.value?.toString();
 }
 
-@Pipe({ name: 'ishPrice', pure: false })
+@Pipe({
+  name: 'ishPrice',
+  pure: false,
+  standalone: false,
+})
 export class PricePipe implements PipeTransform {
   displayText: string;
 
@@ -31,22 +35,25 @@ export class PricePipe implements PipeTransform {
       return this.translateService.instant('product.price.na.text');
     }
 
-    if (!this.translateService.currentLang) {
+    if (!this.translateService.getCurrentLang()) {
       return 'N/A';
     }
 
     switch (data.type) {
       case 'PriceItem':
         if (priceType) {
-          return formatPrice(PriceItemHelper.selectType(data, priceType), this.translateService.currentLang);
+          return formatPrice(PriceItemHelper.selectType(data, priceType), this.translateService.getCurrentLang());
         }
         this.accountFacade.userPriceDisplayType$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(type => {
-          this.displayText = formatPrice(PriceItemHelper.selectType(data, type), this.translateService.currentLang);
+          this.displayText = formatPrice(
+            PriceItemHelper.selectType(data, type),
+            this.translateService.getCurrentLang()
+          );
           this.cdRef.markForCheck();
         });
         return this.displayText;
       default:
-        return formatPrice(data as Price, this.translateService.currentLang);
+        return formatPrice(data as Price, this.translateService.getCurrentLang());
     }
   }
 }

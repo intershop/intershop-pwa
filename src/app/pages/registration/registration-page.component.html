@@ -1,3 +1,7 @@
+<div class="marketing-area">
+  <ish-content-include includeId="include.registration.base.top.pagelet2-Include" />
+</div>
+
 <ish-error-message [error]="error$ | async" />
 
 <div data-testing-id="account-create-full-page">
@@ -15,8 +19,8 @@
             <input
               class="btn btn-primary"
               type="submit"
-              [attr.aria-describedby]="form.invalid && registrationForm.submitted ? 'submit-button-help' : null"
               value="{{ 'account.create.button.label' | translate }}"
+              [attr.aria-describedby]="form.invalid && registrationForm.submitted ? 'submit-button-help' : null"
             />
             <input
               class="btn btn-secondary"

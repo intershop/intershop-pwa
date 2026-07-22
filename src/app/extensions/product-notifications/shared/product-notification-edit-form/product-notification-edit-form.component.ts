@@ -26,6 +26,7 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-edit-form',
+  standalone: false,
   templateUrl: './product-notification-edit-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

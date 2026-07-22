@@ -1,27 +1,19 @@
 .swiper {
-  padding-bottom: 20px;
+  padding-bottom: $space-default * 2;
 
   .swiper-pagination {
-    bottom: 0;
+    bottom: divide($space-default, -3);
+  }
 
-    .swiper-pagination-bullet-active {
-      background: $bg-color-corporate;
-    }
+  .swiper-pagination-bullet {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin: 0 !important;
+    background: transparent;
+    opacity: 1;
 
-    .swiper-pagination-bullet {
-      &:only-child {
-        visibility: hidden;
-      }
-
-      position: relative;
-      width: 24px;
-      height: 24px;
-      margin: 0;
-      background: transparent;
-      opacity: 1;
-    }
-
-    .swiper-pagination-bullet::before {
+    &::before {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -34,50 +26,64 @@
       transform: translate(-50%, -50%);
     }
 
-    .swiper-pagination-bullet-active::before {
+    &:only-child {
+      visibility: hidden;
+    }
+  }
+
+  .swiper-pagination-bullet-active {
+    &::before {
       background-color: $CORPORATE-PRIMARY;
     }
   }
-}
 
-.swiper-slide {
-  padding-right: $space-default;
-  padding-left: $space-default;
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-  position: absolute;
-  top: 0;
-  z-index: 10;
-  width: $carousel-control-icon-width;
-  height: 100%;
-  cursor: pointer;
-  background: no-repeat 50% / 100% 100%;
-  opacity: 0.5;
-
-  &:hover {
-    opacity: 1;
+  .swiper-slide {
+    padding-right: $space-default;
+    padding-left: $space-default;
   }
 
-  &.swiper-button-disabled {
-    opacity: 0;
+  &.swiper-watch-progress {
+    // a11y: hide non visible slides to prevent tabbing into them
+    // only applies to carousels with watchSlidesProgress: true
+    .swiper-slide {
+      &:not(.swiper-slide-visible) {
+        visibility: hidden;
+      }
+    }
   }
-}
 
-.swiper-button-next {
-  right: 0;
-  background-image: escape-svg($carousel-control-next-icon-bg);
+  .swiper-button-next,
+  .swiper-button-prev {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    width: $carousel-control-icon-width;
+    height: 100%;
+    color: transparent;
+    cursor: pointer;
+    background: no-repeat 50% / 100% 100%;
+    opacity: 0.5;
 
-  &::after {
-    content: '';
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0;
+    }
   }
-}
 
-.swiper-button-prev {
-  background-image: escape-svg($carousel-control-prev-icon-bg);
+  .swiper-button-next {
+    right: 0;
+    background-image: escape-svg($carousel-control-next-icon-bg);
+  }
 
-  &::after {
-    content: '';
+  .swiper-button-prev {
+    left: 0;
+    background-image: escape-svg($carousel-control-prev-icon-bg);
   }
 }

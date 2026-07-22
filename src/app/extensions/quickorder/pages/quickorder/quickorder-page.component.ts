@@ -5,6 +5,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
 @Component({
   selector: 'ish-quickorder-page',
+  standalone: false,
   templateUrl: './quickorder-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

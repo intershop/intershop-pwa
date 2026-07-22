@@ -1,8 +1,19 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import SwiperCore, { Navigation, Pagination, SwiperOptions, A11y } from 'swiper';
+import Swiper from 'swiper';
+import { A11y, Navigation, Pagination } from 'swiper/modules';
+import { SwiperOptions } from 'swiper/types';
 
 import {
   LARGE_BREAKPOINT_WIDTH,
@@ -14,14 +25,13 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
 
-SwiperCore.use([Pagination, Navigation, A11y]);
-
 @Component({
   selector: 'ish-products-list',
+  standalone: false,
   templateUrl: './products-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductsListComponent implements OnChanges {
+export class ProductsListComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) productSKUs: string[];
   @Input() listStyle: string;
   @Input() slideItems: number;
@@ -31,34 +41,41 @@ export class ProductsListComponent implements OnChanges {
 
   productSKUs$: Observable<string[]>;
 
-  /**
-   * track already fetched SKUs
-   */
-  private fetchedSKUs = new Set<string>();
+  private swiper: Swiper;
+  private swiperInitialized = false;
 
-  /**
-   * configuration of swiper carousel
-   * https://swiperjs.com/swiper-api
-   */
-  swiperConfig: SwiperOptions;
+  @ViewChild('swiper') set swiperRef(ref: ElementRef) {
+    if (ref && !this.swiperInitialized && !SSR) {
+      this.swiperInitialized = true;
+      const swiperEl = ref.nativeElement;
+      this.swiper = new Swiper(swiperEl, {
+        modules: [A11y, Navigation, Pagination],
+        ...this.swiperConfig,
+        navigation: {
+          nextEl: swiperEl.querySelector('.swiper-button-next'),
+          prevEl: swiperEl.querySelector('.swiper-button-prev'),
+        },
+        pagination: {
+          el: swiperEl.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+      });
+    }
+  }
+
+  // configuration of swiper carousel: https://swiperjs.com/swiper-api
+  private swiperConfig: SwiperOptions = {
+    watchSlidesProgress: true,
+    direction: 'horizontal',
+    breakpoints: {},
+  };
 
   constructor(
     @Inject(SMALL_BREAKPOINT_WIDTH) private smallBreakpointWidth: InjectSingle<typeof SMALL_BREAKPOINT_WIDTH>,
     @Inject(MEDIUM_BREAKPOINT_WIDTH) private mediumBreakpointWidth: InjectSingle<typeof MEDIUM_BREAKPOINT_WIDTH>,
     @Inject(LARGE_BREAKPOINT_WIDTH) private largeBreakpointWidth: InjectSingle<typeof LARGE_BREAKPOINT_WIDTH>,
     private shoppingFacade: ShoppingFacade
-  ) {
-    this.swiperConfig = {
-      watchSlidesProgress: true,
-      direction: 'horizontal',
-      navigation: true,
-      pagination: {
-        clickable: true,
-      },
-      observer: true,
-      observeParents: true,
-    };
-  }
+  ) {}
 
   ngOnChanges(): void {
     this.configureSlides(this.slideItems);
@@ -68,13 +85,13 @@ export class ProductsListComponent implements OnChanges {
       distinctUntilChanged<[string[], string[]]>(isEqual),
       map(([skus, failed]) => skus.filter(x => !failed.includes(x)))
     );
+
+    // update swiper when slides change
+    this.swiper?.update();
   }
 
-  lazyFetch(fetch: boolean, sku: string): boolean {
-    if (fetch) {
-      this.fetchedSKUs.add(sku);
-    }
-    return this.fetchedSKUs.has(sku);
+  ngOnDestroy(): void {
+    this.swiper?.destroy();
   }
 
   /**

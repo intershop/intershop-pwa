@@ -5,31 +5,29 @@
 >
   <div class="loading-container mt-auto">
     @if ((loading$ | async) !== true) {
-      <div>
-        <div class="row align-items-end g-0">
-          <div class="col">
-            <div class="infobox-count" data-testing-id="responded-counter">
-              {{ respondedQuotes }}
-            </div>
-            <div>
-              {{ 'account.quotes.widget.responded.label' | translate }}
-            </div>
+      <div class="row align-items-end g-0">
+        <div class="col">
+          <div class="infobox-count" data-testing-id="responded-counter">
+            {{ respondedQuotes }}
           </div>
-          <div class="col text-end">
-            <div class="infobox-count-large" data-testing-id="submitted-counter">
-              {{ submittedQuoteRequests }}
-            </div>
-            <div>
-              {{ 'account.quotes.widget.submitted.label' | translate }}
-            </div>
+          <div>
+            {{ 'account.quotes.widget.responded.label' | translate }}
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            <a data-testing-id="quote-list-link" routerLink="/account/quotes">
-              {{ 'account.quotes.widget.view_all_quotes.link' | translate }}
-            </a>
+        <div class="col text-end">
+          <div class="infobox-count-large" data-testing-id="submitted-counter">
+            {{ submittedQuoteRequests }}
           </div>
+          <div>
+            {{ 'account.quotes.widget.submitted.label' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <a data-testing-id="quote-list-link" routerLink="/account/quotes">
+            {{ 'account.quotes.widget.view_all_quotes.link' | translate }}
+          </a>
         </div>
       </div>
     } @else {

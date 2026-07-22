@@ -2,24 +2,25 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 
 /**
  * This directive can be used to add functionality on form submit events.
- * It has been used to focus the first invalid form element on submit.
+ * It focuses the first invalid native form element on submit.
+ * Custom elements (hyphenated tag names like Angular components or Formly wrappers) are skipped.
  */
 @Directive({
   selector: '[ishFormSubmit]',
+  standalone: false,
 })
 export class FormSubmitDirective {
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef<HTMLElement>) {}
 
   @HostListener('submit')
   onFormSubmit() {
-    const invalidElements = this.elementRef.nativeElement.querySelectorAll('.ng-invalid');
-    if (invalidElements.length) {
-      const firstElement = invalidElements[0] as HTMLElement;
+    const firstElement = Array.from(this.elementRef.nativeElement.querySelectorAll<HTMLElement>('.ng-invalid')).find(
+      el => !el.tagName.includes('-') || el.tagName.toLowerCase() === 'ng-select'
+    );
+    if (firstElement) {
       if (firstElement.tagName.toLowerCase() === 'ng-select') {
-        // Special handling for ng-select: focus the nested input
-        firstElement.querySelector('input')?.focus();
+        firstElement.querySelector<HTMLElement>('input')?.focus();
       } else {
-        // For standard form elements, focus the element directly
         firstElement.focus();
       }
     }

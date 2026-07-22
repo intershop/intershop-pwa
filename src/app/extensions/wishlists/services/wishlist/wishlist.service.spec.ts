@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { Link } from 'ish-core/models/link/link.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 
 import { WishlistSharing, WishlistSharingResponse } from '../../models/wishlist-sharing/wishlist-sharing.model';
@@ -38,23 +39,31 @@ describe('Wishlist Service', () => {
 
   it("should get wishlists when 'getWishlists' is called for rest applications", done => {
     when(apiServiceMock.get(`privatecustomers/-/wishlists`)).thenReturn(
-      of({ elements: [{ uri: 'any/wishlists/1234' }] })
+      of({
+        elements: [
+          {
+            itemId: '1234',
+            title: 'My Wishlist',
+            attributes: [
+              { name: 'itemsCount', value: 2 },
+              { name: 'preferred', value: true },
+            ],
+          },
+        ] as Link[],
+      })
     );
-    when(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
 
     wishlistService.getWishlists().subscribe(data => {
       verify(apiServiceMock.get(`privatecustomers/-/wishlists`)).once();
-      verify(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
         [
           {
             "id": "1234",
-            "items": [],
-            "itemsCount": 0,
+            "itemsCount": 2,
             "preferred": true,
             "public": undefined,
             "shared": undefined,
-            "title": undefined,
+            "title": "My Wishlist",
           },
         ]
       `);
@@ -63,27 +72,87 @@ describe('Wishlist Service', () => {
   });
 
   it("should get wishlists when 'getWishlists' is called for b2c applications", done => {
-    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(of({ elements: [{ uri: 'any/wishlists/1234' }] }));
-    when(apiServiceMock.get(`customers/-/wishlists/1234`)).thenReturn(of({ id: '1234', preferred: true }));
     when(appFacade.customerRestResource$).thenReturn(of('customers'));
+    when(apiServiceMock.get(`customers/-/wishlists`)).thenReturn(
+      of({
+        elements: [
+          {
+            itemId: '1234',
+            title: 'My Wishlist',
+            attributes: [
+              { name: 'itemsCount', value: 2 },
+              { name: 'preferred', value: true },
+            ],
+          },
+        ] as Link[],
+      })
+    );
 
     wishlistService.getWishlists().subscribe(data => {
       verify(apiServiceMock.get(`customers/-/wishlists`)).once();
-      verify(apiServiceMock.get(`customers/-/wishlists/1234`)).once();
       expect(data).toMatchInlineSnapshot(`
         [
           {
             "id": "1234",
-            "items": [],
-            "itemsCount": 0,
+            "itemsCount": 2,
             "preferred": true,
             "public": undefined,
             "shared": undefined,
-            "title": undefined,
+            "title": "My Wishlist",
           },
         ]
       `);
       done();
+    });
+  });
+
+  it("should get wishlists individually when 'getWishlists' returns WishlistData", done => {
+    when(apiServiceMock.get(`privatecustomers/-/wishlists`)).thenReturn(
+      of({
+        elements: [
+          { title: 'Wishlist 1', uri: 'any/wishlists/1234', preferred: false },
+          { title: 'Wishlist 2', uri: 'any/wishlists/5678', preferred: true },
+        ] as WishlistData[],
+      })
+    );
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).thenReturn(
+      of({ title: 'Wishlist 1', itemsCount: 2, items: [], preferred: false } as WishlistData)
+    );
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/5678`)).thenReturn(
+      of({ title: 'Wishlist 2', itemsCount: 0, items: [], preferred: true } as WishlistData)
+    );
+
+    wishlistService.getWishlists().subscribe(data => {
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists`)).once();
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/1234`)).once();
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/5678`)).once();
+      expect(data).toHaveLength(2);
+      done();
+    });
+  });
+
+  it("should get a wishlist when 'getWishlist' is called", done => {
+    const wishlistId = '1234';
+
+    when(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).thenReturn(
+      of({ title: 'My Wishlist', itemsCount: 0, items: [], preferred: true } as WishlistData)
+    );
+
+    wishlistService.getWishlist(wishlistId).subscribe(data => {
+      verify(apiServiceMock.get(`privatecustomers/-/wishlists/${wishlistId}`)).once();
+      expect(data.id).toEqual(wishlistId);
+      expect(data.title).toEqual('My Wishlist');
+      done();
+    });
+  });
+
+  it("should return an error when 'getWishlist' is called without a wishlistId", done => {
+    wishlistService.getWishlist(undefined).subscribe({
+      next: fail,
+      error: error => {
+        expect(error).toMatchInlineSnapshot(`[Error: getWishlist() called without wishlistId]`);
+        done();
+      },
     });
   });
 

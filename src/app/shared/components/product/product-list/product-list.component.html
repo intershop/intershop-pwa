@@ -1,12 +1,13 @@
 <div class="product-list row">
+  @let listingLoading = listingLoading$ | async;
   @if (!products.length) {
     <div class="gx-0">
-      @if ((listingLoading$ | async) !== true) {
+      @if (listingLoading !== true) {
         {{ 'search.noresult.filtered_products.message' | translate }}
       }
     </div>
   }
-  @if (listingLoading$ | async) {
+  @if (listingLoading) {
     <div class="product-list-loading">
       <ish-loading [standalone]="true" />
     </div>
@@ -25,7 +26,7 @@
       }
     </ng-container>
   }
-  @if (listingLoading$ | async) {
+  @if (listingLoading) {
     <div class="col-12">
       <ish-loading [standalone]="true" />
     </div>

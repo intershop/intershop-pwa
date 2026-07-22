@@ -181,6 +181,8 @@ export class RegistrationFormConfigurationService {
         address,
         userId: registrationConfig.userId,
         subscribedToNewsletter: formValue.newsletterSubscription,
+        captcha: formValue.captcha,
+        captchaAction: formValue.captchaAction,
       });
     } else {
       const customer: Customer = {

@@ -12,6 +12,7 @@ import { ShippingMethod } from 'ish-core/models/shipping-method/shipping-method.
 
 @Component({
   selector: 'ish-checkout-shipping-page',
+  standalone: false,
   templateUrl: './checkout-shipping-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

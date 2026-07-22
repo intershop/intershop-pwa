@@ -15,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
   declarations: [AccountPaymentComponent, AccountPaymentConcardisDirectdebitComponent, AccountPaymentPageComponent],
+  imports: [RouterModule.forChild(routes), SharedModule],
 })
 export class AccountPaymentPageModule {}

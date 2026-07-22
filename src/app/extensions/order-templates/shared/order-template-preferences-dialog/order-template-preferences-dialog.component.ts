@@ -1,18 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { pick } from 'lodash-es';
 
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
 
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -26,6 +17,7 @@ import { OrderTemplate } from '../../models/order-template/order-template.model'
  */
 @Component({
   selector: 'ish-order-template-preferences-dialog',
+  standalone: false,
   templateUrl: './order-template-preferences-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -45,19 +37,12 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   model: Partial<OrderTemplate>;
   fields: FormlyFieldConfig[];
 
-  /**
-   *  A reference to the current modal.
-   */
-  modal: NgbModalRef;
-
   /** localization keys, default = for new */
   primaryButton = 'account.order_template.new_from_order.button.create.label';
   private orderTemplateTitle = 'account.order_template.new_order_template.text';
   modalHeader = 'account.order_template.list.button.add_template.label';
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
-
-  constructor(private ngbModal: NgbModal) {}
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   ngOnInit() {
     this.fields = [
@@ -99,7 +84,7 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
         title: this.model.title,
       });
 
-      this.hide();
+      this.modalDialog.hide();
     }
   }
 
@@ -107,13 +92,6 @@ export class OrderTemplatePreferencesDialogComponent implements OnInit {
   show() {
     this.orderTemplateForm.reset();
     this.model = pick(this.orderTemplate, 'title');
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'order-template-preferences-title' });
-  }
-
-  /** Close the modal. */
-  hide() {
-    if (this.modal) {
-      this.modal.close();
-    }
+    this.modalDialog.show();
   }
 }

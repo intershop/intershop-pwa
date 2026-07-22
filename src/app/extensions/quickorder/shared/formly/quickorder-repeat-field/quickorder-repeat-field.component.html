@@ -11,9 +11,9 @@
     <div class="col-3 col-sm-1 d-flex align-items-start quickorder-line-item">
       <button
         class="btn-tool btn-link m-2"
-        type="button"
         title="{{ 'quickorder.page.remove.row' | translate }}"
-        (click)="remove(i); updateContexts()"
+        type="button"
+        (click)="removeRow(i)"
       >
         <i class="bi bi-trash-fill"></i>
       </button>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { QuoteContextFacade, isQuoteValid } from '../../facades/quote-context.facade';
@@ -6,10 +6,14 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
 
 @Component({
   selector: 'ish-quote-interactions',
+  standalone: false,
   templateUrl: './quote-interactions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuoteInteractionsComponent implements OnInit {
+  @Input() showClose = false;
+  @Output() readonly closeDialog = new EventEmitter<void>();
+
   quote$: Observable<Quote | QuoteRequest>;
   state$: Observable<QuoteStatus>;
   isQuoteValid$: Observable<boolean>;

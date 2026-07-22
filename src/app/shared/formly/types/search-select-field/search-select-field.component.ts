@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Renderer2, ViewChild } from '@angular/core';
-import { NgSelectComponent } from '@ng-select/ng-select';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
@@ -10,27 +9,14 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
 
 @Component({
   selector: 'ish-search-select-field',
+  standalone: false,
   templateUrl: './search-select-field.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class SearchSelectFieldComponent extends FieldType<FieldTypeConfig> implements AfterViewInit {
-  @ViewChild(NgSelectComponent) ngSelect: NgSelectComponent;
-
+export class SearchSelectFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {
     props: {
       options: [] as SelectOption[],
     },
   };
-
-  constructor(private renderer: Renderer2) {
-    super();
-  }
-
-  // set the id on the search input for accessibility reasons
-  ngAfterViewInit() {
-    const inputElement = this.ngSelect?.searchInput?.nativeElement;
-    if (inputElement) {
-      this.renderer.setAttribute(inputElement, 'id', this.id);
-    }
-  }
 }

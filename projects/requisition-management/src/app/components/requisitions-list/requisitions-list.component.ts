@@ -5,19 +5,20 @@ import { Requisition, RequisitionStatus } from '../../models/requisition/requisi
 import { RequisitionRejectDialogComponent } from '../requisition-reject-dialog/requisition-reject-dialog.component';
 
 export type RequisitionColumnsType =
-  | 'requisitionNo'
-  | 'orderNo'
-  | 'orderNoSimple'
-  | 'creationDate'
+  | 'actions'
+  | 'approvalDate'
   | 'approver'
   | 'buyer'
-  | 'approvalDate'
-  | 'rejectionDate'
+  | 'creationDate'
   | 'lineItems'
+  | 'orderNo'
+  | 'orderNoSimple'
   | 'orderTotal'
-  | 'actions';
+  | 'rejectionDate'
+  | 'requisitionNo';
 @Component({
   selector: 'ish-requisitions-list',
+  standalone: false,
   templateUrl: './requisitions-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

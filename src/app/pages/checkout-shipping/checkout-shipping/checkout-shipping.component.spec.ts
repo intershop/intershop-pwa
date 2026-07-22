@@ -13,6 +13,7 @@ import { CheckoutShippingComponent } from './checkout-shipping.component';
 @Component({
   // custom selector to prevent component ID collision
   selector: 'ish-dummy-shipping-wrapper',
+  standalone: false,
   template: '<ng-template #fieldComponent />',
 })
 class DummyWrapperComponent extends FieldWrapper {}

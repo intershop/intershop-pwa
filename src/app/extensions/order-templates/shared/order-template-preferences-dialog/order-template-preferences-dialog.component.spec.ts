@@ -1,5 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
+
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatePreferencesDialogComponent } from './order-template-preferences-dialog.component';
 
@@ -7,6 +13,14 @@ describe('Order Template Preferences Dialog Component', () => {
   let component: OrderTemplatePreferencesDialogComponent;
   let fixture: ComponentFixture<OrderTemplatePreferencesDialogComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [MockComponent(ModalDialogComponent), OrderTemplatePreferencesDialogComponent],
+      providers: [provideTranslateService()],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderTemplatePreferencesDialogComponent);
@@ -21,10 +35,11 @@ describe('Order Template Preferences Dialog Component', () => {
   });
 
   it('should emit new order template data when submit form was called and the form was valid', () => {
-    fixture.detectChanges();
-    component.model = {
+    component.orderTemplate = {
+      id: '123456789',
       title: 'test order template',
     };
+    fixture.detectChanges();
 
     const emitter = spy(component.submitOrderTemplate);
 

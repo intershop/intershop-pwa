@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -15,7 +16,6 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';
-import { ProductRatingStarComponent } from '../product-rating-star/product-rating-star.component';
 import { ProductReviewCreateDialogComponent } from '../product-review-create-dialog/product-review-create-dialog.component';
 
 import { ProductReviewsComponent } from './product-reviews.component';
@@ -50,11 +50,10 @@ describe('Product Reviews Component', () => {
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      imports: [RoleToggleModule.forTesting(), RouterModule],
+      imports: [NgbModule, RoleToggleModule.forTesting(), RouterModule],
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(ModalDialogComponent),
-        MockComponent(ProductRatingStarComponent),
         MockComponent(ProductReviewCreateDialogComponent),
         MockPipe(DatePipe),
         MockPipe(TranslatePipe),
@@ -93,7 +92,7 @@ describe('Product Reviews Component', () => {
 
   it('should render rating stars', () => {
     fixture.detectChanges();
-    expect(element.getElementsByTagName('ish-product-rating-star')).toBeTruthy();
+    expect(element.querySelector('ngb-rating')).toBeTruthy();
   });
 
   it('should render error message if reviews could not be loaded', () => {

@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ish-confirm-leave-modal',
+  standalone: false,
   templateUrl: './confirm-leave-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

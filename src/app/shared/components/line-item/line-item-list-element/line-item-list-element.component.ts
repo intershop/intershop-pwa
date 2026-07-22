@@ -11,13 +11,14 @@ import { OrderLineItem } from 'ish-core/models/order/order.model';
 
 @Component({
   selector: 'ish-line-item-list-element',
+  standalone: false,
   templateUrl: './line-item-list-element.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemListElementComponent implements OnChanges {
   @Input({ required: true }) pli: Partial<LineItemView & OrderLineItem>;
   @Input() editable = true;
-  @Input() lineItemViewType: 'simple' | 'availability';
+  @Input() lineItemViewType: 'availability' | 'simple';
 
   private updateSubscription: Subscription;
   private destroyRef = inject(DestroyRef);

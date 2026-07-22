@@ -1,13 +1,14 @@
 /* eslint-disable ish-custom-rules/no-intelligence-in-artifacts */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, UrlSegment } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
+import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
@@ -30,15 +31,17 @@ describe('Registration Page Component', () => {
     activatedRoute = mock(ActivatedRoute);
     await TestBed.configureTestingModule({
       declarations: [
+        MockComponent(ContentIncludeComponent),
         MockComponent(ErrorMessageComponent),
         MockComponent(LazyAddressDoctorComponent),
         RegistrationPageComponent,
       ],
-      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslateModule.forRoot()],
+      imports: [FeatureToggleModule.forTesting('addressDoctor'), FormlyTestingModule, TranslatePipe],
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: ActivatedRoute, useFactory: () => instance(activatedRoute) },
         { provide: RegistrationFormConfigurationService, useFactory: () => instance(configService) },
+        provideTranslateService(),
       ],
     }).compileComponents();
 

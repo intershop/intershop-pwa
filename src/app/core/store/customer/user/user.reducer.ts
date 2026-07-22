@@ -85,13 +85,10 @@ const initialState: UserState = {
 
 export const userReducer = createReducer(
   initialState,
-  on(
-    userErrorReset,
-    (state): UserState => ({
-      ...state,
-      error: undefined,
-    })
-  ),
+  on(userErrorReset, (state): UserState => ({
+    ...state,
+    error: undefined,
+  })),
   setLoadingOn(
     loadCompanyUser,
     loadUserByAPIToken,
@@ -150,13 +147,10 @@ export const userReducer = createReducer(
       error,
     };
   }),
-  on(
-    createUserApprovalRequired,
-    (state, action): UserState => ({
-      ...state,
-      customerApprovalEmail: action.payload.email,
-    })
-  ),
+  on(createUserApprovalRequired, (state, action): UserState => ({
+    ...state,
+    customerApprovalEmail: action.payload.email,
+  })),
   on(loginUserSuccess, (state: UserState, action): UserState => {
     const customer = action.payload.customer;
     const user = action.payload.user;
@@ -188,12 +182,9 @@ export const userReducer = createReducer(
       user,
     };
   }),
-  on(
-    updateUserPasswordSuccess,
-    (state): UserState => ({
-      ...state,
-    })
-  ),
+  on(updateUserPasswordSuccess, (state): UserState => ({
+    ...state,
+  })),
   on(updateCustomerSuccess, (state, action): UserState => {
     const customer = action.payload.customer;
 
@@ -202,75 +193,45 @@ export const userReducer = createReducer(
       customer,
     };
   }),
-  on(
-    loadUserCostCentersSuccess,
-    (state, action): UserState => ({
-      ...state,
-      costCenters: action.payload.costCenters,
-    })
-  ),
-  on(
-    loadUserPaymentMethodsSuccess,
-    (state, action): UserState => ({
-      ...state,
-      paymentMethods: action.payload.paymentMethods,
-    })
-  ),
-  on(
-    deleteUserPaymentInstrumentSuccess,
-    (state): UserState => ({
-      ...state,
-    })
-  ),
+  on(loadUserCostCentersSuccess, (state, action): UserState => ({
+    ...state,
+    costCenters: action.payload.costCenters,
+  })),
+  on(loadUserPaymentMethodsSuccess, (state, action): UserState => ({
+    ...state,
+    paymentMethods: action.payload.paymentMethods,
+  })),
+  on(deleteUserPaymentInstrumentSuccess, (state): UserState => ({
+    ...state,
+  })),
   // Password Reminder
-  on(
-    updateUserPasswordByPasswordReminder,
-    requestPasswordReminder,
-    (state): UserState => ({
-      ...state,
-      passwordReminderSuccess: undefined,
-      passwordReminderError: undefined,
-    })
-  ),
-  on(
-    updateUserPasswordByPasswordReminderSuccess,
-    requestPasswordReminderSuccess,
-    (state): UserState => ({
-      ...state,
-      passwordReminderSuccess: true,
-      passwordReminderError: undefined,
-    })
-  ),
-  on(
-    updateUserPasswordByPasswordReminderFail,
-    requestPasswordReminderFail,
-    (state, action): UserState => ({
-      ...state,
-      passwordReminderSuccess: false,
-      passwordReminderError: action.payload.error,
-    })
-  ),
-  on(
-    resetPasswordReminder,
-    (state): UserState => ({
-      ...state,
-      passwordReminderSuccess: undefined,
-      passwordReminderError: undefined,
-    })
-  ),
+  on(updateUserPasswordByPasswordReminder, requestPasswordReminder, (state): UserState => ({
+    ...state,
+    passwordReminderSuccess: undefined,
+    passwordReminderError: undefined,
+  })),
+  on(updateUserPasswordByPasswordReminderSuccess, requestPasswordReminderSuccess, (state): UserState => ({
+    ...state,
+    passwordReminderSuccess: true,
+    passwordReminderError: undefined,
+  })),
+  on(updateUserPasswordByPasswordReminderFail, requestPasswordReminderFail, (state, action): UserState => ({
+    ...state,
+    passwordReminderSuccess: false,
+    passwordReminderError: action.payload.error,
+  })),
+  on(resetPasswordReminder, (state): UserState => ({
+    ...state,
+    passwordReminderSuccess: undefined,
+    passwordReminderError: undefined,
+  })),
   // Newsletter
-  on(
-    userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess,
-    (state, action): UserState => ({
-      ...state,
-      subscribedToNewsletter: action.payload.subscribed,
-    })
-  ),
-  on(
-    userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess,
-    (state, action): UserState => ({
-      ...state,
-      subscribedToNewsletter: action.payload.subscriptionStatus,
-    })
-  )
+  on(userNewsletterApiActions.loadUserNewsletterSubscriptionSuccess, (state, action): UserState => ({
+    ...state,
+    subscribedToNewsletter: action.payload.subscribed,
+  })),
+  on(userNewsletterApiActions.updateUserNewsletterSubscriptionSuccess, (state, action): UserState => ({
+    ...state,
+    subscribedToNewsletter: action.payload.subscriptionStatus,
+  }))
 );

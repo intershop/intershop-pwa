@@ -9,11 +9,12 @@ import { InjectSingle } from 'ish-core/utils/injection';
 
 @Component({
   selector: 'ish-header-navigation',
+  standalone: false,
   templateUrl: './header-navigation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderNavigationComponent implements OnInit {
-  @Input() view: 'auto' | 'small' | 'full' = 'auto';
+  @Input() view: 'auto' | 'full' | 'small' = 'auto';
 
   categories$: Observable<NavigationCategory[]>;
 

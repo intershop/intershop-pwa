@@ -5,13 +5,14 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SupplierStock } from 'ish-core/models/product-inventory/product-inventory.model';
 
 enum StockLevel {
-  high = 100,
-  medium = 50,
   low = 1,
+  medium = 50,
+  high = 100,
 }
 
 @Component({
   selector: 'ish-product-inventory',
+  standalone: false,
   templateUrl: './product-inventory.component.html',
   styleUrls: ['./product-inventory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
@@ -126,7 +125,7 @@ export class UserService {
       mainDivision: body.address.mainDivisionCode,
     };
 
-    const newCustomer$: Observable<CreatePrivateCustomerType | CreateBusinessCustomerType> =
+    const newCustomer$: Observable<CreateBusinessCustomerType | CreatePrivateCustomerType> =
       this.appFacade.currentLocale$.pipe(
         map(currentLocale =>
           body.customer.isBusinessCustomer
@@ -173,10 +172,7 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(
-            map(() => ({ customer: body.customer, user: body.user })),
-            concatMap(customerUser => this.updateCustomerBudgetType(customerUser, body.credentials))
-          )
+          .pipe(map(() => ({ customer: body.customer, user: body.user })))
       )
     );
   }
@@ -364,24 +360,5 @@ export class UserService {
         }
       })
     );
-  }
-
-  /**
-   * Updates the customer budget type right after initial customer creation.
-   */
-  private updateCustomerBudgetType(
-    customerUser: CustomerUserType,
-    credentials: Credentials
-  ): Observable<CustomerUserType> {
-    if (!customerUser?.customer?.budgetPriceType) {
-      return of(customerUser);
-    }
-
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      `BASIC ${window.btoa(`${credentials.login}:${credentials.password}`)}`
-    );
-
-    return this.apiService.put('customers/-', customerUser.customer, { headers }).pipe(map(() => customerUser));
   }
 }

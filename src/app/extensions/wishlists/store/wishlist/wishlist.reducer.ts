@@ -50,6 +50,7 @@ export const wishlistReducer = createReducer(
   initialState,
   setLoadingOn(
     loadWishlists,
+    wishlistActions.loadWishlistDetails,
     wishlistActions.loadSharedWishlist,
     createWishlist,
     deleteWishlist,
@@ -59,6 +60,7 @@ export const wishlistReducer = createReducer(
   ),
   setErrorOn(
     loadWishlistsFail,
+    wishlistApiActions.loadWishlistDetailsFail,
     wishlistApiActions.loadSharedWishlistFail,
     deleteWishlistFail,
     createWishlistFail,
@@ -73,25 +75,30 @@ export const wishlistReducer = createReducer(
     removeItemFromWishlistSuccess,
     createWishlistSuccess,
     loadWishlistsSuccess,
+    wishlistApiActions.loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     deleteWishlistSuccess
   ),
   on(
     loadWishlistsFail,
+    wishlistApiActions.loadWishlistDetailsFail,
     deleteWishlistFail,
     createWishlistFail,
     updateWishlistFail,
     (state: WishlistState): WishlistState => ({
       ...state,
-      selected: undefined as string,
+      selected: undefined,
     })
   ),
   on(loadWishlistsSuccess, (state: WishlistState, action): WishlistState => {
     const { wishlists } = action.payload;
-    return wishlistsAdapter.setAll(wishlists, state);
+    // merge the list headers into the existing entities to preserve already loaded item details
+    const merged = wishlists.map(wishlist => ({ ...state.entities[wishlist.id], ...wishlist }));
+    return wishlistsAdapter.setAll(merged, state);
   }),
   on(
     updateWishlistSuccess,
+    wishlistApiActions.loadWishlistDetailsSuccess,
     wishlistApiActions.loadSharedWishlistSuccess,
     addProductToWishlistSuccess,
     removeItemFromWishlistSuccess,
@@ -134,11 +141,8 @@ export const wishlistReducer = createReducer(
 
     return wishlistsAdapter.upsertOne(updatedWishlist, state);
   }),
-  on(
-    wishlistApiActions.loadSharedWishlistSuccess,
-    (state, action): WishlistState => ({
-      ...state,
-      sharedWishlist: action.payload.wishlist,
-    })
-  )
+  on(wishlistApiActions.loadSharedWishlistSuccess, (state, action): WishlistState => ({
+    ...state,
+    sharedWishlist: action.payload.wishlist,
+  }))
 );

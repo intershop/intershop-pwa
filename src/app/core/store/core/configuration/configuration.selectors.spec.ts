@@ -75,7 +75,7 @@ describe('Configuration Selectors', () => {
               defaultLocale: 'en_US',
               defaultCurrency: 'USD',
               locales: ['en_US', 'fr_BE', 'de_DE'],
-              currencies: ['USD', 'EUR'],
+              currencies: ['EUR', 'USD'],
             },
           },
         })
@@ -189,7 +189,7 @@ describe('Configuration Selectors', () => {
                 defaultLocale: 'de_DE',
                 defaultCurrency: 'EUR',
                 locales: ['en_US', 'de_DE', 'fr_BE', 'nl_BE'],
-                currencies: ['USD', 'EUR'],
+                currencies: ['EUR', 'USD'],
               },
             },
           })
@@ -210,8 +210,8 @@ describe('Configuration Selectors', () => {
       it('should return ICM server currencies for available currencies', () => {
         expect(getAvailableCurrencies(store$.state)).toMatchInlineSnapshot(`
           [
-            "USD",
             "EUR",
+            "USD",
           ]
         `);
       });

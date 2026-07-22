@@ -11,9 +11,8 @@ import { CategoryImageComponent } from 'ish-shared/components/category/category-
 
 @Component({
   selector: 'ish-suggest-categories-tile',
+  imports: [AsyncPipe, CategoryImageComponent, HighlightPipe, PipesModule, RouterLink],
   templateUrl: './suggest-categories-tile.component.html',
-  standalone: true,
-  imports: [AsyncPipe, HighlightPipe, PipesModule, CategoryImageComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuggestCategoriesTileComponent implements OnInit {

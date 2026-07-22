@@ -10,7 +10,7 @@ export class IshDatepickerI18n extends NgbDatepickerI18n {
 
   constructor(translateService: TranslateService) {
     super();
-    this.locale = translateService.currentLang;
+    this.locale = translateService.getCurrentLang();
     this.localeData = ɵfindLocaleData(this.locale);
   }
 

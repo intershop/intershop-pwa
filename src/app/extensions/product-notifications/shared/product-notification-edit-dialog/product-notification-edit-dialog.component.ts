@@ -1,23 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  Input,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, of, shareReplay, switchMap } from 'rxjs';
+import { Observable, map, of, shareReplay, switchMap } from 'rxjs';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';
@@ -39,14 +30,15 @@ import { ProductNotification } from '../../models/product-notification/product-n
  */
 @Component({
   selector: 'ish-product-notification-edit-dialog',
+  standalone: false,
   templateUrl: './product-notification-edit-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductNotificationEditDialogComponent implements OnInit {
   @Input() productNotification: ProductNotification;
 
-  modal: NgbModalRef;
   product$: Observable<ProductView>;
+  inventoryLoaded$: Observable<boolean>;
   userEmail$: Observable<string>;
   private currentCurrency: string;
 
@@ -56,10 +48,9 @@ export class ProductNotificationEditDialogComponent implements OnInit {
 
   private destroyRef = inject(DestroyRef);
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
   constructor(
-    private ngbModal: NgbModal,
     private context: ProductContextFacade,
     private accountFacade: AccountFacade,
     private productNotificationsFacade: ProductNotificationsFacade,
@@ -69,6 +60,7 @@ export class ProductNotificationEditDialogComponent implements OnInit {
   ngOnInit() {
     this.product$ = this.context.select('product');
     const productAvailable$ = this.context.select('inventory', 'inStock');
+    this.inventoryLoaded$ = productAvailable$.pipe(map(() => true));
     this.userEmail$ = this.accountFacade.userEmail$;
 
     // determine current currency
@@ -91,14 +83,14 @@ export class ProductNotificationEditDialogComponent implements OnInit {
   // close modal
   hide() {
     this.productNotificationForm.reset();
-    if (this.modal) {
-      this.modal.close();
+    if (this.modalDialog) {
+      this.modalDialog.hide();
     }
   }
 
   // open modal
   show() {
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'product-notification-edit-modal-title' });
+    this.modalDialog.show();
   }
 
   // submit the form

@@ -30,6 +30,7 @@ interface RecurrenceFormData {
 
 @Component({
   selector: 'ish-basket-order-recurrence-edit',
+  standalone: false,
   templateUrl: './basket-order-recurrence-edit.component.html',
   styleUrls: ['./basket-order-recurrence-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -232,7 +233,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
     }
   }
 
-  updateOrderRecurrence(updateData: Recurrence | null) {
+  updateOrderRecurrence(updateData: null | Recurrence) {
     if (updateData) {
       // update order recurrence with form values (or default value)
       this.checkoutFacade.updateBasketRecurrence(updateData);

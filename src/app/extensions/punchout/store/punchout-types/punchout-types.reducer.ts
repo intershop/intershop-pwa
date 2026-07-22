@@ -24,11 +24,8 @@ export const punchoutTypesReducer = createReducer(
   setLoadingOn(loadPunchoutTypes),
   unsetLoadingAndErrorOn(loadPunchoutTypesSuccess),
   setErrorOn(loadPunchoutTypesFail),
-  on(
-    loadPunchoutTypesSuccess,
-    (state, action): PunchoutTypesState => ({
-      ...state,
-      types: action.payload.types,
-    })
-  )
+  on(loadPunchoutTypesSuccess, (state, action): PunchoutTypesState => ({
+    ...state,
+    types: action.payload.types,
+  }))
 );

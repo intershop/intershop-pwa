@@ -1,10 +1,18 @@
-<ng-template #modal let-addModal>
-  <div class="modal-header">
-    <h2 class="modal-title" id="order-template-preferences-title">{{ modalTitle || modalHeader | translate }}</h2>
-    <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
-  </div>
-
-  <form #form="ngForm" ishFormSubmit novalidate [formGroup]="orderTemplateForm" (ngSubmit)="submitOrderTemplateForm()">
+<ish-modal-dialog
+  #modal
+  [options]="{
+    titleText: modalTitle || modalHeader | translate,
+    ariaLabelledBy: 'order-template-preferences-title',
+  }"
+>
+  <form
+    #form="ngForm"
+    body
+    ishFormSubmit
+    novalidate
+    [formGroup]="orderTemplateForm"
+    (ngSubmit)="submitOrderTemplateForm()"
+  >
     <div class="modal-body">
       <formly-form [fields]="fields" [form]="orderTemplateForm" [model]="model" />
     </div>
@@ -18,9 +26,9 @@
       >
         {{ primaryButton | translate }}
       </button>
-      <button class="btn btn-secondary" type="button" (click)="hide()">
+      <button class="btn btn-secondary" type="button" (click)="modal.hide()">
         {{ 'account.cancel.button.label' | translate }}
       </button>
     </div>
   </form>
-</ng-template>
+</ish-modal-dialog>

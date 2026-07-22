@@ -10,6 +10,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
  */
 @Component({
   selector: 'ish-organization-settings-company-page',
+  standalone: false,
   templateUrl: './organization-settings-company-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

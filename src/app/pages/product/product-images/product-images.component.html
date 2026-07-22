@@ -18,20 +18,28 @@
     @if (getImageViewIDs$('L') | async; as largeImages) {
       <div class="col-12 col-lg-9 product-detail-img clearfix">
         <div class="product-image-container">
-          <swiper #carousel [navigation]="true">
-            @for (imageView of largeImages; track imageView; let i = $index) {
-              <ng-template swiperSlide>
-                <div tabindex="0" (click)="openZoomModal(i)" (keydown.enter)="openZoomModal(i)">
-                  <ish-product-image
-                    imageType="L"
-                    [imageView]="imageView"
-                    [loading]="i === 0 ? 'eager' : 'lazy'"
-                    [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
-                  />
+          <div #swiper class="swiper">
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-wrapper">
+              @for (imageView of largeImages; track imageView; let i = $index) {
+                <div class="swiper-slide">
+                  <div
+                    [tabindex]="isActiveSlide(i) ? 0 : -1"
+                    (click)="openZoomModal(i)"
+                    (keydown.enter)="openZoomModal(i)"
+                  >
+                    <ish-product-image
+                      imageType="L"
+                      [imageView]="imageView"
+                      [loading]="i === 0 ? 'eager' : 'lazy'"
+                      [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
+                    />
+                  </div>
                 </div>
-              </ng-template>
-            }
-          </swiper>
+              }
+            </div>
+            <div class="swiper-button-next"></div>
+          </div>
           <ish-product-label />
         </div>
       </div>
@@ -43,11 +51,13 @@
     #zoomDialog
     [options]="{
       scrollable: true,
-      modalDialogClass: 'modal-fullscreen',
+      fullscreen: true,
     }"
   >
-    @for (imageView of zoomImages; track imageView; let i = $index) {
-      <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
-    }
+    <div class="text-center">
+      @for (imageView of zoomImages; track imageView; let i = $index) {
+        <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
+      }
+    </div>
   </ish-modal-dialog>
 }

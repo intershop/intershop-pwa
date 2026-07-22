@@ -1,10 +1,12 @@
 <h2>{{ 'checkout.address.shipping.label' | translate }}</h2>
+@let collapsed = collapseChange | async;
 @if (shippingAddress$ | async; as address) {
   <div class="address-box">
-    @if ((basketInvoiceAndShippingAddressEqual$ | async) === false) {
+    @let invoiceAndShippingEqual = basketInvoiceAndShippingAddressEqual$ | async;
+    @if (invoiceAndShippingEqual === false) {
       <div class="float-end">
         <!-- edit shipping address -->
-        @if (collapseChange | async) {
+        @if (collapsed) {
           <button
             class="btn-tool btn-link"
             data-testing-id="edit-shipping-address-link"
@@ -18,11 +20,11 @@
           </button>
         }
         <!-- delete shipping address -->
-        @if ((basketShippingAddressDeletable$ | async) && (collapseChange | async)) {
+        @if ((basketShippingAddressDeletable$ | async) && collapsed) {
           <button
             class="btn-tool btn-link"
-            type="button"
             title="{{ 'checkout.address.delete.button.label' | translate }}"
+            type="button"
             (click)="modalDialog.show(address)"
           >
             <i class="bi bi-trash-fill"></i>
@@ -46,7 +48,7 @@
       <!-- display shipping address -->
       <ish-address [address]="address" />
     }
-    @if (basketInvoiceAndShippingAddressEqual$ | async) {
+    @if (invoiceAndShippingEqual) {
       <p class="section" data-testing-id="sameAsInvoice">
         {{ 'checkout.same_as_billing_address.text' | translate }}
       </p>
@@ -61,12 +63,11 @@
 }
 
 <!-- shipping address selection -->
-@if (addresses$ | async; as addresses) {
-  @if (addresses.length) {
-    <form [formGroup]="form">
-      <formly-form [fields]="fields" [form]="form" />
-    </form>
-  }
+@let addresses = addresses$ | async;
+@if (addresses?.length) {
+  <form [formGroup]="form">
+    <formly-form [fields]="fields" [form]="form" />
+  </form>
 }
 
 <!-- Add a new Shipping to address -->
@@ -77,7 +78,7 @@
       class="btn btn-link w-auto"
       data-testing-id="create-shipping-address-link"
       type="button"
-      [attr.aria-expanded]="(collapseChange | async) === false"
+      [attr.aria-expanded]="collapsed === false"
       (click)="showAddressForm()"
     >
       {{ 'checkout.create_shipping_address.link' | translate }}
@@ -86,15 +87,15 @@
 }
 
 <!-- shipping address form -->
-<div data-testing-id="shipping-address-form" id="shipping-address-panel" [ngbCollapse]="collapseChange | async">
+<div data-testing-id="shipping-address-form" id="shipping-address-panel" [ngbCollapse]="collapsed">
   <ish-formly-customer-address-form
     [address]="editAddress"
-    [resetForm]="collapseChange | async"
+    [resetForm]="collapsed"
     (cancelForm)="cancelEditAddress()"
     (save)="saveAddress($event)"
   />
 </div>
 
-@if ((collapseChange | async) === false) {
+@if (collapsed === false) {
   <ish-lazy-address-doctor />
 }

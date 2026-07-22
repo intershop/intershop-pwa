@@ -8,6 +8,7 @@ import { RecentlyFacade } from '../../facades/recently.facade';
 
 @Component({
   selector: 'ish-recently-viewed',
+  standalone: false,
   templateUrl: './recently-viewed.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

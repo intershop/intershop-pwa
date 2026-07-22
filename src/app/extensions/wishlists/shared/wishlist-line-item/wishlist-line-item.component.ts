@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
@@ -8,6 +8,7 @@ import { Wishlist, WishlistItem } from '../../models/wishlist/wishlist.model';
  */
 @Component({
   selector: 'ish-wishlist-line-item',
+  standalone: false,
   templateUrl: './wishlist-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -18,12 +19,10 @@ export class WishlistLineItemComponent {
   @Input({ required: true }) currentWishlist: Wishlist;
   @Input() readOnly = false;
 
-  moveItemToOtherWishlist(sku: string, wishlistMoveData: { id: string; title: string }) {
-    if (wishlistMoveData.id) {
-      this.wishlistsFacade.moveItemToWishlist(this.currentWishlist.id, wishlistMoveData.id, sku);
-    } else {
-      this.wishlistsFacade.moveItemToNewWishlist(this.currentWishlist.id, wishlistMoveData.title, sku);
-    }
+  @Output() readonly moveClicked = new EventEmitter<string>();
+
+  emitMoveClicked() {
+    this.moveClicked.emit(this.wishlistItemData.id);
   }
 
   removeProductFromWishlist(sku: string) {

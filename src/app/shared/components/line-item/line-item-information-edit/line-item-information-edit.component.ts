@@ -10,10 +10,10 @@ import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-updat
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 
 interface ComponentState {
-  lineItem: Partial<Pick<LineItemView, 'id' | 'productSKU' | 'customFields'>>;
+  lineItem: Partial<Pick<LineItemView, 'customFields' | 'id' | 'productSKU'>>;
   visible: boolean;
   customFields: CustomFieldsComponentInput[];
-  editMode: 'edit' | 'add'; // 'edit' for editable custom fields with existing values, else 'add' new values (relevant for translations)
+  editMode: 'add' | 'edit'; // 'edit' for editable custom fields with existing values, else 'add' new values (relevant for translations)
 }
 
 /**
@@ -21,6 +21,7 @@ interface ComponentState {
  */
 @Component({
   selector: 'ish-line-item-information-edit',
+  standalone: false,
   templateUrl: './line-item-information-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],

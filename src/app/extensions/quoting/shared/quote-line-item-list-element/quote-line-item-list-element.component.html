@@ -1,3 +1,4 @@
+@let editable = editable$ | async;
 <div class="row list-item-row" data-testing-id="product-list-item">
   <!-- Product Image -->
   <div class="col-2 list-item">
@@ -18,7 +19,7 @@
       <ish-product-bundle-display />
 
       <ish-product-inventory />
-      @if (editable$ | async) {
+      @if (editable) {
         <div class="d-flex align-items-center">
           <ish-lazy-product-add-to-order-template
             displayType="icon"
@@ -27,10 +28,10 @@
           <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool ms-0'" />
           <button
             class="btn-tool btn-link"
+            title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
             type="button"
             [attr.data-id]="lineItem.id"
             [attr.data-testing-id]="'remove-line-item'"
-            title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
             (click)="onDeleteItem()"
           >
             <i class="bi bi-trash-fill"></i>
@@ -46,7 +47,7 @@
           translationKey="shopping_cart.pli.qty.label"
           [for]="'quote-quantity_' + lineItem.id"
         />
-        @if (editable$ | async) {
+        @if (editable) {
           <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
         } @else {
           {{ lineItem.quantity.value | number }}
@@ -57,8 +58,8 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100" [ngClass]="{ 'text-end': editable$ | async }">
-      @if (editable$ | async) {
+    <div class="form-group w-100" [ngClass]="{ 'text-end': editable }">
+      @if (editable) {
         <ish-product-quantity />
       } @else {
         {{ lineItem.quantity.value | number }}

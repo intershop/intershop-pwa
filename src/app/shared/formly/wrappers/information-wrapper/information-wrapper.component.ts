@@ -12,6 +12,7 @@ import { FieldWrapper } from '@ngx-formly/core';
  */
 @Component({
   selector: 'ish-information-wrapper',
+  standalone: false,
   templateUrl: './information-wrapper.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

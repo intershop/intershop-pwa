@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { CostCenterImportResult } from 'ish-core/models/cost-center/cost-center.model';
@@ -44,7 +44,7 @@ describe('Cost Center Import Page Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CostCenterImportPageComponent],
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterModule, TranslatePipe],
       providers: [
         {
           provide: OrganizationManagementFacade,
@@ -55,6 +55,7 @@ describe('Cost Center Import Page Component', () => {
           },
         },
         provideRouter([]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

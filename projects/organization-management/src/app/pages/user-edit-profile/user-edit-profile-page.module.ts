@@ -10,7 +10,7 @@ import { UserEditProfilePageComponent } from './user-edit-profile-page.component
 const userEditProfilePageRoutes: Routes = [{ path: '', component: UserEditProfilePageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(userEditProfilePageRoutes), SharedModule],
   declarations: [UserEditProfilePageComponent],
+  imports: [OrganizationManagementModule, RouterModule.forChild(userEditProfilePageRoutes), SharedModule],
 })
 export class UserEditProfilePageModule {}

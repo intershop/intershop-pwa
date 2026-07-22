@@ -1,20 +1,20 @@
 type AttributeType =
-  | 'String'
+  | 'BigDecimal'
   | 'Boolean'
   | 'Date'
-  | 'Integer'
   | 'Double'
+  | 'Integer'
   | 'Long'
-  | 'BigDecimal'
-  | 'MultipleInteger'
-  | 'MultipleDouble'
-  | 'MultipleLong'
   | 'MultipleBigDecimal'
-  | 'MultipleString'
   | 'MultipleBoolean'
   | 'MultipleDate'
+  | 'MultipleDouble'
+  | 'MultipleInteger'
+  | 'MultipleLong'
+  | 'MultipleString'
+  | 'Quantity'
   | 'ResourceAttribute'
-  | 'Quantity';
+  | 'String';
 
 export interface Attribute<T = unknown> {
   name: string;

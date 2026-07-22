@@ -7,4 +7,4 @@ export interface PunchoutUser {
   punchoutType: PunchoutType;
 }
 
-export type PunchoutType = 'oci' | 'cxml';
+export type PunchoutType = 'cxml' | 'oci';

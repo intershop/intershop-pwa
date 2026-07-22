@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
+import { Link } from 'ish-core/models/link/link.model';
+
 import { WishlistData } from './wishlist.interface';
 import { WishlistMapper } from './wishlist.mapper';
 import { Wishlist } from './wishlist.model';
@@ -47,6 +49,39 @@ describe('Wishlist Mapper', () => {
         { sku: '123456', id: 'wishlistItemId', creationDate: 12345818123, desiredQuantity: { value: 2 } },
       ]);
       expect(mapped).not.toHaveProperty('creationDate');
+    });
+  });
+
+  describe('fromListData', () => {
+    it('should return an empty array when input is falsy', () => {
+      expect(wishlistMapper.fromListData(undefined)).toBeEmpty();
+    });
+
+    it('should map incoming list data to wishlist model data without items', () => {
+      const wishlistsData = [
+        {
+          itemId: '1234',
+          title: 'wishlist title',
+          attributes: [
+            { name: 'itemsCount', value: 3 },
+            { name: 'preferred', value: true },
+            { name: 'public', value: false },
+            { name: 'shared', value: true },
+          ],
+        } as Link,
+      ];
+
+      const mapped = wishlistMapper.fromListData(wishlistsData);
+
+      expect(mapped).toHaveLength(1);
+      expect(mapped[0]).toHaveProperty('id', '1234');
+      expect(mapped[0]).toHaveProperty('title', 'wishlist title');
+      expect(mapped[0]).toHaveProperty('itemsCount', 3);
+      expect(mapped[0]).toHaveProperty('preferred', true);
+      expect(mapped[0]).toHaveProperty('public', false);
+      expect(mapped[0]).toHaveProperty('shared', true);
+      // list data does not contain the items, they are loaded on demand
+      expect(mapped[0]).not.toHaveProperty('items');
     });
   });
 

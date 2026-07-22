@@ -44,20 +44,16 @@ export const punchoutUsersReducer = createReducer(
     deletePunchoutUserSuccess
   ),
 
-  on(
-    loadPunchoutUsersSuccess,
-    (state, action): PunchoutUsersState => punchoutUsersAdapter.upsertMany(action.payload.users, state)
+  on(loadPunchoutUsersSuccess, (state, action): PunchoutUsersState =>
+    punchoutUsersAdapter.upsertMany(action.payload.users, state)
   ),
-  on(
-    addPunchoutUserSuccess,
-    (state, action): PunchoutUsersState => punchoutUsersAdapter.addOne(action.payload.user, state)
+  on(addPunchoutUserSuccess, (state, action): PunchoutUsersState =>
+    punchoutUsersAdapter.addOne(action.payload.user, state)
   ),
-  on(
-    updatePunchoutUserSuccess,
-    (state, action): PunchoutUsersState => punchoutUsersAdapter.upsertOne(action.payload.user, state)
+  on(updatePunchoutUserSuccess, (state, action): PunchoutUsersState =>
+    punchoutUsersAdapter.upsertOne(action.payload.user, state)
   ),
-  on(
-    deletePunchoutUserSuccess,
-    (state, action): PunchoutUsersState => punchoutUsersAdapter.removeOne(action.payload.login, state)
+  on(deletePunchoutUserSuccess, (state, action): PunchoutUsersState =>
+    punchoutUsersAdapter.removeOne(action.payload.login, state)
   )
 );

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
@@ -19,7 +19,7 @@ describe('Quickorder Page Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(QuickorderAddProductsFormComponent),
@@ -27,7 +27,10 @@ describe('Quickorder Page Component', () => {
         MockComponent(SkipContentLinkComponent),
         QuickorderPageComponent,
       ],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) }],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(mock(CheckoutFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

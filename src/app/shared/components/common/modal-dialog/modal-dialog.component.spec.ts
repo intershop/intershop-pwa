@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { ModalDialogComponent } from './modal-dialog.component';
@@ -11,8 +11,9 @@ describe('Modal Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [ModalDialogComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 

@@ -13,16 +13,16 @@ import { RequisitionMapper } from '../../models/requisition/requisition.mapper';
 import { Requisition, RequisitionStatus, RequisitionViewer } from '../../models/requisition/requisition.model';
 
 type RequisitionIncludeType =
-  | 'invoiceToAddress'
-  | 'commonShipToAddress'
   | 'commonShippingMethod'
+  | 'commonShipToAddress'
   | 'discounts'
-  | 'lineItems'
+  | 'invoiceToAddress'
   | 'lineItems_discounts'
   | 'lineItems_warranty'
-  | 'payments'
+  | 'lineItems'
+  | 'payments_paymentInstrument'
   | 'payments_paymentMethod'
-  | 'payments_paymentInstrument';
+  | 'payments';
 
 @Injectable({ providedIn: 'root' })
 export class RequisitionsService {

@@ -14,7 +14,7 @@ export class PunchoutProductContextDisplayPropertiesService implements ExternalD
   constructor(private roleToggleService: RoleToggleService) {}
 
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices'>>
+    context$: Observable<Pick<ProductContext, 'prices' | 'product'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>> {
     return context$.pipe(
       switchMap(() => this.roleToggleService.hasRole(['APP_B2B_CXML_USER', 'APP_B2B_OCI_USER'])),

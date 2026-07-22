@@ -20,7 +20,7 @@ export type PaypalPageType = 'cart' | 'checkout' | 'home' | 'product-details' | 
  * These components determine which PayPal UI elements are available in the application.
  * The SDK can be loaded with different combinations of components based on the use case.
  */
-export type PaypalAdapterTypes = 'Buttons' | 'Messages' | 'CardFields' | 'GooglePay' | 'ApplePay';
+export type PaypalAdapterTypes = 'ApplePay' | 'Buttons' | 'CardFields' | 'GooglePay' | 'Messages';
 
 interface PaypalScriptParams {
   /** The current application locale (e.g., 'en_US', 'de_DE') */

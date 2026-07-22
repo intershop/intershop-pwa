@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyForm } from '@ngx-formly/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
@@ -23,9 +23,13 @@ describe('Account Order Filters Component', () => {
     when(accountFacade.isOrderManager$).thenReturn(of(true));
     when(accountFacade.isLoggedIn$).thenReturn(of(true));
     await TestBed.configureTestingModule({
-      imports: [MockComponent(FormlyForm), NgbCollapseModule, ReactiveFormsModule, TranslateModule.forRoot()],
+      imports: [MockComponent(FormlyForm), NgbCollapseModule, ReactiveFormsModule, TranslatePipe],
       declarations: [AccountOrderFiltersComponent],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideRouter([])],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

@@ -20,10 +20,14 @@
       }
     </div>
     <div class="modal-footer">
-      <a class="btn btn-link me-auto" [routerLink]="['/account/quotes']">{{
-        'account.quotes.widget.view_all_quotes.link' | translate
-      }}</a>
-      <ish-quote-interactions />
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-end align-items-md-center gap-3 w-100"
+      >
+        <a class="btn btn-link me-auto" [routerLink]="['/account/quotes']">{{
+          'account.quotes.widget.view_all_quotes.link' | translate
+        }}</a>
+        <ish-quote-interactions [showClose]="true" (closeDialog)="hide()" />
+      </div>
     </div>
   }
 }

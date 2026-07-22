@@ -128,6 +128,10 @@ http {
 
     keepalive_timeout 65;
 
+    # Hide server technology and version for security reasons
+    server_tokens off;
+    more_clear_headers 'Server';
+
     include /etc/nginx/conf.d/features.conf;
     include /etc/nginx/conf.d/loglevel.conf;
 

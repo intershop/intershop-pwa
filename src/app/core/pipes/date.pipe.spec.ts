@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { DatePipe } from './date.pipe';
 
@@ -13,13 +13,13 @@ describe('Date Pipe', () => {
     registerLocaleData(localeDe);
 
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      providers: [DatePipe],
+      imports: [TranslatePipe],
+      providers: [DatePipe, provideTranslateService()],
     });
     datePipe = TestBed.inject(DatePipe);
 
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
   });
 
   it('should be created', () => {

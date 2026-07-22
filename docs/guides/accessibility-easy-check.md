@@ -55,7 +55,7 @@ Performing any of the following checks on a web page will give you a basic under
 
   Page titles are the first thing screen readers read and help people know where they are.
   They describe the content of a website in a concise and appropriate way, and are composed of the individual title of a page, e.g., "About Us" or "News," and a general description of the website, e.g., the company name.
-  They can be set in the [Angular Routing Modules](https://v18.angular.dev/guide/routing/common-router-tasks#setting-the-page-title).
+  They can be set in the [Angular Routing Modules](https://v19.angular.dev/guide/routing/common-router-tasks#setting-the-page-title).
 
 - [ ] **3. [Headings](https://www.w3.org/WAI/test-evaluate/easy-checks/headings/)**
 

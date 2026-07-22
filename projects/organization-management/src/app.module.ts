@@ -14,7 +14,6 @@ import { LoginComponent } from './login.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
-  exports: [SharedModule],
   imports: [
     BrowserModule,
     CoreModule,
@@ -45,6 +44,7 @@ import { LoginComponent } from './login.component';
     ]),
     SharedModule,
   ],
+  exports: [SharedModule],
   providers: [],
   bootstrap: [AppComponent],
 })

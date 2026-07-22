@@ -9,6 +9,7 @@ import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.
 
 @Component({
   selector: 'ish-cms-product-list-filter',
+  standalone: false,
   templateUrl: './cms-product-list-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

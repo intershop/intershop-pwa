@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -21,10 +21,11 @@ describe('Product Compare Status Component', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ProductCompareStatusComponent],
-      imports: [RouterModule, TranslateModule.forRoot()],
+      imports: [RouterModule, TranslatePipe],
       providers: [
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         provideRouter([{ path: 'compare', children: [] }]),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

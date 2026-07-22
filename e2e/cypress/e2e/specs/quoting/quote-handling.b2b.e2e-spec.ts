@@ -9,6 +9,7 @@ import { CartPage } from '../../pages/checkout/cart.page';
 import { CategoryPage } from '../../pages/shopping/category.page';
 import { FamilyPage } from '../../pages/shopping/family.page';
 import { ProductDetailPage } from '../../pages/shopping/product-detail.page';
+import { QuoteRequestSelectionDialog } from '../../pages/shopping/quote-request-selection.dialog';
 import { QuoteRequestDialog } from '../../pages/shopping/quote-request.dialog';
 
 const _ = {
@@ -50,6 +51,7 @@ describe('Quote Handling', () => {
       page.setQuantity(quantity);
       page.addProductToQuoteRequest();
     });
+    at(QuoteRequestSelectionDialog, dialog => dialog.confirmNew('My Quote'));
     at(QuoteRequestDialog, dialog => {
       dialog.totalPrice.should('contain', _.product.price * quantity);
       dialog.hide();
@@ -60,6 +62,7 @@ describe('Quote Handling', () => {
   it('user adds one product from product list page to quote', () => {
     at(ProductDetailPage, page => page.breadcrumb.items.eq(2).click());
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
+    at(QuoteRequestSelectionDialog, dialog => dialog.selectFirstExisting());
     at(QuoteRequestDialog, dialog => {
       dialog.totalPrice.should('contain', _.product.price * 3);
       dialog.hide();
@@ -97,6 +100,7 @@ describe('Quote Handling', () => {
     at(MyAccountPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
+    at(QuoteRequestSelectionDialog, dialog => dialog.selectFirstExisting());
     at(QuoteRequestDialog, dialog => {
       dialog.submitQuoteRequest().then(quoteId => {
         dialog.hide();
@@ -126,6 +130,7 @@ describe('Quote Handling', () => {
     at(QuoteDetailPage, page => page.header.gotoCategoryPage(_.catalog));
     at(CategoryPage, page => page.gotoSubCategory(_.categoryId));
     at(FamilyPage, page => page.productList.addProductToQuoteRequest(_.product.sku));
+    at(QuoteRequestSelectionDialog, dialog => dialog.selectFirstExisting());
     at(QuoteRequestDialog, dialog => {
       dialog.hide();
     });

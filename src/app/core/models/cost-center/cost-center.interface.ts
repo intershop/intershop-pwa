@@ -5,7 +5,7 @@ import { Price } from 'ish-core/models/price/price.model';
 
 import { CostCenter } from './cost-center.model';
 
-export type CostCenterData = Omit<CostCenter, 'orders'> & {
+export type CostCenterData = {
   orders?: {
     orderNo: string;
     orderDate: number[];
@@ -15,7 +15,7 @@ export type CostCenterData = Omit<CostCenter, 'orders'> & {
     orderTotalGross: Price;
     orderTotalNet: Price;
   }[];
-};
+} & Omit<CostCenter, 'orders'>;
 
 export interface CostCenterListData {
   data: Link[];

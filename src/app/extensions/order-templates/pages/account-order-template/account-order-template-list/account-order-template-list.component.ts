@@ -7,17 +7,16 @@ import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';
 
-type OrderTemplateColumnsType = 'title' | 'creationDate' | 'lineItems' | 'actions';
+type OrderTemplateColumnsType = 'actions' | 'creationDate' | 'lineItems' | 'title';
 
 @Component({
   selector: 'ish-account-order-template-list',
+  standalone: false,
   templateUrl: './account-order-template-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderTemplateListComponent {
-  /**
-   * The list of order templates of the customer.
-   */
+  /** The list of order templates of the customer. */
   @Input() orderTemplates: OrderTemplate[];
   @Input() columnsToDisplay: OrderTemplateColumnsType[] = ['title', 'creationDate', 'lineItems', 'actions'];
 
@@ -40,6 +39,6 @@ export class AccountOrderTemplateListComponent {
   }
 
   getParts(template: OrderTemplate): SkuQuantityType[] {
-    return template?.items.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value }));
+    return template.items?.map(item => ({ sku: item.sku, quantity: item.desiredQuantity.value })) ?? [];
   }
 }

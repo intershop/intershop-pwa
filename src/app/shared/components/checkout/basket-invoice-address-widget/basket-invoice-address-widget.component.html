@@ -1,8 +1,10 @@
 <h2>{{ 'checkout.address.billing.label' | translate }}</h2>
+@let collapsed = collapseChange | async;
+@let isLoggedIn = isLoggedIn$ | async;
 @if (invoiceAddress$ | async; as address) {
   <div class="address-box">
     <!-- edit invoice address -->
-    @if (collapseChange | async) {
+    @if (collapsed) {
       <button
         class="btn-tool btn-link float-end"
         data-testing-id="edit-invoice-address-link"
@@ -24,23 +26,22 @@
 }
 
 <!-- invoice address selection -->
-@if (addresses$ | async; as addresses) {
-  @if (addresses.length) {
-    <form [formGroup]="form">
-      <formly-form [fields]="fields" [form]="form" />
-    </form>
-  }
+@let addresses = addresses$ | async;
+@if (addresses?.length) {
+  <form [formGroup]="form">
+    <formly-form [fields]="fields" [form]="form" />
+  </form>
 }
 
 <!-- Add a new Invoice to address -->
-@if ((collapseChange | async) && (isLoggedIn$ | async)) {
+@if (collapsed && isLoggedIn) {
   <div class="row">
     <button
       aria-controls="invoice-address-panel"
       class="btn btn-link w-auto"
       data-testing-id="create-invoice-address-link"
       type="button"
-      [attr.aria-expanded]="(collapseChange | async) === false"
+      [attr.aria-expanded]="false"
       (click)="showAddressForm()"
     >
       {{ 'checkout.create_invoice_address.link' | translate }}
@@ -49,16 +50,16 @@
 }
 
 <!-- invoice address form -->
-<div data-testing-id="invoice-address-form" id="invoice-address-panel" [ngbCollapse]="collapseChange | async">
+<div data-testing-id="invoice-address-form" id="invoice-address-panel" [ngbCollapse]="collapsed">
   <ish-formly-customer-address-form
     [address]="editAddress"
-    [extension]="(isLoggedIn$ | async) === false"
-    [resetForm]="collapseChange | async"
+    [extension]="isLoggedIn === false"
+    [resetForm]="collapsed"
     (cancelForm)="cancelEditAddress()"
     (save)="saveAddress($event)"
   />
 </div>
 
-@if ((collapseChange | async) === false) {
+@if (collapsed === false) {
   <ish-lazy-address-doctor />
 }

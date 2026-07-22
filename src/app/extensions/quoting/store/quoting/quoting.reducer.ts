@@ -112,9 +112,8 @@ export const quotingReducer = createReducer(
     updateQuoteRequestSuccess,
     (state, action): QuotingInternalState => quotingAdapter.upsertOne(action.payload.entity, state)
   ),
-  on(
-    deleteQuotingEntitySuccess,
-    (state, action): QuotingInternalState => quotingAdapter.removeOne(action.payload.id, state)
+  on(deleteQuotingEntitySuccess, (state, action): QuotingInternalState =>
+    quotingAdapter.removeOne(action.payload.id, state)
   ),
   // active quote request
   on(addProductToQuoteRequest, (state): QuotingInternalState => ({ ...state, activeQuoteRequest: undefined })),

@@ -13,10 +13,10 @@ export const environment: Environment = {
     'businessCustomerRegistration',
     'costCenters',
     'maps',
+    'orderTemplates',
     'punchout',
     'quickorder',
     'quoting',
-    'orderTemplates',
   ],
 
   ...overrides,

@@ -1,3 +1,4 @@
+/* eslint-disable perfectionist/sort-union-types */
 import { Auth0Config } from 'ish-core/identity-provider/auth0.identity-provider';
 import { CookieConsentOptions } from 'ish-core/models/cookies/cookies.model';
 import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
@@ -39,15 +40,14 @@ export interface Environment {
     /* B2B features */
     | 'businessCustomerRegistration'
     | 'costCenters'
-    | 'quoting'
-    | 'quickorder'
     | 'orderTemplates'
     | 'punchout'
+    | 'quoting'
+    | 'quickorder'
     /* B2C features */
     | 'guestCheckout'
     | 'wishlists'
     /* ICM compatibility - a.o. to be used with the ICMCompatibilityInterceptor */
-    // | 'messageToMerchant'
     | 'legacyEncoding'
     /* Third-party Integrations */
     | 'addressDoctor'
@@ -83,12 +83,12 @@ export interface Environment {
 
   // global definition of the product listing page size
   productListingItemsPerPage:
-    | number
     | {
         category: number;
         search: number;
         master: number;
-      };
+      }
+    | number;
 
   /**
    * default viewType used for product listings
@@ -98,7 +98,7 @@ export interface Environment {
    * - to override it for all device types use `defaultProductListingViewType: 'list'`
    * - to override it for mobile and tablet use `defaultProductListingViewType: { mobile: 'list', tablet: 'list' }`
    */
-  defaultProductListingViewType?: ViewType | Partial<Record<DeviceType, ViewType>>;
+  defaultProductListingViewType?: Partial<Record<DeviceType, ViewType>> | ViewType;
 
   // default device type used for initial page responses
   defaultDeviceType: DeviceType;
@@ -140,7 +140,7 @@ export interface Environment {
    * - 'always': fetch fresh price information all the time
    * - 'stable': only fetch prices once per application lifetime
    */
-  priceUpdate: 'stable' | 'always';
+  priceUpdate: 'always' | 'stable';
 
   // sparque integration
   sparque?: SparqueConfig;

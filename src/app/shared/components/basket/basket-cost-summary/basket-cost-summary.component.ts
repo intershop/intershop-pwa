@@ -17,6 +17,7 @@ import { PaypalPageType } from 'ish-core/utils/paypal/paypal-config/paypal-confi
  */
 @Component({
   selector: 'ish-basket-cost-summary',
+  standalone: false,
   templateUrl: './basket-cost-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -13,7 +13,7 @@ const errorPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(errorPageRoutes), SearchBoxComponent, SharedModule],
   declarations: [ErrorComponent, ErrorPageComponent, ServerErrorComponent],
+  imports: [RouterModule.forChild(errorPageRoutes), SearchBoxComponent, SharedModule],
 })
 export class ErrorPageModule {}

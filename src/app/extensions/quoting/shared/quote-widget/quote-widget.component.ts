@@ -9,6 +9,7 @@ import { QuotingFacade } from '../../facades/quoting.facade';
 
 @Component({
   selector: 'ish-quote-widget',
+  standalone: false,
   templateUrl: './quote-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

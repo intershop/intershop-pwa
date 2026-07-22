@@ -120,11 +120,21 @@ export class QuotingService {
       .pipe(map(() => quoteRequestID));
   }
 
-  private createQuoteRequest(): Observable<QuoteStub> {
+  private createQuoteRequest(displayName?: string): Observable<QuoteStub> {
     return this.apiService
       .b2bUserEndpoint()
       .post<Link>('quoterequests')
-      .pipe(map(link => this.quoteMapper.fromData(link, 'QuoteRequest')));
+      .pipe(
+        map(link => this.quoteMapper.fromData(link, 'QuoteRequest')),
+        concatMap(quoteStub =>
+          displayName
+            ? this.apiService
+                .b2bUserEndpoint()
+                .put(`quoterequests/${this.apiService.encodeResourceId(quoteStub.id)}`, { displayName })
+                .pipe(map(() => quoteStub))
+            : of(quoteStub)
+        )
+      );
   }
 
   private getOrCreateActiveQuoteRequest() {
@@ -155,16 +165,41 @@ export class QuotingService {
       );
   }
 
-  addProductToQuoteRequest(sku: string, quantity: number) {
-    return this.getOrCreateActiveQuoteRequest().pipe(
-      concatMap(quoteRequest =>
+  /**
+   * Adds a product line item to a quote request.
+   *
+   * The target quote request is determined from the `options`:
+   * - if `quoteRequestId` is set, the product is added to that specific quote request,
+   * - else if `createNew` is `true`, a new quote request is created (using `displayName` as its name) and used,
+   * - otherwise the most recent "New" (not yet submitted) quote request is reused, or a new one is created if none exists.
+   *
+   * @param sku       the SKU of the product to add
+   * @param quantity  the quantity of the product to add
+   * @param options   optional target configuration
+   * @param options.quoteRequestId  id of an existing quote request to add the product to; takes precedence over `createNew`
+   * @param options.displayName     name for the new quote request, only used when a new quote request is created
+   * @param options.createNew       if `true`, always creates a new quote request instead of reusing the active one
+   * @returns an observable emitting the id of the quote request the product was added to
+   */
+  addProductToQuoteRequest(
+    sku: string,
+    quantity: number,
+    options?: { quoteRequestId?: string; displayName?: string; createNew?: boolean }
+  ): Observable<string> {
+    const id$ = options?.quoteRequestId
+      ? of(options.quoteRequestId)
+      : (options?.createNew ? this.createQuoteRequest(options.displayName) : this.getOrCreateActiveQuoteRequest()).pipe(
+          map(quoteRequest => quoteRequest.id)
+        );
+    return id$.pipe(
+      concatMap(quoteRequestId =>
         this.apiService
           .b2bUserEndpoint()
-          .post(`quoterequests/${this.apiService.encodeResourceId(quoteRequest.id)}/items`, {
+          .post(`quoterequests/${this.apiService.encodeResourceId(quoteRequestId)}/items`, {
             productSKU: sku,
             quantity: { value: quantity },
           })
-          .pipe(map(() => quoteRequest.id))
+          .pipe(map(() => quoteRequestId))
       )
     );
   }

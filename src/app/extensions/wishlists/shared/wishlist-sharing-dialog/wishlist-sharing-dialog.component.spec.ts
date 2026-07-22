@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
+
+import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
+import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { WishlistSharingDialogComponent } from './wishlist-sharing-dialog.component';
 
@@ -8,6 +15,19 @@ describe('Wishlist Sharing Dialog Component', () => {
   let component: WishlistSharingDialogComponent;
   let fixture: ComponentFixture<WishlistSharingDialogComponent>;
   let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [
+        MockComponent(ModalDialogComponent),
+        MockDirective(FormSubmitDirective),
+        MockDirective(ServerHtmlDirective),
+        WishlistSharingDialogComponent,
+      ],
+      providers: [provideTranslateService()],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WishlistSharingDialogComponent);
@@ -23,6 +43,7 @@ describe('Wishlist Sharing Dialog Component', () => {
   });
 
   it('should emit wishlist sharing data when form is submitted and valid', () => {
+    component.show();
     const recipientEmails = 'test@example.com';
     const personalMessage = 'Test message';
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateCompiler, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateCompiler, TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject, map } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
@@ -24,7 +24,7 @@ describe('Product Item Variations Component', () => {
   const readOnly$ = new BehaviorSubject<boolean>(false);
   const visible$ = new BehaviorSubject<boolean>(true);
   const advancedVariationHandling$ = new BehaviorSubject<boolean>(true);
-  const productType$ = new BehaviorSubject<'VariationProduct' | 'VariationProductMaster' | 'Product'>(
+  const productType$ = new BehaviorSubject<'Product' | 'VariationProduct' | 'VariationProductMaster'>(
     'VariationProduct'
   );
   const variationCount$ = new BehaviorSubject<number>(25);
@@ -40,11 +40,7 @@ describe('Product Item Variations Component', () => {
     when(appFacade.serverSetting$(anyString())).thenReturn(advancedVariationHandling$);
 
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
-        }),
-      ],
+      imports: [TranslatePipe],
       declarations: [
         MockComponent(ProductVariationDisplayComponent),
         MockComponent(ProductVariationSelectComponent),
@@ -53,6 +49,9 @@ describe('Product Item Variations Component', () => {
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService({
+          compiler: { provide: TranslateCompiler, useClass: PWATranslateCompiler },
+        }),
       ],
     }).compileComponents();
   });
@@ -78,7 +77,7 @@ describe('Product Item Variations Component', () => {
     advancedVariationHandling$.next(true);
     variationCount$.next(25);
 
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('product.variations.text', '{{ 0, plural, =1{one model} other{# models} }}');
 

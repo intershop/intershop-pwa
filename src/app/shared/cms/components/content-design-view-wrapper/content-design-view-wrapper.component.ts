@@ -1,18 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, afterNextRender } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView, ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
-import { PreviewService } from 'ish-core/utils/preview/preview.service';
 
 @Component({
   selector: 'ish-content-design-view-wrapper',
+  standalone: false,
   templateUrl: './content-design-view-wrapper.component.html',
   styleUrls: ['./content-design-view-wrapper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentDesignViewWrapperComponent implements OnInit {
+export class ContentDesignViewWrapperComponent {
   // pagelet parameter
   @Input() pageletId: string;
   // slot parameters
@@ -22,7 +22,7 @@ export class ContentDesignViewWrapperComponent implements OnInit {
   @Input() include: ContentPageletEntryPointView;
 
   pagelet$: Observable<ContentPageletView>;
-  type: 'pagelet' | 'slot' | 'include';
+  type: 'include' | 'pagelet' | 'slot';
 
   isDesignViewMode = false;
 
@@ -32,16 +32,16 @@ export class ContentDesignViewWrapperComponent implements OnInit {
 
   constructor(
     private cmsFacade: CMSFacade,
-    private previewService: PreviewService,
-    private designViewService: DesignViewService
-  ) {}
-
-  ngOnInit() {
-    this.isDesignViewMode = this.previewService.isDesignViewMode;
-
-    if (this.isDesignViewMode) {
-      this.initializeComponent();
-    }
+    private designViewService: DesignViewService,
+    private cdRef: ChangeDetectorRef
+  ) {
+    afterNextRender(() => {
+      this.isDesignViewMode = this.designViewService.isDesignViewMode();
+      if (this.isDesignViewMode) {
+        this.initializeComponent();
+        this.cdRef.markForCheck();
+      }
+    });
   }
 
   onPageletHover() {

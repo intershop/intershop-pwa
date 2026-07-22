@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { LazyBudgetInfoComponent } from 'organization-management';
 import { of } from 'rxjs';
@@ -25,7 +25,7 @@ describe('Requisition Buyer Approval Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [
         MockComponent(BudgetBarComponent),
         MockComponent(InfoBoxComponent),
@@ -33,7 +33,7 @@ describe('Requisition Buyer Approval Component', () => {
         PricePipe,
         RequisitionBuyerApprovalComponent,
       ],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

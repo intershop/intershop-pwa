@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
@@ -32,9 +32,12 @@ describe('Basket Order Recurrence Edit Component', () => {
     when(checkoutFacadeMock.canUseBasketForRecurringOrder$).thenReturn(canUseBasketForRecurringOrder$);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, NgbCollapseModule, TranslateModule.forRoot()],
+      imports: [FormlyTestingModule, NgbCollapseModule, TranslatePipe],
       declarations: [BasketOrderRecurrenceEditComponent, MockComponent(ContentIncludeComponent)],
-      providers: [{ provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) }],
+      providers: [
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacadeMock) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

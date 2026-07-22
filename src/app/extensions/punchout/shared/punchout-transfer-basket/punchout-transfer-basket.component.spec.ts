@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
@@ -16,9 +16,9 @@ describe('Punchout Transfer Basket Component', () => {
     punchoutFacade = mock(PunchoutFacade);
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [PunchoutTransferBasketComponent],
-      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }],
+      providers: [{ provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 

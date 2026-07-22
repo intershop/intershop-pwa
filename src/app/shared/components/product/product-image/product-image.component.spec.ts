@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -26,8 +26,12 @@ describe('Product Image Component', () => {
     when(context.select('productURL')).thenReturn(of('/product/TEST'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideRouter([])],
+      imports: [TranslatePipe],
+      providers: [
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -37,7 +41,7 @@ describe('Product Image Component', () => {
     component = fixture.componentInstance;
 
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.set('product.image.text.alttext', 'product photo');
     translate.set('product.image.not_available.alttext', 'no product image available');

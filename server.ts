@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports, max-lines */
-import { CommonEngine } from '@angular/ssr';
+import { CommonEngine } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
@@ -130,6 +130,7 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
 // The Express app is exported so that it can be used by serverless Functions.
+// eslint-disable-next-line complexity
 export function app() {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
@@ -172,22 +173,22 @@ export function app() {
       });
 
       const certErrorCodes = [
-        'CERT_SIGNATURE_FAILURE',
-        'CERT_NOT_YET_VALID',
+        'CERT_CHAIN_TOO_LONG',
         'CERT_HAS_EXPIRED',
-        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
-        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'CERT_NOT_YET_VALID',
+        'CERT_REJECTED',
+        'CERT_REVOKED',
+        'CERT_SIGNATURE_FAILURE',
+        'CERT_UNTRUSTED',
         'DEPTH_ZERO_SELF_SIGNED_CERT',
+        'ERROR_IN_CERT_NOT_AFTER_FIELD',
+        'ERROR_IN_CERT_NOT_BEFORE_FIELD',
+        'HOSTNAME_MISMATCH',
+        'INVALID_CA',
+        'INVALID_PURPOSE',
         'SELF_SIGNED_CERT_IN_CHAIN',
         'UNABLE_TO_GET_ISSUER_CERT_LOCALLY',
         'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
-        'CERT_CHAIN_TOO_LONG',
-        'CERT_REVOKED',
-        'INVALID_CA',
-        'INVALID_PURPOSE',
-        'CERT_UNTRUSTED',
-        'CERT_REJECTED',
-        'HOSTNAME_MISMATCH',
       ];
 
       req.on('error', (e: { code: string }) => {
@@ -235,6 +236,7 @@ export function app() {
       { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
       { provide: METRICS_DETAIL_LEVEL, useValue: metricsDetailLevel },
     ],
+    allowedHosts: ['localhost', ...(process.env.ALLOWED_HOSTS?.split(',') ?? [])],
   });
 
   const onFinished = require('on-finished');
@@ -509,7 +511,7 @@ export function app() {
     // find last baseHref parameter
     const regex = /baseHref=([^;?#]*)/g;
     let baseHref = '/';
-    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl)); ) {
+    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
 
@@ -618,6 +620,9 @@ export function app() {
   // running behind nginx - make sure to use all x-forwarded headers correctly
   // see https://expressjs.com/en/guide/behind-proxies.html
   server.set('trust proxy', true);
+
+  // Disable Express x-powered-by header for security reasons
+  server.disable('x-powered-by');
 
   return server;
 }

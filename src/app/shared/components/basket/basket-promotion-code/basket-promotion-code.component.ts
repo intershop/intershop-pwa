@@ -25,6 +25,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
  */
 @Component({
   selector: 'ish-basket-promotion-code',
+  standalone: false,
   templateUrl: './basket-promotion-code.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

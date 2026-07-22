@@ -8,8 +8,8 @@ import { CheckoutReceiptPageComponent } from './checkout-receipt-page.component'
 import { CheckoutReceiptComponent } from './checkout-receipt/checkout-receipt.component';
 
 @NgModule({
-  imports: [RequisitionManagementExportsModule, SharedModule],
   declarations: [CheckoutReceiptComponent, CheckoutReceiptOrderComponent, CheckoutReceiptPageComponent],
+  imports: [RequisitionManagementExportsModule, SharedModule],
 })
 export class CheckoutReceiptPageModule {
   static component = CheckoutReceiptPageComponent;

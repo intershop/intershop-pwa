@@ -9,8 +9,9 @@ import { concatMap, filter, last, map, mergeMap, switchMap } from 'rxjs/operator
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { ofUrl, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getUserAuthorized } from 'ish-core/store/customer/user';
+import { getUserAuthorized, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import {
+  delayUntil,
   distinctCompareWith,
   mapErrorToAction,
   mapToPayload,
@@ -60,6 +61,15 @@ export class OrderTemplateEffects {
     private store: Store
   ) {}
 
+  loadOrderTemplatesAfterLogin$ = createEffect(() =>
+    this.store.pipe(
+      select(getUserAuthorized),
+      whenTruthy(),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
+      map(() => loadOrderTemplates())
+    )
+  );
+
   loadOrderTemplates$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadOrderTemplates),
@@ -69,6 +79,19 @@ export class OrderTemplateEffects {
         this.orderTemplateService.getOrderTemplates().pipe(
           map(orderTemplates => loadOrderTemplatesSuccess({ orderTemplates })),
           mapErrorToAction(loadOrderTemplatesFail)
+        )
+      )
+    )
+  );
+
+  loadOrderTemplateDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(orderTemplatesActions.loadOrderTemplateDetails),
+      mapToPayloadProperty('orderTemplateId'),
+      mergeMap(orderTemplateId =>
+        this.orderTemplateService.getOrderTemplate(orderTemplateId).pipe(
+          map(orderTemplate => orderTemplatesApiActions.loadOrderTemplateDetailsSuccess({ orderTemplate })),
+          mapErrorToAction(orderTemplatesApiActions.loadOrderTemplateDetailsFail)
         )
       )
     )
@@ -203,7 +226,7 @@ export class OrderTemplateEffects {
                 sku: payload.sku,
                 quantity: payload.quantity,
               }),
-              selectOrderTemplate({ id: orderTemplate.id }),
+              ...(payload.suppressSelect ? [] : [selectOrderTemplate({ id: orderTemplate.id })]),
             ]),
             mapErrorToAction(createOrderTemplateFail)
           )
@@ -222,6 +245,7 @@ export class OrderTemplateEffects {
               title: payload.target.title,
               sku: payload.target.sku,
               quantity: payload.target.quantity,
+              suppressSelect: true,
             }),
             removeItemFromOrderTemplate({
               orderTemplateId: payload.source.id,
@@ -267,13 +291,15 @@ export class OrderTemplateEffects {
   );
 
   /**
-   * Trigger LoadOrderTemplates action after LoginUserSuccess.
+   * Loads the details of the selected order template, e.g. when the detail page is opened
    */
-  loadOrderTemplatesAfterLogin$ = createEffect(() =>
-    this.store.pipe(
-      select(getUserAuthorized),
+  loadSelectedOrderTemplateDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(selectOrderTemplate),
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
+      mapToPayloadProperty('id'),
       whenTruthy(),
-      map(() => loadOrderTemplates())
+      map(id => orderTemplatesActions.loadOrderTemplateDetails({ orderTemplateId: id }))
     )
   );
 

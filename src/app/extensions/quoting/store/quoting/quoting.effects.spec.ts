@@ -308,21 +308,36 @@ describe('Quoting Effects', () => {
 
   describe('addProductToQuoteRequest$', () => {
     beforeEach(() => {
-      when(quotingService.addProductToQuoteRequest(anything(), anything())).thenReturn(of('quoteRequestID'));
+      when(quotingService.addProductToQuoteRequest(anything(), anything(), anything())).thenReturn(
+        of('quoteRequestID')
+      );
       when(quotingService.getQuoteDetails(anything(), anything(), anything())).thenCall((id, type) =>
         of({ id, type, completenessLevel: 'Detail' } as QuoteStub)
       );
     });
 
     it('should add product to quote request via quoting service when triggered', done => {
-      actions$ = of(addProductToQuoteRequest({ sku: 'SKU', quantity: 10 }));
+      actions$ = of(
+        addProductToQuoteRequest({
+          sku: 'SKU',
+          quantity: 10,
+          quoteRequestId: 'quoteRequestID',
+          displayName: 'My Quote Request',
+          createNew: true,
+        })
+      );
 
       effects.addProductToQuoteRequest$.subscribe(() => {
-        verify(quotingService.addProductToQuoteRequest(anything(), anything())).once();
+        verify(quotingService.addProductToQuoteRequest(anything(), anything(), anything())).once();
         expect(capture(quotingService.addProductToQuoteRequest).last()).toMatchInlineSnapshot(`
           [
             "SKU",
             10,
+            {
+              "createNew": true,
+              "displayName": "My Quote Request",
+              "quoteRequestId": "quoteRequestID",
+            },
           ]
         `);
         done();

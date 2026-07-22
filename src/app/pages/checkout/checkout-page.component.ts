@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 
 @Component({
+  standalone: false,
   templateUrl: './checkout-page.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })

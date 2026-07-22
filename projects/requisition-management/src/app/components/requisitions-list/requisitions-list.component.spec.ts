@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterModule, provideRouter } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
@@ -48,9 +48,13 @@ describe('Requisitions List Component', () => {
   beforeEach(async () => {
     facade = mock(RequisitionManagementFacade);
     await TestBed.configureTestingModule({
-      imports: [CdkTableModule, RouterModule, TranslateModule.forRoot()],
+      imports: [CdkTableModule, RouterModule, TranslatePipe],
       declarations: [MockComponent(RequisitionRejectDialogComponent), MockPipe(PricePipe), RequisitionsListComponent],
-      providers: [{ provide: RequisitionManagementFacade, useFactory: () => instance(facade) }, provideRouter([])],
+      providers: [
+        { provide: RequisitionManagementFacade, useFactory: () => instance(facade) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -59,7 +63,7 @@ describe('Requisitions List Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
     translate.setTranslation('en', {
       'account.approvallist.items': '{{0}} items',

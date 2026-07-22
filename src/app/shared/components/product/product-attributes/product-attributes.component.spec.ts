@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { Product } from 'ish-core/models/product/product.model';
@@ -18,8 +18,9 @@ describe('Product Attributes Component', () => {
       { name: 'B', type: 'String', value: 'B' },
     ];
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslatePipe],
       declarations: [AttributeToStringPipe, ProductAttributesComponent],
+      providers: [provideTranslateService()],
     }).compileComponents();
   });
 
@@ -30,7 +31,7 @@ describe('Product Attributes Component', () => {
     component.product = product;
 
     const translate = TestBed.inject(TranslateService);
-    translate.setDefaultLang('en');
+    translate.setFallbackLang('en');
     translate.use('en');
   });
 

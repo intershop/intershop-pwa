@@ -15,6 +15,7 @@ interface BudgetValues {
 
 @Component({
   selector: 'ish-requisition-cost-center-approval',
+  standalone: false,
   templateUrl: './requisition-cost-center-approval.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

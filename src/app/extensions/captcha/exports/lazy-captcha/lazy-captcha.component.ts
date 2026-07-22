@@ -33,6 +33,7 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
  */
 @Component({
   selector: 'ish-lazy-captcha',
+  standalone: false,
   templateUrl: './lazy-captcha.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -42,7 +43,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   /**
     form containing the captcha form controls
    */
-  @Input({ required: true }) form: FormGroup | FormArray;
+  @Input({ required: true }) form: FormArray | FormGroup;
 
   @Input({ required: true }) topic: CaptchaTopic;
 

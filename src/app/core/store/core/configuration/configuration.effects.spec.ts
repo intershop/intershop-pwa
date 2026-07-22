@@ -2,7 +2,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { instance, mock } from 'ts-mockito';
@@ -20,11 +20,12 @@ describe('Configuration Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), TranslateModule.forRoot()],
+      imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig']), TranslatePipe],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         ConfigurationEffects,
         provideMockActions(() => actions$),
+        provideTranslateService(),
       ],
     });
 
@@ -59,7 +60,7 @@ describe('Configuration Effects', () => {
     });
     it('should update TranslateService when locale was initialized', fakeAsync(() => {
       tick(1000);
-      expect(translateService.currentLang).toMatchInlineSnapshot(`"en_US"`);
+      expect(translateService.getCurrentLang()).toMatchInlineSnapshot(`"en_US"`);
     }));
   });
 });

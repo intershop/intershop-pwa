@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,7 +18,7 @@ describe('Price Pipe', () => {
   let element: HTMLElement;
   let translateService: TranslateService;
 
-  @Component({ template: '~{{ price | ishPrice }}~' })
+  @Component({ standalone: false, template: '~{{ price | ishPrice }}~' })
   class DummyComponent {
     price: Price | PriceItem;
   }
@@ -26,15 +26,17 @@ describe('Price Pipe', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+      providers: [
+        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     registerLocaleData(localeDe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;
@@ -107,6 +109,7 @@ describe('Price Pipe', () => {
   let accountFacade: AccountFacade;
 
   @Component({
+    standalone: false,
     template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
   })
   class DummyComponent {
@@ -119,15 +122,14 @@ describe('Price Pipe', () => {
 
     await TestBed.configureTestingModule({
       declarations: [DummyComponent, PricePipe],
-      imports: [TranslateModule.forRoot()],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
   });
 
   beforeEach(() => {
     registerLocaleData(localeDe);
     translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
+    translateService.setFallbackLang('en');
 
     fixture = TestBed.createComponent(DummyComponent);
     component = fixture.componentInstance;

@@ -19,7 +19,7 @@ const organizationManagementReducers: ActionReducerMap<OrganizationManagementSta
   budget: budgetReducer,
 };
 
-const organizationManagementEffects = [UsersEffects, CostCentersEffects, BudgetEffects];
+const organizationManagementEffects = [BudgetEffects, CostCentersEffects, UsersEffects];
 
 @Injectable()
 export class DefaultOrganizationManagementStoreConfig implements StoreConfig<OrganizationManagementState> {

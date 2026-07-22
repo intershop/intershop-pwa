@@ -1,13 +1,14 @@
 import { ApplicationRef, Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Subject, delay, filter, first, fromEvent, map, race, switchMap, take, timer, withLatestFrom } from 'rxjs';
+import { Subject, delay, filter, first, fromEvent, map, switchMap, take, withLatestFrom } from 'rxjs';
 
 import { getICMBaseURL } from 'ish-core/store/core/configuration';
+import { DesignViewService } from 'ish-core/utils/design-view/design-view.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 interface StorefrontEditingMessage {
-  type: 'sfe-pwaready' | 'sfe-pwanavigation' | 'sfe-pwastable' | 'sfe-setcontext';
+  type: 'sfe-pwanavigation' | 'sfe-pwaready' | 'sfe-pwastable' | 'sfe-setcontext';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }
@@ -24,30 +25,21 @@ export class PreviewService {
   private initOnTopLevel = false; // for debug purposes. enables this feature even in top-level windows
 
   private hostMessagesSubject$ = new Subject<StorefrontEditingMessage>();
-  private localPreviewContextId: string;
+  private previewContextId: string;
 
   constructor(
     private router: Router,
     private store: Store,
     private appRef: ApplicationRef,
-    private route: ActivatedRoute
+    private designViewService: DesignViewService
   ) {
-    this.init();
     if (!SSR) {
-      race([
-        this.route.queryParams.pipe(
-          filter(params => params.PreviewContextID),
-          map(params => params.PreviewContextID),
-          take(1)
-        ),
-        // end listening for PreviewContextID if there is no such parameter at initialization
-        timer(3000),
-      ]).subscribe(value => {
-        if (value) {
-          this.previewContextId = value;
-        }
-      });
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('PreviewContextID')) {
+        this.setPreviewContextId(params.get('PreviewContextID'));
+      }
     }
+    this.init();
   }
 
   /**
@@ -75,13 +67,14 @@ export class PreviewService {
    * Is used by the init method, so it will only initialize when
    * (1) there is a window (i.e. the application does not run in SSR context)
    * (2) application does not run on top level window (i.e. it runs in the design view iframe)
-   * (3) OR the debug mode is on (`initOnTopLevel`).
+   * (3) OR the debug mode is on (`initOnTopLevel`)
+   * (4) IAP Design View Mode is not already active (either one uses the IAP Design View or this preview in ICM Backoffice)
    */
   private shouldInit() {
     return (
       typeof window !== 'undefined' &&
       ((window.parent && window.parent !== window) || this.initOnTopLevel) &&
-      !this.isDesignViewMode
+      !this.designViewService.isDesignViewMode()
     );
   }
 
@@ -157,15 +150,15 @@ export class PreviewService {
     switch (message.type) {
       case 'sfe-setcontext': {
         const previewContextMsg: SetPreviewContextMessage = message;
-        this.previewContextId = previewContextMsg?.payload?.previewContextID;
+        this.setPreviewContextId(previewContextMsg?.payload?.previewContextID);
         location.reload();
         return;
       }
     }
   }
 
-  set previewContextId(previewContextId: string) {
-    this.localPreviewContextId = previewContextId;
+  private setPreviewContextId(previewContextId: string) {
+    this.previewContextId = previewContextId;
     if (!SSR) {
       if (previewContextId) {
         sessionStorage.setItem('PreviewContextID', previewContextId);
@@ -175,12 +168,7 @@ export class PreviewService {
     }
   }
 
-  get previewContextId() {
-    return this.localPreviewContextId ?? (!SSR ? sessionStorage.getItem('PreviewContextID') : undefined);
-  }
-
-  // TODO: replace usage of previewContextId to identify Design View mode
-  get isDesignViewMode(): boolean {
-    return this.previewContextId === 'DESIGNVIEW';
+  getPreviewContextId() {
+    return this.previewContextId ?? (!SSR ? sessionStorage.getItem('PreviewContextID') : undefined);
   }
 }

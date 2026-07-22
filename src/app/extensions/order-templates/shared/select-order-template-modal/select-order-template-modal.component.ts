@@ -6,18 +6,18 @@ import {
   Input,
   OnInit,
   Output,
-  TemplateRef,
   ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
+import { whenTruthy } from 'ish-core/utils/operators';
+import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 
@@ -26,6 +26,7 @@ import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
  */
 @Component({
   selector: 'ish-select-order-template-modal',
+  standalone: false,
   templateUrl: './select-order-template-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -48,17 +49,12 @@ export class SelectOrderTemplateModalComponent implements OnInit {
   });
 
   showForm: boolean;
-  modal: NgbModalRef;
 
   private destroyRef = inject(DestroyRef);
 
-  @ViewChild('modal', { static: false }) modalTemplate: TemplateRef<unknown>;
+  @ViewChild('modal') modalDialog: ModalDialogComponent<unknown>;
 
-  constructor(
-    private ngbModal: NgbModal,
-    private orderTemplatesFacade: OrderTemplatesFacade,
-    private translate: TranslateService
-  ) {}
+  constructor(private orderTemplatesFacade: OrderTemplatesFacade) {}
 
   ngOnInit() {
     this.orderTemplateOptions$ = this.orderTemplatesFacade.orderTemplatesSelectOptions$(this.addMoveProduct === 'move');
@@ -73,6 +69,8 @@ export class SelectOrderTemplateModalComponent implements OnInit {
       }
     } else if (radioButtons.newOrderTemplate && this.formGroup.valid) {
       this.submitNew(radioButtons.newOrderTemplate);
+    } else {
+      markAsDirtyRecursive(this.formGroup);
     }
   }
 
@@ -102,14 +100,14 @@ export class SelectOrderTemplateModalComponent implements OnInit {
 
   /** close modal */
   hide() {
-    this.modal.close();
+    this.modalDialog.hide();
     this.formGroup.reset();
   }
 
   /** open modal */
   show() {
     this.showForm = true;
-    this.modal = this.ngbModal.open(this.modalTemplate, { ariaLabelledBy: 'select-order-template-modal-title' });
+    this.modalDialog.show();
 
     // set default values after init (for example after closing and reopening the modal)
     this.orderTemplateOptions$
@@ -120,8 +118,7 @@ export class SelectOrderTemplateModalComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(option => {
-        const defaultValue = this.translate.instant('account.order_template.new_order_template.text');
-        this.formGroup.patchValue({ orderTemplate: option.value, newOrderTemplate: defaultValue });
+        this.formGroup.patchValue({ orderTemplate: option.value });
       });
   }
 
@@ -152,8 +149,12 @@ export class SelectOrderTemplateModalComponent implements OnInit {
     const selectedValue = this.formGroup.value.orderTemplate;
 
     if (selectedValue === 'new' || !selectedValue) {
-      return this.orderTemplatesFacade.currentOrderTemplate$.pipe(
-        map(currentOrderTemplate => `route://account/order-templates/${currentOrderTemplate?.id}`),
+      const title = this.formGroup.value.newOrderTemplate;
+      return this.orderTemplatesFacade.orderTemplates$.pipe(
+        // pick the most recently created template matching the title since titles are not unique
+        map(templates => templates.filter(t => t.title === title).sort((a, b) => b.creationDate - a.creationDate)[0]),
+        whenTruthy(),
+        map(template => `route://account/order-templates/${template.id}`),
         take(1)
       );
     } else {

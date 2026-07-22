@@ -1,0 +1,11 @@
+@if (selected) {
+  <div class="row">
+    @if (selected.length) {
+      <div class="col-md-12">
+        <button class="btn btn-link btn-link-action" type="button" (click)="clear()">
+          {{ 'product.remove_all_product_filters.text' | translate }}
+        </button>
+      </div>
+    }
+  </div>
+}

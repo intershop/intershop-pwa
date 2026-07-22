@@ -86,7 +86,7 @@ const defaultDisplayProperties: ProductContextDisplayProperties<true | undefined
 
 export interface ExternalDisplayPropertiesProvider {
   setup(
-    context$: Observable<Pick<ProductContext, 'product' | 'prices' | 'inventory'>>
+    context$: Observable<Pick<ProductContext, 'inventory' | 'prices' | 'product'>>
   ): Observable<Partial<ProductContextDisplayProperties<false>>>;
 }
 
@@ -126,7 +126,7 @@ export interface ProductContext {
 
   // child contexts
   propagateActive: boolean;
-  children: Record<string | number, ProductContext>;
+  children: Record<number | string, ProductContext>;
 
   // selected warranty
   selectedWarranty: string;
@@ -585,6 +585,5 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
     if (this.get('propagateActive')) {
       this.set('propagateActive', () => false);
     }
-    super.ngOnDestroy();
   }
 }

@@ -5,6 +5,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { User } from 'ish-core/models/user/user.model';
 
 @Component({
+  standalone: false,
   templateUrl: './account-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

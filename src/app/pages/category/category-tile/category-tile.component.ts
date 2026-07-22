@@ -14,6 +14,7 @@ import { ImageLoading } from 'ish-core/models/image/image.model';
  */
 @Component({
   selector: 'ish-category-tile',
+  standalone: false,
   templateUrl: './category-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

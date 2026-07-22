@@ -5,7 +5,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ImageLoading } from 'ish-core/models/image/image.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
-export type ProductItemDisplayType = 'tile' | 'row';
+export type ProductItemDisplayType = 'row' | 'tile';
 
 /**
  * The Product Item Component renders the product either as 'tile' or 'row'.
@@ -13,6 +13,7 @@ export type ProductItemDisplayType = 'tile' | 'row';
  */
 @Component({
   selector: 'ish-product-item',
+  standalone: false,
   templateUrl: './product-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

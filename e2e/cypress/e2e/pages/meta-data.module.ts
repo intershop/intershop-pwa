@@ -29,11 +29,11 @@ export class MetaDataModule {
     });
   }
 
-  private checkStrategy(val: string | RegExp | string[]) {
+  private checkStrategy(val: RegExp | string | string[]) {
     return typeof val === 'string' ? 'equal' : Array.isArray(val) ? 'include.members' : 'match';
   }
 
-  check(expect: { title?: string; url?: RegExp; description?: string; [key: string]: string | RegExp }) {
+  check(expect: { title?: string; url?: RegExp; description?: string; [key: string]: RegExp | string }) {
     waitLoadingEnd(3000);
     const expected = {
       ...MetaDataModule.defaultMeta,
