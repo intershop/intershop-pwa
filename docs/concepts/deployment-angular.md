@@ -9,7 +9,6 @@ kb_sync_latest_only
 
 - [Simple Browser-Side Rendering](#simple-browser-side-rendering)
 - [Browser-Side Rendering with On-Demand Server-Side Pre-Rendering (Angular SSR)](#browser-side-rendering-with-on-demand-server-side-pre-rendering-angular-ssr)
-- [Impact of Service Workers](#impact-of-service-workers)
 - [Further References](#further-references)
 
 ## Simple Browser-Side Rendering
@@ -49,13 +48,6 @@ This leads to significant performance improvements.
 This method is the default setup for the Intershop PWA.
 A `Dockerfile` is provided for building the [SSR Image][concept-building-blocks].
 
-## Impact of Service Workers
-
-If the Intershop PWA is run with an enabled [Service Worker][concept-progressive-web-app], the SSR process is only triggered on the first visit to the web page.
-After that, the service worker causes the application to behave like a simple browser-side application where certain additional caching can lead to an improved client experience.
-
-However, browsers and crawlers that do not support JavaScript will still receive fully pre-rendered page responses from the SSR process.
-
 ## Further References
 
 - [Concept - Building Blocks][concept-building-blocks]
@@ -66,4 +58,4 @@ However, browsers and crawlers that do not support JavaScript will still receive
 [angular-deployment]: https://angular.dev/tools/cli/deployment
 [angular-ssr]: https://v19.angular.dev/guide/ssr
 [concept-building-blocks]: ./pwa-building-blocks.md
-[concept-progressive-web-app]: ./progressive-web-app.md#service-worker
+[concept-progressive-web-app]: ./progressive-web-app.md

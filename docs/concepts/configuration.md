@@ -119,7 +119,7 @@ This provides the most flexible way of configuring the application at runtime.
 
 ### Build Settings
 
-One example for a build-time configuration is the property `serviceWorker`, which is managed in the _angular.json_ configurations and used to activate the [service worker](./progressive-web-app.md#service-worker).
+Build-time configuration properties are managed in the _angular.json_ configurations.
 
 In general, properties available at build time can only be supplied by Angular CLI environments (see above).
 

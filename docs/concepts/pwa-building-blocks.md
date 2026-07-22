@@ -103,9 +103,6 @@ Read on for a step-by-step walkthrough of the initial connection request.
 
 Deployment without using nginx is theoretically possible, even though many useful features of an nginx deployment are obviously not available.
 
-> [!WARNING]
-> Enabling [service workers](progressive-web-app.md#service-worker) is not possible without using nginx. The Intershop PWA will not function as intended if you do.
-
 ## Hiding the ICM Backend
 
 For security reasons, it may be desirable to hide the backend address and prevent direct access to it.

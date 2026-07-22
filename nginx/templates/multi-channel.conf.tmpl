@@ -185,7 +185,7 @@ server {
     }
 
     # respect cache entries of static assets
-    location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
         auth_basic off;
 

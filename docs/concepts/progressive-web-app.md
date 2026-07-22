@@ -8,7 +8,6 @@ kb_sync_latest_only
 # Progressive Web App
 
 - [Web App Manifest](#web-app-manifest)
-- [Service Worker](#service-worker)
 
 In order to be a [Progressive Web Application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps), the Intershop PWA implements some advanced concepts matching those criteria.
 
@@ -18,24 +17,3 @@ The Web App Manifest enables the PWA to be installable on home screens of mobile
 The application is easily accessible via a generated link, and branding is applied to icons and browser coloring so it poses as a native application.
 
 The manifest in the PWA is theme-specific and can be customized in the file `src/assets/themes/<theme>/manifest.webmanifest`.
-
-## Service Worker
-
-[Service workers](https://angular.dev/ecosystem/service-workers) are automatically installed into client device browsers after the first visit to the shop and take over all the handling of the application on the client side.
-Possible advanced features supplied are offline capabilities and push notifications.
-After installation, the service worker effectively disables server-side rendering for clients and invokes all rendering on the client itself.
-
-For the Intershop PWA, offline browsing is not a suitable use case for most customers, and push notifications are not yet supplied by Intershop Commerce Management.
-For now, service worker integration is an **experimental** feature that can be activated for appropriate projects.
-
-To activate the service worker, run:
-
-```bash
-node schematics/customization/service-worker true
-```
-
-To run the project as a Progressive Web App with an enabled [Service Worker](https://angular.dev/ecosystem/service-workers/getting-started), use `npm run start` to build and serve the application.
-Next, open _<http://localhost:4200>_ in your browser and test it or run a PWA audit.
-Currently, only _localhost_ or _127.0.0.1_ functions with the service worker, since _https_ communication is required on all other domains.
-
-You can also activate the service worker specifically for Docker builds by supplying the build argument `serviceWorker=true`.
