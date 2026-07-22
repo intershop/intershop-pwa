@@ -48,6 +48,12 @@ The `@angular/animations`-based `bottomOut` trigger of the cookie banner has bee
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
 Its inputs changed: the previous `lastPage` (number of pages) was replaced by the required inputs `itemCount` (total number of items) and `pageSize` (items per page).
 
+**Removal of the Service Worker integration**
+
+The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use.
+The `@angular/service-worker` dependency, the `ngsw-config.json` file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
+The Web App Manifest (installability) is unaffected and remains available.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

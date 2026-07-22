@@ -41,9 +41,6 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
-      - name: Disable ServiceWorker
-        run: node schematics/customization/service-worker false
-
       - name: Build SSR
         run: npm run build:multi
 

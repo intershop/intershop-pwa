@@ -7,7 +7,6 @@ services:
     build:
       context: .
       # args:
-      #   serviceWorker: 'false'
       #   activeThemes: b2b
       #   activeThemes: b2c
     # command: ['node', 'dist/b2c/run-standalone']
@@ -115,7 +114,6 @@ services:
   #     context: .
   #     args:
   #       configuration: production
-  #       serviceWorker: 'false'
   #       deployUrl: http://mypwa.net:4222
   #   ports:
   #     - '4222:4200'

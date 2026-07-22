@@ -68,7 +68,6 @@
     "@angular/platform-browser-dynamic": "^20.3.29",
     "@angular/platform-server": "^20.3.29",
     "@angular/router": "^20.3.29",
-    "@angular/service-worker": "^20.3.29",
     "@angular/ssr": "^20.3.34",
     "@elastic/ecs-pino-format": "^1.5.0",
     "@googlemaps/js-api-loader": "1.16.8",
