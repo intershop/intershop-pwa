@@ -442,17 +442,6 @@ export function app() {
     res.sendStatus(200);
   });
 
-  server.get(/\/ngsw\.json/, (_, res) => {
-    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.set('Content-Type', 'application/json; charset=UTF-8');
-        res.send(data);
-      }
-    });
-  });
-
   // route handler for all files that need the DEPLOY_URL replacement
   server.get(/\/assets\/.*|.*\.(woff2?|json)$|.*\/manifest\.webmanifest$/, (req, _, next) => {
     req.url = req.originalUrl.slice(!DEPLOY_URL.startsWith('http') ? DEPLOY_URL.length : 0).replace(/[;?&].*$/, '');

@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 12.0.0 to 13.0.0
+
+**Removal of the Service Worker integration**
+
+The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use.
+The `@angular/service-worker` dependency, the `ngsw-config.json` file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
+The Web App Manifest (installability) is unaffected and remains available.
+
 ## From 11.2.0 to 12.0.0
 
 **Angular 19 upgrade**

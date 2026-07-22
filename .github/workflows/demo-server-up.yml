@@ -37,7 +37,6 @@ jobs:
         id: ssr
         uses: elgohr/Publish-Docker-Github-Action@v5
         env:
-          serviceWorker: false
           displayVersion: ${{ github.sha }}
           testing: true
           NODE_OPTIONS: --max-old-space-size=8192
@@ -46,7 +45,7 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
           registry: ${{ secrets.DOCKER_REGISTRY }}
-          buildargs: serviceWorker,displayVersion,testing
+          buildargs: displayVersion,testing
 
       - name: Publish NGINX image to Registry
         id: nginx

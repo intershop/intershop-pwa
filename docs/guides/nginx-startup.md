@@ -106,9 +106,6 @@ The configuration can be supplied by setting the environment variable `MULTI_CHA
 Alternatively, the source can be supplied by setting `MULTI_CHANNEL_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
 If no environment variables for multi-channel configuration are provided, the configuration will fall back to the content of [_nginx/multi-channel.yaml_](../../nginx/multi-channel.yaml), which can also be customized.
 
-> [!WARNING]
-> Multi-channel configuration with context paths does not work in conjunction with [service workers](../concepts/progressive-web-app.md#service-worker).
-
 An extended list of examples can be found in the [Multi-Site Configurations](../guides/multi-site-configurations.md#Syntax) guide.
 
 ### Ignore Parameters During Caching
