@@ -23,11 +23,12 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 
 **`ALLOWED_HOSTS` configuration for SSR**
 
-The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
-By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
-For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
-Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
-
+> [!IMPORTANT]
+> The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
+> By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
+> For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
+>
 > `URL with hostname "abc.xyz.com" is not allowed.`
 
 **ESLint Perfectionist plugin**
@@ -73,11 +74,11 @@ Use `ish-deferred-item` with `ishLazyLoadingContent` for lazy loading.
 With the rework of the `FilterDropdownComponent` to use `ng-select` instead of `ngbDropdown` and to support multi-selection, the `FilterNavigationBadgesComponent` has been renamed to `FilterNavigationActionsComponent` (selector changed from `ish-filter-navigation-badges` to `ish-filter-navigation-actions`).
 The component now only provides a "Remove all filters" action.
 
-**Design View and Preview Context changes**
+**Design View and preview context changes**
 
-The Design View and Preview Context features have been reworked so that they can be used simultaneously.
-Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real Preview Context data from being used at the same time.
-Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for Preview Context data.
+The Design View and preview features have been reworked so that they can be used simultaneously.
+Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real preview context data from being used at the same time.
+Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for preview context data.
 
 **Modal fullscreen and scrollable styling**
 
@@ -119,12 +120,12 @@ If you customized or extended the `ProductRatingStarComponent` component in your
 
 **Removal of customer budget type update after registration**
 
-The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now persists the `budgetPriceType` directly (requires ICM 14.2.0).
-This also fixes the customer approval flow that broke starting with Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
+The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now directly persists the `budgetPriceType` (requires ICM 14.2.0).
+This also fixes the customer approval flow that has been broken since Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
 
 ## From 11.1.0 to 11.2.0
 
-**Extended Withdrawal functionality**
+**Extended withdrawal functionality**
 
 On the Order Detail Page in the My Account area, withdrawal information is now displayed for orders that have been withdrawn.
 In addition, for orders that are still eligible for withdrawal, a link to the withdrawal form is now shown on the Order Detail Page.
