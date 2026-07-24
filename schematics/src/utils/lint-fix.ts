@@ -11,7 +11,9 @@ const registerLintAtEnd = once((root: string) => {
   process.on('exit', () => {
     if (process.env.CI !== 'true') {
       if (lintFiles.length) {
-        process.stdout.write(`\nLINTING ${lintFiles.length} files...`);
+        process.stdout.write(
+          `\n${lintFiles.length} file(s) updated. Formatting and linting, this may take a while...\n`
+        );
         try {
           const absolutePaths = lintFiles.map(file => join(root, file));
 
@@ -26,8 +28,9 @@ const registerLintAtEnd = once((root: string) => {
             execSync(`npx prettier --write --log-level warn ${batch.join(' ')}`, { cwd: root });
             execSync(`npx eslint --fix ${batch.join(' ')}`, { cwd: root });
           }
+          process.stdout.write('Formatting and linting finished.\n');
         } catch (error) {
-          process.stderr.write('Error details:', error);
+          process.stderr.write(`Formatting and linting failed: ${error}\n`);
         }
       }
     } else {

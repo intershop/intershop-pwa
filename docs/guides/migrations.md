@@ -5,7 +5,7 @@ kb_everyone
 kb_sync_latest_only
 -->
 
-# Migrations
+# Migration Notes
 
 ## From 11.2.0 to 12.0.0
 
@@ -16,8 +16,22 @@ Companion libraries have been updated to their Angular 19 compatible versions as
 
 In Angular 19, components, directives, and pipes are standalone by default.
 Since the PWA still relies on NgModule-based declarations, the `standalone: false` attribute had to be added to all components, directives, and pipes that are not standalone yet.
-The declaration as `standalone: true` is now the default and therefore removed from the existing standalone components.
-This additional configuration will be required for any custom or overridden components, directives, and pipes in projects too.
+
+To apply this configuration to custom code, run the PWA migration schematics.
+They wrap Angular's `explicit-standalone-flag` migration and additionally cover theme override files, which the Angular migration skips (see [Migration How To](./migrations-how-to.md#run-the-provided-migration-schematics) for the recommended `ng update` command).
+To run these migrations on their own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:explicit-standalone-flag
+ng g ./schematics/dist/migrations/migrations.json:standalone-override-flag
+```
+
+> [!NOTE]
+> The migration schematics were added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
+
+Angular's migration determines whether a declaration is standalone based on its NgModule membership (via static analysis).
+As a result, it adds `standalone: false` only to declarations that are part of an NgModule and leaves genuinely standalone components untouched — even those that do not declare `standalone: true` explicitly.
+Make sure the project builds without compilation errors and that all files are covered by a `tsconfig` before running the migration, otherwise affected files are skipped.
 
 For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3).
 
@@ -51,6 +65,15 @@ The same applies to test setups, where `provideTranslateService()` and an `impor
 The element-text-as-key form of the `translate` directive (for example, `<span translate>my.key</span>`) is deprecated in version 18 and removed in version 19; use the `translate` pipe (`{{ 'my.key' | translate }}`) or the bound directive (`[translate]="'my.key'"`) instead.
 The `getCurrentLang()` method can now return `undefined`, so any custom code relying on it must handle that case.
 For all breaking changes, see the [ngx-translate Migration Guide v17 → v18](https://ngx-translate.org/getting-started/migration-guide/).
+
+To apply these mechanical changes to custom components, directives, pipes, and their tests, run the PWA migration schematic and then the project's checks (`npm run check`) to catch anything that needs manual review:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:ngx-translate18
+```
+
+> [!NOTE]
+> The migration schematics was added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
 
 **Swiper 12 upgrade**
 
@@ -1244,7 +1267,7 @@ To allow for an as easy as possible migration of existing PWA projects, we split
 We advise you to first cherry pick all the `eslint` commits provided by the PWA release before applying the lint rules to the project customizations to fix the issues that reside in the project code.
 If the found issues are too many to address them in an ordered manner, it is probably best to temporarily disable some of the failing rules in `.eslintrc.json` (see [Configuring ESLint](./eslint.md#configuring-eslint) and to only fix one after another.
 
-It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Import Changes from New PWA Release](./customizations.md#import-changes-from-new-pwa-release-migration) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
+It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Migration How To](./migrations-how-to.md) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
 After this, all the linter switch commits should be applied and the project should be brought back to a clean state.
 Once this is done, subsequent commits should be migrated.
 If your project contains own custom TSLint rules, you will have to re-implement them as ESLint rules to be able to apply them to your code base (see [Custom ESLint rules](./eslint.md#custom-eslint-rules)).

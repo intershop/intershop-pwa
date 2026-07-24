@@ -21,10 +21,6 @@ kb_sync_latest_only
   - [Static Assets](#static-assets)
   - [Dependencies](#dependencies)
   - [Cypress Tests](#cypress-tests)
-- [Import Changes from New PWA Release (Migration)](#import-changes-from-new-pwa-release-migration)
-  - [1. Range Cherry Pick of New Release Commits](#1-range-cherry-pick-of-new-release-commits)
-  - [2. Rebase Commits of New Release](#2-rebase-commits-of-new-release)
-  - [3. Merge the New Release in its Entirety](#3-merge-the-new-release-in-its-entirety)
 - [Hints](#hints)
 - [Further References](#further-references)
 
@@ -255,93 +251,6 @@ We currently use patterns in the test name to determine the channel for which th
 For example, `login-user.b2b.b2c.e2e-spec.ts` can be run for the inSPIRED B2C and B2B channels.
 The same system can be adopted for customization projects.
 
-## Import Changes from New PWA Release (Migration)
-
-Importing changes of new releases is done with Git tooling.
-If you follow the guidelines in this chapter, the updating process will run without major problems.
-Remember to use `npm install` after importing a change that modified the `package.json` and `package-lock.json`, and run tests and linting in the process.
-
-> [!TIP]
-> In case of problems with `npm install` during or at the end of a migration, replace the `package-lock.json` of your project with the original one from the Intershop PWA (the one fitting to the last migration commit), delete the `node_modules` folder and run `npm install` again.
-> This is the most reliable way to get a working set of dependencies again including the changes fitting to your project-specific dependencies.
-
-Reading the [migrations.md](./migrations.md) and the [CHANGELOG.md](../../CHANGELOG.md) - especially the 'Breaking Changes' section - is the first step before any migration.
-
-> [!TIP]
-> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers migration‑related video tutorials in the _Progressive Web App_ category.
-
-Begin any migration with adding the Intershop PWA GitHub repository as an additional remote if this is not already the case.
-
-```
-git remote add intershop https://github.com/intershop/intershop-pwa.git
-```
-
-Afterward, you need to fetch the new release tags of the `intershop` remote.
-
-```
-git fetch intershop 'refs/tags/*:refs/tags/*'
-```
-
-For importing changes from the current release, you can use different approaches:
-
-### 1. Range Cherry Pick of New Release Commits
-
-For the range `git cherry-pick` approach, you need to create a new branch based on the current project's main development branch, naming it, for example, `migration_to_1.1`.
-
-```
-git checkout -b migration_to_1.1
-```
-
-Now, the Git commits of the new Intershop PWA release will be cherry-picked into this migration branch.
-For this, you need to provide the wanted commit range by using the Intershop PWA version tags, e.g., `1.0.0` to `1.1.0` (since the end tag is a merge commit, it will lead to an error at the end of the cherry pick; to prevent this, only the commits up to the second parent should be used with `^2`).
-If there are any problems with the tags, using the specific commit SHAs should always work.
-
-```
-git cherry-pick 1.0.0..1.1.0^2
-```
-
-Now each commit of the new Intershop PWA release is applied to the custom project context.
-Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
-
-If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
-For this purpose, set `HUSKY=0` as environment variable.
-
-After successfully going through the range, cherry-pick (with `git commit` and `git cherry-pick --continue` after each resolved merge conflict), an `npm install` will probably be required, and you need to check whether the project code still works as expected.
-Starting the server or `npm run check` are good basic tests for that.
-
-### 2. Rebase Commits of New Release
-
-For the `git rebase --onto` approach, you need to create a new branch based on the release tag of the Intershop PWA you want to migrate to, naming it, for example, `migration_to_1.1`.
-
-```
-git checkout -b migration_to_1.1 1.1.0
-```
-
-Now the branch with the Git commits of the new Intershop PWA release will be rebased onto the current project's main development branch.
-To do so, you need to provide the branch name of the target branch to rebase onto.
-In addition, a commit is needed where the current migration branch should be "cut off".
-This is usually the current version tag of the Intershop PWA used in the custom project, e.g., `1.0.0`.
-If there are any problems with the tag, using the specific commit SHAs should always work.
-
-```
-git rebase --onto develop 1.0.0
-```
-
-Now each commit of the new Intershop PWA release is applied to the custom project context.
-Thus, if any merge conflicts arise, this will be within the specific Intershop PWA commit context and should be mergeable with the information and diff provided for this commit in the GitHub repository.
-
-If merge conflicts need to be resolved, it is advisable to disable any pre-commit hooks during the migration.
-For this purpose, set `HUSKY=0` as environment variable.
-
-After successfully going through the rebase onto (with `git rebase --continue` after each resolved merge conflict), an `npm install` will probably be required, and you need to check whether the project code still works as expected.
-Starting the server or `npm run check` are good basic tests for that.
-
-### 3. Merge the New Release in its Entirety
-
-This is also a possible way to migrate your custom project to the latest version of the Intershop PWA, but you will have to resolve all potentially appearing conflicts at once and without the specific commit context.
-
-Just add the Intershop PWA GitHub repository as a second remote in your project and `git merge` the release branch.
-
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
@@ -359,3 +268,4 @@ Just add the Intershop PWA GitHub repository as a second remote in your project 
 ## Further References
 
 - [How to do projects with Intershop PWA 1.0 and Themes](https://www.youtube.com/watch?v=qz-ONgd9qdY)
+- [Migration How To](./migrations-how-to.md)

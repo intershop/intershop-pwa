@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "SchematicsPWAStandaloneOverrideFlagMigration",
+  "title": "Standalone Override Flag Migration",
+  "description": "Synchronizes the standalone flag of theme override artifacts with their related standard artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "project": {
+      "type": "string",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+  }
+}
