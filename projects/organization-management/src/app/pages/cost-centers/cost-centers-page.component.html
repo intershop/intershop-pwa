@@ -137,7 +137,8 @@
         }}</span>
         <ish-paging
           [currentPage]="pageNumber$ | async"
-          [lastPage]="getTotalPages(paging.total)"
+          [itemCount]="paging.total"
+          [pageSize]="pageSize"
           (goToPage)="loadMoreCostCenters($event)"
         />
       </div>

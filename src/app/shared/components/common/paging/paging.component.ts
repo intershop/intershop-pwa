@@ -18,7 +18,8 @@ const MAX_SIZE: Readonly<Record<'desktop' | 'mobile', number>> = {
 })
 export class PagingComponent {
   @Input({ required: true }) currentPage: number;
-  @Input({ required: true }) lastPage: number;
+  @Input({ required: true }) itemCount: number;
+  @Input({ required: true }) pageSize: number;
 
   @Output() readonly goToPage: EventEmitter<number> = new EventEmitter<number>();
 

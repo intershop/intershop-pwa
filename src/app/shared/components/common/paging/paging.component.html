@@ -1,11 +1,11 @@
-@if (currentPage && lastPage) {
+@if (currentPage && itemCount) {
   <nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
     <ngb-pagination
-      [collectionSize]="lastPage"
+      [collectionSize]="itemCount"
       [ellipses]="true"
       [maxSize]="maxSize$ | async"
       [page]="currentPage"
-      [pageSize]="1"
+      [pageSize]="pageSize"
       [rotate]="true"
       (pageChange)="setPage($event)"
     />
