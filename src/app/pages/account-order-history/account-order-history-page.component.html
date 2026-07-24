@@ -26,12 +26,13 @@
 />
 
 @let paging = pagingInfo$ | async;
-@if (paging?.total > pageSize) {
+@if (paging && paging.total > pageSize) {
   <div class="d-flex align-items-center flex-wrap justify-content-between mb-3">
     <span class="text-nowrap">{{ 'account.order_history.paging.items.label' | translate: { '0': paging.total } }}</span>
     <ish-paging
       [currentPage]="pageNumber$ | async"
-      [lastPage]="getTotalPages(paging.total)"
+      [itemCount]="paging.total"
+      [pageSize]="pageSize"
       (goToPage)="loadMoreOrders($event)"
     />
   </div>

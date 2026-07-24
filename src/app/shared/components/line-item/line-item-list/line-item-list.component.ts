@@ -35,12 +35,10 @@ export class LineItemListComponent implements OnChanges {
   @Input() pageSize = 25;
 
   currentPage = 1;
-  lastPage: number;
   displayItems: Partial<LineItemView & OrderLineItem>[] = [];
 
   ngOnChanges(c: SimpleChanges) {
     if (c.lineItems) {
-      this.lastPage = Math.ceil(this.lineItems?.length / this.pageSize);
       this.goToPage(this.currentPage);
     }
   }

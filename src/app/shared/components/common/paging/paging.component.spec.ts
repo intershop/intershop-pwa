@@ -33,7 +33,8 @@ describe('Paging Component', () => {
     element = fixture.nativeElement;
 
     component.currentPage = 1;
-    component.lastPage = 10;
+    component.itemCount = 100;
+    component.pageSize = 10;
   });
 
   afterAll(() => {

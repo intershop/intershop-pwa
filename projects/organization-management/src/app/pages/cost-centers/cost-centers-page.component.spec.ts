@@ -66,6 +66,7 @@ describe('Cost Centers Page Component', () => {
     element = fixture.nativeElement;
 
     component.columnsToDisplay = ['costCenterId', 'costCenterName', 'costCenterBudget', 'actions'];
+    component.pageSize = costCenters.length + 1;
   });
 
   it('should be created', () => {
