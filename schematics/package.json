@@ -19,6 +19,9 @@
     "intershop"
   ],
   "schematics": "./dist/collection.json",
+  "ng-update": {
+    "migrations": "./dist/migrations/migrations.json"
+  },
   "jest": {
     "testRunner": "jest-jasmine2",
     "transform": {
