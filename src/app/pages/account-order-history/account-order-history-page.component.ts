@@ -84,8 +84,4 @@ export class AccountOrderHistoryPageComponent implements OnInit {
       }
     });
   }
-
-  getTotalPages(totalOrders: number) {
-    return Math.ceil(totalOrders / this.pageSize);
-  }
 }

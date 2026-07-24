@@ -1,5 +1,42 @@
 // BUTTONS
 
+@mixin btn-primary-appearance {
+  background-color: $CORPORATE-PRIMARY;
+  border-color: $CORPORATE-PRIMARY;
+
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: $CORPORATE-SECONDARY;
+    border-color: $CORPORATE-SECONDARY;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  &.disabled,
+  &:disabled {
+    color: $text-color-secondary;
+    background-color: $color-tertiary;
+    border-color: $border-color-light;
+    box-shadow: none;
+    opacity: 0.65;
+  }
+
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active {
+    background-color: $CORPORATE-DARK;
+    border-color: $CORPORATE-DARK;
+    box-shadow: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
 .btn {
   font-family: $font-family-bold;
   text-transform: uppercase;
@@ -21,40 +58,7 @@
   @include focus-visible-reset();
 
   &-primary {
-    background-color: $CORPORATE-PRIMARY;
-    border-color: $CORPORATE-PRIMARY;
-
-    &:hover,
-    &:focus,
-    &.focus {
-      background-color: $CORPORATE-SECONDARY;
-      border-color: $CORPORATE-SECONDARY;
-      box-shadow: none;
-    }
-
-    &:focus-visible {
-      box-shadow: none;
-    }
-
-    &.disabled,
-    &:disabled {
-      color: $text-color-secondary;
-      background-color: $color-tertiary;
-      border-color: $border-color-light;
-      box-shadow: none;
-      opacity: 0.65;
-    }
-
-    &:not(:disabled):not(.disabled):active,
-    &:not(:disabled):not(.disabled).active {
-      background-color: $CORPORATE-DARK;
-      border-color: $CORPORATE-DARK;
-      box-shadow: none;
-
-      &:focus {
-        box-shadow: none;
-      }
-    }
+    @include btn-primary-appearance;
   }
 
   &-secondary {

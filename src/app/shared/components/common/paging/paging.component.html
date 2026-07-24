@@ -1,52 +1,13 @@
-@if (currentPage && lastPage) {
+@if (currentPage && itemCount) {
   <nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
-    <ul class="pagination">
-      <li class="page-item">
-        <button
-          class="btn btn-primary mb-0 ps-2"
-          data-testing-id="paging-previous-button"
-          type="button"
-          [attr.aria-disabled]="currentPage === 1"
-          [disabled]="currentPage === 1"
-          [title]="'navigation.paging.previous_page.label' | translate"
-          (click)="setPage(currentPage - 1)"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-      </li>
-      @for (p of pageIndices; track p) {
-        <li class="page-item pt-2" data-testing-id="paging-link" [ngClass]="{ active: p === currentPage }">
-          @if (p !== -1) {
-            <a
-              tabindex="0"
-              [attr.aria-current]="p === currentPage ? 'page' : null"
-              [title]="
-                p === currentPage
-                  ? ('navigation.paging.current_page.label' | translate: { '0': p })
-                  : ('navigation.paging.go_to_page.label' | translate: { '0': p })
-              "
-              (click)="setPage(p)"
-              (keyup.enter)="setPage(p)"
-              >{{ p }}</a
-            >
-          } @else {
-            ...
-          }
-        </li>
-      }
-      <li class="page-item">
-        <button
-          class="btn btn-primary m-0 pe-2"
-          data-testing-id="paging-next-button"
-          type="button"
-          [attr.aria-disabled]="currentPage === lastPage"
-          [disabled]="currentPage === lastPage"
-          [title]="'navigation.paging.next_page.label' | translate"
-          (click)="setPage(currentPage + 1)"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-      </li>
-    </ul>
+    <ngb-pagination
+      [collectionSize]="itemCount"
+      [ellipses]="true"
+      [maxSize]="maxSize$ | async"
+      [page]="currentPage"
+      [pageSize]="pageSize"
+      [rotate]="true"
+      (pageChange)="setPage($event)"
+    />
   </nav>
 }

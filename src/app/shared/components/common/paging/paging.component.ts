@@ -1,28 +1,37 @@
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Observable, map } from 'rxjs';
+
+import { AppFacade } from 'ish-core/facades/app.facade';
+
+// maximum number of pages to display in the pagination component per device type
+const MAX_SIZE: Readonly<Record<'desktop' | 'mobile', number>> = {
+  mobile: 3,
+  desktop: 5,
+};
 
 @Component({
   selector: 'ish-paging',
   standalone: false,
   templateUrl: './paging.component.html',
-  styleUrls: ['./paging.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PagingComponent implements OnChanges {
+export class PagingComponent {
   @Input({ required: true }) currentPage: number;
-  @Input({ required: true }) lastPage: number;
+  @Input({ required: true }) itemCount: number;
+  @Input({ required: true }) pageSize: number;
 
   @Output() readonly goToPage: EventEmitter<number> = new EventEmitter<number>();
 
-  pageIndices: number[] = [];
+  maxSize$: Observable<number> = this.appFacade.deviceType$.pipe(
+    map(deviceType => (deviceType === 'mobile' ? MAX_SIZE.mobile : MAX_SIZE.desktop))
+  );
 
-  constructor(private scroller: ViewportScroller) {}
+  constructor(
+    private scroller: ViewportScroller,
+    private appFacade: AppFacade
+  ) {}
 
-  ngOnChanges(): void {
-    if (this.currentPage && this.lastPage) {
-      this.pageIndices = this.getPages(this.currentPage, this.lastPage);
-    }
-  }
   /**
    * If the user changes the page the goToPage event is emitted
    *
@@ -31,28 +40,5 @@ export class PagingComponent implements OnChanges {
   setPage(page: number) {
     this.goToPage.emit(page);
     this.scroller.scrollToPosition([0, 0]);
-  }
-
-  /**
-   * Determines the page array - elements with the value of -1 will be shown as ...
-   *
-   * @param current current page
-   * @param total   number of pages
-   * @returns       pages array
-   */
-  private getPages(current: number, total: number): number[] {
-    if (total <= 8) {
-      return [...Array(total).keys()].map(x => x + 1);
-    }
-
-    if (current > 4) {
-      if (current >= total - 3) {
-        return [1, -1, total - 5, total - 4, total - 3, total - 2, total - 1, total];
-      } else {
-        return [1, -1, current - 2, current - 1, current, current + 1, current + 2, -1, total];
-      }
-    }
-
-    return [1, 2, 3, 4, 5, 6, -1, total];
   }
 }

@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migrations
 
+## From 12.0.0 to 13.0.0
+
+**Replace custom pagination markup with `NgbPagination`**
+
+The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
+Its inputs changed: the previous `lastPage` (number of pages) was replaced by the required inputs `itemCount` (total number of items) and `pageSize` (items per page).
+
 ## From 11.2.0 to 12.0.0
 
 **Angular 19 upgrade**
