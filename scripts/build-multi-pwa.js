@@ -1,9 +1,7 @@
 const { sync: spawnSync } = require('cross-spawn');
-const { readFileSync, writeFileSync } = require('fs');
+const { readFileSync } = require('fs');
 
-const configurations = (process.env.ACTIVE_THEMES || JSON.parse(readFileSync('package.json')).activeThemes)
-  .split(',')
-  .map((theme, index) => ({ theme, port: 4000 + index }));
+const configurations = (process.env.ACTIVE_THEMES || JSON.parse(readFileSync('package.json')).activeThemes).split(',');
 
 const clientBuilds = [];
 const serverBuilds = [];
@@ -13,14 +11,14 @@ const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join
 
 if (processArgs.includes('client') || !processArgs.includes('server'))
   clientBuilds.push(
-    ...configurations.map(({ theme }) =>
+    ...configurations.map(theme =>
       `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
     )
   );
 
 if (processArgs.includes('server') || !processArgs.includes('client'))
   serverBuilds.push(
-    ...configurations.map(({ theme }) =>
+    ...configurations.map(theme =>
       `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
     )
   );
@@ -42,14 +40,3 @@ if (result.status === 0 && serverBuilds.length) {
 if (result.status !== 0) {
   process.exit(result.status);
 }
-
-configurations.forEach(({ theme }) => {
-  writeFileSync(
-    `dist/${theme}/run-standalone.js`,
-    `const path = require('path');
-process.env.BROWSER_FOLDER = path.join(__dirname, 'browser');
-process.env.THEME = process.env.THEME || '${theme}';
-require('child_process').fork(path.join(__dirname, 'server', 'main'));
-`
-  );
-});

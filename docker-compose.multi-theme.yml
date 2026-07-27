@@ -25,11 +25,15 @@ x-ssr-defaults: &ssr-defaults
 services:
   ssr-b2c:
     <<: *ssr-defaults
-    command: ['node', 'dist/b2c/run-standalone']
+    environment:
+      <<: *ssr-env
+      THEME: b2c
 
   ssr-b2b:
     <<: *ssr-defaults
-    command: ['node', 'dist/b2b/run-standalone']
+    environment:
+      <<: *ssr-env
+      THEME: b2b
 
   nginx:
     image: intershophub/intershop-pwa-nginx

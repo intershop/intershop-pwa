@@ -2,12 +2,12 @@
 
 set -e
 
-if [ -z "$*" ]
-then
-  # Run directly with Node (single theme per container, no PM2)
-  # THEME is determined by the build's activeThemes arg
-  THEME_DIR=$(ls -d dist/*/server 2>/dev/null | head -1 | cut -d'/' -f2)
-  exec node "dist/${THEME_DIR}/run-standalone.js"
+if [ -n "${THEME}" ] && [ -f "/dist/${THEME}/server/main.js" ]; then
+  exec node "/dist/${THEME}/server/main.js"
+elif [ -f "/dist/server/main.js" ]; then
+  THEME=""
+  exec node "/dist/server/main.js"
 else
-  exec "$@"
+  echo "No server found to start. Theme is set to '${THEME:-undefined}'."
+  exit 1
 fi

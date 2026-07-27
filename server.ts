@@ -126,7 +126,11 @@ const DEPLOY_URL = getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
+const BROWSER_FOLDER =
+  process.env.BROWSER_FOLDER ||
+  (process.env.THEME
+    ? join(process.cwd(), 'dist', process.env.THEME, 'browser')
+    : join(process.cwd(), 'dist', 'browser'));
 
 // Discover all theme browser folders for serving static assets from any container
 const ALL_BROWSER_FOLDERS: { baseHref: string; folder: string }[] = (() => {
