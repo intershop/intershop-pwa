@@ -455,8 +455,8 @@ export function app() {
       if (resolved) {
         req.url = resolved.relativePath;
         return express.static(resolved.folder, {
-          setHeaders: (res, path) => {
-            res.set('Cache-Control', defaultCacheControl(path));
+          setHeaders: (response, filePath) => {
+            response.set('Cache-Control', defaultCacheControl(filePath));
           },
         })(req, res, next);
       }
@@ -515,7 +515,7 @@ export function app() {
   // Serve static files from all theme browser folders
   ALL_BROWSER_FOLDERS.forEach(({ folder }) => {
     server.get(
-      '*.*',
+      /.*\..*/,
       express.static(folder, {
         setHeaders: (res, path) => {
           res.set('Cache-Control', defaultCacheControl(path));
@@ -698,7 +698,25 @@ export function app() {
   return server;
 }
 
-// Metrics are now exposed via the /metrics endpoint directly (no PM2 IPC needed)
+// Metrics are now exposed via the /metrics endpoint on a separate port (no PM2 IPC needed)
+const metricsApp = (() => {
+  if (!/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+    return;
+  }
+  const server = express();
+  server.get('/metrics', (_req, res) => {
+    client.register
+      .metrics()
+      .then(content => {
+        res.set('Content-Type', client.register.contentType);
+        res.send(content);
+      })
+      .catch(err => {
+        res.status(500).send(err.message);
+      });
+  });
+  return server;
+})();
 
 function run() {
   const http = require('http');
@@ -712,6 +730,17 @@ function run() {
     'Node Express server started'
   );
   logger.info({ file: { directory: BROWSER_FOLDER } }, 'Serving static files');
+  if (metricsApp) {
+    const METRICS_PORT = 9113;
+    http.createServer(metricsApp).listen(METRICS_PORT);
+    logger.info(
+      {
+        host: { name: require('os').hostname() },
+        server: { port: METRICS_PORT },
+      },
+      'Prometheus metrics server started'
+    );
+  }
 }
 
 // Webpack will replace 'require' with '__webpack_require__'
