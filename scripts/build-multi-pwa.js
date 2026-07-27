@@ -45,15 +45,6 @@ if (result.status !== 0) {
   process.exit(result.status);
 }
 
-writeFileSync(
-  'src/ssr/server-scripts/ecosystem-ports.json',
-  JSON.stringify(
-    configurations.reduce((acc, { theme, port }) => ({ ...acc, [theme]: port }), {}),
-    undefined,
-    2
-  )
-);
-
 configurations.forEach(({ theme }) => {
   writeFileSync(
     `dist/${theme}/run-standalone.js`,
