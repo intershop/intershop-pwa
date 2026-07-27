@@ -15,6 +15,7 @@ x-ssr-defaults: &ssr-defaults
   environment: &ssr-env
     ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
     SOURCE_MAPS: 'true'
+    # PROMETHEUS: 'true'
     LOGLEVEL: ${LOGLEVEL:-error}
     LOGFORMAT: ${LOGFORMAT:-json}
   expose:
