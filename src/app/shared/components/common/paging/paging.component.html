@@ -1,4 +1,4 @@
-@if (currentPage && itemCount) {
+@if (itemCount && itemCount > pageSize && currentPage) {
   <nav [attr.aria-label]="'navigation.paging.aria_label' | translate">
     <ngb-pagination
       [collectionSize]="itemCount"

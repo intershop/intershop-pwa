@@ -130,11 +130,12 @@
       <tr *cdkRowDef="let row; columns: columnsToDisplay" cdk-row></tr>
     </table>
     @let paging = pagingInfo$ | async;
-    @if (paging && paging.total > pageSize) {
+    @if (paging?.total > 0) {
       <div class="d-flex align-items-center flex-wrap justify-content-between mb-3">
         <span class="text-nowrap">{{
           'account.costcenter.paging.items.label' | translate: { '0': paging.total }
         }}</span>
+
         <ish-paging
           [currentPage]="pageNumber$ | async"
           [itemCount]="paging.total"

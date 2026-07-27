@@ -10,6 +10,7 @@ import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { PagingInfo } from 'ish-core/models/paging-info/paging-info.model';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { PagingComponent } from 'ish-shared/components/common/paging/paging.component';
 
 import { BudgetInfoComponent } from '../../components/budget-info/budget-info.component';
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
@@ -47,6 +48,7 @@ describe('Cost Centers Page Component', () => {
         MockComponent(CostCentersFilterComponent),
         MockComponent(LoadingComponent),
         MockComponent(ModalDialogComponent),
+        MockComponent(PagingComponent),
       ],
       providers: [
         { provide: OrganizationManagementFacade, useFactory: () => instance(organizationManagementFacade) },

@@ -10,6 +10,10 @@ const MAX_SIZE: Readonly<Record<'desktop' | 'mobile', number>> = {
   desktop: 5,
 };
 
+/**
+ * Displays a pagination control for navigating through a paged list of items.
+ * Renders the page navigation only when the total item count exceeds the page size.
+ */
 @Component({
   selector: 'ish-paging',
   standalone: false,
