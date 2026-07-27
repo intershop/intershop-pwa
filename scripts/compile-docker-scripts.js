@@ -15,7 +15,6 @@ fs.writeFileSync(
   JSON.stringify(
     {
       dependencies: {
-        pm2: lockFile.packages['node_modules/pm2'].version,
         express: lockFile.packages['node_modules/express'].version,
       },
     },
@@ -33,7 +32,6 @@ globSync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file =>
       target: 'node',
       mode: 'production',
       externals: {
-        pm2: 'commonjs pm2',
         express: 'commonjs express',
       },
       optimization: {
