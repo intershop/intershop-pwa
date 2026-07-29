@@ -26,7 +26,7 @@ export class AddressDoctorFacade {
         })
       ),
       // if the address check takes longer than 5 seconds return with no suggestions
-      timer(5000).pipe(map(() => []))
+      timer(5000).pipe(map((): Address[] => []))
     );
   }
 }

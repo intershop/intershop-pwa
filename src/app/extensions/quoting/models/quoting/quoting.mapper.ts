@@ -76,7 +76,7 @@ export class QuotingMapper {
       originTotal: PriceMapper.fromData(data.originTotal),
 
       items: data.items?.map(item => ({
-        id: undefined,
+        id: undefined as string,
         productSKU: item.productSKU,
         quantity: item.quantity,
 

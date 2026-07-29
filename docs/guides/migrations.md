@@ -9,6 +9,12 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**TypeScript 5.8 update**
+
+TypeScript has been updated to version 5.8 (required by Angular 20).
+The stricter type inference of TypeScript 5.8 reports object literal properties and function expressions initialized with `undefined` or `[]` as implicitly `any`.
+Check your custom code for new `TS7018`/`TS7011` compiler errors and add the appropriate type annotations.
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
