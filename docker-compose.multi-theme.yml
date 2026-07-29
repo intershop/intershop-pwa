@@ -44,9 +44,7 @@ services:
     ports:
       - '4200:80'
     environment:
-      UPSTREAM_PWA: 'http://ssr-b2c:4200'
-      THEME_UPSTREAMS: 'b2c=ssr-b2c:4200,b2b=ssr-b2b:4200'
-      ASSETS_UPSTREAM: 'ssr-b2c:4200,ssr-b2b:4200'
+      UPSTREAMS: 'b2c=ssr-b2c:4200,b2b=ssr-b2b:4200'
       ICM_BASE_URL: ${ICM_BASE_URL:-https://develop.icm.intershop.de}
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
