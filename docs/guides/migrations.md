@@ -9,11 +9,26 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
-**TypeScript 5.8 update**
+**TypeScript 5.8/5.9 update**
 
-TypeScript has been updated to version 5.8 (required by Angular 20).
+TypeScript has been updated to version 5.8 (required by Angular 20) and to 5.9 together with the Angular 20 upgrade.
 The stricter type inference of TypeScript 5.8 reports object literal properties and function expressions initialized with `undefined` or `[]` as implicitly `any`.
 Check your custom code for new `TS7018`/`TS7011` compiler errors and add the appropriate type annotations.
+
+**Angular 20 upgrade**
+
+With Intershop PWA 13.0.0, the project is updated to Angular 20.
+Companion libraries are updated to their Angular 20 compatible versions as well, for example NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
+
+Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
+The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.server.json` and `tsconfig.spec.json` keep `"node"`).
+
+Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
+
+- `platformBrowserDynamic()` from `@angular/platform-browser-dynamic` is deprecated; use `platformBrowser()` from `@angular/platform-browser` for bootstrapping instead.
+- The `ng-reflect-*` attributes are no longer emitted; snapshot tests relying on them need to be updated.
+
+For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
 
 **Replace custom pagination markup with `NgbPagination`**
 

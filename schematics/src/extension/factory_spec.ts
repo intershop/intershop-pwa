@@ -49,7 +49,7 @@ describe('Extension Schematic', () => {
     const tree = await schematicRunner.runSchematic('extension', options, appTree);
     const appModuleContent = tree.readContent('/src/app/app.module.ts');
     expect(appModuleContent).toMatchInlineSnapshot(`
-      "import { NgModule } from '@angular/core';
+      "import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
       import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
@@ -66,7 +66,9 @@ describe('Extension Schematic', () => {
           AppRoutingModule,
           FooRoutingModule, AppLastRoutingModule
         ],
-        providers: [],
+        providers: [
+          provideBrowserGlobalErrorListeners()
+        ],
         bootstrap: [AppComponent]
       })
       export class AppModule { }

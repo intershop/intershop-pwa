@@ -187,7 +187,6 @@ You can download the generated heap dumps from the container and analyze them us
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
 - [PM2][pm2]
 - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
-- [Angular Universal: a Complete Practical Guide](https://blog.angular-university.io/angular-universal/)
 
 [concept-hybrid]: ../concepts/hybrid-approach.md
 [concept-deploy-url]: ../concepts/deploy-url.md

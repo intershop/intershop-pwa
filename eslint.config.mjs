@@ -117,6 +117,7 @@ export default defineConfig([
       '@angular-eslint/prefer-output-readonly': 'warn',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
+      '@angular-eslint/prefer-inject': 'off',
 
       // NgRx best practices
       ...ngrx.configs.store.rules,

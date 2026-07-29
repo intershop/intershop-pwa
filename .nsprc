@@ -1,10 +1,1 @@
-{
-  "GHSA-48r7-hpm6-gfxm": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-39pv-4j6c-2g6v": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-58w9-8g37-x9v5": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-rgjc-h3x7-9mwg": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-qxh6-94w6-9r5p": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-jhpw-976m-542j": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-jj27-h5hq-8x99": "Ignored since there probably won't be a fix for Angular 19",
-  "GHSA-vpx6-8pjr-4g3v": "Ignored since there probably won't be a fix for Angular 19"
-}
+{}

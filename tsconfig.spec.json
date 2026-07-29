@@ -9,6 +9,7 @@
 
     /* Modules */
     "module": "CommonJs",
+    "moduleResolution": "node",
     "allowJs": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]

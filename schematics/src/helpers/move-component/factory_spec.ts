@@ -87,7 +87,7 @@ export class DummyTwoComponent {}
     );
 
     expect(appTree.readContent('/src/app/app.module.ts')).toMatchInlineSnapshot(`
-      "import { NgModule } from '@angular/core';
+      "import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
       import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
@@ -103,7 +103,9 @@ export class DummyTwoComponent {}
           BrowserModule,
           AppRoutingModule
         ],
-        providers: [],
+        providers: [
+          provideBrowserGlobalErrorListeners()
+        ],
         bootstrap: [AppComponent]
       })
       export class AppModule { }

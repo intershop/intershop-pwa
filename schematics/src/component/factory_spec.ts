@@ -32,7 +32,7 @@ describe('Component Schematic', () => {
     `);
     const moduleContent = tree.readContent('/src/app/app.module.ts');
     expect(moduleContent).toMatchInlineSnapshot(`
-      "import { NgModule } from '@angular/core';
+      "import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
       import { BrowserModule } from '@angular/platform-browser';
 
       import { AppRoutingModule } from './app-routing.module';
@@ -48,7 +48,9 @@ describe('Component Schematic', () => {
           BrowserModule,
           AppRoutingModule
         ],
-        providers: [],
+        providers: [
+          provideBrowserGlobalErrorListeners()
+        ],
         bootstrap: [AppComponent]
       })
       export class AppModule { }
