@@ -190,7 +190,7 @@
     "ts-mockito": "^2.6.1",
     "ts-morph": "^28.0.0",
     "ts-node": "~10.9.2",
-    "typescript": "~5.5.4",
+    "typescript": "~5.8.3",
     "typescript-eslint": "^8.67.0",
     "xliff": "^6.4.0"
   },
