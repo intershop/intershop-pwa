@@ -1,24 +1,35 @@
 # multi-channel.conf
 
-{{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
+{{- /* Upstream routing */ -}}
+{{- $upstreamsList := (getenv "UPSTREAMS" | strings.Split ",") -}}
+{{- if and (len $upstreamsList | eq 1) not (index $upstreamsList 0 | strings.contains "=" ) }}
+
+# Upstream routing without themes
+upstream default_pwa {
+    server {{ index $upstreamsList 0 | strings.TrimSpace }};
+}
+
+upstream assets_pool {
+    server {{ index $upstreamsList 0 | strings.TrimSpace }};
+}
+
+{{- else }}
 
 # Theme-based upstream routing (one SSR container per theme)
-{{- if getenv "THEME_UPSTREAMS" }}
-{{- range (getenv "THEME_UPSTREAMS" | strings.Split ",") }}
-{{- $parts := . | strings.Split "=" }}
+  {{- range $upstreamsList }}
+  {{- $parts := . | strings.Split "=" }}
 upstream theme_{{ index $parts 0 | strings.TrimSpace }} {
     server {{ index $parts 1 | strings.TrimSpace }};
 }
-{{- end }}
-{{- end }}
+  {{- end }}
 
 # Round-robin upstream for static assets (all containers have all themes' files)
-{{- if getenv "ASSETS_UPSTREAM" }}
 upstream assets_pool {
-{{- range (getenv "ASSETS_UPSTREAM" | strings.Split ",") }}
-    server {{ . | strings.TrimSpace }};
-{{- end }}
+  {{- range $upstreamsList }}
+    server {{ index (. | strings.Split "=") 1 | strings.TrimSpace }};
+  {{- end }}
 }
+
 {{- end }}
 
 {{ define "LOCATION_TEMPLATE" }}
@@ -80,11 +91,11 @@ upstream assets_pool {
 
         rewrite '^(.*)$' '$1$default_rewrite_params' break;
 
-      {{- if and (has . "theme") (getenv "THEME_UPSTREAMS") }}
+        {{- if has . "theme" }}
         proxy_pass http://theme_{{ .theme }};
-      {{- else }}
-        proxy_pass {{ getenv "UPSTREAM_PWA" }};
-      {{- end }}
+        {{- else }}
+        proxy_pass http://default_pwa;
+        {{- end }}
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
@@ -202,7 +213,7 @@ server {
         proxy_cache_bypass true;
         add_header X-Cache-Status $upstream_cache_status;
 
-        proxy_pass {{ $UPSTREAM_PWA }};
+        proxy_pass http://assets_pool;
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
@@ -220,11 +231,7 @@ server {
 
         add_header X-Cache-Status $cache_status;
 
-      {{- if getenv "ASSETS_UPSTREAM" }}
         proxy_pass http://assets_pool;
-      {{- else }}
-        proxy_pass {{ $UPSTREAM_PWA }};
-      {{- end }}
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
