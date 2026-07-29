@@ -98,7 +98,7 @@ Have a look at [`ProductPageComponent`][src-product-page-component-ts] for an ex
 ### Inject [`ProductContextFacade`][src-product-context-facade]
 
 The easiest way to interact with the context is to do the same as you would do with facades.
-Inject the [`ProductContextFacade`][src-product-context-facade] into your components and relay data for the template into observables and use the [async pipe](https://angular.io/guide/observables-in-angular#async-pipe) there:
+Inject the [`ProductContextFacade`][src-product-context-facade] into your components and relay data for the template into observables and use the [async pipe](https://angular.dev/api/common/AsyncPipe) there:
 
 ```typescript
 @Component({ ... })

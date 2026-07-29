@@ -14,14 +14,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^15.18.0",
+    "cypress": "^15.21.0",
     "cypress-failed-log": "^2.10.0",
     "cypress-log-to-output": "^1.1.2",
     "lodash": "^4.18.1",
-    "typescript": "~5.8.3"
+    "typescript": "~5.9.3"
   },
   "devDependencies": {
-    "@types/lodash": "^ 4.17.24",
-    "@types/node": "^22.20.0"
+    "@types/lodash": "^ 4.17.25",
+    "@types/node": "^22.20.1"
   }
 }

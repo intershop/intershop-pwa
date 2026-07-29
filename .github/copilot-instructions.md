@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-Angular 19-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
+Angular 20-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
 
 ## Technology Stack
 
-- Angular 19.2, TypeScript 5.5, NgRx, Node.js 22
+- Angular 20.3, TypeScript 5.9, NgRx, Node.js 22
 - Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
