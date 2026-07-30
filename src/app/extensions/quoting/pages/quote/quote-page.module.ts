@@ -8,7 +8,7 @@ import { QuotePageComponent } from './quote-page.component';
 const quotePageRoutes: Routes = [{ path: '', component: QuotePageComponent }];
 
 @NgModule({
-  declarations: [QuotePageComponent],
   imports: [QuotingModule, RouterModule.forChild(quotePageRoutes)],
+  declarations: [QuotePageComponent],
 })
 export class QuotePageModule {}

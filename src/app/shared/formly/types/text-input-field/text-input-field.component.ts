@@ -17,8 +17,8 @@ import { provideNgxMask } from 'ngx-mask';
   selector: 'ish-text-input-field',
   standalone: false,
   templateUrl: './text-input-field.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNgxMask()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
   private textInputFieldTypes = ['text', 'email', 'password', 'tel'];

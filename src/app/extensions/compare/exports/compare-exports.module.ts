@@ -8,13 +8,12 @@ import { LazyProductCompareStatusComponent } from './lazy-product-compare-status
 import { LazyProductSendToCompareComponent } from './lazy-product-send-to-compare/lazy-product-send-to-compare.component';
 
 @NgModule({
+  imports: [FeatureToggleModule],
   declarations: [
     LazyProductAddToCompareComponent,
     LazyProductCompareStatusComponent,
     LazyProductSendToCompareComponent,
   ],
-  imports: [FeatureToggleModule],
-  exports: [LazyProductAddToCompareComponent, LazyProductCompareStatusComponent, LazyProductSendToCompareComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -25,5 +24,6 @@ import { LazyProductSendToCompareComponent } from './lazy-product-send-to-compar
       multi: true,
     },
   ],
+  exports: [LazyProductAddToCompareComponent, LazyProductCompareStatusComponent, LazyProductSendToCompareComponent],
 })
 export class CompareExportsModule {}

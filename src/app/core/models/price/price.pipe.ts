@@ -16,8 +16,8 @@ export function formatPrice(price: Price, lang: string): string {
 
 @Pipe({
   name: 'ishPrice',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class PricePipe implements PipeTransform {
   displayText: string;

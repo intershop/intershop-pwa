@@ -8,8 +8,8 @@ import { AccountOverviewPageComponent } from './account-overview-page.component'
 import { AccountOverviewComponent } from './account-overview/account-overview.component';
 
 @NgModule({
-  declarations: [AccountOverviewComponent, AccountOverviewPageComponent],
   imports: [OrganizationManagementExportsModule, RequisitionManagementExportsModule, SharedModule],
+  declarations: [AccountOverviewComponent, AccountOverviewPageComponent],
 })
 export class AccountOverviewPageModule {
   static component = AccountOverviewPageComponent;

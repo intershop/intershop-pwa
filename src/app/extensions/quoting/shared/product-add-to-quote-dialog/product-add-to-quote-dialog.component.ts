@@ -14,8 +14,8 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   selector: 'ish-product-add-to-quote-dialog',
   standalone: false,
   templateUrl: './product-add-to-quote-dialog.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: QuoteContextFacade, useClass: ActiveQuoteContextFacade }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAddToQuoteDialogComponent implements OnInit {
   activeQuoteRequest$: Observable<Quote | QuoteRequest>;

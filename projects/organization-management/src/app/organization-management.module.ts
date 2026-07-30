@@ -32,8 +32,8 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
   imports: [OrganizationManagementStoreModule, SharedModule],
+  declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
   exports: [...exportedComponents],
 })
 export class OrganizationManagementModule {}

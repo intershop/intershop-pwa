@@ -11,8 +11,8 @@ import { Quote, QuoteRequest, QuoteStatus } from '../../models/quoting/quoting.m
   selector: 'ish-quote-page',
   standalone: false,
   templateUrl: './quote-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: QuoteContextFacade, useClass: SelectedQuoteContextFacade }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuotePageComponent implements OnInit {
   selectedQuote$: Observable<Quote | QuoteRequest>;

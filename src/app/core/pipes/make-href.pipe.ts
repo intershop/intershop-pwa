@@ -8,8 +8,8 @@ import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
 @Pipe({
   name: 'ishMakeHref',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class MakeHrefPipe implements PipeTransform {
   constructor(private multiSiteService: MultiSiteService) {}
