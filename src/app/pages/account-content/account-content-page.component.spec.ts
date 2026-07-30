@@ -119,9 +119,7 @@ describe('Account Content Page Component', () => {
       when(cmsFacade.contentPageLoading$).thenReturn(of(false));
 
       fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(
-        `<ish-content-pagelet ng-reflect-pagelet-id="pagelet1" pageid="test-page-id"></ish-content-pagelet>`
-      );
+      expect(element).toMatchInlineSnapshot(`<ish-content-pagelet pageid="test-page-id"></ish-content-pagelet>`);
     });
 
     it('should handle loading state changes', () => {

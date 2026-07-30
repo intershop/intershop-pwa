@@ -42,6 +42,7 @@ describe('Product Price Component', () => {
     context = mock(ProductContextFacade);
     when(context.select('displayProperties', 'price')).thenReturn(of(true));
     when(context.select('product')).thenReturn(of({ sku: '123' }));
+    when(context.select('prices')).thenReturn(of(dummyPricing(10, 10)));
 
     await TestBed.configureTestingModule({
       imports: [TranslatePipe],

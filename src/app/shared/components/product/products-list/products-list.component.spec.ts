@@ -48,6 +48,7 @@ describe('Products List Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    component.productSKUs = [];
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
@@ -83,21 +84,9 @@ describe('Products List Component', () => {
     expect(element.querySelectorAll('ish-product-item')).toHaveLength(3);
     expect(element.querySelectorAll('ish-product-item')).toMatchInlineSnapshot(`
       NodeList [
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="1"
-      ></ish-product-item>,
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="2"
-      ></ish-product-item>,
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="3"
-      ></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
       ]
     `);
   });
@@ -111,8 +100,8 @@ describe('Products List Component', () => {
     expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
     expect(element.querySelectorAll('ish-product-item')).toMatchInlineSnapshot(`
       NodeList [
-        <ish-product-item ishproductcontext="" ng-reflect-sku="2"></ish-product-item>,
-        <ish-product-item ishproductcontext="" ng-reflect-sku="3"></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
       ]
     `);
   });

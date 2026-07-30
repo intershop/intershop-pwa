@@ -43,11 +43,9 @@ describe('Cms Navigation Link Component', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchInlineSnapshot(`
-      <li class="dropdown nav-link">
-        <a ng-reflect-router-link="/home" style="width: 100%" href="/home"> Home </a>
-      </li>
-    `);
+    expect(element).toMatchInlineSnapshot(
+      `<li class="dropdown nav-link"><a style="width: 100%" href="/home"> Home </a></li>`
+    );
   });
 
   it('should render external link if set', () => {
@@ -69,12 +67,9 @@ describe('Cms Navigation Link Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <li class="dropdown nav-link">
-        <a ng-reflect-router-link="/home" href="/home"> Home </a
-        ><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
+        <a href="/home"> Home </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
-          <li class="sub-navigation-content">
-            <div ng-reflect-ish-server-html="<span>Hello World</span>"></div>
-          </li>
+          <li class="sub-navigation-content"><div></div></li>
         </ul>
       </li>
     `);

@@ -74,8 +74,6 @@ describe('Cms Dialog Component', () => {
     component.pagelet = createContentPageletView(pagelet2);
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(element).toMatchInlineSnapshot(
-      `<ish-content-slot ng-reflect-slot="app_sf_base_cm:slot.dialog.con"></ish-content-slot>`
-    );
+    expect(element).toMatchInlineSnapshot(`<ish-content-slot></ish-content-slot>`);
   });
 });

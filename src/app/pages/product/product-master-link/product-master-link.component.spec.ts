@@ -48,10 +48,7 @@ describe('Product Master Link Component', () => {
   it('should render link for master product', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
-      <a
-        class="product-variation all-variations-link"
-        ng-reflect-router-link="/product/MASTER"
-        href="/product/MASTER"
+      <a class="product-variation all-variations-link" href="/product/MASTER"
         >product.choose_another_variation.link</a
       >
     `);

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Header Default Component should render normal header adequately for desktop 1`] = `
-<div class="header container desktop" ng-reflect-ng-class="desktop">
+<div class="header container desktop">
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
@@ -18,23 +18,16 @@ exports[`Header Default Component should render normal header adequately for des
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
     <div class="language-switch-container">
-      <ish-language-switch
-        data-testing-id="language-switch-desktop"
-        ng-reflect-device-type="desktop"
-      ></ish-language-switch>
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-md-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-md-none"
       class="d-md-none"
     ></ish-mini-basket>
   </div>
@@ -52,10 +45,7 @@ exports[`Header Default Component should render normal header adequately for des
     </div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="desktop"
-        ></ish-search-box>
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
     </div>
   </div>
@@ -64,11 +54,7 @@ exports[`Header Default Component should render normal header adequately for des
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="false"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -79,7 +65,7 @@ exports[`Header Default Component should render normal header adequately for des
 `;
 
 exports[`Header Default Component should render normal header adequately for mobile devices 1`] = `
-<div class="header container mobile" ng-reflect-ng-class="mobile">
+<div class="header container mobile">
   <ul class="user-links">
     <li class="d-none d-md-block">
       <ish-lazy-product-compare-status
@@ -94,31 +80,21 @@ exports[`Header Default Component should render normal header adequately for mob
       tabindex="-1"
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
-    <div class="search-container header-search-container show" ng-reflect-collapsed="false">
-      <ish-search-box
-        data-testing-id="search-box-desktop"
-        ng-reflect-device-type="mobile"
-      ></ish-search-box>
+    <div class="search-container header-search-container show">
+      <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
     <div class="language-switch-container">
-      <ish-language-switch
-        data-testing-id="language-switch-desktop"
-        ng-reflect-device-type="mobile"
-      ></ish-language-switch>
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
-    <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
+    <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-md-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-md-none"
       class="d-md-none"
     ></ish-mini-basket>
   </div>
@@ -141,11 +117,7 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="true"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -156,7 +128,7 @@ exports[`Header Default Component should render normal header adequately for mob
 `;
 
 exports[`Header Default Component should render normal header adequately for tablet devices 1`] = `
-<div class="header container tablet" ng-reflect-ng-class="tablet">
+<div class="header container tablet">
   <ul class="user-links">
     <li><ish-login-status data-testing-id="user-status-desktop"></ish-login-status></li>
     <li class="d-none d-md-block">
@@ -173,23 +145,16 @@ exports[`Header Default Component should render normal header adequately for tab
       aria-label="search.searchbox.button.sticky_header.aria_label"
     ></a>
     <div class="language-switch-container">
-      <ish-language-switch
-        data-testing-id="language-switch-desktop"
-        ng-reflect-device-type="tablet"
-      ></ish-language-switch>
+      <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-md-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-md-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-md-none"
       class="d-md-none"
     ></ish-mini-basket>
   </div>
@@ -207,10 +172,7 @@ exports[`Header Default Component should render normal header adequately for tab
     </div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="tablet"
-        ></ish-search-box>
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
     </div>
   </div>
@@ -219,11 +181,7 @@ exports[`Header Default Component should render normal header adequately for tab
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="false"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -234,7 +192,7 @@ exports[`Header Default Component should render normal header adequately for tab
 `;
 
 exports[`Header Default Component should render sticky header adequately for desktop 1`] = `
-<div class="header container desktop" ng-reflect-ng-class="desktop">
+<div class="header container desktop">
   <div class="header-utility">
     <a
       role="button"
@@ -244,19 +202,15 @@ exports[`Header Default Component should render sticky header adequately for des
       ><i class="bi bi-search header-icon"></i
     ></a>
     <div class="language-switch-container"></div>
-    <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
+    <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-lg-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-lg-none"
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
@@ -274,10 +228,7 @@ exports[`Header Default Component should render sticky header adequately for des
     </div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="desktop"
-        ></ish-search-box>
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
     </div>
   </div>
@@ -286,11 +237,7 @@ exports[`Header Default Component should render sticky header adequately for des
     <div class="hamburger-menu open"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="false"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -301,7 +248,7 @@ exports[`Header Default Component should render sticky header adequately for des
 `;
 
 exports[`Header Default Component should render sticky header adequately for mobile devices 1`] = `
-<div class="header container mobile" ng-reflect-ng-class="mobile">
+<div class="header container mobile">
   <div class="header-utility">
     <a
       role="button"
@@ -310,26 +257,19 @@ exports[`Header Default Component should render sticky header adequately for mob
       aria-label="search.searchbox.button.sticky_header.aria_label"
       ><i class="bi bi-search header-icon"></i
     ></a>
-    <div class="search-container header-search-container" ng-reflect-collapsed="false">
-      <ish-search-box
-        data-testing-id="search-box-desktop"
-        ng-reflect-device-type="mobile"
-      ></ish-search-box>
+    <div class="search-container header-search-container">
+      <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
     <div class="language-switch-container"></div>
-    <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
+    <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-lg-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-lg-none"
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
@@ -352,11 +292,7 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="true"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>
@@ -367,7 +303,7 @@ exports[`Header Default Component should render sticky header adequately for mob
 `;
 
 exports[`Header Default Component should render sticky header adequately for tablet devices 1`] = `
-<div class="header container tablet" ng-reflect-ng-class="tablet">
+<div class="header container tablet">
   <div class="header-utility">
     <a
       role="button"
@@ -377,19 +313,15 @@ exports[`Header Default Component should render sticky header adequately for tab
       ><i class="bi bi-search header-icon"></i
     ></a>
     <div class="language-switch-container"></div>
-    <ish-login-status view="small" ng-reflect-view="small"></ish-login-status
+    <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket
       data-testing-id="mini-basket-desktop"
       view="full"
       class="d-none d-lg-block"
-      ng-reflect-view="full"
-      ng-reflect-ng-class="d-lg-block"
     ></ish-mini-basket
     ><ish-mini-basket
       data-testing-id="mini-basket-mobile"
       view="small"
-      ng-reflect-view="small"
-      ng-reflect-ng-class="d-lg-none"
       class="d-lg-none"
     ></ish-mini-basket>
   </div>
@@ -407,10 +339,7 @@ exports[`Header Default Component should render sticky header adequately for tab
     </div>
     <div class="col-md-4">
       <div class="search-container header-search-container">
-        <ish-search-box
-          data-testing-id="search-box-desktop"
-          ng-reflect-device-type="tablet"
-        ></ish-search-box>
+        <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
     </div>
   </div>
@@ -419,11 +348,7 @@ exports[`Header Default Component should render sticky header adequately for tab
     <div class="hamburger-menu"><span></span><span></span><span></span></div>
   </button>
   <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      ng-reflect-collapsed="true"
-      aria-label="navigation.main.aria_label"
-    >
+    <nav class="global-nav navbar-expand-md" aria-label="navigation.main.aria_label">
       <div class="main-navigation">
         <ish-header-navigation></ish-header-navigation
         ><ish-user-information-mobile></ish-user-information-mobile>

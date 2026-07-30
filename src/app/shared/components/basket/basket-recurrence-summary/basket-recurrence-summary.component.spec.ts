@@ -43,12 +43,7 @@ describe('Basket Recurrence Summary Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <div class="cart-summary">
         <h3 class="h5">order.recurrence.heading</h3>
-        <ish-order-recurrence
-          labelcssclass="col-6"
-          valuecssclass="col-6 text-end"
-          ng-reflect-label-css-class="col-6"
-          ng-reflect-value-css-class="col-6 text-end"
-        ></ish-order-recurrence>
+        <ish-order-recurrence labelcssclass="col-6" valuecssclass="col-6 text-end"></ish-order-recurrence>
       </div>
     `);
   });
