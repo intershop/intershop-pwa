@@ -10,7 +10,7 @@ import { UserEditBudgetPageComponent } from './user-edit-budget-page.component';
 const userEditBudgetPageRoutes: Routes = [{ path: '', component: UserEditBudgetPageComponent }];
 
 @NgModule({
-  declarations: [UserEditBudgetPageComponent],
   imports: [OrganizationManagementModule, RouterModule.forChild(userEditBudgetPageRoutes), SharedModule],
+  declarations: [UserEditBudgetPageComponent],
 })
 export class UserEditBudgetPageModule {}

@@ -47,7 +47,7 @@ export class CaptchaV2Component implements OnInit {
 }
 
 @NgModule({
-  declarations: [CaptchaV2Component],
   imports: [CommonModule, RecaptchaModule, TranslatePipe],
+  declarations: [CaptchaV2Component],
 })
 export class CaptchaV2ComponentModule {}

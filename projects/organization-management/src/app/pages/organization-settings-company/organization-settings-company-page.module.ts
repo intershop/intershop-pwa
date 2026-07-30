@@ -11,7 +11,7 @@ const organizationSettingsCompanyPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OrganizationSettingsCompanyComponent, OrganizationSettingsCompanyPageComponent],
   imports: [RouterModule.forChild(organizationSettingsCompanyPageRoutes), SharedModule],
+  declarations: [OrganizationSettingsCompanyComponent, OrganizationSettingsCompanyPageComponent],
 })
 export class OrganizationSettingsCompanyPageModule {}

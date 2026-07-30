@@ -342,8 +342,8 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...declaredComponents, ...exportedComponents],
   imports: [...importExportModules, ...standaloneComponents],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {

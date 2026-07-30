@@ -10,7 +10,7 @@ import { CostCenterEditPageComponent } from './cost-center-edit-page.component';
 const costCenterEditPageRoutes: Routes = [{ path: '', component: CostCenterEditPageComponent }];
 
 @NgModule({
-  declarations: [CostCenterEditPageComponent],
   imports: [OrganizationManagementModule, RouterModule.forChild(costCenterEditPageRoutes), SharedModule],
+  declarations: [CostCenterEditPageComponent],
 })
 export class CostCenterEditPageModule {}

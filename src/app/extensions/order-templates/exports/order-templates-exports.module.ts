@@ -9,14 +9,8 @@ import { LazyOrderTemplateWidgetComponent } from './lazy-order-template-widget/l
 import { LazyProductAddToOrderTemplateComponent } from './lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 
 @NgModule({
-  declarations: [
-    LazyBasketCreateOrderTemplateComponent,
-    LazyOrderCreateOrderTemplateComponent,
-    LazyOrderTemplateWidgetComponent,
-    LazyProductAddToOrderTemplateComponent,
-  ],
   imports: [FeatureToggleModule],
-  exports: [
+  declarations: [
     LazyBasketCreateOrderTemplateComponent,
     LazyOrderCreateOrderTemplateComponent,
     LazyOrderTemplateWidgetComponent,
@@ -31,6 +25,12 @@ import { LazyProductAddToOrderTemplateComponent } from './lazy-product-add-to-or
       },
       multi: true,
     },
+  ],
+  exports: [
+    LazyBasketCreateOrderTemplateComponent,
+    LazyOrderCreateOrderTemplateComponent,
+    LazyOrderTemplateWidgetComponent,
+    LazyProductAddToOrderTemplateComponent,
   ],
 })
 export class OrderTemplatesExportsModule {}

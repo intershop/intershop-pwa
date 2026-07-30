@@ -8,7 +8,7 @@ import { CostCenterImportPageComponent } from './cost-center-import-page.compone
 const costCenterImportPageRoutes: Routes = [{ path: '', component: CostCenterImportPageComponent }];
 
 @NgModule({
-  declarations: [CostCenterImportPageComponent],
   imports: [RouterModule.forChild(costCenterImportPageRoutes), SharedModule],
+  declarations: [CostCenterImportPageComponent],
 })
 export class CostCenterImportPageModule {}

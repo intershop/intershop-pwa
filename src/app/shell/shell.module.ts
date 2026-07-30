@@ -39,23 +39,6 @@ import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-conten
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
 @NgModule({
-  declarations: [
-    ...exportedComponents,
-    BackToTopComponent,
-    CookiesBannerComponent,
-    HeaderCheckoutComponent,
-    HeaderDefaultComponent,
-    HeaderErrorComponent,
-    HeaderNavigationComponent,
-    HeaderSimpleComponent,
-    LanguageSwitchComponent,
-    LazyContentIncludeComponent,
-    LazyMiniBasketContentComponent,
-    LoginStatusComponent,
-    MiniBasketComponent,
-    SubCategoryNavigationComponent,
-    UserInformationMobileComponent,
-  ],
   imports: [
     AuthorizationToggleModule,
     CommonModule,
@@ -74,6 +57,23 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     TrackingExportsModule,
     TranslatePipe,
     WishlistsExportsModule,
+  ],
+  declarations: [
+    ...exportedComponents,
+    BackToTopComponent,
+    CookiesBannerComponent,
+    HeaderCheckoutComponent,
+    HeaderDefaultComponent,
+    HeaderErrorComponent,
+    HeaderNavigationComponent,
+    HeaderSimpleComponent,
+    LanguageSwitchComponent,
+    LazyContentIncludeComponent,
+    LazyMiniBasketContentComponent,
+    LoginStatusComponent,
+    MiniBasketComponent,
+    SubCategoryNavigationComponent,
+    UserInformationMobileComponent,
   ],
   exports: [...exportedComponents],
 })

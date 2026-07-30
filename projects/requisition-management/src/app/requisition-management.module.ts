@@ -15,13 +15,13 @@ const exportedComponents = [RequisitionRejectDialogComponent, RequisitionsListCo
 const importExportModules = [NgbNavModule];
 
 @NgModule({
+  imports: [...importExportModules, RequisitionManagementStoreModule, SharedModule],
   declarations: [
     ...exportedComponents,
     ApprovalWidgetComponent,
     CheckoutReceiptRequisitionComponent,
     RequisitionWidgetComponent,
   ],
-  imports: [...importExportModules, RequisitionManagementStoreModule, SharedModule],
   exports: [...exportedComponents, ...importExportModules],
 })
 export class RequisitionManagementModule {}

@@ -26,6 +26,7 @@ const categoryPageRoutes: Routes = [
 ];
 
 @NgModule({
+  imports: [RouterModule.forChild(categoryPageRoutes), CategoryImageComponent, SharedModule],
   declarations: [
     CategoryCategoriesComponent,
     CategoryListComponent,
@@ -34,6 +35,5 @@ const categoryPageRoutes: Routes = [
     CategoryProductsComponent,
     CategoryTileComponent,
   ],
-  imports: [RouterModule.forChild(categoryPageRoutes), CategoryImageComponent, SharedModule],
 })
 export class CategoryPageModule {}

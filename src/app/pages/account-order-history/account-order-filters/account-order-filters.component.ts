@@ -124,8 +124,8 @@ function urlToQuery(params: UrlModel): Partial<OrderListQuery> {
   selector: 'ish-account-order-filters',
   standalone: false,
   templateUrl: './account-order-filters.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: NgbDateAdapter, useClass: OrderDateFilterAdapter }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderFiltersComponent implements OnInit, AfterViewInit {
   @Input() fragmentOnRouting: string;

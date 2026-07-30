@@ -11,7 +11,7 @@ import { CostCentersPageComponent } from './cost-centers-page.component';
 const costCentersPageRoutes: Routes = [{ path: '', component: CostCentersPageComponent }];
 
 @NgModule({
-  declarations: [CostCentersFilterComponent, CostCentersPageComponent],
   imports: [OrganizationManagementModule, RouterModule.forChild(costCentersPageRoutes), SharedModule],
+  declarations: [CostCentersFilterComponent, CostCentersPageComponent],
 })
 export class CostCentersPageModule {}

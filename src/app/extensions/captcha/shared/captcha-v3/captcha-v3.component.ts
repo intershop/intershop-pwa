@@ -103,8 +103,8 @@ export class CaptchaV3Component implements OnInit {
 }
 
 @NgModule({
-  declarations: [CaptchaV3Component],
   imports: [DirectivesModule, RecaptchaV3Module, TranslatePipe],
+  declarations: [CaptchaV3Component],
   providers: [
     {
       provide: RECAPTCHA_V3_SITE_KEY,

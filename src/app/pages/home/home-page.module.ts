@@ -8,7 +8,7 @@ import { HomePageComponent } from './home-page.component';
 const homePageRoutes: Routes = [{ path: '', component: HomePageComponent, data: { wrapperClass: 'homepage' } }];
 
 @NgModule({
-  declarations: [HomePageComponent],
   imports: [RouterModule.forChild(homePageRoutes), SharedModule],
+  declarations: [HomePageComponent],
 })
 export class HomePageModule {}

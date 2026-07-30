@@ -17,8 +17,8 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  */
 @Pipe({
   name: 'ishServerSetting',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class ServerSettingPipe implements PipeTransform {
   private returnValue: unknown;

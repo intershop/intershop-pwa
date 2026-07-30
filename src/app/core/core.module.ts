@@ -29,7 +29,6 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     StateManagementModule,
     TranslatePipe,
   ],
-  exports: [TranslatePipe],
   providers: [
     // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
     // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },
@@ -51,6 +50,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     },
     provideHttpClient(withInterceptorsFromDi()),
   ],
+  exports: [TranslatePipe],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

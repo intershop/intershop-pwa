@@ -21,7 +21,7 @@ const cookiesPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CookiesModalComponent],
   imports: [CommonModule, RouterModule.forChild(cookiesPageRoutes), TranslatePipe],
+  declarations: [CookiesModalComponent],
 })
 export class CookiesPageModule {}

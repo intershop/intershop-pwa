@@ -8,9 +8,8 @@ import { AddressDoctorModalComponent } from './shared/address-doctor-modal/addre
 import { AddressDoctorComponent } from './shared/address-doctor/address-doctor.component';
 
 @NgModule({
-  declarations: [AddressDoctorComponent, AddressDoctorModalComponent],
   imports: [SharedModule],
-  exports: [SharedModule],
+  declarations: [AddressDoctorComponent, AddressDoctorModalComponent],
   providers: [
     {
       provide: FEATURE_EVENT_RESULT_LISTENER,
@@ -18,5 +17,6 @@ import { AddressDoctorComponent } from './shared/address-doctor/address-doctor.c
       multi: true,
     },
   ],
+  exports: [SharedModule],
 })
 export class AddressDoctorModule {}

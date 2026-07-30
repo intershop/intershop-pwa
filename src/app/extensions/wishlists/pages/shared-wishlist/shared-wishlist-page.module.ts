@@ -10,7 +10,7 @@ import { SharedWishlistPageComponent } from './shared-wishlist-page.component';
 const wishlistPageRoutes: Routes = [{ path: '', component: SharedWishlistPageComponent }];
 
 @NgModule({
-  declarations: [SharedWishlistPageComponent],
   imports: [RouterModule.forChild(wishlistPageRoutes), SharedModule, WishlistsModule],
+  declarations: [SharedWishlistPageComponent],
 })
 export class SharedWishlistPageModule {}

@@ -5,9 +5,9 @@ import { LazyCaptchaComponent } from './lazy-captcha/lazy-captcha.component';
 import { SitekeyProviderService } from './sitekey-provider/sitekey-provider.service';
 
 @NgModule({
-  declarations: [LazyCaptchaComponent],
   imports: [CommonModule],
-  exports: [LazyCaptchaComponent],
+  declarations: [LazyCaptchaComponent],
   providers: [SitekeyProviderService],
+  exports: [LazyCaptchaComponent],
 })
 export class CaptchaExportsModule {}

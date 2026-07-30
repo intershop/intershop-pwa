@@ -19,6 +19,7 @@ const quickOrderFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
+  imports: [FormlyModule.forChild(quickOrderFormlyConfig), SharedModule],
   declarations: [
     DirectOrderComponent,
     QuickorderAddProductsFormComponent,
@@ -26,7 +27,6 @@ const quickOrderFormlyConfig: ConfigOption = {
     QuickorderLinkComponent,
     QuickorderRepeatFieldComponent,
   ],
-  imports: [FormlyModule.forChild(quickOrderFormlyConfig), SharedModule],
   exports: [QuickorderAddProductsFormComponent, QuickorderCsvFormComponent, SharedModule],
 })
 export class QuickorderModule {}

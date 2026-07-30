@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountProfilePasswordComponent, AccountProfilePasswordPageComponent],
   imports: [RouterModule.forChild(routes), SharedModule],
+  declarations: [AccountProfilePasswordComponent, AccountProfilePasswordPageComponent],
 })
 export class AccountProfilePasswordPageModule {}

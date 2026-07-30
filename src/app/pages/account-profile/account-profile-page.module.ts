@@ -48,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountProfileComponent, AccountProfilePageComponent],
   imports: [RouterModule.forChild(routes), SharedModule],
+  declarations: [AccountProfileComponent, AccountProfilePageComponent],
 })
 export class AccountProfilePageModule {}

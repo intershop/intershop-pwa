@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountProfileEmailComponent, AccountProfileEmailPageComponent],
   imports: [RouterModule.forChild(routes), SharedModule],
+  declarations: [AccountProfileEmailComponent, AccountProfileEmailPageComponent],
 })
 export class AccountProfileEmailPageModule {}

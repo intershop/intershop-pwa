@@ -4,9 +4,8 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.service';
 
 @NgModule({
-  declarations: [],
   imports: [FeatureToggleModule],
-  exports: [],
+  declarations: [],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -17,5 +16,6 @@ import { LAZY_FEATURE_MODULE } from 'ish-core/utils/module-loader/module-loader.
       multi: true,
     },
   ],
+  exports: [],
 })
 export class ContactUsExportsModule {}

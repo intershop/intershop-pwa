@@ -11,8 +11,8 @@ import { VariationAttribute } from 'ish-core/models/product-variation/variation-
  */
 @Pipe({
   name: 'ishVariationAttribute',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class VariationAttributePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

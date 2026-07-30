@@ -183,7 +183,7 @@ const accountPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountNavigationComponent, AccountPageComponent, AccountUserInfoComponent],
   imports: [AccountOverviewPageModule, RouterModule.forChild(accountPageRoutes), SharedModule],
+  declarations: [AccountNavigationComponent, AccountPageComponent, AccountUserInfoComponent],
 })
 export class AccountPageModule {}

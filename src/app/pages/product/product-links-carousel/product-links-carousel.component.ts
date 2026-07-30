@@ -26,8 +26,8 @@ import { whenTruthy } from 'ish-core/utils/operators';
   selector: 'ish-product-links-carousel',
   standalone: false,
   templateUrl: './product-links-carousel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RxState],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductLinksCarouselComponent implements OnDestroy {
   /**

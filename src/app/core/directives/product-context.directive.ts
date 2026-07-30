@@ -12,9 +12,9 @@ declare type IdType = number | string;
 
 @Directive({
   selector: '[ishProductContext]',
+  standalone: false,
   providers: [ProductContextFacade],
   exportAs: 'ishProductContext',
-  standalone: false,
 })
 export class ProductContextDirective implements OnInit {
   @Input() completeness: ProductCompletenessLevel = ProductCompletenessLevel.List;

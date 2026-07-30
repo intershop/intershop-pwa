@@ -16,7 +16,7 @@ const accountWishlistPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountWishlistListComponent, AccountWishlistPageComponent],
   imports: [RouterModule.forChild(accountWishlistPageRoutes), SharedModule, WishlistsModule],
+  declarations: [AccountWishlistListComponent, AccountWishlistPageComponent],
 })
 export class AccountWishlistPageModule {}

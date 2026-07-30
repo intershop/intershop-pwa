@@ -9,8 +9,8 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   selector: 'ish-product-page',
   standalone: false,
   templateUrl: './product-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{ provide: ProductContextFacade, useClass: SelectedProductContextFacade }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductPageComponent implements OnInit {
   productLoading$: Observable<boolean>;

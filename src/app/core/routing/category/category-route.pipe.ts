@@ -6,8 +6,8 @@ import { generateCategoryUrl } from './category.route';
 
 @Pipe({
   name: 'ishCategoryRoute',
-  pure: true,
   standalone: false,
+  pure: true,
 })
 export class CategoryRoutePipe implements PipeTransform {
   transform(category: CategoryView): string {
