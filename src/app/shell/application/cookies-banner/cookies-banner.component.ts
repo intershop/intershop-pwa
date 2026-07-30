@@ -1,7 +1,5 @@
-import { AnimationEvent } from '@angular/animations';
 import { ChangeDetectionStrategy, Component, OnInit, TransferState } from '@angular/core';
 
-import bottomOutAnimation from 'ish-core/animations/bottom-out.animation';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CookieConsentSettings } from 'ish-core/models/cookies/cookies.model';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -14,7 +12,6 @@ import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
   standalone: false,
   templateUrl: './cookies-banner.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [bottomOutAnimation()],
 })
 export class CookiesBannerComponent implements OnInit {
   showBanner = false;
@@ -49,6 +46,7 @@ export class CookiesBannerComponent implements OnInit {
 
   acceptAll() {
     this.transitionBanner = 'bottom-out';
+    this.cookiesConsentFor = undefined;
   }
 
   acceptOnlyRequired() {
@@ -56,8 +54,12 @@ export class CookiesBannerComponent implements OnInit {
     this.cookiesConsentFor = ['required'];
   }
 
-  setCookiesConsent(event: AnimationEvent): void {
-    if (event.toState === this.transitionBanner) {
+  setCookiesConsent(event: TransitionEvent): void {
+    if (
+      event.target === event.currentTarget &&
+      event.propertyName === 'transform' &&
+      this.transitionBanner === 'bottom-out'
+    ) {
       if (this.cookiesConsentFor === undefined) {
         this.cookiesService.setCookiesConsentForAll();
       } else {

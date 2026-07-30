@@ -7,6 +7,11 @@
   color: $text-color-inverse;
   background-color: $color-primary !important;
   opacity: 0.9;
+  transition: transform 1s ease-out;
+
+  &.bottom-out {
+    transform: translateY(100%);
+  }
 
   .cookies-banner-text {
     margin-bottom: divide($space-default, 3);

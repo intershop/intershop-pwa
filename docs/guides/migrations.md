@@ -30,6 +30,11 @@ Angular 20 introduces several breaking changes that may require adaptations in c
 
 For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
 
+**Deprecated `@angular/animations` usage removed**
+
+The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [`cookies.scss`](../../src/styles/components/cookies.scss).
+`BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`; once this dependency is dropped, the import and the dependency can be removed.
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.

@@ -24,11 +24,13 @@ import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
 
 @NgModule({
-  declarations: [AppComponent],
   // Order matters: AppLastRoutingModule must be last because it contains the wildcard route.
   /* eslint-disable perfectionist/sort-arrays */
   imports: [
     AppRoutingModule,
+    // BrowserAnimationsModule is still required by ngx-toastr's default animated toast component
+    // TODO: Keep until ngx-toastr no longer depends on @angular/animations, then this and the dependency can be removed.
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     BrowserAnimationsModule,
     BrowserModule,
     CompareRoutingModule,
@@ -44,13 +46,13 @@ import { ShellModule } from './shell/shell.module';
     WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
+  declarations: [AppComponent],
   /* eslint-enable perfectionist/sort-arrays */
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
     provideClientHydration(withNoHttpTransferCache()),
   ],
-
   bootstrap: [AppComponent],
 })
 export class AppModule {
