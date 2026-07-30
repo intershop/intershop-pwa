@@ -58,7 +58,7 @@ describe('Product Promotion Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="promotion-list">
         <li class="promotion-list-item">
-          <div class="promotion-short-title" ng-reflect-ish-server-html="MyPromotion"></div>
+          <div class="promotion-short-title"></div>
           <br />
           <div><ish-promotion-details></ish-promotion-details></div>
         </li>

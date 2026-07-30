@@ -39,6 +39,7 @@ describe('Formly Customer Address Form Component', () => {
 
     component.addressForm = formGroupDirective;
     when(accountFacade.isBusinessCustomer$).thenReturn(of(false));
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
     when(formGroupDirective.resetForm()).thenReturn();
   });
 

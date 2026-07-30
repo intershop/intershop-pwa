@@ -136,9 +136,7 @@ describe('Cms Navigation Page Component', () => {
       <li class="dropdown">
         <a> Ebene 1 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
-          <li class="sub-navigation-content">
-            <div ng-reflect-ish-server-html="<span>Hello Page</span>"></div>
-          </li>
+          <li class="sub-navigation-content"><div></div></li>
         </ul>
       </li>
     `);
@@ -160,9 +158,7 @@ describe('Cms Navigation Page Component', () => {
         <a> Ebene 1 </a><a class="dropdown-toggle"><i class="bi bi-plus"></i></a>
         <ul class="category-level1 dropdown-menu">
           <li class="main-navigation-level1-item"><a style="width: 100%"> Ebene 2 </a></li>
-          <li class="sub-navigation-content">
-            <div ng-reflect-ish-server-html="<span>Hello Page</span>"></div>
-          </li>
+          <li class="sub-navigation-content"><div></div></li>
         </ul>
       </li>
     `);

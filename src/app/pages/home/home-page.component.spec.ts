@@ -36,10 +36,7 @@ describe('Home Page Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <h1 class="visually-hidden">seo.title.home</h1>
-      <ish-content-include
-        includeid="include.homepage.content.pagelet2-Include"
-        ng-reflect-include-id="include.homepage.content.pagel"
-      ></ish-content-include>
+      <ish-content-include includeid="include.homepage.content.pagelet2-Include"></ish-content-include>
     `);
   });
 });

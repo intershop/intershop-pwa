@@ -74,15 +74,7 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('pagelet');
     expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper pagelet pagelet-selected"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ish-scroll="true"
-        ng-reflect-ng-class="pagelet,pagelet-selected,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
+      <div scrollcontainer="root" class="design-view-wrapper pagelet pagelet-selected">
         <div class="design-view-wrapper-actions">
           <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
             <i class="bi bi-pencil-fill"></i>
@@ -111,14 +103,7 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('slot');
     expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper slot"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ng-class="slot,,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
+      <div scrollcontainer="root" class="design-view-wrapper slot">
         <div class="design-view-wrapper-actions">
           <div class="name">Slot Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">
@@ -141,14 +126,7 @@ describe('Content Design View Wrapper Component', () => {
 
     expect(component.type).toEqual('include');
     expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper include"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ng-class="include,,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
+      <div scrollcontainer="root" class="design-view-wrapper include">
         <div class="design-view-wrapper-actions">
           <div class="name">Include Name xyz</div>
           <button type="button" class="btn" title="designview.add.link.title">

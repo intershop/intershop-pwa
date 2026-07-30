@@ -46,31 +46,18 @@ describe('Header Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
         <li class="dropdown first">
-          <a
-            class="main-navigation-link"
-            ng-reflect-router-link="/cat/A"
-            data-testing-id="A-link"
-            style="width: 100%"
-            href="/cat/A"
-          >
+          <a class="main-navigation-link" data-testing-id="A-link" style="width: 100%" href="/cat/A">
             CAT_A
           </a>
         </li>
         <li class="dropdown">
-          <a
-            class="main-navigation-link"
-            ng-reflect-router-link="/cat/C"
-            data-testing-id="C-link"
-            style="width: 100%"
-            href="/cat/C"
-          >
+          <a class="main-navigation-link" data-testing-id="C-link" style="width: 100%" href="/cat/C">
             CAT_C
           </a>
         </li>
         <ish-lazy-content-include
           includeid="include.header.navigation.pagelet2-Include"
           role="listitem"
-          ng-reflect-include-id="include.header.navigation.page"
         ></ish-lazy-content-include>
       </ul>
     `);

@@ -12,7 +12,7 @@ describe('Category List Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CategoryListComponent, MockComponent(CategoryTileComponent)],
+      declarations: [MockComponent(CategoryTileComponent)],
     }).compileComponents();
   });
 
@@ -29,18 +29,8 @@ describe('Category List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <ul class="category-list row">
-        <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile
-            ng-reflect-category-unique-id="uid1"
-            ng-reflect-loading="eager"
-          ></ish-category-tile>
-        </li>
-        <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile
-            ng-reflect-category-unique-id="uid2"
-            ng-reflect-loading="eager"
-          ></ish-category-tile>
-        </li>
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
       </ul>
     `);
   });

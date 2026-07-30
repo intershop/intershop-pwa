@@ -40,43 +40,10 @@ describe('Product List Paging Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
         <li><span>«</span></li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            class="active"
-            href="/?page=1"
-            >1</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=2"
-            >2</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=3"
-            >3</a
-          >
-        </li>
-        <li class="pagination-list-next">
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=2"
-            >»</a
-          >
-        </li>
+        <li><a queryparamshandling="merge" class="active" href="/?page=1">1</a></li>
+        <li><a queryparamshandling="merge" href="/?page=2">2</a></li>
+        <li><a queryparamshandling="merge" href="/?page=3">3</a></li>
+        <li class="pagination-list-next"><a queryparamshandling="merge" href="/?page=2">»</a></li>
       </ul>
     `);
   });
@@ -87,52 +54,11 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=1"
-            >«</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=1"
-            >1</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            class="active"
-            href="/?page=2"
-            >2</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=3"
-            >3</a
-          >
-        </li>
-        <li class="pagination-list-next">
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=3"
-            >»</a
-          >
-        </li>
+        <li><a queryparamshandling="merge" href="/?page=1">«</a></li>
+        <li><a queryparamshandling="merge" href="/?page=1">1</a></li>
+        <li><a queryparamshandling="merge" class="active" href="/?page=2">2</a></li>
+        <li><a queryparamshandling="merge" href="/?page=3">3</a></li>
+        <li class="pagination-list-next"><a queryparamshandling="merge" href="/?page=3">»</a></li>
       </ul>
     `);
   });
@@ -143,43 +69,10 @@ describe('Product List Paging Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ul class="product-list-paging">
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=2"
-            >«</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=1"
-            >1</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            href="/?page=2"
-            >2</a
-          >
-        </li>
-        <li>
-          <a
-            queryparamshandling="merge"
-            ng-reflect-query-params-handling="merge"
-            ng-reflect-router-link=""
-            class="active"
-            href="/?page=3"
-            >3</a
-          >
-        </li>
+        <li><a queryparamshandling="merge" href="/?page=2">«</a></li>
+        <li><a queryparamshandling="merge" href="/?page=1">1</a></li>
+        <li><a queryparamshandling="merge" href="/?page=2">2</a></li>
+        <li><a queryparamshandling="merge" class="active" href="/?page=3">3</a></li>
         <li class="pagination-list-next"><span>»</span></li>
       </ul>
     `);

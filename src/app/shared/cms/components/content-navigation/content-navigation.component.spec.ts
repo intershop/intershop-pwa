@@ -116,41 +116,15 @@ describe('Content Navigation Component', () => {
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1-pg1"
-          title="Page 1"
-          href="/page-1-pg1"
-          >Page 1</a
-        >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.a-pg1.A"
-          title="Page 1.A"
-          href="/page-1/page-1.a-pg1.A"
-          >Page 1.A</a
-        >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
-          title="Page 1.A.a"
-          href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+          <a class="link-decoration-hover" title="Page 1" href="/page-1-pg1">Page 1</a>,
+          <a class="link-decoration-hover" title="Page 1.A" href="/page-1/page-1.a-pg1.A">Page 1.A</a>,
+          <a class="link-decoration-hover" title="Page 1.A.a" href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
           >Page 1.A.a</a
         >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
-          title="Page 1.A.b"
-          href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+          <a class="link-decoration-hover" title="Page 1.A.b" href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
           >Page 1.A.b</a
         >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.b-pg1.B"
-          title="Page 1.B"
-          href="/page-1/page-1.b-pg1.B"
-          >Page 1.B</a
-        >,
+          <a class="link-decoration-hover" title="Page 1.B" href="/page-1/page-1.b-pg1.B">Page 1.B</a>,
         ]
       `);
     });
@@ -161,27 +135,9 @@ describe('Content Navigation Component', () => {
 
       expect(element.querySelectorAll('a')).toMatchInlineSnapshot(`
         NodeList [
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1-pg1"
-          title="Page 1"
-          href="/page-1-pg1"
-          >Page 1</a
-        >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.a-pg1.A"
-          title="Page 1.A"
-          href="/page-1/page-1.a-pg1.A"
-          >Page 1.A</a
-        >,
-          <a
-          class="link-decoration-hover"
-          ng-reflect-router-link="/page-1/page-1.b-pg1.B"
-          title="Page 1.B"
-          href="/page-1/page-1.b-pg1.B"
-          >Page 1.B</a
-        >,
+          <a class="link-decoration-hover" title="Page 1" href="/page-1-pg1">Page 1</a>,
+          <a class="link-decoration-hover" title="Page 1.A" href="/page-1/page-1.a-pg1.A">Page 1.A</a>,
+          <a class="link-decoration-hover" title="Page 1.B" href="/page-1/page-1.b-pg1.B">Page 1.B</a>,
         ]
       `);
     });
@@ -201,29 +157,15 @@ describe('Content Navigation Component', () => {
         expect(element.querySelectorAll('.page-navigation-active')).toMatchInlineSnapshot(`
           NodeList [
             <li class="page-navigation-active">
-            <a
-              class="link-decoration-hover"
-              ng-reflect-router-link="/page-1/page-1.a-pg1.A"
-              title="Page 1.A"
-              href="/page-1/page-1.a-pg1.A"
-              >Page 1.A</a
-            >
-            <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
+            <a class="link-decoration-hover" title="Page 1.A" href="/page-1/page-1.a-pg1.A">Page 1.A</a>
+            <ul class="page-navigation-2">
               <li>
-                <a
-                  class="link-decoration-hover"
-                  ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
-                  title="Page 1.A.a"
-                  href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+                <a class="link-decoration-hover" title="Page 1.A.a" href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
                   >Page 1.A.a</a
                 >
               </li>
               <li>
-                <a
-                  class="link-decoration-hover"
-                  ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
-                  title="Page 1.A.b"
-                  href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+                <a class="link-decoration-hover" title="Page 1.A.b" href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
                   >Page 1.A.b</a
                 >
               </li>
@@ -242,20 +184,13 @@ describe('Content Navigation Component', () => {
       it('should set page-navigation-1 class to first layer', () => {
         expect(element.querySelectorAll('.page-navigation-1')).toMatchInlineSnapshot(`
           NodeList [
-            <ul ng-reflect-ng-class="page-navigation-1" class="page-navigation-1">
+            <ul class="page-navigation-1">
             <li>
-              <a
-                class="link-decoration-hover"
-                ng-reflect-router-link="/page-1/page-1.a-pg1.A"
-                title="Page 1.A"
-                href="/page-1/page-1.a-pg1.A"
-                >Page 1.A</a
-              >
-              <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
+              <a class="link-decoration-hover" title="Page 1.A" href="/page-1/page-1.a-pg1.A">Page 1.A</a>
+              <ul class="page-navigation-2">
                 <li>
                   <a
                     class="link-decoration-hover"
-                    ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
                     title="Page 1.A.a"
                     href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
                     >Page 1.A.a</a
@@ -264,7 +199,6 @@ describe('Content Navigation Component', () => {
                 <li>
                   <a
                     class="link-decoration-hover"
-                    ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
                     title="Page 1.A.b"
                     href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
                     >Page 1.A.b</a
@@ -273,13 +207,7 @@ describe('Content Navigation Component', () => {
               </ul>
             </li>
             <li>
-              <a
-                class="link-decoration-hover"
-                ng-reflect-router-link="/page-1/page-1.b-pg1.B"
-                title="Page 1.B"
-                href="/page-1/page-1.b-pg1.B"
-                >Page 1.B</a
-              >
+              <a class="link-decoration-hover" title="Page 1.B" href="/page-1/page-1.b-pg1.B">Page 1.B</a>
             </li>
           </ul>,
           ]
@@ -289,22 +217,14 @@ describe('Content Navigation Component', () => {
       it('should set page-navigation-2 class to second layer', () => {
         expect(element.querySelectorAll('.page-navigation-2')).toMatchInlineSnapshot(`
           NodeList [
-            <ul ng-reflect-ng-class="page-navigation-2" class="page-navigation-2">
+            <ul class="page-navigation-2">
             <li>
-              <a
-                class="link-decoration-hover"
-                ng-reflect-router-link="/page-1/page-1.a/page-1.a.a-pg"
-                title="Page 1.A.a"
-                href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
+              <a class="link-decoration-hover" title="Page 1.A.a" href="/page-1/page-1.a/page-1.a.a-pg1.A.a"
                 >Page 1.A.a</a
               >
             </li>
             <li>
-              <a
-                class="link-decoration-hover"
-                ng-reflect-router-link="/page-1/page-1.a/page-1.a.b-pg"
-                title="Page 1.A.b"
-                href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
+              <a class="link-decoration-hover" title="Page 1.A.b" href="/page-1/page-1.a/page-1.a.b-pg1.A.b"
                 >Page 1.A.b</a
               >
             </li>

@@ -31,7 +31,7 @@ describe('Product Notification Edit Dialog Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
-    accountFacade = mock(accountFacade);
+    accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
@@ -56,6 +56,7 @@ describe('Product Notification Edit Dialog Component', () => {
     when(context.select('product')).thenReturn(of({ name: 'Test Product' } as ProductView));
     when(context.select('inventory', 'inStock')).thenReturn(of(true));
     when(accountFacade.userEmail$).thenReturn(of('test@test.com'));
+    when(productNotificationsFacade.productNotificationBySku$(anything(), anything())).thenReturn(of(undefined));
   });
 
   beforeEach(() => {

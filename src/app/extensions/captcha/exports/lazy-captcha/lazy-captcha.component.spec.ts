@@ -83,13 +83,7 @@ describe('Lazy Captcha Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v2
         ><div>
-          <div ng-reflect-ng-class="d-none" class="d-none">
-            <re-captcha
-              class="captcha"
-              ng-reflect-site-key="captchaSiteKeyASDF"
-              id="ngrecaptcha-0"
-            ></re-captcha>
-          </div></div
+          <div class="d-none"><re-captcha class="captcha" id="ngrecaptcha-0"></re-captcha></div></div
       ></ish-captcha-v2>
     `);
     const v2Cmp: CaptchaV2Component = fixture.debugElement.query(By.css('ish-captcha-v2'))?.componentInstance;
@@ -108,11 +102,7 @@ describe('Lazy Captcha Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v3
-        ><p
-          data-testing-id="recaptcha-v3-info"
-          class="validation-message"
-          ng-reflect-ish-server-html="recaptcha.v3.info_text"
-        ></p
+        ><p data-testing-id="recaptcha-v3-info" class="validation-message"></p
       ></ish-captcha-v3>
     `);
     const v3Cmp: CaptchaV3Component = fixture.debugElement.query(By.css('ish-captcha-v3'))?.componentInstance;

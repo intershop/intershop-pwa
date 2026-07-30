@@ -46,8 +46,6 @@ describe('Line Item Custom Fields Component', () => {
   it('should be render the custom fields view', () => {
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(
-      `<ish-custom-fields-view ng-reflect-fields="[object Object],[object Object"></ish-custom-fields-view>`
-    );
+    expect(element).toMatchInlineSnapshot(`<ish-custom-fields-view></ish-custom-fields-view>`);
   });
 });

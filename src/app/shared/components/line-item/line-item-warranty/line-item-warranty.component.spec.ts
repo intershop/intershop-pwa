@@ -58,12 +58,9 @@ describe('Line Item Warranty Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('ish-product-warranty')).toBeTruthy();
-    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(`
-      <ish-product-warranty
-        ng-reflect-selected-warranty-sku="war2"
-        ng-reflect-view-type="select"
-      ></ish-product-warranty>
-    `);
+    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(
+      `<ish-product-warranty></ish-product-warranty>`
+    );
   });
 
   it('should render the pli warranty if the warranty is not editable', () => {
@@ -71,12 +68,9 @@ describe('Line Item Warranty Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('ish-product-warranty')).toBeTruthy();
-    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(`
-      <ish-product-warranty
-        ng-reflect-selected-warranty-sku="war2"
-        ng-reflect-view-type="display"
-      ></ish-product-warranty>
-    `);
+    expect(element.querySelector('ish-product-warranty')).toMatchInlineSnapshot(
+      `<ish-product-warranty></ish-product-warranty>`
+    );
   });
 
   it('should update warranty if updateLineItemWarranty is called', () => {
