@@ -2,9 +2,9 @@
   <div
     class="cookies-banner"
     role="region"
-    [@bottomOut]="transitionBanner"
     [attr.aria-label]="'cookies.banner.title' | translate"
-    (@bottomOut.done)="setCookiesConsent($event)"
+    [class.bottom-out]="transitionBanner === 'bottom-out'"
+    (transitionend)="setCookiesConsent($event)"
   >
     <div class="d-lg-flex justify-content-between align-items-center">
       <div class="cookies-banner-text" [ishServerHtml]="'cookies.banner.text' | translate"></div>
