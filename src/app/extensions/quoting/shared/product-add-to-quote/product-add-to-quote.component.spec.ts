@@ -7,6 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductRetailSet } from 'ish-core/models/product/product.model';
 
 import { ProductAddToQuoteComponent } from './product-add-to-quote.component';
 
@@ -74,5 +75,15 @@ describe('Product Add To Quote Component', () => {
     tick(500);
 
     expect(location.path()).toMatchInlineSnapshot(`"/addProductToQuoteRequest?sku=dummy&quantity=5"`);
+  }));
+
+  it('should route to addToQuote URL with quantity 1 for retail sets', fakeAsync(() => {
+    when(context.get('product')).thenReturn({ type: 'RetailSet' } as ProductRetailSet);
+    fixture.detectChanges();
+    component.addToQuote();
+
+    tick(500);
+
+    expect(location.path()).toMatchInlineSnapshot(`"/addProductToQuoteRequest?sku=dummy&quantity=1"`);
   }));
 });
