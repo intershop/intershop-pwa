@@ -56,6 +56,7 @@ describe('Payment Payone Creditcard Component', () => {
     const response = {
       pseudocardpan: 'token',
       truncatedcardpan: '41111XXXX111',
+      cardtype: 'V',
       status: 'VALID',
     };
 
@@ -71,6 +72,7 @@ describe('Payment Payone Creditcard Component', () => {
     const response = {
       pseudocardpan: 'token',
       truncatedcardpan: '41111XXXX111',
+      cardtype: 'V',
       status: 'INVALID',
     };
 
