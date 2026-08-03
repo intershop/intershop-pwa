@@ -703,10 +703,7 @@ export function app() {
 }
 
 // Metrics are now exposed via the /metrics endpoint on a separate port (no PM2 IPC needed)
-const metricsApp = (() => {
-  if (!/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-    return;
-  }
+function metricsApp() {
   const server = express();
   server.get('/metrics', (_req, res) => {
     client.register
@@ -720,7 +717,7 @@ const metricsApp = (() => {
       });
   });
   return server;
-})();
+}
 
 function run() {
   const http = require('http');
@@ -734,9 +731,10 @@ function run() {
     'Node Express server started'
   );
   logger.info({ file: { directory: BROWSER_FOLDER } }, 'Serving static files');
-  if (metricsApp) {
+
+  if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
     const METRICS_PORT = 9113;
-    http.createServer(metricsApp).listen(METRICS_PORT);
+    http.createServer(metricsApp()).listen(METRICS_PORT);
     logger.info(
       {
         host: { name: require('os').hostname() },
