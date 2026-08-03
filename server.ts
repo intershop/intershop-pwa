@@ -721,7 +721,7 @@ function metricsApp() {
 
 function run() {
   const http = require('http');
-  http.createServer(app()).listen(PORT);
+  const ssrServer = http.createServer(app()).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
   logger.info(
     {
@@ -732,9 +732,10 @@ function run() {
   );
   logger.info({ file: { directory: BROWSER_FOLDER } }, 'Serving static files');
 
+  let metricsServer = undefined;
   if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
     const METRICS_PORT = 9113;
-    http.createServer(metricsApp()).listen(METRICS_PORT);
+    metricsServer = http.createServer(metricsApp()).listen(METRICS_PORT);
     logger.info(
       {
         host: { name: require('os').hostname() },
@@ -743,6 +744,24 @@ function run() {
       'Prometheus metrics server started'
     );
   }
+
+  // Graceful shutdown on SIGTERM and SIGINT
+  const shutdown = () => {
+    logger.info('Shutting down server...');
+    ssrServer.close(() => {
+      logger.info('SSR server shut down successfully');
+      if (metricsServer) {
+        metricsServer.close(() => {
+          logger.info('Metrics server shut down successfully');
+          process.exit(0);
+        });
+      } else {
+        process.exit(0);
+      }
+    });
+  };
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 
 // Webpack will replace 'require' with '__webpack_require__'
