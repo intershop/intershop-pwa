@@ -5,6 +5,7 @@ import { Observable, map, shareReplay } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductData } from 'ish-core/models/product/product.interface';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 export interface FaqEntry {
   question: string;
@@ -33,6 +34,7 @@ export type ProductGeoType = 'faqs' | 'howTo';
   templateUrl: './product-geo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class ProductGeoComponent implements OnInit {
   @Input({ required: true }) type: ProductGeoType;
 

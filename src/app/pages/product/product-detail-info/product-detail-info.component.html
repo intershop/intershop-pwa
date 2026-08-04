@@ -48,7 +48,7 @@
         <ng-container [ngbNavItem]="'FAQS'">
           <a ngbNavLink>{{ 'product.faqs.heading' | translate }}</a>
           <ng-template ngbNavContent>
-            <ish-product-geo type="faqs" />
+            <ish-lazy-product-geo type="faqs" />
           </ng-template>
         </ng-container>
       }
@@ -57,7 +57,7 @@
         <ng-container [ngbNavItem]="'HOW_TO'">
           <a ngbNavLink>{{ 'product.how_to.heading' | translate }}</a>
           <ng-template ngbNavContent>
-            <ish-product-geo type="howTo" />
+            <ish-lazy-product-geo type="howTo" />
           </ng-template>
         </ng-container>
       }

@@ -27,6 +27,7 @@ import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
+import { GeoExportsModule } from '../extensions/geo/exports/geo-exports.module';
 import { OrderTemplatesExportsModule } from '../extensions/order-templates/exports/order-templates-exports.module';
 import { ProductNotificationsExportsModule } from '../extensions/product-notifications/exports/product-notifications-exports.module';
 import { PunchoutExportsModule } from '../extensions/punchout/exports/punchout-exports.module';
@@ -134,7 +135,6 @@ import { ProductAttachmentsComponent } from './components/product/product-attach
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
 import { ProductChooseVariationComponent } from './components/product/product-choose-variation/product-choose-variation.component';
-import { ProductGeoComponent } from './components/product/product-geo/product-geo.component';
 import { ProductIdComponent } from './components/product/product-id/product-id.component';
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
@@ -182,6 +182,7 @@ const importExportModules = [
   FormlyAddressFormsModule,
   FormlyModule,
   FormsSharedModule,
+  GeoExportsModule,
   InfiniteScrollDirective,
   NgbCarouselModule,
   NgbCollapseModule,
@@ -313,7 +314,6 @@ const exportedComponents = [
   ProductAttachmentsComponent,
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
-  ProductGeoComponent,
   ProductIdComponent,
   ProductInventoryComponent,
   ProductItemComponent,
