@@ -71,11 +71,7 @@
             <dt>{{ 'account.orderdetails.withdrawal_status.label' | translate }}</dt>
             <dd data-testing-id="withdrawal-status">
               <span class="badge text-bg-secondary">
-                @if (order.withdrawal?.status === 'CREATED') {
-                  {{ 'withdrawal.status.label.received' | translate }}
-                } @else {
-                  {{ 'withdrawal.status.label.approved' | translate }}
-                }
+                {{ 'withdrawal.status.label.received' | translate }}
               </span>
             </dd>
             @if (order.withdrawal?.withdrawalCreationDate) {
