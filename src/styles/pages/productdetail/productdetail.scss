@@ -145,24 +145,10 @@
 }
 
 .product-faqs {
-  dt {
-    margin-top: $space-default;
-    font-weight: $font-weight-bold;
-
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  dd {
-    margin-bottom: 0;
-  }
-
   &__author {
     display: flex;
-    flex-wrap: wrap;
     gap: 0 divide($space-default, 2);
-    margin-top: divide($space-default, 2);
+    margin-bottom: $space-default;
     font-size: $font-size-sm;
     color: $text-color-tertiary;
   }
@@ -182,18 +168,4 @@
 
 .product-how-to {
   padding-left: $space-default * 1.5;
-
-  &__step + &__step {
-    margin-top: $space-default;
-  }
-
-  &__step-name {
-    display: block;
-    margin-bottom: divide($space-default, 4);
-  }
-
-  &__step-text {
-    margin-bottom: 0;
-    color: $text-color-primary;
-  }
 }

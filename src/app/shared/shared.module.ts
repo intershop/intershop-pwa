@@ -134,6 +134,7 @@ import { ProductAttachmentsComponent } from './components/product/product-attach
 import { ProductAttributesComponent } from './components/product/product-attributes/product-attributes.component';
 import { ProductBundleDisplayComponent } from './components/product/product-bundle-display/product-bundle-display.component';
 import { ProductChooseVariationComponent } from './components/product/product-choose-variation/product-choose-variation.component';
+import { ProductGeoComponent } from './components/product/product-geo/product-geo.component';
 import { ProductIdComponent } from './components/product/product-id/product-id.component';
 import { ProductImageComponent } from './components/product/product-image/product-image.component';
 import { ProductInventoryComponent } from './components/product/product-inventory/product-inventory.component';
@@ -312,6 +313,7 @@ const exportedComponents = [
   ProductAttachmentsComponent,
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
+  ProductGeoComponent,
   ProductIdComponent,
   ProductInventoryComponent,
   ProductItemComponent,

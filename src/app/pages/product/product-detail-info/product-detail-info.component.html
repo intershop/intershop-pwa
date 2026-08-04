@@ -44,50 +44,22 @@
         </ng-container>
       }
       <!-- FAQs -->
-      @if (faqs$ | async; as faqs) {
-        @if (faqs.length) {
-          <ng-container [ngbNavItem]="'FAQS'">
-            <a ngbNavLink>{{ 'product.faqs.heading' | translate }}</a>
-            <ng-template ngbNavContent>
-              <dl class="product-faqs">
-                @for (faq of faqs; track faq.question) {
-                  <dt>{{ faq.question }}</dt>
-                  <dd [innerHTML]="faq.answer"></dd>
-                  @if (faq.authorName) {
-                    <dd class="product-faqs__author">
-                      <span class="product-faqs__author-name">{{ faq.authorName }}</span>
-                      @if (faq.authorDescription) {
-                        <span class="product-faqs__author-description">{{ faq.authorDescription }}</span>
-                      }
-                      @if (faq.authorOrganization) {
-                        <span class="product-faqs__author-organization">{{ faq.authorOrganization }}</span>
-                      }
-                    </dd>
-                  }
-                }
-              </dl>
-            </ng-template>
-          </ng-container>
-        }
+      @if (hasFaqs$ | async) {
+        <ng-container [ngbNavItem]="'FAQS'">
+          <a ngbNavLink>{{ 'product.faqs.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-geo type="faqs" />
+          </ng-template>
+        </ng-container>
       }
       <!-- HowTo -->
-      @if (howToSteps$ | async; as steps) {
-        <!-- How To -->
-        @if (steps.length) {
-          <ng-container [ngbNavItem]="'HOW_TO'">
-            <a ngbNavLink>{{ 'product.how_to.heading' | translate }}</a>
-            <ng-template ngbNavContent>
-              <ol class="product-how-to">
-                @for (step of steps; track step.position) {
-                  <li class="product-how-to__step">
-                    <strong class="product-how-to__step-name">{{ step.name }}</strong>
-                    <p class="product-how-to__step-text">{{ step.text }}</p>
-                  </li>
-                }
-              </ol>
-            </ng-template>
-          </ng-container>
-        }
+      @if (hasHowTo$ | async) {
+        <ng-container [ngbNavItem]="'HOW_TO'">
+          <a ngbNavLink>{{ 'product.how_to.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-geo type="howTo" />
+          </ng-template>
+        </ng-container>
       }
     </nav>
     <div [ngbNavOutlet]="nav"></div>
