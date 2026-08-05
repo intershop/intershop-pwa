@@ -1,5 +1,5 @@
 # https://github.com/devcontainers/images/tree/main/src/javascript-node
-ARG VARIANT="22"
+ARG VARIANT="24"
 FROM mcr.microsoft.com/devcontainers/javascript-node:${VARIANT}
 
 ENV NODE_OPTIONS=--max-old-space-size=8192 LOGLEVEL=info LOGFORMAT=text TRUST_ICM=true

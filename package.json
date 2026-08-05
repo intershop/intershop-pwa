@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": "22.22.0",
-    "npm": "10.9.4"
+    "node": "24.19.0",
+    "npm": "11.17.0"
   },
   "private": true,
   "scripts": {
@@ -142,7 +142,7 @@
     "@types/google.maps": "^3.65.5",
     "@types/jest": "^30.0.0",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^22.20.1",
+    "@types/node": "^24.13.3",
     "@types/webpack": "^5.28.5",
     "@typescript-eslint/rule-tester": "^8.67.0",
     "better-npm-audit": "^3.11.0",
@@ -237,5 +237,13 @@
       "path": "./node_modules/@commitlint/cz-commitlint"
     },
     "active-themes": "b2b,b2c"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": true,
+    "lmdb": true,
+    "msgpackr-extract": true,
+    "unrs-resolver": true,
+    "@parcel/watcher": true
   }
 }

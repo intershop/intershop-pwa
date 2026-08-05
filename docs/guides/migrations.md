@@ -9,6 +9,14 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**Node.js 24 update**
+
+The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.
+
+Please be aware that npm 11 no longer runs dependencies' lifecycle scripts (preinstall/install/postinstall) by default, as a supply‑chain security measure.
+Packages that need to run such scripts must be explicitly allow‑listed (`allowScripts` in the `package.json`).
+`npm install` will warn about missing allow-listing for custom dependencies.
+
 **TypeScript 5.8/5.9 update**
 
 TypeScript has been updated to version 5.8 (required by Angular 20) and to 5.9 together with the Angular 20 upgrade.
