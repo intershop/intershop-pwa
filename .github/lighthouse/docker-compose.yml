@@ -20,3 +20,4 @@ services:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
       CACHE: 1
+      CACHE_DURATION_NGINX_OK: 60m
