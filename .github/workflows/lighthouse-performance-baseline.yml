@@ -41,6 +41,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate self-signed TLS certificate for HTTP/2
+        run: |
+          mkdir -p .github/lighthouse/certs
+          openssl req -x509 -newkey rsa:2048 -sha256 -nodes \
+            -keyout .github/lighthouse/certs/key.pem \
+            -out .github/lighthouse/certs/cert.pem \
+            -days 365 -subj '/CN=localhost' \
+            -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+
       - name: Run docker compose to start SSR and nginx
         uses: hoverkraft-tech/compose-action@v2
         with:
@@ -53,7 +62,7 @@ jobs:
           urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
           for url in $urls; do
             echo "Warming up $url"
-            curl -s "$url" >/dev/null
+            curl -sk "$url" >/dev/null
           done
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)

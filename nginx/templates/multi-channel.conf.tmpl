@@ -118,6 +118,7 @@ server {
     server_name ~^{{ $domain }}$;
   {{ if getenv "SSL" | strings.ToLower | regexp.Match "on|1|true|yes" }}
     listen 443 ssl;
+    http2 on;
     ssl_certificate     /var/nginx/certs/cert.pem;
     ssl_certificate_key /var/nginx/certs/key.pem;
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
