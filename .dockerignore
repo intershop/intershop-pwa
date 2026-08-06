@@ -84,6 +84,11 @@
 # from src/app/extensions/copilot/exports/.gitignore
 /src/app/extensions/copilot/exports/**/lazy*
 
+# from src/app/extensions/geo/exports/.gitignore
+/src/app/extensions/geo/exports/**/lazy*
+!/src/app/extensions/geo/exports/lazy-product-geo/
+!/src/app/extensions/geo/exports/lazy-product-geo/**
+
 # from src/app/extensions/order-templates/exports/.gitignore
 /src/app/extensions/order-templates/exports/**/lazy*
 

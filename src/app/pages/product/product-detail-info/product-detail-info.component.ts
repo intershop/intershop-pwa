@@ -25,25 +25,17 @@ export class ProductDetailInfoComponent implements OnInit {
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
-
-    this.hasFaqs$ = this.context.select('product').pipe(
-      map(product => {
-        const attr = product.attributeGroups?.GEO?.attributes?.find(a => a.name === 'GEO_FAQ');
-        return !!attr?.value;
-      })
-    );
-
-    this.hasHowTo$ = this.context.select('product').pipe(
-      map(product => {
-        const attr = product.attributeGroups?.GEO?.attributes?.find(a => a.name === 'GEO_HOW_TO');
-        return !!attr?.value;
-      })
-    );
+    this.hasFaqs$ = this.context.select('product').pipe(map(product => this.hasGeoAttribute(product, 'GEO_FAQ')));
+    this.hasHowTo$ = this.context.select('product').pipe(map(product => this.hasGeoAttribute(product, 'GEO_HOW_TO')));
 
     // when routing between products reset the opened product tab to the default tab
     this.context
       .select('sku')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => (this.active = 'DESCRIPTION'));
+  }
+
+  private hasGeoAttribute(product: ProductView, name: 'GEO_FAQ' | 'GEO_HOW_TO'): boolean {
+    return !!product.attributeGroups?.GEO?.attributes?.find(a => a.name === name)?.value;
   }
 }

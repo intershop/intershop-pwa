@@ -3,14 +3,14 @@ import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
+import { isEqual } from 'lodash-es';
 import { distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 
-import { ProductData } from 'ish-core/models/product/product.interface';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
 
-import { FaqEntry, HowToData, HowToStep } from '../../models/geo.model';
+import { GeoHelper } from '../../models/geo/geo.helper';
 
 @Injectable()
 export class GeoEffects {
@@ -40,17 +40,19 @@ export class GeoEffects {
         ofType(routerNavigationAction),
         // fire immediately on (lazy) subscription to catch the current route
         startWith(undefined),
+        // removes existing script tag on route change
         tap(() => {
           this.faqScriptEl = this.upsertJsonLdScript(this.faqScriptEl, undefined);
         }),
+        // adds new script tag on route change if faq data is available
         switchMap(() =>
           this.productPage$.pipe(
-            map(product => this.parseFaqs(product.attributeGroups)),
-            distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+            map(product => GeoHelper.parseFaqs(product.attributeGroups)),
+            distinctUntilChanged(isEqual),
             tap(faqs => {
               this.faqScriptEl = this.upsertJsonLdScript(
                 this.faqScriptEl,
-                faqs.length ? this.buildFaqJsonLd(faqs) : undefined
+                faqs.length ? GeoHelper.buildFaqJsonLd(faqs) : undefined
               );
             })
           )
@@ -65,17 +67,19 @@ export class GeoEffects {
         ofType(routerNavigationAction),
         // fire immediately on (lazy) subscription to catch the current route
         startWith(undefined),
+        // removes existing script tag on route change
         tap(() => {
           this.howToScriptEl = this.upsertJsonLdScript(this.howToScriptEl, undefined);
         }),
+        // adds new script tag on route change if how-to data is available
         switchMap(() =>
           this.productPage$.pipe(
-            map(product => this.parseHowTo(product.attributeGroups)),
-            distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+            map(product => GeoHelper.parseHowTo(product.attributeGroups)),
+            distinctUntilChanged(isEqual),
             tap(howTo => {
               this.howToScriptEl = this.upsertJsonLdScript(
                 this.howToScriptEl,
-                howTo.steps.length ? this.buildHowToJsonLd(howTo) : undefined
+                howTo.steps.length ? GeoHelper.buildHowToJsonLd(howTo) : undefined
               );
             })
           )
@@ -83,98 +87,6 @@ export class GeoEffects {
       ),
     { dispatch: false }
   );
-
-  private parseFaqs(attributeGroups: ProductData['attributeGroups']): FaqEntry[] {
-    const attr = attributeGroups?.GEO?.attributes?.find(a => a.name === 'GEO_FAQ');
-    if (!attr?.value) {
-      return [];
-    }
-    try {
-      const val = typeof attr.value === 'string' ? JSON.parse(attr.value) : attr.value;
-      const entities = Array.isArray(val) ? val : val?.mainEntity;
-      if (!Array.isArray(entities)) {
-        return [];
-      }
-      return entities.map(
-        (e: {
-          name: string;
-          acceptedAnswer: {
-            text: string;
-            author?: { name?: string; description?: string; affiliation?: { name?: string } };
-          };
-        }) => ({
-          question: e.name,
-          answer: e.acceptedAnswer?.text,
-          authorName: e.acceptedAnswer?.author?.name,
-          authorDescription: e.acceptedAnswer?.author?.description,
-          authorOrganization: e.acceptedAnswer?.author?.affiliation?.name,
-        })
-      );
-    } catch {
-      return [];
-    }
-  }
-
-  private parseHowTo(attributeGroups: ProductData['attributeGroups']): HowToData {
-    const attr = attributeGroups?.GEO?.attributes?.find(a => a.name === 'GEO_HOW_TO');
-    if (!attr?.value) {
-      return { steps: [] };
-    }
-    try {
-      const val = typeof attr.value === 'string' ? JSON.parse(attr.value) : attr.value;
-      const steps = Array.isArray(val) ? val : val?.step;
-      if (!Array.isArray(steps)) {
-        return { steps: [] };
-      }
-      return {
-        name: typeof val?.name === 'string' ? val.name : undefined,
-        steps: steps.map((s: HowToStep) => ({ position: s.position, name: s.name, text: s.text })),
-      };
-    } catch {
-      return { steps: [] };
-    }
-  }
-
-  private buildFaqJsonLd(faqs: FaqEntry[]): object {
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqs.map(faq => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: faq.answer,
-          ...(faq.authorName
-            ? {
-                author: {
-                  '@type': 'Person',
-                  name: faq.authorName,
-                  ...(faq.authorDescription ? { description: faq.authorDescription } : {}),
-                  ...(faq.authorOrganization
-                    ? { affiliation: { '@type': 'Organization', name: faq.authorOrganization } }
-                    : {}),
-                },
-              }
-            : {}),
-        },
-      })),
-    };
-  }
-
-  private buildHowToJsonLd(howTo: HowToData): object {
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      ...(howTo.name ? { name: howTo.name } : {}),
-      step: howTo.steps.map(s => ({
-        '@type': 'HowToStep',
-        position: s.position,
-        name: s.name,
-        text: s.text,
-      })),
-    };
-  }
 
   private upsertJsonLdScript(
     existing: HTMLScriptElement | undefined,
