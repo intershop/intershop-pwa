@@ -7,6 +7,6 @@ import { ProductGeoComponent } from './shared/product-geo/product-geo.component'
 @NgModule({
   declarations: [ProductGeoComponent],
   imports: [SharedModule],
-  exports: [ProductGeoComponent],
+  exports: [SharedModule],
 })
 export class GeoModule {}
