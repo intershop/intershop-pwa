@@ -29,6 +29,7 @@
 **/*.orig
 /dev.bat
 **/.lighthouseci/
+/.github/lighthouse/certs/
 
 # from dist/.gitignore
 /dist/**/*
