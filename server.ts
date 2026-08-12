@@ -514,6 +514,10 @@ export function app() {
     for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
+    // reject absolute URLs and protocol-relative paths to prevent base href hijacking
+    if (!/^\/([^/]|$)/.test(baseHref)) {
+      baseHref = '/';
+    }
 
     commonEngine
       .render({
