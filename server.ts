@@ -509,13 +509,13 @@ export function app() {
     }
 
     // find last baseHref parameter
-    const regex = /baseHref=([^;?#]*)/g;
+    const regex = /baseHref=([^;?#&]*)/g;
     let baseHref = '/';
     for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
     }
-    // reject absolute URLs and protocol-relative paths to prevent base href hijacking
-    if (!/^\/([^/]|$)/.test(baseHref)) {
+    // only allow safe path characters to prevent base href hijacking / HTML injection
+    if (!/^\/[a-zA-Z0-9\-._~!$&'()*+,;=:@/]*$/.test(baseHref) && baseHref !== '/') {
       baseHref = '/';
     }
 
