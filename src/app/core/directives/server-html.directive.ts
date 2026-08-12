@@ -24,6 +24,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
   @Input() callbacks: Record<string, (event?: MouseEvent) => void>;
 
+  private initialized = false;
   private renderer = inject(Renderer2);
 
   constructor(
@@ -34,7 +35,15 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   ) {}
 
   @Input() set ishServerHtml(val: string) {
-    const element = this.elementRef.nativeElement;
+    const element = this.elementRef.nativeElement as HTMLElement;
+    const reuseServerContent = !SSR && !this.initialized && element.hasChildNodes();
+    this.initialized = true;
+
+    // Keep the DOM nodes produced by SSR so hydration does not turn unchanged HTML into a new LCP candidate.
+    if (reuseServerContent) {
+      return;
+    }
+
     while (element.firstChild) {
       element.removeChild(element.firstChild);
     }
