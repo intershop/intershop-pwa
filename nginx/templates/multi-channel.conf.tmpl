@@ -2,7 +2,7 @@
 
 {{- /* Upstream routing */ -}}
 {{- $upstreamsList := (getenv "UPSTREAMS" | strings.Split ",") -}}
-{{- if and (len $upstreamsList | eq 1) not (index $upstreamsList 0 | strings.contains "=" ) }}
+{{- if and (len $upstreamsList | eq 1) (not (index $upstreamsList 0 | strings.Contains "=")) }}
 
 # Upstream routing without themes
 upstream default_pwa {
