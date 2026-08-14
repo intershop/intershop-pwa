@@ -136,12 +136,17 @@ const BROWSER_FOLDER =
 const ALL_BROWSER_FOLDERS: { baseHref: string; folder: string }[] = (() => {
   const folders: { baseHref: string; folder: string }[] = [];
   const distDir = join(process.cwd(), 'dist');
-  if (fs.existsSync(distDir)) {
+  if (fs.existsSync(distDir) && process.env.THEME) {
     for (const entry of fs.readdirSync(distDir)) {
       const browserDir = join(distDir, entry, 'browser');
       if (fs.existsSync(browserDir) && fs.statSync(browserDir).isDirectory()) {
         folders.push({ baseHref: `/${entry}`, folder: browserDir });
       }
+    }
+  } else {
+    const browserDir = join(distDir, 'browser');
+    if (fs.existsSync(browserDir) && fs.statSync(browserDir).isDirectory()) {
+      folders.push({ baseHref: '', folder: browserDir });
     }
   }
   return folders;
