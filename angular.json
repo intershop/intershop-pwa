@@ -25,7 +25,10 @@
             "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
-            "plugins": ["./templates/esbuild/define-build-constants.ts"],
+            "plugins": [
+              "./templates/esbuild/define-build-constants.ts",
+              "./templates/esbuild/theme-overrides.ts"
+            ],
             "assets": [
               "src/assets",
               {
@@ -52,12 +55,6 @@
               "pino",
               "pino-pretty",
               "js-yaml"
-            ],
-            "fileReplacements": [
-              {
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.b2b.ts"
-              }
             ]
           },
           "defaultConfiguration": "b2b,production",
@@ -111,17 +108,7 @@
                 "sass": {
                   "silenceDeprecations": ["import"]
                 }
-              },
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.b2c.ts"
-                },
-                {
-                  "replace": "src/app/pages/account/account-navigation/account-navigation.items.ts",
-                  "with": "src/app/pages/account/account-navigation/account-navigation.items.b2c.ts"
-                }
-              ]
+              }
             }
           }
         },
@@ -132,6 +119,12 @@
           },
           "defaultConfiguration": "b2b-development",
           "configurations": {
+            "b2b": {
+              "buildTarget": "intershop-pwa:build:b2b,development"
+            },
+            "b2c": {
+              "buildTarget": "intershop-pwa:build:b2c,development"
+            },
             "b2b-development": {
               "buildTarget": "intershop-pwa:build:b2b,development"
             },

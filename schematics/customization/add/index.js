@@ -27,22 +27,41 @@ for (const project in angularJson.projects) {
 }
 
 const architect = angularJson.projects[project].architect;
-architect['build-webpack'].configurations[theme] = {};
-architect['serve-webpack'].configurations[theme] = {
-  buildTarget: 'intershop-pwa:build-webpack:' + theme,
+architect.build.configurations[theme] = {
+  assets: [
+    'src/assets',
+    {
+      glob: 'favicon.ico',
+      input: `src/assets/themes/${theme}/img/`,
+      output: '/',
+    },
+  ],
+  styles: [`src/styles/themes/${theme}/style.scss`],
+  stylePreprocessorOptions: {
+    includePaths: [`src/styles/themes/${theme}`],
+    sass: {
+      silenceDeprecations: ['import'],
+    },
+  },
 };
-architect['server-webpack'].configurations[theme] = {};
-architect['serve-ssr-webpack'].configurations[theme] = {
-  buildTarget: `intershop-pwa:build-webpack:${theme},development`,
-  serverTarget: `intershop-pwa:server-webpack:${theme},development`,
+architect.serve.configurations[`${theme}-development`] = {
+  buildTarget: `intershop-pwa:build:${theme},development`,
+};
+architect.serve.configurations[theme] = {
+  buildTarget: `intershop-pwa:build:${theme},development`,
+};
+architect.serve.configurations[`${theme}-production`] = {
+  buildTarget: `intershop-pwa:build:${theme},production`,
+};
+architect.serve.configurations[`${theme}-ssr`] = {
+  buildTarget: `intershop-pwa:build:${theme},development,ssr`,
 };
 
 if (setDefault) {
   console.log('setting', theme, 'as default for targets');
-  architect['build-webpack'].defaultConfiguration = theme + ',production';
-  architect['serve-webpack'].defaultConfiguration = theme + ',development';
-  architect['server-webpack'].defaultConfiguration = theme + ',production';
-  architect['serve-ssr-webpack'].defaultConfiguration = theme;
+  architect.build.defaultConfiguration = theme + ',production';
+  architect.serve.defaultConfiguration = theme + '-development';
+  architect.serve.options.buildTarget = `intershop-pwa:build:${theme},development`;
 }
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));

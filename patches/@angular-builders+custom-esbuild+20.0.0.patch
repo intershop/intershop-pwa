@@ -1,0 +1,49 @@
+diff --git a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/index.js b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/index.js
+index 91d813c..4a8947d 100644
+--- a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/index.js
++++ b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/index.js
+@@ -58,11 +58,11 @@ function executeCustomDevServerBuilder(options, context) {
+             // https://github.com/angular/angular-cli/pull/26212/files#diff-a99020cbdb97d20b2bc686bcb64b31942107d56db06fd880171b0a86f7859e6eR52
+             middleware.push(await (0, common_1.loadModule)(path.join(workspaceRoot, middlewarePath), tsConfig, context.logger));
+         }
+-        const buildPlugins = await (0, load_plugins_1.loadPlugins)(buildOptions.plugins, workspaceRoot, tsConfig, context.logger, options, context.target);
++        const buildPlugins = await (0, load_plugins_1.loadPlugins)(buildOptions.plugins, workspaceRoot, tsConfig, context.logger, buildOptions, buildTarget);
+         const indexHtmlTransformer = buildOptions.indexHtmlTransformer
+             ? await (0, load_index_html_transformer_1.loadIndexHtmlTransformer)(path.join(workspaceRoot, buildOptions.indexHtmlTransformer), tsConfig, context.logger, context.target)
+             : undefined;
+-        (0, patch_builder_context_1.patchBuilderContext)(context, buildTarget);
++        (0, patch_builder_context_1.patchBuilderContext)(context, buildTarget, buildOptions);
+         return { middleware, buildPlugins, indexHtmlTransformer };
+     }), (0, rxjs_1.switchMap)((extensions) => (0, build_1.executeDevServerBuilder)(options, context, extensions)));
+ }
+diff --git a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.d.ts b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.d.ts
+index 55fac10..73eae12 100644
+--- a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.d.ts
++++ b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.d.ts
+@@ -1,2 +1,2 @@
+-import { BuilderContext, Target } from '@angular-devkit/architect';
+-export declare function patchBuilderContext(context: BuilderContext, buildTarget: Target): void;
++import { BuilderContext, Target, TargetOptions } from '@angular-devkit/architect';
++export declare function patchBuilderContext(context: BuilderContext, buildTarget: Target, buildOptions: TargetOptions): void;
+diff --git a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.js b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.js
+index 4b8d59d..2b1e814 100644
+--- a/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.js
++++ b/node_modules/@angular-builders/custom-esbuild/dist/dev-server/patch-builder-context.js
+@@ -10,7 +10,7 @@ function cleanBuildTargetOptions(options) {
+     delete options.indexHtmlTransformer;
+     return options;
+ }
+-function patchBuilderContext(context, buildTarget) {
++function patchBuilderContext(context, buildTarget, buildOptions) {
+     const originalGetBuilderNameForTarget = context.getBuilderNameForTarget;
+     // We have to patch `getBuilderNameForTarget` because Angular CLI checks
+     // whether the runnable target is `@angular/build:application`
+@@ -31,7 +31,7 @@ function patchBuilderContext(context, buildTarget) {
+         if (target.project === buildTarget.project &&
+             target.target === buildTarget.target &&
+             target.configuration === buildTarget.configuration) {
+-            cleanBuildTargetOptions(options);
++            return cleanBuildTargetOptions(buildOptions);
+         }
+         return options;
+     };

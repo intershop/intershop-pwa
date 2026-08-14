@@ -17,7 +17,7 @@ export default {
   ...createCjsPreset(),
   testRunner: 'jest-jasmine2',
   maxWorkers: process.env.JEST_MAX_WORKERS || '75%', // keep some cpu for moving the mouse
-  roots: ['src', 'projects'],
+  roots: ['src', 'projects', 'templates'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],
   modulePaths: [tsConfig.compilerOptions.baseUrl],

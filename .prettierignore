@@ -1,4 +1,5 @@
 *.sh
+*.patch
 *.bat
 *.cmd
 *.ps1

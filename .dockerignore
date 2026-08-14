@@ -148,6 +148,8 @@ templates/*
 !templates/esbuild/
 templates/esbuild/*
 !templates/esbuild/define-build-constants.ts
+!templates/esbuild/build-configuration.ts
+!templates/esbuild/theme-overrides.ts
 
 scripts
 !scripts/build-multi-pwa.js

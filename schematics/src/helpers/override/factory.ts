@@ -6,6 +6,38 @@ import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schem
 import { copyFile } from '../../utils/filesystem';
 import { setStyleUrls } from '../../utils/registration';
 
+function addThemeSuffix(resource: string, theme: string): string {
+  return resource.replace(/(\.[^.]+)$/, `.${theme}$1`);
+}
+
+function createComponentOverride(
+  from: string,
+  target: string,
+  theme: string,
+  resources: { html?: boolean; scss?: boolean }
+): Rule {
+  return host => {
+    let content = host.readText(from);
+
+    if (resources.html) {
+      content = content.replace(
+        /(\btemplateUrl\s*:\s*['"])([^'"]+)(['"])/,
+        (_match, before: string, resource: string, after: string) =>
+          `${before}${addThemeSuffix(resource, theme)}${after}`
+      );
+    }
+    if (resources.scss) {
+      content = content.replace(
+        /(\bstyleUrls?\s*:\s*)(\[[^\]]*\]|['"][^'"]+['"])/,
+        (_match, before: string, resourceDefinition: string) =>
+          `${before}${resourceDefinition.replace(/\.scss(?=['"])/g, `.${theme}.scss`)}`
+      );
+    }
+
+    host.create(target, content);
+  };
+}
+
 export function override(options: Options): Rule {
   // eslint-disable-next-line complexity
   return async host => {
@@ -58,9 +90,13 @@ export function override(options: Options): Rule {
       host.create(target, `/* style definitions for overriding with theme "${options.theme}" */`);
     }
 
-    if (options.ts) {
+    if (options.ts || options.html || options.scss) {
       const target = from.replace(/([^\\/]+).ts$/, `$1.${options.theme}.ts`);
-      operations.push(copyFile(from, target));
+      operations.push(
+        from.includes('.component.')
+          ? createComponentOverride(from, target, options.theme, options)
+          : copyFile(from, target)
+      );
     }
 
     return chain(operations);
