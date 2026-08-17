@@ -19,7 +19,6 @@ import {
 } from 'rxjs/operators';
 
 import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Image } from 'ish-core/models/image/image.model';
 import { Pricing } from 'ish-core/models/price/price.model';
 import { ProductInventory } from 'ish-core/models/product-inventory/product-inventory.model';
@@ -107,7 +106,6 @@ export interface ProductContext {
   categoryId: string;
   displayProperties: Partial<ProductContextDisplayProperties>;
   inventory: ProductInventory;
-  geo: Attribute<string>[];
 
   // lazy
   links: ProductLinksDictionary;
@@ -363,17 +361,6 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
               attr => attr.value
               // eslint-disable-next-line unicorn/no-null
             )[0]?.name || null
-        ),
-        distinctUntilChanged()
-      )
-    );
-
-    this.connect(
-      'geo',
-      this.select('product').pipe(
-        map(
-          product =>
-            ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
         ),
         distinctUntilChanged()
       )

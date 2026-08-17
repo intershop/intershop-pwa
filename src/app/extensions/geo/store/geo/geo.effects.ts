@@ -14,6 +14,7 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 
 import { GeoHelper } from '../../models/geo/geo.helper';
+import { SchemaFAQPage, SchemaHowTo } from '../../models/geo/geo.model';
 
 @Injectable()
 export class GeoEffects {
@@ -54,12 +55,12 @@ export class GeoEffects {
                 ) as Attribute<string>[]
             ),
             map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')?.value as string),
-            map(geoFaq => GeoHelper.parseFaq(geoFaq)),
+            map(geoFaq => GeoHelper.parseGeoAttribute<SchemaFAQPage>(geoFaq)),
             distinctUntilChanged(isEqual),
             tap(faq => {
               this.faqScriptEl = this.domService.upsertJsonLdScript(
                 this.faqScriptEl,
-                faq.length ? GeoHelper.buildFaqJsonLd(faq) : undefined
+                faq?.mainEntity?.length ? faq : undefined
               );
             })
           )
@@ -89,12 +90,12 @@ export class GeoEffects {
                 ) as Attribute<string>[]
             ),
             map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')?.value as string),
-            map(geoHowTo => GeoHelper.parseHowTo(geoHowTo)),
+            map(geoHowTo => GeoHelper.parseGeoAttribute<SchemaHowTo>(geoHowTo)),
             distinctUntilChanged(isEqual),
             tap(howTo => {
               this.howToScriptEl = this.domService.upsertJsonLdScript(
                 this.howToScriptEl,
-                howTo.steps.length ? GeoHelper.buildHowToJsonLd(howTo) : undefined
+                howTo.step?.length ? howTo : undefined
               );
             })
           )

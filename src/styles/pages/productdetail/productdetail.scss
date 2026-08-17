@@ -143,29 +143,3 @@
     margin-top: 0;
   }
 }
-
-.product-faqs {
-  &__author {
-    display: flex;
-    gap: 0 divide($space-default, 2);
-    margin-bottom: $space-default;
-    font-size: $font-size-sm;
-    color: $text-color-tertiary;
-  }
-
-  &__author-name {
-    font-weight: $font-weight-bold;
-  }
-
-  &__author-description,
-  &__author-organization {
-    &::before {
-      margin-right: divide($space-default, 4);
-      content: '·';
-    }
-  }
-}
-
-.product-how-to {
-  padding-left: $space-default * 1.5;
-}

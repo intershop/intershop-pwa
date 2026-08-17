@@ -6,21 +6,53 @@ export interface FaqEntry {
   authorOrganization?: string;
 }
 
-export interface FaqRaw {
-  name: string;
-  acceptedAnswer: {
-    text: string;
-    author?: { name?: string; description?: string; affiliation?: { name?: string } };
-  };
+export interface SchemaFAQPage {
+  '@context': 'https://schema.org';
+  '@type': 'FAQPage';
+  mainEntity: [
+    {
+      '@type': 'Question';
+      name: string;
+      acceptedAnswer: {
+        '@type': 'Answer';
+        text: string;
+        dateModified?: string;
+        author?: {
+          '@type': 'Person';
+          name: string;
+          description?: string;
+          affiliation?: {
+            '@type': 'Organization';
+            name: string;
+          };
+        };
+      };
+    },
+  ];
 }
 
-export interface HowToStep {
-  position: number;
+export interface SchemaHowTo {
+  '@context': 'https://schema.org';
+  '@type': 'HowTo';
   name: string;
-  text: string;
-}
-
-export interface HowToData {
-  name?: string;
-  steps: HowToStep[];
+  step: [
+    {
+      '@type': 'HowToStep';
+      position: number;
+      name: string;
+      text: string;
+    },
+  ];
+  tool?: [
+    {
+      '@type': 'HowToTool';
+      name: string;
+    },
+  ];
+  supply?: [
+    {
+      '@type': 'HowToSupply';
+      name: string;
+    },
+  ];
 }

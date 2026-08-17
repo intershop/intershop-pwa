@@ -2,18 +2,18 @@
   @case ('faq') {
     @if (faq$ | async; as faqs) {
       @if (faqs.length) {
-        <dl class="product-faqs">
+        <dl class="product-faq">
           @for (faq of faqs; track faq.question) {
             <dt>{{ faq.question }}</dt>
             <dd [innerHTML]="faq.answer"></dd>
             @if (faq.authorName) {
-              <dd class="product-faqs__author">
-                <span class="product-faqs__author-name">{{ faq.authorName }}</span>
+              <dd class="author">
+                <span class="author-name">{{ faq.authorName }}</span>
                 @if (faq.authorDescription) {
-                  <span class="product-faqs__author-description">{{ faq.authorDescription }}</span>
+                  <span class="author-description">{{ faq.authorDescription }}</span>
                 }
                 @if (faq.authorOrganization) {
-                  <span class="product-faqs__author-organization">{{ faq.authorOrganization }}</span>
+                  <span class="author-organization">{{ faq.authorOrganization }}</span>
                 }
               </dd>
             }
@@ -24,16 +24,36 @@
   }
   @case ('howto') {
     @if (howTo$ | async; as howTo) {
-      @if (howTo?.steps.length) {
+      @if (howTo?.step.length) {
         <h3>{{ howTo.name }}</h3>
-        <ol class="product-how-to">
-          @for (step of howTo.steps; track step.position) {
-            <li class="product-how-to__step">
-              <strong class="product-how-to__step-name">{{ step.name }}</strong>
-              <p class="product-how-to__step-text">{{ step.text }}</p>
+
+        <h4>Steps</h4>
+        <ol class="product-how-to-steps">
+          @for (step of howTo.step; track step.position) {
+            <li>
+              <strong>{{ step.name }}</strong>
+              <p>{{ step.text }}</p>
             </li>
           }
         </ol>
+
+        @if (howTo.tool?.length) {
+          <h4>Tools</h4>
+          <ul class="product-how-to-tools">
+            @for (tool of howTo.tool; track tool.name) {
+              <li>{{ tool.name }}</li>
+            }
+          </ul>
+        }
+
+        @if (howTo.supply?.length) {
+          <h4>Supplies</h4>
+          <ul class="product-how-to-supplies">
+            @for (supply of howTo.supply; track supply.name) {
+              <li>{{ supply.name }}</li>
+            }
+          </ul>
+        }
       }
     }
   }

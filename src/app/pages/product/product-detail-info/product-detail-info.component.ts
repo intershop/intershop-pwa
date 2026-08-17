@@ -3,7 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 
@@ -26,12 +28,21 @@ export class ProductDetailInfoComponent implements OnInit {
   ngOnInit() {
     this.product$ = this.context.select('product');
     this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
-    this.hasFaq$ = this.context
-      .select('geo')
-      .pipe(map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')));
-    this.hasHowTo$ = this.context
-      .select('geo')
-      .pipe(map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')));
+
+    this.hasFaq$ = this.context.select('product').pipe(
+      map(
+        product =>
+          ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
+      ),
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ'))
+    );
+    this.hasHowTo$ = this.context.select('product').pipe(
+      map(
+        product =>
+          ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
+      ),
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO'))
+    );
 
     // when routing between products reset the opened product tab to the default tab
     this.context
