@@ -1,31 +1,30 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 
+import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
 import { ofProductUrl } from 'ish-core/routing/product/product.route';
 import { getSelectedProduct } from 'ish-core/store/shopping/products';
+import { DomService } from 'ish-core/utils/dom/dom.service';
 
 import { GeoHelper } from '../../models/geo/geo.helper';
 
 @Injectable()
 export class GeoEffects {
-  private renderer: Renderer2;
   private faqScriptEl: HTMLScriptElement | undefined;
   private howToScriptEl: HTMLScriptElement | undefined;
 
   constructor(
     private actions$: Actions,
     private store: Store,
-    rendererFactory: RendererFactory2,
-    @Inject(DOCUMENT) private document: Document
-  ) {
-    this.renderer = rendererFactory.createRenderer(undefined, undefined);
-  }
+    private domService: DomService
+  ) {}
 
   private productPage$ = this.store.pipe(
     ofProductUrl(),
@@ -42,17 +41,25 @@ export class GeoEffects {
         startWith(undefined),
         // removes existing script tag on route change
         tap(() => {
-          this.faqScriptEl = this.upsertJsonLdScript(this.faqScriptEl, undefined);
+          this.faqScriptEl = this.domService.upsertJsonLdScript(this.faqScriptEl, undefined);
         }),
         // adds new script tag on route change if faq data is available
         switchMap(() =>
           this.productPage$.pipe(
-            map(product => GeoHelper.parseFaqs(product.attributeGroups)),
+            map(
+              product =>
+                ProductHelper.getAttributesOfGroup(
+                  product,
+                  AttributeGroupTypes.ProductGeoAttributes
+                ) as Attribute<string>[]
+            ),
+            map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')?.value as string),
+            map(geoFaq => GeoHelper.parseFaq(geoFaq)),
             distinctUntilChanged(isEqual),
-            tap(faqs => {
-              this.faqScriptEl = this.upsertJsonLdScript(
+            tap(faq => {
+              this.faqScriptEl = this.domService.upsertJsonLdScript(
                 this.faqScriptEl,
-                faqs.length ? GeoHelper.buildFaqJsonLd(faqs) : undefined
+                faq.length ? GeoHelper.buildFaqJsonLd(faq) : undefined
               );
             })
           )
@@ -69,15 +76,23 @@ export class GeoEffects {
         startWith(undefined),
         // removes existing script tag on route change
         tap(() => {
-          this.howToScriptEl = this.upsertJsonLdScript(this.howToScriptEl, undefined);
+          this.howToScriptEl = this.domService.upsertJsonLdScript(this.howToScriptEl, undefined);
         }),
         // adds new script tag on route change if how-to data is available
         switchMap(() =>
           this.productPage$.pipe(
-            map(product => GeoHelper.parseHowTo(product.attributeGroups)),
+            map(
+              product =>
+                ProductHelper.getAttributesOfGroup(
+                  product,
+                  AttributeGroupTypes.ProductGeoAttributes
+                ) as Attribute<string>[]
+            ),
+            map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')?.value as string),
+            map(geoHowTo => GeoHelper.parseHowTo(geoHowTo)),
             distinctUntilChanged(isEqual),
             tap(howTo => {
-              this.howToScriptEl = this.upsertJsonLdScript(
+              this.howToScriptEl = this.domService.upsertJsonLdScript(
                 this.howToScriptEl,
                 howTo.steps.length ? GeoHelper.buildHowToJsonLd(howTo) : undefined
               );
@@ -87,23 +102,4 @@ export class GeoEffects {
       ),
     { dispatch: false }
   );
-
-  private upsertJsonLdScript(
-    existing: HTMLScriptElement | undefined,
-    jsonLd: object | undefined
-  ): HTMLScriptElement | undefined {
-    if (!jsonLd) {
-      if (existing) {
-        this.renderer.removeChild(this.document.head, existing);
-      }
-      return;
-    }
-    const el: HTMLScriptElement = existing ?? this.renderer.createElement('script');
-    this.renderer.setAttribute(el, 'type', 'application/ld+json');
-    this.renderer.setProperty(el, 'text', JSON.stringify(jsonLd, undefined, 2));
-    if (!existing) {
-      this.renderer.appendChild(this.document.head, el);
-    }
-    return el;
-  }
 }

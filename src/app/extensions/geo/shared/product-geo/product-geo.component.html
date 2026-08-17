@@ -1,6 +1,6 @@
 @switch (type) {
-  @case ('faqs') {
-    @if (faqs$ | async; as faqs) {
+  @case ('faq') {
+    @if (faq$ | async; as faqs) {
       @if (faqs.length) {
         <dl class="product-faqs">
           @for (faq of faqs; track faq.question) {
@@ -22,11 +22,12 @@
       }
     }
   }
-  @case ('howTo') {
-    @if (howToSteps$ | async; as steps) {
-      @if (steps.length) {
+  @case ('howto') {
+    @if (howTo$ | async; as howTo) {
+      @if (howTo?.steps.length) {
+        <h3>{{ howTo.name }}</h3>
         <ol class="product-how-to">
-          @for (step of steps; track step.position) {
+          @for (step of howTo.steps; track step.position) {
             <li class="product-how-to__step">
               <strong class="product-how-to__step-name">{{ step.name }}</strong>
               <p class="product-how-to__step-text">{{ step.text }}</p>

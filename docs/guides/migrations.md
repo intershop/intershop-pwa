@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 12.0.0 to 12.1.0
+
+**Generative Engine Optimization (GEO)**
+
+We introduced the Generative Engine Optimization (GEO) integration as a new extension which can be enabled with the feature toggle `geo`.
+
 ## From 11.2.0 to 12.0.0
 
 **Angular 19 upgrade**

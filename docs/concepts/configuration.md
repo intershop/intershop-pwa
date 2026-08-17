@@ -182,6 +182,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | compare                      | Product compare feature (additional configuration via `dataRetention` configuration options)                                                    |
 | contactUs                    | Allow the user to contact the website provider via a contact web form                                                                           |
 | extraConfiguration           | Fetch extra configuration information from _Configuration_ CMS component for [configurable themes](../guides/themes.md#configurable-theme) etc. |
+| geo                          | Generative Engine Optimization (GEO) integration                                                                                                |
 | productNotifications         | Product notifications feature for price and in stock notifications                                                                              |
 | rating                       | Display product ratings                                                                                                                         |
 | recently                     | Display recently viewed products (additional configuration via `dataRetention` configuration options)                                           |

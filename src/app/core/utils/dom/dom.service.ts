@@ -155,4 +155,23 @@ export class DomService {
       this.renderer.removeClass(el, cssClass);
     }
   }
+
+  upsertJsonLdScript(
+    existing: HTMLScriptElement | undefined,
+    jsonLd: object | undefined
+  ): HTMLScriptElement | undefined {
+    if (!jsonLd) {
+      if (existing) {
+        this.renderer.removeChild(this.document.head, existing);
+      }
+      return;
+    }
+    const el: HTMLScriptElement = existing ?? this.renderer.createElement('script');
+    this.renderer.setAttribute(el, 'type', 'application/ld+json');
+    this.renderer.setProperty(el, 'text', JSON.stringify(jsonLd, undefined, 2));
+    if (!existing) {
+      this.renderer.appendChild(this.document.head, el);
+    }
+    return el;
+  }
 }

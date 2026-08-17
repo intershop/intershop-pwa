@@ -11,7 +11,7 @@ import { LazyProductGeoComponent } from './lazy-product-geo/lazy-product-geo.com
     {
       provide: LAZY_FEATURE_MODULE,
       useValue: {
-        feature: 'always',
+        feature: 'geo',
         location: () => import('../store/geo-store.module').then(m => m.GeoStoreModule),
       },
       multi: true,

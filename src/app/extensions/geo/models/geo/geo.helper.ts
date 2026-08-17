@@ -1,19 +1,10 @@
-import { ProductData } from 'ish-core/models/product/product.interface';
-
-import { FaqEntry, HowToData, HowToStep } from './geo.model';
-
-interface FaqRaw {
-  name: string;
-  acceptedAnswer: {
-    text: string;
-    author?: { name?: string; description?: string; affiliation?: { name?: string } };
-  };
-}
+import { FaqEntry, FaqRaw, HowToData, HowToStep } from './geo.model';
 
 export class GeoHelper {
-  static parseFaqs(attributeGroups: ProductData['attributeGroups']): FaqEntry[] {
-    const parsed = GeoHelper.parseGeoAttribute<{ mainEntity?: FaqRaw[] } | FaqRaw[]>(attributeGroups, 'GEO_FAQ');
-    const entities = Array.isArray(parsed) ? parsed : parsed?.mainEntity;
+  static parseFaq(attributeData: string): FaqEntry[] {
+    const parsed = GeoHelper.parseGeoAttribute<{ mainEntity?: FaqRaw[] }>(attributeData);
+    console.log('PARSED FAQ', parsed);
+    const entities = parsed?.mainEntity;
     if (!Array.isArray(entities)) {
       return [];
     }
@@ -26,17 +17,15 @@ export class GeoHelper {
     }));
   }
 
-  static parseHowTo(attributeGroups: ProductData['attributeGroups']): HowToData {
-    const parsed = GeoHelper.parseGeoAttribute<{ name?: string; step?: HowToStep[] } | HowToStep[]>(
-      attributeGroups,
-      'GEO_HOW_TO'
-    );
-    const steps = Array.isArray(parsed) ? parsed : parsed?.step;
+  static parseHowTo(attributeData: string): HowToData {
+    const parsed = GeoHelper.parseGeoAttribute<{ name?: string; step?: HowToStep[] }>(attributeData);
+    console.log('PARSED HOWTO', parsed);
+    const steps = parsed?.step;
     if (!Array.isArray(steps)) {
       return { steps: [] };
     }
     return {
-      name: !Array.isArray(parsed) && typeof parsed?.name === 'string' ? parsed.name : undefined,
+      name: parsed.name,
       steps: steps.map(s => ({ position: s.position, name: s.name, text: s.text })),
     };
   }
@@ -82,23 +71,12 @@ export class GeoHelper {
     };
   }
 
-  private static getGeoAttributeValue(
-    attributeGroups: ProductData['attributeGroups'],
-    name: 'GEO_FAQ' | 'GEO_HOW_TO'
-  ): object | string | undefined {
-    return attributeGroups?.GEO?.attributes?.find(a => a.name === name)?.value as object | string | undefined;
-  }
-
-  private static parseGeoAttribute<T>(
-    attributeGroups: ProductData['attributeGroups'],
-    name: 'GEO_FAQ' | 'GEO_HOW_TO'
-  ): T | undefined {
-    const value = GeoHelper.getGeoAttributeValue(attributeGroups, name);
-    if (!value) {
+  private static parseGeoAttribute<T>(attributeData: string): T | undefined {
+    if (!attributeData) {
       return;
     }
     try {
-      return typeof value === 'string' ? (JSON.parse(value) as T) : (value as T);
+      return JSON.parse(attributeData) as T;
     } catch {
       return;
     }

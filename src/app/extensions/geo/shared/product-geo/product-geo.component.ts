@@ -2,11 +2,13 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angu
 import { Observable, map, shareReplay } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { GeoHelper } from '../../models/geo/geo.helper';
-import { FaqEntry, HowToStep } from '../../models/geo/geo.model';
+import { FaqEntry, HowToData } from '../../models/geo/geo.model';
 
-type ProductGeoType = 'faqs' | 'howTo';
+type ProductGeoType = 'faq' | 'howto';
 
 @Component({
   selector: 'ish-product-geo',
@@ -14,23 +16,26 @@ type ProductGeoType = 'faqs' | 'howTo';
   templateUrl: './product-geo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+@GenerateLazyComponent()
 export class ProductGeoComponent implements OnInit {
   @Input({ required: true }) type: ProductGeoType;
 
-  faqs$: Observable<FaqEntry[]>;
-  howToSteps$: Observable<HowToStep[]>;
+  faq$: Observable<FaqEntry[]>;
+  howTo$: Observable<HowToData>;
 
   private context = inject(ProductContextFacade);
 
   ngOnInit() {
-    if (this.type === 'faqs') {
-      this.faqs$ = this.context.select('product').pipe(
-        map(product => GeoHelper.parseFaqs(product.attributeGroups)),
+    if (this.type === 'faq') {
+      this.faq$ = this.context.select('geo').pipe(
+        map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')?.value as string),
+        map(geoFaq => GeoHelper.parseFaq(geoFaq)),
         shareReplay(1)
       );
-    } else if (this.type === 'howTo') {
-      this.howToSteps$ = this.context.select('product').pipe(
-        map(product => GeoHelper.parseHowTo(product.attributeGroups).steps),
+    } else if (this.type === 'howto') {
+      this.howTo$ = this.context.select('geo').pipe(
+        map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')?.value as string),
+        map(geoHowTo => GeoHelper.parseHowTo(geoHowTo)),
         shareReplay(1)
       );
     }
