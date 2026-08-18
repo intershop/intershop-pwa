@@ -86,6 +86,7 @@ kb_sync_latest_only
 - [Concept - Logging](./concepts/logging.md)
 - [Guide - CI](./guides/continuous-integration.md)
 - [Guide - Optimizations](./guides/optimizations.md)
+- [Guide - Markdown Mirrors](./guides/markdown-mirrors.md)
 
 ### Third-party Integrations
 
