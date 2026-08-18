@@ -13,8 +13,7 @@ export class GeoHelper {
   }
 
   static parseFaq(attributeData: string): FaqEntry[] {
-    const parsed = GeoHelper.parseGeoAttribute<SchemaFAQPage>(attributeData);
-    const entities = parsed?.mainEntity;
+    const entities = GeoHelper.parseGeoAttribute<SchemaFAQPage>(attributeData)?.mainEntity;
     if (!Array.isArray(entities)) {
       return [];
     }

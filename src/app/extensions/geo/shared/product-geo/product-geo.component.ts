@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angu
 import { Observable, map, shareReplay } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeGroupTypes, GeoAttributes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
@@ -36,7 +36,7 @@ export class ProductGeoComponent implements OnInit {
           product =>
             ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
         ),
-        map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')?.value as string),
+        map(geo => AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoFaq)?.value as string),
         map(geoFaq => GeoHelper.parseFaq(geoFaq)),
         shareReplay(1)
       );
@@ -46,7 +46,7 @@ export class ProductGeoComponent implements OnInit {
           product =>
             ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
         ),
-        map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')?.value as string),
+        map(geo => AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoHowTo)?.value as string),
         map(geoHowTo => GeoHelper.parseGeoAttribute<SchemaHowTo>(geoHowTo)),
         shareReplay(1)
       );

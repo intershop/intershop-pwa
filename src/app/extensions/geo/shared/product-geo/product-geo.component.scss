@@ -29,11 +29,8 @@
   &-supplies {
     padding-left: $space-default * 1.5;
   }
+}
 
-  &-tools,
-  &-supplies {
-    li {
-      font-family: $font-family-bold;
-    }
-  }
+h4 {
+  font-family: $font-family-bold;
 }

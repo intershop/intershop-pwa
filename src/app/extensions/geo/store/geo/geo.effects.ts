@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import { distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 
-import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeGroupTypes, GeoAttributes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
@@ -54,7 +54,7 @@ export class GeoEffects {
                   AttributeGroupTypes.ProductGeoAttributes
                 ) as Attribute<string>[]
             ),
-            map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ')?.value as string),
+            map(geo => AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoFaq)?.value as string),
             map(geoFaq => GeoHelper.parseGeoAttribute<SchemaFAQPage>(geoFaq)),
             distinctUntilChanged(isEqual),
             tap(faq => {
@@ -89,13 +89,13 @@ export class GeoEffects {
                   AttributeGroupTypes.ProductGeoAttributes
                 ) as Attribute<string>[]
             ),
-            map(geo => AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO')?.value as string),
+            map(geo => AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoHowTo)?.value as string),
             map(geoHowTo => GeoHelper.parseGeoAttribute<SchemaHowTo>(geoHowTo)),
             distinctUntilChanged(isEqual),
             tap(howTo => {
               this.howToScriptEl = this.domService.upsertJsonLdScript(
                 this.howToScriptEl,
-                howTo.step?.length ? howTo : undefined
+                howTo?.step?.length ? howTo : undefined
               );
             })
           )

@@ -1,5 +1,9 @@
 export enum AttributeGroupTypes {
-  ProductGeoAttributes = 'GEO',
-  // ProductGeoAttributes = 'PRODUCT_GEO_ATTRIBUTES',
+  ProductGeoAttributes = 'PRODUCT_GEO_ATTRIBUTES',
   ProductLabelAttributes = 'PRODUCT_LABEL_ATTRIBUTES',
+}
+
+export enum GeoAttributes {
+  GeoFaq = 'GEO_FAQ',
+  GeoHowTo = 'GEO_HOW_TO',
 }

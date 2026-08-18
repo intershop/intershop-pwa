@@ -168,7 +168,9 @@ export class DomService {
     }
     const el: HTMLScriptElement = existing ?? this.renderer.createElement('script');
     this.renderer.setAttribute(el, 'type', 'application/ld+json');
-    this.renderer.setProperty(el, 'text', JSON.stringify(jsonLd, undefined, 2));
+    // escape '<' so a '</script>' inside a value cannot break out during SSR serialization
+    const serialized = JSON.stringify(jsonLd, undefined, 2).replace(/</g, '\\u003c');
+    this.renderer.setProperty(el, 'text', serialized);
     if (!existing) {
       this.renderer.appendChild(this.document.head, el);
     }

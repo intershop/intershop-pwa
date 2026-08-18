@@ -12,6 +12,8 @@ kb_sync_latest_only
 **Generative Engine Optimization (GEO)**
 
 We introduced the Generative Engine Optimization (GEO) integration as a new extension which can be enabled with the feature toggle `geo`.
+The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if according generated data is available at the product.
+It also adds [JSON-LD](https://json-ld.org/) information to the HTML header of the product detail page.
 
 ## From 11.2.0 to 12.0.0
 

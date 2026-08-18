@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { AttributeGroupTypes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeGroupTypes, GeoAttributes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
@@ -34,14 +34,14 @@ export class ProductDetailInfoComponent implements OnInit {
         product =>
           ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
       ),
-      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_FAQ'))
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoFaq))
     );
     this.hasHowTo$ = this.context.select('product').pipe(
       map(
         product =>
           ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
       ),
-      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, 'GEO_HOW_TO'))
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoHowTo))
     );
 
     // when routing between products reset the opened product tab to the default tab
