@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Configure Docker image tags based on Git references.
       # The configuration here will push the `develop` branch as `latest`
@@ -79,7 +79,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # Configure Docker image tags based on Git references.
       # The configuration here will push the `develop` branch as `latest`
