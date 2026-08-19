@@ -1,11 +1,13 @@
+import { LocationStrategy } from '@angular/common';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { filter, first, fromEvent, map, switchMap, tap, withLatestFrom } from 'rxjs';
 
 import { designViewActions, getDesignViewSelectedPageletId } from 'ish-core/store/content/design-view';
-import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
+import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 interface DesignViewMessage<T = ToDVMessageType> {
@@ -15,10 +17,15 @@ interface DesignViewMessage<T = ToDVMessageType> {
 }
 
 type FromDVMessageType =
-  'dv-clientHighlightPagelet' | 'dv-clientPreviewPagelet' | 'dv-clientRefresh' | 'dv-clientScrollToPagelet';
+  | 'dv-clientHighlightPagelet'
+  | 'dv-clientPreviewPagelet'
+  | 'dv-clientRefresh'
+  | 'dv-clientScrollToPagelet'
+  | 'dv-clientSetLocale';
 
 type ToDVMessageType =
   | 'dv-clientAction'
+  | 'dv-clientAvailableLocales'
   | 'dv-clientContentIds'
   | 'dv-clientLocale'
   | 'dv-clientNavigation'
@@ -33,7 +40,9 @@ export class DesignViewService {
     private router: Router,
     private appRef: ApplicationRef,
     private domService: DomService,
-    private store: Store
+    private store: Store,
+    private locationStrategy: LocationStrategy,
+    private multiSiteService: MultiSiteService
   ) {
     if (!SSR && new URLSearchParams(window.location.search).has('DesignView')) {
       this.setDesignViewMode(true);
@@ -151,6 +160,13 @@ export class DesignViewService {
         )
       )
       .subscribe(locale => this.messageToHost({ type: 'dv-clientLocale', payload: { locale } }));
+
+    // send `dv-clientAvailableLocales` event when application is stable and the available locales were determined
+    stable$
+      .pipe(switchMap(() => this.store.pipe(select(getAvailableLocales), whenTruthy(), first())))
+      .subscribe(availableLocales =>
+        this.messageToHost({ type: 'dv-clientAvailableLocales', payload: { availableLocales } })
+      );
   }
 
   /**
@@ -173,6 +189,22 @@ export class DesignViewService {
       }
       case 'dv-clientScrollToPagelet': {
         this.store.dispatch(designViewActions.scrollToPagelet({ pageletId: message.payload.componentId }));
+        break;
+      }
+      case 'dv-clientSetLocale': {
+        const locale: string = message.payload.locale;
+        const [path, queryString] = this.locationStrategy.path().split('?');
+        this.multiSiteService
+          .getLangUpdatedUrl(locale, path)
+          .pipe(first())
+          .subscribe(url => {
+            const finalUrl = this.multiSiteService.appendUrlParams(
+              url,
+              url === path ? { lang: locale } : {},
+              queryString
+            );
+            location.assign(finalUrl);
+          });
         break;
       }
       default: {
