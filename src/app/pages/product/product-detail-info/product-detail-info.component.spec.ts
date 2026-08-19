@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockDirective } from 'ng-mocks';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -9,6 +9,8 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
+
+import { LazyProductReviewsComponent } from '../../../extensions/rating/exports/lazy-product-reviews/lazy-product-reviews.component';
 
 import { ProductDetailInfoComponent } from './product-detail-info.component';
 
@@ -26,7 +28,11 @@ describe('Product Detail Info Component', () => {
 
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('rating'), NgbNavModule, TranslatePipe],
-      declarations: [MockDirective(ServerHtmlDirective), ProductDetailInfoComponent],
+      declarations: [
+        MockComponent(LazyProductReviewsComponent),
+        MockDirective(ServerHtmlDirective),
+        ProductDetailInfoComponent,
+      ],
       providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
     }).compileComponents();
   });

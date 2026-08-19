@@ -289,6 +289,8 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             /\bcarousel\b/,
             /\bslide\b/,
             /\bnav-tabs\b/,
+            /\btab-content\b/,
+            /\btab-pane\b/,
             /\bnav-link\b/,
             /\bpopover\b/,
             /\btable\b/,
