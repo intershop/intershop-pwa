@@ -102,3 +102,4 @@ kb_sync_latest_only
 ## Agent Readiness
 
 - [Guide - Markdown Mirrors](./guides/markdown-mirrors.md)
+- [Guide - llms.txt](./guides/llms-txt.md)
