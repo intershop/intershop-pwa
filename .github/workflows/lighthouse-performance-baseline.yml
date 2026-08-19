@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: package.json
           cache: npm
@@ -51,7 +51,7 @@ jobs:
             -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
 
       - name: Run docker compose to start SSR and nginx
-        uses: hoverkraft-tech/compose-action@v2
+        uses: hoverkraft-tech/compose-action@v3
         with:
           compose-file: '.github/lighthouse/docker-compose.yml'
           up-flags: '--build'
@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload baseline Lighthouse reports
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports-baseline
           path: |
