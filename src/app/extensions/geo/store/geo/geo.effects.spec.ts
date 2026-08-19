@@ -4,6 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import { GeoAttributes } from 'ish-core/models/attribute-group/attribute-group.types';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { ProductHelper } from 'ish-core/models/product/product.model';
 import { routerTestNavigationAction } from 'ish-core/utils/dev/routing';
@@ -71,7 +72,9 @@ describe('Geo Effects', () => {
         ],
       };
 
-      jest.spyOn(AttributeHelper, 'getAttributeByAttributeName').mockReturnValue({ name: 'GEO_FAQ', value: 'faq' });
+      jest
+        .spyOn(AttributeHelper, 'getAttributeByAttributeName')
+        .mockReturnValue({ name: GeoAttributes.GeoFaq, value: 'faq' });
       jest.spyOn(GeoHelper, 'parseGeoAttribute').mockReturnValueOnce(faq).mockReturnValueOnce(undefined);
       (domServiceMock.upsertJsonLdScript as jest.Mock)
         .mockReturnValueOnce(existingScript)
@@ -100,7 +103,9 @@ describe('Geo Effects', () => {
     });
 
     it('should not insert FAQ json-ld script for invalid payload', done => {
-      jest.spyOn(AttributeHelper, 'getAttributeByAttributeName').mockReturnValue({ name: 'GEO_FAQ', value: 'invalid' });
+      jest
+        .spyOn(AttributeHelper, 'getAttributeByAttributeName')
+        .mockReturnValue({ name: GeoAttributes.GeoFaq, value: 'invalid' });
       jest.spyOn(GeoHelper, 'parseGeoAttribute').mockReturnValue(undefined);
       (domServiceMock.upsertJsonLdScript as jest.Mock).mockReturnValue(undefined);
 
@@ -128,7 +133,7 @@ describe('Geo Effects', () => {
 
       jest
         .spyOn(AttributeHelper, 'getAttributeByAttributeName')
-        .mockReturnValue({ name: 'GEO_HOW_TO', value: 'howTo' });
+        .mockReturnValue({ name: GeoAttributes.GeoHowTo, value: 'howTo' });
       jest.spyOn(GeoHelper, 'parseGeoAttribute').mockReturnValue(howTo);
       (domServiceMock.upsertJsonLdScript as jest.Mock).mockReturnValue(undefined);
 
