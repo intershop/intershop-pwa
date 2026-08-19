@@ -24,7 +24,7 @@
   }
   @case ('howto') {
     @if (howTo$ | async; as howTo) {
-      @if (howTo?.step.length) {
+      @if (howTo?.step?.length) {
         <h3>{{ howTo.name }}</h3>
 
         <h4>{{ 'product.how_to.steps' | translate }}</h4>

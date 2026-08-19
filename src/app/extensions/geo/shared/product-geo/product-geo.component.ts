@@ -25,7 +25,7 @@ export class ProductGeoComponent implements OnInit {
   @Input({ required: true }) type: ProductGeoType;
 
   faq$: Observable<FaqEntry[]>;
-  howTo$: Observable<SchemaHowTo>;
+  howTo$: Observable<SchemaHowTo | undefined>;
 
   private context = inject(ProductContextFacade);
 
