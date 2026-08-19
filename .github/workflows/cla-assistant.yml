@@ -40,7 +40,7 @@ jobs:
           path-to-document: 'https://github.com/intershop/intershop-pwa/blob/12.0.0/INTERSHOP_CLA.md' # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: 'main'
-          #allowlist: user1,bot*
+          allowlist: '*[bot]'
 
           # The following are the optional inputs. If the optional inputs are not provided, the default values are used.
           remote-organization-name: intershop # Enter the remote organization name where the signatures should be stored (Default is storing the signatures in the same repository).
