@@ -155,4 +155,25 @@ export class DomService {
       this.renderer.removeClass(el, cssClass);
     }
   }
+
+  upsertJsonLdScript(
+    existing: HTMLScriptElement | undefined,
+    jsonLd: object | undefined
+  ): HTMLScriptElement | undefined {
+    if (!jsonLd) {
+      if (existing) {
+        this.renderer.removeChild(this.document.head, existing);
+      }
+      return;
+    }
+    const el: HTMLScriptElement = existing ?? this.renderer.createElement('script');
+    this.renderer.setAttribute(el, 'type', 'application/ld+json');
+    // escape '<' so a '</script>' inside a value cannot break out during SSR serialization
+    const serialized = JSON.stringify(jsonLd, undefined, 2).replace(/</g, '\\u003c');
+    this.renderer.setProperty(el, 'text', serialized);
+    if (!existing) {
+      this.renderer.appendChild(this.document.head, el);
+    }
+    return el;
+  }
 }
