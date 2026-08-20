@@ -89,9 +89,17 @@ Make sure to use them as written in the table below.
 > For production deployments, set `ALLOWED_HOSTS` to the public hostname(s) under which the PWA is served (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
 > When unset, only `localhost` is accepted.
 > Restricting the allowed hosts ensures that only requests with a trusted `Host` header are rendered server-side.
-> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> environment:
+>   - name: ALLOWED_HOSTS
+>     value: 'shop.example.com,*.example.com'
+> ```
 
 ## Development
 

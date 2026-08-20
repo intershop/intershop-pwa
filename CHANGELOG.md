@@ -7,6 +7,55 @@ kb_everyone
 
 # Changelog
 
+## [12.1.0](https://github.com/intershop/intershop-pwa/releases/tag/12.1.0) (2026-08-20)
+
+> [!NOTE]
+> Intershop PWA 12.1.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.4.0.
+> It will work with all versions from ICM 14.4.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 12.1.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 22.22.0 LTS (including npm 10.9.4), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.13.0 for PWA 12.1.0 deployments.
+
+> [!IMPORTANT]
+> For production deployments, set `ALLOWED_HOSTS` to the public hostname(s) under which the PWA is served (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
+> When unset, only `localhost` is accepted.
+> Restricting the allowed hosts ensures that only requests with a trusted `Host` header are rendered server-side.
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> environment:
+>   - name: ALLOWED_HOSTS
+>     value: 'shop.example.com,*.example.com'
+> ```
+
+### Features
+
+- Generative Engine Optimization (GEO) integration for product detail pages (#2155) ([cb7e85b](https://github.com/intershop/intershop-pwa/commit/cb7e85b))
+- introduce `ng update` based migration support for PWA 12.0.0 (#2143) ([9980ea5](https://github.com/intershop/intershop-pwa/commit/9980ea5))
+- forward PAYONE credit card type to ICM (#2147) ([952a263](https://github.com/intershop/intershop-pwa/commit/952a263))
+- **Design View:** add locale (languge switch) handling (#2161) ([2a06c90](https://github.com/intershop/intershop-pwa/commit/2a06c90))
+
+### Bug Fixes
+
+- quantity for adding retail set products to order template (#2160) ([9df1ba4](https://github.com/intershop/intershop-pwa/commit/9df1ba4))
+- sanitize hash character in product variation slugs (#2159) ([425a610](https://github.com/intershop/intershop-pwa/commit/425a610))
+- validate `baseHref` parameter to prevent base href hijacking (#2156) ([4a80ec8](https://github.com/intershop/intershop-pwa/commit/4a80ec8))
+- add `ADDITIONAL_HEADERS` to error responses as well (e.g. CSP headers) (#2158) ([5deb916](https://github.com/intershop/intershop-pwa/commit/5deb916))
+- quantity for adding retail set products to quote (#2146) ([f511e3f](https://github.com/intershop/intershop-pwa/commit/f511e3f))
+- prevent console error on product review tab (#2144) ([2a34b9f](https://github.com/intershop/intershop-pwa/commit/2a34b9f))
+
+### Dependencies
+
+- migration of `conventional-changelog` from version 7 to 8 (removed Handlebars templates) (#2165) ([d01c777](https://github.com/intershop/intershop-pwa/commit/d01c777))
+
 ## [12.0.0](https://github.com/intershop/intershop-pwa/releases/tag/12.0.0) (2026-07-22)
 
 > [!NOTE]
@@ -24,9 +73,17 @@ kb_everyone
 > For production deployments, set `ALLOWED_HOSTS` to the public hostname(s) under which the PWA is served (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
 > When unset, only `localhost` is accepted.
 > Restricting the allowed hosts ensures that only requests with a trusted `Host` header are rendered server-side.
-> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> environment:
+>   - name: ALLOWED_HOSTS
+>     value: 'shop.example.com,*.example.com'
+> ```
 
 ### Features
 
@@ -96,7 +153,7 @@ kb_everyone
 
 ### CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS
 
-- add CMS include at the top of the registration page (#2108) - icm-as-customization-headless:4.3.0
+- add CMS include at the top of the registration page (#2108) - icm-as-customization-headless:4.2.1
 - reduction of order template and wishlist calls (#2048) - ICM 14.2.0
 - display customer approval message after registration (#2132) - ICM 14.2.0
 

@@ -52,6 +52,14 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 > Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> environment:
+>   - name: ALLOWED_HOSTS
+>     value: 'shop.example.com,*.example.com'
+> ```
 
 **ESLint Perfectionist plugin**
 
