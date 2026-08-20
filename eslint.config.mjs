@@ -409,7 +409,7 @@ export default defineConfig([
           {
             importNamePattern: 'tap',
             name: 'rxjs/operators',
-            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages)\\.effects\\.ts$).*\\.effects\\.ts*$',
+            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts*$',
             message:
               'The usage of "tap" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code.',
           },

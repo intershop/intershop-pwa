@@ -43,6 +43,24 @@
           </ng-template>
         </ng-container>
       }
+      <!-- FAQ -->
+      @if (hasFaq$ | async) {
+        <ng-container *ishFeature="'geo'" [ngbNavItem]="'FAQ'">
+          <a ngbNavLink>{{ 'product.faq.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-lazy-product-geo type="faq" />
+          </ng-template>
+        </ng-container>
+      }
+      <!-- How To -->
+      @if (hasHowTo$ | async) {
+        <ng-container *ishFeature="'geo'" [ngbNavItem]="'HOW_TO'">
+          <a ngbNavLink>{{ 'product.how_to.heading' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-lazy-product-geo type="howto" />
+          </ng-template>
+        </ng-container>
+      }
     </nav>
     <div [ngbNavOutlet]="nav"></div>
   </div>

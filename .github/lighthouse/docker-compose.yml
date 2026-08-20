@@ -14,9 +14,13 @@ services:
     depends_on:
       - pwa
     ports:
-      - '4200:80'
+      - '4200:443'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
       CACHE: 1
+      CACHE_DURATION_NGINX_OK: 60m
+      SSL: 1
+    volumes:
+      - ./certs:/var/nginx/certs:ro

@@ -24,10 +24,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: package.json
           cache: npm
@@ -42,8 +42,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate self-signed TLS certificate for HTTP/2
+        run: |
+          mkdir -p .github/lighthouse/certs
+          openssl req -x509 -newkey rsa:2048 -sha256 -nodes \
+            -keyout .github/lighthouse/certs/key.pem \
+            -out .github/lighthouse/certs/cert.pem \
+            -days 365 -subj '/CN=localhost' \
+            -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+
       - name: Run docker compose to start SSR and nginx
-        uses: hoverkraft-tech/compose-action@v2
+        uses: hoverkraft-tech/compose-action@v3
         with:
           compose-file: '.github/lighthouse/docker-compose.yml'
           up-flags: '--build'
@@ -54,7 +63,7 @@ jobs:
           urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
           for url in $urls; do
             echo "Warming up $url"
-            curl -s "$url" >/dev/null
+            curl -sk "$url" >/dev/null
           done
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)
@@ -71,7 +80,7 @@ jobs:
 
       - name: Upload current Lighthouse reports
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports-current
           path: |
@@ -80,7 +89,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Download baseline Lighthouse reports
-        uses: dawidd6/action-download-artifact@v12
+        uses: dawidd6/action-download-artifact@v23
         with:
           workflow: lighthouse-performance-baseline.yml
           branch: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_branch || github.ref_name }}

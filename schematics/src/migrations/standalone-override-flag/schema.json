@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "SchematicsPWAComponent",
-  "title": "Formly 6 Migration",
-  "description": "Tool to do the migration from formly 5 to version 6.",
+  "$id": "SchematicsPWAStandaloneOverrideFlagMigration",
+  "title": "Standalone Override Flag Migration",
+  "description": "Synchronizes the standalone flag of theme override artifacts with their related standard artifact.",
   "type": "object",
   "additionalProperties": false,
   "properties": {

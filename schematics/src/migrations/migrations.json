@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "explicit-standalone-flag": {
+      "version": "12.0.0",
+      "description": "Runs Angular's explicit-standalone-flag migration on the project's in-program (NgModule-declared) custom artifacts.",
+      "factory": "./explicit-standalone-flag/factory#migrateExplicitStandaloneFlag"
+    },
+    "standalone-override-flag": {
+      "version": "12.0.0",
+      "description": "Synchronizes the standalone flag of theme override artifacts with their related standard artifact.",
+      "factory": "./standalone-override-flag/factory#migrateStandaloneOverrideFlag",
+      "schema": "./standalone-override-flag/schema.json"
+    },
+    "ngx-translate18": {
+      "version": "12.0.0",
+      "description": "Migrates custom code to the ngx-translate 17/18 breaking changes: TranslateService API renames and the removal of TranslateModule in favor of TranslatePipe and provideTranslateService.",
+      "factory": "./ngx-translate18/factory#migrateNgxTranslate"
+    }
+  }
+}

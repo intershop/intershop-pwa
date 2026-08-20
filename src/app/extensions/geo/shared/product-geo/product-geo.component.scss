@@ -1,0 +1,36 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.product-faq {
+  .author {
+    display: flex;
+    gap: 0 divide($space-default, 2);
+    margin-bottom: $space-default;
+    font-size: $font-size-sm;
+    color: $text-color-tertiary;
+
+    &-name {
+      font-family: $font-family-bold;
+    }
+
+    &-description,
+    &-organization {
+      &::before {
+        margin-right: divide($space-default, 3);
+        content: '·';
+      }
+    }
+  }
+}
+
+.product-how-to {
+  &-steps,
+  &-tools,
+  &-supplies {
+    padding-left: $space-default * 1.5;
+  }
+}
+
+h4 {
+  font-family: $font-family-bold;
+}

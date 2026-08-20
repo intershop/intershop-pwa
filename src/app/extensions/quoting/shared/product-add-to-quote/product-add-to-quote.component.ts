@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductHelper } from 'ish-core/models/product/product.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
@@ -38,8 +39,10 @@ export class ProductAddToQuoteComponent implements OnInit {
   }
 
   addToQuote() {
+    const product = this.context.get('product');
+    const quantity = ProductHelper.isRetailSet(product) ? 1 : this.context.get('quantity');
     this.router.navigate(['/addProductToQuoteRequest'], {
-      queryParams: { sku: this.context.get('sku'), quantity: this.context.get('quantity') },
+      queryParams: { sku: this.context.get('sku'), quantity },
     });
   }
 }

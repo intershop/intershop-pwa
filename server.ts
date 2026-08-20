@@ -508,11 +508,16 @@ export function app() {
       }
     }
 
-    // find last baseHref parameter
-    const regex = /baseHref=([^;?#]*)/g;
+    // extract last baseHref from matrix params only (;baseHref=...), ignore query string
+    const pathPart = req.originalUrl.split('?')[0];
+    const baseHrefRegex = /;baseHref=([^;]*)/g;
     let baseHref = '/';
-    for (let match: RegExpExecArray; (match = regex.exec(req.originalUrl));) {
+    for (let match: RegExpExecArray; (match = baseHrefRegex.exec(pathPart));) {
       baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
+    }
+    // only allow simple path segments to prevent base href hijacking
+    if (!/^\/([a-zA-Z0-9][a-zA-Z0-9\-._/]*)?$/.test(baseHref)) {
+      baseHref = '/';
     }
 
     commonEngine

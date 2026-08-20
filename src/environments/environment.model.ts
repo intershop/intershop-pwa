@@ -31,6 +31,7 @@ export interface Environment {
     | 'compare'
     | 'contactUs'
     | 'extraConfiguration'
+    | 'geo'
     | 'productNotifications'
     | 'rating'
     | 'recently'
@@ -162,6 +163,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   features: [
     'compare',
     'contactUs',
+    'geo',
     'productNotifications',
     'rating',
     'recently',

@@ -1251,6 +1251,11 @@
   "product.details.company.label": "Rechercher dans la boutique en ligne : {{0}}",
   "product.details.heading": "Détails",
   "product.email_a_friend.link": "Envoyer un courriel à un(e) ami(e)",
+  "product.faq.heading": "FAQ",
+  "product.how_to.heading": "Mode d'emploi",
+  "product.how_to.steps": "Étapes",
+  "product.how_to.supplies": "Fournitures",
+  "product.how_to.tools": "Outils",
   "product.image.not_available.alttext": "Aucune image du produit disponible",
   "product.image.text.alttext": "photo du produit",
   "product.instock.text": "En stock",
@@ -1599,6 +1604,5 @@
   "wishlist.table.header.price": "Prix",
   "wishlist.table.options.move_to_another_wishlist": "Déplacer vers une autre liste",
   "wishlist.table.options.remove": "Supprimer",
-  "withdrawal.status.label.approved": "Approuvée",
   "withdrawal.status.label.received": "Reçue"
 }

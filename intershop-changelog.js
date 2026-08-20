@@ -1,6 +1,4 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
 
 module.exports = {
   parser: {
@@ -52,11 +50,10 @@ module.exports = {
         diff.hash = commit.hash.substring(0, 7);
       }
 
-      // remove references that already appear in the subject
       var issues = [];
       diff.references = commit.references.filter(reference => issues.indexOf(reference.issue) === -1);
 
-      return Object.assign({}, commit, diff);
+      return diff;
     },
     groupBy: 'type',
     commitGroupsSort: function (arg1, arg2) {
@@ -83,9 +80,51 @@ module.exports = {
     commitsSort: ['scope'],
     noteGroupsSort: 'title',
     notesSort: 'text',
-    mainTemplate: fs.readFileSync(path.resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
-    headerPartial: fs.readFileSync(path.resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
-    commitPartial: fs.readFileSync(path.resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-    footerPartial: fs.readFileSync(path.resolve(__dirname, 'templates/footer.hbs'), 'utf-8'),
+    headerPartial: function (context) {
+      return `## [${context.version}](${context.host}/${context.owner}/${context.repository}/releases/tag/${context.version}) (${context.date})`;
+    },
+    commitPartial: function (context, commit) {
+      var repoUrl = context.repository
+        ? [context.host, context.owner, context.repository].filter(Boolean).join('/')
+        : context.repoUrl || '';
+      var commitPath = context.commit || 'commit';
+      var scope = commit.scope ? `**${commit.scope}:** ` : '';
+      var subject = commit.subject || commit.header || '';
+      var hashRef = '';
+      if (commit.hash) {
+        hashRef = context.linkReferences
+          ? ` ([${commit.hash}](${repoUrl}/${commitPath}/${commit.hash}))`
+          : ` ${commit.hash}`;
+      }
+      return `${scope}${subject}${hashRef}`;
+    },
+    footerPartial: function (context) {
+      var result = '';
+      if (context?.noteGroups?.length) {
+        context.noteGroups.forEach(group => {
+          result += `\n### ${group.title}\n\n`;
+          group.notes.forEach(note => {
+            result += `- ${note.commit?.scope ? `**${note.commit.scope}:** ` : ''}${note.text}\n`;
+          });
+        });
+      }
+      return result;
+    },
+    template: function (context) {
+      var { headerPartial, commitPartial, footerPartial } = context;
+      var commitGroups = context.commitGroups || [];
+      var result = headerPartial(context) + '\n';
+      commitGroups.forEach(group => {
+        if (group.title) {
+          result += '\n### ' + group.title + '\n\n';
+        }
+        group.commits.forEach(commit => {
+          result += '- ' + commitPartial(context, commit) + '\n';
+        });
+      });
+      result += footerPartial(context);
+      result += '\n';
+      return result;
+    },
   },
 };

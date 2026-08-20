@@ -95,9 +95,17 @@ Read on for a step-by-step walkthrough of the initial connection request.
 > [!IMPORTANT]
 > For production deployments, set the `ALLOWED_HOSTS` environment variable on the [SSR container](../guides/ssr-startup.md) to your public hostname(s) (e.g., `ALLOWED_HOSTS=shop.example.com,*.example.com`).
 > By default, only `localhost` is accepted, which will cause SSR to fail for requests with any other `Host` header.
-> Failing to configure the correct ALLOWED_HOSTS will result in the following error message:
+> Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> environment:
+>   - name: ALLOWED_HOSTS
+>     value: 'shop.example.com,*.example.com'
+> ```
 
 ## Deployment Without Nginx
 

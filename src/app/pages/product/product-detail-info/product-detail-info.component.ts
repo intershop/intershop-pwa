@@ -3,6 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable, map } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AttributeGroupTypes, GeoAttributes } from 'ish-core/models/attribute-group/attribute-group.types';
+import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.helper';
 
@@ -15,21 +18,36 @@ import { ProductHelper } from 'ish-core/models/product/product.helper';
 export class ProductDetailInfoComponent implements OnInit {
   product$: Observable<ProductView>;
   isVariationMaster$: Observable<boolean>;
+  hasFaq$: Observable<boolean>;
+  hasHowTo$: Observable<boolean>;
   active = 'DESCRIPTION'; // default product tab
 
   private destroyRef = inject(DestroyRef);
-
-  constructor(private context: ProductContextFacade) {}
+  private context = inject(ProductContextFacade);
 
   ngOnInit() {
     this.product$ = this.context.select('product');
+    this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
+
+    this.hasFaq$ = this.context.select('product').pipe(
+      map(
+        product =>
+          ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
+      ),
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoFaq))
+    );
+    this.hasHowTo$ = this.context.select('product').pipe(
+      map(
+        product =>
+          ProductHelper.getAttributesOfGroup(product, AttributeGroupTypes.ProductGeoAttributes) as Attribute<string>[]
+      ),
+      map(geo => !!AttributeHelper.getAttributeByAttributeName(geo, GeoAttributes.GeoHowTo))
+    );
 
     // when routing between products reset the opened product tab to the default tab
     this.context
       .select('sku')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => (this.active = 'DESCRIPTION'));
-
-    this.isVariationMaster$ = this.context.select('product').pipe(map(ProductHelper.isMasterProduct));
   }
 }

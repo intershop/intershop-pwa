@@ -5,6 +5,7 @@ import { anyNumber, anyString, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ProductRetailSet } from 'ish-core/models/product/product.model';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { SelectOrderTemplateModalComponent } from '../select-order-template-modal/select-order-template-modal.component';
@@ -17,6 +18,7 @@ describe('Product Add To Order Template Component', () => {
   let element: HTMLElement;
   let orderTemplateFacade: OrderTemplatesFacade;
   let accountFacade: AccountFacade;
+  let productContext: ProductContextFacade;
 
   const orderTemplateDetails = [
     {
@@ -43,9 +45,9 @@ describe('Product Add To Order Template Component', () => {
     orderTemplateFacade = mock(OrderTemplatesFacade);
     when(orderTemplateFacade.orderTemplates$).thenReturn(of(orderTemplateDetails));
     accountFacade = mock(AccountFacade);
-    const productContext = mock(ProductContextFacade);
+    productContext = mock(ProductContextFacade);
     when(productContext.get('sku')).thenReturn('test sku');
-    when(productContext.get('quantity')).thenReturn(1);
+    when(productContext.get('quantity')).thenReturn(5);
 
     await TestBed.configureTestingModule({
       declarations: [MockComponent(SelectOrderTemplateModalComponent), ProductAddToOrderTemplateComponent],
@@ -79,5 +81,19 @@ describe('Product Add To Order Template Component', () => {
     fixture.detectChanges();
     component.addProductToOrderTemplate({ id: undefined, title: 'Test Order Template' });
     verify(orderTemplateFacade.addProductToNewOrderTemplate(anyString(), anyString(), anyNumber())).once();
+  });
+
+  it('should call orderTemplateFacade to add retail set product with quantity 1 to order template', () => {
+    when(productContext.get('product')).thenReturn({ type: 'RetailSet' } as ProductRetailSet);
+    fixture.detectChanges();
+    component.addProductToOrderTemplate({ id: 'testid', title: 'Test Order Template' });
+    verify(orderTemplateFacade.addProductToOrderTemplate('testid', 'test sku', 1)).once();
+  });
+
+  it('should call orderTemplateFacade to add retail set product with quantity 1 to new order template', () => {
+    when(productContext.get('product')).thenReturn({ type: 'RetailSet' } as ProductRetailSet);
+    fixture.detectChanges();
+    component.addProductToOrderTemplate({ id: undefined, title: 'Test Order Template' });
+    verify(orderTemplateFacade.addProductToNewOrderTemplate('Test Order Template', 'test sku', 1)).once();
   });
 });

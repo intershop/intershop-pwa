@@ -82,6 +82,7 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
       status: string;
       pseudocardpan: string;
       truncatedcardpan: string;
+      cardtype: string;
     }) {
       thisComp.submitCallback(response);
     };
@@ -166,12 +167,13 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   }
 
   // visible-for-testing
-  submitCallback(response: { status: string; pseudocardpan: string; truncatedcardpan: string }) {
+  submitCallback(response: { status: string; pseudocardpan: string; truncatedcardpan: string; cardtype: string }) {
     if (response.status === 'VALID' && !this.payoneCreditCardForm.invalid) {
       this.submitPayment.emit({
         parameters: [
           { name: 'pseudocardpan', value: response.pseudocardpan },
           { name: 'truncatedcardpan', value: response.truncatedcardpan },
+          { name: 'cardtype', value: response.cardtype },
         ],
         saveAllowed: this.paymentMethod.saveAllowed && this.payoneCreditCardForm.get('saveForLater').value,
       });

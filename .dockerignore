@@ -29,6 +29,7 @@
 **/*.orig
 /dev.bat
 **/.lighthouseci/
+/.github/lighthouse/certs/
 
 # from dist/.gitignore
 /dist/**/*
@@ -82,6 +83,9 @@
 
 # from src/app/extensions/copilot/exports/.gitignore
 /src/app/extensions/copilot/exports/**/lazy*
+
+# from src/app/extensions/geo/exports/.gitignore
+/src/app/extensions/geo/exports/**/lazy*
 
 # from src/app/extensions/order-templates/exports/.gitignore
 /src/app/extensions/order-templates/exports/**/lazy*

@@ -105,12 +105,13 @@ describe('Product Route', () => {
           { value: 'SSD - (HDD)' },
           { value: 'Cobalt Blue & Yellow' },
           { value: '500 r/min' },
+          { value: 'RED (#FF0000)' },
         ],
       } as VariationProduct);
 
       it('should include attribute values in slug when product is a variation', () => {
         expect(generateProductUrl(product, undefined)).toMatchInlineSnapshot(
-          `"/some-example-name-ssd-hdd-cobalt-blue-yellow-500-r/min-prdA"`
+          `"/some-example-name-ssd-hdd-cobalt-blue-yellow-500-r/min-red-ff0000-prdA"`
         );
       });
     });
