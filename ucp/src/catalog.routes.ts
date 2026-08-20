@@ -2,10 +2,10 @@ import express, { Request } from 'express';
 
 import { toUcpProduct } from './catalog.mapper';
 import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './catalog.validation';
-import { IcmCatalogClient } from './icm-catalog.client';
+import { IcmCatalogClient } from './icm-client';
 import { IcmError } from './icm.error';
-import { UCP_VERSION, UcpConfig } from './ucp.config';
-import { sendUcpError } from './ucp.errors';
+import { sendUcpError } from './errors';
+import { UCP_VERSION, UcpConfig } from './config';
 
 /**
  * UCP Catalog capability (`dev.ucp.shopping.catalog.search` / `.lookup`).
@@ -36,7 +36,7 @@ function catalogUcp(capability: 'lookup' | 'search', status?: 'error'): Record<s
 /** Extract the SKU from an ICM link `uri` such as `.../products/849899`. */
 function skuFromUri(uri: string | undefined): string | undefined {
   if (!uri) {
-    return;
+    return undefined;
   }
   const match = /\/products\/([^/;?]+)/.exec(uri);
   return match ? decodeURIComponent(match[1]) : undefined;
@@ -46,12 +46,14 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
   const router = express.Router();
   const client = new IcmCatalogClient(config);
 
-  // Parse JSON only for the UCP routes, leaving the rest of the app untouched.
+  // Product page URLs point at the storefront, not this service.
+  const storefrontBaseUrl = (req: Request): string => config.storefrontBaseUrl ?? requestOrigin(req);
+
   router.use(express.json());
 
   router.post('/catalog/search', async (req, res) => {
     const parsed = validateSearchRequest(req.body);
-    if (parsed.error) {
+    if (!parsed.ok) {
       res.status(400).json({ error: { type: 'invalid_request', message: parsed.error } });
       return;
     }
@@ -68,7 +70,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const context = {
       currency: config.currency,
       icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: requestOrigin(req),
+      storefrontBaseUrl: storefrontBaseUrl(req),
     };
 
     try {
@@ -90,7 +92,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
 
   router.post('/catalog/lookup', async (req, res) => {
     const parsed = validateLookupRequest(req.body);
-    if (parsed.error) {
+    if (!parsed.ok) {
       res.status(400).json({ error: { type: 'invalid_request', message: parsed.error } });
       return;
     }
@@ -99,7 +101,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const baseContext = {
       currency: config.currency,
       icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: requestOrigin(req),
+      storefrontBaseUrl: storefrontBaseUrl(req),
     };
 
     try {
@@ -133,7 +135,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
 
   router.post('/catalog/product', async (req, res) => {
     const parsed = validateProductRequest(req.body);
-    if (parsed.error) {
+    if (!parsed.ok) {
       res.status(400).json({ error: { type: 'invalid_request', message: parsed.error } });
       return;
     }
@@ -142,7 +144,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const context = {
       currency: config.currency,
       icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: requestOrigin(req),
+      storefrontBaseUrl: storefrontBaseUrl(req),
       input: { id, match: 'exact' as const },
     };
 

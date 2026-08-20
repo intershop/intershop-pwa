@@ -223,7 +223,6 @@ titlecase
 toastr
 topseller
 tsquery
-ucp
 uncommit
 undiscounted
 unflatten

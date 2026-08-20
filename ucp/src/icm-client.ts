@@ -1,8 +1,7 @@
-import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-
 import { IcmError } from './icm.error';
 import { IcmProductResponse, IcmProductSearchResponse } from './icm.types';
-import { UcpConfig } from './ucp.config';
+import { getLogger } from './logger';
+import { UcpConfig } from './config';
 
 const logger = getLogger('UCP');
 
@@ -68,6 +67,6 @@ function safeJsonParse(text: string): unknown {
   try {
     return JSON.parse(text);
   } catch {
-    return;
+    return undefined;
   }
 }

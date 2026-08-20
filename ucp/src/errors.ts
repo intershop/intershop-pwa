@@ -1,8 +1,7 @@
 import { Response } from 'express';
 
-import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-
 import { IcmError } from './icm.error';
+import { getLogger } from './logger';
 
 const logger = getLogger('UCP');
 

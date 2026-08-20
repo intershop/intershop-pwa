@@ -222,10 +222,10 @@
       "prettier --log-level warn --write"
     ],
     "*.{html,js,mjs}": [
-      "eslint --fix --max-warnings 0"
+      "eslint --fix --max-warnings 0 --no-warn-ignored"
     ],
     "*.ts": [
-      "eslint --fix --max-warnings 0",
+      "eslint --fix --max-warnings 0 --no-warn-ignored",
       "jest --ci --bail --findRelatedTests --passWithNoTests"
     ],
     "src/assets/i18n/*.json": [

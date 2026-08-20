@@ -1,0 +1,29 @@
+{
+  "name": "intershop-pwa-ucp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone UCP (Universal Commerce Protocol) service exposing non-transactional catalog Search and Lookup over the Intershop ICM REST API.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/intershop/intershop-pwa.git",
+    "directory": "ucp"
+  },
+  "license": "MIT",
+  "scripts": {
+    "serve": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

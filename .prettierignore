@@ -35,6 +35,8 @@
 .prettierrc
 .nvmrc
 .nsprc
+.env
+.env.*
 package*.json
 Dockerfile*
 .browserslistrc

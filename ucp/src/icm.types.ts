@@ -1,5 +1,5 @@
 /**
- * Minimal, defensively-typed views of the ICM REST payloads this adapter reads.
+ * Minimal, defensively-typed views of the ICM REST payloads this service reads.
  *
  * ICM response shapes vary across versions (7.10 / 11 / 12+), so every field is
  * optional and mappers must degrade gracefully. These interfaces intentionally

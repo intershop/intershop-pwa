@@ -87,12 +87,12 @@ export interface ToUcpProductContext {
  */
 function fromIcmMoney(money: IcmMoney | undefined, fallbackCurrency: string): UcpPrice | undefined {
   if (!money) {
-    return;
+    return undefined;
   }
   const source = money.gross ?? money;
   const value = source.value ?? money.value;
   if (typeof value !== 'number' || Number.isNaN(value)) {
-    return;
+    return undefined;
   }
   const currency = source.currency ?? money.currency ?? money.currencyMnemonic ?? fallbackCurrency;
   const factor = 10 ** minorUnitDigits(currency);

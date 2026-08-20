@@ -26,7 +26,6 @@ import {
   environment,
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
-import { registerUcp } from './src/ssr/ucp';
 
 const logger = getLogger('Server');
 
@@ -305,11 +304,6 @@ export function app() {
       })
     );
   }
-
-  // UCP (https://ucp.dev) discovery + non-transactional catalog Search/Lookup.
-  // Registered before the static-file and SSR handlers so `/.well-known/ucp` is
-  // not treated as a static asset.
-  registerUcp(server);
 
   const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const url = req.originalUrl;

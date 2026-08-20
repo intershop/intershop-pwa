@@ -1,4 +1,4 @@
-import { UCP_BASE_PATH, UCP_VERSION } from './ucp.config';
+import { UCP_BASE_PATH, UCP_VERSION } from './config';
 
 /**
  * OpenAPI 3.1 documentation for the UCP catalog Search and Lookup capabilities,

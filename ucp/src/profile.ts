@@ -1,4 +1,4 @@
-import { UCP_BASE_PATH, UCP_VERSION } from './ucp.config';
+import { UCP_BASE_PATH, UCP_VERSION } from './config';
 
 /**
  * Builds the public UCP business profile served at `/.well-known/ucp`.
@@ -11,7 +11,7 @@ import { UCP_BASE_PATH, UCP_VERSION } from './ucp.config';
  * Catalog Search and Lookup capabilities over the existing REST API. Cart,
  * checkout, payment and order capabilities are deliberately not declared.
  *
- * @param origin absolute origin of this deployment (e.g. `https://shop.example.com`)
+ * @param origin absolute origin of this deployment (e.g. `https://ucp.example.com`)
  */
 export function buildUcpProfile(origin: string): Record<string, unknown> {
   const endpoint = `${origin}${UCP_BASE_PATH}`;
