@@ -1,0 +1,51 @@
+import { UCP_BASE_PATH, UCP_VERSION } from './ucp.config';
+
+/**
+ * Builds the public UCP business profile served at `/.well-known/ucp`.
+ *
+ * The profile declares which UCP capabilities this business supports, the spec
+ * versions, the transport, and the endpoint base URL agents should call.
+ * Structure follows the UCP profile guide (https://ucp.dev).
+ *
+ * Scope: non-transactional catalog discovery only. This business advertises the
+ * Catalog Search and Lookup capabilities over the existing REST API. Cart,
+ * checkout, payment and order capabilities are deliberately not declared.
+ *
+ * @param origin absolute origin of this deployment (e.g. `https://shop.example.com`)
+ */
+export function buildUcpProfile(origin: string): Record<string, unknown> {
+  const endpoint = `${origin}${UCP_BASE_PATH}`;
+
+  return {
+    ucp: {
+      version: UCP_VERSION,
+      services: {
+        'dev.ucp.shopping': [
+          {
+            version: UCP_VERSION,
+            spec: 'https://ucp.dev/specification/overview',
+            transport: 'rest',
+            endpoint,
+            openapi: `${endpoint}/openapi.json`,
+          },
+        ],
+      },
+      capabilities: {
+        'dev.ucp.shopping.catalog.search': [
+          {
+            version: UCP_VERSION,
+            spec: 'https://ucp.dev/specification/catalog/search',
+            openapi: `${endpoint}/openapi.json`,
+          },
+        ],
+        'dev.ucp.shopping.catalog.lookup': [
+          {
+            version: UCP_VERSION,
+            spec: 'https://ucp.dev/specification/catalog/lookup',
+            openapi: `${endpoint}/openapi.json`,
+          },
+        ],
+      },
+    },
+  };
+}
