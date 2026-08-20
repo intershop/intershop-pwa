@@ -14,6 +14,7 @@ describe('Server Config Mapper', () => {
             displayName: null,
           },
           basket: { acceleration: true, id: 'basket' },
+          channel: { id: 'channel', displayName: 'inTRONICS Business' },
           general: { id: 'general', locales: ['en_US', 'de_DE'] },
           services: {
             id: 'services',
@@ -34,6 +35,9 @@ describe('Server Config Mapper', () => {
             },
             "basket": {
               "acceleration": true,
+            },
+            "channel": {
+              "displayName": "inTRONICS Business",
             },
             "general": {
               "locales": [

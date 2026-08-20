@@ -1,4 +1,5 @@
 @if (product$ | async; as product) {
+  @let channelName = channelName$ | async;
   <div class="row product-details-top-line justify-content-end">
     <div class="col-lg-12">
       <ul class="share-tools">
@@ -29,7 +30,11 @@
         <li>
           <a
             href="mailto:
-          ?subject={{ 'email.recommended_product.heading' | translate: { '0': channelName } }}
+          ?subject={{
+              channelName
+                ? ('email.recommended_product.heading' | translate: { '0': channelName })
+                : ('email.recommended_product.heading.no_channel' | translate)
+            }}
           &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
             [title]="'product.email_a_friend.link' | translate"
           >
