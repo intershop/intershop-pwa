@@ -59,14 +59,8 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
       return;
     }
 
-    // ICM search requires a free-text term.
-    const query = parsed.data.query?.trim();
-    if (!query) {
-      res
-        .status(400)
-        .json({ error: { type: 'invalid_request', message: 'This adapter requires a `query` for search.' } });
-      return;
-    }
+    // Validation guarantees a non-empty query.
+    const query = (parsed.data.query ?? '').trim();
     const limit = Math.min(parsed.data.pagination?.limit ?? CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT);
     const offset = decodeCursor(parsed.data.pagination?.cursor);
     const context = {

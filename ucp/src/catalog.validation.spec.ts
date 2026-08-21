@@ -11,14 +11,18 @@ describe('validateSearchRequest', () => {
     assert.equal(result.data.query, 'laptop');
   });
 
-  it('accepts a request with filters only', () => {
-    const result = validateSearchRequest({ filters: { categories: ['computers'] } });
+  it('accepts a query with optional filters', () => {
+    const result = validateSearchRequest({ query: 'computer', filters: { categories: ['computers'] } });
 
     assert.ok(result.ok);
     assert.deepEqual(result.data.filters, { categories: ['computers'] });
   });
 
-  it('rejects a request without a query or filters', () => {
+  it('rejects a filters-only request without a query', () => {
+    assert.equal(validateSearchRequest({ filters: { categories: ['computers'] } }).ok, false);
+  });
+
+  it('rejects a request without a query', () => {
     assert.equal(validateSearchRequest({}).ok, false);
   });
 

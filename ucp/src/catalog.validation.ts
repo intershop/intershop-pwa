@@ -47,7 +47,7 @@ function validatePaginationLimit(pagination: unknown): ValidationResult<number |
   return { ok: true, data: limit };
 }
 
-/** Validate `POST /catalog/search` — requires at least a `query` or `filters`. */
+/** Validate `POST /catalog/search` — requires a non-empty `query`; `filters` is an optional refinement. */
 export function validateSearchRequest(body: unknown): ValidationResult<CatalogSearchRequest> {
   if (!isRecord(body)) {
     return { ok: false, error: 'Request body must be a JSON object.' };
@@ -60,8 +60,8 @@ export function validateSearchRequest(body: unknown): ValidationResult<CatalogSe
     return { ok: false, error: '`filters` must be an object.' };
   }
   const hasQuery = typeof query === 'string' && query.trim().length > 0;
-  if (!hasQuery && filters === undefined) {
-    return { ok: false, error: 'Provide a `query` or `filters`.' };
+  if (!hasQuery) {
+    return { ok: false, error: 'Provide a non-empty `query`.' };
   }
   const limit = validatePaginationLimit(pagination);
   if (!limit.ok) {

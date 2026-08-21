@@ -92,10 +92,12 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
               'application/json': {
                 schema: {
                   type: 'object',
+                  required: ['query'],
                   properties: {
-                    query: { type: 'string', description: 'Free-text search term.' },
+                    query: { type: 'string', minLength: 1, description: 'Free-text search term (required).' },
                     filters: {
                       type: 'object',
+                      description: 'Optional refinement applied on top of the query.',
                       properties: {
                         categories: { type: 'array', items: { type: 'string' } },
                         price: {
