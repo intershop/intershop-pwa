@@ -117,6 +117,13 @@
 # from src/ssr/server-scripts/.gitignore
 /src/ssr/server-scripts/ecosystem-ports.json
 
+# from ucp/.gitignore
+/ucp/node_modules
+/ucp/dist
+/ucp/.env
+/ucp/.env.*
+!/ucp/.env.example
+
 # The content between these markers is generated.
 # It can be synchronized using 'npm run update-dockerignore'
 
