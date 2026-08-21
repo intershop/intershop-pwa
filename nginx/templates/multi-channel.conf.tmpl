@@ -114,6 +114,13 @@ proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g 
 {{- end }}
 {{- end }}
 
+{{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+{{- if $UPSTREAM_UCP }}
+# Dedicated cache zone for the static UCP discovery documents (profile + OpenAPI).
+proxy_cache_path /tmp/cache/ucp levels=1:2 keys_zone=ucp:1m max_size=64m inactive=60m use_temp_path=off;
+{{- end }}
+{{- end }}
+
 {{- range $domain, $mapping := (ds "domains") }}
 server {
     server_name ~^{{ $domain }}$;
@@ -187,9 +194,36 @@ server {
     }
 
   {{ if $UPSTREAM_UCP }}
-    # UCP (https://ucp.dev) discovery + non-transactional catalog API, served by the
-    # standalone UCP service. Publicly accessible (bypasses BASIC_AUTH) and matched
-    # before the static-asset location so `/ucp/v1/openapi.json` is not treated as an asset.
+    # UCP (https://ucp.dev) discovery documents: the static profile and OpenAPI contract.
+    # Safe to cache (short TTL) to shield the UCP service from discovery-poll load. Matched
+    # before the general UCP location and the static-asset location.
+    location ~* ^/(\.well-known/ucp|ucp/v1/openapi\.json)$ {
+        allow all;
+        auth_basic off;
+
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $thescheme;
+        proxy_set_header X-Forwarded-Host $host;
+
+      {{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
+        proxy_cache ucp;
+        proxy_cache_key $scheme://$host$uri;
+        proxy_cache_valid 200 {{ getenv "CACHE_DURATION_UCP" }};
+        proxy_ignore_headers Cache-Control Expires Set-Cookie;
+        add_header X-Cache-Status $upstream_cache_status always;
+      {{- end }}
+
+        proxy_pass {{ $UPSTREAM_UCP }};
+        proxy_buffer_size 128k;
+        proxy_buffers 4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+
+    # UCP non-transactional catalog API (POST search/lookup/product) and any other UCP
+    # paths. Dynamic and body-dependent, so never cached. Publicly accessible
+    # (bypasses BASIC_AUTH) and matched before the static-asset location.
     location ~* ^/(\.well-known/ucp|ucp/) {
         allow all;
         auth_basic off;
