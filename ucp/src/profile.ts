@@ -15,6 +15,7 @@ import { UCP_BASE_PATH, UCP_VERSION } from './config';
  */
 export function buildUcpProfile(origin: string): Record<string, unknown> {
   const endpoint = `${origin}${UCP_BASE_PATH}`;
+  const specBase = `https://ucp.dev/${UCP_VERSION}`;
 
   return {
     ucp: {
@@ -23,10 +24,11 @@ export function buildUcpProfile(origin: string): Record<string, unknown> {
         'dev.ucp.shopping': [
           {
             version: UCP_VERSION,
-            spec: 'https://ucp.dev/specification/overview',
+            spec: `${specBase}/specification/overview`,
             transport: 'rest',
             endpoint,
-            openapi: `${endpoint}/openapi.json`,
+            // Business-profile REST service schema: our own OpenAPI describing the catalog surface.
+            schema: `${endpoint}/openapi.json`,
           },
         ],
       },
@@ -34,15 +36,15 @@ export function buildUcpProfile(origin: string): Record<string, unknown> {
         'dev.ucp.shopping.catalog.search': [
           {
             version: UCP_VERSION,
-            spec: 'https://ucp.dev/specification/catalog/search',
-            openapi: `${endpoint}/openapi.json`,
+            spec: `${specBase}/specification/catalog/search`,
+            schema: `${specBase}/schemas/shopping/catalog_search.json`,
           },
         ],
         'dev.ucp.shopping.catalog.lookup': [
           {
             version: UCP_VERSION,
-            spec: 'https://ucp.dev/specification/catalog/lookup',
-            openapi: `${endpoint}/openapi.json`,
+            spec: `${specBase}/specification/catalog/lookup`,
+            schema: `${specBase}/schemas/shopping/catalog_lookup.json`,
           },
         ],
       },
