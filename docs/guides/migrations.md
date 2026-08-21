@@ -169,6 +169,9 @@ If you customized or extended the `ProductRatingStarComponent` component in your
 The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now directly persists the `budgetPriceType` (requires ICM 14.2.0).
 This also fixes the customer approval flow that has been broken since Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
 
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 11.0.0 to version 12.0.0](https://public.academy.intershop.com/plus/catalog/courses/493).
+
 ## From 11.1.0 to 11.2.0
 
 **Extended withdrawal functionality**
