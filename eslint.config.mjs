@@ -38,7 +38,7 @@ export default defineConfig([
     'eslint-rules/dist/**/*',
     'schematics/dist/**/*',
     'schematics/src/utils/lint-fix-mock.js',
-    'ucp/**/*',
+    'ucp/**/*', // @ucp-integration
   ]),
   // TypeScript recommended + stylistic configs from typescript-eslint
   ...[...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({

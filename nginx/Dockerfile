@@ -83,7 +83,9 @@ ENV SSR=on
 ENV SSL=off
 ENV CACHE_DURATION_NGINX_OK=10m
 ENV CACHE_DURATION_NGINX_NF=60m
+# @ucp-integration start
 ENV CACHE_DURATION_UCP=12h
+# @ucp-integration end
 ENV LOGLEVEL=error
 ENV LOGFORMAT=json
 

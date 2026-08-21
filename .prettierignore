@@ -35,8 +35,10 @@
 .prettierrc
 .nvmrc
 .nsprc
+# @ucp-integration start
 .env
 .env.*
+# @ucp-integration end
 package*.json
 Dockerfile*
 .browserslistrc

@@ -48,6 +48,7 @@ services:
       # allow backend requests to use HTTP/2 with Fetch API (experimental)
       # ALLOW_H2: 'true'
 
+  # @ucp-integration start
   ucp:
     image: intershop-pwa-ucp
     build: ./ucp
@@ -57,20 +58,21 @@ services:
       # UCP_PUBLIC_BASE_URL and STOREFRONT_BASE_URL default to the request origin
       # (the storefront domain, since agent requests arrive through nginx).
     restart: unless-stopped
+  # @ucp-integration end
 
   nginx:
     image: intershophub/intershop-pwa-nginx
     build: nginx
     depends_on:
       - pwa
-      - ucp
+      - ucp # @ucp-integration
     ports:
       - '4200:80'
       # - '9114:9113'
       # - '443:443'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      UPSTREAM_UCP: 'http://ucp:4000'
+      UPSTREAM_UCP: 'http://ucp:4000' # @ucp-integration
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0

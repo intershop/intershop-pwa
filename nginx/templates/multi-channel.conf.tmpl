@@ -1,7 +1,7 @@
 # multi-channel.conf
 
 {{ $UPSTREAM_PWA := getenv "UPSTREAM_PWA" }}
-{{ $UPSTREAM_UCP := getenv "UPSTREAM_UCP" }}
+{{ $UPSTREAM_UCP := getenv "UPSTREAM_UCP" }}{{/* @ucp-integration */}}
 
 {{ define "LOCATION_TEMPLATE" }}
         {{- $channel := .channel }}
@@ -114,12 +114,14 @@ proxy_cache_path /tmp/cache/{{ . }} levels=1:2 keys_zone={{ . }}:1m max_size=1g 
 {{- end }}
 {{- end }}
 
+{{/* @ucp-integration start */}}
 {{- if (getenv "CACHE" | strings.ToLower | regexp.Match "on|1|true|yes") }}
 {{- if $UPSTREAM_UCP }}
-# Dedicated cache zone for the static UCP discovery documents (profile + OpenAPI).
+# dedicated cache zone for the static UCP discovery documents (profile + OpenAPI).
 proxy_cache_path /tmp/cache/ucp levels=1:2 keys_zone=ucp:1m max_size=64m inactive=60m use_temp_path=off;
 {{- end }}
 {{- end }}
+{{/* @ucp-integration end */}}
 
 {{- range $domain, $mapping := (ds "domains") }}
 server {
@@ -193,6 +195,7 @@ server {
         proxy_busy_buffers_size 256k;
     }
 
+  {{/* @ucp-integration start */}}
   {{ if $UPSTREAM_UCP }}
     # UCP (https://ucp.dev) discovery documents: the static profile and OpenAPI contract.
     # Safe to cache (short TTL) to shield the UCP service from discovery-poll load. Matched
@@ -240,6 +243,7 @@ server {
         proxy_busy_buffers_size 256k;
     }
   {{ end }}
+  {{/* @ucp-integration end */}}
     # respect cache entries of static assets
     location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
