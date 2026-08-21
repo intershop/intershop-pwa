@@ -54,10 +54,11 @@ export class IcmCatalogClient {
   }
 
   /** Free-text product search returning link stubs (SKUs resolved separately). */
-  searchProducts(searchTerm: string, amount: number): Promise<IcmProductSearchResponse> {
+  searchProducts(searchTerm: string, amount: number, offset = 0): Promise<IcmProductSearchResponse> {
     return this.request<IcmProductSearchResponse>('products', {
       searchTerm,
       amount,
+      offset,
       attrs: 'sku,productName,shortDescription,listPrice,salePrice,availability,inStock',
     });
   }

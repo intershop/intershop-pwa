@@ -2,10 +2,11 @@ import express, { Request } from 'express';
 
 import { toUcpProduct } from './catalog.mapper';
 import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './catalog.validation';
+import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT, CATALOG_MAX_LOOKUP_IDS, UCP_VERSION, UcpConfig } from './config';
+import { decodeCursor, encodeCursor } from './cursor';
 import { IcmCatalogClient } from './icm-client';
 import { IcmError } from './icm.error';
 import { sendUcpError } from './errors';
-import { UCP_VERSION, UcpConfig } from './config';
 
 /**
  * UCP Catalog capability (`dev.ucp.shopping.catalog.search` / `.lookup`).
@@ -66,7 +67,8 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
         .json({ error: { type: 'invalid_request', message: 'This adapter requires a `query` for search.' } });
       return;
     }
-    const limit = Math.min(parsed.data.pagination?.limit ?? 10, 50);
+    const limit = Math.min(parsed.data.pagination?.limit ?? CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT);
+    const offset = decodeCursor(parsed.data.pagination?.cursor);
     const context = {
       currency: config.currency,
       icmBaseUrl: config.icmBaseUrl,
@@ -74,16 +76,22 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     };
 
     try {
-      const result = await client.searchProducts(query, limit);
+      const result = await client.searchProducts(query, limit, offset);
       const stubs = result.elements ?? [];
       const skus = stubs.map(stub => stub.sku ?? skuFromUri(stub.uri)).filter((sku): sku is string => Boolean(sku));
       const products = await Promise.all(skus.map(async sku => toUcpProduct(await client.getProduct(sku), context)));
-      const total = result.total ?? products.length;
+      const total = result.total ?? offset + stubs.length;
+      const nextOffset = offset + stubs.length;
+      const hasNextPage = nextOffset < total;
 
       res.json({
         ucp: catalogUcp('search'),
         products,
-        pagination: { has_next_page: total > products.length, total_count: total },
+        pagination: {
+          has_next_page: hasNextPage,
+          total_count: total,
+          ...(hasNextPage ? { cursor: encodeCursor(nextOffset) } : {}),
+        },
       });
     } catch (error) {
       sendUcpError(res, error);
@@ -94,6 +102,16 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const parsed = validateLookupRequest(req.body);
     if (!parsed.ok) {
       res.status(400).json({ error: { type: 'invalid_request', message: parsed.error } });
+      return;
+    }
+
+    if (parsed.data.ids.length > CATALOG_MAX_LOOKUP_IDS) {
+      res.status(400).json({
+        error: {
+          type: 'request_too_large',
+          message: `Too many ids; the maximum batch size is ${CATALOG_MAX_LOOKUP_IDS}.`,
+        },
+      });
       return;
     }
 

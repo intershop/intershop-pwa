@@ -8,6 +8,15 @@ export const UCP_VERSION = '2026-04-08';
 /** Base path under which the UCP catalog capability is served. */
 export const UCP_BASE_PATH = '/ucp/v1';
 
+/** Default number of products returned by catalog search (UCP conformance default). */
+export const CATALOG_DEFAULT_LIMIT = 10;
+
+/** Maximum number of products returned by catalog search in a single page. */
+export const CATALOG_MAX_LIMIT = 50;
+
+/** Maximum number of identifiers accepted in a single catalog lookup batch. */
+export const CATALOG_MAX_LOOKUP_IDS = 100;
+
 /** Resolved, plain configuration the service depends on. */
 export interface UcpConfig {
   /** Port the service listens on. */

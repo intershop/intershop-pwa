@@ -67,12 +67,23 @@ export function validateSearchRequest(body: unknown): ValidationResult<CatalogSe
   if (!limit.ok) {
     return { ok: false, error: limit.error };
   }
+  let cursor: string | undefined;
+  if (isRecord(pagination) && pagination.cursor !== undefined) {
+    if (typeof pagination.cursor !== 'string') {
+      return { ok: false, error: '`pagination.cursor` must be a string.' };
+    }
+    cursor = pagination.cursor;
+  }
+  const paginationOut =
+    limit.data !== undefined || cursor !== undefined
+      ? { ...(limit.data !== undefined ? { limit: limit.data } : {}), ...(cursor !== undefined ? { cursor } : {}) }
+      : undefined;
   return {
     ok: true,
     data: {
       query: typeof query === 'string' ? query : undefined,
       filters: filters as CatalogSearchRequest['filters'],
-      pagination: limit.data !== undefined ? { limit: limit.data } : undefined,
+      pagination: paginationOut,
     },
   };
 }

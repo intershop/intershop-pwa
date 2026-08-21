@@ -37,6 +37,17 @@ describe('validateSearchRequest', () => {
     assert.ok(result.ok);
     assert.deepEqual(result.data.pagination, { limit: 20 });
   });
+
+  it('passes through a pagination cursor', () => {
+    const result = validateSearchRequest({ query: 'x', pagination: { cursor: 'MTA' } });
+
+    assert.ok(result.ok);
+    assert.deepEqual(result.data.pagination, { cursor: 'MTA' });
+  });
+
+  it('rejects a non-string cursor', () => {
+    assert.equal(validateSearchRequest({ query: 'x', pagination: { cursor: 5 } }).ok, false);
+  });
 });
 
 describe('validateLookupRequest', () => {

@@ -104,7 +104,13 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
                         },
                       },
                     },
-                    pagination: { type: 'object', properties: { limit: { type: 'integer', minimum: 1 } } },
+                    pagination: {
+                      type: 'object',
+                      properties: {
+                        limit: { type: 'integer', minimum: 1, description: 'Page size (default 10, max 50).' },
+                        cursor: { type: 'string', description: 'Opaque cursor from a previous response.' },
+                      },
+                    },
                   },
                 },
               },
@@ -121,7 +127,14 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
                       products: { type: 'array', items: { $ref: '#/components/schemas/Product' } },
                       pagination: {
                         type: 'object',
-                        properties: { has_next_page: { type: 'boolean' }, total_count: { type: 'integer' } },
+                        properties: {
+                          has_next_page: { type: 'boolean' },
+                          total_count: { type: 'integer' },
+                          cursor: {
+                            type: 'string',
+                            description: 'Cursor for the next page (present when has_next_page).',
+                          },
+                        },
                       },
                     },
                   },
@@ -163,7 +176,9 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
                 },
               },
             },
-            '400': { description: 'Invalid request payload.' },
+            '400': {
+              description: 'Invalid request payload, or `request_too_large` when the id batch exceeds the limit.',
+            },
           },
         },
       },
