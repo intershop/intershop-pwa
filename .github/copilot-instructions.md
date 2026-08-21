@@ -6,7 +6,7 @@ Angular 20-based Progressive Web App for enterprise commerce. Built for performa
 
 ## Technology Stack
 
-- Angular 20.3, TypeScript 5.9, NgRx, Node.js 22
+- Angular 20.3, TypeScript 5.9, NgRx, Node.js 24
 - Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
