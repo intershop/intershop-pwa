@@ -87,10 +87,6 @@ export class CostCentersPageComponent implements OnInit {
     });
   }
 
-  getTotalPages(totalCostCenters: number) {
-    return Math.ceil(totalCostCenters / this.pageSize);
-  }
-
   loadFilteredCostCenters(filters: Partial<CostCenterQuery>) {
     this.activeFilters = filters;
     this.organizationManagementFacade.loadCostCenters({

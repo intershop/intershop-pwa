@@ -8,6 +8,7 @@ import {
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbPaginationModule,
   NgbPopoverModule,
   NgbRatingModule,
 } from '@ng-bootstrap/ng-bootstrap';
@@ -188,6 +189,7 @@ const importExportModules = [
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbPaginationModule,
   NgbPopoverModule,
   NgbRatingModule,
   NgSelectModule,

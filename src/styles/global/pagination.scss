@@ -1,0 +1,19 @@
+ngb-pagination {
+  .pagination {
+    margin-bottom: 0;
+  }
+
+  a[href].page-link {
+    text-decoration: none;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    @include focus-visible-reset();
+  }
+
+  .page-item.active .page-link {
+    @include btn-primary-appearance;
+  }
+}
