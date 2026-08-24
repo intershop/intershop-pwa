@@ -1,5 +1,3 @@
-declare module 'express-robots-txt';
-
 declare const PRODUCTION_MODE: boolean;
 
 declare const SERVICE_WORKER: boolean;

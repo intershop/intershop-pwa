@@ -52,14 +52,6 @@
               "pino-pretty",
               "js-yaml"
             ],
-            "define": {
-              "PWA_VERSION": "\"11.2.0\"",
-              "PRODUCTION_MODE": "false",
-              "SERVICE_WORKER": "false",
-              "NGRX_RUNTIME_CHECKS": "true",
-              "THEME": "\"b2b\"",
-              "SSR": "false"
-            },
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
@@ -67,20 +59,12 @@
               }
             ]
           },
-          "defaultConfiguration": "b2b,production",
+          "defaultConfiguration": "b2b,production,define-b2b-production",
           "configurations": {
             "production": {
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "true",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "false",
-                "THEME": "\"b2b\"",
-                "SSR": "false"
-              },
               "budgets": [
                 {
                   "type": "initial",
@@ -91,16 +75,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "5kb",
                   "maximumError": "10kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.b2b.ts"
-                },
-                {
-                  "replace": "src/app/core/store/store-devtools.module.ts",
-                  "with": "src/app/core/store/store-devtools.module.production.ts"
                 }
               ]
             },
@@ -118,7 +92,103 @@
               "server": "src/main.server.ts",
               "ssr": {
                 "entry": "src/server.ts"
+              }
+            },
+            "b2b": {},
+            "b2c": {
+              "assets": [
+                "src/assets",
+                {
+                  "glob": "favicon.ico",
+                  "input": "src/assets/themes/b2c/img/",
+                  "output": "/"
+                }
+              ],
+              "styles": [
+                "src/styles/themes/b2c/style.scss"
+              ],
+              "stylePreprocessorOptions": {
+                "includePaths": [
+                  "src/styles/themes/b2c"
+                ],
+                "sass": {
+                  "silenceDeprecations": [
+                    "import"
+                  ]
+                }
               },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2c.ts"
+                },
+                {
+                  "replace": "src/app/pages/account/account-navigation/account-navigation.items.ts",
+                  "with": "src/app/pages/account/account-navigation/account-navigation.items.b2c.ts"
+                }
+              ]
+            },
+            "define-b2b-development": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "false",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "true",
+                "THEME": "\"b2b\"",
+                "SSR": "false"
+              }
+            },
+            "define-b2c-development": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "false",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "true",
+                "THEME": "\"b2c\"",
+                "SSR": "false"
+              }
+            },
+            "define-b2b-production": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "false"
+              }
+            },
+            "define-b2c-production": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2c\"",
+                "SSR": "false"
+              }
+            },
+            "define-b2b-development-ssr": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "false",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "true",
+                "THEME": "\"b2b\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            },
+            "define-b2c-development-ssr": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "false",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "true",
+                "THEME": "\"b2c\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            },
+            "define-b2b-production-ssr": {
               "define": {
                 "PWA_VERSION": "\"11.2.0\"",
                 "PRODUCTION_MODE": "true",
@@ -128,27 +198,42 @@
                 "SSR": "globalThis.ngServerMode"
               }
             },
-            "b2b": {}
+            "define-b2c-production-ssr": {
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2c\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "intershop-pwa:build"
+            "buildTarget": "intershop-pwa:build:b2b,development,define-b2b-development"
           },
-          "defaultConfiguration": "b2b,development",
+          "defaultConfiguration": "b2b-development",
           "configurations": {
-            "production": {
-              "buildTarget": "intershop-pwa:build:production"
+            "b2b-development": {
+              "buildTarget": "intershop-pwa:build:b2b,development,define-b2b-development"
             },
-            "development": {
-              "buildTarget": "intershop-pwa:build:development"
+            "b2c-development": {
+              "buildTarget": "intershop-pwa:build:b2c,development,define-b2c-development"
             },
-            "b2b": {
-              "buildTarget": "intershop-pwa:build:b2b"
+            "b2b-production": {
+              "buildTarget": "intershop-pwa:build:b2b,production,define-b2b-production"
             },
-            "ssr": {
-              "buildTarget": "intershop-pwa:build:b2b,development,ssr"
+            "b2c-production": {
+              "buildTarget": "intershop-pwa:build:b2c,production,define-b2c-production"
+            },
+            "b2b-ssr": {
+              "buildTarget": "intershop-pwa:build:b2b,development,ssr,define-b2b-development-ssr"
+            },
+            "b2c-ssr": {
+              "buildTarget": "intershop-pwa:build:b2c,development,ssr,define-b2c-development-ssr"
             }
           }
         },
