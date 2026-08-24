@@ -48,7 +48,7 @@ Configuration is read from environment variables (see [.env.example](./.env.exam
 | `STOREFRONT_BASE_URL` | request origin                     | Storefront origin used to build product page URLs. |
 | `ICM_BASE_URL`        | `https://develop.icm.intershop.de` | Base URL of the ICM backend.                       |
 | `ICM_SERVER`          | `INTERSHOP/rest/WFS`               | ICM REST server path.                              |
-| `ICM_CHANNEL`         | `inSPIRED-inTRONICS-Site`          | ICM channel the catalog is served from.            |
+| `ICM_CHANNEL`         | `inSPIRED-inTRONICS_Business-Site` | ICM channel the catalog is served from.            |
 | `ICM_APPLICATION`     | `-`                                | ICM application.                                   |
 | `ICM_LOCALE`          | `en_US`                            | Locale used for catalog requests.                  |
 | `ICM_CURRENCY`        | `USD`                              | Currency used for catalog prices.                  |
@@ -120,7 +120,7 @@ you can verify the behavior:
 
 # no cache header — always proxied (catalog API)
 (Invoke-WebRequest -Method Post http://localhost:4200/ucp/v1/catalog/search `
-  -ContentType 'application/json' -Body '{ "query": "camera" }').Headers['X-Cache-Status']
+  -ContentType 'application/json' -Body '{ "query": "Microsoft" }').Headers['X-Cache-Status']
 ```
 
 ## Trying It Out
@@ -134,11 +134,15 @@ Invoke-RestMethod http://localhost:4000/ucp/v1/openapi.json | ConvertTo-Json -De
 
 # Search the catalog
 Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/search `
-  -ContentType 'application/json' -Body '{ "query": "camera" }' | ConvertTo-Json -Depth 8
+  -ContentType 'application/json' -Body '{ "query": "Microsoft" }' | ConvertTo-Json -Depth 8
 
-# Look up products by identifier
+# Look up a single product by identifier
 Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
-  -ContentType 'application/json' -Body '{ "ids": ["201807231-01"] }' | ConvertTo-Json -Depth 8
+  -ContentType 'application/json' -Body '{ "ids": ["201807195"] }' | ConvertTo-Json -Depth 8
+
+# Look up multiple products in one batch
+Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
+  -ContentType 'application/json' -Body '{ "ids": ["201807195", "201807201"] }' | ConvertTo-Json -Depth 8
 ```
 
 ## Architecture

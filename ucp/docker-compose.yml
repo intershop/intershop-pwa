@@ -13,7 +13,7 @@ services:
       # STOREFRONT_BASE_URL: 'https://shop.example.com'
       ICM_BASE_URL: '${ICM_BASE_URL:-https://develop.icm.intershop.de}'
       ICM_SERVER: '${ICM_SERVER:-INTERSHOP/rest/WFS}'
-      ICM_CHANNEL: '${ICM_CHANNEL:-inSPIRED-inTRONICS-Site}'
+      ICM_CHANNEL: '${ICM_CHANNEL:-inSPIRED-inTRONICS_Business-Site}'
       ICM_APPLICATION: '${ICM_APPLICATION:--}'
       ICM_LOCALE: '${ICM_LOCALE:-en_US}'
       ICM_CURRENCY: '${ICM_CURRENCY:-USD}'

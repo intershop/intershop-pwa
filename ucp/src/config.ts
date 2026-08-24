@@ -47,7 +47,7 @@ export function resolveUcpConfig(): UcpConfig {
       : undefined,
     icmBaseUrl: stripTrailingSlash(process.env.ICM_BASE_URL ?? 'https://develop.icm.intershop.de'),
     icmServer: process.env.ICM_SERVER ?? 'INTERSHOP/rest/WFS',
-    icmChannel: process.env.ICM_CHANNEL ?? 'inSPIRED-inTRONICS-Site',
+    icmChannel: process.env.ICM_CHANNEL ?? 'inSPIRED-inTRONICS_Business-Site',
     icmApplication: process.env.ICM_APPLICATION ?? '-',
     locale: process.env.ICM_LOCALE ?? 'en_US',
     currency: process.env.ICM_CURRENCY ?? 'USD',
