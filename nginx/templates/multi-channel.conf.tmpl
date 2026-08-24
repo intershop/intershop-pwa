@@ -226,8 +226,10 @@ server {
         allow all;
         auth_basic off;
         {{ $first := index $mapping 0 -}}
-        rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
-        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri?" permanent;
+        # The target depends on the active multi-site configuration. Do not let browsers
+        # cache it when the same host is later used for a different PWA configuration.
+        rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" redirect;
+        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri?" redirect;
     }
     location ^~ /sitemap_ {
         {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}
