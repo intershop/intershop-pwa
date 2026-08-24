@@ -31,11 +31,7 @@
 **/.lighthouseci/
 /.github/lighthouse/certs/
 
-# from dist/.gitignore
-/dist/**/*
-!/dist/.gitignore
-!/dist/entrypoint.sh
-!/dist/robots.txt
+/dist/
 
 # from e2e/.gitignore
 /e2e/node_modules
@@ -150,9 +146,6 @@ azure-pipelines*
 src/assets/mock-data
 
 templates
-!templates/webpack
 
 scripts
-!scripts/build*pwa.js
 !scripts/init-development-environment.js
-!scripts/compile-docker-scripts.js
