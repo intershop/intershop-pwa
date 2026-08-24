@@ -104,17 +104,11 @@
                   "output": "/"
                 }
               ],
-              "styles": [
-                "src/styles/themes/b2c/style.scss"
-              ],
+              "styles": ["src/styles/themes/b2c/style.scss"],
               "stylePreprocessorOptions": {
-                "includePaths": [
-                  "src/styles/themes/b2c"
-                ],
+                "includePaths": ["src/styles/themes/b2c"],
                 "sass": {
-                  "silenceDeprecations": [
-                    "import"
-                  ]
+                  "silenceDeprecations": ["import"]
                 }
               },
               "fileReplacements": [

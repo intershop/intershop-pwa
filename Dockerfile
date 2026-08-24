@@ -13,22 +13,30 @@ COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
 COPY src /workspace/src
-COPY scripts/init-development-environment.js /workspace/scripts/
+COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-ssr-runtime.js /workspace/scripts/
 RUN npm run postinstall
 ARG testing=false
 ENV TESTING=${testing}
-RUN npm run build -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+ARG activeThemes=b2b,b2c
+RUN npm_config_active_themes="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+RUN npm install --package-lock-only --prefix dist --ignore-scripts --no-audit
 
 FROM node:24.19.0-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
+RUN cd /dist && npm ci --omit=dev --ignore-scripts --no-audit && \
+    chmod 755 /dist/entrypoint.sh && \
+    touch /dist/ecosystem.json && chown nobody:nobody /dist/ecosystem.json && chmod 644 /dist/ecosystem.json
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
 ENV DISPLAY_VERSION=${displayVersion}
 ENV LOGLEVEL=error
 ENV LOGFORMAT=json
-EXPOSE 4200
+ENV NODE_PATH=/dist/node_modules
+ENV PATH=/dist/node_modules/.bin:$PATH
+ENV PM2_HOME=/tmp/pm2
+EXPOSE 4200 9113
 USER nobody
-HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node -e "require('http').get('http://localhost:4200', response => process.exit(response.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["node", "/dist/server/server.mjs"]
+HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.cjs
+ENTRYPOINT ["/sbin/tini", "--", "sh", "/dist/entrypoint.sh"]
+CMD ["start"]
