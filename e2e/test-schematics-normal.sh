@@ -107,9 +107,6 @@ test -f projects/organization-management/src/app/exports/lazy-user-roles-selecti
 grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/organization-management-exports.module.ts
 grep "LazyUserRolesSelectionComponent" projects/organization-management/src/app/exports/index.ts
 
-node schematics/customization/service-worker false
-grep '"serviceWorker": false' angular.json
-
 export NODE_OPTIONS=--max-old-space-size=8192
 
 npm exec npm-run-all format "lint -- --fix" compile build

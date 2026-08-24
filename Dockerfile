@@ -13,34 +13,22 @@ COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
 COPY src /workspace/src
-COPY scripts /workspace/scripts/
+COPY scripts/init-development-environment.js /workspace/scripts/
 RUN npm run postinstall
-ARG serviceWorker
-RUN node schematics/customization/service-worker ${serviceWorker} || true
-COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
-ARG activeThemes=
-RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
-COPY tsconfig.server.json server.ts /workspace/
-COPY babel.config.js /workspace/
-RUN npm run build:multi server
-RUN node scripts/compile-docker-scripts
-COPY dist/* /workspace/dist/
+RUN npm run build -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 
 FROM node:24.19.0-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
-RUN cd dist && npm install
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
-ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
+ENV DISPLAY_VERSION=${displayVersion}
 ENV LOGLEVEL=error
 ENV LOGFORMAT=json
-EXPOSE 4200 9113
-RUN mkdir /.pm2 && chown nobody:nobody /.pm2 && chmod 700 /.pm2 && \
-    touch /dist/ecosystem.yml && chown nobody:nobody /dist/ecosystem.yml && chmod 644 /dist/ecosystem.yml
+EXPOSE 4200
 USER nobody
-HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
-ENTRYPOINT [ "/sbin/tini", "--", "sh", "/dist/entrypoint.sh" ]
+HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node -e "require('http').get('http://localhost:4200', response => process.exit(response.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "/dist/server/server.mjs"]
