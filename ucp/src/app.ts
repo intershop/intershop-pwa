@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import express, { Request } from 'express';
 
 import { UCP_BASE_PATH, UcpConfig } from './config';
@@ -10,6 +12,9 @@ function requestOrigin(req: Request): string {
   return `${req.protocol}://${req.get('host')}`;
 }
 
+/** Static demo page, shipped alongside the compiled sources under `public/`. */
+const DEMO_PAGE = path.join(__dirname, '..', 'public', 'demo.html');
+
 /**
  * Assembles the Express application exposing the UCP (https://ucp.dev) discovery
  * and catalog surfaces:
@@ -19,6 +24,7 @@ function requestOrigin(req: Request): string {
  *  - `POST /ucp/v1/catalog/search`  — UCP-conformant catalog Search
  *  - `POST /ucp/v1/catalog/lookup`  — UCP-conformant catalog Lookup (batch)
  *  - `POST /ucp/v1/catalog/product` — single-product detail lookup
+ *  - `GET  /ucp/demo`               — interactive, same-origin showcase page
  *
  * Scope: non-transactional catalog discovery only.
  */
@@ -43,6 +49,11 @@ export function createApp(config: UcpConfig): express.Express {
   app.get(`${UCP_BASE_PATH}/openapi.json`, (req, res) => {
     res.set('Cache-Control', 'public, max-age=300');
     res.json(buildUcpOpenApi(profileOrigin(req)));
+  });
+
+  // Interactive showcase; served under `/ucp/` so the PWA nginx proxies it too.
+  app.get('/ucp/demo', (_req, res) => {
+    res.sendFile(DEMO_PAGE);
   });
 
   // Non-transactional catalog Search and Lookup over the ICM REST API.

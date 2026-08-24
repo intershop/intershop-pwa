@@ -30,6 +30,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/dist ./dist
 
+# Static assets (the interactive demo page) served at /ucp/demo.
+COPY public ./public
+
 EXPOSE 4000
 
 # Liveness/readiness: hit the built-in /health route using Node's global fetch.

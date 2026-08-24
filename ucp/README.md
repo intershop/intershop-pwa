@@ -33,6 +33,7 @@ Excluded (intentionally, non-transactional MVP):
 | `POST` | `/ucp/v1/catalog/search`  | UCP-conformant catalog Search (free-text).           |
 | `POST` | `/ucp/v1/catalog/lookup`  | UCP-conformant catalog Lookup (batch by identifier). |
 | `POST` | `/ucp/v1/catalog/product` | Single-product detail lookup.                        |
+| `GET`  | `/ucp/demo`               | Interactive, same-origin showcase page.              |
 
 Product prices are returned as integer minor units (for example cents) together with an
 ISO 4217 currency code, as required by the UCP catalog model.
@@ -144,6 +145,18 @@ Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
 Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
   -ContentType 'application/json' -Body '{ "ids": ["201807195", "201807201"] }' | ConvertTo-Json -Depth 8
 ```
+
+## Demo
+
+The service ships an interactive, single-page **showcase** at `/ucp/demo` that walks through
+the agent flow — Discovery → catalog Search (with pagination) → batch Lookup — against the
+live service, showing the exact UCP request/response for each step and the ICM calls behind
+the scenes. It talks to its own origin, so it works wherever the service is reachable:
+
+- Standalone container: <http://localhost:4000/ucp/demo>
+- Behind the PWA nginx: <http://localhost:4200/ucp/demo> (the `/ucp/` route is already proxied)
+
+No configuration or separate server is required; open the URL in a browser.
 
 ## Architecture
 
