@@ -141,7 +141,8 @@ export function toUcpProduct(product: IcmProductData, context: ToUcpProductConte
   const media = pickMedia(product, context);
   const title = product.productName ?? sku;
   const description = { plain: product.shortDescription ?? product.longDescription ?? product.productName ?? sku };
-  const url = `${context.storefrontBaseUrl}/product/${encodeURIComponent(sku)}`;
+  // PWA canonical short product route; the storefront redirects to the locale-prefixed URL.
+  const url = `${context.storefrontBaseUrl}/prd${encodeURIComponent(sku)}`;
   const available = product.inStock ?? product.availability ?? false;
 
   const variant: UcpVariant = {

@@ -27,7 +27,7 @@ describe('Catalog Mapper', () => {
     assert.equal(result.id, '12345');
     assert.equal(result.title, 'Test Product');
     assert.equal(result.description.plain, 'A short description');
-    assert.equal(result.url, 'https://shop.example.com/product/12345');
+    assert.equal(result.url, 'https://shop.example.com/prd12345');
     assert.equal(result.variants.length, 1);
     assert.equal(result.variants[0].id, '12345');
     assert.equal(result.variants[0].availability.available, true);

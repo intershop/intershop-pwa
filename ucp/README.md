@@ -41,17 +41,17 @@ ISO 4217 currency code, as required by the UCP catalog model.
 
 Configuration is read from environment variables (see [.env.example](./.env.example)).
 
-| Variable              | Default                            | Description                                        |
-| --------------------- | ---------------------------------- | -------------------------------------------------- |
-| `UCP_PORT`            | `4000`                             | Port the service listens on.                       |
-| `UCP_PUBLIC_BASE_URL` | request origin                     | Fixed public origin advertised in the profile.     |
-| `STOREFRONT_BASE_URL` | request origin                     | Storefront origin used to build product page URLs. |
-| `ICM_BASE_URL`        | `https://develop.icm.intershop.de` | Base URL of the ICM backend.                       |
-| `ICM_SERVER`          | `INTERSHOP/rest/WFS`               | ICM REST server path.                              |
-| `ICM_CHANNEL`         | `inSPIRED-inTRONICS_Business-Site` | ICM channel the catalog is served from.            |
-| `ICM_APPLICATION`     | `-`                                | ICM application.                                   |
-| `ICM_LOCALE`          | `en_US`                            | Locale used for catalog requests.                  |
-| `ICM_CURRENCY`        | `USD`                              | Currency used for catalog prices.                  |
+| Variable              | Default                            | Description                                                                                                                                                                                             |
+| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UCP_PORT`            | `4000`                             | Port the service listens on.                                                                                                                                                                            |
+| `UCP_PUBLIC_BASE_URL` | request origin                     | Fixed public origin advertised in the profile.                                                                                                                                                          |
+| `STOREFRONT_BASE_URL` | request origin                     | Storefront origin used to build `/prd<sku>` product page URLs. Include a locale segment (e.g. `https://shop.example.com/en`) to link straight to the localized page and skip the storefront's redirect. |
+| `ICM_BASE_URL`        | `https://develop.icm.intershop.de` | Base URL of the ICM backend.                                                                                                                                                                            |
+| `ICM_SERVER`          | `INTERSHOP/rest/WFS`               | ICM REST server path.                                                                                                                                                                                   |
+| `ICM_CHANNEL`         | `inSPIRED-inTRONICS_Business-Site` | ICM channel the catalog is served from.                                                                                                                                                                 |
+| `ICM_APPLICATION`     | `-`                                | ICM application.                                                                                                                                                                                        |
+| `ICM_LOCALE`          | `en_US`                            | Locale used for catalog requests.                                                                                                                                                                       |
+| `ICM_CURRENCY`        | `USD`                              | Currency used for catalog prices.                                                                                                                                                                       |
 
 ## Development
 
