@@ -18,13 +18,14 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-builders/custom-esbuild:application",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
+            "plugins": ["./templates/esbuild/define-build-constants.ts"],
             "assets": [
               "src/assets",
               {
@@ -59,7 +60,7 @@
               }
             ]
           },
-          "defaultConfiguration": "b2b,production,define-b2b-production",
+          "defaultConfiguration": "b2b,production",
           "configurations": {
             "production": {
               "outputHashing": "all",
@@ -121,113 +122,33 @@
                   "with": "src/app/pages/account/account-navigation/account-navigation.items.b2c.ts"
                 }
               ]
-            },
-            "define-b2b-development": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "false",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "true",
-                "THEME": "\"b2b\"",
-                "SSR": "false"
-              }
-            },
-            "define-b2c-development": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "false",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "true",
-                "THEME": "\"b2c\"",
-                "SSR": "false"
-              }
-            },
-            "define-b2b-production": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "true",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "false",
-                "THEME": "\"b2b\"",
-                "SSR": "false"
-              }
-            },
-            "define-b2c-production": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "true",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "false",
-                "THEME": "\"b2c\"",
-                "SSR": "false"
-              }
-            },
-            "define-b2b-development-ssr": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "false",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "true",
-                "THEME": "\"b2b\"",
-                "SSR": "globalThis.ngServerMode"
-              }
-            },
-            "define-b2c-development-ssr": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "false",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "true",
-                "THEME": "\"b2c\"",
-                "SSR": "globalThis.ngServerMode"
-              }
-            },
-            "define-b2b-production-ssr": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "true",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "false",
-                "THEME": "\"b2b\"",
-                "SSR": "globalThis.ngServerMode"
-              }
-            },
-            "define-b2c-production-ssr": {
-              "define": {
-                "PWA_VERSION": "\"11.2.0\"",
-                "PRODUCTION_MODE": "true",
-                "SERVICE_WORKER": "false",
-                "NGRX_RUNTIME_CHECKS": "false",
-                "THEME": "\"b2c\"",
-                "SSR": "globalThis.ngServerMode"
-              }
             }
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-esbuild:dev-server",
           "options": {
-            "buildTarget": "intershop-pwa:build:b2b,development,define-b2b-development"
+            "buildTarget": "intershop-pwa:build:b2b,development"
           },
           "defaultConfiguration": "b2b-development",
           "configurations": {
             "b2b-development": {
-              "buildTarget": "intershop-pwa:build:b2b,development,define-b2b-development"
+              "buildTarget": "intershop-pwa:build:b2b,development"
             },
             "b2c-development": {
-              "buildTarget": "intershop-pwa:build:b2c,development,define-b2c-development"
+              "buildTarget": "intershop-pwa:build:b2c,development"
             },
             "b2b-production": {
-              "buildTarget": "intershop-pwa:build:b2b,production,define-b2b-production"
+              "buildTarget": "intershop-pwa:build:b2b,production"
             },
             "b2c-production": {
-              "buildTarget": "intershop-pwa:build:b2c,production,define-b2c-production"
+              "buildTarget": "intershop-pwa:build:b2c,production"
             },
             "b2b-ssr": {
-              "buildTarget": "intershop-pwa:build:b2b,development,ssr,define-b2b-development-ssr"
+              "buildTarget": "intershop-pwa:build:b2b,development,ssr"
             },
             "b2c-ssr": {
-              "buildTarget": "intershop-pwa:build:b2c,development,ssr,define-b2c-development-ssr"
+              "buildTarget": "intershop-pwa:build:b2c,development,ssr"
             }
           }
         },
