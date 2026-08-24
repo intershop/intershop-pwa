@@ -121,11 +121,11 @@ const PORT = process.env.PORT || 4200;
 
 const DEPLOY_URL = getDeployURLFromEnv();
 
-const DIST_FOLDER = join(process.cwd(), 'dist');
+const DIST_FOLDER = process.env.DIST_FOLDER || join(process.cwd(), 'dist');
 
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
-const INDEX_FILE = process.env.INDEX_FILE || join(process.cwd(), 'dist', 'server', 'index.server.html');
+const INDEX_FILE = process.env.INDEX_FILE || join(DIST_FOLDER, 'server', 'index.server.html');
 
 // The Express app is exported so that it can be used by serverless Functions.
 // eslint-disable-next-line complexity

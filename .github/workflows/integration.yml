@@ -45,13 +45,13 @@ jobs:
         run: npm ci
 
       - name: Build SSR
-        run: npm run build:${{ matrix.theme }}
+        run: npm run build:${{ matrix.theme }} -- --output-path=dist/${{ matrix.theme }}
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v7
         with:
           name: dist-${{ matrix.theme }}
-          path: dist
+          path: dist/${{ matrix.theme }}
 
   SSR:
     needs: [Build]
@@ -75,17 +75,19 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: dist-${{ matrix.theme }}
-          path: dist
+          path: dist/${{ matrix.theme }}
 
       - name: Set Environment
         run: |
           echo "LOGLEVEL=error" >> $GITHUB_ENV
           echo "LOGFORMAT=text" >> $GITHUB_ENV
           echo "THEME=${{ matrix.theme }}" >> $GITHUB_ENV
+          echo "BROWSER_FOLDER=dist/${{ matrix.theme }}/browser" >> $GITHUB_ENV
+          echo "DIST_FOLDER=dist/${{ matrix.theme }}" >> $GITHUB_ENV
 
       - name: Test SSR
         run: |
-          node dist/server/server.mjs &
+          node dist/${{ matrix.theme }}/server/server.mjs &
           sh e2e/test-ssr.sh
 
   Cypress:
@@ -114,17 +116,19 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: dist-${{ matrix.theme }}
-          path: dist
+          path: dist/${{ matrix.theme }}
 
       - name: Set Environment
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
           echo "THEME=${{ matrix.theme }}" >> $GITHUB_ENV
+          echo "BROWSER_FOLDER=dist/${{ matrix.theme }}/browser" >> $GITHUB_ENV
+          echo "DIST_FOLDER=dist/${{ matrix.theme }}" >> $GITHUB_ENV
 
       - name: Start SSR
         run: |
-          node dist/server/server.mjs &
+          node dist/${{ matrix.theme }}/server/server.mjs &
 
       - name: Cypress
         uses: cypress-io/github-action@v7
