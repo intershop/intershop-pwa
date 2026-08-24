@@ -51,7 +51,8 @@ const coreMetaReducers: MetaReducer<CoreState>[] = [
         strictActionSerializability: NGRX_RUNTIME_CHECKS,
         strictStateImmutability: NGRX_RUNTIME_CHECKS,
         strictStateSerializability: NGRX_RUNTIME_CHECKS,
-        strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS,
+        // Vite reloads application modules without clearing NgRx's global action-type registry during development SSR.
+        strictActionTypeUniqueness: NGRX_RUNTIME_CHECKS && !SSR,
       },
     }),
     StoreRouterConnectingModule.forRoot({
