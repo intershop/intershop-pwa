@@ -7,14 +7,12 @@
  * only registers the route and renders the underlying PWA page via the Angular SSR engine.
  */
 
+import { InjectionToken } from '@angular/core';
 import { CommonEngine } from '@angular/ssr/node';
 import express from 'express';
-import { join } from 'path';
 
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
 import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
-
-import { APP_BASE_HREF } from '../main.server';
 
 import { htmlToMarkdown } from './html-to-markdown';
 
@@ -22,6 +20,8 @@ const logger = getLogger('Server');
 
 interface MarkdownMirrorDependencies {
   commonEngine: CommonEngine;
+  appBaseHref: InjectionToken<string>;
+  indexFile: string;
   browserFolder: string;
   getRequestId(req: express.Request): string;
   getBaseLogData(req: express.Request): Record<string, unknown>;
@@ -41,7 +41,7 @@ export function toMarkdownMirrorUrl(url: string): string {
  * the static file handlers so that URLs ending in `.md` are not treated as static assets.
  */
 export function registerMarkdownMirror(server: express.Application, deps: MarkdownMirrorDependencies): void {
-  const { commonEngine, browserFolder, getRequestId, getBaseLogData, extractBaseHref } = deps;
+  const { commonEngine, appBaseHref, indexFile, browserFolder, getRequestId, getBaseLogData, extractBaseHref } = deps;
 
   // Markdown mirror: render the underlying PWA page and return its main content as Markdown.
   const renderMarkdownMirror = (req: express.Request, res: express.Response) => {
@@ -58,11 +58,11 @@ export function registerMarkdownMirror(server: express.Application, deps: Markdo
     commonEngine
       .render({
         url: `${req.protocol}://${req.headers.host}${targetUrl}`,
-        documentFilePath: join(browserFolder, 'index.html'),
+        documentFilePath: indexFile,
         publicPath: browserFolder,
         inlineCriticalCss: false,
         providers: [
-          { provide: APP_BASE_HREF, useValue: baseHref },
+          { provide: appBaseHref, useValue: baseHref },
           { provide: REQUEST, useValue: req },
           { provide: RESPONSE, useValue: res },
           { provide: REQUEST_ID, useValue: getRequestId(req) },

@@ -1,5 +1,5 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, Optional, REQUEST as ANGULAR_REQUEST } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
@@ -38,6 +38,7 @@ export class SeoEffects {
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: InjectSingle<typeof REQUEST>,
+    @Optional() @Inject(ANGULAR_REQUEST) private angularRequest: InjectSingle<typeof ANGULAR_REQUEST>,
     @Inject(APP_BASE_HREF) private baseHref: string,
     private appRef: ApplicationRef
   ) {}
@@ -198,8 +199,10 @@ export class SeoEffects {
     let url: string;
     if (this.request) {
       url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
+    } else if (this.angularRequest) {
+      url = new URL(this.baseHref, this.angularRequest.url).href;
     } else {
-      url = this.doc.baseURI;
+      url = new URL(this.baseHref, this.doc.URL).href;
     }
     return url.endsWith('/') ? url : `${url}/`;
   }
