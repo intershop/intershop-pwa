@@ -5,8 +5,13 @@
     "outDir": "./node_modules/.out-tsc/app",
 
     /* Language & Environment */
-    "types": []
+    "types": ["node"]
   },
-  "files": ["src/main.ts", "src/polyfills.ts"],
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+    "src/main.server.ts",
+    "src/server.ts"
+  ],
   "include": ["src/typings.d.ts"]
 }

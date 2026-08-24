@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports, max-lines */
-import { CommonEngine } from '@angular/ssr/node';
+import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
@@ -16,16 +16,12 @@ import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
 import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
-import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
-import {
-  APP_BASE_HREF,
-  AppServerModule,
-  HYBRID_MAPPING_TABLE,
-  ICM_CONFIG_MATCH,
-  ICM_WEB_URL,
-  environment,
-} from './src/main.server';
-import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
+import { icmCallsCache } from './app/core/interceptors/ssr-cache.interceptor';
+import { getDeployURLFromEnv, setDeployUrlInFile } from './ssr/deploy-url';
+
+globalThis.ngServerMode = true;
+
+type MainServer = typeof import('./main.server');
 
 const logger = getLogger('Server');
 
@@ -129,9 +125,18 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 
 const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
 
+const INDEX_FILE = process.env.INDEX_FILE || join(process.cwd(), 'dist', 'server', 'index.server.html');
+
 // The Express app is exported so that it can be used by serverless Functions.
 // eslint-disable-next-line complexity
-export function app() {
+export function app({
+  APP_BASE_HREF: appBaseHref,
+  AppServerModule: appServerModule,
+  HYBRID_MAPPING_TABLE: hybridMappingTable,
+  ICM_CONFIG_MATCH: icmConfigMatch,
+  ICM_WEB_URL: icmWebUrl,
+  environment,
+}: MainServer) {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
   const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
@@ -230,7 +235,7 @@ export function app() {
 
   // setup Angular SSR engine
   const commonEngine = new CommonEngine({
-    bootstrap: AppServerModule,
+    bootstrap: appServerModule,
     providers: [
       { provide: 'SSR_HYBRID', useValue: !!process.env.SSR_HYBRID },
       { provide: 'PROMETHEUS_REST', useValue: prometheusRest },
@@ -308,7 +313,7 @@ export function app() {
   const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const url = req.originalUrl;
     let newUrl: string;
-    for (const entry of HYBRID_MAPPING_TABLE) {
+    for (const entry of hybridMappingTable) {
       const icmUrlRegex = new RegExp(entry.icm);
       const pwaUrlRegex = new RegExp(entry.pwa);
       const icmMatchArray = icmUrlRegex.exec(url);
@@ -319,7 +324,7 @@ export function app() {
         };
         newUrl = url
           // Rewrite configuration part of incoming ICM url
-          .replace(new RegExp(ICM_CONFIG_MATCH), buildICMWebURL(config))
+          .replace(new RegExp(icmConfigMatch), buildICMWebURL(config))
           // Build pwa URL based on equally named-groups of ICM url
           .replace(icmUrlRegex, `/${entry.pwaBuild}`);
         break;
@@ -360,7 +365,7 @@ export function app() {
   };
 
   const buildICMWebURL = (config: Record<string, string> = {}): string =>
-    ICM_WEB_URL.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
+    icmWebUrl.replace(/\$<(\w+)>/g, (match, group) => config[group] || match);
 
   if (process.env.SSR_HYBRID) {
     server.use(/.*/, hybridRedirect);
@@ -392,7 +397,7 @@ export function app() {
   }
 
   function defaultCacheControl(path: string): string {
-    if (/\.[0-9a-f]{16,}\./.test(path)) {
+    if (/(?:\.[0-9a-f]{16,}|-[A-Z0-9]{8})\./.test(path)) {
       // file was output-hashed -> 1y
       return 'public, max-age=31557600';
     } else {
@@ -512,11 +517,11 @@ export function app() {
     commonEngine
       .render({
         url: `${req.protocol}://${req.headers.host}${req.originalUrl}`,
-        documentFilePath: join(BROWSER_FOLDER, 'index.html'),
+        documentFilePath: INDEX_FILE,
         publicPath: BROWSER_FOLDER,
         inlineCriticalCss: false,
         providers: [
-          { provide: APP_BASE_HREF, useValue: baseHref },
+          { provide: appBaseHref, useValue: baseHref },
           { provide: REQUEST, useValue: req },
           { provide: RESPONSE, useValue: res },
           { provide: REQUEST_ID, useValue: getRequestId(req) },
@@ -640,9 +645,10 @@ if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
   });
 }
 
-function run() {
+export async function run() {
+  const mainServer = await import('./main.server');
   const http = require('http');
-  http.createServer(app()).listen(PORT);
+  http.createServer(app(mainServer)).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
   logger.info(
     {
@@ -654,18 +660,6 @@ function run() {
   logger.info({ file: { directory: BROWSER_FOLDER } }, 'Serving static files');
 }
 
-// Webpack will replace 'require' with '__webpack_require__'
-// '__non_webpack_require__' is a proxy to Node 'require'
-// The below code is to ensure that the server is run only when not requiring the bundle.
-// eslint-disable-next-line @typescript-eslint/naming-convention
-declare const __non_webpack_require__: NodeJS.Require;
-
-const mainModule = __non_webpack_require__.main;
-
-const moduleFilename = mainModule?.filename || '';
-
-if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
-  run();
+if (isMainModule(import.meta.url) || process.env.pm_id !== undefined) {
+  void run();
 }
-
-export * from './src/main.server';

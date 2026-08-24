@@ -112,6 +112,14 @@ describe('Server Config Effects', () => {
 
       expect(effects.loadServerConfigOnInit$).toBeObservable(expected$);
     });
+
+    describe.onSSREnvironment('in SSR', () => {
+      it('should complete without an error if no navigation occurs', () => {
+        actions$ = hot('|');
+
+        expect(effects.loadServerConfigOnInit$).toBeObservable(cold('|'));
+      });
+    });
   });
 
   describe('loadServerConfig$', () => {

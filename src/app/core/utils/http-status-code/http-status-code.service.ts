@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Inject, Injectable, Optional, RESPONSE_INIT } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -8,7 +8,8 @@ import { RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 export class HttpStatusCodeService {
   constructor(
     private router: Router,
-    @Optional() @Inject(RESPONSE) private response: InjectSingle<typeof RESPONSE>
+    @Optional() @Inject(RESPONSE) private response: InjectSingle<typeof RESPONSE>,
+    @Optional() @Inject(RESPONSE_INIT) private responseInit: InjectSingle<typeof RESPONSE_INIT>
   ) {}
 
   /**
@@ -20,7 +21,10 @@ export class HttpStatusCodeService {
    */
   setStatus(status: number, redirect = true) {
     if (SSR) {
-      this.response.status(status);
+      this.response?.status(status);
+      if (this.responseInit) {
+        this.responseInit.status = status;
+      }
     }
     if (redirect && status >= 400) {
       // 503: server is unavailable
