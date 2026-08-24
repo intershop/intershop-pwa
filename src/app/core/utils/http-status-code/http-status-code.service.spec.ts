@@ -127,10 +127,7 @@ describe('Http Status Code Service', () => {
     it('should set the standard response status', () => {
       const responseInit: ResponseInit = {};
       TestBed.configureTestingModule({
-        providers: [
-          { provide: RESPONSE_INIT, useValue: responseInit },
-          provideRouter([{ path: 'error', children: [] }]),
-        ],
+        providers: [{ provide: RESPONSE_INIT, useValue: responseInit }],
       });
 
       TestBed.inject(HttpStatusCodeService).setStatus(404, false);
