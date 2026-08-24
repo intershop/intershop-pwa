@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
-import { IcmError } from './icm.error';
-import { getLogger } from './logger';
+import { IcmError } from '../icm/icm.error';
+import { getLogger } from '../logger';
 
 const logger = getLogger('UCP');
 

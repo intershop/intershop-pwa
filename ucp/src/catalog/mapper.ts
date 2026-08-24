@@ -1,4 +1,4 @@
-import { IcmMoney, IcmProductData } from './icm.types';
+import { IcmMoney, IcmProductData } from '../icm/icm.types';
 
 /**
  * Maps ICM products to the UCP Catalog `Product`/`Variant` model, per

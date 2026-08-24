@@ -1,4 +1,4 @@
-import { UCP_BASE_PATH, UCP_VERSION } from './config';
+import { UCP_BASE_PATH, UCP_VERSION } from '../config';
 
 /**
  * Builds the public UCP business profile served at `/.well-known/ucp`.

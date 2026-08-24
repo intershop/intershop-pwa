@@ -1,11 +1,12 @@
 import express, { Request } from 'express';
 
-import { toUcpProduct } from './catalog.mapper';
-import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './catalog.validation';
-import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT, CATALOG_MAX_LOOKUP_IDS, UCP_VERSION, UcpConfig } from './config';
+import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT, CATALOG_MAX_LOOKUP_IDS, UCP_VERSION, UcpConfig } from '../config';
+import { IcmCatalogClient } from '../icm/icm-client';
+import { IcmError } from '../icm/icm.error';
+
 import { decodeCursor, encodeCursor } from './cursor';
-import { IcmCatalogClient } from './icm-client';
-import { IcmError } from './icm.error';
+import { toUcpProduct } from './mapper';
+import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './validation';
 import { sendUcpError } from './errors';
 
 /**

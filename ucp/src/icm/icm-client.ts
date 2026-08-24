@@ -1,7 +1,8 @@
+import { UcpConfig } from '../config';
+import { getLogger } from '../logger';
+
 import { IcmError } from './icm.error';
 import { IcmProductResponse, IcmProductSearchResponse } from './icm.types';
-import { getLogger } from './logger';
-import { UcpConfig } from './config';
 
 const logger = getLogger('UCP');
 

@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { ToUcpProductContext, toUcpProduct } from './catalog.mapper';
-import { IcmProductData } from './icm.types';
+import { IcmProductData } from '../icm/icm.types';
+
+import { ToUcpProductContext, toUcpProduct } from './mapper';
 
 const context: ToUcpProductContext = {
   currency: 'USD',

@@ -1,9 +1,9 @@
 import express, { Request } from 'express';
 
-import { createCatalogRouter } from './catalog.routes';
 import { UCP_BASE_PATH, UcpConfig } from './config';
-import { buildUcpOpenApi } from './openapi';
-import { buildUcpProfile } from './profile';
+import { createCatalogRouter } from './catalog/routes';
+import { buildUcpOpenApi } from './discovery/openapi';
+import { buildUcpProfile } from './discovery/profile';
 
 /** Absolute origin of the incoming request (honours proxy `X-Forwarded-*`). */
 function requestOrigin(req: Request): string {

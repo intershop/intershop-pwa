@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './catalog.validation';
+import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './validation';
 
 describe('validateSearchRequest', () => {
   it('accepts a request with a query', () => {
