@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextDisplayProperties, ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 
@@ -12,18 +13,18 @@ import { ProductView } from 'ish-core/models/product-view/product-view.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailActionsComponent implements OnInit {
-  // TODO: to be removed once channelName information available in system
-  channelName = 'inTRONICS';
-
+  channelName$: Observable<string>;
   product$: Observable<ProductView>;
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    private context: ProductContextFacade
+    private context: ProductContextFacade,
+    private appFacade: AppFacade
   ) {}
 
   ngOnInit() {
     this.product$ = this.context.select('product');
+    this.channelName$ = this.appFacade.channelName$;
   }
 
   configuration$(key: keyof ProductContextDisplayProperties) {

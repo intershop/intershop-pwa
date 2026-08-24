@@ -1109,6 +1109,7 @@
   "designview.edit.link.title": "Modifier",
   "dialog.close.text": "Fermer",
   "email.recommended_product.heading": "J’ai trouvé un article pour vous sur {{0}}",
+  "email.recommended_product.heading.no_channel": "J’ai trouvé un article pour vous",
   "email.recommended_product.text": "Allez voir ce que j’ai trouvé pour vous. {{0}}\n{{1}}",
   "email.wishlist_sharing.heading": "J’ai partagé ma liste de souhaits avec toi.",
   "email.wishlist_sharing.text": "Jetez un coup d’oeil à ma liste de souhaits :",

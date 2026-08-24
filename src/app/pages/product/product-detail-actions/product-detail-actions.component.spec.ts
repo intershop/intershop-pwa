@@ -4,6 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { createProductView } from 'ish-core/models/product-view/product-view.model';
@@ -19,13 +20,20 @@ describe('Product Detail Actions Component', () => {
   let translate: TranslateService;
   let element: HTMLElement;
   let context: ProductContextFacade;
+  let appFacade: AppFacade;
 
   beforeEach(async () => {
     context = mock(ProductContextFacade);
+    appFacade = mock(AppFacade);
+    when(appFacade.channelName$).thenReturn(of('inTRONICS Business'));
     await TestBed.configureTestingModule({
       imports: [FeatureToggleModule.forTesting('compare'), TranslatePipe],
       declarations: [MockComponent(LazyProductSendToCompareComponent), ProductDetailActionsComponent],
-      providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }, provideTranslateService()],
+      providers: [
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: ProductContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 

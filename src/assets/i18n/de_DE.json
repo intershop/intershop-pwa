@@ -1109,6 +1109,7 @@
   "designview.edit.link.title": "Bearbeiten",
   "dialog.close.text": "Schließen",
   "email.recommended_product.heading": "Ich habe bei {{0}} etwas für dich gefunden",
+  "email.recommended_product.heading.no_channel": "Ich habe etwas für dich gefunden",
   "email.recommended_product.text": "Sieh mal, was ich für dich gefunden habe. {{0}}\n{{1}}",
   "email.wishlist_sharing.heading": "Ich habe meine Wunschliste mit dir geteilt.",
   "email.wishlist_sharing.text": "Schau dir meine Wunschliste an:",

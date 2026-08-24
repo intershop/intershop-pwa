@@ -1109,6 +1109,7 @@
   "designview.edit.link.title": "Edit",
   "dialog.close.text": "Close",
   "email.recommended_product.heading": "I found an item for you at {{0}}",
+  "email.recommended_product.heading.no_channel": "I found an item for you",
   "email.recommended_product.text": "Take a look at what I found for you. {{0}}\n{{1}}",
   "email.wishlist_sharing.heading": "I shared my wishlist with you.",
   "email.wishlist_sharing.text": "Take a look at my wishlist:",
