@@ -43,6 +43,7 @@ export default (builderOptions: BuilderOptions, target: Target): Plugin => {
   const theme = getSingleConfiguration(configurations, themes, 'theme');
   const mode = getSingleConfiguration(configurations, modes, 'mode');
   const production = mode === 'production';
+  process.env.PURGE_CSS ??= String(production);
   const serviceWorker = false;
   const pwaVersion = `${version} built ${buildDate} - configuration:${theme},${mode} service-worker:${serviceWorker}`;
 
