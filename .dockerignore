@@ -151,3 +151,4 @@ scripts
 !scripts/build-multi-pwa.js
 !scripts/build-ssr-runtime.js
 !scripts/init-development-environment.js
+!scripts/remove-data-testing-attributes.cjs
