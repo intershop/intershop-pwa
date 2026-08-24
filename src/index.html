@@ -11,6 +11,12 @@
     <link href="assets/themes/b2b/img/logo_apple_167x167.png" rel="apple-touch-icon" sizes="167x167" />
     <link href="assets/themes/b2b/manifest.webmanifest" rel="manifest" />
     <meta content="#006b99" name="theme-color" />
+    <!-- Reveal the SSR-rendered cookies banner at FCP when no consent cookie exists yet; see the cookies-banner component. -->
+    <script>
+      if (!/(?:^|; )cookieConsent=/.test(document.cookie)) {
+        document.documentElement.classList.add('show-cookie-banner');
+      }
+    </script>
   </head>
   <body>
     <ish-root>Intershop Progressive Web App is loading ...</ish-root>
