@@ -30,7 +30,6 @@
 /dev.bat
 **/.lighthouseci/
 /.github/lighthouse/certs/
-
 /dist/
 
 # from e2e/.gitignore

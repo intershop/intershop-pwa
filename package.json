@@ -142,6 +142,8 @@
     "@commitlint/config-conventional": "^21.2.2",
     "@commitlint/cz-commitlint": "^21.2.2",
     "@cspell/eslint-plugin": "^10.0.1",
+    "@fullhuman/postcss-purgecss": "^8.0.0",
+    "@intershop/postcss-purgecss-config": "file:tools/postcss-purgecss-config",
     "@lhci/cli": "^0.15.1",
     "@ngrx/eslint-plugin": "^20.1.0",
     "@phenomnomnominal/tsquery": "^6.2.0",
