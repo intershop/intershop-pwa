@@ -145,7 +145,10 @@ azure-pipelines*
 
 src/assets/mock-data
 
-templates
+templates/*
+!templates/esbuild/
+templates/esbuild/*
+!templates/esbuild/define-build-constants.ts
 
 scripts
 !scripts/build-multi-pwa.js
