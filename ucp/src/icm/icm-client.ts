@@ -2,7 +2,7 @@ import { UcpConfig } from '../config';
 import { getLogger } from '../logger';
 
 import { IcmError } from './icm.error';
-import { IcmProductResponse, IcmProductSearchResponse } from './icm.types';
+import { IcmProductResponse, IcmProductSearchResponse, IcmVariationsResponse } from './icm.types';
 
 const logger = getLogger('UCP');
 
@@ -62,6 +62,11 @@ export class IcmCatalogClient {
       offset,
       attrs: 'sku,productName,shortDescription,listPrice,salePrice,availability,inStock',
     });
+  }
+
+  /** List the variations of a variation master (links + their defining attribute values). */
+  getVariations(masterSku: string): Promise<IcmVariationsResponse> {
+    return this.request<IcmVariationsResponse>(`products/${encodeURIComponent(masterSku)}/variations`, { amount: 50 });
   }
 }
 

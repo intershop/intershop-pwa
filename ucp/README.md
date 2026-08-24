@@ -38,6 +38,24 @@ Excluded (intentionally, non-transactional MVP):
 Product prices are returned as integer minor units (for example cents) together with an
 ISO 4217 currency code, as required by the UCP catalog model.
 
+## Pricing
+
+Every product carries a `price_range` (`min`/`max`) and each variant a single `price`, both
+in integer minor units + ISO 4217 currency. The service maps the ICM product kinds as follows:
+
+- **Simple product** — `price_range.min == max`; one variant at that price.
+- **Variation master** — `price_range` spans the cheapest and most expensive variation
+  (`minSalePrice`/`maxSalePrice`); the featured variant is the ICM default variation, whose
+  own `price` need not equal `price_range.min` (per the UCP spec, the range and the featured
+  price are decoupled).
+- **Retail set** — `price_range` spans the cheapest part (`minSalePrice`) and the summed
+  total (`summedUpSalePrice`); the variant price is the whole-set total.
+- **Product bundle** — sold as one unit at a single price, so it maps like a simple product
+  (`price_range.min == max`), unlike a retail set.
+
+A strike-through `list_price` / `list_price_range` is emitted only when the list price is
+higher than the sale price.
+
 ## Configuration
 
 Configuration is read from environment variables (see [.env.example](./.env.example)).

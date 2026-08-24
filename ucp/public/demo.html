@@ -601,6 +601,17 @@
         );
       }
 
+      // Render a UCP price_range as "min – max", collapsing to a single price when they match.
+      function moneyRange(range, fallbackCurrency) {
+        if (!range) return '-';
+        const min = range.min?.amount;
+        const max = range.max?.amount;
+        const currency = range.min?.currency || range.max?.currency || fallbackCurrency;
+        if (min == null && max == null) return '-';
+        if (max == null || min === max) return money(min ?? max, currency);
+        return `${money(min, currency)} – ${money(max, currency)}`;
+      }
+
       function activate(n) {
         for (let i = 1; i <= 3; i++) {
           const el = $('#step' + i);
@@ -628,8 +639,8 @@
         return {
           id: v.id,
           title: p.title,
-          price: v.price?.amount,
-          currency: v.price?.currency,
+          range: p.price_range,
+          currency: v.price?.currency || p.price_range?.min?.currency,
           in_stock: v.availability?.available,
           image: p.media?.[0]?.url || v.media?.[0]?.url || '',
         };
@@ -640,7 +651,7 @@
           <div class="item" data-idx="${idx}">
             <img src="${esc(it.image)}" alt="" onerror="this.style.visibility='hidden'"/>
             <div class="title">${esc(it.title)}</div>
-            <div class="price">${money(it.price, it.currency)}</div>
+            <div class="price">${moneyRange(it.range, it.currency)}</div>
             <div class="stock">${it.in_stock ? '● in stock' : '○ out of stock'} · ${esc(it.id)}</div>
           </div>`;
       }
@@ -757,11 +768,12 @@
           const rows = products
             .map(p => {
               const v = (p.variants && p.variants[0]) || {};
+              const variantCount = p.variants?.length || 0;
               return (
                 `<div class="row"><span>${esc(p.title || '')} <span class="hint">(${esc(p.id || '')})</span></span>` +
-                `<span>${money(v.price?.amount, v.price?.currency)} · ${
-                  v.availability?.available ? '● in stock' : '○ out of stock'
-                }</span></div>`
+                `<span>${moneyRange(p.price_range, v.price?.currency)}${
+                  variantCount > 1 ? ` · ${variantCount} variants` : ''
+                } · ${v.availability?.available ? '● in stock' : '○ out of stock'}</span></div>`
               );
             })
             .join('');
