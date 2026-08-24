@@ -9,19 +9,19 @@ import { mergeDeep } from 'ish-core/utils/functions';
 
 export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
-const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
+export const NGRX_STATE_IMPORT_ACTION_TYPE = '[Internal] Import NgRx State';
 
 let transferredState: Record<string, unknown>;
 
 /**
  * Meta reducer for hydrating server side state on the client side if supplied by SSR.
- * Initially (STATE_ACTION_TYPE) all already registered slices are hydrated, then removed from the transferred state.
+ * Initially (NGRX_STATE_IMPORT_ACTION_TYPE) all already registered slices are hydrated, then removed from the transferred state.
  * On subsequent updates (UPDATE), only features that are still in the transferred state are applied, then removed from the transferred state.
  * This allows to apply the transferred state in parts and only once, e.g. as features are loaded, and prevents transferred state from being lost if the store is updated before a feature is loaded.
  */
 export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
   return (state: CoreState, action: { payload: Record<string, unknown>; features: string[] } & Action) => {
-    if (action.type === STATE_ACTION_TYPE) {
+    if (action.type === NGRX_STATE_IMPORT_ACTION_TYPE) {
       // keep a mutable copy — slices are removed as they're applied
       transferredState = { ...action.payload };
       const registered = Object.keys(state ?? {});
@@ -64,7 +64,7 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store, ac
       actions.pipe(first()).subscribe(() => {
         const state = transferState.get<object>(NGRX_STATE_SK, undefined);
         transferState.remove(NGRX_STATE_SK);
-        store.dispatch({ type: STATE_ACTION_TYPE, payload: state });
+        store.dispatch({ type: NGRX_STATE_IMPORT_ACTION_TYPE, payload: state });
       });
     } else {
       // server
