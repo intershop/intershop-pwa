@@ -83,34 +83,62 @@ domain. The root `docker-compose.yml` defines a `ucp` service, and the PWA nginx
 `/.well-known/ucp` and `/ucp/` to it when the `UPSTREAM_UCP` environment variable is set
 (for example `UPSTREAM_UCP: 'http://ucp:4000'`).
 
-```bash
+```powershell
 # from the repository root
 docker compose up --build
-curl -i http://localhost:4200/.well-known/ucp
+Invoke-RestMethod http://localhost:4200/.well-known/ucp | ConvertTo-Json -Depth 6
 ```
 
-Because the requests arrive through nginx, the profile `endpoint` and product page URLs are
-derived from the storefront origin automatically; `UCP_PUBLIC_BASE_URL` and
+Because the requests arrive through nginx, the profile `endpoint` and product page URLs are derived from the storefront origin automatically; `UCP_PUBLIC_BASE_URL` and
 `STOREFRONT_BASE_URL` only need to be set to override that behavior.
+
+### Caching
+
+When nginx caching is enabled (`CACHE` set to `on`/`true`/`1`/`yes`), the PWA nginx caches
+the two **static discovery documents** in a dedicated cache zone to shield the service from
+discovery-poll traffic:
+
+| Path                   | Cached? | TTL                           |
+| ---------------------- | ------- | ----------------------------- |
+| `/.well-known/ucp`     | yes     | `CACHE_DURATION_UCP` (`12h`)  |
+| `/ucp/v1/openapi.json` | yes     | `CACHE_DURATION_UCP` (`12h`)  |
+| `/ucp/v1/catalog/*`    | no      | always proxied to the service |
+
+The catalog `search`/`lookup`/`product` endpoints are dynamic and body-dependent, so they
+are never cached. The TTL is controlled by the `CACHE_DURATION_UCP` environment variable
+(default `12h`, set in [nginx/Dockerfile](../nginx/Dockerfile)). nginx deliberately ignores
+the upstream `Cache-Control` header and applies its own TTL, so the service's own
+`Cache-Control: public, max-age=300` on the discovery documents only affects any caches
+sitting in front of nginx (browsers, CDNs).
+
+Every cacheable response carries an `X-Cache-Status` header (`HIT`, `MISS`, or `BYPASS`) so
+you can verify the behavior:
+
+```powershell
+# HIT after the first request (discovery documents)
+(Invoke-WebRequest http://localhost:4200/.well-known/ucp).Headers['X-Cache-Status']
+
+# no cache header — always proxied (catalog API)
+(Invoke-WebRequest -Method Post http://localhost:4200/ucp/v1/catalog/search `
+  -ContentType 'application/json' -Body '{ "query": "camera" }').Headers['X-Cache-Status']
+```
 
 ## Trying It Out
 
-```bash
+```powershell
 # Discover the profile
-curl -i http://localhost:4000/.well-known/ucp
+Invoke-RestMethod http://localhost:4000/.well-known/ucp | ConvertTo-Json -Depth 6
 
 # Read the OpenAPI documentation
-curl -i http://localhost:4000/ucp/v1/openapi.json
+Invoke-RestMethod http://localhost:4000/ucp/v1/openapi.json | ConvertTo-Json -Depth 8
 
 # Search the catalog
-curl -i -X POST http://localhost:4000/ucp/v1/catalog/search \
-  -H 'Content-Type: application/json' \
-  -d '{ "query": "camera" }'
+Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/search `
+  -ContentType 'application/json' -Body '{ "query": "camera" }' | ConvertTo-Json -Depth 8
 
 # Look up products by identifier
-curl -i -X POST http://localhost:4000/ucp/v1/catalog/lookup \
-  -H 'Content-Type: application/json' \
-  -d '{ "ids": ["201807231-01"] }'
+Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
+  -ContentType 'application/json' -Body '{ "ids": ["201807231-01"] }' | ConvertTo-Json -Depth 8
 ```
 
 ## Architecture
@@ -119,10 +147,21 @@ The service is intentionally small and self-contained. Only `src/config.ts` read
 environment; every other module operates on a plain configuration object. The Express
 application is assembled in `src/app.ts` and started by `src/server.ts`.
 
+The source is grouped by concern so that further UCP capabilities can be added alongside
+the existing catalog surface:
+
+```
+src/
+  server.ts  app.ts  config.ts  logger.ts   # bootstrap and cross-cutting concerns
+  icm/                                       # ICM REST client, types and errors
+  catalog/                                   # catalog Search/Lookup routes, validation, mapping
+  discovery/                                 # UCP profile and OpenAPI documents
+```
+
 Because the scope is deliberately non-transactional, this is not a permanent architecture
 decision for all future UCP stages. When transactional capabilities (cart, checkout,
-payment, identity linking, signing) are added, the deployment and boundaries should be
-re-evaluated.
+payment, identity linking, signing) are added, they should be added as sibling folders
+(e.g. `cart/`, `checkout/`) and the deployment and boundaries should be re-evaluated.
 
 ## Further References
 
