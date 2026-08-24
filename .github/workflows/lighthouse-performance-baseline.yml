@@ -7,6 +7,13 @@ on:
       - develop
     paths:
       - src/**
+      - .github/lighthouse/**
+      - .github/workflows/lighthouse-performance-baseline.yml
+      - angular.json
+      - package.json
+      - package-lock.json
+      - server*.ts
+      - tsconfig*.json
 
 concurrency:
   group: ${{ github.workflow }}

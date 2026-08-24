@@ -39,11 +39,11 @@ import { TranslationGenerator } from './utils/translate/translations-generator';
         useFactory: (lang: string) => {
           switch (lang) {
             case 'en_US':
-              return import('../../assets/i18n/en_US.json');
+              return import('../../assets/i18n/en_US.json').then(module => module.default);
             case 'fr_FR':
-              return import('../../assets/i18n/fr_FR.json');
+              return import('../../assets/i18n/fr_FR.json').then(module => module.default);
             case 'de_DE':
-              return import('../../assets/i18n/de_DE.json');
+              return import('../../assets/i18n/de_DE.json').then(module => module.default);
           }
         },
       },

@@ -18,32 +18,54 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
-            "outputPath": "dist/browser",
+            "outputPath": "dist",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "browser": "src/main.ts",
+            "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets",
               {
                 "glob": "favicon.ico",
-                "input": "src/assets/themes/theme_placeholder/img/",
+                "input": "src/assets/themes/b2b/img/",
                 "output": "/"
               }
             ],
-            "scripts": [],
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/theme_placeholder"]
+              "includePaths": ["src/styles/themes/b2b"],
+              "sass": {
+                "silenceDeprecations": ["import"]
+              }
             },
             "sourceMap": true,
-            "allowedCommonJsDependencies": ["localforage"]
+            "allowedCommonJsDependencies": [
+              "localforage",
+              "express-http-proxy",
+              "prom-client",
+              "undici",
+              "on-finished",
+              "@elastic/ecs-pino-format",
+              "pino",
+              "pino-pretty",
+              "js-yaml"
+            ],
+            "define": {
+              "PWA_VERSION": "\"11.2.0\"",
+              "PRODUCTION_MODE": "false",
+              "SERVICE_WORKER": "false",
+              "NGRX_RUNTIME_CHECKS": "true",
+              "THEME": "\"b2b\"",
+              "SSR": "false"
+            },
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.b2b.ts"
+              }
+            ]
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
@@ -51,21 +73,15 @@
               "outputHashing": "all",
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": true,
-              "commonChunk": false,
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "false"
+              },
               "budgets": [
-                {
-                  "type": "bundle",
-                  "name": "main",
-                  "maximumWarning": "550kb",
-                  "maximumError": "600kb"
-                },
-                {
-                  "type": "bundle",
-                  "name": "vendor",
-                  "maximumWarning": "900kb",
-                  "maximumError": "1000kb"
-                },
                 {
                   "type": "initial",
                   "maximumWarning": "1.8mb",
@@ -79,6 +95,10 @@
               ],
               "fileReplacements": [
                 {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.b2b.ts"
+                },
+                {
                   "replace": "src/app/core/store/store-devtools.module.ts",
                   "with": "src/app/core/store/store-devtools.module.production.ts"
                 }
@@ -86,7 +106,6 @@
             },
             "development": {
               "optimization": false,
-              "buildOptimizer": false,
               "tsConfig": "tsconfig.app-no-checks.json",
               "budgets": [
                 {
@@ -95,12 +114,25 @@
                 }
               ]
             },
-            "b2b": {},
-            "b2c": {}
+            "ssr": {
+              "server": "src/main.server.ts",
+              "ssr": {
+                "entry": "src/server.ts"
+              },
+              "define": {
+                "PWA_VERSION": "\"11.2.0\"",
+                "PRODUCTION_MODE": "true",
+                "SERVICE_WORKER": "false",
+                "NGRX_RUNTIME_CHECKS": "false",
+                "THEME": "\"b2b\"",
+                "SSR": "globalThis.ngServerMode"
+              }
+            },
+            "b2b": {}
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "intershop-pwa:build"
           },
@@ -116,8 +148,8 @@
             "b2b": {
               "buildTarget": "intershop-pwa:build:b2b"
             },
-            "b2c": {
-              "buildTarget": "intershop-pwa:build:b2c"
+            "ssr": {
+              "buildTarget": "intershop-pwa:build:b2b,development,ssr"
             }
           }
         },
@@ -138,48 +170,6 @@
               "**/*.html"
             ]
           }
-        },
-        "server": {
-          "builder": "@angular-builders/custom-webpack:server",
-          "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
-            "outputPath": "dist/server",
-            "main": "server.ts",
-            "optimization": true,
-            "tsConfig": "tsconfig.server.json",
-            "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/theme_placeholder"]
-            },
-            "sourceMap": true
-          },
-          "defaultConfiguration": "b2b,production",
-          "configurations": {
-            "production": {},
-            "development": {},
-            "b2b": {},
-            "b2c": {}
-          }
-        },
-        "serve-ssr": {
-          "builder": "@angular-devkit/build-angular:ssr-dev-server",
-          "options": {
-            "browserTarget": "intershop-pwa:build",
-            "serverTarget": "intershop-pwa:server"
-          },
-          "defaultConfiguration": "b2b",
-          "configurations": {
-            "b2b": {
-              "browserTarget": "intershop-pwa:build:b2b,development",
-              "serverTarget": "intershop-pwa:server:b2b,development"
-            },
-            "b2c": {
-              "browserTarget": "intershop-pwa:build:b2c,development",
-              "serverTarget": "intershop-pwa:server:b2c,development"
-            }
-          }
         }
       }
     },
@@ -193,19 +183,21 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/organization-management",
             "index": "projects/organization-management/src/index.html",
-            "main": "projects/organization-management/src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "browser": "projects/organization-management/src/main.ts",
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/b2b"],
+              "sass": {
+                "silenceDeprecations": ["import"]
+              }
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -217,13 +209,13 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.development.ts"
+                "with": "src/environments/environment.b2b.ts"
               }
             ]
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "organization-management:build",
             "hmr": true
@@ -241,19 +233,21 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "customWebpackConfig": {
-              "path": "./templates/webpack/webpack.custom.ts",
-              "replaceDuplicatePlugins": true
-            },
             "outputPath": "dist/requisition-management",
             "index": "projects/requisition-management/src/index.html",
-            "main": "projects/requisition-management/src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "browser": "projects/requisition-management/src/main.ts",
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": ["src/styles/themes/b2b/style.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles/themes/b2b"],
+              "sass": {
+                "silenceDeprecations": ["import"]
+              }
+            },
             "assets": [
               {
                 "glob": "**/*",
@@ -265,13 +259,13 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.development.ts"
+                "with": "src/environments/environment.b2b.ts"
               }
             ]
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "requisition-management:build",
             "hmr": true

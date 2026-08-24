@@ -42,7 +42,7 @@ jobs:
         run: npm ci
 
       - name: Build SSR
-        run: npm run build:multi
+        run: npm run build
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v7
@@ -54,6 +54,8 @@ jobs:
     needs: [Build]
     runs-on: ubuntu-latest
 
+    # TODO: es-build currently builds only the B2B theme, so the 'b2c' matrix leg runs against the same single server.
+    # Restore per-theme handling here once multi-theme es-build build/runtime support is added (see docs/guides/esbuild-migration.md).
     strategy:
       matrix:
         test: ['b2c', 'b2b']
@@ -91,13 +93,15 @@ jobs:
 
       - name: Test SSR
         run: |
-          node dist/$THEME/run-standalone &
+          node dist/server/server.mjs &
           sh e2e/test-ssr.sh
 
   Cypress:
     needs: [Build, SSR]
     runs-on: ubuntu-latest
 
+    # TODO: esbuild currently builds only the B2B theme, so the 'b2c' matrix leg runs against the same single server.
+    # Restore per-theme handling here once multi-theme esbuild build/runtime support is added (see docs/guides/esbuild-migration.md).
     strategy:
       fail-fast: false
       matrix:
@@ -139,7 +143,8 @@ jobs:
 
       - name: Start SSR
         run: |
-          node dist/$THEME/run-standalone &
+          # TODO: start the theme-specific SSR build (was 'node dist/$THEME/run-standalone') once multi-theme esbuild output exists.
+          node dist/server/server.mjs &
 
       - name: Cypress
         uses: cypress-io/github-action@v7

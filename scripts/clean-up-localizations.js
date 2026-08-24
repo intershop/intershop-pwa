@@ -9,25 +9,8 @@ const localizationFile_default = 'src/assets/i18n/en_US.json';
 // ADDITIONAL GLOBAL PATTERNS HAVE TO BE ADDED HERE
 const regExps = [/.*\.error.*/i];
 
-let filesToBeSearched;
-
-const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_config_build;
-
-if (doBuild) {
-  // perform a build with sourcemaps and use those files
-  execSync('git clean -xdf dist', { stdio: 'inherit' });
-  execSync('npm run build:multi client -- --source-map', { stdio: 'inherit' });
-
-  filesToBeSearched = _.flatten(
-    globSync('dist/**/active-files.json').map(activeFilesPath => {
-      console.log('loading', activeFilesPath);
-      return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
-    })
-  ).filter((v, i, a) => a.indexOf(v) === i);
-} else {
-  // go through directory recursively and find files to be searched
-  filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
-}
+// Go through the source directories recursively. Build-based cleanup depended on the removed custom webpack metadata.
+const filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
 
 console.log('\nKeep-patterns:');
 regExps.forEach(regex => {

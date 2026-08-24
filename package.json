@@ -36,7 +36,7 @@
     "spell-check": "cspell lint --no-summary --no-progress \"{src,projects,docs}/**/*{.{html,scss,md},en_US.json}\"",
     "clean": "git clean -xdf -e \"*environment.local.ts\" -e \"*environment.development.ts\" -e \"*node_modules\"",
     "postclean": "npm ci --prefer-offline --no-audit",
-    "check": "npm-run-all \"lint -- --fix\" format compile build:multi test dead-code update-dockerignore clean-localizations",
+    "check": "npm-run-all \"lint -- --fix\" format compile build test dead-code update-dockerignore clean-localizations",
     "clean-check": "npm-run-all clean check",
     "check-no-changes": "git diff --exit-code --raw -p --stat",
     "show-ignored-files": "git ls-files . --exclude-standard --others --ignored --directory",
@@ -45,13 +45,12 @@
     "3rd-party-licenses:summary": "npx license-checker --summary",
     "docs": "npx markserv -a localhost docs/README.md",
     "synchronize-lazy-components": "ng g lazy-components",
-    "build:watch": "npm run build client -- --watch",
-    "build": "node scripts/build-pwa",
-    "build:multi": "node scripts/build-multi-pwa",
-    "analyze": "npm run build client -- --stats-json && npx webpack-bundle-analyzer --host 0.0.0.0 dist/browser/stats.json dist/browser",
-    "serve": "node dist/server/main.js",
+    "build:watch": "ng run intershop-pwa:build:b2b,development --watch",
+    "build": "ng run intershop-pwa:build:b2b,production,ssr",
+    "build:client": "ng run intershop-pwa:build:b2b,production",
+    "serve": "node dist/server/server.mjs",
     "start": "npm-run-all build serve",
-    "dev:ssr": "ng run intershop-pwa:serve-ssr",
+    "dev:ssr": "ng serve --configuration=ssr",
     "xliff": "node scripts/convert-to-xliff.js",
     "audit": "better-npm-audit audit"
   },
@@ -90,8 +89,6 @@
     "date-fns": "^4.4.0",
     "express": "^5.2.1",
     "express-http-proxy": "^2.1.2",
-    "express-robots-txt": "^1.0.0",
-    "file-replace-loader": "^1.4.3",
     "js-yaml": "^5.3.0",
     "lodash-es": "^4.18.1",
     "ng-recaptcha-2": "^16.0.1",
@@ -100,7 +97,6 @@
     "ngx-toastr": "^19.1.0",
     "pino": "^10.3.1",
     "pino-pretty": "^13.1.3",
-    "pm2": "^7.0.3",
     "prom-client": "^15.1.3",
     "rxjs": "~7.8.2",
     "swiper": "^14.1.0",
@@ -112,7 +108,6 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^20.0.0",
     "@angular-devkit/build-angular": "^20.3.34",
     "@angular-eslint/builder": "^20.7.0",
     "@angular-eslint/eslint-plugin": "^20.7.0",
@@ -122,9 +117,6 @@
     "@angular/cli": "^20.3.34",
     "@angular/compiler-cli": "^20.3.29",
     "@angular/language-service": "^20.3.29",
-    "@babel/plugin-proposal-decorators": "^7.29.7",
-    "@babel/plugin-transform-class-properties": "^7.29.7",
-    "@babel/plugin-transform-private-methods": "^7.29.7",
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@commitlint/cz-commitlint": "^21.2.2",
@@ -142,7 +134,6 @@
     "@types/jest": "^30.0.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.13.3",
-    "@types/webpack": "^5.28.5",
     "@typescript-eslint/rule-tester": "^8.67.0",
     "better-npm-audit": "^3.11.0",
     "browser-sync": "^3.0.4",
@@ -175,7 +166,6 @@
     "ng-mocks": "^14.17.2",
     "npm-run-all2": "^9.0.3",
     "prettier": "^3.9.6",
-    "purgecss-webpack-plugin": "^8.0.0",
     "sort-json": "^2.0.1",
     "stylelint": "^17.14.1",
     "stylelint-config-recess-order": "^7.8.0",
@@ -194,9 +184,6 @@
     "xliff": "^6.4.0"
   },
   "overrides": {
-    "express-robots-txt": {
-      "express": "^5.2.1"
-    },
     "glob@>=9.0.0": "^13.0.6",
     "ng-morph": {
       "minimatch": "^10.2.5"
