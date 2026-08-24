@@ -3,7 +3,6 @@ import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
-import robots from 'express-robots-txt';
 import * as fs from 'fs';
 import { join } from 'path';
 import * as client from 'prom-client';
@@ -128,7 +127,6 @@ const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist',
 const INDEX_FILE = process.env.INDEX_FILE || join(process.cwd(), 'dist', 'server', 'index.server.html');
 
 // The Express app is exported so that it can be used by serverless Functions.
-// eslint-disable-next-line complexity
 export function app({
   APP_BASE_HREF: appBaseHref,
   AppServerModule: appServerModule,
@@ -285,30 +283,30 @@ export function app({
 
   // seo robots.txt
   const pathToRobotsTxt = join(DIST_FOLDER, 'robots.txt');
-  if (fs.existsSync(pathToRobotsTxt)) {
-    server.use(robots(pathToRobotsTxt));
-  } else {
-    server.use(
-      robots({
-        UserAgent: '*',
-        Disallow: [
-          '/error',
-          '/maintenance',
-          '/account',
-          '/compare',
-          '/recently',
-          '/basket',
-          '/checkout',
-          '/register',
-          '/login',
-          '/logout',
-          '/forgotPassword',
-          '/gdpr-requests',
-          '/contact',
-        ],
-      })
-    );
-  }
+  server.get('/robots.txt', (_req, res) =>
+    fs.existsSync(pathToRobotsTxt)
+      ? res.sendFile(pathToRobotsTxt)
+      : res
+          .type('text/plain')
+          .send(
+            [
+              'User-agent: *',
+              'Disallow: /error',
+              'Disallow: /maintenance',
+              'Disallow: /account',
+              'Disallow: /compare',
+              'Disallow: /recently',
+              'Disallow: /basket',
+              'Disallow: /checkout',
+              'Disallow: /register',
+              'Disallow: /login',
+              'Disallow: /logout',
+              'Disallow: /forgotPassword',
+              'Disallow: /gdpr-requests',
+              'Disallow: /contact',
+            ].join('\n')
+          )
+  );
 
   const hybridRedirect = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const url = req.originalUrl;
