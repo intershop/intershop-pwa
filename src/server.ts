@@ -395,7 +395,7 @@ export function app({
   }
 
   function defaultCacheControl(path: string): string {
-    if (/\.[0-9a-f]{16,}\./.test(path)) {
+    if (/(?:\.[0-9a-f]{16,}|-[A-Z0-9]{8})\./.test(path)) {
       // file was output-hashed -> 1y
       return 'public, max-age=31557600';
     } else {
