@@ -11,6 +11,7 @@ import { SearchResultPage } from '../../pages/shopping/search-result.page';
 const _ = {
   catalog: 'Cameras-Camcorders',
   categoryid: 'Cameras-Camcorders.584',
+  homepageContent: '**/cms/includes/include.homepage.content.pagelet2-Include',
 };
 
 describe('Missing Data', () => {
@@ -18,7 +19,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.intercept('GET', '**/cms/**', { statusCode: 500 });
+      cy.intercept('GET', _.homepageContent, { statusCode: 500 });
     });
 
     it('should lead to server error page', () => {
@@ -35,7 +36,7 @@ describe('Missing Data', () => {
     before(() => {
       LoginPage.navigateTo();
 
-      cy.intercept('GET', '**/cms/**', { statusCode: 404 });
+      cy.intercept('GET', _.homepageContent, { statusCode: 404 });
     });
 
     it('should not lead to error page', () => {
@@ -92,7 +93,7 @@ describe('Missing Data', () => {
     it('should lead straight to error page', () => {
       ProductDetailPage.navigateTo('ERROAR');
       at(NotFoundPage);
-      cy.url().should('contain', 'prdERROAR');
+      cy.url().should('contain', '/error');
     });
   });
 
@@ -115,7 +116,7 @@ describe('Missing Data', () => {
     it('should lead straight to error page', () => {
       FamilyPage.navigateTo('ERROAR');
       at(NotFoundPage);
-      cy.url().should('contain', 'ctgERROAR');
+      cy.url().should('contain', '/error');
     });
   });
 });
