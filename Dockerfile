@@ -5,10 +5,11 @@ ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
+COPY tools/postcss-purgecss-config /workspace/tools/postcss-purgecss-config
 RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs /workspace/
+COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs .postcssrc.json /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY templates/esbuild/define-build-constants.ts /workspace/templates/esbuild/define-build-constants.ts
@@ -19,6 +20,8 @@ RUN npm run postinstall
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=b2b,b2c
+ARG purgeCss=true
+ENV PURGE_CSS=${purgeCss}
 RUN npm_config_active_themes="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 RUN npm install --package-lock-only --prefix dist --ignore-scripts --no-audit
 
