@@ -224,6 +224,19 @@ describe('Product Context Facade', () => {
     }));
 
     describe('quantity handling', () => {
+      it('should emit a quantity change made immediately after subscribing', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
+        const updates: number[] = [];
+        context.validDebouncedQuantityUpdate$().subscribe(quantity => updates.push(quantity));
+
+        context.set('quantity', () => 20);
+        tick(800);
+
+        expect(updates).toEqual([20]);
+        discardPeriodicTasks();
+      }));
+
       it('should start with min order quantity for product', fakeAsync(() => {
         context.set('sku', () => '123');
         tick(DEBOUNCE_TIME);
