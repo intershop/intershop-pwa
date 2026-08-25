@@ -55,6 +55,9 @@ services:
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       ICM_CHANNEL: 'inSPIRED-inTRONICS_Business-Site'
+      # The inSPIRED demo channel serves English/German/French and USD/EUR; advertise them to agents.
+      ICM_SUPPORTED_LOCALES: 'en_US,de_DE,fr_FR'
+      ICM_SUPPORTED_CURRENCIES: 'USD,EUR'
       # UCP_PUBLIC_BASE_URL and STOREFRONT_BASE_URL default to the request origin
       # (the storefront domain, since agent requests arrive through nginx).
     restart: unless-stopped

@@ -6,6 +6,7 @@ import { IcmError } from '../icm/icm.error';
 
 import { decodeCursor, encodeCursor } from './cursor';
 import { IcmVariation, ToUcpProductContext, toUcpMasterProduct, toUcpProduct } from './mapper';
+import { negotiate, toContentLanguage } from './negotiation';
 import { validateLookupRequest, validateProductRequest, validateSearchRequest } from './validation';
 import { sendUcpError } from './errors';
 
@@ -51,13 +52,23 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
   // Product page URLs point at the storefront, not this service.
   const storefrontBaseUrl = (req: Request): string => config.storefrontBaseUrl ?? requestOrigin(req);
 
+  // Per-request locale/currency negotiation (Accept-Language / Accept-Currency) over the advertised sets.
+  const baseContext = (req: Request, res: express.Response): ToUcpProductContext => {
+    const { locale, currency } = negotiate(
+      { acceptLanguage: req.get('accept-language'), acceptCurrency: req.get('accept-currency') },
+      config
+    );
+    res.set('Content-Language', toContentLanguage(locale));
+    return { locale, currency, icmBaseUrl: config.icmBaseUrl, storefrontBaseUrl: storefrontBaseUrl(req) };
+  };
+
   // Fetch a master's variations and resolve each to a full product for variant mapping.
   async function expandMaster(
     masterSku: string,
     master: Awaited<ReturnType<typeof client.getProduct>>,
     context: ToUcpProductContext
   ) {
-    const links = (await client.getVariations(masterSku)).elements ?? [];
+    const links = (await client.getVariations(masterSku, context)).elements ?? [];
     const variations = (
       await Promise.all(
         links.map(async (link): Promise<IcmVariation | undefined> => {
@@ -67,7 +78,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
           }
           const isDefault = link.attributes?.some(attr => attr.name === 'defaultVariation' && attr.value === true);
           return {
-            product: await client.getProduct(sku),
+            product: await client.getProduct(sku, context),
             attributeValues: link.variableVariationAttributeValues ?? [],
             isDefault,
           };
@@ -80,13 +91,13 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
   // get_product detail: expand a master or variation into the full variant list, with
   // `selected` and option availability signals.
   async function resolveProductDetail(id: string, context: ToUcpProductContext) {
-    const product = await client.getProduct(id);
+    const product = await client.getProduct(id, context);
     const detail = { ...context, detail: true };
     if (product.productMaster) {
       return expandMaster(product.sku ?? id, product, detail);
     }
     if (product.mastered && product.productMasterSKU) {
-      const master = await client.getProduct(product.productMasterSKU);
+      const master = await client.getProduct(product.productMasterSKU, context);
       return expandMaster(product.productMasterSKU, master, detail);
     }
     return toUcpProduct(product, context);
@@ -95,16 +106,16 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
   // Lookup: return only the variant that correlates to the requested id, carrying `inputs`
   // (the lookup schema requires an `inputs` entry on every returned variant).
   async function resolveLookupProduct(id: string, context: ToUcpProductContext) {
-    const product = await client.getProduct(id);
+    const product = await client.getProduct(id, context);
     if (product.productMaster) {
       // A master id resolves to its default variation as the featured representative.
-      const links = (await client.getVariations(product.sku ?? id)).elements ?? [];
+      const links = (await client.getVariations(product.sku ?? id, context)).elements ?? [];
       const link =
         links.find(l => l.attributes?.some(a => a.name === 'defaultVariation' && a.value === true)) ?? links[0];
       const sku = skuFromUri(link?.uri);
       if (sku) {
         const variation: IcmVariation = {
-          product: await client.getProduct(sku),
+          product: await client.getProduct(sku, context),
           attributeValues: link?.variableVariationAttributeValues ?? [],
           isDefault: true,
         };
@@ -113,7 +124,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
       return toUcpProduct(product, context);
     }
     if (product.mastered && product.productMasterSKU) {
-      const master = await client.getProduct(product.productMasterSKU);
+      const master = await client.getProduct(product.productMasterSKU, context);
       return toUcpMasterProduct(master, [{ product, attributeValues: [], isDefault: true }], context);
     }
     return toUcpProduct(product, context);
@@ -122,9 +133,9 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
   // Search view: feature the hit variation (a real, purchasable SKU) under its master, so
   // `variant.id` stays purchasable while `price_range` spans the master. No variant fan-out.
   async function resolveSearchProduct(sku: string, context: ToUcpProductContext) {
-    const product = await client.getProduct(sku);
+    const product = await client.getProduct(sku, context);
     if (product.mastered && product.productMasterSKU) {
-      const master = await client.getProduct(product.productMasterSKU);
+      const master = await client.getProduct(product.productMasterSKU, context);
       return toUcpMasterProduct(master, [{ product, attributeValues: [], isDefault: true }], context);
     }
     return toUcpProduct(product, context);
@@ -143,14 +154,10 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const query = (parsed.data.query ?? '').trim();
     const limit = Math.min(parsed.data.pagination?.limit ?? CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT);
     const offset = decodeCursor(parsed.data.pagination?.cursor);
-    const context = {
-      currency: config.currency,
-      icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: storefrontBaseUrl(req),
-    };
+    const context = baseContext(req, res);
 
     try {
-      const result = await client.searchProducts(query, limit, offset);
+      const result = await client.searchProducts(query, limit, offset, context);
       const stubs = result.elements ?? [];
       const skus = stubs.map(stub => stub.sku ?? skuFromUri(stub.uri)).filter((sku): sku is string => Boolean(sku));
       const resolved = await Promise.all(skus.map(sku => resolveSearchProduct(sku, context)));
@@ -199,18 +206,14 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     }
 
     const ids = [...new Set(parsed.data.ids)];
-    const baseContext = {
-      currency: config.currency,
-      icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: storefrontBaseUrl(req),
-    };
+    const context = baseContext(req, res);
 
     try {
       const products = [];
       const notFound: string[] = [];
       for (const id of ids) {
         try {
-          products.push(await resolveLookupProduct(id, { ...baseContext, input: { id, match: 'exact' } }));
+          products.push(await resolveLookupProduct(id, { ...context, input: { id, match: 'exact' } }));
         } catch (error) {
           if (error instanceof IcmError && error.status === 404) {
             notFound.push(id);
@@ -242,9 +245,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
 
     const { id, selected, preferences } = parsed.data;
     const context = {
-      currency: config.currency,
-      icmBaseUrl: config.icmBaseUrl,
-      storefrontBaseUrl: storefrontBaseUrl(req),
+      ...baseContext(req, res),
       ...(selected ? { selected } : {}),
       ...(preferences ? { preferences } : {}),
     };

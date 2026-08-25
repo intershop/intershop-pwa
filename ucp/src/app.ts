@@ -44,7 +44,12 @@ export function createApp(config: UcpConfig): express.Express {
   // Publicly cacheable, unauthenticated business profile.
   app.get('/.well-known/ucp', (req, res) => {
     res.set('Cache-Control', 'public, max-age=300');
-    res.json(buildUcpProfile(profileOrigin(req)));
+    res.json(
+      buildUcpProfile(profileOrigin(req), {
+        supportedLocales: config.supportedLocales,
+        supportedCurrencies: config.supportedCurrencies,
+      })
+    );
   });
 
   // OpenAPI documentation for the declared capabilities.

@@ -12,10 +12,16 @@ import { UCP_BASE_PATH, UCP_VERSION } from '../config';
  * checkout, payment and order capabilities are deliberately not declared.
  *
  * @param origin absolute origin of this deployment (e.g. `https://ucp.example.com`)
+ * @param options catalog localization advertised to agents (locales/currencies they may request)
  */
-export function buildUcpProfile(origin: string): Record<string, unknown> {
+export function buildUcpProfile(
+  origin: string,
+  options?: { supportedLocales?: string[]; supportedCurrencies?: string[] }
+): Record<string, unknown> {
   const endpoint = `${origin}${UCP_BASE_PATH}`;
   const specBase = `https://ucp.dev/${UCP_VERSION}`;
+  const supportedLocales = options?.supportedLocales?.length ? options.supportedLocales : undefined;
+  const supportedCurrencies = options?.supportedCurrencies?.length ? options.supportedCurrencies : undefined;
 
   return {
     ucp: {
@@ -29,6 +35,9 @@ export function buildUcpProfile(origin: string): Record<string, unknown> {
             endpoint,
             // Business-profile REST service schema: our own OpenAPI describing the catalog surface.
             schema: `${endpoint}/openapi.json`,
+            // Locales/currencies an agent may request via Accept-Language / Accept-Currency.
+            ...(supportedLocales ? { supported_locales: supportedLocales } : {}),
+            ...(supportedCurrencies ? { supported_currencies: supportedCurrencies } : {}),
           },
         ],
       },

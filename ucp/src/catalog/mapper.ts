@@ -90,6 +90,8 @@ export interface UcpProduct {
 export interface ToUcpProductContext {
   /** ISO 4217 currency used as fallback when ICM omits it. */
   currency: string;
+  /** ICM `loc` value the catalog is served in; forwarded to ICM calls. */
+  locale?: string;
   /** Absolute origin of the ICM backend, to resolve relative image URLs. */
   icmBaseUrl: string;
   /** Absolute origin of the storefront, to build product page URLs. */

@@ -6,6 +6,12 @@ import { IcmProductResponse, IcmProductSearchResponse, IcmVariationsResponse } f
 
 const logger = getLogger('UCP');
 
+/** Optional per-request locale/currency override for a single ICM call. */
+export interface IcmRequestLocale {
+  locale?: string;
+  currency?: string;
+}
+
 /**
  * Thin, read-only REST client for the Intershop ICM commerce API.
  *
@@ -23,8 +29,14 @@ export class IcmCatalogClient {
     this.baseEndpoint = [icmBaseUrl, icmServer, icmChannel, icmApplication].filter(Boolean).join('/');
   }
 
-  private buildUrl(path: string, query?: Record<string, boolean | number | string | undefined>): string {
-    const matrix = `;loc=${this.config.locale};cur=${this.config.currency}`;
+  private buildUrl(
+    path: string,
+    query?: Record<string, boolean | number | string | undefined>,
+    locale?: IcmRequestLocale
+  ): string {
+    const loc = locale?.locale ?? this.config.locale;
+    const cur = locale?.currency ?? this.config.currency;
+    const matrix = `;loc=${loc};cur=${cur}`;
     const url = new URL(`${this.baseEndpoint}${matrix}/${path}`);
     if (query) {
       for (const [key, value] of Object.entries(query)) {
@@ -36,8 +48,12 @@ export class IcmCatalogClient {
     return url.toString();
   }
 
-  private async request<T>(path: string, query?: Record<string, boolean | number | string | undefined>): Promise<T> {
-    const url = this.buildUrl(path, query);
+  private async request<T>(
+    path: string,
+    query?: Record<string, boolean | number | string | undefined>,
+    locale?: IcmRequestLocale
+  ): Promise<T> {
+    const url = this.buildUrl(path, query, locale);
     const response = await fetch(url, { method: 'GET', headers: { Accept: 'application/json' } });
     const text = await response.text();
     const parsed: unknown = text ? safeJsonParse(text) : undefined;
@@ -50,23 +66,40 @@ export class IcmCatalogClient {
   }
 
   /** Look up a single product by SKU. */
-  getProduct(sku: string): Promise<IcmProductResponse> {
-    return this.request<IcmProductResponse>(`products/${encodeURIComponent(sku)}`, { allImages: true, extended: true });
+  getProduct(sku: string, locale?: IcmRequestLocale): Promise<IcmProductResponse> {
+    return this.request<IcmProductResponse>(
+      `products/${encodeURIComponent(sku)}`,
+      { allImages: true, extended: true },
+      locale
+    );
   }
 
   /** Free-text product search returning link stubs (SKUs resolved separately). */
-  searchProducts(searchTerm: string, amount: number, offset = 0): Promise<IcmProductSearchResponse> {
-    return this.request<IcmProductSearchResponse>('products', {
-      searchTerm,
-      amount,
-      offset,
-      attrs: 'sku,productName,shortDescription,listPrice,salePrice,availability,inStock',
-    });
+  searchProducts(
+    searchTerm: string,
+    amount: number,
+    offset = 0,
+    locale?: IcmRequestLocale
+  ): Promise<IcmProductSearchResponse> {
+    return this.request<IcmProductSearchResponse>(
+      'products',
+      {
+        searchTerm,
+        amount,
+        offset,
+        attrs: 'sku,productName,shortDescription,listPrice,salePrice,availability,inStock',
+      },
+      locale
+    );
   }
 
   /** List the variations of a variation master (links + their defining attribute values). */
-  getVariations(masterSku: string): Promise<IcmVariationsResponse> {
-    return this.request<IcmVariationsResponse>(`products/${encodeURIComponent(masterSku)}/variations`, { amount: 50 });
+  getVariations(masterSku: string, locale?: IcmRequestLocale): Promise<IcmVariationsResponse> {
+    return this.request<IcmVariationsResponse>(
+      `products/${encodeURIComponent(masterSku)}/variations`,
+      { amount: 50 },
+      locale
+    );
   }
 }
 

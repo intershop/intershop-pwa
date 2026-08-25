@@ -79,6 +79,16 @@
         color: var(--ink);
         font-weight: 600;
       }
+      .badge select {
+        background: var(--panel-2);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font: inherit;
+        font-size: 12px;
+        padding: 2px 4px;
+        margin-left: 4px;
+      }
       .spacer {
         flex: 1;
       }
@@ -741,6 +751,12 @@
         <span class="badge" id="badge-channel">Channel: <b>…</b></span>
         <span class="badge">UCP: <b id="badge-endpoint">…</b></span>
         <span class="badge" id="badge-schema">Conformance: <b>…</b></span>
+        <span class="badge" title="Language sent as Accept-Language on every UCP call"
+          >🌐<select id="sel-lang"></select
+        ></span>
+        <span class="badge" title="Currency sent as Accept-Currency on every UCP call"
+          >💱<select id="sel-cur"></select
+        ></span>
         <span class="spacer"></span>
         <label class="toggle"><input type="checkbox" id="devmode" /> Developer mode</label>
         <button class="mini" id="restart">↺ Restart</button>
@@ -812,7 +828,8 @@
       // Perform a UCP call against this service (same origin).
       async function ucpCall(method, path, body) {
         const url = ORIGIN + path;
-        const headers = {};
+        // Negotiate language/currency from the header selectors on every call.
+        const headers = { 'Accept-Language': state.locale.replace('_', '-'), 'Accept-Currency': state.currency };
         if (body) headers['Content-Type'] = 'application/json';
         let status = 0,
           json = {};
@@ -836,7 +853,8 @@
         }
         return { ...ICM_DEFAULT };
       }
-      const icmRestUrl = (icm, path) => `${icm.base}/INTERSHOP/rest/WFS/${icm.channel}/-;loc=en_US;cur=USD/${path}`;
+      const icmRestUrl = (icm, path) =>
+        `${icm.base}/INTERSHOP/rest/WFS/${icm.channel}/-;loc=${state.locale};cur=${state.currency}/${path}`;
       const icmLink = (url, label) =>
         `<a href="${esc(url)}" target="_blank" rel="noopener" style="font-family:var(--mono);word-break:break-all">${label ?? 'GET ' + esc(url)}</a>`;
 
@@ -1340,7 +1358,16 @@
       }
 
       /* ============================ product cards ============================ */
-      const state = { discovered: false, cards: [], selected: [], nextCursor: null, query: null, searchOffset: 0 };
+      const state = {
+        discovered: false,
+        cards: [],
+        selected: [],
+        nextCursor: null,
+        query: null,
+        searchOffset: 0,
+        locale: 'en_US',
+        currency: 'USD',
+      };
       const SEARCH_LIMIT = 6;
 
       function cardFromProduct(p) {
@@ -1607,7 +1634,7 @@
       function renderChips() {
         const chips = [];
         chips.push(`<button class="chip" data-act="search" data-q="Surface">🔍 Find a Microsoft Surface</button>`);
-        chips.push(`<button class="chip" data-act="search" data-q="camera">🔍 Search cameras</button>`);
+        chips.push(`<button class="chip" data-act="search" data-q="beamer">🔍 Search beamer</button>`);
         chips.push(
           `<button class="chip" data-act="lookup" data-ids="201807195,201807201">🔎 Look up two SKUs</button>`
         );
@@ -1683,6 +1710,41 @@
       });
 
       /* ============================ init ============================ */
+      const LOCALE_LABELS = {
+        en_US: 'English (US)',
+        en_GB: 'English (UK)',
+        de_DE: 'Deutsch (DE)',
+        fr_FR: 'Français (FR)',
+      };
+      // Populate the language/currency selectors from the profile's advertised supported sets.
+      async function loadLocales() {
+        let locales = ['en_US'];
+        let currencies = ['USD'];
+        try {
+          const profile = await (await fetch(ORIGIN + '/.well-known/ucp')).json();
+          const service = profile.ucp?.services?.['dev.ucp.shopping']?.[0] || {};
+          if (service.supported_locales?.length) locales = service.supported_locales;
+          if (service.supported_currencies?.length) currencies = service.supported_currencies;
+        } catch {
+          /* keep the defaults */
+        }
+        state.locale = locales[0];
+        state.currency = currencies[0];
+        const langSel = $('#sel-lang');
+        const curSel = $('#sel-cur');
+        langSel.innerHTML = locales
+          .map(l => `<option value="${esc(l)}">${esc(LOCALE_LABELS[l] || l.replace('_', '-'))}</option>`)
+          .join('');
+        curSel.innerHTML = currencies.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+        langSel.value = state.locale;
+        curSel.value = state.currency;
+        langSel.addEventListener('change', () => {
+          state.locale = langSel.value;
+        });
+        curSel.addEventListener('change', () => {
+          state.currency = curSel.value;
+        });
+      }
       async function loadBadges() {
         $('#badge-endpoint').textContent = ORIGIN + BASE;
         try {
@@ -1704,6 +1766,7 @@
       renderChips();
       greet();
       loadBadges();
+      loadLocales();
       loadSchemas();
     </script>
   </body>

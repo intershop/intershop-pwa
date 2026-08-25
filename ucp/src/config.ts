@@ -31,14 +31,32 @@ export interface UcpConfig {
   icmApplication: string;
   locale: string;
   currency: string;
+  /** Locales the catalog can be served in (ICM `loc` values); the first is the default. */
+  supportedLocales: string[];
+  /** Currencies the catalog can be served in (ISO 4217); the first is the default. */
+  supportedCurrencies: string[];
 }
 
 function stripTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '');
 }
 
+/** Parse a comma-separated env list, always including `fallback` first and de-duplicating case-insensitively. */
+function parseList(value: string | undefined, fallback: string): string[] {
+  const items = (value ?? '').split(',').map(entry => entry.trim());
+  const seen = new Map<string, string>();
+  for (const entry of [fallback, ...items]) {
+    if (entry && !seen.has(entry.toLowerCase())) {
+      seen.set(entry.toLowerCase(), entry);
+    }
+  }
+  return [...seen.values()];
+}
+
 /** Resolve the UCP configuration from environment variables. */
 export function resolveUcpConfig(): UcpConfig {
+  const locale = process.env.ICM_LOCALE ?? 'en_US';
+  const currency = process.env.ICM_CURRENCY ?? 'USD';
   return {
     port: Number(process.env.UCP_PORT ?? 4000),
     publicBaseUrl: process.env.UCP_PUBLIC_BASE_URL ? stripTrailingSlash(process.env.UCP_PUBLIC_BASE_URL) : undefined,
@@ -49,7 +67,9 @@ export function resolveUcpConfig(): UcpConfig {
     icmServer: process.env.ICM_SERVER ?? 'INTERSHOP/rest/WFS',
     icmChannel: process.env.ICM_CHANNEL ?? 'inSPIRED-inTRONICS_Business-Site',
     icmApplication: process.env.ICM_APPLICATION ?? '-',
-    locale: process.env.ICM_LOCALE ?? 'en_US',
-    currency: process.env.ICM_CURRENCY ?? 'USD',
+    locale,
+    currency,
+    supportedLocales: parseList(process.env.ICM_SUPPORTED_LOCALES, locale),
+    supportedCurrencies: parseList(process.env.ICM_SUPPORTED_CURRENCIES, currency),
   };
 }

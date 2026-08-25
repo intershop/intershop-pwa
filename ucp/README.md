@@ -57,21 +57,49 @@ in integer minor units + ISO 4217 currency. The service maps the ICM product kin
 A strike-through `list_price` / `list_price_range` is emitted only when the list price is
 higher than the sale price.
 
+## Localization (language & currency)
+
+The catalog is served in the ICM channel's configured `ICM_LOCALE` / `ICM_CURRENCY` by
+default. An agent may request another language or currency **per call**, negotiated against
+the sets the deployment advertises:
+
+- **Language** — send a standard `Accept-Language` header (BCP-47, e.g. `de-DE`). It is
+  matched against `ICM_SUPPORTED_LOCALES`; unsupported values fall back to the default. The
+  chosen locale is echoed back in the `Content-Language` response header.
+- **Currency** — send an `Accept-Currency` header (ISO 4217, e.g. `EUR`). It is matched
+  against `ICM_SUPPORTED_CURRENCIES`; unsupported values fall back to the default. Every
+  price already carries its own `currency` code.
+
+The advertised sets appear in the `/.well-known/ucp` profile as `supported_locales` and
+`supported_currencies` on the `dev.ucp.shopping` service, so agents can discover the options
+before calling. Because an ICM channel is typically bound to a fixed currency, the supported
+sets must reflect what the channel can actually serve — configure them to match, or run a
+separate instance/channel per market.
+
+```powershell
+# Request German text and EUR prices for a lookup
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/lookup `
+  -ContentType 'application/json' -Headers @{ 'Accept-Language' = 'de-DE'; 'Accept-Currency' = 'EUR' } `
+  -Body '{ "ids": ["201807195"] }' | ConvertTo-Json -Depth 8
+```
+
 ## Configuration
 
 Configuration is read from environment variables (see [.env.example](./.env.example)).
 
-| Variable              | Default                            | Description                                                                                                                                                                                             |
-| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `UCP_PORT`            | `4000`                             | Port the service listens on.                                                                                                                                                                            |
-| `UCP_PUBLIC_BASE_URL` | request origin                     | Optional fixed public origin of the UCP service, advertised inside the `/.well-known/ucp` profile. If unset, the incoming request origin is used.                                                       |
-| `STOREFRONT_BASE_URL` | request origin                     | Storefront origin used to build `/prd<sku>` product page URLs. Include a locale segment (e.g. `https://shop.example.com/en`) to link straight to the localized page and skip the storefront's redirect. |
-| `ICM_BASE_URL`        | `https://develop.icm.intershop.de` | Base URL of the ICM backend.                                                                                                                                                                            |
-| `ICM_SERVER`          | `INTERSHOP/rest/WFS`               | ICM REST server path.                                                                                                                                                                                   |
-| `ICM_CHANNEL`         | `inSPIRED-inTRONICS_Business-Site` | ICM channel the catalog is served from.                                                                                                                                                                 |
-| `ICM_APPLICATION`     | `-`                                | ICM application.                                                                                                                                                                                        |
-| `ICM_LOCALE`          | `en_US`                            | Locale used for catalog requests.                                                                                                                                                                       |
-| `ICM_CURRENCY`        | `USD`                              | Currency used for catalog prices.                                                                                                                                                                       |
+| Variable                   | Default                            | Description                                                                                                                                                                                             |
+| -------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `UCP_PORT`                 | `4000`                             | Port the service listens on.                                                                                                                                                                            |
+| `UCP_PUBLIC_BASE_URL`      | request origin                     | Optional fixed public origin of the UCP service, advertised inside the `/.well-known/ucp` profile. If unset, the incoming request origin is used.                                                       |
+| `STOREFRONT_BASE_URL`      | request origin                     | Storefront origin used to build `/prd<sku>` product page URLs. Include a locale segment (e.g. `https://shop.example.com/en`) to link straight to the localized page and skip the storefront's redirect. |
+| `ICM_BASE_URL`             | `https://develop.icm.intershop.de` | Base URL of the ICM backend.                                                                                                                                                                            |
+| `ICM_SERVER`               | `INTERSHOP/rest/WFS`               | ICM REST server path.                                                                                                                                                                                   |
+| `ICM_CHANNEL`              | `inSPIRED-inTRONICS_Business-Site` | ICM channel the catalog is served from.                                                                                                                                                                 |
+| `ICM_APPLICATION`          | `-`                                | ICM application.                                                                                                                                                                                        |
+| `ICM_LOCALE`               | `en_US`                            | Locale used for catalog requests.                                                                                                                                                                       |
+| `ICM_CURRENCY`             | `USD`                              | Currency used for catalog prices.                                                                                                                                                                       |
+| `ICM_SUPPORTED_LOCALES`    | `ICM_LOCALE`                       | Comma-separated locales an agent may request via `Accept-Language`, advertised as `supported_locales` in the profile. The default locale is always included.                                            |
+| `ICM_SUPPORTED_CURRENCIES` | `ICM_CURRENCY`                     | Comma-separated currencies an agent may request via `Accept-Currency`, advertised as `supported_currencies` in the profile. The default currency is always included.                                    |
 
 ## Development
 

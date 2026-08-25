@@ -86,6 +86,10 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
         post: {
           summary: 'Search the catalog (dev.ucp.shopping.catalog.search)',
           operationId: 'catalogSearch',
+          parameters: [
+            { $ref: '#/components/parameters/AcceptLanguage' },
+            { $ref: '#/components/parameters/AcceptCurrency' },
+          ],
           requestBody: {
             required: true,
             content: {
@@ -151,6 +155,10 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
         post: {
           summary: 'Batch lookup by identifier (dev.ucp.shopping.catalog.lookup)',
           operationId: 'catalogLookup',
+          parameters: [
+            { $ref: '#/components/parameters/AcceptLanguage' },
+            { $ref: '#/components/parameters/AcceptCurrency' },
+          ],
           requestBody: {
             required: true,
             content: {
@@ -188,6 +196,10 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
         post: {
           summary: 'Single-product detail lookup',
           operationId: 'catalogProduct',
+          parameters: [
+            { $ref: '#/components/parameters/AcceptLanguage' },
+            { $ref: '#/components/parameters/AcceptCurrency' },
+          ],
           requestBody: {
             required: true,
             content: {
@@ -215,6 +227,28 @@ export function buildUcpOpenApi(origin: string): Record<string, unknown> {
     },
     components: {
       schemas: { Price: price, Media: media, Variant: variant, Product: product },
+      parameters: {
+        AcceptLanguage: {
+          name: 'Accept-Language',
+          in: 'header',
+          required: false,
+          schema: { type: 'string' },
+          description:
+            'Preferred language as a BCP-47 tag (e.g. de-DE). Negotiated against the profile ' +
+            'supported_locales; unsupported values fall back to the default. The chosen locale is ' +
+            'echoed in the Content-Language response header.',
+        },
+        AcceptCurrency: {
+          name: 'Accept-Currency',
+          in: 'header',
+          required: false,
+          schema: { type: 'string' },
+          description:
+            'Preferred ISO 4217 currency (e.g. EUR). Negotiated against the profile ' +
+            'supported_currencies; unsupported values fall back to the default. Every price carries its ' +
+            'own currency code.',
+        },
+      },
     },
   };
 }

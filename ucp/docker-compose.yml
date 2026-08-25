@@ -17,4 +17,7 @@ services:
       ICM_APPLICATION: '${ICM_APPLICATION:--}'
       ICM_LOCALE: '${ICM_LOCALE:-en_US}'
       ICM_CURRENCY: '${ICM_CURRENCY:-USD}'
+      # Locales/currencies agents may request (Accept-Language / Accept-Currency); must match the channel.
+      ICM_SUPPORTED_LOCALES: '${ICM_SUPPORTED_LOCALES:-en_US,de_DE,fr_FR}'
+      ICM_SUPPORTED_CURRENCIES: '${ICM_SUPPORTED_CURRENCIES:-USD,EUR}'
     restart: unless-stopped
