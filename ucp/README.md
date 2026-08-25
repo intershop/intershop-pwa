@@ -25,15 +25,16 @@ Excluded (intentionally, non-transactional MVP):
 
 ## Endpoints
 
-| Method | Path                      | Description                                          |
-| ------ | ------------------------- | ---------------------------------------------------- |
-| `GET`  | `/health`                 | Liveness/readiness probe.                            |
-| `GET`  | `/.well-known/ucp`        | The public, machine-readable business profile.       |
-| `GET`  | `/ucp/v1/openapi.json`    | OpenAPI documentation for Search and Lookup.         |
-| `POST` | `/ucp/v1/catalog/search`  | UCP-conformant catalog Search (free-text).           |
-| `POST` | `/ucp/v1/catalog/lookup`  | UCP-conformant catalog Lookup (batch by identifier). |
-| `POST` | `/ucp/v1/catalog/product` | Single-product detail lookup.                        |
-| `GET`  | `/ucp/demo`               | Interactive, same-origin showcase page.              |
+| Method | Path                      | Description                                                                     |
+| ------ | ------------------------- | ------------------------------------------------------------------------------- |
+| `GET`  | `/health`                 | Liveness/readiness probe.                                                       |
+| `GET`  | `/.well-known/ucp`        | The public, machine-readable business profile.                                  |
+| `GET`  | `/ucp/v1/openapi.json`    | OpenAPI documentation for Search and Lookup.                                    |
+| `POST` | `/ucp/v1/catalog/search`  | UCP-conformant catalog Search (free-text).                                      |
+| `POST` | `/ucp/v1/catalog/lookup`  | UCP-conformant catalog Lookup (batch by identifier; correlated variant per id). |
+| `POST` | `/ucp/v1/catalog/product` | Full product detail (all variants, options, `selected`).                        |
+| `GET`  | `/ucp/demo`               | Interactive, same-origin showcase page.                                         |
+| `GET`  | `/ucp/validator`          | Interactive spec/schema conformance validator.                                  |
 
 Product prices are returned as integer minor units (for example cents) together with an
 ISO 4217 currency code, as required by the UCP catalog model.
@@ -146,22 +147,38 @@ you can verify the behavior:
 
 ```powershell
 # Discover the profile
-Invoke-RestMethod http://localhost:4000/.well-known/ucp | ConvertTo-Json -Depth 6
+Invoke-RestMethod http://localhost:4200/.well-known/ucp | ConvertTo-Json -Depth 6
 
 # Read the OpenAPI documentation
-Invoke-RestMethod http://localhost:4000/ucp/v1/openapi.json | ConvertTo-Json -Depth 8
+Invoke-RestMethod http://localhost:4200/ucp/v1/openapi.json | ConvertTo-Json -Depth 8
 
 # Search the catalog
-Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/search `
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/search `
   -ContentType 'application/json' -Body '{ "query": "Microsoft" }' | ConvertTo-Json -Depth 8
 
 # Look up a single product by identifier
-Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/lookup `
   -ContentType 'application/json' -Body '{ "ids": ["201807195"] }' | ConvertTo-Json -Depth 8
 
 # Look up multiple products in one batch
-Invoke-RestMethod -Method Post http://localhost:4000/ucp/v1/catalog/lookup `
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/lookup `
   -ContentType 'application/json' -Body '{ "ids": ["201807195", "201807201"] }' | ConvertTo-Json -Depth 8
+
+# Fetch a single product's full detail
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/product `
+  -ContentType 'application/json' -Body '{ "id": "201807195" }' | ConvertTo-Json -Depth 8
+
+# Fetch a variation master's full detail (all variants, options, selected)
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/product `
+  -ContentType 'application/json' -Body '{ "id": "201807231" }' | ConvertTo-Json -Depth 10
+
+# Narrow a master to a chosen configuration (selected acts like the storefront's option pickers)
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/product `
+  -ContentType 'application/json' -Body '{ "id": "201807231", "selected": [{ "name": "Hard drive size", "label": "512GB" }, { "name": "Display Size", "label": "15\"" }] }' | ConvertTo-Json -Depth 10
+
+# Relax the lowest-priority option when the combination does not exist (preferences keeps earlier options)
+Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/product `
+  -ContentType 'application/json' -Body '{ "id": "201807231", "selected": [{ "name": "Hard drive size", "label": "1TB" }, { "name": "Display Size", "label": "17\"" }], "preferences": ["Hard drive size", "Display Size"] }' | ConvertTo-Json -Depth 10
 ```
 
 ## Demo
@@ -174,7 +191,37 @@ the scenes. It talks to its own origin, so it works wherever the service is reac
 - Standalone container: <http://localhost:4000/ucp/demo>
 - Behind the PWA nginx: <http://localhost:4200/ucp/demo> (the `/ucp/` route is already proxied)
 
+In the search step you can type a free-text query, or enter multiple comma-separated SKUs
+(e.g. `201807195, 201807201`) to resolve them directly via a batch Lookup.
+
+A companion **conformance validator** at `/ucp/validator` calls each endpoint and checks the
+response against the official ucp.dev JSON Schemas (draft 2020-12, `$ref` graph resolved via
+ajv) plus the spec's MUST/SHOULD behaviour rules.
+
 No configuration or separate server is required; open the URL in a browser.
+
+## Validator
+
+The **conformance validator** at `/ucp/validator` is an interactive, same-origin page that
+calls the live endpoints and reports how conformant each response is:
+
+- Standalone container: <http://localhost:4000/ucp/validator>
+- Behind the PWA nginx: <http://localhost:4200/ucp/validator>
+
+Each tab (Search, Lookup, Product, Profile) builds a request, shows the raw response, and
+lists findings as **errors / warnings / info**. Two validation layers run:
+
+1. **Official JSON Schema (ajv).** It fetches the ucp.dev catalog schemas for the configured
+   version, resolves the entire `$ref` graph (draft 2020-12), and validates the response
+   against the concrete `search_response` / `lookup_response` / `get_product_response`
+   sub-schemas. Requires outbound access to `ucp.dev`; if unreachable it falls back to the
+   behaviour rules and says so.
+2. **Behaviour rules.** The spec's MUST/SHOULD text that a schema cannot express — e.g. the
+   UCP envelope, HTTP-200-for-business-outcomes, `price_range` coherence, and the lookup
+   `inputs` correlation.
+
+The Product tab also exposes `selected` and `preferences` inputs so you can exercise the
+variant-narrowing feature described above.
 
 ## Architecture
 

@@ -449,12 +449,15 @@
             >
             → <code>POST /catalog/search</code>, advertised in the profile). The service maps each ICM product to a UCP
             <code>product</code> with one or more <code>variants</code>.
-            <b>Click one or more products to select them</b> and look them up together in the next step.
+            <b>Click one or more products to select them</b> and look them up together in the next step. You can also
+            type one or more SKUs (comma-separated, e.g. <code>201807195, 201807201</code>) to resolve them directly.
           </div>
           <div class="controls">
-            <input id="query" placeholder="Search term" type="text" value="Microsoft" />
+            <input id="query" placeholder="Search term — or comma-separated SKUs" type="text" value="Microsoft" />
             <button id="btn-search">Search catalog</button>
-            <span class="hint">then click one or more product cards ↓</span>
+            <span class="hint"
+              >free-text search, or SKUs like <code>201807195, 201807201</code> · then click cards ↓</span
+            >
           </div>
           <div class="items" id="items"></div>
           <div class="controls" id="more-controls" style="display: none">
@@ -678,11 +681,7 @@
         const r = await ucpCall('POST', '/ucp/v1/catalog/search', body);
         const products = r.response.json?.products || [];
         const pg = r.response.json?.pagination || {};
-        const startIdx = state.cards.length;
-        const newCards = products.map(cardFromProduct);
-        state.cards.push(...newCards);
-        $('#items').insertAdjacentHTML('beforeend', newCards.map((it, i) => itemHtml(it, startIdx + i)).join(''));
-        [...document.querySelectorAll('#items .item')].slice(startIdx).forEach(bindCard);
+        appendProductCards(products);
 
         state.nextCursor = pg.has_next_page ? pg.cursor : null;
         const more = $('#more-controls');
@@ -719,9 +718,48 @@
         $('#out2').innerHTML = renderExchange(r, behind);
       }
 
-      // --- Step 2: Catalog search (dev.ucp.shopping.catalog.search) ---
+      // Append UCP products as selectable cards (shared by search and SKU lookup).
+      function appendProductCards(products) {
+        const startIdx = state.cards.length;
+        const newCards = products.map(cardFromProduct);
+        state.cards.push(...newCards);
+        $('#items').insertAdjacentHTML('beforeend', newCards.map((it, i) => itemHtml(it, startIdx + i)).join(''));
+        [...document.querySelectorAll('#items .item')].slice(startIdx).forEach(bindCard);
+      }
+
+      // Resolve one or more SKUs directly via Catalog Lookup and render them as cards.
+      async function runLookupByIds(ids) {
+        const r = await ucpCall('POST', '/ucp/v1/catalog/lookup', { ids });
+        const products = r.response.json?.products || [];
+        appendProductCards(products);
+        $('#more-controls').style.display = 'none';
+        $('#page-info').textContent = products.length
+          ? `Resolved ${products.length} of ${ids.length} requested id${ids.length > 1 ? 's' : ''}`
+          : '';
+        const icm = deriveIcm(products);
+        const links = ids
+          .slice(0, 3)
+          .map(id =>
+            icmLink(
+              icmRestUrl(icm, `products/${encodeURIComponent(id)}?allImages=true&extended=true`),
+              `GET …/products/${esc(id)}`
+            )
+          )
+          .join('<br>');
+        const behind =
+          `The service resolves each requested id via ICM ${links}${ids.length > 3 ? '<br>…' : ''} and maps every ` +
+          `ICM product to a UCP product. Unknown ids come back as <code>messages</code> (HTTP 200), not errors.`;
+        $('#out2').innerHTML = renderExchange(r, behind);
+      }
+
+      // --- Step 2: Catalog search, or batch lookup when multiple comma-separated SKUs are entered ---
       $('#btn-search').addEventListener('click', async () => {
-        state.query = $('#query').value.trim() || 'Microsoft';
+        const raw = $('#query').value.trim();
+        const ids = raw
+          .split(',')
+          .map(part => part.trim())
+          .filter(Boolean);
+        const isLookup = ids.length > 1;
         state.cards = [];
         state.selected = [];
         state.nextCursor = null;
@@ -729,7 +767,12 @@
         $('#more-controls').style.display = 'none';
         $('#out2').innerHTML = '<span class="spinner"></span>';
         updateSelection();
-        await runSearch();
+        if (isLookup) {
+          await runLookupByIds(ids);
+        } else {
+          state.query = raw || 'Microsoft';
+          await runSearch();
+        }
       });
 
       // --- Load more (cursor-based pagination) ---

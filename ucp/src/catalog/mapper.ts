@@ -54,7 +54,8 @@ export interface UcpSelectedOption {
 /** A product-level option dimension with its distinct values, e.g. `Size: [8, 9, 10]`. */
 export interface UcpProductOption {
   name: string;
-  values: { label: string }[];
+  /** `exists`/`available` are populated only for the `get_product` detail response. */
+  values: { label: string; exists?: boolean; available?: boolean }[];
 }
 
 export interface UcpVariant {
@@ -80,6 +81,8 @@ export interface UcpProduct {
   list_price_range?: UcpPriceRange;
   media: UcpMedia[];
   options?: UcpProductOption[];
+  /** Effective option selection anchoring the featured variant (get_product detail only). */
+  selected?: UcpSelectedOption[];
   variants: UcpVariant[];
   tags?: string[];
 }
@@ -93,6 +96,12 @@ export interface ToUcpProductContext {
   storefrontBaseUrl: string;
   /** When set, adds a lookup correlation `inputs` entry to the variant. */
   input?: UcpVariantInput;
+  /** `get_product` detail mode: emit `selected` and option `available`/`exists` signals. */
+  detail?: boolean;
+  /** `get_product` interactive narrowing: option selections that anchor the featured variant. */
+  selected?: UcpSelectedOption[];
+  /** `get_product` option relaxation priority (lowest-priority names relaxed first). */
+  preferences?: string[];
 }
 
 /**
@@ -330,6 +339,96 @@ function aggregateOptions(variations: IcmVariation[]): UcpProductOption[] {
 }
 
 /**
+ * Adds the `get_product` availability signals per value, evaluated relative to the featured
+ * variant's selection: for each option dimension the other dimensions are held to the featured
+ * value, then `exists`/`available` reflect whether a (in-stock) variation carries that value.
+ */
+function detailOptionsRelative(variations: IcmVariation[], featured: IcmVariation | undefined): UcpProductOption[] {
+  const dims: { key: string; name: string }[] = [];
+  const seen = new Set<string>();
+  for (const variation of variations) {
+    for (const attr of variation.attributeValues ?? []) {
+      if (attr.value == null) {
+        continue;
+      }
+      const key = attr.variationAttributeId ?? attr.name ?? '';
+      if (!seen.has(key)) {
+        seen.add(key);
+        dims.push({ key, name: attr.name ?? key });
+      }
+    }
+  }
+  const labelOf = (variation: IcmVariation, key: string): string | undefined => {
+    const attr = variation.attributeValues?.find(a => (a.variationAttributeId ?? a.name) === key);
+    return attr?.value != null ? String(attr.value) : undefined;
+  };
+  const featuredSelection = new Map<string, string | undefined>();
+  dims.forEach(dim => featuredSelection.set(dim.key, featured ? labelOf(featured, dim.key) : undefined));
+
+  return dims.map(dim => {
+    const values: string[] = [];
+    for (const variation of variations) {
+      const label = labelOf(variation, dim.key);
+      if (label != null && !values.includes(label)) {
+        values.push(label);
+      }
+    }
+    return {
+      name: dim.name,
+      values: values.map(label => {
+        const match = variations.find(
+          variation =>
+            labelOf(variation, dim.key) === label &&
+            dims.every(
+              other => other.key === dim.key || labelOf(variation, other.key) === featuredSelection.get(other.key)
+            )
+        );
+        const available = match ? (match.product.inStock ?? match.product.availability ?? false) : false;
+        return { label, exists: !!match, available };
+      }),
+    };
+  });
+}
+
+/**
+ * Resolve the featured variation for a `get_product` selection: find a variation matching all
+ * `selected` options, relaxing the lowest-priority option first (names later in `preferences`,
+ * or absent from it, are relaxed before earlier ones). Returns undefined if nothing matches.
+ */
+function narrowVariation(
+  variations: IcmVariation[],
+  selected: UcpSelectedOption[],
+  preferences: string[]
+): IcmVariation | undefined {
+  const labelOf = (variation: IcmVariation, name: string): string | undefined => {
+    const attr = variation.attributeValues?.find(a => (a.name ?? a.variationAttributeId) === name);
+    return attr?.value != null ? String(attr.value) : undefined;
+  };
+  const matchesAll = (variation: IcmVariation, constraints: UcpSelectedOption[]): boolean =>
+    constraints.every(sel => labelOf(variation, sel.name) === sel.label);
+  const rank = (name: string): number => {
+    const index = preferences.indexOf(name);
+    return index === -1 ? -1 : preferences.length - index;
+  };
+
+  let constraints = [...selected];
+  while (constraints.length) {
+    const found = variations.find(variation => matchesAll(variation, constraints));
+    if (found) {
+      return found;
+    }
+    let dropIndex = 0;
+    for (let i = 1; i < constraints.length; i++) {
+      if (rank(constraints[i].name) < rank(constraints[dropIndex].name)) {
+        dropIndex = i;
+      }
+    }
+    constraints = constraints.filter((_, i) => i !== dropIndex);
+  }
+  return undefined;
+}
+
+/**
  * Map an ICM variation master plus its resolved variations to a full UCP Product:
  * one variant per variation with its selected options, product-level `options`, and a
  * `price_range` spanning all variants. The ICM default variation is featured first
@@ -345,10 +444,19 @@ export function toUcpMasterProduct(
   const pricing = computePricing(master, context.currency);
   const title = master.productName ?? masterSku;
   const description = { plain: master.shortDescription ?? master.longDescription ?? master.productName ?? masterSku };
-  // Feature the default variation first; option value order stays natural (from the original order).
-  const featuredFirst = [...variations.filter(v => v.isDefault), ...variations.filter(v => !v.isDefault)];
+  // Featured variant: for a get_product selection, narrow to it (relaxing per preferences);
+  // otherwise the ICM default variation. Option value order stays natural (original order).
+  const defaultVariation = variations.find(variation => variation.isDefault) ?? variations[0];
+  const narrowed =
+    context.detail && context.selected?.length
+      ? narrowVariation(variations, context.selected, context.preferences ?? [])
+      : undefined;
+  const featured = narrowed ?? defaultVariation;
+  const featuredFirst = featured ? [featured, ...variations.filter(variation => variation !== featured)] : variations;
   const variants = featuredFirst.map(variation => toUcpVariant(variation, context));
-  const options = aggregateOptions(variations);
+  const options = context.detail ? detailOptionsRelative(variations, featured) : aggregateOptions(variations);
+  // get_product detail anchors the featured variant with an explicit `selected` selection.
+  const selected = context.detail && featured ? toSelectedOptions(featured.attributeValues) : [];
 
   if (context.input && variants.length) {
     const exact = variants.find(variant => variant.sku === context.input?.id);
@@ -365,6 +473,7 @@ export function toUcpMasterProduct(
     ...(pricing.list_price_range ? { list_price_range: pricing.list_price_range } : {}),
     media: pickMedia(master, context),
     ...(options.length ? { options } : {}),
+    ...(selected.length ? { selected } : {}),
     variants,
     ...(master.manufacturer ? { tags: [master.manufacturer] } : {}),
   };

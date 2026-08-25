@@ -21,6 +21,10 @@ export interface CatalogLookupRequest {
 
 export interface CatalogProductRequest {
   id: string;
+  /** Interactive variant narrowing: option selections that anchor the featured variant. */
+  selected?: { name: string; label: string }[];
+  /** Option names in relaxation priority order (lowest-priority names relaxed first). */
+  preferences?: string[];
 }
 
 export type ValidationResult<T> = { ok: true; data: T } | { ok: false; error: string };
@@ -100,10 +104,34 @@ export function validateLookupRequest(body: unknown): ValidationResult<CatalogLo
   return { ok: true, data: { ids } };
 }
 
-/** Validate `POST /catalog/product` — requires a non-empty `id`. */
+/** Validate `POST /catalog/product` — requires a non-empty `id`; `selected`/`preferences` are optional. */
 export function validateProductRequest(body: unknown): ValidationResult<CatalogProductRequest> {
   if (!isRecord(body) || typeof body.id !== 'string' || !body.id.length) {
     return { ok: false, error: '`id` must be a non-empty string.' };
   }
-  return { ok: true, data: { id: body.id } };
+  let selected: { name: string; label: string }[] | undefined;
+  if (body.selected !== undefined) {
+    if (!Array.isArray(body.selected)) {
+      return { ok: false, error: '`selected` must be an array of { name, label } options.' };
+    }
+    const parsed = body.selected.filter(
+      (option): option is { name: string; label: string } =>
+        isRecord(option) && typeof option.name === 'string' && typeof option.label === 'string'
+    );
+    if (parsed.length !== body.selected.length) {
+      return { ok: false, error: 'Each `selected` entry must have a string `name` and `label`.' };
+    }
+    selected = parsed.length ? parsed : undefined;
+  }
+  let preferences: string[] | undefined;
+  if (body.preferences !== undefined) {
+    if (!Array.isArray(body.preferences) || !body.preferences.every(name => typeof name === 'string')) {
+      return { ok: false, error: '`preferences` must be an array of option-name strings.' };
+    }
+    preferences = body.preferences.length ? (body.preferences as string[]) : undefined;
+  }
+  return {
+    ok: true,
+    data: { id: body.id, ...(selected ? { selected } : {}), ...(preferences ? { preferences } : {}) },
+  };
 }

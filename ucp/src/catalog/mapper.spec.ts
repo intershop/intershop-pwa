@@ -255,4 +255,78 @@ describe('toUcpMasterProduct', () => {
     });
     assert.equal(result.options, undefined);
   });
+  // Full 2x2 grid (Hard drive size x Display Size) with one out-of-stock combo, for detail tests.
+  const gridVariation = (sku: string, hd: string, display: string, inStock: boolean): IcmVariation => ({
+    product: { sku, productName: 'Surface Book 2', salePrice: { value: 2000, currency: 'USD' }, inStock },
+    attributeValues: [
+      { name: 'Hard drive size', value: hd, variationAttributeId: 'Hard_disk_drive_capacity' },
+      { name: 'Display Size', value: display, variationAttributeId: 'attr_displaysize' },
+    ],
+    isDefault: hd === '256GB' && display === '13.5"',
+  });
+  const grid: IcmVariation[] = [
+    gridVariation('sb-256-135', '256GB', '13.5"', true),
+    gridVariation('sb-256-150', '256GB', '15"', true),
+    gridVariation('sb-512-135', '512GB', '13.5"', false),
+    gridVariation('sb-512-150', '512GB', '15"', true),
+  ];
+
+  it('emits selected and availability relative to the default featured variant', () => {
+    const result = toUcpMasterProduct(master, grid, { ...context, detail: true });
+
+    // No selection -> featured is the default variation.
+    assert.deepEqual(result.selected, [
+      { name: 'Hard drive size', label: '256GB' },
+      { name: 'Display Size', label: '13.5"' },
+    ]);
+    // Hard drive size availability with Display held at the featured value (13.5"):
+    // 512GB/13.5" exists but is out of stock.
+    assert.deepEqual(result.options?.[0], {
+      name: 'Hard drive size',
+      values: [
+        { label: '256GB', exists: true, available: true },
+        { label: '512GB', exists: true, available: false },
+      ],
+    });
+  });
+
+  it('narrows the featured variant to an exact selection', () => {
+    const result = toUcpMasterProduct(master, grid, {
+      ...context,
+      detail: true,
+      selected: [
+        { name: 'Hard drive size', label: '512GB' },
+        { name: 'Display Size', label: '15"' },
+      ],
+    });
+
+    assert.equal(result.variants[0].sku, 'sb-512-150');
+    assert.deepEqual(result.selected, [
+      { name: 'Hard drive size', label: '512GB' },
+      { name: 'Display Size', label: '15"' },
+    ]);
+  });
+
+  it('relaxes the lowest-priority option when no exact variant matches', () => {
+    const result = toUcpMasterProduct(master, grid, {
+      ...context,
+      detail: true,
+      // No 512GB/17" variant exists; keep Hard drive size, relax Display Size first.
+      selected: [
+        { name: 'Hard drive size', label: '512GB' },
+        { name: 'Display Size', label: '17"' },
+      ],
+      preferences: ['Hard drive size', 'Display Size'],
+    });
+
+    // Falls back to a 512GB variant (Display relaxed).
+    assert.equal(result.selected?.[0].label, '512GB');
+  });
+
+  it('omits selected and availability signals outside detail mode', () => {
+    const result = toUcpMasterProduct(master, variations, context);
+
+    assert.equal(result.selected, undefined);
+    assert.deepEqual(result.options?.[0].values, [{ label: '256GB' }, { label: '1TB' }]);
+  });
 });

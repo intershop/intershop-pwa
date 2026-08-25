@@ -12,8 +12,9 @@ function requestOrigin(req: Request): string {
   return `${req.protocol}://${req.get('host')}`;
 }
 
-/** Static demo page, shipped alongside the compiled sources under `public/`. */
+/** Static demo and validator page, shipped alongside the compiled sources under `public/`. */
 const DEMO_PAGE = path.join(__dirname, '..', 'public', 'demo.html');
+const VALIDATOR_PAGE = path.join(__dirname, '..', 'public', 'validator.html');
 
 /**
  * Assembles the Express application exposing the UCP (https://ucp.dev) discovery
@@ -54,6 +55,11 @@ export function createApp(config: UcpConfig): express.Express {
   // Interactive showcase; served under `/ucp/` so the PWA nginx proxies it too.
   app.get('/ucp/demo', (_req, res) => {
     res.sendFile(DEMO_PAGE);
+  });
+
+  // Interactive showcase validator; served under `/ucp/` so the PWA nginx proxies it too.
+  app.get('/ucp/validator', (_req, res) => {
+    res.sendFile(VALIDATOR_PAGE);
   });
 
   // Non-transactional catalog Search and Lookup over the ICM REST API.

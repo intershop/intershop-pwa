@@ -77,15 +77,44 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     return toUcpMasterProduct(master, variations, context);
   }
 
-  // Detail view (lookup/product): expand a master or variation into the full variant list.
-  async function resolveDetailProduct(id: string, context: ToUcpProductContext) {
+  // get_product detail: expand a master or variation into the full variant list, with
+  // `selected` and option availability signals.
+  async function resolveProductDetail(id: string, context: ToUcpProductContext) {
     const product = await client.getProduct(id);
+    const detail = { ...context, detail: true };
     if (product.productMaster) {
-      return expandMaster(product.sku ?? id, product, context);
+      return expandMaster(product.sku ?? id, product, detail);
     }
     if (product.mastered && product.productMasterSKU) {
       const master = await client.getProduct(product.productMasterSKU);
-      return expandMaster(product.productMasterSKU, master, context);
+      return expandMaster(product.productMasterSKU, master, detail);
+    }
+    return toUcpProduct(product, context);
+  }
+
+  // Lookup: return only the variant that correlates to the requested id, carrying `inputs`
+  // (the lookup schema requires an `inputs` entry on every returned variant).
+  async function resolveLookupProduct(id: string, context: ToUcpProductContext) {
+    const product = await client.getProduct(id);
+    if (product.productMaster) {
+      // A master id resolves to its default variation as the featured representative.
+      const links = (await client.getVariations(product.sku ?? id)).elements ?? [];
+      const link =
+        links.find(l => l.attributes?.some(a => a.name === 'defaultVariation' && a.value === true)) ?? links[0];
+      const sku = skuFromUri(link?.uri);
+      if (sku) {
+        const variation: IcmVariation = {
+          product: await client.getProduct(sku),
+          attributeValues: link?.variableVariationAttributeValues ?? [],
+          isDefault: true,
+        };
+        return toUcpMasterProduct(product, [variation], context);
+      }
+      return toUcpProduct(product, context);
+    }
+    if (product.mastered && product.productMasterSKU) {
+      const master = await client.getProduct(product.productMasterSKU);
+      return toUcpMasterProduct(master, [{ product, attributeValues: [], isDefault: true }], context);
     }
     return toUcpProduct(product, context);
   }
@@ -181,7 +210,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
       const notFound: string[] = [];
       for (const id of ids) {
         try {
-          products.push(await resolveDetailProduct(id, { ...baseContext, input: { id, match: 'exact' } }));
+          products.push(await resolveLookupProduct(id, { ...baseContext, input: { id, match: 'exact' } }));
         } catch (error) {
           if (error instanceof IcmError && error.status === 404) {
             notFound.push(id);
@@ -211,16 +240,17 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
       return;
     }
 
-    const { id } = parsed.data;
+    const { id, selected, preferences } = parsed.data;
     const context = {
       currency: config.currency,
       icmBaseUrl: config.icmBaseUrl,
       storefrontBaseUrl: storefrontBaseUrl(req),
-      input: { id, match: 'exact' as const },
+      ...(selected ? { selected } : {}),
+      ...(preferences ? { preferences } : {}),
     };
 
     try {
-      const product = await resolveDetailProduct(id, context);
+      const product = await resolveProductDetail(id, context);
       res.json({ ucp: catalogUcp('lookup'), product });
     } catch (error) {
       // A missing product is a business outcome: HTTP 200 with an error envelope.
