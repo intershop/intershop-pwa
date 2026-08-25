@@ -17,6 +17,8 @@ export interface IcmMoney {
 export interface IcmImage {
   effectiveUrl?: string;
   primaryImage?: boolean;
+  viewID?: string;
+  typeID?: string;
 }
 
 export interface IcmProductData {

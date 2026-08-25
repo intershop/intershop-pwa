@@ -1,0 +1,1710 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Intershop UCP - Agent Playground</title>
+    <style>
+      :root {
+        --bg: #0f1a2b;
+        --panel: #16233a;
+        --panel-2: #1d2f4d;
+        --ink: #e8eef7;
+        --muted: #97a6bd;
+        --line: #294066;
+        --accent: #4c8dff;
+        --accent-2: #16c79a;
+        --agent: #ffb454;
+        --icm: #b48cff;
+        --user: #4c8dff;
+        --err: #ff6b6b;
+        --warn: #ffb454;
+        --ok: #16c79a;
+        --code: #0b1322;
+        --mono: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+        --radius: 12px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(1200px 600px at 80% -10%, #1b2c49 0, var(--bg) 55%);
+        color: var(--ink);
+        font-family:
+          'Segoe UI',
+          system-ui,
+          -apple-system,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+      a {
+        color: var(--accent);
+      }
+      header.top {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 20px 24px 8px;
+      }
+      header.top h1 {
+        margin: 0 0 6px;
+        font-size: 22px;
+      }
+      header.top p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 860px;
+        font-size: 14px;
+      }
+      .badges {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .badge {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--muted);
+      }
+      .badge b {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .spacer {
+        flex: 1;
+      }
+      .badge.clickable {
+        cursor: pointer;
+        user-select: none;
+      }
+      .badge .arrow {
+        display: inline-block;
+        margin-left: 4px;
+        color: var(--muted);
+        transition: transform 0.15s;
+      }
+      .badge.open .arrow {
+        transform: rotate(90deg);
+      }
+      .schema-list {
+        margin-top: 8px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--code);
+        padding: 8px 12px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        max-height: 220px;
+        overflow: auto;
+      }
+      .schema-list .head {
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .schema-list .row {
+        padding: 2px 0;
+        word-break: break-all;
+      }
+      .toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        cursor: pointer;
+        user-select: none;
+      }
+      .toggle input {
+        accent-color: var(--accent);
+      }
+      button.mini {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 5px 11px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      button.mini:hover {
+        border-color: var(--accent);
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 8px 24px 24px;
+      }
+      #chat {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 16px 0;
+        min-height: 40vh;
+      }
+      .msg {
+        display: flex;
+        gap: 10px;
+        max-width: 100%;
+      }
+      .msg .who {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        font-size: 15px;
+        border: 1px solid var(--line);
+      }
+      .msg.user {
+        flex-direction: row-reverse;
+      }
+      .msg.user .who {
+        background: rgba(76, 141, 255, 0.15);
+      }
+      .msg.agent .who {
+        background: rgba(255, 180, 84, 0.14);
+      }
+      .bubble {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 11px 14px;
+        background: var(--panel);
+        max-width: 82%;
+      }
+      .msg.user .bubble {
+        background: rgba(76, 141, 255, 0.12);
+        border-color: #34507e;
+      }
+      .bubble .lead {
+        font-size: 14.5px;
+      }
+      .bubble .lead b {
+        color: #fff;
+      }
+      .typing span {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 3px;
+        border-radius: 50%;
+        background: var(--muted);
+        animation: blink 1.2s infinite both;
+      }
+      .typing span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes blink {
+        0%,
+        80%,
+        100% {
+          opacity: 0.2;
+        }
+        40% {
+          opacity: 1;
+        }
+      }
+      .items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .item {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel-2);
+        padding: 10px;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          transform 0.1s;
+      }
+      .item:hover {
+        transform: translateY(-2px);
+      }
+      .item.selected {
+        border-color: var(--accent-2);
+        box-shadow: 0 0 0 1px var(--accent-2) inset;
+      }
+      .item img {
+        width: 100%;
+        height: 96px;
+        object-fit: contain;
+        background: #fff;
+        border-radius: 6px;
+        margin-bottom: 7px;
+      }
+      .item .title {
+        font-size: 12.5px;
+        font-weight: 600;
+        min-height: 32px;
+      }
+      .item .price {
+        color: var(--accent-2);
+        font-weight: 700;
+        margin-top: 3px;
+        font-size: 13px;
+      }
+      .item .stock {
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .item .details {
+        margin-top: 7px;
+        font-size: 11px;
+        color: var(--accent);
+      }
+      .lk {
+        display: flex;
+        gap: 14px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel-2);
+        padding: 12px;
+        margin-top: 10px;
+      }
+      @media (max-width: 560px) {
+        .lk {
+          flex-direction: column;
+        }
+      }
+      .lk-media {
+        position: relative;
+        width: 190px;
+        flex: 0 0 auto;
+      }
+      @media (max-width: 560px) {
+        .lk-media {
+          width: 100%;
+        }
+      }
+      .lk-media img {
+        width: 100%;
+        height: 170px;
+        object-fit: contain;
+        background: #fff;
+        border-radius: 8px;
+        display: none;
+      }
+      .lk-media img.active {
+        display: block;
+      }
+      .lk-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: 0;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .lk-nav.prev {
+        left: 6px;
+      }
+      .lk-nav.next {
+        right: 6px;
+      }
+      .lk-count {
+        position: absolute;
+        bottom: 6px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        font-size: 10.5px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        font-family: var(--mono);
+      }
+      .lk-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .lk-info .title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+      }
+      .lk-info .price {
+        color: var(--accent-2);
+        font-weight: 700;
+        margin-top: 2px;
+      }
+      .lk-info .stock {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .lk-info .opts {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .lk-info .desc {
+        font-size: 12.5px;
+        color: var(--ink);
+        margin-top: 8px;
+      }
+      .lk-info .details {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--accent);
+        cursor: pointer;
+        display: inline-block;
+      }
+      .lk.lk-plain {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+      }
+      .detail {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel-2);
+        padding: 12px;
+      }
+      .detail h4 {
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+      .detail .range {
+        color: var(--accent-2);
+        font-weight: 700;
+      }
+      .optrow {
+        margin-top: 8px;
+      }
+      .optrow .name {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
+      }
+      .optvals {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .optval {
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 5px 10px;
+        font-size: 12.5px;
+        cursor: pointer;
+        background: var(--panel);
+      }
+      .optval.sel {
+        border-color: var(--accent-2);
+        color: var(--accent-2);
+        box-shadow: 0 0 0 1px var(--accent-2) inset;
+      }
+      .optval.unavail {
+        opacity: 0.4;
+      }
+      .featured {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--ink);
+      }
+      .featured b {
+        color: #fff;
+      }
+      /* UCP + validation panel */
+      details.ucp {
+        margin-top: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--code);
+        overflow: hidden;
+      }
+      details.ucp > summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 9px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+      details.ucp > summary::-webkit-details-marker {
+        display: none;
+      }
+      summary .method {
+        color: var(--agent);
+        font-weight: 700;
+      }
+      summary .path {
+        color: var(--ink);
+      }
+      summary .verdict {
+        margin-left: auto;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 999px;
+        font-size: 11px;
+        border: 1px solid var(--line);
+      }
+      .verdict.pass {
+        color: var(--ok);
+        border-color: var(--ok);
+      }
+      .verdict.warn {
+        color: var(--warn);
+        border-color: var(--warn);
+      }
+      .verdict.fail {
+        color: var(--err);
+        border-color: var(--err);
+      }
+      .ucp-body {
+        padding: 0 12px 12px;
+      }
+      .exchange {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 760px) {
+        .exchange {
+          grid-template-columns: 1fr;
+        }
+      }
+      .xcard {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--panel);
+      }
+      .xcard h5 {
+        margin: 0;
+        padding: 7px 10px;
+        font-size: 11px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+      pre.j {
+        margin: 0;
+        padding: 10px;
+        background: var(--code);
+        color: #d6e2f5;
+        font-size: 11.5px;
+        overflow: auto;
+        max-height: 260px;
+        font-family: var(--mono);
+      }
+      .req-line {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 11.5px;
+        word-break: break-all;
+      }
+      .status-pill {
+        font-size: 10.5px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+      .s2 {
+        background: #0e3a2e;
+        color: var(--ok);
+      }
+      .s4,
+      .s5 {
+        background: #3a1616;
+        color: var(--err);
+      }
+      .behind {
+        margin-top: 10px;
+        border: 1px dashed var(--icm);
+        border-radius: 8px;
+      }
+      .behind h5 {
+        margin: 0;
+        padding: 7px 10px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--icm);
+        border-bottom: 1px solid var(--line);
+      }
+      .behind .b {
+        padding: 8px 11px;
+        font-size: 12px;
+        color: #cdbcff;
+      }
+      .behind code {
+        color: #e6ddff;
+        background: #241a3a;
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      .validation {
+        margin-top: 10px;
+      }
+      .valhead {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--muted);
+        margin-bottom: 6px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .vpill {
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .vpill.err {
+        color: var(--err);
+        border-color: var(--err);
+      }
+      .vpill.warn {
+        color: var(--warn);
+        border-color: var(--warn);
+      }
+      .vpill.ok {
+        color: var(--ok);
+        border-color: var(--ok);
+      }
+      .issue {
+        display: flex;
+        gap: 9px;
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        border-left-width: 3px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+        background: var(--panel);
+      }
+      .issue.error {
+        border-left-color: var(--err);
+      }
+      .issue.warning {
+        border-left-color: var(--warn);
+      }
+      .issue.info {
+        border-left-color: var(--accent);
+      }
+      .issue.pass {
+        border-left-color: var(--ok);
+      }
+      .issue .ib {
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 3px 6px;
+        border-radius: 4px;
+        height: fit-content;
+        white-space: nowrap;
+      }
+      .ib.error {
+        background: rgba(255, 107, 107, 0.15);
+        color: var(--err);
+      }
+      .ib.warning {
+        background: rgba(255, 180, 84, 0.15);
+        color: var(--warn);
+      }
+      .ib.info {
+        background: rgba(76, 141, 255, 0.15);
+        color: var(--accent);
+      }
+      .ib.pass {
+        background: rgba(22, 199, 154, 0.15);
+        color: var(--ok);
+      }
+      .issue .msg {
+        font-size: 12.5px;
+      }
+      .issue .meta {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 2px;
+        word-break: break-word;
+      }
+      .issue .rule {
+        color: var(--agent);
+      }
+      /* composer */
+      .composer {
+        position: sticky;
+        bottom: 0;
+        background: linear-gradient(180deg, #0f1a2b00, var(--bg) 30%);
+        padding: 12px 0 4px;
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .chip {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 7px 13px;
+        font-size: 12.5px;
+        cursor: pointer;
+      }
+      .chip:hover {
+        border-color: var(--accent);
+      }
+      .chip.primary {
+        background: var(--accent);
+        color: #05122e;
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+      .inputbar {
+        display: flex;
+        gap: 8px;
+      }
+      .inputbar input {
+        flex: 1;
+        background: var(--code);
+        border: 1px solid var(--line);
+        color: var(--ink);
+        border-radius: 10px;
+        padding: 11px 13px;
+        font-size: 14px;
+        outline: none;
+      }
+      .inputbar input:focus {
+        border-color: var(--accent);
+      }
+      .inputbar button {
+        background: var(--accent);
+        color: #05122e;
+        border: 0;
+        border-radius: 10px;
+        padding: 0 18px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      /* developer mode: force-open every UCP panel */
+      body.dev details.ucp {
+        border-color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>Intershop UCP - Agent Playground</h1>
+      <p>
+        A simulated conversation between a shopping agent and this store over the
+        <b>Universal Commerce Protocol (UCP)</b>. Each agent turn is a real UCP call - expand it to see the exact
+        request/response, the ICM work behind the scenes, and a live <b>conformance check</b> against the official
+        ucp.dev schemas.
+      </p>
+      <div class="badges">
+        <span class="badge" id="badge-icm">ICM: <b>…</b></span>
+        <span class="badge" id="badge-channel">Channel: <b>…</b></span>
+        <span class="badge">UCP: <b id="badge-endpoint">…</b></span>
+        <span class="badge" id="badge-schema">Conformance: <b>…</b></span>
+        <span class="spacer"></span>
+        <label class="toggle"><input type="checkbox" id="devmode" /> Developer mode</label>
+        <button class="mini" id="restart">↺ Restart</button>
+      </div>
+      <div class="schema-list" id="schema-list" hidden></div>
+    </header>
+
+    <main>
+      <div id="chat"></div>
+
+      <div class="composer">
+        <div class="chips" id="chips"></div>
+        <div class="inputbar">
+          <input
+            id="prompt"
+            placeholder="Ask the agent… e.g. 'Find a Surface laptop' or paste SKUs: 201807195, 201807201"
+          />
+          <button id="send">Send</button>
+        </div>
+        <p class="hint">
+          Type a product query, or one or more comma-separated SKUs to look them up directly. Click a result for full
+          detail and interactive option selection.
+        </p>
+      </div>
+    </main>
+
+    <script type="module">
+      import Ajv2020 from 'https://esm.sh/ajv@8.17.1/dist/2020';
+      import addFormats from 'https://esm.sh/ajv-formats@3.0.1?deps=ajv@8.17.1';
+
+      /* ============================ helpers ============================ */
+      const $ = (s, r = document) => r.querySelector(s);
+      const ORIGIN = location.origin;
+      const BASE = '/ucp/v1';
+      const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+      const isArr = Array.isArray;
+      const isStr = v => typeof v === 'string';
+      const isInt = v => Number.isInteger(v);
+      const esc = s =>
+        String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      const chat = $('#chat');
+      const scroll = () => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+      function money(amount, currency) {
+        if (amount == null) return '-';
+        const zero = ['JPY', 'KRW', 'CLP'].includes(currency);
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD' }).format(
+          zero ? amount : amount / 100
+        );
+      }
+      function moneyRange(range, fallback) {
+        if (!range) return '-';
+        const min = range.min?.amount,
+          max = range.max?.amount;
+        const cur = range.min?.currency || range.max?.currency || fallback;
+        if (min == null && max == null) return '-';
+        if (max == null || min === max) return money(min ?? max, cur);
+        return `${money(min, cur)} – ${money(max, cur)}`;
+      }
+      function highlight(json) {
+        return esc(JSON.stringify(json, null, 2))
+          .replace(/(&quot;[^&]*?&quot;)(\s*:)/g, '<span style="color:#7fd3ff">$1</span>$2')
+          .replace(/: (&quot;.*?&quot;)/g, ': <span style="color:#c3e88d">$1</span>')
+          .replace(/: (\d+\.?\d*)/g, ': <span style="color:#ffcb6b">$1</span>')
+          .replace(/: (true|false|null)/g, ': <span style="color:#f78c6c">$1</span>');
+      }
+      const statusClass = s => 's' + String(s).charAt(0);
+
+      // Perform a UCP call against this service (same origin).
+      async function ucpCall(method, path, body) {
+        const url = ORIGIN + path;
+        const headers = {};
+        if (body) headers['Content-Type'] = 'application/json';
+        let status = 0,
+          json = {};
+        try {
+          const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
+          status = res.status;
+          json = await res.json().catch(() => ({}));
+        } catch (e) {
+          json = { error: { type: 'network_error', message: String(e) } };
+        }
+        return { request: { method, url, body }, response: { status, json } };
+      }
+
+      /* ICM behind-the-scenes reconstruction (for narration only). */
+      const ICM_DEFAULT = { base: 'https://develop.icm.intershop.de', channel: 'inSPIRED-inTRONICS_Business-Site' };
+      function deriveIcm(products) {
+        for (const p of products || []) {
+          const url = p.media?.[0]?.url || p.variants?.[0]?.media?.[0]?.url;
+          const m = url && /^(https?:\/\/[^/]+)\/INTERSHOP\/static\/WFS\/([^/;]+)/.exec(url);
+          if (m) return { base: m[1], channel: m[2] };
+        }
+        return { ...ICM_DEFAULT };
+      }
+      const icmRestUrl = (icm, path) => `${icm.base}/INTERSHOP/rest/WFS/${icm.channel}/-;loc=en_US;cur=USD/${path}`;
+      const icmLink = (url, label) =>
+        `<a href="${esc(url)}" target="_blank" rel="noopener" style="font-family:var(--mono);word-break:break-all">${label ?? 'GET ' + esc(url)}</a>`;
+
+      /* ============================ validation engine ============================ */
+      let compiledSchemas = {};
+      let schemasLoaded = false;
+
+      async function addSchemaGraph(ajv, roots) {
+        const seen = new Set();
+        const order = [];
+        const queue = [...roots];
+        while (queue.length) {
+          const url = queue.shift().split('#')[0];
+          if (seen.has(url)) continue;
+          seen.add(url);
+          const doc = await (await fetch(url, { mode: 'cors' })).json();
+          if (!doc.$id) doc.$id = url;
+          if (!ajv.getSchema(doc.$id)) ajv.addSchema(doc);
+          order.push(url);
+          (JSON.stringify(doc).match(/"(https:\/\/ucp\.dev\/[^"#]+)/g) || []).forEach(m => {
+            const u = m.slice(1);
+            if (!seen.has(u)) queue.push(u);
+          });
+        }
+        return order;
+      }
+      // Populate the expandable list of schema files fetched to validate responses.
+      function renderSchemaList(urls) {
+        const list = $('#schema-list');
+        list.innerHTML =
+          `<div class="head">Fetched ${urls.length} JSON Schema files from ucp.dev to check every response against the official spec:</div>` +
+          urls
+            .map(u => `<div class="row"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a></div>`)
+            .join('');
+      }
+      async function loadSchemas() {
+        const ver = '2026-04-08';
+        const searchUrl = `https://ucp.dev/${ver}/schemas/shopping/catalog_search.json`;
+        const lookupUrl = `https://ucp.dev/${ver}/schemas/shopping/catalog_lookup.json`;
+        const badge = $('#badge-schema');
+        try {
+          const ajv = new Ajv2020({ allErrors: true, strict: false });
+          addFormats(ajv);
+          const urls = await addSchemaGraph(ajv, [searchUrl, lookupUrl]);
+          compiledSchemas.search = ajv.getSchema(searchUrl + '#/$defs/search_response');
+          compiledSchemas.lookup = ajv.getSchema(lookupUrl + '#/$defs/lookup_response');
+          compiledSchemas.product = ajv.getSchema(lookupUrl + '#/$defs/get_product_response');
+          schemasLoaded = ['search', 'lookup', 'product'].some(k => compiledSchemas[k]);
+          if (schemasLoaded) {
+            renderSchemaList(urls);
+            badge.classList.add('clickable');
+            badge.innerHTML = 'Conformance: <b>checked vs. official UCP spec</b> <span class="arrow">▸</span>';
+          } else {
+            badge.innerHTML = 'Conformance: <b>checked vs. built-in spec rules</b>';
+          }
+        } catch (e) {
+          schemasLoaded = false;
+          badge.innerHTML = 'Conformance: <b>checked vs. built-in spec rules</b>';
+        }
+      }
+      // Toggle the schema-file list from the Conformance badge.
+      $('#badge-schema').addEventListener('click', () => {
+        const badge = $('#badge-schema');
+        if (!badge.classList.contains('clickable')) return;
+        const list = $('#schema-list');
+        const wasHidden = list.hidden;
+        list.hidden = !wasHidden;
+        badge.classList.toggle('open', wasHidden);
+      });
+      function schemaIssues(op, root) {
+        const out = [];
+        const fn = compiledSchemas[op];
+        if (!fn) return out;
+        if (!fn(root) && isArr(fn.errors))
+          fn.errors.forEach(e =>
+            out.push({
+              sev: 'error',
+              rule: 'JSON Schema (ajv)',
+              msg: `${e.message}${e.params && Object.keys(e.params).length ? ` (${JSON.stringify(e.params)})` : ''}`,
+              path: e.instancePath || '/',
+            })
+          );
+        return out;
+      }
+
+      function Ctx() {
+        return { issues: [] };
+      }
+      const add = (c, sev, rule, msg, path) => c.issues.push({ sev, rule, msg, path: path || '' });
+
+      function checkPrice(c, p, path) {
+        if (!isObj(p)) {
+          add(c, 'error', 'Price', `${path} must be an object with amount + currency.`, path);
+          return;
+        }
+        if (!isInt(p.amount))
+          add(
+            c,
+            'error',
+            'Price.amount',
+            'amount is required and MUST be an integer (ISO 4217 minor units).',
+            path + '.amount'
+          );
+        if (!isStr(p.currency))
+          add(c, 'error', 'Price.currency', 'currency is required (ISO 4217 code).', path + '.currency');
+        else if (!/^[A-Z]{3}$/.test(p.currency))
+          add(
+            c,
+            'warning',
+            'Price.currency',
+            'currency SHOULD be a 3-letter uppercase ISO 4217 code.',
+            path + '.currency'
+          );
+      }
+      function checkRange(c, pr, path) {
+        if (!isObj(pr)) {
+          add(c, 'error', 'PriceRange', `${path} is required and MUST have min + max.`, path);
+          return;
+        }
+        if (pr.min === undefined) add(c, 'error', 'PriceRange.min', 'min is required.', path + '.min');
+        else checkPrice(c, pr.min, path + '.min');
+        if (pr.max === undefined) add(c, 'error', 'PriceRange.max', 'max is required.', path + '.max');
+        else checkPrice(c, pr.max, path + '.max');
+        if (
+          isObj(pr.min) &&
+          isObj(pr.max) &&
+          isInt(pr.min.amount) &&
+          isInt(pr.max.amount) &&
+          pr.min.amount > pr.max.amount
+        )
+          add(c, 'error', 'PriceRange', 'min must not exceed max.', path);
+      }
+      function checkDesc(c, d, path, req) {
+        if (d === undefined) {
+          if (req) add(c, 'error', 'Description', 'description is required.', path);
+          return;
+        }
+        if (!isObj(d)) {
+          add(c, 'error', 'Description', 'description MUST be an object with at least one format (e.g. plain).', path);
+          return;
+        }
+        if (!isStr(d.plain) && !isStr(d.markdown) && !isStr(d.html))
+          add(c, 'warning', 'Description', 'description SHOULD contain at least one text format.', path);
+      }
+      function checkVariant(c, v, path, o) {
+        o = o || {};
+        if (!isObj(v)) {
+          add(c, 'error', 'Variant', `${path} must be an object.`, path);
+          return;
+        }
+        if (!isStr(v.id))
+          add(c, 'error', 'Variant.id', 'id is required (GID) - used as item.id at checkout.', path + '.id');
+        if (!isStr(v.title)) add(c, 'error', 'Variant.title', 'title is required.', path + '.title');
+        checkDesc(c, v.description, path + '.description', true);
+        if (v.price === undefined) add(c, 'error', 'Variant.price', 'price is required.', path + '.price');
+        else checkPrice(c, v.price, path + '.price');
+        if (v.list_price !== undefined) checkPrice(c, v.list_price, path + '.list_price');
+        if (o.requireInputs) {
+          if (!isArr(v.inputs) || v.inputs.length === 0)
+            add(
+              c,
+              'error',
+              'Lookup.Correlation',
+              'In lookup responses each variant MUST carry a non-empty inputs[] array.',
+              path + '.inputs'
+            );
+          else
+            v.inputs.forEach((inp, i) => {
+              if (!isStr(inp.id))
+                add(c, 'error', 'Lookup.Correlation', 'inputs[].id is required.', `${path}.inputs[${i}].id`);
+              if (inp.match !== undefined && !['exact', 'featured'].includes(inp.match))
+                add(
+                  c,
+                  'info',
+                  'Lookup.Correlation',
+                  `inputs[].match '${inp.match}' is not well-known (exact, featured).`,
+                  `${path}.inputs[${i}].match`
+                );
+            });
+        }
+      }
+      function checkProduct(c, p, path, o) {
+        o = o || {};
+        if (!isObj(p)) {
+          add(c, 'error', 'Product', `${path} must be an object.`, path);
+          return;
+        }
+        if (!isStr(p.id)) add(c, 'error', 'Product.id', 'id is required (GID).', path + '.id');
+        if (!isStr(p.title)) add(c, 'error', 'Product.title', 'title is required.', path + '.title');
+        checkDesc(c, p.description, path + '.description', true);
+        if (p.price_range === undefined)
+          add(c, 'error', 'Product.price_range', 'price_range is required.', path + '.price_range');
+        else checkRange(c, p.price_range, path + '.price_range');
+        if (p.list_price_range !== undefined) checkRange(c, p.list_price_range, path + '.list_price_range');
+        if (!isArr(p.variants)) {
+          add(c, 'error', 'Product.variants', 'variants is required and MUST be an array.', path + '.variants');
+        } else {
+          if (p.variants.length === 0)
+            add(
+              c,
+              'warning',
+              'Product.variants',
+              'variants is empty; expose >=1 purchasable variant.',
+              path + '.variants'
+            );
+          p.variants.forEach((v, i) =>
+            checkVariant(c, v, `${path}.variants[${i}]`, { requireInputs: o.requireInputs })
+          );
+          if (isObj(p.price_range) && isObj(p.price_range.min) && isObj(p.price_range.max)) {
+            const amts = p.variants.map(v => (isObj(v.price) ? v.price.amount : null)).filter(isInt);
+            if (amts.length) {
+              const mn = Math.min(...amts),
+                mx = Math.max(...amts);
+              if (isInt(p.price_range.min.amount) && p.price_range.min.amount > mn)
+                add(
+                  c,
+                  'warning',
+                  'PriceRange coherence',
+                  `price_range.min (${p.price_range.min.amount}) is higher than the cheapest variant (${mn}).`,
+                  path + '.price_range.min'
+                );
+              if (isInt(p.price_range.max.amount) && p.price_range.max.amount < mx)
+                add(
+                  c,
+                  'warning',
+                  'PriceRange coherence',
+                  `price_range.max (${p.price_range.max.amount}) is lower than the most expensive variant (${mx}).`,
+                  path + '.price_range.max'
+                );
+            }
+          }
+        }
+        if (o.op === 'product') {
+          if (isArr(p.options))
+            p.options.forEach((opt, i) => {
+              const op2 = `${path}.options[${i}]`;
+              if (!isStr(opt.name)) add(c, 'error', 'ProductOption.name', 'name is required.', op2 + '.name');
+              if (!isArr(opt.values))
+                add(c, 'error', 'ProductOption.values', 'values is required (array).', op2 + '.values');
+              else
+                opt.values.forEach((val, j) => {
+                  const vp = `${op2}.values[${j}]`;
+                  if (!isStr(val.label)) add(c, 'error', 'OptionValue.label', 'label is required.', vp + '.label');
+                  if (typeof val.available !== 'boolean')
+                    add(
+                      c,
+                      'warning',
+                      'get_product availability',
+                      "option values SHOULD carry 'available'.",
+                      vp + '.available'
+                    );
+                  if (typeof val.exists !== 'boolean')
+                    add(
+                      c,
+                      'warning',
+                      'get_product availability',
+                      "option values SHOULD carry 'exists'.",
+                      vp + '.exists'
+                    );
+                });
+            });
+          const hasOptions = isArr(p.options) && p.options.length > 0;
+          if (hasOptions && p.selected === undefined)
+            add(
+              c,
+              'warning',
+              'get_product.selected',
+              'product.selected SHOULD anchor the featured variant when options exist.',
+              path + '.selected'
+            );
+          if (p.selected !== undefined && !isArr(p.selected))
+            add(
+              c,
+              'error',
+              'get_product.selected',
+              'selected MUST be an array of Selected Options.',
+              path + '.selected'
+            );
+        }
+        if (isArr(p.variants) && p.variants.length > 1)
+          add(
+            c,
+            'info',
+            'Product.featured',
+            'First variant is treated as featured; ensure variants[0] is the intended representative.',
+            path + '.variants[0]'
+          );
+      }
+      function checkEnvelope(c, root) {
+        if (!isObj(root.ucp)) {
+          add(c, 'error', 'UCP envelope', "'ucp' is required in every catalog response.", 'ucp');
+          return;
+        }
+        if (!isStr(root.ucp.version))
+          add(c, 'warning', 'UCP envelope', 'ucp.version (YYYY-MM-DD) SHOULD be present.', 'ucp.version');
+        else if (!/^\d{4}-\d{2}-\d{2}$/.test(root.ucp.version))
+          add(c, 'warning', 'UCP envelope', 'ucp.version SHOULD use YYYY-MM-DD.', 'ucp.version');
+        if (root.ucp.status !== undefined && !['success', 'error'].includes(root.ucp.status))
+          add(c, 'error', 'UCP envelope', "ucp.status MUST be 'success' or 'error'.", 'ucp.status');
+      }
+      function checkMessages(c, msgs) {
+        if (msgs === undefined) return;
+        if (!isArr(msgs)) {
+          add(c, 'error', 'messages', 'messages MUST be an array.', 'messages');
+          return;
+        }
+        msgs.forEach((m, i) => {
+          const p = `messages[${i}]`;
+          if (!['error', 'warning', 'info'].includes(m.type))
+            add(c, 'error', 'Message.type', 'type MUST be error/warning/info.', p + '.type');
+          if (!isStr(m.content)) add(c, 'error', 'Message.content', 'content is required.', p + '.content');
+          if (m.type === 'error') {
+            if (!isStr(m.code)) add(c, 'error', 'Message(Error).code', 'code is required for errors.', p + '.code');
+            if (!['recoverable', 'requires_buyer_input', 'requires_buyer_review', 'unrecoverable'].includes(m.severity))
+              add(
+                c,
+                'error',
+                'Message(Error).severity',
+                'severity is required and MUST be a known value.',
+                p + '.severity'
+              );
+          }
+        });
+      }
+      function behaviourSearch(c, root) {
+        checkEnvelope(c, root);
+        if (!isArr(root.products))
+          add(c, 'error', 'search.products', 'products is required and MUST be an array.', 'products');
+        else root.products.forEach((p, i) => checkProduct(c, p, `products[${i}]`, { op: 'search' }));
+        checkMessages(c, root.messages);
+        if (root.pagination !== undefined) {
+          const pg = root.pagination;
+          if (!isObj(pg)) add(c, 'error', 'pagination', 'pagination MUST be an object.', 'pagination');
+          else {
+            if (typeof pg.has_next_page !== 'boolean')
+              add(
+                c,
+                'error',
+                'pagination.has_next_page',
+                'has_next_page is required (boolean).',
+                'pagination.has_next_page'
+              );
+            if (pg.has_next_page === true && !isStr(pg.cursor))
+              add(
+                c,
+                'error',
+                'pagination.cursor',
+                'cursor MUST be present when has_next_page is true.',
+                'pagination.cursor'
+              );
+          }
+        }
+      }
+      function behaviourLookup(c, root) {
+        checkEnvelope(c, root);
+        if (!isArr(root.products))
+          add(c, 'error', 'lookup.products', 'products is required and MUST be an array (may be empty).', 'products');
+        else
+          root.products.forEach((p, i) => checkProduct(c, p, `products[${i}]`, { op: 'lookup', requireInputs: true }));
+        checkMessages(c, root.messages);
+      }
+      function behaviourProduct(c, root) {
+        checkEnvelope(c, root);
+        if (root.ucp && root.ucp.status === 'error') {
+          if (!isArr(root.messages) || root.messages.length === 0)
+            add(c, 'error', 'get_product error', "With ucp.status='error' a messages[] array is required.", 'messages');
+          else checkMessages(c, root.messages);
+          return;
+        }
+        if (root.product === undefined)
+          add(c, 'error', 'get_product.product', 'product is required (single object).', 'product');
+        else if (isArr(root.product))
+          add(c, 'error', 'get_product.product', 'product MUST be a single object, not an array.', 'product');
+        else checkProduct(c, root.product, 'product', { op: 'product' });
+        checkMessages(c, root.messages);
+      }
+      function behaviourProfile(c, root) {
+        if (!isObj(root.ucp)) {
+          add(c, 'error', 'profile.ucp', "Discovery profile MUST expose a 'ucp' object.", 'ucp');
+          return;
+        }
+        if (!isStr(root.ucp.version))
+          add(c, 'warning', 'profile.version', 'ucp.version SHOULD be present.', 'ucp.version');
+        const caps = root.ucp.capabilities;
+        if (!isObj(caps)) {
+          add(c, 'error', 'profile.capabilities', 'ucp.capabilities is required.', 'ucp.capabilities');
+          return;
+        }
+        ['dev.ucp.shopping.catalog.search', 'dev.ucp.shopping.catalog.lookup'].forEach(k => {
+          if (!caps[k])
+            add(c, 'warning', 'profile.capabilities', `Capability '${k}' is not advertised.`, `ucp.capabilities.${k}`);
+        });
+      }
+      function validateResponse(op, status, json) {
+        const c = Ctx();
+        if (op !== 'profile') {
+          if (status === 400)
+            add(
+              c,
+              'info',
+              'REST error handling',
+              'HTTP 400 - request rejected (invalid_request or request_too_large). Business outcomes use HTTP 200.',
+              ''
+            );
+          else if (status >= 500)
+            add(
+              c,
+              'warning',
+              'REST error handling',
+              `HTTP ${status} - acceptable for protocol/backend transport errors; business outcomes MUST use HTTP 200.`,
+              ''
+            );
+          else if (status !== 200)
+            add(c, 'error', 'REST error handling', `Business outcomes MUST return HTTP 200; got HTTP ${status}.`, '');
+        }
+        if (!json) {
+          add(c, 'error', 'Transport', 'Response body is not valid JSON.', '');
+          return c.issues;
+        }
+        if (schemasLoaded && compiledSchemas[op]) c.issues.push(...schemaIssues(op, json));
+        if (op === 'search') behaviourSearch(c, json);
+        else if (op === 'lookup') behaviourLookup(c, json);
+        else if (op === 'product') behaviourProduct(c, json);
+        else if (op === 'profile') behaviourProfile(c, json);
+        return c.issues;
+      }
+
+      /* ============================ rendering ============================ */
+      function renderExchange(result, behindHtml) {
+        const { request, response } = result;
+        const body = request.body
+          ? `<pre class="j">${highlight(request.body)}</pre>`
+          : '<pre class="j" style="color:var(--muted)">(no body)</pre>';
+        const behind = behindHtml
+          ? `<div class="behind"><h5>Behind the scenes · UCP service → ICM</h5><div class="b">${behindHtml}</div></div>`
+          : '';
+        return `<div class="exchange">
+            <div class="xcard"><h5>Agent → Business (request)</h5>
+              <div class="req-line"><span class="method">${esc(request.method)}</span> ${esc(request.url)}</div>${body}</div>
+            <div class="xcard"><h5>Business → Agent (response)
+              <span class="status-pill ${statusClass(response.status)}">${response.status}</span></h5>
+              <pre class="j">${highlight(response.json)}</pre></div>
+          </div>${behind}`;
+      }
+      function renderValidation(issues) {
+        const errs = issues.filter(i => i.sev === 'error').length,
+          warns = issues.filter(i => i.sev === 'warning').length,
+          infos = issues.filter(i => i.sev === 'info').length;
+        const order = { error: 0, warning: 1, info: 2 };
+        const sorted = [...issues].sort((a, b) => order[a.sev] - order[b.sev]);
+        const head = `<div class="valhead">Validation
+            <span class="vpill err">${errs} err</span><span class="vpill warn">${warns} warn</span><span class="vpill">${infos} info</span>
+            <span class="hint" style="margin-left:auto">${schemasLoaded ? 'official schema + behaviour rules' : 'behaviour rules'}</span></div>`;
+        const list = sorted.length
+          ? sorted
+              .map(
+                i =>
+                  `<div class="issue ${i.sev}"><span class="ib ${i.sev}">${i.sev}</span><div><div class="msg">${esc(i.msg)}</div><div class="meta"><span class="rule">${esc(i.rule)}</span>${i.path ? ' · ' + esc(i.path) : ''}</div></div></div>`
+              )
+              .join('')
+          : `<div class="issue pass"><span class="ib pass">pass</span><div class="msg">All checked rules satisfied.</div></div>`;
+        return `<div class="validation">${head}${list}</div>`;
+      }
+      // Build the collapsible UCP + validation panel for one call.
+      function ucpPanel(op, result, behindHtml) {
+        const issues = validateResponse(op, result.response.status, result.response.json);
+        const errs = issues.filter(i => i.sev === 'error').length,
+          warns = issues.filter(i => i.sev === 'warning').length;
+        const cls = errs ? 'fail' : warns ? 'warn' : 'pass';
+        const label = errs ? `✗ ${errs} issue(s)` : warns ? `⚠ ${warns} warning(s)` : '✓ conformant';
+        const open = $('#devmode').checked ? 'open' : '';
+        const { method, url } = result.request;
+        const path = url.replace(ORIGIN, '');
+        return `<details class="ucp" ${open}>
+            <summary><span class="method">${esc(method)}</span> <span class="path">${esc(path)}</span>
+              <span class="verdict ${cls}">${label}</span></summary>
+            <div class="ucp-body">${renderExchange(result, behindHtml)}${renderValidation(issues)}</div>
+          </details>`;
+      }
+
+      function addUser(text) {
+        const el = document.createElement('div');
+        el.className = 'msg user';
+        el.innerHTML = `<div class="who">🧑</div><div class="bubble"><div class="lead">${esc(text)}</div></div>`;
+        chat.appendChild(el);
+        scroll();
+      }
+      function addTyping() {
+        const el = document.createElement('div');
+        el.className = 'msg agent';
+        el.innerHTML = `<div class="who">🤖</div><div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+        chat.appendChild(el);
+        scroll();
+        return el;
+      }
+      // Replace a typing bubble with real agent content.
+      function fillAgent(el, innerHtml) {
+        el.innerHTML = `<div class="who">🤖</div><div class="bubble">${innerHtml}</div>`;
+        scroll();
+        return el;
+      }
+
+      /* ============================ product cards ============================ */
+      const state = { discovered: false, cards: [], selected: [], nextCursor: null, query: null, searchOffset: 0 };
+      const SEARCH_LIMIT = 6;
+
+      function cardFromProduct(p) {
+        const v = (p.variants && p.variants[0]) || {};
+        return {
+          productId: p.id,
+          variantId: v.id,
+          title: p.title,
+          range: p.price_range,
+          currency: v.price?.currency || p.price_range?.min?.currency,
+          inStock: v.availability?.available,
+          image: p.media?.[0]?.url || v.media?.[0]?.url || '',
+        };
+      }
+      function cardHtml(it, idx) {
+        return `<div class="item" data-idx="${idx}">
+            <img src="${esc(it.image)}" alt="" onerror="this.style.visibility='hidden'"/>
+            <div class="title">${esc(it.title)}</div>
+            <div class="price">${moneyRange(it.range, it.currency)}</div>
+            <div class="stock">${it.inStock ? '● in stock' : '○ out of stock'} · ${esc(it.productId)}</div>
+            <div class="details" data-detail="${idx}">Details ▸</div>
+          </div>`;
+      }
+      function wireCards(container) {
+        container.querySelectorAll('.item').forEach(el => {
+          el.addEventListener('click', e => {
+            if (e.target.closest('[data-detail]')) return;
+            const card = state.cards[Number(el.dataset.idx)];
+            const i = state.selected.indexOf(card);
+            if (i >= 0) {
+              state.selected.splice(i, 1);
+              el.classList.remove('selected');
+            } else {
+              state.selected.push(card);
+              el.classList.add('selected');
+            }
+            renderChips();
+          });
+        });
+        container.querySelectorAll('[data-detail]').forEach(el => {
+          el.addEventListener('click', () => {
+            const card = state.cards[Number(el.dataset.detail)];
+            runProduct(card.productId, []);
+          });
+        });
+      }
+
+      /* ============================ agent actions ============================ */
+      async function ensureDiscovery() {
+        if (state.discovered) return;
+        state.discovered = true;
+        const el = addTyping();
+        const r = await ucpCall('GET', '/.well-known/ucp');
+        const caps = Object.keys(r.response.json?.ucp?.capabilities || {});
+        const endpoint = r.response.json?.ucp?.services?.['dev.ucp.shopping']?.[0]?.endpoint;
+        if (endpoint) $('#badge-endpoint').textContent = endpoint;
+        const behind =
+          'No ICM call. ' +
+          icmLink(ORIGIN + '/.well-known/ucp', 'GET …/.well-known/ucp') +
+          ' is static metadata the service returns directly.';
+        const lead = `First I <b>discover</b> what this store supports. It advertises ${caps.map(cap => `<code>${esc(cap)}</code>`).join(', ') || 'no catalog capabilities'} - no auth required.`;
+        fillAgent(el, `<div class="lead">${lead}</div>${ucpPanel('profile', r, behind)}`);
+      }
+
+      async function runSearch(query, cursor, appendTo) {
+        state.query = query;
+        if (!cursor) state.searchOffset = 0; // a fresh search restarts the result window
+        await ensureDiscovery();
+        const body = { query, pagination: { limit: SEARCH_LIMIT, ...(cursor ? { cursor } : {}) } };
+        const el = appendTo || addTyping();
+        const r = await ucpCall('POST', BASE + '/catalog/search', body);
+        const products = r.response.json?.products || [];
+        const pg = r.response.json?.pagination || {};
+        const startIdx = state.cards.length;
+        const newCards = products.map(cardFromProduct);
+        state.cards.push(...newCards);
+        state.nextCursor = pg.has_next_page ? pg.cursor : null;
+        const cards = newCards.map((it, i) => cardHtml(it, startIdx + i)).join('');
+        const icm = deriveIcm(products);
+        const searchUrl = icmRestUrl(icm, `products?searchTerm=${encodeURIComponent(query)}&amount=${SEARCH_LIMIT}`);
+        const behind = `The service calls ICM ${icmLink(searchUrl, 'GET …/products?searchTerm=…')} for result stubs, then fetches each hit and maps it to a UCP product (prices → minor units, variation masters resolved to a representative variant).`;
+        const startNum = state.searchOffset + 1;
+        const endNum = state.searchOffset + products.length;
+        state.searchOffset += products.length;
+        const total = pg.total_count;
+        const range = total != null ? `${startNum}–${endNum} of ${total}` : `${startNum}–${endNum}`;
+        const lead = products.length
+          ? cursor
+            ? `Here are results <b>${range}</b> for <b>${esc(query)}</b> — select several to look up together, or click one for detail.`
+            : `I searched the live catalog for <b>${esc(query)}</b> — showing results <b>${range}</b>. Click one for detail, or select several to look up together.`
+          : `I searched for <b>${esc(query)}</b> but the catalog returned no matches.`;
+        const wrap = fillAgent(
+          el,
+          `<div class="lead">${lead}</div><div class="items">${cards}</div>${ucpPanel('search', r, behind)}`
+        );
+        wireCards(wrap);
+        renderChips();
+      }
+
+      async function runLookup(ids) {
+        await ensureDiscovery();
+        const el = addTyping();
+        const r = await ucpCall('POST', BASE + '/catalog/lookup', { ids });
+        const products = r.response.json?.products || [];
+        const icm = deriveIcm(products);
+        const links = ids
+          .slice(0, 3)
+          .map(id =>
+            icmLink(icmRestUrl(icm, `products/${encodeURIComponent(id)}?extended=true`), `GET …/products/${esc(id)}`)
+          )
+          .join('<br>');
+        const behind = `The service resolves each requested id via ICM${ids.length > 3 ? ' (first 3 shown)' : ''}:<br>${links} and returns the correlated variant per id (each carries an <code>inputs</code> entry). Unknown ids come back as <code>messages</code> (HTTP 200).`;
+        const cards = products.map((p, i) => lookupCardHtml(p, i)).join('');
+        const lead = `I looked up <b>${ids.length}</b> identifier(s) in a single batch call and resolved ${products.length} product(s).`;
+        const wrap = fillAgent(el, `<div class="lead">${lead}</div>${cards}${ucpPanel('lookup', r, behind)}`);
+        wireLookupCards(wrap);
+      }
+
+      /* Collapse the ICM S/M/L/ZOOM variants of the same view into one best-resolution image per view. */
+      function distinctImages(media) {
+        const rankOf = url =>
+          ({ ZOOM: 4, L: 3, M: 2, S: 1 })[(url.match(/\/(ZOOM|L|M|S)\//i) || [])[1]?.toUpperCase()] || 0;
+        const byView = new Map();
+        for (const m of media || []) {
+          if (!m.url) continue;
+          const view = (m.url.match(/_([a-z0-9]+)\.[a-z]+$/i) || [, m.url])[1];
+          const rank = rankOf(m.url);
+          const cur = byView.get(view);
+          if (!cur || rank > cur.rank) byView.set(view, { url: m.url, alt: m.alt_text, rank });
+        }
+        return [...byView.values()];
+      }
+      // Rich product tile for a looked-up product: image slider + title, price, description, options.
+      function lookupCardHtml(p, idx) {
+        const v = (p.variants && p.variants[0]) || {};
+        const imgs = distinctImages(p.media);
+        const imgHtml = imgs
+          .map(
+            (im, i) =>
+              `<img class="${i === 0 ? 'active' : ''}" src="${esc(im.url)}" alt="${esc(im.alt || p.title || '')}" onerror="this.style.visibility='hidden'">`
+          )
+          .join('');
+        const nav =
+          imgs.length > 1
+            ? `<button class="lk-nav prev" data-nav="prev">‹</button><button class="lk-nav next" data-nav="next">›</button><div class="lk-count">1/${imgs.length}</div>`
+            : '';
+        const desc = v.description?.plain || p.description?.plain || '';
+        const opts = (v.options || [])
+          .map(o => `${esc(o.name)}: <b style="color:var(--ink)">${esc(o.label)}</b>`)
+          .join(' · ');
+        // A master resolves to a variant SKU distinct from its own id, so it has options to configure.
+        const configurable = v.sku && v.sku !== p.id;
+        return `<div class="lk">
+            <div class="lk-media" data-slider="${idx}">${imgHtml}${nav}</div>
+            <div class="lk-info">
+              <div class="title">${esc(p.title || '')}</div>
+              <div class="price">${moneyRange(p.price_range, v.price?.currency)}</div>
+              <div class="stock">${v.availability?.available ? '● in stock' : '○ out of stock'} · ${esc(p.id)}${p.variants?.length > 1 ? ` · ${p.variants.length} variants` : ''}</div>
+              ${opts ? `<div class="opts">${opts}</div>` : ''}
+              ${desc ? `<div class="desc">${esc(desc)}</div>` : ''}
+              ${configurable ? `<div class="details" data-detail-id="${esc(p.id)}">Configure options ▸</div>` : ''}
+            </div>
+          </div>`;
+      }
+      // Wire the image sliders and (for masters) the "Configure options" links on looked-up product tiles.
+      function wireLookupCards(container) {
+        container.querySelectorAll('.lk-media').forEach(media => {
+          const imgs = [...media.querySelectorAll('img')];
+          if (imgs.length < 2) return;
+          const count = media.querySelector('.lk-count');
+          let idx = 0;
+          const show = i => {
+            imgs.forEach((im, k) => im.classList.toggle('active', k === i));
+            if (count) count.textContent = `${i + 1}/${imgs.length}`;
+          };
+          media.querySelector('[data-nav="prev"]')?.addEventListener('click', () => {
+            idx = (idx - 1 + imgs.length) % imgs.length;
+            show(idx);
+          });
+          media.querySelector('[data-nav="next"]')?.addEventListener('click', () => {
+            idx = (idx + 1) % imgs.length;
+            show(idx);
+          });
+        });
+        container.querySelectorAll('[data-detail-id]').forEach(node =>
+          node.addEventListener('click', () => {
+            addUser(`Configure ${node.dataset.detailId}`);
+            runProduct(node.dataset.detailId, []);
+          })
+        );
+      }
+
+      async function runProduct(id, selected) {
+        await ensureDiscovery();
+        const el = addTyping();
+        const body = { id, ...(selected && selected.length ? { selected } : {}) };
+        const r = await ucpCall('POST', BASE + '/catalog/product', body);
+        const p = r.response.json?.product;
+        const icm = deriveIcm(p ? [p] : []);
+        const behind = `The service resolves the product via ICM ${icmLink(icmRestUrl(icm, `products/${encodeURIComponent(id)}?allImages=true&extended=true`), 'GET …/products/{id}')}; for a variation master it also lists variations and maps each to a UCP variant with option availability relative to the selection.`;
+        let detailHtml = '';
+        if (p) {
+          const featured = (p.variants && p.variants[0]) || {};
+          const sel = new Map((p.selected || []).map(s => [s.name, s.label]));
+          const opts = (p.options || [])
+            .map(opt => {
+              const vals = opt.values
+                .map(val => {
+                  const isSel = sel.get(opt.name) === val.label;
+                  const cls = `optval${isSel ? ' sel' : ''}${val.available === false ? ' unavail' : ''}`;
+                  return `<span class="${cls}" data-opt="${esc(opt.name)}" data-val="${esc(val.label)}">${esc(val.label)}</span>`;
+                })
+                .join('');
+              return `<div class="optrow"><div class="name">${esc(opt.name)}</div><div class="optvals">${vals}</div></div>`;
+            })
+            .join('');
+          const imgs = distinctImages(p.media);
+          const imgHtml = imgs
+            .map(
+              (im, i) =>
+                `<img class="${i === 0 ? 'active' : ''}" src="${esc(im.url)}" alt="${esc(im.alt || p.title || '')}" onerror="this.style.visibility='hidden'">`
+            )
+            .join('');
+          const nav =
+            imgs.length > 1
+              ? `<button class="lk-nav prev" data-nav="prev">‹</button><button class="lk-nav next" data-nav="next">›</button><div class="lk-count">1/${imgs.length}</div>`
+              : '';
+          const descText = p.description?.plain || featured.description?.plain || '';
+          const featuredLine = opts
+            ? `<div class="featured">Featured: <b>${esc(featured.title || featured.sku || '')}</b> — ${money(featured.price?.amount, featured.price?.currency)} · ${featured.availability?.available ? 'in stock' : 'out of stock'}</div>`
+            : '';
+          detailHtml = `<div class="detail"><div class="lk lk-plain">
+              <div class="lk-media" data-slider="0">${imgHtml}${nav}</div>
+              <div class="lk-info">
+                <h4>${esc(p.title)} <span class="range">${moneyRange(p.price_range, featured.price?.currency)}</span></h4>
+                <div class="stock">${featured.availability?.available ? '● in stock' : '○ out of stock'} · ${esc(p.id)}</div>
+                ${descText ? `<div class="desc">${esc(descText)}</div>` : ''}
+                ${opts}
+                ${featuredLine}
+              </div></div></div>`;
+        }
+        const hasOptions = !!(p && p.options && p.options.length);
+        const lead =
+          selected && selected.length
+            ? `Narrowing to your selection…`
+            : hasOptions
+              ? `Here's the full detail for <b>${esc(id)}</b>. Pick option values to narrow the configuration.`
+              : `Here's the full detail for <b>${esc(id)}</b>.`;
+        const wrap = fillAgent(el, `<div class="lead">${lead}</div>${detailHtml}${ucpPanel('product', r, behind)}`);
+        wireLookupCards(wrap); // image slider (no detail links present here)
+        // Wire interactive option pickers → re-call product with an updated selection.
+        wrap.querySelectorAll('.optval').forEach(elv => {
+          elv.addEventListener('click', () => {
+            const cur = new Map(((p && p.selected) || []).map(s => [s.name, s.label]));
+            cur.set(elv.dataset.opt, elv.dataset.val);
+            const newSel = [...cur].map(([name, label]) => ({ name, label }));
+            addUser(`Set ${elv.dataset.opt} = ${elv.dataset.val}`);
+            runProduct(id, newSel);
+          });
+        });
+      }
+
+      /* ============================ composer ============================ */
+      function renderChips() {
+        const chips = [];
+        chips.push(`<button class="chip" data-act="search" data-q="Surface">🔍 Find a Microsoft Surface</button>`);
+        chips.push(`<button class="chip" data-act="search" data-q="camera">🔍 Search cameras</button>`);
+        chips.push(
+          `<button class="chip" data-act="lookup" data-ids="201807195,201807201">🔎 Look up two SKUs</button>`
+        );
+        if (state.nextCursor) chips.push(`<button class="chip" data-act="more">➕ Load more</button>`);
+        if (state.selected.length)
+          chips.push(
+            `<button class="chip primary" data-act="lookupsel">🛒 Look up selected (${state.selected.length})</button>`
+          );
+        $('#chips').innerHTML = chips.join('');
+        $('#chips')
+          .querySelectorAll('.chip')
+          .forEach(c =>
+            c.addEventListener('click', () => {
+              const act = c.dataset.act;
+              if (act === 'search') {
+                addUser(`Find "${c.dataset.q}"`);
+                runSearch(c.dataset.q);
+              } else if (act === 'lookup') {
+                const ids = c.dataset.ids.split(',');
+                addUser(`Look up ${ids.join(', ')}`);
+                runLookup(ids);
+              } else if (act === 'more') {
+                addUser('Show me more results');
+                runSearch(state.query, state.nextCursor);
+              } else if (act === 'lookupsel') {
+                const ids = state.selected.map(s => s.productId);
+                addUser(`Look up my ${ids.length} selected products`);
+                // Consume the selection: unmark the tiles and drop the "Look up selected" button.
+                state.selected = [];
+                document.querySelectorAll('.item.selected').forEach(el => el.classList.remove('selected'));
+                renderChips();
+                runLookup(ids);
+              }
+            })
+          );
+      }
+
+      function submitPrompt() {
+        const raw = $('#prompt').value.trim();
+        if (!raw) return;
+        $('#prompt').value = '';
+        const ids = raw
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+        const looksLikeSkus = ids.length > 1 && ids.every(t => /^[a-z0-9-]+$/i.test(t) && /\d/.test(t));
+        addUser(raw);
+        if (looksLikeSkus) runLookup(ids);
+        else {
+          state.query = raw;
+          runSearch(raw);
+        }
+      }
+      $('#send').addEventListener('click', submitPrompt);
+      $('#prompt').addEventListener('keydown', e => {
+        if (e.key === 'Enter') submitPrompt();
+      });
+
+      $('#devmode').addEventListener('change', e => {
+        document.body.classList.toggle('dev', e.target.checked);
+        document.querySelectorAll('details.ucp').forEach(d => (d.open = e.target.checked));
+      });
+      $('#restart').addEventListener('click', () => {
+        state.discovered = false;
+        state.cards = [];
+        state.selected = [];
+        state.nextCursor = null;
+        state.query = null;
+        state.searchOffset = 0;
+        chat.innerHTML = '';
+        renderChips();
+        greet();
+      });
+
+      /* ============================ init ============================ */
+      async function loadBadges() {
+        $('#badge-endpoint').textContent = ORIGIN + BASE;
+        try {
+          const h = await (await fetch(ORIGIN + '/ucp/health')).json();
+          $('#badge-icm').innerHTML = 'ICM: <b>' + esc(h.icm) + '</b>';
+          $('#badge-channel').innerHTML = 'Channel: <b>' + esc(h.channel) + '</b>';
+        } catch {
+          $('#badge-icm').style.display = 'none';
+          $('#badge-channel').style.display = 'none';
+        }
+      }
+      function greet() {
+        const el = document.createElement('div');
+        el.className = 'msg agent';
+        el.innerHTML = `<div class="who">🤖</div><div class="bubble"><div class="lead">Hi! I'm a shopping agent connected to this store over UCP. Ask me to find something, or try a suggestion below. I'll show you every request I make and whether it conforms to the spec.</div></div>`;
+        chat.appendChild(el);
+      }
+
+      renderChips();
+      greet();
+      loadBadges();
+      loadSchemas();
+    </script>
+  </body>
+</html>

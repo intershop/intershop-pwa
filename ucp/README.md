@@ -33,7 +33,7 @@ Excluded (intentionally, non-transactional MVP):
 | `POST` | `/ucp/v1/catalog/search`  | UCP-conformant catalog Search (free-text).                                      |
 | `POST` | `/ucp/v1/catalog/lookup`  | UCP-conformant catalog Lookup (batch by identifier; correlated variant per id). |
 | `POST` | `/ucp/v1/catalog/product` | Full product detail (all variants, options, `selected`).                        |
-| `GET`  | `/ucp/demo`               | Interactive, same-origin showcase page.                                         |
+| `GET`  | `/ucp/playground`         | Interactive agent playground (chat + inline conformance).                       |
 | `GET`  | `/ucp/validator`          | Interactive spec/schema conformance validator.                                  |
 
 Product prices are returned as integer minor units (for example cents) together with an
@@ -181,22 +181,30 @@ Invoke-RestMethod -Method Post http://localhost:4200/ucp/v1/catalog/product `
   -ContentType 'application/json' -Body '{ "id": "201807231", "selected": [{ "name": "Hard drive size", "label": "1TB" }, { "name": "Display Size", "label": "17\"" }], "preferences": ["Hard drive size", "Display Size"] }' | ConvertTo-Json -Depth 10
 ```
 
-## Demo
+## Playground
 
-The service ships an interactive, single-page **showcase** at `/ucp/demo` that walks through
-the agent flow — Discovery → catalog Search (with pagination) → batch Lookup — against the
-live service, showing the exact UCP request/response for each step and the ICM calls behind
-the scenes. It talks to its own origin, so it works wherever the service is reachable:
+The service ships an interactive **agent playground** at `/ucp/playground`
+that simulates a chat between a shopping agent and this store over UCP. Every agent turn is a
+real UCP call, and each one is expandable to reveal the exact request/response, the ICM work
+behind the scenes, **and** a live conformance verdict. It talks to its own origin, so it works
+wherever the service is reachable:
 
-- Standalone container: <http://localhost:4000/ucp/demo>
-- Behind the PWA nginx: <http://localhost:4200/ucp/demo> (the `/ucp/` route is already proxied)
+- Standalone container: <http://localhost:4000/ucp/playground>
+- Behind the PWA nginx: <http://localhost:4200/ucp/playground> (the `/ucp/` route is already proxied)
 
-In the search step you can type a free-text query, or enter multiple comma-separated SKUs
-(e.g. `201807195, 201807201`) to resolve them directly via a batch Lookup.
+What it covers:
 
-A companion **conformance validator** at `/ucp/validator` calls each endpoint and checks the
-response against the official ucp.dev JSON Schemas (draft 2020-12, `$ref` graph resolved via
-ajv) plus the spec's MUST/SHOULD behaviour rules.
+- **Discovery** runs automatically on the first message (`GET /.well-known/ucp`).
+- **Search** — type a free-text query, or paste comma-separated SKUs to resolve them via a
+  batch **Lookup** instead.
+- **Lookup** — resolved products render as rich tiles; a master also shows a
+  **Configure options ▸** action (simple products, which have nothing to configure, do not).
+- **Detail** (`POST /catalog/product`) — reached two ways: the **Details ▸** link on any search
+  result (every product kind) and the **Configure options ▸** action on a master's lookup tile.
+  It opens the full product, and for a master adds clickable option values that re-issue the
+  call with `selected` to narrow the configuration live.
+- **Conformance** — each turn shows a ✓/⚠/✗ badge; expand it (or toggle **Developer mode**)
+  to see the request/response plus the same schema + behaviour validation as the validator.
 
 No configuration or separate server is required; open the URL in a browser.
 

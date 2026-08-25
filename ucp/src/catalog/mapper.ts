@@ -1,4 +1,4 @@
-import { IcmMoney, IcmProductData, IcmVariationAttributeValue } from '../icm/icm.types';
+import { IcmImage, IcmMoney, IcmProductData, IcmVariationAttributeValue } from '../icm/icm.types';
 
 /**
  * Maps ICM products to the UCP Catalog `Product`/`Variant` model, per
@@ -126,11 +126,26 @@ function absoluteImageUrl(url: string, icmBaseUrl: string): string {
   return url.startsWith('http') ? url : `${icmBaseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
+// Prefer a reasonably sized representative per view; larger comes later so a bigger tier wins ties.
+const IMAGE_SIZE_RANK: Record<string, number> = { L: 4, ZOOM: 3, M: 2, S: 1 };
+
 function pickMedia(product: IcmProductData, context: ToUcpProductContext): UcpMedia[] {
-  const images = product.images ?? [];
-  const primary = images.filter(image => image.primaryImage && image.effectiveUrl);
-  const chosen = primary.length ? primary : images.filter(image => image.effectiveUrl);
-  return chosen.map(image => ({
+  const images = (product.images ?? []).filter(image => image.effectiveUrl);
+  // Collapse the per-size variants (S/M/L/ZOOM) of each view down to a single best image.
+  const bestPerView = new Map<string, { image: IcmImage; rank: number }>();
+  for (const image of images) {
+    const view = image.viewID ?? (image.effectiveUrl as string);
+    const rank = IMAGE_SIZE_RANK[(image.typeID ?? '').toUpperCase()] ?? 0;
+    const current = bestPerView.get(view);
+    if (!current || rank > current.rank) {
+      bestPerView.set(view, { image, rank });
+    }
+  }
+  // Featured (primary) views first so media[0] is the main product shot.
+  const ordered = [...bestPerView.values()].sort(
+    (a, b) => Number(b.image.primaryImage ?? false) - Number(a.image.primaryImage ?? false)
+  );
+  return ordered.map(({ image }) => ({
     type: 'image' as const,
     url: absoluteImageUrl(image.effectiveUrl as string, context.icmBaseUrl),
     alt_text: product.productName,

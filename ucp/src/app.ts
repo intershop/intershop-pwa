@@ -12,8 +12,8 @@ function requestOrigin(req: Request): string {
   return `${req.protocol}://${req.get('host')}`;
 }
 
-/** Static demo and validator page, shipped alongside the compiled sources under `public/`. */
-const DEMO_PAGE = path.join(__dirname, '..', 'public', 'demo.html');
+/** Static playground and validator pages, shipped alongside the compiled sources under `public/`. */
+const PLAYGROUND_PAGE = path.join(__dirname, '..', 'public', 'playground.html');
 const VALIDATOR_PAGE = path.join(__dirname, '..', 'public', 'validator.html');
 
 /**
@@ -25,7 +25,7 @@ const VALIDATOR_PAGE = path.join(__dirname, '..', 'public', 'validator.html');
  *  - `POST /ucp/v1/catalog/search`  — UCP-conformant catalog Search
  *  - `POST /ucp/v1/catalog/lookup`  — UCP-conformant catalog Lookup (batch)
  *  - `POST /ucp/v1/catalog/product` — single-product detail lookup
- *  - `GET  /ucp/demo`               — interactive, same-origin showcase page
+ *  - `GET  /ucp/playground`         — interactive, same-origin agent playground
  *
  * Scope: non-transactional catalog discovery only.
  */
@@ -36,7 +36,8 @@ export function createApp(config: UcpConfig): express.Express {
 
   const profileOrigin = (req: Request): string => config.publicBaseUrl ?? requestOrigin(req);
 
-  app.get('/health', (_req, res) => {
+  // Health is also exposed under `/ucp/` so the nginx-proxied UI can read ICM/channel badges.
+  app.get(['/health', '/ucp/health'], (_req, res) => {
     res.json({ status: 'ok', icm: config.icmBaseUrl, channel: config.icmChannel });
   });
 
@@ -52,9 +53,9 @@ export function createApp(config: UcpConfig): express.Express {
     res.json(buildUcpOpenApi(profileOrigin(req)));
   });
 
-  // Interactive showcase; served under `/ucp/` so the PWA nginx proxies it too.
-  app.get('/ucp/demo', (_req, res) => {
-    res.sendFile(DEMO_PAGE);
+  // Interactive agent playground (chat + inline conformance); served under `/ucp/` so nginx proxies it.
+  app.get('/ucp/playground', (_req, res) => {
+    res.sendFile(PLAYGROUND_PAGE);
   });
 
   // Interactive showcase validator; served under `/ucp/` so the PWA nginx proxies it too.
