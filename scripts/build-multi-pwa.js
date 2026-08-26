@@ -6,7 +6,8 @@ const activeThemes = (process.env.npm_config_active_themes || packageJson.config
   .split(',')
   .map(theme => theme.trim())
   .filter(Boolean);
-const buildArguments = process.argv.slice(2);
+const clientOnly = process.argv.includes('client');
+const buildArguments = process.argv.slice(2).filter(argument => argument !== 'client');
 
 if (!activeThemes.length) {
   console.error('No active themes configured.');
@@ -16,7 +17,7 @@ if (!activeThemes.length) {
 const ports = {};
 
 activeThemes.forEach((theme, index) => {
-  const buildScript = `build:${theme}`;
+  const buildScript = clientOnly ? `build:client:${theme}` : `build:${theme}`;
   if (!packageJson.scripts[buildScript]) {
     console.error(`Missing npm script "${buildScript}".`);
     process.exit(1);
@@ -31,6 +32,10 @@ activeThemes.forEach((theme, index) => {
 
   ports[theme] = 4000 + index;
 });
+
+if (clientOnly) {
+  process.exit(0);
+}
 
 mkdirSync('dist', { recursive: true });
 writeFileSync('dist/ecosystem-ports.json', JSON.stringify(ports, undefined, 2));
