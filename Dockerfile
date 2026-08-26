@@ -10,6 +10,7 @@ RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
 COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs .postcssrc.json /workspace/
+COPY builders /workspace/builders
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY templates/esbuild/define-build-constants.ts /workspace/templates/esbuild/define-build-constants.ts

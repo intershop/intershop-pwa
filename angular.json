@@ -155,9 +155,18 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "intershop-builders:extract-i18n",
           "options": {
             "buildTarget": "intershop-pwa:build"
+          },
+          "defaultConfiguration": "b2b",
+          "configurations": {
+            "b2b": {
+              "buildTarget": "intershop-pwa:build:b2b"
+            },
+            "b2c": {
+              "buildTarget": "intershop-pwa:build:b2c"
+            }
           }
         },
         "lint": {
