@@ -30,7 +30,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/dist ./dist
 
-# Static assets (the interactive demo page) served at /ucp/demo.
+# Static assets (the interactive playground page) served at /ucp/playground.
 COPY public ./public
 
 EXPOSE 4000

@@ -1,6 +1,13 @@
 import express, { Request } from 'express';
 
-import { CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT, CATALOG_MAX_LOOKUP_IDS, UCP_VERSION, UcpConfig } from '../config';
+import {
+  CATALOG_DEFAULT_LIMIT,
+  CATALOG_LOOKUP_CONCURRENCY,
+  CATALOG_MAX_LIMIT,
+  CATALOG_MAX_LOOKUP_IDS,
+  UCP_VERSION,
+  UcpConfig,
+} from '../config';
 import { IcmCatalogClient } from '../icm/icm-client';
 import { IcmError } from '../icm/icm.error';
 
@@ -43,6 +50,20 @@ function skuFromUri(uri: string | undefined): string | undefined {
   }
   const match = /\/products\/([^/;?]+)/.exec(uri);
   return match ? decodeURIComponent(match[1]) : undefined;
+}
+
+/** Map over items with a bounded number of concurrent workers, preserving input order. */
+async function mapWithConcurrency<T, R>(items: T[], limit: number, worker: (item: T) => Promise<R>): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let next = 0;
+  const run = async (): Promise<void> => {
+    while (next < items.length) {
+      const index = next++;
+      results[index] = await worker(items[index]);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, run));
+  return results;
 }
 
 export function createCatalogRouter(config: UcpConfig): express.Router {
@@ -209,19 +230,19 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const context = baseContext(req, res);
 
     try {
-      const products = [];
-      const notFound: string[] = [];
-      for (const id of ids) {
+      // Resolve ids in parallel with a bounded pool; a hard failure aborts the batch.
+      const settled = await mapWithConcurrency(ids, CATALOG_LOOKUP_CONCURRENCY, async id => {
         try {
-          products.push(await resolveLookupProduct(id, { ...context, input: { id, match: 'exact' } }));
+          return { product: await resolveLookupProduct(id, { ...context, input: { id, match: 'exact' } }) } as const;
         } catch (error) {
           if (error instanceof IcmError && error.status === 404) {
-            notFound.push(id);
-          } else {
-            throw error;
+            return { notFoundId: id } as const;
           }
+          throw error;
         }
-      }
+      });
+      const products = settled.flatMap(entry => ('product' in entry ? [entry.product] : []));
+      const notFound = settled.flatMap(entry => ('notFoundId' in entry ? [entry.notFoundId] : []));
 
       res.json({
         ucp: catalogUcp('lookup'),

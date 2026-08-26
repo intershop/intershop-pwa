@@ -242,7 +242,7 @@ function computePricing(product: IcmProductData, currency: string): UcpPricing {
   const hasStrikethrough = !!(
     list.representative &&
     sale.representative &&
-    list.representative.amount !== sale.representative.amount
+    list.representative.amount > sale.representative.amount
   );
   return {
     price,

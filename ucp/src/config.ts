@@ -17,6 +17,9 @@ export const CATALOG_MAX_LIMIT = 50;
 /** Maximum number of identifiers accepted in a single catalog lookup batch. */
 export const CATALOG_MAX_LOOKUP_IDS = 100;
 
+/** Number of lookup ids resolved against ICM in parallel (bounds fan-out latency vs. load). */
+export const CATALOG_LOOKUP_CONCURRENCY = 6;
+
 /** Resolved, plain configuration the service depends on. */
 export interface UcpConfig {
   /** Port the service listens on. */
