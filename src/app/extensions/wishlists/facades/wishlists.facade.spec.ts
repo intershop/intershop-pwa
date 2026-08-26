@@ -16,7 +16,7 @@ describe('Wishlists Facade', () => {
     title: 'loaded wishlist',
     preferred: false,
     itemsCount: 1,
-    items: [{ sku: 'sku1', id: 'item1', creationDate: 1, desiredQuantity: { value: 1 } }],
+    items: [{ sku: 'sku1', id: 'item1', creationDate: 1 }],
   };
   const headerWishlist: Wishlist = { id: 'header', title: 'header only wishlist', preferred: false, itemsCount: 2 };
 

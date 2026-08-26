@@ -106,12 +106,12 @@ describe('Wishlist Widget Component', () => {
 
       it('should emit the SKUs of the preferred wishlist only', done => {
         wishlists$.next([
-          { ...wl1, items: [{ sku: 'sku-other', id: 'i0', creationDate: 1, desiredQuantity: { value: 1 } }] },
+          { ...wl1, items: [{ sku: 'sku-other', id: 'i0', creationDate: 1 }] },
           {
             ...wl2,
             preferred: true,
             itemsCount: 1,
-            items: [{ sku: 'sku-preferred', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }],
+            items: [{ sku: 'sku-preferred', id: 'i1', creationDate: 1 }],
           },
         ]);
         fixture.detectChanges();
@@ -140,12 +140,12 @@ describe('Wishlist Widget Component', () => {
           {
             ...wl1,
             preferred: false,
-            items: [{ sku: 'sku1', id: 'i1', creationDate: 1, desiredQuantity: { value: 1 } }],
+            items: [{ sku: 'sku1', id: 'i1', creationDate: 1 }],
           },
           {
             ...wl3,
             preferred: false,
-            items: [{ sku: 'sku3', id: 'i2', creationDate: 2, desiredQuantity: { value: 1 } }],
+            items: [{ sku: 'sku3', id: 'i2', creationDate: 2 }],
           },
         ]);
         fixture.detectChanges();
