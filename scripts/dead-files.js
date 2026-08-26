@@ -1,19 +1,17 @@
-const _ = require('lodash');
 const { globSync } = require('glob');
-const fs = require('fs');
 
-const activeFiles = _.flatten(
-  globSync('dist/**/active-files.json').map(activeFilesPath => {
-    console.log('loading', activeFilesPath);
-    return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
-  })
-).filter((v, i, a) => a.indexOf(v) === i);
+const { loadSourceMapFiles } = require('./active-localization-files');
 
+const packageJson = require('../package.json');
+const activeThemes = (process.env.npm_config_active_themes || packageJson.config['active-themes'])
+  .split(',')
+  .map(theme => theme.trim())
+  .filter(Boolean);
+
+const activeFiles = new Set(activeThemes.flatMap(theme => loadSourceMapFiles(`dist/${theme}`, theme)));
 const filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html,scss}');
 
 filesToBeSearched
-  .filter(file => !activeFiles.includes(file))
+  .filter(file => !activeFiles.has(file.replace(/\\/g, '/')))
   .filter(file => !file.includes('/dev/') && !file.endsWith('.model.ts') && !file.endsWith('.interface.ts'))
-  .forEach(file => {
-    console.log(file);
-  });
+  .forEach(file => console.log(file));
