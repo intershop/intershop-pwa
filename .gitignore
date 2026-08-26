@@ -46,3 +46,6 @@ Thumbs.db
 
 # Angular build output
 /dist/
+
+# Bundle analyzer output
+/.sonda/
