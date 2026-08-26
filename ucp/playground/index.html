@@ -731,8 +731,16 @@
         color: var(--muted);
         font-size: 11.5px;
       }
-      /* developer mode: force-open every UCP panel */
+      /* Conformance UI (header badge + per-call panels) is a developer-mode feature, hidden by default. */
+      #badge-schema,
+      details.ucp {
+        display: none;
+      }
+      body.dev #badge-schema {
+        display: inline;
+      }
       body.dev details.ucp {
+        display: block;
         border-color: var(--accent);
       }
     </style>
@@ -1452,11 +1460,11 @@
         const endNum = state.searchOffset + products.length;
         state.searchOffset += products.length;
         const total = pg.total_count;
-        const range = total != null ? `${startNum}–${endNum} of ${total}` : `${startNum}–${endNum}`;
+        const range = total != null ? `${startNum}–${endNum} of ${total}` : `${startNum}-${endNum}`;
         const lead = products.length
           ? cursor
-            ? `Here are results <b>${range}</b> for <b>${esc(query)}</b> — select several to look up together, or click one for detail.`
-            : `I searched the live catalog for <b>${esc(query)}</b> — showing results <b>${range}</b>. Click one for detail, or select several to look up together.`
+            ? `Here are results <b>${range}</b> for <b>${esc(query)}</b> - select several to look up together, or click one for detail.`
+            : `I searched the live catalog for <b>${esc(query)}</b> - showing results <b>${range}</b>. Click one for detail, or select several to look up together.`
           : `I searched for <b>${esc(query)}</b> but the catalog returned no matches.`;
         const wrap = fillAgent(
           el,
@@ -1596,7 +1604,7 @@
               : '';
           const descText = p.description?.plain || featured.description?.plain || '';
           const featuredLine = opts
-            ? `<div class="featured">Featured: <b>${esc(featured.title || featured.sku || '')}</b> — ${money(featured.price?.amount, featured.price?.currency)} · ${featured.availability?.available ? 'in stock' : 'out of stock'}</div>`
+            ? `<div class="featured">Featured: <b>${esc(featured.title || featured.sku || '')}</b> - ${money(featured.price?.amount, featured.price?.currency)} · ${featured.availability?.available ? 'in stock' : 'out of stock'}</div>`
             : '';
           detailHtml = `<div class="detail"><div class="lk lk-plain">
               <div class="lk-media" data-slider="0">${imgHtml}${nav}</div>
