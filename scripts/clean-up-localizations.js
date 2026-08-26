@@ -3,14 +3,38 @@ const fs = require('fs');
 const { globSync } = require('glob');
 const { execSync } = require('child_process');
 
+const { loadActiveLocalizationFiles } = require('./active-localization-files');
+
 const localizationFile_default = 'src/assets/i18n/en_US.json';
 
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
 // ADDITIONAL GLOBAL PATTERNS HAVE TO BE ADDED HERE
 const regExps = [/.*\.error.*/i];
 
-// Go through the source directories recursively. Build-based cleanup depended on the removed custom webpack metadata.
-const filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
+let filesToBeSearched;
+
+const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_config_build;
+
+if (doBuild) {
+  execSync('npm run build:multi client -- --stats-json --source-map', { stdio: 'inherit' });
+
+  const activeThemes = (process.env.npm_config_active_themes || require('../package.json').config['active-themes'])
+    .split(',')
+    .map(theme => theme.trim())
+    .filter(Boolean);
+  if (!activeThemes.length) {
+    throw new Error('No active themes configured.');
+  }
+
+  filesToBeSearched = _.uniq(
+    activeThemes.flatMap(theme => {
+      console.log('loading build metadata for', theme);
+      return loadActiveLocalizationFiles(`dist/${theme}`, theme);
+    })
+  );
+} else {
+  filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
+}
 
 console.log('\nKeep-patterns:');
 regExps.forEach(regex => {
