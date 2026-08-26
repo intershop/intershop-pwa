@@ -30,8 +30,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/dist ./dist
 
-# Static assets (the interactive playground page) served at /ucp/playground.
-COPY public ./public
+# Optional demo playground UI (self-contained folder, prebuilt Ajv bundle included).
+# Remove this line to drop it from the image.
+COPY playground ./playground
 
 EXPOSE 4000
 

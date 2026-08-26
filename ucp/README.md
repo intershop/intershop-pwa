@@ -34,7 +34,6 @@ Excluded (intentionally, non-transactional MVP):
 | `POST` | `/ucp/v1/catalog/lookup`  | UCP-conformant catalog Lookup (batch by identifier; correlated variant per id). |
 | `POST` | `/ucp/v1/catalog/product` | Full product detail (all variants, options, `selected`).                        |
 | `GET`  | `/ucp/playground`         | Interactive agent playground (chat + inline conformance).                       |
-| `GET`  | `/ucp/validator`          | Interactive spec/schema conformance validator.                                  |
 
 Product prices are returned as integer minor units (for example cents) together with an
 ISO 4217 currency code, as required by the UCP catalog model.
@@ -232,32 +231,17 @@ What it covers:
   It opens the full product, and for a master adds clickable option values that re-issue the
   call with `selected` to narrow the configuration live.
 - **Conformance** — each turn shows a ✓/⚠/✗ badge; expand it (or toggle **Developer mode**)
-  to see the request/response plus the same schema + behaviour validation as the validator.
+  to see the request/response plus a live schema + behaviour validation of the response.
 
 No configuration or separate server is required; open the URL in a browser.
 
-## Validator
-
-The **conformance validator** at `/ucp/validator` is an interactive, same-origin page that
-calls the live endpoints and reports how conformant each response is:
-
-- Standalone container: <http://localhost:4000/ucp/validator>
-- Behind the PWA nginx: <http://localhost:4200/ucp/validator>
-
-Each tab (Search, Lookup, Product, Profile) builds a request, shows the raw response, and
-lists findings as **errors / warnings / info**. Two validation layers run:
-
-1. **Official JSON Schema (ajv).** It fetches the ucp.dev catalog schemas for the configured
-   version, resolves the entire `$ref` graph (draft 2020-12), and validates the response
-   against the concrete `search_response` / `lookup_response` / `get_product_response`
-   sub-schemas. Requires outbound access to `ucp.dev`; if unreachable it falls back to the
-   behaviour rules and says so.
-2. **Behaviour rules.** The spec's MUST/SHOULD text that a schema cannot express — e.g. the
-   UCP envelope, HTTP-200-for-business-outcomes, `price_range` coherence, and the lookup
-   `inputs` correlation.
-
-The Product tab also exposes `selected` and `preferences` inputs so you can exercise the
-variant-narrowing feature described above.
+The playground is fully self-contained in the [`playground/`](./playground) folder — the page
+and a prebuilt, committed local Ajv bundle ([`vendor/ajv.mjs`](./playground/vendor/ajv.mjs)),
+so it needs no build step and no extra dependencies. It is optional: to drop it from a project,
+delete the `playground/` folder and remove its two references — the
+`app.use('/ucp/playground', …)` line in [`src/app.ts`](./src/app.ts) and the `COPY playground`
+line in the [`Dockerfile`](./Dockerfile). ([`build-bundle.mjs`](./playground/build-bundle.mjs)
+is a one-off helper to regenerate the bundle when bumping Ajv.)
 
 ## Architecture
 

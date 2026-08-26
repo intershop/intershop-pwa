@@ -12,10 +12,6 @@ function requestOrigin(req: Request): string {
   return `${req.protocol}://${req.get('host')}`;
 }
 
-/** Static playground and validator pages, shipped alongside the compiled sources under `public/`. */
-const PLAYGROUND_PAGE = path.join(__dirname, '..', 'public', 'playground.html');
-const VALIDATOR_PAGE = path.join(__dirname, '..', 'public', 'validator.html');
-
 /**
  * Assembles the Express application exposing the UCP (https://ucp.dev) discovery
  * and catalog surfaces:
@@ -58,15 +54,9 @@ export function createApp(config: UcpConfig): express.Express {
     res.json(buildUcpOpenApi(profileOrigin(req)));
   });
 
-  // Interactive agent playground (chat + inline conformance); served under `/ucp/` so nginx proxies it.
-  app.get('/ucp/playground', (_req, res) => {
-    res.sendFile(PLAYGROUND_PAGE);
-  });
-
-  // Interactive showcase validator; served under `/ucp/` so the PWA nginx proxies it too.
-  app.get('/ucp/validator', (_req, res) => {
-    res.sendFile(VALIDATOR_PAGE);
-  });
+  // Optional demo UI. To remove the playground entirely, delete the `ucp/playground` folder
+  // and this block, plus the `COPY playground` line in the Dockerfile.
+  app.use('/ucp/playground', express.static(path.join(__dirname, '..', 'playground'), { extensions: ['html'] }));
 
   // Non-transactional catalog Search and Lookup over the ICM REST API.
   app.use(UCP_BASE_PATH, createCatalogRouter(config));

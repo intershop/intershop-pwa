@@ -784,8 +784,7 @@
     </main>
 
     <script type="module">
-      import Ajv2020 from 'https://esm.sh/ajv@8.17.1/dist/2020';
-      import addFormats from 'https://esm.sh/ajv-formats@3.0.1?deps=ajv@8.17.1';
+      import { Ajv2020, addFormats } from './vendor/ajv.mjs';
 
       /* ============================ helpers ============================ */
       const $ = (s, r = document) => r.querySelector(s);
