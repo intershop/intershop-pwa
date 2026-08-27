@@ -15,6 +15,7 @@ const config: UcpConfig = {
   currency: 'USD',
   supportedLocales: ['en_US', 'de_DE'],
   supportedCurrencies: ['USD', 'EUR'],
+  markets: [],
 };
 
 describe('negotiateLocale', () => {

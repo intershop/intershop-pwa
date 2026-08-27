@@ -38,22 +38,112 @@ export interface UcpConfig {
   supportedLocales: string[];
   /** Currencies the catalog can be served in (ISO 4217); the first is the default. */
   supportedCurrencies: string[];
+  /** Optional host-to-channel markets; when set, the channel is resolved per request from the `Host`. */
+  markets: MarketConfig[];
+}
+
+/**
+ * A single market in the optional `UCP_MARKETS` map: one `Host` (or several) bound to an ICM
+ * channel, with optional locale/currency, advertised sets, and origin overrides. Lets one UCP
+ * instance serve several channels/origins (see `resolveMarket`).
+ */
+export interface MarketConfig {
+  /** Request `Host` header(s) that select this market (case-insensitive, port ignored). */
+  host: string | string[];
+  /** ICM channel served for this host. */
+  icmChannel: string;
+  /** Default ICM `loc` value; falls back to the global `ICM_LOCALE`. */
+  locale?: string;
+  /** Default ISO 4217 currency; falls back to the global `ICM_CURRENCY`. */
+  currency?: string;
+  /** Locales advertised for this host; falls back to the global supported set. */
+  supportedLocales?: string[];
+  /** Currencies advertised for this host; falls back to the global supported set. */
+  supportedCurrencies?: string[];
+  /** Storefront origin for product links on this host; falls back to the global `STOREFRONT_BASE_URL`. */
+  storefrontBaseUrl?: string;
+  /** Public origin advertised in this host's profile; falls back to the global `UCP_PUBLIC_BASE_URL`. */
+  publicBaseUrl?: string;
 }
 
 function stripTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '');
 }
 
-/** Parse a comma-separated env list, always including `fallback` first and de-duplicating case-insensitively. */
-function parseList(value: string | undefined, fallback: string): string[] {
-  const items = (value ?? '').split(',').map(entry => entry.trim());
+/** De-duplicate `entries` case-insensitively, always keeping `fallback` first. */
+function dedupeList(entries: string[], fallback: string): string[] {
   const seen = new Map<string, string>();
-  for (const entry of [fallback, ...items]) {
-    if (entry && !seen.has(entry.toLowerCase())) {
-      seen.set(entry.toLowerCase(), entry);
+  for (const entry of [fallback, ...entries]) {
+    const trimmed = entry?.trim();
+    if (trimmed && !seen.has(trimmed.toLowerCase())) {
+      seen.set(trimmed.toLowerCase(), trimmed);
     }
   }
   return [...seen.values()];
+}
+
+/** Parse a comma-separated env list, always including `fallback` first and de-duplicating case-insensitively. */
+function parseList(value: string | undefined, fallback: string): string[] {
+  return dedupeList((value ?? '').split(','), fallback);
+}
+
+/** Parse the optional `UCP_MARKETS` JSON array; empty when unset (single-channel default). */
+function parseMarkets(value: string | undefined): MarketConfig[] {
+  if (!value?.trim()) {
+    return [];
+  }
+  let raw: unknown;
+  try {
+    raw = JSON.parse(value);
+  } catch {
+    throw new Error('UCP_MARKETS must be valid JSON.');
+  }
+  if (!Array.isArray(raw)) {
+    throw new Error('UCP_MARKETS must be a JSON array.');
+  }
+  return raw.map((entry, index) => {
+    const market = entry as Partial<MarketConfig>;
+    if (!market.host || !market.icmChannel) {
+      throw new Error(`UCP_MARKETS[${index}] requires "host" and "icmChannel".`);
+    }
+    return market as MarketConfig;
+  });
+}
+
+function hostsOf(market: MarketConfig): string[] {
+  return Array.isArray(market.host) ? market.host : [market.host];
+}
+
+/**
+ * Resolve the effective per-request configuration for the requested `Host`.
+ *
+ * With no `UCP_MARKETS` configured (or no host match) this returns the global config unchanged —
+ * i.e. today's single-channel behavior. When a market matches, its channel and overrides win, so
+ * one instance can serve several channels/origins keyed on `Host` (UCP is origin-scoped).
+ */
+export function resolveMarket(config: UcpConfig, host: string | undefined): UcpConfig {
+  if (!config.markets.length || !host) {
+    return config;
+  }
+  const hostname = host.split(':')[0].toLowerCase();
+  const market = config.markets.find(entry => hostsOf(entry).some(h => h.toLowerCase() === hostname));
+  if (!market) {
+    return config;
+  }
+  const locale = market.locale ?? config.locale;
+  const currency = market.currency ?? config.currency;
+  return {
+    ...config,
+    icmChannel: market.icmChannel,
+    locale,
+    currency,
+    supportedLocales: dedupeList(market.supportedLocales ?? config.supportedLocales, locale),
+    supportedCurrencies: dedupeList(market.supportedCurrencies ?? config.supportedCurrencies, currency),
+    storefrontBaseUrl: market.storefrontBaseUrl
+      ? stripTrailingSlash(market.storefrontBaseUrl)
+      : config.storefrontBaseUrl,
+    publicBaseUrl: market.publicBaseUrl ? stripTrailingSlash(market.publicBaseUrl) : config.publicBaseUrl,
+  };
 }
 
 /** Resolve the UCP configuration from environment variables. */
@@ -74,5 +164,6 @@ export function resolveUcpConfig(): UcpConfig {
     currency,
     supportedLocales: parseList(process.env.ICM_SUPPORTED_LOCALES, locale),
     supportedCurrencies: parseList(process.env.ICM_SUPPORTED_CURRENCIES, currency),
+    markets: parseMarkets(process.env.UCP_MARKETS),
   };
 }

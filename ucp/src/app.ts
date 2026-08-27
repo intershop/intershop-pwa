@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import express, { Request } from 'express';
 
-import { UCP_BASE_PATH, UcpConfig } from './config';
+import { UCP_BASE_PATH, UcpConfig, resolveMarket } from './config';
 import { createCatalogRouter } from './catalog/routes';
 import { buildUcpOpenApi } from './discovery/openapi';
 import { buildUcpProfile } from './discovery/profile';
@@ -30,28 +30,29 @@ export function createApp(config: UcpConfig): express.Express {
   app.set('trust proxy', true);
   app.disable('x-powered-by');
 
-  const profileOrigin = (req: Request): string => config.publicBaseUrl ?? requestOrigin(req);
-
   // Health is also exposed under `/ucp/` so the nginx-proxied UI can read ICM/channel badges.
-  app.get(['/health', '/ucp/health'], (_req, res) => {
-    res.json({ status: 'ok', icm: config.icmBaseUrl, channel: config.icmChannel });
+  app.get(['/health', '/ucp/health'], (req, res) => {
+    const market = resolveMarket(config, req.get('host'));
+    res.json({ status: 'ok', icm: market.icmBaseUrl, channel: market.icmChannel });
   });
 
   // Publicly cacheable, unauthenticated business profile.
   app.get('/.well-known/ucp', (req, res) => {
+    const market = resolveMarket(config, req.get('host'));
     res.set('Cache-Control', 'public, max-age=300');
     res.json(
-      buildUcpProfile(profileOrigin(req), {
-        supportedLocales: config.supportedLocales,
-        supportedCurrencies: config.supportedCurrencies,
+      buildUcpProfile(market.publicBaseUrl ?? requestOrigin(req), {
+        supportedLocales: market.supportedLocales,
+        supportedCurrencies: market.supportedCurrencies,
       })
     );
   });
 
   // OpenAPI documentation for the declared capabilities.
   app.get(`${UCP_BASE_PATH}/openapi.json`, (req, res) => {
+    const market = resolveMarket(config, req.get('host'));
     res.set('Cache-Control', 'public, max-age=300');
-    res.json(buildUcpOpenApi(profileOrigin(req)));
+    res.json(buildUcpOpenApi(market.publicBaseUrl ?? requestOrigin(req)));
   });
 
   // Optional demo UI. To remove the playground entirely, delete the `ucp/playground` folder

@@ -7,6 +7,7 @@ import {
   CATALOG_MAX_LOOKUP_IDS,
   UCP_VERSION,
   UcpConfig,
+  resolveMarket,
 } from '../config';
 import { IcmCatalogClient } from '../icm/icm-client';
 import { IcmError } from '../icm/icm.error';
@@ -68,25 +69,38 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, worker: (item
 
 export function createCatalogRouter(config: UcpConfig): express.Router {
   const router = express.Router();
-  const client = new IcmCatalogClient(config);
 
-  // Product page URLs point at the storefront, not this service.
-  const storefrontBaseUrl = (req: Request): string => config.storefrontBaseUrl ?? requestOrigin(req);
+  // One ICM client per channel; each request resolves its market (and thus channel) from the `Host`.
+  const clientsByChannel = new Map<string, IcmCatalogClient>();
+  const clientFor = (market: UcpConfig): IcmCatalogClient => {
+    let client = clientsByChannel.get(market.icmChannel);
+    if (!client) {
+      client = new IcmCatalogClient(market);
+      clientsByChannel.set(market.icmChannel, client);
+    }
+    return client;
+  };
 
-  // Per-request locale/currency negotiation (Accept-Language / Accept-Currency) over the advertised sets.
-  const baseContext = (req: Request, res: express.Response): ToUcpProductContext => {
+  // Per-request locale/currency negotiation (Accept-Language / Accept-Currency) over the market's advertised sets.
+  const baseContext = (req: Request, res: express.Response, market: UcpConfig): ToUcpProductContext => {
     const { locale, currency } = negotiate(
       { acceptLanguage: req.get('accept-language'), acceptCurrency: req.get('accept-currency') },
-      config
+      market
     );
     res.set('Content-Language', toContentLanguage(locale));
-    return { locale, currency, icmBaseUrl: config.icmBaseUrl, storefrontBaseUrl: storefrontBaseUrl(req) };
+    return {
+      locale,
+      currency,
+      icmBaseUrl: market.icmBaseUrl,
+      storefrontBaseUrl: market.storefrontBaseUrl ?? requestOrigin(req),
+    };
   };
 
   // Fetch a master's variations and resolve each to a full product for variant mapping.
   async function expandMaster(
+    client: IcmCatalogClient,
     masterSku: string,
-    master: Awaited<ReturnType<typeof client.getProduct>>,
+    master: Awaited<ReturnType<IcmCatalogClient['getProduct']>>,
     context: ToUcpProductContext
   ) {
     const links = (await client.getVariations(masterSku, context)).elements ?? [];
@@ -111,22 +125,22 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
 
   // get_product detail: expand a master or variation into the full variant list, with
   // `selected` and option availability signals.
-  async function resolveProductDetail(id: string, context: ToUcpProductContext) {
+  async function resolveProductDetail(client: IcmCatalogClient, id: string, context: ToUcpProductContext) {
     const product = await client.getProduct(id, context);
     const detail = { ...context, detail: true };
     if (product.productMaster) {
-      return expandMaster(product.sku ?? id, product, detail);
+      return expandMaster(client, product.sku ?? id, product, detail);
     }
     if (product.mastered && product.productMasterSKU) {
       const master = await client.getProduct(product.productMasterSKU, context);
-      return expandMaster(product.productMasterSKU, master, detail);
+      return expandMaster(client, product.productMasterSKU, master, detail);
     }
     return toUcpProduct(product, context);
   }
 
   // Lookup: return only the variant that correlates to the requested id, carrying `inputs`
   // (the lookup schema requires an `inputs` entry on every returned variant).
-  async function resolveLookupProduct(id: string, context: ToUcpProductContext) {
+  async function resolveLookupProduct(client: IcmCatalogClient, id: string, context: ToUcpProductContext) {
     const product = await client.getProduct(id, context);
     if (product.productMaster) {
       // A master id resolves to its default variation as the featured representative.
@@ -153,7 +167,7 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
 
   // Search view: feature the hit variation (a real, purchasable SKU) under its master, so
   // `variant.id` stays purchasable while `price_range` spans the master. No variant fan-out.
-  async function resolveSearchProduct(sku: string, context: ToUcpProductContext) {
+  async function resolveSearchProduct(client: IcmCatalogClient, sku: string, context: ToUcpProductContext) {
     const product = await client.getProduct(sku, context);
     if (product.mastered && product.productMasterSKU) {
       const master = await client.getProduct(product.productMasterSKU, context);
@@ -175,13 +189,15 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     const query = (parsed.data.query ?? '').trim();
     const limit = Math.min(parsed.data.pagination?.limit ?? CATALOG_DEFAULT_LIMIT, CATALOG_MAX_LIMIT);
     const offset = decodeCursor(parsed.data.pagination?.cursor);
-    const context = baseContext(req, res);
+    const market = resolveMarket(config, req.get('host'));
+    const client = clientFor(market);
+    const context = baseContext(req, res, market);
 
     try {
       const result = await client.searchProducts(query, limit, offset, context);
       const stubs = result.elements ?? [];
       const skus = stubs.map(stub => stub.sku ?? skuFromUri(stub.uri)).filter((sku): sku is string => Boolean(sku));
-      const resolved = await Promise.all(skus.map(sku => resolveSearchProduct(sku, context)));
+      const resolved = await Promise.all(skus.map(sku => resolveSearchProduct(client, sku, context)));
       // Collapse multiple variation hits that resolve to the same master product.
       const seen = new Set<string>();
       const products = resolved.filter(product => {
@@ -227,13 +243,17 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     }
 
     const ids = [...new Set(parsed.data.ids)];
-    const context = baseContext(req, res);
+    const market = resolveMarket(config, req.get('host'));
+    const client = clientFor(market);
+    const context = baseContext(req, res, market);
 
     try {
       // Resolve ids in parallel with a bounded pool; a hard failure aborts the batch.
       const settled = await mapWithConcurrency(ids, CATALOG_LOOKUP_CONCURRENCY, async id => {
         try {
-          return { product: await resolveLookupProduct(id, { ...context, input: { id, match: 'exact' } }) } as const;
+          return {
+            product: await resolveLookupProduct(client, id, { ...context, input: { id, match: 'exact' } }),
+          } as const;
         } catch (error) {
           if (error instanceof IcmError && error.status === 404) {
             return { notFoundId: id } as const;
@@ -265,14 +285,16 @@ export function createCatalogRouter(config: UcpConfig): express.Router {
     }
 
     const { id, selected, preferences } = parsed.data;
+    const market = resolveMarket(config, req.get('host'));
+    const client = clientFor(market);
     const context = {
-      ...baseContext(req, res),
+      ...baseContext(req, res, market),
       ...(selected ? { selected } : {}),
       ...(preferences ? { preferences } : {}),
     };
 
     try {
-      const product = await resolveProductDetail(id, context);
+      const product = await resolveProductDetail(client, id, context);
       res.json({ ucp: catalogUcp('lookup'), product });
     } catch (error) {
       // A missing product is a business outcome: HTTP 200 with an error envelope.

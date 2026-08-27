@@ -9,6 +9,7 @@ services:
       - '${UCP_PORT:-4000}:4000'
     environment:
       UCP_PORT: '4000'
+      # UCP_PUBLIC_BASE_URL and STOREFRONT_BASE_URL default to the request origin.
       # UCP_PUBLIC_BASE_URL: 'https://ucp.example.com'
       # STOREFRONT_BASE_URL: 'https://shop.example.com'
       ICM_BASE_URL: '${ICM_BASE_URL:-https://develop.icm.intershop.de}'
@@ -20,4 +21,23 @@ services:
       # Locales/currencies agents may request (Accept-Language / Accept-Currency); must match the channel.
       ICM_SUPPORTED_LOCALES: '${ICM_SUPPORTED_LOCALES:-en_US,de_DE,fr_FR}'
       ICM_SUPPORTED_CURRENCIES: '${ICM_SUPPORTED_CURRENCIES:-USD,EUR}'
+      # Optional multi-channel: one UCP instance serving several storefront hosts/channels,
+      # resolved per request from the Host header (unset = single ICM_CHANNEL above).
+      # Per-market fields omitted here fall back to the ICM_* defaults above
+      # (supportedLocales/supportedCurrencies -> ICM_SUPPORTED_LOCALES/ICM_SUPPORTED_CURRENCIES).
+      # UCP_MARKETS: |
+      #   [
+      #     {
+      #       "host": ["intershoppwa.azurewebsites.net", "intershoppwa-b2b.azurewebsites.net"],
+      #       "icmChannel": "inSPIRED-inTRONICS_Business-Site",
+      #       "supportedLocales": ["en_US", "de_DE", "fr_FR"],
+      #       "supportedCurrencies": ["USD", "EUR"]
+      #     },
+      #     {
+      #       "host": "intershoppwa-b2c.azurewebsites.net",
+      #       "icmChannel": "inSPIRED-inTRONICS-Site",
+      #       "supportedLocales": ["en_US", "de_DE", "fr_FR"],
+      #       "supportedCurrencies": ["USD", "EUR"]
+      #     }
+      #   ]
     restart: unless-stopped

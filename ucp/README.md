@@ -73,7 +73,7 @@ The advertised sets appear in the `/.well-known/ucp` profile as `supported_local
 `supported_currencies` on the `dev.ucp.shopping` service, so agents can discover the options
 before calling. Because an ICM channel is typically bound to a fixed currency, the supported
 sets must reflect what the channel can actually serve — configure them to match, or run a
-separate instance/channel per market.
+separate instance/channel per market, or use `UCP_MARKETS` (see [Multi-channel (markets)](#multi-channel-markets)).
 
 ```powershell
 # Request German text and EUR prices for a lookup
@@ -99,6 +99,59 @@ Configuration is read from environment variables (see [.env.example](./.env.exam
 | `ICM_CURRENCY`             | `USD`                              | Currency used for catalog prices.                                                                                                                                                                                                                                                                      |
 | `ICM_SUPPORTED_LOCALES`    | `ICM_LOCALE`                       | Comma-separated locales an agent may request via `Accept-Language`, advertised as `supported_locales` in the profile. The default locale is always included.                                                                                                                                           |
 | `ICM_SUPPORTED_CURRENCIES` | `ICM_CURRENCY`                     | Comma-separated currencies an agent may request via `Accept-Currency`, advertised as `supported_currencies` in the profile. The default currency is always included.                                                                                                                                   |
+| `UCP_MARKETS`              | _(unset)_                          | Optional JSON array mapping request `Host` values to ICM channels, so **one instance serves several channels/origins**. When unset (or no host matches), the single `ICM_CHANNEL` above is used (default behavior). See [Multi-channel (markets)](#multi-channel-markets).                             |
+
+### Multi-channel (markets)
+
+By default the service serves one channel (`ICM_CHANNEL`) for every request. To serve several
+channels from a **single deployment**, set `UCP_MARKETS` to a JSON array; the channel (and its
+advertised sets and origins) is then resolved **per request from the `Host` header**. This suits
+UCP's origin-scoped model: one business profile per host.
+
+Each market requires `host` and `icmChannel`; everything else is optional and falls back to the
+global values. `host` may be a single string or an array.
+
+**Fallback is per field.** When a market omits a field, only that field is taken from the global
+env default (the "Falls back to" column below) — the rest of the market still applies. And when the
+incoming `Host` matches **no** market (or `UCP_MARKETS` is unset), the request is served entirely
+from the globals (`ICM_CHANNEL`, `ICM_SUPPORTED_LOCALES`, `ICM_SUPPORTED_CURRENCIES`, …), i.e. the
+default single-channel behavior. So a market that only sets `host` + `icmChannel` inherits the
+global locales, currencies and origins; the two markets below could drop `supportedLocales` /
+`supportedCurrencies` entirely because they equal `ICM_SUPPORTED_LOCALES` / `ICM_SUPPORTED_CURRENCIES`.
+
+| Field                 | Falls back to              | Description                                           |
+| --------------------- | -------------------------- | ----------------------------------------------------- |
+| `host`                | —                          | `Host` value(s) selecting this market (port ignored). |
+| `icmChannel`          | —                          | ICM channel served for this host.                     |
+| `locale`              | `ICM_LOCALE`               | Default catalog locale.                               |
+| `currency`            | `ICM_CURRENCY`             | Default catalog currency.                             |
+| `supportedLocales`    | `ICM_SUPPORTED_LOCALES`    | Locales advertised in this host's profile.            |
+| `supportedCurrencies` | `ICM_SUPPORTED_CURRENCIES` | Currencies advertised in this host's profile.         |
+| `storefrontBaseUrl`   | `STOREFRONT_BASE_URL`      | Storefront origin for product links on this host.     |
+| `publicBaseUrl`       | `UCP_PUBLIC_BASE_URL`      | Public origin advertised in this host's profile.      |
+
+```jsonc
+// UCP_MARKETS — one deployment, three storefront hosts, two channels
+[
+  {
+    "host": ["intershoppwa.azurewebsites.net", "intershoppwa-b2b.azurewebsites.net"],
+    "icmChannel": "inSPIRED-inTRONICS_Business-Site",
+    "supportedLocales": ["en_US", "de_DE", "fr_FR"],
+    "supportedCurrencies": ["USD", "EUR"],
+  },
+  {
+    "host": "intershoppwa-b2c.azurewebsites.net",
+    "icmChannel": "inSPIRED-inTRONICS-Site",
+    "supportedLocales": ["en_US", "de_DE", "fr_FR"],
+    "supportedCurrencies": ["USD", "EUR"],
+  },
+]
+```
+
+> [!IMPORTANT]
+> The proxy in front of UCP must forward the real `Host` (or `X-Forwarded-Host`) — `trust proxy`
+> is on. If nginx/CDN caches the discovery documents, the cache key **must include the host**, or
+> different markets would share one cached profile.
 
 ## Development
 
