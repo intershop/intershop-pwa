@@ -119,6 +119,7 @@ mouseout
 ngcc
 ngmodule
 ngrx
+ngsw
 nodir
 nofollow
 noindex

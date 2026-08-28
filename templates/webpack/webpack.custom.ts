@@ -150,18 +150,16 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
-  // set production mode, service-worker, ngrx runtime checks
-  const serviceWorker = !!angularJsonConfig.serviceWorker;
+  // set production mode, ngrx runtime checks
   const ngrxRuntimeChecks = process.env.TESTING === 'true' || !production;
   config.plugins.push(
     new DefinePlugin({
       PWA_VERSION: JSON.stringify(
-        `${require('../../package.json').version} built ${new Date()} - configuration:${
+        `${require('../../package.json').version} built ${new Date().toISOString().slice(0, 16).replace('T', ' ')} - configuration:${
           targetOptions.configuration
-        } service-worker:${serviceWorker}`
+        }`
       ),
       PRODUCTION_MODE: production,
-      SERVICE_WORKER: serviceWorker,
       NGRX_RUNTIME_CHECKS: ngrxRuntimeChecks,
       THEME: JSON.stringify(theme),
       SSR: targetOptions.target === 'server',
@@ -176,7 +174,6 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
   }
 
   logger.log('setting production:', production);
-  logger.log('setting serviceWorker:', serviceWorker);
   logger.log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {

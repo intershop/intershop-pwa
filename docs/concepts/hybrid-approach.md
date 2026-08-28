@@ -140,9 +140,6 @@ cache:
 >
 > It might be necessary to set `TRUST_ICM=1` if the development ICM is deployed with an insecure certificate or a certificate that does not work for the PWA parts.
 
-Also, the **Service Worker must be disabled** for the PWA, as it installs itself in the browser of the client device and takes over the routing process, making it impossible to break out of the PWA and delegate to ICM.
-The Service Worker is disabled by default.
-
 ### Mapping Table
 
 The mapping table resides in the PWA source code and provides the page-specific mapping configuration for the Hybrid Approach.

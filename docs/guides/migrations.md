@@ -54,6 +54,12 @@ The wishlists quantity handling functionality is removed, as it was currently on
 The `desiredQuantity` and `purchasedQuantity` properties were removed from the `WishlistItem` model and the optional `quantity` parameter was removed from the `addProductToWishlist` action.
 Custom code that relied on these properties or passed a quantity when adding a product to a wishlist should not integrate the changes of the according commit.
 
+**Removal of the Service Worker integration**
+
+The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use.
+The `@angular/service-worker` dependency, the `ngsw-config.json` file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
+The Web App Manifest (installability) is unaffected and remains available.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
