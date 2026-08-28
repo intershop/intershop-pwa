@@ -48,6 +48,12 @@ The `@angular/animations`-based `bottomOut` trigger of the cookie banner has bee
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
 Its inputs changed: the previous `lastPage` (number of pages) was replaced by the required inputs `itemCount` (total number of items) and `pageSize` (items per page).
 
+**Removed quantity handling from wishlists**
+
+The wishlists quantity handling functionality is removed, as it was currently only partially implemented in the data layer, but not on the actual front-end.
+The `desiredQuantity` and `purchasedQuantity` properties were removed from the `WishlistItem` model and the optional `quantity` parameter was removed from the `addProductToWishlist` action.
+Custom code that relied on these properties or passed a quantity when adding a product to a wishlist should not integrate the changes of the according commit.
+
 **Removal of the Service Worker integration**
 
 The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use.
