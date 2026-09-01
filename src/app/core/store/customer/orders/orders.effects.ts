@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, merge, race } from 'rxjs';
+import { EMPTY, from, fromEvent, merge, race } from 'rxjs';
 import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -42,6 +42,8 @@ import {
 } from './orders.actions';
 import { getOrder, getOrderListQuery, getSelectedOrder } from './orders.selectors';
 
+export const REDIRECT_PENDING_ORDER_ID = 'redirect-pending-order-id';
+
 @Injectable()
 export class OrdersEffects {
   constructor(
@@ -59,12 +61,17 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(createOrder),
       concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
-      mergeMap(([, basketId]) =>
-        this.orderService.createOrder(basketId, true).pipe(
+      mergeMap(([, basketId]) => {
+        if (!SSR) {
+          // a left over marker of a previous order must not abort the new one
+          sessionStorage.removeItem(REDIRECT_PENDING_ORDER_ID);
+        }
+
+        return this.orderService.createOrder(basketId, true).pipe(
           map(order => createOrderSuccess({ order, basketId })),
           mapErrorToAction(createOrderFail)
-        )
-      )
+        );
+      })
     )
   );
 
@@ -83,6 +90,7 @@ export class OrdersEffects {
             order.orderCreation.stopAction.type === 'Redirect' &&
             order.orderCreation.stopAction.redirectUrl
           ) {
+            sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else if (
@@ -200,6 +208,66 @@ export class OrdersEffects {
   );
 
   /**
+   * Reloads the application if it is restored from the back/forward cache while a payment provider redirect
+   * is still pending.
+   *
+   * Going back from the payment provider shortly after the redirect restores the previous document instead of
+   * loading it again. The application is therefore never bootstrapped, no routing happens and
+   * cancelOrderAfterRedirectAbortion$ would not notice the return at all.
+   */
+  reloadAfterRedirectAbortion$ = createEffect(
+    () =>
+      SSR
+        ? EMPTY
+        : fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
+            filter(event => event.persisted && !!sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)),
+            map(() => location.reload())
+          ),
+    { dispatch: false }
+  );
+
+  /**
+   * Cancels an order whose payment provider redirect has been aborted by the customer.
+   *
+   * After order creation the customer is redirected to the payment provider by leaving the application.
+   * If the customer uses the browser back button there instead of finishing or cancelling the payment,
+   * the provider never calls one of the supplied redirect URLs, so the order would stay in its pending
+   * 'STOPPED' state and the basket would remain blocked.
+   *
+   * Returning to the checkout review page without any query parameter is therefore treated as an abortion:
+   * the id of the pending order is read from the session storage and the regular cancellation flow is
+   * entered by navigating to the cancel URL, which finally sends the CANCEL status to the server.
+   * Since the basket only reappears with that cancellation, the navigation cannot wait for it and may be
+   * rejected by the checkout guard, so the marker is kept until the navigation actually succeeded.
+   */
+  cancelOrderAfterRedirectAbortion$ = createEffect(
+    () =>
+      this.store.pipe(
+        ofUrl(/^\/checkout\/review/),
+        select(selectQueryParams),
+        // any query parameter means the provider redirected back on its own, which the regular flow handles
+        filter(
+          queryParams => !SSR && !Object.keys(queryParams).length && !!sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)
+        ),
+        map(() => sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)),
+        whenTruthy(),
+        // prevents a retry loop if the navigation below is rejected by the checkout guard
+        distinctUntilChanged(),
+        concatMap(orderId =>
+          from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel', orderId } })).pipe(
+            map(navigated => {
+              if (navigated) {
+                sessionStorage.removeItem(REDIRECT_PENDING_ORDER_ID);
+              }
+              return navigated;
+            })
+          )
+        )
+      ),
+    { dispatch: false }
+  );
+
+  /**
    * Returning from redirect after checkout (before customer is logged in).
    * Waits until the customer is logged in and triggers the handleOrderAfterRedirect action afterwards.
    */
@@ -227,8 +295,13 @@ export class OrdersEffects {
     this.actions$.pipe(
       ofType(selectOrderAfterRedirect),
       mapToPayloadProperty('params'),
-      concatMap(params =>
-        this.orderService.updateOrderPayment(params.orderId, params).pipe(
+      concatMap(params => {
+        if (!SSR) {
+          // the provider redirected back on its own, so no abortion handling is needed anymore
+          sessionStorage.removeItem(REDIRECT_PENDING_ORDER_ID);
+        }
+
+        return this.orderService.updateOrderPayment(params.orderId, params).pipe(
           map(orderId => {
             if (params.redirect === 'success') {
               return selectOrder({ orderId });
@@ -238,8 +311,8 @@ export class OrdersEffects {
             }
           }),
           mapErrorToAction(selectOrderAfterRedirectFail)
-        )
-      )
+        );
+      })
     )
   );
 
