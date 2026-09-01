@@ -5,6 +5,8 @@ import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schem
 
 import { componentDecorator, createApplication, createModule, createSchematicRunner } from '../../utils/testHelper';
 
+import overrideSchema from './schema.json';
+
 describe('override Schematic', () => {
   const schematicRunner = createSchematicRunner();
 
@@ -29,8 +31,20 @@ describe('override Schematic', () => {
     export function parse() {};
     `
     );
+    const angularJson = JSON.parse(appTree.readContent('/angular.json'));
+    angularJson.projects.bar.architect.build.configurations.acme = { theme: 'acme' };
+    appTree.overwrite('/angular.json', JSON.stringify(angularJson));
 
     runOverride = options => schematicRunner.runSchematic('override', { project: 'bar', ...options }, appTree);
+  });
+
+  it('should offer the standard theme choices without restricting custom themes', () => {
+    expect(overrideSchema.properties.theme['x-prompt']).toEqual({
+      type: 'list',
+      message: 'For which theme?',
+      items: ['b2b', 'b2c', 'all'],
+    });
+    expect(overrideSchema.properties.theme).not.toHaveProperty('enum');
   });
 
   it('should create files', () => {
@@ -97,7 +111,20 @@ describe('override Schematic', () => {
     });
   });
 
-  it('should do nothing when no override was specified', async () => {
+  it('should reject a theme that is not configured in angular.json', async done => {
+    await runOverride({ from: 'src/app/foo/dummy/dummy.component.ts', theme: 'missing', ts: true }).catch(err => {
+      expect(err).toMatchInlineSnapshot(`[Error: Unknown theme "missing". Available themes: acme, all.]`);
+      done();
+    });
+  });
+
+  it('should accept a theme configured in angular.json', async () => {
+    const tree = await runOverride({ from: 'src/app/foo/dummy/dummy.component.ts', theme: 'acme', ts: true });
+
+    expect(tree.exists('/src/app/foo/dummy/dummy.component.acme.ts')).toBeTrue();
+  });
+
+  it('should always create a TypeScript override', async () => {
     const tree = await runOverride({ from: 'src/app/foo/dummy/dummy.component.ts', theme: 'all' });
 
     expect(tree.files.filter(x => x.includes('dummy.component'))).toMatchInlineSnapshot(`
@@ -105,6 +132,7 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/foo/dummy/dummy.component.all.ts",
       ]
     `);
 
@@ -135,11 +163,15 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
+        "/src/app/foo/dummy/dummy.component.all.ts",
         "/src/app/foo/dummy/dummy.component.all.html",
       ]
     `);
 
     expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toContain(
+      "templateUrl: './dummy.component.all.html'"
+    );
   });
 
   it('should override component scss for components with css if specified', async () => {
@@ -151,11 +183,15 @@ describe('override Schematic', () => {
         "/src/app/foo/foobar/foobar.component.scss",
         "/src/app/foo/foobar/foobar.component.spec.ts",
         "/src/app/foo/foobar/foobar.component.ts",
+        "/src/app/foo/foobar/foobar.component.all.ts",
         "/src/app/foo/foobar/foobar.component.all.scss",
       ]
     `);
 
     expect(appTree.exists('/src/app/foo/foobar/foobar.component.all.scss')).toBeTrue();
+    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toContain(
+      "styleUrls: ['./foobar.component.all.scss']"
+    );
   });
 
   it('should override component scss for components without it', async () => {
@@ -166,16 +202,19 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.scss",
+        "/src/app/foo/dummy/dummy.component.all.ts",
         "/src/app/foo/dummy/dummy.component.all.scss",
       ]
     `);
 
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
-    expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeTrue();
+    expect(appTree.exists('/src/app/foo/dummy/dummy.component.scss')).toBeFalse();
     const dummyComponent = appTree.readContent('/src/app/foo/dummy/dummy.component.ts');
     expect(componentDecorator(dummyComponent)).toMatchInlineSnapshot(
-      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', styleUrls: ['./dummy.component.scss'], })"`
+      `"@Component({ selector: 'ish-dummy', standalone: false, templateUrl: './dummy.component.html', })"`
+    );
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toContain(
+      "styleUrls: ['./dummy.component.all.scss']"
     );
   });
 
@@ -211,16 +250,19 @@ describe('override Schematic', () => {
         "/src/app/foo/foobar/foobar.component.scss",
         "/src/app/foo/foobar/foobar.component.spec.ts",
         "/src/app/foo/foobar/foobar.component.ts",
+        "/src/app/foo/foobar/foobar.component.all.ts",
         "/src/app/foo/foobar/foobar.component.all.html",
         "/src/app/foo/foobar/foobar.component.all.scss",
-        "/src/app/foo/foobar/foobar.component.all.ts",
       ]
     `);
 
     expect(appTree.exists('/src/app/foo/foobar/foobar.component.all.scss')).toBeTrue();
     expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toEqual(
-      appTree.readContent('/src/app/foo/foobar/foobar.component.ts')
+    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toContain(
+      "templateUrl: './foobar.component.all.html'"
+    );
+    expect(appTree.readContent('/src/app/foo/foobar/foobar.component.all.ts')).toContain(
+      "styleUrls: ['./foobar.component.all.scss']"
     );
   });
 
@@ -238,17 +280,19 @@ describe('override Schematic', () => {
         "/src/app/foo/dummy/dummy.component.html",
         "/src/app/foo/dummy/dummy.component.spec.ts",
         "/src/app/foo/dummy/dummy.component.ts",
-        "/src/app/foo/dummy/dummy.component.all.html",
-        "/src/app/foo/dummy/dummy.component.scss",
-        "/src/app/foo/dummy/dummy.component.all.scss",
         "/src/app/foo/dummy/dummy.component.all.ts",
+        "/src/app/foo/dummy/dummy.component.all.html",
+        "/src/app/foo/dummy/dummy.component.all.scss",
       ]
     `);
 
     expect(appTree.exists('/src/app/foo/dummy/dummy.component.all.scss')).toBeTrue();
     expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.html')).toMatchInlineSnapshot(`"OVERRIDE"`);
-    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toEqual(
-      appTree.readContent('/src/app/foo/dummy/dummy.component.ts')
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toContain(
+      "templateUrl: './dummy.component.all.html'"
+    );
+    expect(appTree.readContent('/src/app/foo/dummy/dummy.component.all.ts')).toContain(
+      "styleUrls: ['./dummy.component.all.scss']"
     );
   });
 
