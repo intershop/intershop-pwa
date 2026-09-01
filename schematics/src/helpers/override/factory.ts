@@ -1,15 +1,18 @@
 import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { getWorkspace } from '@schematics/angular/utility/workspace';
+import { getThemeNames, type AngularWorkspace } from 'intershop-builders/dist/theme-configuration.js';
 import { normalize, posix } from 'path';
 import { OverrideOptionsSchema as Options } from 'schemas/helpers/override/schema';
-import { Node, ObjectLiteralExpression } from 'ts-morph';
-
-import { createTsMorphProject } from '../../utils/ts-morph';
+import { Node, ObjectLiteralExpression, Project } from 'ts-morph';
 
 function getComponentMetadata(host: Tree, componentFile: string) {
-  const project = createTsMorphProject(host);
-  project.addSourceFileAtPath(componentFile);
-  const sourceFile = project.getSourceFileOrThrow(componentFile);
+  const content = host.read(componentFile);
+  if (!content) {
+    throw new SchematicsException(`Could not read "${componentFile}".`);
+  }
+
+  const project = new Project({ useInMemoryFileSystem: true });
+  const sourceFile = project.createSourceFile(componentFile, content.toString());
   const decorator = sourceFile
     .getClasses()
     .map(classDeclaration => classDeclaration.getDecorator('Component'))
@@ -90,6 +93,17 @@ export function override(options: Options): Rule {
     if (!options.theme) {
       throw new SchematicsException('Option (theme) is required.');
     }
+
+    if (options.theme !== 'all') {
+      const angularJson = host.read('/angular.json');
+      const themes = angularJson ? getThemeNames(JSON.parse(angularJson.toString()) as AngularWorkspace) : [];
+      if (!themes.includes(options.theme)) {
+        throw new SchematicsException(
+          `Unknown theme "${options.theme}". Available themes: ${[...themes, 'all'].join(', ')}.`
+        );
+      }
+    }
+
     if ((options.html || options.scss) && !from.includes('.component.')) {
       throw new SchematicsException('Template and Style overrides only work on components.');
     }
@@ -98,7 +112,7 @@ export function override(options: Options): Rule {
     const themedHtml = options.html ? from.replace(/\.ts$/, `.${options.theme}.html`) : undefined;
     const themedScss = options.scss ? from.replace(/\.ts$/, `.${options.theme}.scss`) : undefined;
 
-    if ((options.ts || themedHtml || themedScss) && !host.exists(themedTs)) {
+    if (!host.exists(themedTs)) {
       host.create(themedTs, host.read(from));
     }
 

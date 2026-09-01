@@ -1,6 +1,13 @@
 const fs = require('fs');
 const { parse, stringify } = require('comment-json');
-const { execSync } = require('child_process');
+const { execFileSync, execSync } = require('child_process');
+const { getMainProject, getThemeNames } = require('intershop-builders/dist/theme-configuration.js');
+
+const prettier = require.resolve('prettier/bin/prettier.cjs');
+
+function format(file) {
+  execFileSync(process.execPath, [prettier, '--write', file], { stdio: 'inherit' });
+}
 
 const theme = process.argv.slice(2).filter(a => !a.startsWith('-'))?.[0];
 const setDefault = process.argv.slice(2).includes('--default');
@@ -10,36 +17,32 @@ if (!theme) {
   process.exit(1);
 }
 
-if (fs.existsSync(`src/styles/themes/${theme}/style.scss`)) {
-  console.error(`theme with name "${theme}" already exists`);
+// replace in angular.json
+const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
+const project = getMainProject(angularJson);
+const architect = angularJson.projects[project].architect;
+const themeDirectory = `src/styles/themes/${theme}`;
+const existingThemeConfiguration = architect.build.configurations[theme];
+const existingThemeKeys = Object.keys(existingThemeConfiguration ?? {});
+
+if (existingThemeConfiguration && existingThemeKeys.length > 0 && existingThemeConfiguration.theme !== theme) {
+  console.error(`configuration with name "${theme}" already exists and is not a theme`);
   process.exit(1);
 }
 
-// add style definition files
-execSync(`npx ncp src/styles/themes/b2b src/styles/themes/${theme} --stopOnErr`);
+if (fs.existsSync(`${themeDirectory}/style.scss`)) {
+  console.log(`resuming setup for theme "${theme}"`);
+} else {
+  // add style definition files
+  fs.cpSync('src/styles/themes/b2b', themeDirectory, { recursive: true, errorOnExist: true });
+}
 
-// replace in angular.json
-const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' }));
-const project = Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '');
 console.log('setting prefix for new components to "custom" for all projects');
 for (const project in angularJson.projects) {
   angularJson.projects[project].prefix = 'custom';
 }
 
-const architect = angularJson.projects[project].architect;
-architect.build.configurations[theme] = {
-  styles: [`src/styles/themes/${theme}/style.scss`],
-  stylePreprocessorOptions: {
-    ...architect.build.options.stylePreprocessorOptions,
-    includePaths: [`src/styles/themes/${theme}`],
-  },
-  fileReplacements: [
-    {
-      replace: 'src/environments/environment.ts',
-      with: `src/environments/environment.${theme}.ts`,
-    },
-  ],
-};
+architect.build.configurations[theme] = { ...existingThemeConfiguration, theme };
 architect.serve.configurations[theme] = {
   buildTarget: `${project}:build:${theme},development`,
   hmr: true,
@@ -47,22 +50,30 @@ architect.serve.configurations[theme] = {
 
 if (setDefault) {
   console.log('setting', theme, 'as default for targets');
-  architect.build.defaultConfiguration = theme + ',production';
+  architect.build.defaultConfiguration = `${theme},production`;
   architect.serve.defaultConfiguration = theme;
+  architect.serve.options.buildTarget = `${project}:build:${theme},development`;
 }
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));
-execSync('npx prettier --write angular.json');
+format('angular.json');
 
 // replace in package.json
 const packageJson = parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' }));
 if (setDefault) {
   packageJson.activeThemes = theme;
 } else {
-  packageJson.activeThemes = `${packageJson.activeThemes},${theme}`;
+  packageJson.activeThemes = [
+    ...new Set(
+      `${packageJson.activeThemes ?? ''},${theme}`
+        .split(',')
+        .map(activeTheme => activeTheme.trim())
+        .filter(Boolean)
+    ),
+  ].join(',');
 }
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
-execSync('npx prettier --write package.json');
+format('package.json');
 
 // replace in eslint.config.mjs
 let eslintConfig = fs.readFileSync('./eslint.config.mjs', { encoding: 'UTF-8' });
@@ -77,30 +88,31 @@ if (!eslintConfig.includes("prefixes: ['ish', 'custom']")) {
   eslintConfig = eslintConfig.replace(/prefixes: \['ish'\]/g, "prefixes: ['ish', 'custom']");
 }
 
-// Add theme to project-structure reusePatterns.theme: b2b|b2c -> b2b|b2c|newTheme
-if (!eslintConfig.includes(`b2b|b2c|${theme}`)) {
-  eslintConfig = eslintConfig.replace('b2b|b2c', `b2b|b2c|${theme}`);
-}
-
 fs.writeFileSync('./eslint.config.mjs', eslintConfig);
-execSync('npx prettier --write eslint.config.mjs');
+format('eslint.config.mjs');
 
 // add environment copy
 if (!fs.existsSync(`src/environments/environment.${theme}.ts`)) {
-  execSync(`npx ncp src/environments/environment.b2b.ts src/environments/environment.${theme}.ts --stopOnErr`);
+  fs.copyFileSync('src/environments/environment.b2b.ts', `src/environments/environment.${theme}.ts`);
 }
 
-// add theme to schematics
-const overrideSchematic = './schematics/src/helpers/override/schema.json';
-const schematicsJson = parse(fs.readFileSync(overrideSchematic, { encoding: 'UTF-8' }));
+// keep the override schematic prompt in sync with the registered themes
+const overrideSchemaPath = './schematics/src/helpers/override/schema.json';
+const builtOverrideSchemaPath = './schematics/dist/helpers/override/schema.json';
+const overrideSchema = parse(fs.readFileSync(overrideSchemaPath, { encoding: 'UTF-8' }));
+const themeChoices = [...getThemeNames(angularJson), 'all'];
+const choicesChanged =
+  JSON.stringify(overrideSchema.properties.theme['x-prompt'].items) !== JSON.stringify(themeChoices);
 
-if (!schematicsJson.properties.theme.enum.includes(theme)) {
-  if (setDefault) {
-    schematicsJson.properties.theme.enum = [theme, 'all'];
-  } else {
-    schematicsJson.properties.theme.enum.unshift(theme);
-  }
-  fs.writeFileSync(overrideSchematic, stringify(schematicsJson, null, 2));
-  execSync('npx prettier --write ' + overrideSchematic);
-  execSync('npm run build:schematics');
+if (choicesChanged) {
+  overrideSchema.properties.theme['x-prompt'].items = themeChoices;
+  fs.writeFileSync(overrideSchemaPath, stringify(overrideSchema, null, 2));
+  format(overrideSchemaPath);
+}
+
+const builtThemeChoices = fs.existsSync(builtOverrideSchemaPath)
+  ? parse(fs.readFileSync(builtOverrideSchemaPath, { encoding: 'UTF-8' })).properties.theme['x-prompt'].items
+  : [];
+if (choicesChanged || JSON.stringify(builtThemeChoices) !== JSON.stringify(themeChoices)) {
+  execSync('npm run build:schematics', { stdio: 'inherit' });
 }
