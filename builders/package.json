@@ -8,9 +8,12 @@
     "test": "npm run build && node --test test/*.test.mjs"
   },
   "peerDependencies": {
+    "@angular-builders/custom-esbuild": "^20.0.0",
     "@angular-devkit/architect": "^0.2003.0",
     "@angular-devkit/build-angular": "^20.3.0",
     "@angular-devkit/core": "^20.3.0",
-    "@angular/build": "^20.3.0"
+    "@angular/build": "^20.3.0",
+    "glob": "^13.0.0",
+    "rxjs": "^7.8.0"
   }
 }

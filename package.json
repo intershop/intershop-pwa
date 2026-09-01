@@ -21,7 +21,7 @@
     "build:eslint-rules": "cd eslint-rules && npm run build",
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
-    "test": "node --test scripts/active-localization-files.test.js scripts/docker-build-context.test.js && npm run test:builders && jest --ci",
+    "test": "node --test scripts/active-localization-files.test.js scripts/docker-build-context.test.js scripts/theme-configuration.test.js && npm run test:builders && jest --ci",
     "test:watch": "jest --watch -i",
     "test:builders": "cd builders && npm run test",
     "test:eslint-rules": "cd eslint-rules && npm run test -- --ci",
