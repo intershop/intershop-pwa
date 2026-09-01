@@ -26,7 +26,7 @@ import {
   environment,
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
-import { htmlToMarkdown } from './src/ssr/html-to-markdown';
+import { registerMarkdownMirror, toMarkdownMirrorUrl } from './src/ssr/markdown-mirror';
 
 const logger = getLogger('Server');
 
@@ -417,68 +417,15 @@ export function app() {
     }
   }
 
-  // build the public Markdown mirror URL: drop the nginx-injected matrix params (;...), keep a
-  // real query string, and append `.md` to the path (e.g. `/en/home;lang=..` -> `/en/home.md`)
-  const toMarkdownMirrorUrl = (url: string): string => {
-    const [pathAndMatrix, query] = url.split('?');
-    const path = pathAndMatrix.split(';')[0];
-    return `${path}.md${query ? `?${query}` : ''}`;
-  };
-
-  // Markdown mirror: render the underlying PWA page and return its main content as Markdown.
-  // Registered before the static file handlers so that URLs ending in `.md` are not treated
-  // as static assets.
-  const renderMarkdownMirror = (req: express.Request, res: express.Response) => {
-    // remove the `.md` suffix from the path to obtain the underlying PWA route
-    const targetUrl = req.originalUrl.replace(/\.md(?=$|[?;#])/, '');
-
-    logger.info({ ...getBaseLogData(req), url: { full: targetUrl } }, 'MD (Markdown mirror)');
-
-    // set no-cache up-front so every response path (success and error) is consistent with regular routes
-    res.set('Cache-Control', 'no-cache');
-
-    const baseHref = extractBaseHref(targetUrl);
-
-    commonEngine
-      .render({
-        url: `${req.protocol}://${req.headers.host}${targetUrl}`,
-        documentFilePath: join(BROWSER_FOLDER, 'index.html'),
-        publicPath: BROWSER_FOLDER,
-        inlineCriticalCss: false,
-        providers: [
-          { provide: APP_BASE_HREF, useValue: baseHref },
-          { provide: REQUEST, useValue: req },
-          { provide: RESPONSE, useValue: res },
-          { provide: REQUEST_ID, useValue: getRequestId(req) },
-        ],
-      })
-      .then(html => {
-        if (!html) {
-          const errorMsg = `Markdown mirror failed: No HTML generated for ${targetUrl}`;
-          logger.error(
-            { ...getBaseLogData(req), http: { response: { status_code: 500 } }, error: { message: errorMsg } },
-            'Markdown mirror returned empty HTML'
-          );
-          return res.status(500).send(errorMsg);
-        }
-
-        const markdown = htmlToMarkdown(html);
-        res.set('Content-Type', 'text/markdown; charset=UTF-8');
-        res.status(res.statusCode).send(markdown);
-      })
-      .catch(err => {
-        logger.error(
-          { ...getBaseLogData(req), error: { message: err?.message || String(err), stack_trace: err?.stack } },
-          'Markdown mirror rendering error'
-        );
-        // send a generic message; details are logged, never exposed to the client (OWASP A05:2021)
-        res.status(500).send('Internal Server Error');
-      });
-  };
-
-  // match `.md` either at the end of the path or directly before matrix parameters (`;...`)
-  // that nginx appends (e.g. `/help/example.md;lang=en_US;...;baseHref=%2F`)
-  server.get(/\.md(;|$)/, renderMarkdownMirror);
+  // Markdown mirror route: render the underlying PWA page and return its main content as Markdown.
+  // Registered before the static file handlers so that URLs ending in `.md` are not treated as static assets.
+  registerMarkdownMirror(server, {
+    commonEngine,
+    browserFolder: BROWSER_FOLDER,
+    getRequestId,
+    getBaseLogData,
+    extractBaseHref,
+  });
 
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
