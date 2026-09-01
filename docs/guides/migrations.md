@@ -60,6 +60,13 @@ The experimental Angular Service Worker integration has been removed, as it was 
 The `@angular/service-worker` dependency, the `ngsw-config.json` file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
 The Web App Manifest (installability) is unaffected and remains available.
 
+**Hot Module Replacement (HMR) in development**
+
+HMR has been enabled for the `serve` targets in `angular.json` via `"hmr": true`.
+Running `ng serve` now applies style changes (global and component SCSS) in place without a full page reload, preserving the current application state.
+Template and TypeScript changes still trigger a full live-reload as before.
+The setting only affects the dev server (`ng serve`) and has no impact on production builds or SSR.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
