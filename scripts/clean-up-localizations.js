@@ -4,6 +4,7 @@ const { globSync } = require('glob');
 const { execSync } = require('child_process');
 
 const { loadActiveLocalizationFiles } = require('./active-localization-files');
+const { readAngularWorkspace, resolveActiveThemes } = require('intershop-builders/dist/theme-configuration.js');
 
 const localizationFile_default = 'src/assets/i18n/en_US.json';
 
@@ -18,13 +19,11 @@ const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_c
 if (doBuild) {
   execSync('npm run build:multi client -- --stats-json --source-map', { stdio: 'inherit' });
 
-  const activeThemes = (process.env.npm_config_active_themes || require('../package.json').config['active-themes'])
-    .split(',')
-    .map(theme => theme.trim())
-    .filter(Boolean);
-  if (!activeThemes.length) {
-    throw new Error('No active themes configured.');
-  }
+  const packageJson = require('../package.json');
+  const activeThemes = resolveActiveThemes(
+    readAngularWorkspace(process.cwd()),
+    process.env.ACTIVE_THEMES || process.env.npm_config_active_themes || packageJson.config?.['active-themes']
+  );
 
   filesToBeSearched = _.uniq(
     activeThemes.flatMap(theme => {

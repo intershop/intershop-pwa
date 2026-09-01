@@ -1,24 +1,57 @@
 const { sync: spawnSync } = require('cross-spawn');
+const {
+  completeBuildConfigurations,
+  getMainProject,
+  getSelectedConfigurationNames,
+  readAngularWorkspace,
+  resolveTheme,
+} = require('intershop-builders/dist/theme-configuration.js');
 
 const args = process.argv.slice(2);
-const configurationIndex = args.findIndex(arg => arg === '--configuration' || arg.startsWith('--configuration='));
+const clientOnly = args.includes('client');
+const buildArguments = args.filter(argument => argument !== 'client');
+const configurationIndex = buildArguments.findIndex(
+  argument => argument === '--configuration' || argument.startsWith('--configuration=')
+);
 
-let theme = process.env.npm_config_configuration || 'b2b';
-
-if (configurationIndex !== -1) {
-  const configuration = args[configurationIndex];
-  theme = configuration.includes('=')
-    ? configuration.slice(configuration.indexOf('=') + 1)
-    : args[configurationIndex + 1];
-  args.splice(configurationIndex, configuration.includes('=') ? 1 : 2);
-}
-
-if (!['b2b', 'b2c'].includes(theme)) {
-  console.error(`Unsupported build configuration "${theme}". Expected "b2b" or "b2c".`);
+let requestedConfiguration = process.env.npm_config_configuration;
+if (requestedConfiguration === 'true') {
+  console.error('It seems you missed the equal sign in "--configuration=<config>".');
   process.exit(1);
 }
 
-const result = spawnSync('npm', ['run', `build:${theme}`, '--', ...args], { stdio: 'inherit' });
+if (configurationIndex !== -1) {
+  const configurationArgument = buildArguments[configurationIndex];
+  requestedConfiguration = configurationArgument.includes('=')
+    ? configurationArgument.slice(configurationArgument.indexOf('=') + 1)
+    : buildArguments[configurationIndex + 1];
+  buildArguments.splice(configurationIndex, configurationArgument.includes('=') ? 1 : 2);
+}
+
+const workspace = readAngularWorkspace(process.cwd());
+const project = getMainProject(workspace);
+const target = { project, target: 'build' };
+const configurations = completeBuildConfigurations(
+  requestedConfiguration
+    ? requestedConfiguration.split(',').filter(Boolean)
+    : getSelectedConfigurationNames(workspace, target),
+  clientOnly
+);
+
+resolveTheme(workspace, { ...target, configuration: configurations.join(',') });
+
+const result = spawnSync(
+  'node',
+  [
+    '--require',
+    './scripts/remove-data-testing-attributes.cjs',
+    './node_modules/@angular/cli/bin/ng.js',
+    'run',
+    `${project}:build:${configurations.join(',')}`,
+    ...buildArguments,
+  ],
+  { stdio: 'inherit' }
+);
 
 if (result.error) {
   throw result.error;

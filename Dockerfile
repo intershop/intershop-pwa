@@ -16,14 +16,14 @@ COPY schematics /workspace/schematics
 COPY templates/esbuild/define-build-constants.ts /workspace/templates/esbuild/define-build-constants.ts
 COPY projects /workspace/projects
 COPY src /workspace/src
-COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-ssr-runtime.js scripts/remove-data-testing-attributes.cjs /workspace/scripts/
+COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-pwa.js scripts/build-ssr-runtime.js scripts/remove-data-testing-attributes.cjs /workspace/scripts/
 RUN npm run postinstall
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=b2b,b2c
 ARG purgeCss=true
 ENV PURGE_CSS=${purgeCss}
-RUN npm_config_active_themes="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+RUN ACTIVE_THEMES="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 RUN npm install --package-lock-only --prefix dist --ignore-scripts --no-audit
 
 FROM node:24.19.0-alpine

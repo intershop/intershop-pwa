@@ -5,6 +5,16 @@
       "implementation": "./extract-i18n",
       "schema": "./extract-i18n-schema.json",
       "description": "Extract i18n messages from a custom esbuild application"
+    },
+    "application": {
+      "implementation": "./application",
+      "schema": "./application-schema.json",
+      "description": "PROTOTYPE: application build with discovered theme overrides"
+    },
+    "dev-server": {
+      "implementation": "./dev-server",
+      "schema": "./dev-server-schema.json",
+      "description": "PROTOTYPE: development server with discovered theme overrides"
     }
   }
 }

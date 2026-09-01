@@ -18,7 +18,7 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-esbuild:application",
+          "builder": "intershop-builders:application",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -30,13 +30,13 @@
               "src/assets",
               {
                 "glob": "favicon.ico",
-                "input": "src/assets/themes/b2b/img/",
+                "input": "src/assets/themes/theme_placeholder/img/",
                 "output": "/"
               }
             ],
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/b2b"],
+              "includePaths": ["src/styles/themes/theme_placeholder"],
               "sass": {
                 "silenceDeprecations": ["import"]
               }
@@ -56,7 +56,7 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.b2b.ts"
+                "with": "src/environments/environment.theme_placeholder.ts"
               }
             ]
           },
@@ -95,28 +95,12 @@
                 "entry": "src/server.ts"
               }
             },
-            "b2b": {},
+            "b2b": {
+              "theme": "b2b"
+            },
             "b2c": {
-              "assets": [
-                "src/assets",
-                {
-                  "glob": "favicon.ico",
-                  "input": "src/assets/themes/b2c/img/",
-                  "output": "/"
-                }
-              ],
-              "styles": ["src/styles/themes/b2c/style.scss"],
-              "stylePreprocessorOptions": {
-                "includePaths": ["src/styles/themes/b2c"],
-                "sass": {
-                  "silenceDeprecations": ["import"]
-                }
-              },
+              "theme": "b2c",
               "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.b2c.ts"
-                },
                 {
                   "replace": "src/app/pages/account/account-navigation/account-navigation.items.ts",
                   "with": "src/app/pages/account/account-navigation/account-navigation.items.b2c.ts"
@@ -126,7 +110,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-esbuild:dev-server",
+          "builder": "intershop-builders:dev-server",
           "options": {
             "buildTarget": "intershop-pwa:build:b2b,development"
           },
@@ -193,7 +177,7 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-esbuild:application",
+          "builder": "intershop-builders:application",
           "options": {
             "outputPath": "dist/organization-management",
             "index": "projects/organization-management/src/index.html",
@@ -202,9 +186,10 @@
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "plugins": ["./templates/esbuild/define-build-constants.ts"],
             "aot": false,
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "theme": "b2b",
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/b2b"],
+              "includePaths": ["src/styles/themes/theme_placeholder"],
               "sass": {
                 "silenceDeprecations": ["import"]
               }
@@ -220,13 +205,13 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.b2b.ts"
+                "with": "src/environments/environment.theme_placeholder.ts"
               }
             ]
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-esbuild:dev-server",
+          "builder": "intershop-builders:dev-server",
           "options": {
             "buildTarget": "organization-management:build",
             "hmr": true
@@ -244,7 +229,7 @@
       "prefix": "ish",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-esbuild:application",
+          "builder": "intershop-builders:application",
           "options": {
             "outputPath": "dist/requisition-management",
             "index": "projects/requisition-management/src/index.html",
@@ -253,9 +238,10 @@
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "plugins": ["./templates/esbuild/define-build-constants.ts"],
             "aot": false,
-            "styles": ["src/styles/themes/b2b/style.scss"],
+            "theme": "b2b",
+            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/b2b"],
+              "includePaths": ["src/styles/themes/theme_placeholder"],
               "sass": {
                 "silenceDeprecations": ["import"]
               }
@@ -271,13 +257,13 @@
             "fileReplacements": [
               {
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.b2b.ts"
+                "with": "src/environments/environment.theme_placeholder.ts"
               }
             ]
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-esbuild:dev-server",
+          "builder": "intershop-builders:dev-server",
           "options": {
             "buildTarget": "requisition-management:build",
             "hmr": true
