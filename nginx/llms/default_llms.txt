@@ -1,8 +1,3 @@
-# Intershop PWA
+# No content available
 
-> This is the default `llms.txt` served by the Intershop Progressive Web App (PWA) when the requested domain is not mapped to a storefront channel. It intentionally contains no store-specific content or links.
-
-Notes for agents:
-
-- No storefront channel is configured for this domain, so there is no curated page index to expose here.
-- A concrete deployment maps its domains to channels in the multi-channel configuration and provides a channel-specific file named `<channel>_llms.txt` with the relevant links.
+> No llms.txt content is currently available for this site. There is no curated, machine-readable page index to consume at this location.
