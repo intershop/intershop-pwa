@@ -45,8 +45,10 @@ function getBaseLogData(req: express.Request) {
 }
 
 process.on('SIGUSR2', () => {
-  const pm2Name = process.env.name || 'no-pm2';
-  const filename = `/tmp/Heap.${pm2Name}.${process.pid}.${new Date().toISOString().replaceAll(':', '-')}.heapsnapshot`;
+  const processName = process.env.THEME || `pid-${process.pid}`;
+  const filename = `/tmp/Heap.${processName}.${process.pid}.${new Date()
+    .toISOString()
+    .replaceAll(':', '-')}.heapsnapshot`;
   writeHeapSnapshot(filename);
   logger.info({ file: { path: filename } }, 'Heap snapshot written');
 });
@@ -69,10 +71,7 @@ const metricsDetailLevel =
 
 const collectDetailedMetrics = metricsDetailLevel === MetricsDetailLevel.DETAILED;
 
-const defaultLabels =
-  process.env.pm_id && process.env.name && collectDetailedMetrics
-    ? { theme: process.env.name, pm2_id: process.env.pm_id }
-    : undefined;
+const defaultLabels = process.env.THEME && collectDetailedMetrics ? { theme: process.env.THEME } : undefined;
 
 if (defaultLabels) {
   client.register.setDefaultLabels(defaultLabels);
@@ -123,11 +122,15 @@ const restRequestDuration = collectDetailedMetrics
 
 const PORT = process.env.PORT || 4200;
 
-const DEPLOY_URL = getDeployURLFromEnv();
+const DEPLOY_URL = process.env.THEME ? join(getDeployURLFromEnv(), process.env.THEME, '/') : getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
-const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist', 'browser');
+const BROWSER_FOLDER =
+  process.env.BROWSER_FOLDER ||
+  (process.env.THEME
+    ? join(process.cwd(), 'dist', process.env.THEME, 'browser')
+    : join(process.cwd(), 'dist', 'browser'));
 
 // The Express app is exported so that it can be used by serverless Functions.
 // eslint-disable-next-line complexity
@@ -452,6 +455,7 @@ export function app() {
     req.url = req.originalUrl.replace(/[;?&].*$/, '').replace(/^.*\//g, '/');
     next();
   });
+
   server.get(
     /.*\..*/,
     express.static(BROWSER_FOLDER, {
@@ -621,28 +625,26 @@ export function app() {
   return server;
 }
 
-if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
-  interface MetricsMessage {
-    topic: string;
-  }
-  process.on('message', (msg: MetricsMessage) => {
-    if (msg.topic === 'getMetrics') {
-      client.register.getMetricsAsJSON().then((data: client.MetricObject[]) => {
-        process.send({
-          type: 'process:msg',
-          data: {
-            body: data,
-            topic: 'returnMetrics',
-          },
-        });
+// Metrics are now exposed via the /metrics endpoint on a separate port (no PM2 IPC needed)
+function metricsApp() {
+  const server = express();
+  server.get('/metrics', (_req, res) => {
+    client.register
+      .metrics()
+      .then(content => {
+        res.set('Content-Type', client.register.contentType);
+        res.send(content);
+      })
+      .catch(err => {
+        res.status(500).send(err.message);
       });
-    }
   });
+  return server;
 }
 
 function run() {
   const http = require('http');
-  http.createServer(app()).listen(PORT);
+  const ssrServer = http.createServer(app()).listen(PORT);
   collectDefaultMetrics({ prefix: 'pwa_' });
   logger.info(
     {
@@ -652,6 +654,37 @@ function run() {
     'Node Express server started'
   );
   logger.info({ file: { directory: BROWSER_FOLDER } }, 'Serving static files');
+
+  let metricsServer = undefined;
+  if (/^(on|1|true|yes)$/i.test(process.env.PROMETHEUS)) {
+    const METRICS_PORT = 9113;
+    metricsServer = http.createServer(metricsApp()).listen(METRICS_PORT);
+    logger.info(
+      {
+        host: { name: require('os').hostname() },
+        server: { port: METRICS_PORT },
+      },
+      'Prometheus metrics server started'
+    );
+  }
+
+  // Graceful shutdown on SIGTERM and SIGINT
+  const shutdown = () => {
+    logger.info('Shutting down server...');
+    ssrServer.close(() => {
+      logger.info('SSR server shut down successfully');
+      if (metricsServer) {
+        metricsServer.close(() => {
+          logger.info('Metrics server shut down successfully');
+          process.exit(0);
+        });
+      } else {
+        process.exit(0);
+      }
+    });
+  };
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 
 // Webpack will replace 'require' with '__webpack_require__'

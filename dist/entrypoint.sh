@@ -2,14 +2,12 @@
 
 set -e
 
-if [ -z "$*" ]
-then
-  # use 'exec node dist/<theme>/run-standalone'
-  # instead of pm2 to fallback to running
-  # a single theme only
-
-  node dist/build-ecosystem.js
-  exec pm2-runtime dist/ecosystem.yml
+if [ -n "${THEME}" ] && [ -f "/dist/${THEME}/server/main.js" ]; then
+  exec node "/dist/${THEME}/server/main.js"
+elif [ -f "/dist/server/main.js" ]; then
+  THEME=""
+  exec node "/dist/server/main.js"
 else
-  exec "$@"
+  echo "No server found to start. Theme is set to '${THEME:-undefined}'."
+  exit 1
 fi
