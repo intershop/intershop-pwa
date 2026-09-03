@@ -40,7 +40,7 @@ function setProperty(metadata: ObjectLiteralExpression, name: string, initialize
 export function updateComponentResources(
   host: Tree,
   componentFile: string,
-  resources: { html?: string; scss?: string }
+  resources: { html?: string; scss?: { original: string; override: string } }
 ) {
   const { metadata, sourceFile } = getComponentMetadata(host, componentFile);
 
@@ -53,11 +53,29 @@ export function updateComponentResources(
   }
 
   if (resources.scss) {
-    const themedStyle = `'./${posix.basename(resources.scss)}'`;
+    const themedStylePath = `./${posix.basename(resources.scss.override)}`;
+    const themedStyle = `'${themedStylePath}'`;
     if (metadata.getProperty('styleUrl')) {
       setProperty(metadata, 'styleUrl', themedStyle);
-    } else {
+    } else if (!metadata.getProperty('styleUrls')) {
       setProperty(metadata, 'styleUrls', `[${themedStyle}]`);
+    } else {
+      const styleUrls = metadata.getProperty('styleUrls');
+      const initializer = Node.isPropertyAssignment(styleUrls) ? styleUrls.getInitializer() : undefined;
+      if (!Node.isArrayLiteralExpression(initializer)) {
+        throw new SchematicsException('Component metadata property "styleUrls" must be an inline array.');
+      }
+
+      const originalStylePath = `./${posix.basename(resources.scss.original)}`;
+      const originalStyle = initializer
+        .getElements()
+        .find(element => Node.isStringLiteral(element) && element.getLiteralValue() === originalStylePath);
+
+      if (Node.isStringLiteral(originalStyle)) {
+        originalStyle.setLiteralValue(themedStylePath);
+      } else {
+        initializer.addElement(themedStyle);
+      }
     }
   }
 
@@ -125,7 +143,10 @@ export function override(options: Options): Rule {
     }
 
     if (themedHtml || themedScss) {
-      updateComponentResources(host, themedTs, { html: themedHtml, scss: themedScss });
+      updateComponentResources(host, themedTs, {
+        html: themedHtml,
+        scss: themedScss ? { original: from.replace(/\.ts$/, '.scss'), override: themedScss } : undefined,
+      });
     }
 
     return host;

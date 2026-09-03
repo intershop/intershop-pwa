@@ -194,6 +194,21 @@ describe('override Schematic', () => {
     );
   });
 
+  it('should preserve additional component styles when overriding scss', async () => {
+    const componentPath = '/src/app/foo/foobar/foobar.component.ts';
+    appTree.overwrite(
+      componentPath,
+      appTree
+        .readContent(componentPath)
+        .replace("styleUrls: ['./foobar.component.scss']", "styleUrls: ['./foobar.component.scss', './shared.scss']")
+    );
+
+    const tree = await runOverride({ from: componentPath.slice(1), theme: 'all', scss: true });
+    const themedComponent = tree.readContent('/src/app/foo/foobar/foobar.component.all.ts');
+
+    expect(themedComponent).toContain("styleUrls: ['./foobar.component.all.scss', './shared.scss']");
+  });
+
   it('should override component scss for components without it', async () => {
     const tree = await runOverride({ from: 'foo/dummy/dummy.component.ts', theme: 'all', scss: true });
 
