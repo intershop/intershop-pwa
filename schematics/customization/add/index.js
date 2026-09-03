@@ -22,6 +22,7 @@ const angularJson = parse(fs.readFileSync('./angular.json', { encoding: 'UTF-8' 
 const project = getMainProject(angularJson);
 const architect = angularJson.projects[project].architect;
 const themeDirectory = `src/styles/themes/${theme}`;
+const themeImageDirectory = `src/assets/themes/${theme}/img`;
 const existingThemeConfiguration = architect.build.configurations[theme];
 const existingThemeKeys = Object.keys(existingThemeConfiguration ?? {});
 
@@ -35,6 +36,12 @@ if (fs.existsSync(`${themeDirectory}/style.scss`)) {
 } else {
   // add style definition files
   fs.cpSync('src/styles/themes/b2b', themeDirectory, { recursive: true, errorOnExist: true });
+}
+
+const favicon = `${themeImageDirectory}/favicon.ico`;
+if (!fs.existsSync(favicon)) {
+  fs.mkdirSync(themeImageDirectory, { recursive: true });
+  fs.copyFileSync('src/assets/themes/b2b/img/favicon.ico', favicon);
 }
 
 console.log('setting prefix for new components to "custom" for all projects');
