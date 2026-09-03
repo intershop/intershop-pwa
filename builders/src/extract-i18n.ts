@@ -3,11 +3,7 @@ import { executeExtractI18nBuilder, type ExtractI18nBuilderOptions } from '@angu
 import type { json } from '@angular-devkit/core';
 import type { ApplicationBuilderOptions } from '@angular/build';
 
-type CustomApplicationOptions = {
-  indexHtmlTransformer?: string;
-  plugins?: json.JsonValue[];
-} & ApplicationBuilderOptions &
-  json.JsonObject;
+import { applyThemeOverrides, type CustomApplicationOptions } from './theme-overrides.js';
 
 function isTarget(candidate: Target, expected: Target): boolean {
   return (
@@ -51,8 +47,9 @@ async function execute(options: ExtractI18nBuilderOptions, context: BuilderConte
 
   const buildTarget = targetFromTargetString(options.buildTarget ?? ':', project, 'build');
   const buildOptions = (await context.getTargetOptions(buildTarget)) as CustomApplicationOptions;
+  const themedBuildOptions = applyThemeOverrides(buildOptions, context.workspaceRoot, buildTarget).options;
 
-  return executeExtractI18nBuilder(options, createExtractI18nContext(context, buildTarget, buildOptions));
+  return executeExtractI18nBuilder(options, createExtractI18nContext(context, buildTarget, themedBuildOptions));
 }
 
 export default createBuilder<ExtractI18nBuilderOptions>(execute);
