@@ -19,7 +19,7 @@ function isTarget(candidate: Target, expected: Target): boolean {
   );
 }
 
-function createDelegatedContext(
+export function createDevServerContext(
   context: BuilderContext,
   buildTarget: Target,
   buildOptions: CustomApplicationOptions
@@ -42,7 +42,7 @@ function execute(options: CustomDevServerOptions, context: BuilderContext) {
       const build = applyThemeOverrides(rawOptions as CustomApplicationOptions, context.workspaceRoot, buildTarget);
       context.logger.info(`Using ${build.count} discovered theme override(s) for "${build.theme}".`);
 
-      return executeCustomDevServerBuilder(options, createDelegatedContext(context, buildTarget, build.options));
+      return executeCustomDevServerBuilder(options, createDevServerContext(context, buildTarget, build.options));
     })
   );
 }

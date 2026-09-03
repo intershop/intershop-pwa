@@ -39,6 +39,16 @@ export function createExtractI18nContext(
   return delegated;
 }
 
+export async function createThemedExtractI18nContext(
+  context: BuilderContext,
+  buildTarget: Target
+): Promise<BuilderContext> {
+  const buildOptions = (await context.getTargetOptions(buildTarget)) as CustomApplicationOptions;
+  const themedBuildOptions = applyThemeOverrides(buildOptions, context.workspaceRoot, buildTarget).options;
+
+  return createExtractI18nContext(context, buildTarget, themedBuildOptions);
+}
+
 async function execute(options: ExtractI18nBuilderOptions, context: BuilderContext) {
   const project = context.target?.project;
   if (!project) {
@@ -46,10 +56,8 @@ async function execute(options: ExtractI18nBuilderOptions, context: BuilderConte
   }
 
   const buildTarget = targetFromTargetString(options.buildTarget ?? ':', project, 'build');
-  const buildOptions = (await context.getTargetOptions(buildTarget)) as CustomApplicationOptions;
-  const themedBuildOptions = applyThemeOverrides(buildOptions, context.workspaceRoot, buildTarget).options;
 
-  return executeExtractI18nBuilder(options, createExtractI18nContext(context, buildTarget, themedBuildOptions));
+  return executeExtractI18nBuilder(options, await createThemedExtractI18nContext(context, buildTarget));
 }
 
 export default createBuilder<ExtractI18nBuilderOptions>(execute);
