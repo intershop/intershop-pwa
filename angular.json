@@ -99,13 +99,7 @@
               "theme": "b2b"
             },
             "b2c": {
-              "theme": "b2c",
-              "fileReplacements": [
-                {
-                  "replace": "src/app/pages/account/account-navigation/account-navigation.items.ts",
-                  "with": "src/app/pages/account/account-navigation/account-navigation.items.b2c.ts"
-                }
-              ]
+              "theme": "b2c"
             }
           }
         },
