@@ -145,6 +145,16 @@ describe('Html To Markdown', () => {
     expect(result).toEqual('Rating: 4/5 (1)');
   });
 
+  it('should space the review title off the rating (CSS-only gap produces no character)', () => {
+    const result = htmlToMarkdown(
+      wrapInMain(
+        '<div class="review-item-header-title"><ngb-rating aria-valuenow="5" aria-valuemax="5"><span>*</span></ngb-rating><span class="ps-1">Top Set zum Super Preis!</span></div>'
+      )
+    );
+
+    expect(result).toEqual('Rating: 5/5 Top Set zum Super Preis!');
+  });
+
   it('should drop pagination arrow glyphs but keep numbered page links', () => {
     const result = htmlToMarkdown(
       wrapInMain(

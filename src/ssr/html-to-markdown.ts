@@ -268,8 +268,8 @@ function isNoiseListItem(line: string): boolean {
 /**
  * Post-process the generated Markdown: normalize non-breaking spaces, drop empty list
  * markers left after stripping non-content children, unwrap headings that ended up
- * inside link text, space the review count off the rating, and collapse excessive
- * blank lines.
+ * inside link text, space the rating off whatever directly follows it (review count or
+ * review title glued on via a CSS-only gap), and collapse excessive blank lines.
  */
 function cleanupMarkdown(markdown: string): string {
   return markdown
@@ -278,7 +278,7 @@ function cleanupMarkdown(markdown: string): string {
     .filter(line => !isNoiseListItem(line))
     .join('\n')
     .replace(/\[#{1,6}\s+/g, '[')
-    .replace(/(Rating: [\d.]+\/\d+)\((\d+)\)/g, '$1 ($2)')
+    .replace(/(Rating: [\d.]+\/\d+)(?=\S)/g, '$1 ')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
