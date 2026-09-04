@@ -36,6 +36,7 @@ import {
   loadOrdersFail,
   loadOrdersSuccess,
   processPaypalOrderCreation,
+  resetAfterCheckoutPaymentRedirectMarker,
   selectOrder,
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
@@ -385,7 +386,7 @@ describe('Orders Effects', () => {
       expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
     }));
 
-    it('should remove the pending order id from the session storage', fakeAsync(() => {
+    it('should keep the pending order id in the session storage until the cancellation succeeded', fakeAsync(() => {
       sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
       router.navigateByUrl('/checkout/review');
       tick(500);
@@ -394,7 +395,7 @@ describe('Orders Effects', () => {
 
       tick(500);
 
-      expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toBeNull();
+      expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toEqual(order.id);
     }));
 
     it('should not do anything if there is no pending order', fakeAsync(() => {
@@ -427,6 +428,29 @@ describe('Orders Effects', () => {
 
       tick(500);
     }));
+  });
+
+  describe('cleanupRedirectMarker$', () => {
+    beforeEach(() => {
+      sessionStorage.clear();
+    });
+
+    afterEach(() => {
+      sessionStorage.clear();
+    });
+
+    it('should remove the pending order id from the session storage', done => {
+      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+      actions$ = of(resetAfterCheckoutPaymentRedirectMarker());
+
+      effects.cleanupRedirectMarker$.subscribe({
+        next: () => {
+          expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toBeNull();
+          done();
+        },
+        error: fail,
+      });
+    });
   });
 
   describe('reloadAfterRedirectAbortion$', () => {
