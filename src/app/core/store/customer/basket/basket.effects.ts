@@ -26,7 +26,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getCustomFieldsForScope } from 'ish-core/store/core/server-config';
-import { resetOrderErrors } from 'ish-core/store/customer/orders';
+import { resetAfterCheckoutPaymentRedirectMarker, resetOrderErrors } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer, loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
@@ -93,7 +93,7 @@ export class BasketEffects {
         !SSR && sessionStorage.getItem('basket-id')
           ? of(loadBasketWithId({ basketId: sessionStorage.getItem('basket-id') }))
           : this.basketService.getBasket().pipe(
-              map(basket => loadBasketSuccess({ basket })),
+              mergeMap(basket => [loadBasketSuccess({ basket }), resetAfterCheckoutPaymentRedirectMarker()]),
               mapErrorToAction(loadBasketFail)
             )
       )
