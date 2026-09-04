@@ -29,7 +29,7 @@ Official documentation for Angular SSR can be found at [Angular SSR Guide](https
 
 ## robots.txt
 
-We use the library [express-robots-txt](https://github.com/modosc/express-robots-txt) in the express.js server (`server.ts` in the project root) to supply a response to `robots.txt` for crawlers.
+The Express server in `src/server.ts` supplies a response to `robots.txt` for crawlers.
 
 By default, the SSR server provides a response with access to all pages except some restricted paths (e.g., `/error` or `/account`).
 To use a custom `robots.txt`, place it as a file in the `dist` folder.

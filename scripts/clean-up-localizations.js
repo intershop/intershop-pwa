@@ -3,6 +3,8 @@ const fs = require('fs');
 const { globSync } = require('glob');
 const { execSync } = require('child_process');
 
+const { loadActiveLocalizationFiles } = require('./active-localization-files');
+
 const localizationFile_default = 'src/assets/i18n/en_US.json';
 
 // regular expression for patterns of not explicitly used localization keys (dynamic created keys, error keys from REST calls)
@@ -14,18 +16,23 @@ let filesToBeSearched;
 const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_config_build;
 
 if (doBuild) {
-  // perform a build with sourcemaps and use those files
-  execSync('git clean -xdf dist', { stdio: 'inherit' });
-  execSync('npm run build:multi client -- --source-map', { stdio: 'inherit' });
+  execSync('npm run build:multi client -- --stats-json --source-map', { stdio: 'inherit' });
 
-  filesToBeSearched = _.flatten(
-    globSync('dist/**/active-files.json').map(activeFilesPath => {
-      console.log('loading', activeFilesPath);
-      return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
+  const activeThemes = (process.env.npm_config_active_themes || require('../package.json').config['active-themes'])
+    .split(',')
+    .map(theme => theme.trim())
+    .filter(Boolean);
+  if (!activeThemes.length) {
+    throw new Error('No active themes configured.');
+  }
+
+  filesToBeSearched = _.uniq(
+    activeThemes.flatMap(theme => {
+      console.log('loading build metadata for', theme);
+      return loadActiveLocalizationFiles(`dist/${theme}`, theme);
     })
-  ).filter((v, i, a) => a.indexOf(v) === i);
+  );
 } else {
-  // go through directory recursively and find files to be searched
   filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html}');
 }
 

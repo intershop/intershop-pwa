@@ -46,6 +46,7 @@ node_modules
 /out-tsc
 /coverage
 /junit.xml
+/builders/dist
 /eslint-rules/dist
 /schematics/src/**/files/**
 /schematics/dist

@@ -1,4 +1,5 @@
 import { Location } from '@angular/common';
+import { RESPONSE_INIT } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { noop } from 'rxjs';
@@ -119,6 +120,19 @@ describe('Http Status Code Service', () => {
         verify(resSpy.status(503)).once();
         expect(location.path()).toEqual('/maintenance');
       }));
+    });
+  });
+
+  describe.onSSREnvironment('on Angular dev server', () => {
+    it('should set the standard response status', () => {
+      const responseInit: ResponseInit = {};
+      TestBed.configureTestingModule({
+        providers: [{ provide: RESPONSE_INIT, useValue: responseInit }],
+      });
+
+      TestBed.inject(HttpStatusCodeService).setStatus(404, false);
+
+      expect(responseInit.status).toBe(404);
     });
   });
 });

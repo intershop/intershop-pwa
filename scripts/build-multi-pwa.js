@@ -1,65 +1,56 @@
+const { mkdirSync, readFileSync, writeFileSync } = require('fs');
 const { sync: spawnSync } = require('cross-spawn');
-const { readFileSync, writeFileSync } = require('fs');
 
-const configurations = (
-  process.env.npm_config_active_themes || JSON.parse(readFileSync('package.json')).config['active-themes']
+const packageJson = JSON.parse(readFileSync('package.json', { encoding: 'utf-8' }));
+const activeThemes = (
+  process.env.ACTIVE_THEMES ||
+  process.env.npm_config_active_themes ||
+  packageJson.config['active-themes']
 )
   .split(',')
-  .map((theme, index) => ({ theme, port: 4000 + index }));
+  .map(theme => theme.trim())
+  .filter(Boolean);
+const clientOnly = process.argv.includes('client');
+const buildArguments = process.argv.slice(2).filter(argument => argument !== 'client');
 
-const clientBuilds = [];
-const serverBuilds = [];
+if (!activeThemes.length) {
+  console.error('No active themes configured.');
+  process.exit(1);
+}
 
-const processArgs = process.argv.slice(2);
-const extraArgs = processArgs.filter(a => a !== 'client' && a !== 'server').join(' ');
+const ports = {};
 
-if (processArgs.includes('client') || !processArgs.includes('server'))
-  clientBuilds.push(
-    ...configurations.map(({ theme }) =>
-      `build client --configuration=${theme},production -- --output-path=dist/${theme}/browser --progress=false ${extraArgs}`.trim()
-    )
+activeThemes.forEach((theme, index) => {
+  const result = spawnSync(
+    'node',
+    [
+      'scripts/build-pwa.js',
+      ...(clientOnly ? ['client'] : []),
+      `--configuration=${theme}`,
+      ...buildArguments,
+      `--output-path=dist/${theme}`,
+    ],
+    { stdio: 'inherit' }
   );
+  if (result.error) {
+    throw result.error;
+  }
+  if (result.status !== 0) {
+    process.exit(result.status);
+  }
 
-if (processArgs.includes('server') || !processArgs.includes('client'))
-  serverBuilds.push(
-    ...configurations.map(({ theme }) =>
-      `build server --configuration=${theme},production -- --output-path=dist/${theme}/server --progress=false ${extraArgs}`.trim()
-    )
-  );
-
-const cores = +process.env.PWA_BUILD_MAX_WORKERS || Math.round(require('os').cpus().length / 3) || 1;
-const parallel = cores === 1 ? [] : ['--max-parallel', cores, '--parallel'];
-if (parallel.length) {
-  console.log(`Using ${cores} cores for multi compile.`);
-}
-
-// Run client builds first, then server builds (server builds may depend on browser build artifacts)
-let result = { status: 0 };
-if (clientBuilds.length) {
-  result = spawnSync('npm-run-all', ['--silent', ...parallel, ...clientBuilds], { stdio: 'inherit' });
-}
-if (result.status === 0 && serverBuilds.length) {
-  result = spawnSync('npm-run-all', ['--silent', ...parallel, ...serverBuilds], { stdio: 'inherit' });
-}
-if (result.status !== 0) {
-  process.exit(result.status);
-}
-
-writeFileSync(
-  'src/ssr/server-scripts/ecosystem-ports.json',
-  JSON.stringify(
-    configurations.reduce((acc, { theme, port }) => ({ ...acc, [theme]: port }), {}),
-    undefined,
-    2
-  )
-);
-
-configurations.forEach(({ theme }) => {
-  writeFileSync(
-    `dist/${theme}/run-standalone.js`,
-    `const path = require('path');
-process.env.BROWSER_FOLDER = path.join(__dirname, 'browser');
-require('child_process').fork(path.join(__dirname, 'server', 'main'));
-`
-  );
+  ports[theme] = 4000 + index;
 });
+
+if (clientOnly) {
+  process.exit(0);
+}
+
+mkdirSync('dist', { recursive: true });
+writeFileSync('dist/ecosystem-ports.json', JSON.stringify(ports, undefined, 2));
+
+const runtimeBuild = spawnSync('npm', ['run', 'build:ssr-runtime'], { stdio: 'inherit' });
+if (runtimeBuild.error) {
+  throw runtimeBuild.error;
+}
+process.exit(runtimeBuild.status ?? 1);

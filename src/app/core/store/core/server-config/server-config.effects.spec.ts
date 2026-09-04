@@ -6,6 +6,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { NGRX_STATE_IMPORT_ACTION_TYPE } from 'ish-core/configurations/ngrx-state-transfer';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration/configuration.selectors';
@@ -103,6 +104,14 @@ describe('Server Config Effects', () => {
       expect(effects.loadServerConfigOnInit$).toBeObservable(cold('a', { a: expected }));
     });
 
+    it('should trigger the loading of config data after transferred state is imported', () => {
+      store$.overrideSelector(isServerConfigurationLoaded, false);
+
+      actions$ = hot('a', { a: { type: NGRX_STATE_IMPORT_ACTION_TYPE } });
+
+      expect(effects.loadServerConfigOnInit$).toBeObservable(cold('a', { a: loadServerConfig() }));
+    });
+
     it('should not trigger the loading of config data on the second page', () => {
       store$.overrideSelector(isServerConfigurationLoaded, true);
 
@@ -111,6 +120,14 @@ describe('Server Config Effects', () => {
       const expected$ = cold('------------');
 
       expect(effects.loadServerConfigOnInit$).toBeObservable(expected$);
+    });
+
+    describe.onSSREnvironment('in SSR', () => {
+      it('should complete without an error if no navigation occurs', () => {
+        actions$ = hot('|');
+
+        expect(effects.loadServerConfigOnInit$).toBeObservable(cold('|'));
+      });
     });
   });
 

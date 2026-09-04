@@ -88,7 +88,10 @@ Running `ng serve --open` will automatically open a new browser tab with the sta
 
 Running `ng serve --ssl` will run the development server with `https` support.
 
-The development server can be started with different configurations besides the default configuration as well, e.g., `ng serve --configuration "b2c,production"` or a bit shorter `ng s -c=b2c,production`.
+The development server can be started for a specific theme by selecting its configuration, e.g., `ng serve --configuration b2c` or a bit shorter `ng s -c b2c`.
+Each theme has a matching `serve` configuration that runs the development build for that theme.
+
+To serve a theme with a different environment (e.g. `production`) or with server-side rendering, pass the desired build configuration directly via `--build-target`, e.g., `ng serve --build-target=intershop-pwa:build:b2c,production` or `ng serve --build-target=intershop-pwa:build:b2c,development,ssr`.
 
 The different start options can be combined.
 
@@ -193,7 +196,7 @@ If necessary, it can be adjusted to even higher values.
 
 ## Parallelism
 
-The parallelism of `npm run test` and `npm run build:multi` can be customized with environment variables.
+The parallelism of `npm run test` and `npm run build:multi:webpack` can be customized with environment variables.
 
 The environment variable `JEST_MAX_WORKERS` is deferred to [`maxWorkers`](https://jestjs.io/docs/configuration#maxworkers-number--string) of `jest`.
 

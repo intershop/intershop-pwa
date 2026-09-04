@@ -1,0 +1,16 @@
+{
+  "name": "intershop-builders",
+  "version": "0.0.0",
+  "private": true,
+  "builders": "./dist/builders.json",
+  "scripts": {
+    "build": "tsc && node scripts/copy-dist-files.mjs",
+    "test": "npm run build && node --test test/*.test.mjs"
+  },
+  "peerDependencies": {
+    "@angular-devkit/architect": "^0.2003.0",
+    "@angular-devkit/build-angular": "^20.3.0",
+    "@angular-devkit/core": "^20.3.0",
+    "@angular/build": "^20.3.0"
+  }
+}

@@ -30,12 +30,9 @@
 /dev.bat
 **/.lighthouseci/
 /.github/lighthouse/certs/
-
-# from dist/.gitignore
-/dist/**/*
-!/dist/.gitignore
-!/dist/entrypoint.sh
-!/dist/robots.txt
+/dist/
+/builders/dist/
+/.sonda/
 
 # from e2e/.gitignore
 /e2e/node_modules
@@ -149,10 +146,14 @@ azure-pipelines*
 
 src/assets/mock-data
 
-templates
-!templates/webpack
+templates/*
+!templates/esbuild/
+templates/esbuild/*
+!templates/esbuild/define-build-constants.ts
 
 scripts
-!scripts/build*pwa.js
+!scripts/build-multi-pwa.js
+!scripts/build-pwa.js
+!scripts/build-ssr-runtime.js
 !scripts/init-development-environment.js
-!scripts/compile-docker-scripts.js
+!scripts/remove-data-testing-attributes.cjs

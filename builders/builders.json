@@ -1,0 +1,10 @@
+{
+  "$schema": "../node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "extract-i18n": {
+      "implementation": "./extract-i18n",
+      "schema": "./extract-i18n-schema.json",
+      "description": "Extract i18n messages from a custom esbuild application"
+    }
+  }
+}
