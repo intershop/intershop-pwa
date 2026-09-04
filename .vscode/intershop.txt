@@ -191,6 +191,7 @@ ruleset
 rulesets
 rxjs
 safelisting
+sameorigin
 scroller
 searchquerydefinition
 searchstring
