@@ -27,7 +27,7 @@ All `configuration` options must be in the format `--configuration=<theme>,(prod
 
 ## Building Multiple Themes
 
-The `package.json` property `config.active-themes` determines which themes should be built when running `npm run build:multi`.
+The `package.json` property `activeThemes` determines which themes should be built when running `npm run build:multi`.
 This will build server and client bundles for all active themes and supply them in the `dist` folder.
 The SSR process for each theme can be run individually using the generated scripts `dist/<theme>/run-standalone`.
 
