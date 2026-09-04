@@ -119,7 +119,7 @@ npm run dev:ssr -- --ssl
 The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
-ng serve --configuration=ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+ng serve --build-target=intershop-pwa:build:b2b,development,ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
 ```
 
 ## Local ICM Cache
