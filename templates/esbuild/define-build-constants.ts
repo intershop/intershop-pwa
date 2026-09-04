@@ -1,7 +1,7 @@
 import { targetFromTargetString, type Target } from '@angular-devkit/architect';
 import type { Plugin } from 'esbuild';
 
-import { version } from '../../package.json';
+import { config, version } from '../../package.json';
 
 const buildDate = new Date();
 
@@ -9,15 +9,22 @@ interface BuilderOptions {
   buildTarget?: string;
 }
 
-const themes = ['b2b', 'b2c'] as const;
+// Derived from the `config.active-themes` registry in package.json so new themes need no change here.
+const themes = config['active-themes']
+  .split(',')
+  .map(theme => theme.trim())
+  .filter(Boolean);
 
 const modes = ['development', 'production'] as const;
+
+// Falls back to the first active theme in production so no theme name is hardcoded.
+const defaultConfiguration = `${themes[0]},production`;
 
 function getBuildConfigurations(builderOptions: BuilderOptions, target: Target): Set<string> {
   const selectedConfiguration = builderOptions.buildTarget
     ? targetFromTargetString(builderOptions.buildTarget).configuration
     : target.configuration;
-  const configuration = selectedConfiguration || 'b2b,production';
+  const configuration = selectedConfiguration || defaultConfiguration;
 
   return new Set(configuration.split(',').filter(Boolean));
 }

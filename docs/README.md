@@ -36,6 +36,7 @@ kb_sync_latest_only
 ### Developing
 
 - [Guide - Development Environment](./guides/development.md)
+- [Guide - From webpack to esbuild](./guides/webpack-to-esbuild.md)
 - [Guide - Angular Component Development](./guides/angular-component-development.md)
 - [Concept - Styling](./concepts/styling-behavior.md)
 - [Concept - Testing](./concepts/testing.md)
