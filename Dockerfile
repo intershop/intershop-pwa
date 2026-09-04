@@ -19,7 +19,8 @@ COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/
 RUN npm run postinstall
 ARG testing=false
 ENV TESTING=${testing}
-ARG activeThemes=b2b,b2c
+# Empty by default so build:multi falls back to activeThemes in package.json; override with --build-arg activeThemes=...
+ARG activeThemes=
 ARG purgeCss=true
 ENV PURGE_CSS=${purgeCss}
 RUN ACTIVE_THEMES="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER

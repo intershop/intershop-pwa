@@ -3,7 +3,7 @@ const { globSync } = require('glob');
 const { loadSourceMapFiles } = require('./active-localization-files');
 
 const packageJson = require('../package.json');
-const activeThemes = (process.env.npm_config_active_themes || packageJson.config['active-themes'])
+const activeThemes = (process.env.ACTIVE_THEMES || packageJson.activeThemes)
   .split(',')
   .map(theme => theme.trim())
   .filter(Boolean);

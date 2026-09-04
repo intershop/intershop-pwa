@@ -18,7 +18,7 @@ const doBuild = process.argv.slice(2).includes('--build') || !!process.env.npm_c
 if (doBuild) {
   execSync('npm run build:multi client -- --stats-json --source-map', { stdio: 'inherit' });
 
-  const activeThemes = (process.env.npm_config_active_themes || require('../package.json').config['active-themes'])
+  const activeThemes = (process.env.ACTIVE_THEMES || require('../package.json').activeThemes)
     .split(',')
     .map(theme => theme.trim())
     .filter(Boolean);
