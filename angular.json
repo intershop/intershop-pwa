@@ -130,27 +130,15 @@
           "options": {
             "buildTarget": "intershop-pwa:build:b2b,development"
           },
-          "defaultConfiguration": "b2b-development",
+          "defaultConfiguration": "b2b",
           "configurations": {
-            "b2b-development": {
+            "b2b": {
               "buildTarget": "intershop-pwa:build:b2b,development",
               "hmr": true
             },
-            "b2c-development": {
+            "b2c": {
               "buildTarget": "intershop-pwa:build:b2c,development",
               "hmr": true
-            },
-            "b2b-production": {
-              "buildTarget": "intershop-pwa:build:b2b,production"
-            },
-            "b2c-production": {
-              "buildTarget": "intershop-pwa:build:b2c,production"
-            },
-            "b2b-ssr": {
-              "buildTarget": "intershop-pwa:build:b2b,development,ssr"
-            },
-            "b2c-ssr": {
-              "buildTarget": "intershop-pwa:build:b2c,development,ssr"
             }
           }
         },

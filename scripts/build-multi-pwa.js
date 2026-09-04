@@ -2,11 +2,7 @@ const { mkdirSync, readFileSync, writeFileSync } = require('fs');
 const { sync: spawnSync } = require('cross-spawn');
 
 const packageJson = JSON.parse(readFileSync('package.json', { encoding: 'utf-8' }));
-const activeThemes = (
-  process.env.ACTIVE_THEMES ||
-  process.env.npm_config_active_themes ||
-  packageJson.config['active-themes']
-)
+const activeThemes = (process.env.ACTIVE_THEMES || packageJson.activeThemes)
   .split(',')
   .map(theme => theme.trim())
   .filter(Boolean);
