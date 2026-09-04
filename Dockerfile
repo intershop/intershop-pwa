@@ -19,7 +19,7 @@ COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
-RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
+RUN if [ ! -z "${activeThemes}" ]; then npm pkg set activeThemes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 COPY babel.config.js /workspace/

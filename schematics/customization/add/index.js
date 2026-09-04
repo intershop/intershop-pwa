@@ -51,9 +51,9 @@ execSync('npx prettier --write angular.json');
 // replace in package.json
 const packageJson = parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' }));
 if (setDefault) {
-  packageJson.config['active-themes'] = theme;
+  packageJson.activeThemes = theme;
 } else {
-  packageJson.config['active-themes'] = `${packageJson.config['active-themes']},${theme}`;
+  packageJson.activeThemes = `${packageJson.activeThemes},${theme}`;
 }
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 execSync('npx prettier --write package.json');

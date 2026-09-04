@@ -1,9 +1,7 @@
 const { sync: spawnSync } = require('cross-spawn');
 const { readFileSync, writeFileSync } = require('fs');
 
-const configurations = (
-  process.env.npm_config_active_themes || JSON.parse(readFileSync('package.json')).config['active-themes']
-)
+const configurations = (process.env.ACTIVE_THEMES || JSON.parse(readFileSync('package.json')).activeThemes)
   .split(',')
   .map((theme, index) => ({ theme, port: 4000 + index }));
 

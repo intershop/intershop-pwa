@@ -17,6 +17,16 @@ Please be aware that npm 11 no longer runs dependencies' lifecycle scripts (prei
 Packages that need to run such scripts must be explicitly allow‑listed (`allowScripts` in the `package.json`).
 `npm install` will warn about missing allow-listing for custom dependencies.
 
+**Custom `config` properties moved out of `package.json`**
+
+npm 11 warns about custom keys in the `package.json` `config` section (`npm warn Unknown env config ...`) because the legacy `npm_config_*` environment injection is deprecated and will be removed in the next major npm version.
+Therefore the two custom `config` properties have been relocated:
+
+- `config.commitizen.path` moved to a new [`.czrc`](../../.czrc) file.
+- `config.active-themes` moved to the top-level `activeThemes` property in the [`package.json`](../../package.json). The build-time override environment variable changed from `npm_config_active_themes` to `ACTIVE_THEMES` (used by `npm run build:multi`).
+
+Custom code or Docker build arguments that referenced `config.active-themes` (for example via `npm pkg set config.active-themes=...`) must be updated to use `activeThemes`.
+
 **TypeScript 5.8/5.9 update**
 
 TypeScript has been updated to version 5.8 (required by Angular 20) and to 5.9 together with the Angular 20 upgrade.

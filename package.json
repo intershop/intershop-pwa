@@ -231,12 +231,7 @@
       "npm run sort-i18n"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/@commitlint/cz-commitlint"
-    },
-    "active-themes": "b2b,b2c"
-  },
+  "activeThemes": "b2b,b2c",
   "allowScripts": {
     "esbuild": true,
     "fsevents": true,
