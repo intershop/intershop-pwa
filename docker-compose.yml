@@ -6,8 +6,12 @@ services:
     image: intershophub/intershop-pwa-ssr
     build:
       context: .
+      # args:
+      #   activeThemes: b2b
+      #   activeThemes: b2c
     # ports:
     #   - '4201:4200'
+    #   - '9113:9113'
     environment:
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       # additional host names the SSR server accepts besides 'localhost'
