@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Build SSR
-        run: npm run build:${{ matrix.theme }} -- --output-path=dist/${{ matrix.theme }}
+        run: npm run build -- --configuration=${{ matrix.theme }} --output-path=dist/${{ matrix.theme }}
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v7
