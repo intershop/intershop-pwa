@@ -73,7 +73,7 @@ if (!eslintConfig.includes("prefixes: ['ish', 'custom']")) {
 
 // Add theme to project-structure reusePatterns.theme: b2b|b2c -> b2b|b2c|newTheme
 if (!eslintConfig.includes(`b2b|b2c|${theme}`)) {
-  eslintConfig = eslintConfig.replace(/\(\?:b2b\|b2c\)/g, `(?:b2b|b2c|${theme})`);
+  eslintConfig = eslintConfig.replace('b2b|b2c', `b2b|b2c|${theme}`);
 }
 
 fs.writeFileSync('./eslint.config.mjs', eslintConfig);
