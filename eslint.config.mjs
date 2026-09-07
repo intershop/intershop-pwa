@@ -94,7 +94,7 @@ export default defineConfig([
         'error',
         {
           type: 'element',
-          prefix: 'ish',
+          prefix: ['ish'],
           style: 'kebab-case',
         },
       ],
@@ -102,7 +102,7 @@ export default defineConfig([
         'error',
         {
           type: 'attribute',
-          prefix: 'ish',
+          prefix: ['ish'],
           style: 'camelCase',
         },
       ],
