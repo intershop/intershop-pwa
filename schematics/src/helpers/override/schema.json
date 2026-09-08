@@ -31,14 +31,16 @@
     },
     "theme": {
       "type": "string",
-      "enum": ["b2b", "b2c", "all"],
-      "x-prompt": "For which theme?"
+      "x-prompt": {
+        "type": "list",
+        "message": "For which theme?",
+        "items": ["b2b", "b2c", "all"]
+      }
     },
     "ts": {
       "type": "boolean",
       "default": false,
-      "description": "Override TypeScript file",
-      "x-prompt": "Override TS file?"
+      "description": "Deprecated: TypeScript overrides are always generated"
     },
     "html": {
       "type": "boolean",

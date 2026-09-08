@@ -12,6 +12,7 @@ import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
+import { getThemeNames, readAngularWorkspace } from 'intershop-builders/dist/theme-configuration.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
@@ -20,6 +21,8 @@ import ishCustomRules from './eslint-rules/dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const themeNames = getThemeNames(readAngularWorkspace(__dirname));
+const themePattern = `(?:(?:\\.(?:${themeNames.map(theme => theme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')}))*|\\.all)`;
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
@@ -34,6 +37,7 @@ export default defineConfig([
     'src/polyfills.ts',
     'src/environments/environment.development.ts',
     'dist/**/*',
+    'builders/dist/**/*',
     'e2e/cypress/**/*.js',
     'eslint-rules/dist/**/*',
     'schematics/dist/**/*',
@@ -470,7 +474,7 @@ export default defineConfig([
 
           reusePatterns: {
             name: '[a-z][a-z0-9]*(?:-[a-z][a-z0-9]*)*',
-            theme: '(?:(?:\\.(?:b2b|b2c))*|\\.all)',
+            theme: themePattern,
           },
 
           pathPatterns: [

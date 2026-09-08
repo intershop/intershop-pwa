@@ -1,5 +1,11 @@
-const { readFileSync } = require('fs');
 const { sync: spawnSync } = require('cross-spawn');
+const {
+  completeBuildConfigurations,
+  getMainProject,
+  getSelectedConfigurationNames,
+  readAngularWorkspace,
+  resolveTheme,
+} = require('intershop-builders/dist/theme-configuration.js');
 
 const args = process.argv.slice(2);
 const clientOnly = args.includes('client');
@@ -22,29 +28,17 @@ if (configurationIndex !== -1) {
   buildArguments.splice(configurationIndex, configurationArgument.includes('=') ? 1 : 2);
 }
 
-const workspace = JSON.parse(readFileSync('angular.json', 'utf8'));
-const project = Object.entries(workspace.projects).find(([, definition]) => definition.root === '')?.[0];
-if (!project) {
-  console.error('Could not find the main Angular project.');
-  process.exit(1);
-}
+const workspace = readAngularWorkspace(process.cwd());
+const project = getMainProject(workspace);
+const target = { project, target: 'build' };
+const configurations = completeBuildConfigurations(
+  requestedConfiguration
+    ? requestedConfiguration.split(',').filter(Boolean)
+    : getSelectedConfigurationNames(workspace, target),
+  clientOnly
+);
 
-const build = workspace.projects[project].architect?.build ?? workspace.projects[project].targets?.build;
-const configurations = (requestedConfiguration || build?.defaultConfiguration || 'b2b,production')
-  .split(',')
-  .filter(Boolean);
-
-if (!configurations.includes('development') && !configurations.includes('production')) {
-  configurations.push('production');
-}
-if (clientOnly) {
-  const ssrIndex = configurations.indexOf('ssr');
-  if (ssrIndex !== -1) {
-    configurations.splice(ssrIndex, 1);
-  }
-} else if (!configurations.includes('ssr')) {
-  configurations.push('ssr');
-}
+resolveTheme(workspace, { ...target, configuration: configurations.join(',') });
 
 const result = spawnSync(
   'node',
