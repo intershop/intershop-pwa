@@ -9,6 +9,16 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**Store Devtools production configuration**
+
+Store Devtools are now disabled through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in `angular.json`.
+The `store-devtools.module.production.ts` file has been removed.
+Remove any remaining file replacements referencing this file from custom build configurations.
+
+If you previously enabled Store Devtools in production by removing the file replacement, adapt the conditional registration in `store-devtools.module.ts` instead.
+For this customization, restore the production options `maxAge: PRODUCTION_MODE ? 25 : 200` and `logOnly: PRODUCTION_MODE` when enabling instrumentation.
+The default behavior remains unchanged: Store Devtools are enabled in development and disabled in production.
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.
