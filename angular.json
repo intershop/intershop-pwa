@@ -76,12 +76,6 @@
                   "maximumWarning": "5kb",
                   "maximumError": "10kb"
                 }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/app/core/store/store-devtools.module.ts",
-                  "with": "src/app/core/store/store-devtools.module.production.ts"
-                }
               ]
             },
             "development": {
