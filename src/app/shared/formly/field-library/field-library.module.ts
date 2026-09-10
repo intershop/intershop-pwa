@@ -9,6 +9,7 @@ import { AddressLine2Configuration } from './configurations/address-line-2.confi
 import { CityConfiguration } from './configurations/city.configuration';
 import { CompanyName1Configuration } from './configurations/company-name-1.configuration';
 import { CompanyName2Configuration } from './configurations/company-name-2.configuration';
+import { EmailConfiguration } from './configurations/email.configuration';
 import { FirstNameConfiguration } from './configurations/first-name.configuration';
 import { LastNameConfiguration } from './configurations/last-name.configuration';
 import { PhoneHomeConfiguration } from './configurations/phone-home.configuration';
@@ -26,6 +27,7 @@ import { registerLibraryConfigReplacementExtension } from './library-config-repl
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: FirstNameConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: LastNameConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: PhoneHomeConfiguration, multi: true },
+    { provide: FIELD_LIBRARY_CONFIGURATION, useClass: EmailConfiguration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: CompanyName1Configuration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: CompanyName2Configuration, multi: true },
     { provide: FIELD_LIBRARY_CONFIGURATION, useClass: TaxationIDConfiguration, multi: true },

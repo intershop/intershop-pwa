@@ -82,6 +82,11 @@ The setting only affects the dev server (`ng serve`) and has no impact on produc
 `SpecialValidators.email` (used by the `ish-email-field`) now treats an empty value as valid.
 This allows optional email fields; required validation is still enforced by the separate `required` validator where configured.
 
+**Invoice E-mail Field Added to the Business Customer Address Form**
+
+The address form now includes an optional invoice e-mail field for business customers.
+If left empty, the customer's login e-mail address is used.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
