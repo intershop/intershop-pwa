@@ -12,7 +12,7 @@
         <span
           [style.background-color]="getBackgroundColor(facet)"
           [style.background-image]="getBackgroundImage(facet)"
-          [style.border]="facet.displayName.toLowerCase() === 'white' ? '1px solid #ddd' : null"
+          [style.border]="(facet.displayName | lowercase) === 'white' ? '1px solid #ddd' : null"
         ></span>
       </button>
     </li>

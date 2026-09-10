@@ -9,7 +9,7 @@
       >
         @if (group.attributeType === 'colorCode') {
           <span
-            [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
+            [ngClass]="{ 'light-color': (option.label | lowercase) === 'white' }"
             [ngStyle]="{ 'background-color': `#${option.metaData}` }"
           ></span>
         }
