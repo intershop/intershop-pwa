@@ -43,6 +43,7 @@ describe('Address Component', () => {
     expect(element.querySelector('address').innerHTML).toContain('Berlin');
     expect(element.querySelector('address').innerHTML).toContain('Germany');
     expect(element.querySelector('address').innerHTML).toContain('049364112677');
+    expect(element.querySelector('address').innerHTML).toContain('patricia@test.intershop.de');
   });
 
   it('should display postalCode before city if the country is Germany', () => {
@@ -57,13 +58,13 @@ describe('Address Component', () => {
     expect(element.querySelector('address').innerHTML).toContain('Berlin&nbsp;');
   });
 
-  it('should not render an email if displayEmail is not set', () => {
+  it('should not render an email if displayEmail is set to false', () => {
+    component.displayEmail = false;
     fixture.detectChanges();
     expect(element.querySelector('address').innerHTML).not.toContain('patricia@test.intershop.de');
   });
 
-  it('should render an email if displayEmail is set', () => {
-    component.displayEmail = true;
+  it('should be rendered if displayEmail is not set', () => {
     fixture.detectChanges();
     expect(element.querySelector('address').innerHTML).toContain('patricia@test.intershop.de');
   });

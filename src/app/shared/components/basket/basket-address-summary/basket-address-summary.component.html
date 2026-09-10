@@ -11,7 +11,7 @@
     <h3 class="h5 float-start">{{ 'checkout.address.billing.label' | translate }}</h3>
   </div>
   <div data-testing-id="address-summary-invoice-to-address">
-    <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
+    <ish-address [address]="basket.invoiceToAddress" />
   </div>
 
   <!-- Shipping Address -->
@@ -31,7 +31,7 @@
         {{ 'checkout.same_as_billing_address.text' | translate }}
       </address>
     } @else {
-      <ish-address [address]="basket.commonShipToAddress" />
+      <ish-address [address]="basket.commonShipToAddress" [displayEmail]="false" />
     }
   </div>
 </div>
