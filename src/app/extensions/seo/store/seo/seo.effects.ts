@@ -1,5 +1,5 @@
 import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
-import { ApplicationRef, Inject, Injectable, Optional, REQUEST as ANGULAR_REQUEST } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, Optional, REQUEST } from '@angular/core';
 import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
@@ -25,7 +25,6 @@ import { getSelectedProduct } from 'ish-core/store/shopping/products';
 import { DomService } from 'ish-core/utils/dom/dom.service';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
-import { REQUEST } from 'ish-core/utils/ssr/ssr.tokens';
 
 @Injectable()
 export class SeoEffects {
@@ -38,7 +37,6 @@ export class SeoEffects {
     private translate: TranslateService,
     @Inject(DOCUMENT) private doc: Document,
     @Optional() @Inject(REQUEST) private request: InjectSingle<typeof REQUEST>,
-    @Optional() @Inject(ANGULAR_REQUEST) private angularRequest: InjectSingle<typeof ANGULAR_REQUEST>,
     @Inject(APP_BASE_HREF) private baseHref: string,
     private appRef: ApplicationRef
   ) {}
@@ -198,9 +196,7 @@ export class SeoEffects {
   private get baseURL() {
     let url: string;
     if (this.request) {
-      url = `${this.request.protocol}://${this.request.get('host')}${this.baseHref}`;
-    } else if (this.angularRequest) {
-      url = new URL(this.baseHref, this.angularRequest.url).href;
+      url = new URL(this.baseHref, this.request.url).href;
     } else {
       url = new URL(this.baseHref, this.doc.URL).href;
     }
