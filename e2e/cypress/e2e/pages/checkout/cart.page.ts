@@ -96,16 +96,18 @@ export class CartPage {
   lineItem(idx: number) {
     return {
       quantity: {
-        set: (num: number) =>
-          cy
-            .get(this.tag)
+        set: (num: number) => {
+          cy.intercept('PATCH', '**/baskets/*/items/*').as('basketItemUpdate');
+
+          cy.get(this.tag)
             .find('input[data-testing-id="quantity"]:visible')
             .eq(idx)
             .click()
-            .wait(1000)
             .type('{selectAll}')
-            .type(num.toString())
-            .wait(1500),
+            .type(num.toString());
+
+          return cy.wait('@basketItemUpdate').its('response.statusCode').should('equal', 200);
+        },
 
         get: () =>
           cy

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnChanges, Simpl
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { isEqual } from 'lodash-es';
 import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -36,8 +37,13 @@ export class LineItemListElementComponent implements OnChanges {
       }
 
       this.updateSubscription = this.context
-        .validDebouncedQuantityUpdate$()
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .select('quantity')
+        .pipe(
+          debounceTime(800),
+          filter(quantity => !this.context.get('hasQuantityError') && quantity !== this.pli.quantity.value),
+          distinctUntilChanged(),
+          takeUntilDestroyed(this.destroyRef)
+        )
         .subscribe(quantity => {
           this.checkoutFacade.updateBasketItem({ itemId: this.pli.id, quantity });
         });

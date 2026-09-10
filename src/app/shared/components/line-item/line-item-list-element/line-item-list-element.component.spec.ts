@@ -1,12 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { anything, instance, mock, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
@@ -28,6 +31,78 @@ import { LazyProductAddToOrderTemplateComponent } from '../../../../extensions/o
 import { LazyProductAddToWishlistComponent } from '../../../../extensions/wishlists/exports/lazy-product-add-to-wishlist/lazy-product-add-to-wishlist.component';
 
 import { LineItemListElementComponent } from './line-item-list-element.component';
+
+describe('Line Item List Element Component', () => {
+  let context: ProductContextFacade;
+  let component: LineItemListElementComponent;
+  let updateBasketItem: ReturnType<typeof jest.fn>;
+
+  beforeEach(() => {
+    const shoppingFacade = mock(ShoppingFacade);
+    when(shoppingFacade.category$(anything())).thenReturn(EMPTY);
+    const appFacade = mock(AppFacade);
+    when(appFacade.serverSetting$(anything())).thenReturn(EMPTY);
+    updateBasketItem = jest.fn();
+    TestBed.configureTestingModule({
+      declarations: [LineItemListElementComponent],
+      providers: [
+        { provide: AppFacade, useValue: instance(appFacade) },
+        { provide: CheckoutFacade, useValue: { updateBasketItem } },
+        { provide: ShoppingFacade, useValue: instance(shoppingFacade) },
+        ProductContextFacade,
+        provideTranslateService(),
+      ],
+    }).overrideTemplate(LineItemListElementComponent, '');
+    context = TestBed.inject(ProductContextFacade);
+    context.set({ quantity: 1, hasQuantityError: false });
+    const fixture = TestBed.createComponent(LineItemListElementComponent);
+    component = fixture.componentInstance;
+    component.pli = { id: 'basket-item', quantity: { value: 1 } };
+  });
+
+  it('should update the basket when quantity changes before the initial debounce completes', fakeAsync(() => {
+    component.ngOnChanges({ pli: new SimpleChange(undefined, component.pli, true) });
+
+    context.set({ quantity: 2 });
+    tick(800);
+
+    expect(updateBasketItem).toHaveBeenCalledWith({ itemId: 'basket-item', quantity: 2 });
+  }));
+
+  it('should not update the basket for its saved quantity or invalid input', fakeAsync(() => {
+    component.ngOnChanges({ pli: new SimpleChange(undefined, component.pli, true) });
+    tick(800);
+    expect(updateBasketItem).not.toHaveBeenCalled();
+
+    context.set({ quantity: -1, hasQuantityError: true });
+    tick(800);
+    expect(updateBasketItem).not.toHaveBeenCalled();
+
+    context.set({ quantity: 2, hasQuantityError: false });
+    tick(800);
+    expect(updateBasketItem).toHaveBeenCalledWith({ itemId: 'basket-item', quantity: 2 });
+  }));
+
+  it('should preserve an edit when the line item refreshes during the debounce', fakeAsync(() => {
+    component.ngOnChanges({ pli: new SimpleChange(undefined, component.pli, true) });
+    tick(800);
+    context.set({ quantity: 2 });
+    tick(400);
+
+    const previousItem = component.pli;
+    component.pli = { ...previousItem };
+    component.ngOnChanges({ pli: new SimpleChange(previousItem, component.pli, false) });
+    tick(800);
+
+    expect(updateBasketItem).toHaveBeenCalledTimes(1);
+    expect(updateBasketItem).toHaveBeenCalledWith({ itemId: 'basket-item', quantity: 2 });
+
+    component.pli = { ...component.pli, quantity: { value: 2 } };
+    component.ngOnChanges({ pli: new SimpleChange(previousItem, component.pli, false) });
+    tick(800);
+    expect(updateBasketItem).toHaveBeenCalledTimes(1);
+  }));
+});
 
 describe('Line Item List Element Component', () => {
   let component: LineItemListElementComponent;
