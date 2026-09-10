@@ -77,6 +77,11 @@ Running `ng serve` now applies style changes (global and component SCSS) in plac
 Template and TypeScript changes still trigger a full live-reload as before.
 The setting only affects the dev server (`ng serve`) and has no impact on production builds or SSR.
 
+**Email Validator No Longer Rejects Empty Values**
+
+`SpecialValidators.email` (used by the `ish-email-field`) now treats an empty value as valid.
+This allows optional email fields; required validation is still enforced by the separate `required` validator where configured.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
