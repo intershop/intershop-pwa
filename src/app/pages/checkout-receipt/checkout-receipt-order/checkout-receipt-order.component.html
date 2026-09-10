@@ -44,7 +44,7 @@
       </p>
       <p
         [innerHTML]="
-          'checkout.receipt.notification.mail.text' | translate: { '0': order.invoiceToAddress.email || order.email }
+          'checkout.receipt.notification.mail.text' | translate: { '0': order.email || order.invoiceToAddress.email }
         "
       ></p>
     </div>

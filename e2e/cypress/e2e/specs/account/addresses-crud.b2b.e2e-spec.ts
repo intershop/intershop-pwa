@@ -56,6 +56,7 @@ describe('Addresses Page Functionality', () => {
     at(AddressesPage, page => {
       page.createAddress();
       cy.wait(500);
+      page.createAddressFormEmailField.should('exist');
       page.fillCreateAddressForm(_.address);
       page.saveAddress();
       page.furtherAddress.should('contain', _.address.addressLine1);
