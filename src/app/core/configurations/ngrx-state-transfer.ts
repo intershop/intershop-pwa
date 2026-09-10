@@ -5,7 +5,7 @@ import { pick } from 'lodash-es';
 import { first, map, take } from 'rxjs/operators';
 
 import { CoreState } from 'ish-core/store/core/core-store';
-import { mergeDeep } from 'ish-core/utils/functions';
+import { mergeDeep, omit } from 'ish-core/utils/functions';
 
 export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
@@ -73,7 +73,8 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store, ac
         store
           .pipe(
             take(1),
-            map(s => filterState(s, 2))
+            // The browser must route from its own URL, not replay an internal SSR navigation such as a 404 page.
+            map(s => filterState(omit(s, 'router'), 2))
           )
           .subscribe((saveState: object) => {
             state = saveState;

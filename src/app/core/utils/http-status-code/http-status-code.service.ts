@@ -30,11 +30,8 @@ export class HttpStatusCodeService {
       // 503: server is unavailable
       const route = status === 503 ? '/maintenance' : '/error';
 
-      if (SSR) {
-        return this.router.navigateByUrl(route);
-      } else {
-        return this.router.navigateByUrl(route, { skipLocationChange: status < 500 });
-      }
+      // Preserve missing-resource URLs during SSR too, so rendering the error page does not trigger an HTTP redirect.
+      return this.router.navigateByUrl(route, { skipLocationChange: status < 500 });
     }
     return Promise.resolve(true);
   }
