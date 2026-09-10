@@ -16,6 +16,7 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
  * @param parentForm - the parent FormGroup that the address form will belong to
  * @param businessCustomer - whether the address form is for a business customer
  * @param shortForm - whether the address form is in long or short format
+ * @param email - whether the email field is part of this form (set to false when an external extension form handles it)
  * @param prefilledAddress - a collection of key-value pairs that will be used to prefill the form
  *
  * @example
@@ -35,6 +36,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   @Input({ required: true }) parentForm: FormGroup;
   @Input() businessCustomer: boolean;
   @Input() shortForm: boolean;
+  @Input() email = true;
   @Input() prefilledAddress: Partial<Address>;
 
   private countryCode = '';
@@ -65,7 +67,9 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(c: SimpleChanges) {
-    this.fillForm(c.prefilledAddress?.currentValue);
+    if (c.prefilledAddress) {
+      this.fillForm(c.prefilledAddress.currentValue);
+    }
   }
 
   handleCountryChange(model: { countryCode: string }) {
@@ -74,7 +78,12 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     this.countryCode = model.countryCode;
 
     if (model.countryCode !== prevCountryCode) {
-      const configuration = this.afcProvider.getConfiguration(model.countryCode, this.businessCustomer, this.shortForm);
+      const configuration = this.afcProvider.getConfiguration(
+        model.countryCode,
+        this.businessCustomer,
+        this.shortForm,
+        this.email
+      );
 
       // assign new form, model and fields
       this.addressForm = new FormGroup({
@@ -129,7 +138,12 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
   }
 
   private initForm() {
-    const configuration = this.afcProvider.getConfiguration('default', this.businessCustomer, this.shortForm);
+    const configuration = this.afcProvider.getConfiguration(
+      'default',
+      this.businessCustomer,
+      this.shortForm,
+      this.email
+    );
     this.addressForm = new FormGroup({});
     this.addressModel = {
       countryCode: '',
