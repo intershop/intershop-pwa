@@ -16,7 +16,7 @@
           cdk-cell
           [attr.data-label]="'account.order_template.list.table.template' | translate"
         >
-          <a data-testing-id="order-template-list-title" [routerLink]="'/account/order-templates/' + orderTemplate.id">
+          <a data-testing-id="order-template-list-title" [routerLink]="['/account/order-templates', orderTemplate.id]">
             {{ orderTemplate.title }}
           </a>
         </td>

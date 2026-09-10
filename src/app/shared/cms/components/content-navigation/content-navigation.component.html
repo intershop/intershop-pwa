@@ -14,7 +14,7 @@
           treeNode.name
         }}</a>
         @if (treeNode.children.length && depth > counter) {
-          <ul [ngClass]="'page-navigation-' + counter">
+          <ul [ngClass]="`page-navigation-${counter}`">
             <ng-container
               [ngTemplateOutlet]="pageTreeNode"
               [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"

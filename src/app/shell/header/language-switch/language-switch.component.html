@@ -6,13 +6,13 @@
       class="language-switch-button btn btn-link"
       ngbDropdownToggle
       type="button"
-      [attr.aria-label]="('language_switch.label' | translate) + ('locale.' + data.locale + '.long' | translate)"
+      [attr.aria-label]="('language_switch.label' | translate) + (`locale.${data.locale}.long` | translate)"
     >
       <span class="sticky-header-icon">
         <i class="bi bi-globe-americas header-icon mb-1"></i>
       </span>
       <span class="language-switch-current-selection d-inline"
-        >{{ 'locale.' + data.locale + (deviceType === 'mobile' ? '.short' : '.long') | translate
+        >{{ `locale.${data.locale}${deviceType === 'mobile' ? '.short' : '.long'}` | translate
         }}<span class="switch_arrow"></span
       ></span>
     </button>
@@ -24,10 +24,10 @@
               <li>
                 <a
                   [href]="location | ishMakeHref: { lang: loc } | async"
-                  [lang]="'locale.' + loc + '.short' | translate"
+                  [lang]="`locale.${loc}.short` | translate"
                   (click)="setLocaleCookie(loc)"
                 >
-                  {{ 'locale.' + loc + '.long' | translate }}
+                  {{ `locale.${loc}.long` | translate }}
                 </a>
               </li>
             }

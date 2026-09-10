@@ -77,6 +77,21 @@ Running `ng serve` now applies style changes (global and component SCSS) in plac
 Template and TypeScript changes still trigger a full live-reload as before.
 The setting only affects the dev server (`ng serve`) and has no impact on production builds or SSR.
 
+**Template String Concatenation Replaced by Template Literals**
+
+Angular 20 supports JavaScript template literals in template expressions.
+The `@angular-eslint/template/prefer-template-literal` rule has been enabled.
+Existing string concatenations in templates have been auto-fixed, as shown in the following example:
+
+```html
+<!-- before -->
+<span [id]="'item-' + item.id">{{ item.name }}</span>
+<!-- after -->
+<span [id]="`item-${item.id}`">{{ item.name }}</span>
+```
+
+Run `npm run lint -- --fix` to auto-fix any remaining concatenations.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

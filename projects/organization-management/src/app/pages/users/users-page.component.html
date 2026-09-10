@@ -29,13 +29,13 @@
             }
           </div>
           <div class="col-5 col-sm-4 list-item order-2">
-            <dl [attr.data-testing-id]="'user-roles-' + user.login">
+            <dl [attr.data-testing-id]="`user-roles-${user.login}`">
               <ish-user-roles-badges [roleIDs]="user.roleIDs" />
             </dl>
           </div>
           <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
             @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-              <ish-user-budget [attr.data-testing-id]="'user-budget-' + user.login" [budget]="user.userBudget" />
+              <ish-user-budget [attr.data-testing-id]="`user-budget-${user.login}`" [budget]="user.userBudget" />
             }
           </div>
           <div class="col-1 list-item text-end order-sm-4 order-3">

@@ -1146,6 +1146,7 @@ export default defineConfig([
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
       '@angular-eslint/template/prefer-control-flow': 'warn',
+      '@angular-eslint/template/prefer-template-literal': 'warn',
     },
   },
   {

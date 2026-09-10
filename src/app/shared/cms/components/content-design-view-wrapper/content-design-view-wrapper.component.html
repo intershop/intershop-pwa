@@ -21,7 +21,7 @@
             <button
               class="btn"
               title="{{
-                ('designview.edit.link.title' | translate) + (pagelet.displayName ? ' ' + pagelet.displayName : '')
+                ('designview.edit.link.title' | translate) + (pagelet.displayName ? ` ${pagelet.displayName}` : '')
               }}"
               type="button"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"

@@ -4,7 +4,7 @@
   [attr.aria-invalid]="showError ? 'true' : undefined"
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
-  [attr.data-testing-id]="'radio-' + props.label"
+  [attr.data-testing-id]="`radio-${props.label}`"
   [attr.name]="radioName"
   [formControl]="formControl"
   [id]="id"

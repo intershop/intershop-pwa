@@ -45,10 +45,10 @@
       <div class="form-group">
         <ish-product-quantity-label
           translationKey="shopping_cart.pli.qty.label"
-          [for]="'quote-quantity_' + lineItem.id"
+          [for]="`quote-quantity_${lineItem.id}`"
         />
         @if (editable) {
-          <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
+          <ish-product-quantity [elementId]="`quote-quantity_${lineItem.id}`" />
         } @else {
           {{ lineItem.quantity.value | number }}
         }

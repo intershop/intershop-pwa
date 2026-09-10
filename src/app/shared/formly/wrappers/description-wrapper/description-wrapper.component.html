@@ -1,4 +1,4 @@
 <ng-template #fieldComponent />
-<small class="form-text" [id]="id + '-description'" [ngClass]="props.customDescription?.class">
+<small class="form-text" [id]="`${id}-description`" [ngClass]="props.customDescription?.class">
   {{ description | translate: args }}
 </small>

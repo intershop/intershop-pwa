@@ -1,5 +1,5 @@
 @if (productLabel$ | async; as productLabel) {
-  <span class="product-label" [ngClass]="'product-label-' + productLabel">
+  <span class="product-label" [ngClass]="`product-label-${productLabel}`">
     @switch (productLabel) {
       <!-- check for the value and show the according localized text in the ribbon -->
       @case ('new') {

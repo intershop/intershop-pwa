@@ -7,7 +7,7 @@
           aria-current="true"
           class="btn btn-link btn-link-action link-decoration-hover"
           type="button"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          [attr.data-testing-id]="`filter-link-${(facet.name | ishSanitize)}`"
           (click)="filter(facet)"
         >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
@@ -21,10 +21,10 @@
         <button
           class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
           type="button"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          [attr.data-testing-id]="`filter-link-${(facet.name | ishSanitize)}`"
           (click)="filter(facet)"
         >
-          {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
+          {{ facet.displayName }}{{ facet.level === maxLevel ? ` (${facet.count})` : '' }}
         </button>
       }
     </li>

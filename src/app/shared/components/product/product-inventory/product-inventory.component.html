@@ -18,7 +18,7 @@
                 <span class="col-6 stock-level" [ngClass]="getStockLevel(supStock.availableStock)">
                   <!-- keep-localization-pattern: ^product\.inventory\.stock_level\..*$ -->
                   {{
-                    'product.inventory.stock_level.' + getStockLevel(supStock.availableStock)
+                    `product.inventory.stock_level.${getStockLevel(supStock.availableStock)}`
                       | translate: { count: supStock.availableStock }
                   }}
                 </span>

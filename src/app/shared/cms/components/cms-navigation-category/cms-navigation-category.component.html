@@ -3,7 +3,7 @@
 @if (categoryTree$ | async; as category) {
   <li
     #subMenu
-    [class]="'dropdown ' + pagelet.stringParam('CSSClass', '')"
+    [class]="`dropdown ${pagelet.stringParam('CSSClass', '')}`"
     [ngClass]="{ open: isOpened(category.uniqueId) }"
     (click)="subMenuHide(subMenu)"
     (mouseenter)="subMenuShow(subMenu)"

@@ -51,10 +51,10 @@
                   class="form-check-input"
                   formControlName="id"
                   type="radio"
-                  [id]="'paymentOption_' + method.id"
+                  [id]="`paymentOption_${method.id}`"
                   [value]="method.id"
                 />
-                <label class="form-check-label" [for]="'paymentOption_' + method.id">
+                <label class="form-check-label" [for]="`paymentOption_${method.id}`">
                   {{ method.displayName }}
                 </label>
               </div>
@@ -86,11 +86,11 @@
             class="form-check-input"
             formControlName="id"
             type="radio"
-            [id]="'paymentOption_' + pi.id"
+            [id]="`paymentOption_${pi.id}`"
             [value]="pi.id"
           />
         }
-        <label class="form-check-label" [for]="'paymentOption_' + pi.id" [ngClass]="{ 'ms-0': isPreferred }">
+        <label class="form-check-label" [for]="`paymentOption_${pi.id}`" [ngClass]="{ 'ms-0': isPreferred }">
           {{ pi.accountIdentifier }}
         </label>
         <ish-account-payment-concardis-directdebit [paymentInstrument]="pi" />

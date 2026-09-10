@@ -14,7 +14,7 @@
   @if (wishlist) {
     <div class="list-item-row row mx-0" data-testing-id="wishlist-list-item-container">
       <div class="col-7 list-item" data-testing-id="wishlist-list-item">
-        <a data-testing-id="wishlist-list-title" [routerLink]="'/account/wishlists/' + wishlist.id">{{
+        <a data-testing-id="wishlist-list-title" [routerLink]="['/account/wishlists', wishlist.id]">{{
           wishlist.title
         }}</a>
         @if (wishlist.preferred) {

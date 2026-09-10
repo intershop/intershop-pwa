@@ -144,7 +144,7 @@
     >
       <!-- search button with icon -->
       @if (!configuration?.buttonText) {
-        <i class="searchbox-icon" [class]="'bi bi-' + usedIcon"></i>
+        <i class="searchbox-icon" [class]="`bi bi-${usedIcon}`"></i>
       } @else {
         {{ configuration?.buttonText }}
       }

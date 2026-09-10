@@ -8,13 +8,13 @@
         }
       }
     </button>
-    <div class="variation-options" ngbDropdownMenu [attr.aria-labelledby]="uuid + group.id + 'label'">
+    <div class="variation-options" ngbDropdownMenu [attr.aria-labelledby]="`${uuid + group.id}label`">
       @for (option of group.options; track option.value) {
         @if (!option.alternativeCombination || multipleOptions) {
           <button
             ngbDropdownItem
             type="button"
-            [attr.data-testing-id]="group.id + '-' + option.value"
+            [attr.data-testing-id]="`${group.id}-${option.value}`"
             [value]="option.value"
             (click)="optionChange(group.id, option.value)"
           >
@@ -43,7 +43,7 @@
     <span
       class="color-code"
       [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
-      [ngStyle]="{ 'background-color': '#' + option.metaData }"
+      [ngStyle]="{ 'background-color': `#${option.metaData}` }"
     ></span>
   }
   @if (group.attributeType === 'defaultAndSwatchImage') {

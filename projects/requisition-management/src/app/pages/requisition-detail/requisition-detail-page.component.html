@@ -111,7 +111,7 @@
         <ish-requisition-reject-dialog #rejectDialog (submitRejectRequisition)="rejectRequisition($event)" />
 
         <div class="section d-flex d-flex justify-content-between">
-          <a class="no-print" [routerLink]="['../../' + view, { status: requisition.approval.statusCode }]">
+          <a class="no-print" [routerLink]="['../..', view, { status: requisition.approval.statusCode }]">
             @if (view === 'buyer') {
               {{ 'approval.detailspage.links.return_to_requisitions' | translate }}
             } @else {
