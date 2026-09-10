@@ -32,11 +32,11 @@
       <div class="row d-flex">
         <!-- Invoice Address -->
         <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
-          <ish-address [address]="order.invoiceToAddress" [displayEmail]="true" />
+          <ish-address [address]="order.invoiceToAddress" />
         </ish-info-box>
         <!-- Shipping Address -->
         <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
-          <ish-address [address]="order.commonShipToAddress" />
+          <ish-address [address]="order.commonShipToAddress" [displayEmail]="false" />
         </ish-info-box>
       </div>
       <div class="row d-flex">
