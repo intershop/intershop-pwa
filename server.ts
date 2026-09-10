@@ -122,7 +122,7 @@ const restRequestDuration = collectDetailedMetrics
 
 const PORT = process.env.PORT || 4200;
 
-const DEPLOY_URL = process.env.THEME ? join(getDeployURLFromEnv(), process.env.THEME, '/') : getDeployURLFromEnv();
+const DEPLOY_URL = process.env.THEME ? `${getDeployURLFromEnv()}${process.env.THEME}/` : getDeployURLFromEnv();
 
 const DIST_FOLDER = join(process.cwd(), 'dist');
 
