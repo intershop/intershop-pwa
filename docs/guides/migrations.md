@@ -98,6 +98,11 @@ The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/pref
 The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
+**Email Validator No Longer Rejects Empty Values**
+
+`SpecialValidators.email` (used by the `ish-email-field`) now treats an empty value as valid.
+This allows optional email fields; required validation is still enforced by the separate `required` validator where configured.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
