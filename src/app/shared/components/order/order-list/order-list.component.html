@@ -73,7 +73,7 @@
           {{ 'account.orderlist.table.destination' | translate }}
         </th>
         <td *cdkCellDef="let order" cdk-cell [attr.data-label]="'account.orderlist.table.destination' | translate">
-          <ish-address [address]="order.commonShipToAddress" />
+          <ish-address [address]="order.commonShipToAddress" [displayEmail]="false" />
         </td>
       </ng-container>
       <!-- Order total  -->
