@@ -15,7 +15,7 @@
       props.title || props.fieldClass ? '' : dprops.noTitleClass,
     ]"
   >
-    <div class="form-check" [attr.data-testing-id]="keyString + '-wrapper'">
+    <div class="form-check" [attr.data-testing-id]="`${keyString}-wrapper`">
       <ng-template #fieldComponent />
       @if (props.label || props.tooltip) {
         <label

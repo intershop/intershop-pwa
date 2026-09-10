@@ -5,8 +5,8 @@
         class="filter-swatch btn btn-link btn-link-action"
         type="button"
         [attr.aria-current]="facet.selected ? 'true' : undefined"
-        [attr.data-testing-id]="'filter-link-' + (facet.displayName | ishSanitize)"
-        [title]="facet.displayName + ' (' + facet.count + ')'"
+        [attr.data-testing-id]="`filter-link-${(facet.displayName | ishSanitize)}`"
+        [title]="`${facet.displayName} (${facet.count})`"
         (click)="filter(facet)"
       >
         <span

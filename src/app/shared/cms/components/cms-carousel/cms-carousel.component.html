@@ -12,7 +12,7 @@
             <ng-template ngbSlide>
               <div class="row">
                 @for (slidePageletId of slidePagelets; track slidePageletId) {
-                  <div [ngClass]="'col-sm-' + itemGridSize">
+                  <div [ngClass]="`col-sm-${itemGridSize}`">
                     <ish-content-pagelet [pageletId]="slidePageletId" />
                   </div>
                 }

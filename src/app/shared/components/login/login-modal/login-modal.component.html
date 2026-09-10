@@ -15,7 +15,7 @@
       @if (loginMessageKey) {
         <p class="alert alert-info">
           <!-- keep-localization-pattern: ^account\.login\..*\.message$ -->
-          {{ 'account.login.' + loginMessageKey + '.message' | translate }}
+          {{ `account.login.${loginMessageKey}.message` | translate }}
         </p>
       }
 

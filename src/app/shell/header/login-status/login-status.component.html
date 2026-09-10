@@ -25,7 +25,7 @@
     >
       <i class="bi bi-person-fill header-icon"></i>
       @if (user.lastName) {
-        <span class="login-name" [ngClass]="getViewClasses()">{{ user.firstName + ' ' + user.lastName }}</span>
+        <span class="login-name" [ngClass]="getViewClasses()">{{ `${user.firstName} ${user.lastName}` }}</span>
       } @else {
         <span class="login-name" [ngClass]="getViewClasses()">{{
           'account.login_status.myaccount.link' | translate

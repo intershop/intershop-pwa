@@ -2,7 +2,7 @@
   <div
     class="row"
     ishProductContext
-    [attr.data-testing-id]="'quickorder-line-' + i"
+    [attr.data-testing-id]="`quickorder-line-${i}`"
     [configuration]="{ quantity: true }"
     [(quantity)]="model[i].quantity"
   >

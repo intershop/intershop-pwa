@@ -10,7 +10,7 @@
         @if (group.attributeType === 'colorCode') {
           <span
             [ngClass]="{ 'light-color': option.label.toLowerCase() === 'white' }"
-            [ngStyle]="{ 'background-color': '#' + option.metaData }"
+            [ngStyle]="{ 'background-color': `#${option.metaData}` }"
           ></span>
         }
         @if (group.attributeType === 'swatchImage') {

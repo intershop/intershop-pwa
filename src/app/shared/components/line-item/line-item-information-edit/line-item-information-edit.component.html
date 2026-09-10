@@ -10,7 +10,7 @@
             class="btn btn-link btn-link-with-icon"
             data-testing-id="line-item-custom-fields-toggle-link"
             type="button"
-            [attr.aria-controls]="'line-item-information-input_' + getLineItemId()"
+            [attr.aria-controls]="`line-item-information-input_${getLineItemId()}`"
             [attr.aria-expanded]="!collapsed"
             (click)="collapsed = !collapsed"
           >
@@ -21,7 +21,7 @@
             <i class="bi" [ngClass]="collapsed ? 'bi-chevron-down' : 'bi-chevron-up'"></i>
           </button>
         }
-        <div [id]="'line-item-information-input_' + getLineItemId()" [ngbCollapse]="collapsed">
+        <div [id]="`line-item-information-input_${getLineItemId()}`" [ngbCollapse]="collapsed">
           <form ishFormSubmit [formGroup]="customFieldsForm" (ngSubmit)="save()">
             <ish-custom-fields-formly
               fieldClass="col-md-8 col-xl-6"

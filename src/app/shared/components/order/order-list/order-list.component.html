@@ -37,7 +37,7 @@
           cdk-cell
           [attr.data-label]="'account.orderlist.table.order_number.title' | translate"
         >
-          <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
+          <a [routerLink]="['/account/orders', order.id]">{{ order.documentNo }}</a>
         </td>
       </ng-container>
       <!-- Buyer -->

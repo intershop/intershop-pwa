@@ -1,5 +1,5 @@
 @if (category$ | async; as category) {
-  <div class="category-name" [attr.data-testing-id]="'category-' + category.uniqueId">
+  <div class="category-name" [attr.data-testing-id]="`category-${category.uniqueId}`">
     <a tabindex="-1" [routerLink]="category | ishCategoryRoute">
       <ish-category-image [category]="category" [loading]="loading" />
     </a>

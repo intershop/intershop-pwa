@@ -12,7 +12,7 @@
     >
       <a
         class="main-navigation-link"
-        [attr.data-testing-id]="category.uniqueId + '-link'"
+        [attr.data-testing-id]="`${category.uniqueId}-link`"
         [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
         [routerLink]="category.url"
       >

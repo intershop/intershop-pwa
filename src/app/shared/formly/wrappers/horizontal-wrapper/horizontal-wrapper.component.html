@@ -1,4 +1,4 @@
-<div class="form-group row" [attr.data-testing-id]="keyString + '-wrapper'" [class.has-error]="showError">
+<div class="form-group row" [attr.data-testing-id]="`${keyString}-wrapper`" [class.has-error]="showError">
   <!-- prettier-ignore -->
   @if (props.label) {
     <label class="col-form-label" [attr.for]="id" [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"

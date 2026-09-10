@@ -28,7 +28,7 @@
         <ng-container [ngbNavItem]="type">
           <a
             ngbNavLink
-            [attr.data-testing-id]="'account-punchout-tab-' + type"
+            [attr.data-testing-id]="`account-punchout-tab-${type}`"
             [queryParams]="{ format: type }"
             [routerLink]="['../punchout']"
             >{{ 'account.punchout.type.text' | translate: { '0': type } }}</a

@@ -11,7 +11,7 @@
         <ng-template #OciConfigurationPlaceholder>
           @if (availablePlaceholders$ | async; as placeholders) {
             @for (placeholder of placeholders; track placeholder) {
-              <div>{{ '{' + placeholder + '}' }}</div>
+              <div>{{ `{${placeholder}}` }}</div>
             }
           }
         </ng-template>

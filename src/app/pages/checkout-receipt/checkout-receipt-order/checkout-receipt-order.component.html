@@ -34,12 +34,9 @@
         >&nbsp;
         <strong data-testing-id="order-document-number">
           @if (order.customerNo) {
-            <a
-              [routerLink]="[
-                order.recurrence ? '/account/recurring-orders/' + order.id : '/account/orders/' + order.id,
-              ]"
-              >{{ order.documentNo }}</a
-            >
+            <a [routerLink]="['/account', order.recurrence ? 'recurring-orders' : 'orders', order.id]">{{
+              order.documentNo
+            }}</a>
           } @else {
             {{ order.documentNo }}
           }

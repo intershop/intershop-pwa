@@ -17,7 +17,7 @@
             cdk-cell
             [attr.data-label]="'account.costcenter.details.buyers.list.header.name' | translate"
           >
-            <a *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" [routerLink]="'../../users/' + buyer.login"
+            <a *ishIsAuthorizedTo="'APP_B2B_MANAGE_USERS'" [routerLink]="['../../users', buyer.login]"
               >{{ buyer.firstName }} {{ buyer.lastName }}</a
             >
             <ng-container *ishHasNotRole="'APP_B2B_ACCOUNT_OWNER'">

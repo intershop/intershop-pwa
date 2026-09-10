@@ -61,7 +61,7 @@
           <!-- Name -->
           <dt class="col-md-4">{{ 'account.profile.name.label' | translate }}</dt>
           <dd class="col-md-8" data-testing-id="name-field">
-            {{ user.title ? user.title + ' ' : '' }}{{ user.firstName }} {{ user.lastName }}
+            {{ user.title ? `${user.title} ` : '' }}{{ user.firstName }} {{ user.lastName }}
           </dd>
           <!-- Phone -->
           <dt class="col-md-4">{{ 'account.profile.phone.label' | translate }}</dt>

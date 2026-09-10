@@ -2,7 +2,7 @@
   <ng-content select="[header]">
     <div class="modal-header">
       @if (options.titleText) {
-        <h2 class="modal-title" [id]="'modal-title-' + uuid">
+        <h2 class="modal-title" [id]="`modal-title-${uuid}`">
           @if (options.icon) {
             <i class="bi bi-{{ options.icon }} {{ options.iconClass }} "></i>
           }

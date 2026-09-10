@@ -4,7 +4,7 @@
   #skipContentLink
   class="d-none d-lg-block skip-content-link"
   data-nosnippet
-  [href]="'#' + (skipToElementId || generatedElementAfterListingId)"
+  [href]="`#${skipToElementId || generatedElementAfterListingId}`"
   >{{ linkText | translate }}</a
 >
 
