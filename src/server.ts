@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports, max-lines */
-import { CommonEngine, isMainModule } from '@angular/ssr/node';
+import { REQUEST } from '@angular/core';
+import { CommonEngine, createWebRequestFromNodeRequest, isMainModule } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
@@ -14,7 +15,7 @@ import 'zone.js/node';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
+import { REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { icmCallsCache } from './app/core/interceptors/ssr-cache.interceptor';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './ssr/deploy-url';
@@ -522,7 +523,7 @@ export function app({
         inlineCriticalCss: false,
         providers: [
           { provide: appBaseHref, useValue: baseHref },
-          { provide: REQUEST, useValue: req },
+          { provide: REQUEST, useValue: createWebRequestFromNodeRequest(req, ['x-forwarded-proto']) },
           { provide: RESPONSE, useValue: res },
           { provide: REQUEST_ID, useValue: getRequestId(req) },
         ],
