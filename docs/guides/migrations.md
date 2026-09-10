@@ -120,6 +120,11 @@ For more information, see the [Security Headers and Content Security Policy (CSP
 This allows optional e-mail fields.
 Required validation is still enforced by the separate `required` validator where configured.
 
+**Invoice e-mail field added to the business customer address form**
+
+The address form now includes an optional invoice e-mail field for business customers.
+If left empty, the customer's login e-mail address is used.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
