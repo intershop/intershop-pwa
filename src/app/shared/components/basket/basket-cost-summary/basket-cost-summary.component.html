@@ -19,8 +19,7 @@
       <dt class="col-6">
         @if (totals.isEstimated) {
           <span>{{ 'checkout.cart.estimated_shipping_handling.label' | translate }}</span>
-        }
-        @if (!totals.isEstimated) {
+        } @else {
           <span>{{ 'checkout.order.shipping.label' | translate }}</span>
         }
       </dt>
@@ -56,8 +55,7 @@
       <dt class="col-6 total-price">
         @if (totals.isEstimated) {
           <span>{{ 'checkout.cart.estimated_total.label' | translate }}</span>
-        }
-        @if (!totals.isEstimated) {
+        } @else {
           <span>{{ 'checkout.order.total_cost.label' | translate }}</span>
         }
       </dt>

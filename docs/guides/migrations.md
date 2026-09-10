@@ -92,6 +92,12 @@ Existing string concatenations in templates have been auto-fixed, as shown in th
 
 Run `npm run lint -- --fix` to auto-fix any remaining concatenations.
 
+**Additional Angular 20 Template Lint Rules**
+
+The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/prefer-built-in-pipes` rules have been enabled.
+The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
+Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
