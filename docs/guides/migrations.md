@@ -114,6 +114,12 @@ Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable 
 Review and tighten the baseline headers for your domains.
 For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
 
+**E-mail validator no longer rejects empty values**
+
+`SpecialValidators.email` (used by `ish-email-field`) now treats an empty value as valid.
+This allows optional e-mail fields.
+Required validation is still enforced by the separate `required` validator where configured.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
