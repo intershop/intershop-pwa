@@ -10,9 +10,9 @@ const {
   normalizeUrl,
 } = require('./lighthouse-utils');
 
-function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr) {
-  let md = `| Page | | Desktop | Δ | | Mobile | Δ |\n`;
-  md += `|:---|---|---:|---:|---|---:|---:|\n`;
+function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr, mobNoBannerBase, mobNoBannerCurr) {
+  let md = `| Page | | Desktop | Δ | | Mobile | Δ | | Mobile (returning user) | Δ |\n`;
+  md += `|:---|---|---:|---:|---|---:|---:|---|---:|---:|\n`;
 
   for (const url of Object.keys(pages)) {
     const row = [
@@ -23,6 +23,9 @@ function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr)
       '',
       formatScore(mobCurr.get(url)?.performance, mobCurr.get(url)?.reportUrl),
       formatDelta(mobCurr.get(url)?.performance, mobBase.get(url)?.performance, 3),
+      '',
+      formatScore(mobNoBannerCurr.get(url)?.performance, mobNoBannerCurr.get(url)?.reportUrl),
+      formatDelta(mobNoBannerCurr.get(url)?.performance, mobNoBannerBase.get(url)?.performance, 3),
     ];
     md += `| ${row.join(' | ')} |\n`;
   }
@@ -36,6 +39,8 @@ function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr)
   const desktopCurrentScores = collectUrlScores('lighthouse-desktop-current');
   const mobileBaselineScores = collectUrlScores('lighthouse-mobile-baseline');
   const mobileCurrentScores = collectUrlScores('lighthouse-mobile-current');
+  const mobileNoBannerBaselineScores = collectUrlScores('lighthouse-mobile-no-banner-baseline');
+  const mobileNoBannerCurrentScores = collectUrlScores('lighthouse-mobile-no-banner-current');
 
   let body = '### Lighthouse Performance Score Comparison\n\n';
 
@@ -44,7 +49,9 @@ function renderPagePerformanceTable(pages, deskBase, deskCurr, mobBase, mobCurr)
     desktopBaselineScores,
     desktopCurrentScores,
     mobileBaselineScores,
-    mobileCurrentScores
+    mobileCurrentScores,
+    mobileNoBannerBaselineScores,
+    mobileNoBannerCurrentScores
   );
 
   body += '> Click on scores to view detailed Lighthouse reports (links are valid for some days).\n';
