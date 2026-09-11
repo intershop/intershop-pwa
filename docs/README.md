@@ -52,6 +52,7 @@ kb_sync_latest_only
 - [Guide - Accessibility in UX: Patterns and Rationale](./guides/accessibility-ux-pattern.md)
 - [Concept - Captcha](./concepts/captcha.md)
 - [Guide - Security Standard PCI DSS 4.0](./guides/pci-dss-4.md)
+- [Guide - Security Headers and Content Security Policy (CSP)](./guides/security-headers.md)
 
 ### Customization
 

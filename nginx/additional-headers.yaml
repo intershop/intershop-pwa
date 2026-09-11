@@ -1,1 +1,23 @@
 headers:
+  # Permissive-by-default security headers for the standard PWA.
+  # WARNING: while script-src keeps 'unsafe-inline', this CSP does NOT block inline-script XSS.
+  # The most effective hardening step is to remove 'unsafe-inline' from script-src (see docs/guides/security-headers.md).
+  - Content-Security-Policy: >-
+      default-src 'self' https:;
+      script-src 'self' 'unsafe-inline' https:;
+      style-src 'self' 'unsafe-inline' https:;
+      img-src 'self' data: blob: https:;
+      font-src 'self' data: https:;
+      connect-src 'self' https:;
+      frame-src 'self' https:;
+      child-src 'self' blob: https:;
+      worker-src 'self' blob:;
+      form-action 'self' https:;
+      base-uri 'self';
+      object-src 'none'
+  - X-Content-Type-Options: 'nosniff'
+  - Referrer-Policy: 'strict-origin-when-cross-origin'
+  # allow the store locator (geolocation) but disable clearly unused invasive features
+  - Permissions-Policy: 'camera=(), microphone=(), geolocation=(self)'
+  # allow-popups keeps popup-based payment/checkout flows working
+  - Cross-Origin-Opener-Policy: 'same-origin-allow-popups'
