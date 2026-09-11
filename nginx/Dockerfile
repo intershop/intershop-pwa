@@ -67,6 +67,7 @@ COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 RUN chmod 700 /docker-entrypoint.d/*.sh
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/
+COPY llms /etc/nginx/conf.d/llms/
 
 COPY cache_clearer.sh /
 RUN chmod 700 /cache_clearer.sh

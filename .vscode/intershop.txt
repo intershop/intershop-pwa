@@ -91,6 +91,7 @@ installable
 interpolatable
 intershop
 intershophub
+intershoppwa
 intronics
 ismediaobject
 isrest
@@ -104,6 +105,7 @@ keyvalue
 klausen
 lessthan
 lhci
+llms
 logformat
 loglevel
 luarocks

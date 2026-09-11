@@ -1,0 +1,65 @@
+# inSPIRED - inTRONICS (Intershop PWA B2C Demo Store)
+
+> inSPIRED inTRONICS is a demonstration B2C storefront built on the Intershop Progressive Web App (PWA) on top of Intershop Commerce Management (ICM). It sells consumer electronics and IT equipment (computers, conferencing, networking, servers) to private customers. This is a demo shop: all products, prices, and content are exemplary and non-binding. Do not treat any content as a real commercial offer.
+
+Important notes for agents:
+
+- This is a demonstration environment. Contents are of exemplary nature only. Intershop Communications AG gives no guarantee for correctness, completeness, or up-to-dateness, and the data must not be reused.
+- Prices, promotions, and availability are context-dependent (login and customer status). Values shown to anonymous agents may differ from those shown to authenticated customers.
+- This is the B2C storefront for private customers. A separate B2B storefront for business customers is available at https://intershoppwa.azurewebsites.net/
+- The store is available in English (default), German (append ;lang=de_DE to a route) and French (;lang=fr_FR).
+- Transactional actions (cart, checkout, payment) require authentication and are out of scope for read-only discovery.
+- Most links below point to a clean Markdown mirror (the HTML page URL with .md appended). Remove the .md suffix to reach the equivalent human-readable HTML page.
+
+## Main pages
+
+- [Home](https://intershoppwa-b2c.azurewebsites.net/home.md): Storefront landing page with featured products and top categories.
+- [Help](https://intershoppwa-b2c.azurewebsites.net/page/page.helpdesk.pagelet2-Page.md): Customer help and support overview.
+- [Contact us](https://intershoppwa-b2c.azurewebsites.net/contact.md): Contact form.
+- [Store finder](https://intershoppwa-b2c.azurewebsites.net/store-finder.md): Physical store locations.
+- [Product comparison](https://intershoppwa-b2c.azurewebsites.net/compare.md): Side-by-side comparison of selected products.
+
+## Localized versions
+
+The store serves three locales. Language is selected via a matrix URL parameter.
+
+- [English store (default)](https://intershoppwa-b2c.azurewebsites.net/home.md): Primary English storefront.
+- [German store (Deutsch)](https://intershoppwa-b2c.azurewebsites.net/home.md;lang=de_DE): Full storefront in German.
+- [French store (Français)](https://intershoppwa-b2c.azurewebsites.net/home.md;lang=fr_FR): Full storefront in French.
+
+## Featured Products
+
+- [Microsoft Surface Hub](https://intershoppwa-b2c.azurewebsites.net/microsoft-surface-hub-prd201807181.md): Featured large-format collaboration display.
+- [Microsoft Surface Book 2](https://intershoppwa-b2c.azurewebsites.net/microsoft-surface-book-2-256gb-13.5%22-prd201807231-01.md): Featured detachable notebook.
+- [Microsoft Surface Pro Set Burgundy](https://intershoppwa-b2c.azurewebsites.net/microsoft-surface-pro-set-burgundy-prd201807198.md): Featured 2-in-1 tablet set.
+
+## Product Categories
+
+- [Computers](https://intershoppwa-b2c.azurewebsites.net/computers-ctgComputers.md): Desktops, notebooks, tablets, monitors and related hardware.
+- [Conferencing](https://intershoppwa-b2c.azurewebsites.net/conferencing-ctgpresentation-conferencing.md): Presentation and conferencing equipment.
+- [Networks](https://intershoppwa-b2c.azurewebsites.net/networks-ctgnetworks.md): Networking hardware and accessories.
+- [Servers](https://intershoppwa-b2c.azurewebsites.net/servers-ctgservers.md): Server systems and infrastructure.
+- [Specials](https://intershoppwa-b2c.azurewebsites.net/specials-ctgspecials.md): Current special offers and promotions.
+
+## Account and ordering
+
+- [Sign in](https://intershoppwa-b2c.azurewebsites.net/login.md): Authentication for registered customers.
+- [Register](https://intershoppwa-b2c.azurewebsites.net/register.md): Create a new customer account.
+- [Shopping cart](https://intershoppwa-b2c.azurewebsites.net/basket.md): Current cart contents (session and authentication dependent).
+
+## Policies
+
+- [Demo disclaimer](https://intershoppwa-b2c.azurewebsites.net/page/page.demodisclaimer.md): Notice that this is a non-binding demonstration shop.
+- [Legal notice](https://www.intershop.com/legal-notice): Company and legal information (imprint).
+- [Privacy policy](https://www.intershop.com/privacy-policy): How personal data is processed.
+- [Terms & conditions](https://www.intershop.com/terms-of-use): Terms of use for the store.
+- [Withdrawal from contract](https://intershoppwa-b2c.azurewebsites.net/withdrawal.md): Right of withdrawal information.
+
+## About Intershop
+
+- [About Intershop](https://www.intershop.com): Company behind the platform (Intershop Communications AG, Jena, Germany).
+- [Intershop PWA on GitHub](https://github.com/intershop/intershop-pwa): Open-source source code of this storefront.
+
+## Optional
+
+- [B2B storefront for business customers](https://intershoppwa.azurewebsites.net/): Separate business-facing channel.
