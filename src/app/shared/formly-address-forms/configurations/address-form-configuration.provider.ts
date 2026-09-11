@@ -22,7 +22,8 @@ export class AddressFormConfigurationProvider {
   getConfiguration(
     countryCode: string = '',
     businessCustomer: boolean = false,
-    shortForm: boolean = false
+    shortForm: boolean = false,
+    email: boolean = true
   ): AddressFormConfiguration {
     let configuration = this.findConfiguration(countryCode);
     if (!configuration) {
@@ -30,6 +31,7 @@ export class AddressFormConfigurationProvider {
     }
     configuration.businessCustomer = businessCustomer;
     configuration.shortForm = shortForm;
+    configuration.email = email;
     return configuration;
   }
 

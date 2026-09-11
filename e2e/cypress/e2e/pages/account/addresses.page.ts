@@ -29,6 +29,10 @@ export class AddressesPage {
     cy.get('[data-testing-id="create-address-button"]').click();
   }
 
+  get createAddressFormEmailField() {
+    return cy.get('[data-testing-id="create-address-form"]').find('input[data-testing-id="email"]');
+  }
+
   fillForm(user: string, password: string) {
     cy.get('input[data-testing-id="login"]').clear().type(user).blur();
     cy.get('input[data-testing-id="password"]').clear().type(password).blur();

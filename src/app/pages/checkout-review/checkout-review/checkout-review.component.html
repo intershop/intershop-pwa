@@ -75,7 +75,7 @@
           editRouterLink="/checkout/address"
           heading="checkout.widget.billing-address.heading"
         >
-          <ish-address [address]="basket.invoiceToAddress" [displayEmail]="true" />
+          <ish-address [address]="basket.invoiceToAddress" />
         </ish-info-box>
         <!-- Shipping Address -->
         <ish-info-box
@@ -83,7 +83,7 @@
           editRouterLink="/checkout/address"
           heading="checkout.widget.shipping-address.heading"
         >
-          <ish-address [address]="basket.commonShipToAddress" />
+          <ish-address [address]="basket.commonShipToAddress" [displayEmail]="false" />
         </ish-info-box>
       </div>
       <div class="row d-flex">
