@@ -63,6 +63,7 @@ COPY nginx.conf.tmpl /etc/nginx/nginx.conf.tmpl
 COPY features /etc/nginx/features/
 COPY loglevel /etc/nginx/loglevel/
 COPY templates /etc/nginx/templates/
+COPY robots /etc/nginx/conf.d/robots/
 COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 RUN chmod 700 /docker-entrypoint.d/*.sh
 COPY *.yaml /
