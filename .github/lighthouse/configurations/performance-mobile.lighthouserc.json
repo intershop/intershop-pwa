@@ -16,7 +16,7 @@
       "settings": {
         "formFactor": "mobile",
         "throttlingMethod": "devtools",
-        "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-web-security --disable-features=TranslateUI --disable-ipc-flooding-protection --allow-insecure-localhost",
+        "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-web-security --disable-features=TranslateUI --disable-ipc-flooding-protection",
         "onlyCategories": ["performance"]
       }
     },
