@@ -486,14 +486,15 @@ export function app() {
     if (req.headers.accept) {
       const accept = req.headers.accept.toLowerCase();
       if (!accept.includes('html') && ['css', 'image', 'json', 'javascript'].some(inc => accept.includes(inc))) {
+        // 406 (not 404) so NGINX does not cache it and poison the shared HTML page cache entry
         logger.warn(
           {
             ...getBaseLogData(req),
-            http: { request: { mime_type: accept }, response: { status_code: 404 } },
+            http: { request: { mime_type: accept }, response: { status_code: 406 } },
           },
-          'RES 404 - Accept header mismatch'
+          'RES 406 - Accept header mismatch'
         );
-        return res.sendStatus(404);
+        return res.sendStatus(406);
       }
     }
 
