@@ -1,10 +1,4 @@
-import {
-  HTTP_INTERCEPTORS,
-  HttpErrorResponse,
-  provideHttpClient,
-  withFetch,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
 import { RenderMode, provideServerRendering, withRoutes } from '@angular/ssr';
 import { META_REDUCERS } from '@ngrx/store';
@@ -86,7 +80,7 @@ class SSRErrorHandler implements ErrorHandler {
 
 const providers = [
   provideServerRendering(withRoutes([{ path: '**', renderMode: RenderMode.Server }])),
-  provideHttpClient(withFetch(), withInterceptorsFromDi()),
+  provideHttpClient(withFetch()),
   ...(process.env.ICM_BASE_URL_SSR
     ? [{ provide: HTTP_INTERCEPTORS, useClass: SSRInternalBackendInterceptor, multi: true }]
     : []),
