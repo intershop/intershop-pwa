@@ -41,7 +41,7 @@ import {
   selectOrderAfterRedirect,
   selectOrderAfterRedirectFail,
 } from './orders.actions';
-import { OrdersEffects, REDIRECT_PENDING_ORDER_ID } from './orders.effects';
+import { OrdersEffects } from './orders.effects';
 
 describe('Orders Effects', () => {
   let actions$: Observable<Action>;
@@ -169,22 +169,27 @@ describe('Orders Effects', () => {
       expect(location.path()).toEqual('/checkout/receipt?recurringOrderId=BID');
     }));
 
-    // eslint-disable-next-line jest/no-disabled-tests
-    xit('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
-      const action = createOrderSuccess({
-        order: {
-          id: '123',
-          orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
-        } as Order,
-        basketId: 'BID',
-      });
-      actions$ = of(action);
+    it('should mark the order before navigating to an external URL after CreateOrderSuccess', fakeAsync(() => {
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(noop);
 
-      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
+      try {
+        const action = createOrderSuccess({
+          order: {
+            id: '123',
+            orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
+          } as Order,
+          basketId: 'BID',
+        });
+        actions$ = of(action);
 
-      tick(500);
+        effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
 
-      expect(window.location.assign).toHaveBeenCalled();
+        tick(500);
+
+        verify(orderServiceMock.markPendingPaymentRedirect('123')).once();
+      } finally {
+        consoleErrorSpy.mockRestore();
+      }
     }));
   });
 
@@ -375,7 +380,7 @@ describe('Orders Effects', () => {
     });
 
     it('should navigate to the payment page with cancel parameters if the review page is entered with a pending order', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
       router.navigateByUrl('/checkout/review');
       tick(500);
 
@@ -386,8 +391,22 @@ describe('Orders Effects', () => {
       expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
     }));
 
-    it('should keep the pending order id in the session storage until the cancellation succeeded', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+    it('should navigate to the payment page if the review page is restored from the back/forward cache with a pending order', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      // a restore does not trigger a navigation, so keep the regular navigation branch quiet with parameters it ignores
+      router.navigate(['checkout', 'review'], { queryParams: { redirect: 'cancel', orderId: order.id } });
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
+      window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
+    }));
+
+    it('should not clear the pending order marker itself', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
       router.navigateByUrl('/checkout/review');
       tick(500);
 
@@ -395,7 +414,7 @@ describe('Orders Effects', () => {
 
       tick(500);
 
-      expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toEqual(order.id);
+      verify(orderServiceMock.clearPendingPaymentRedirect()).never();
     }));
 
     it('should not do anything if there is no pending order', fakeAsync(() => {
@@ -408,19 +427,17 @@ describe('Orders Effects', () => {
     }));
 
     it('should not do anything if the review page is called with query params', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
       router.navigate(['checkout', 'review'], { queryParams: { redirect: 'cancel', orderId: order.id } });
       tick(500);
 
       effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
 
       tick(500);
-
-      expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toEqual(order.id);
     }));
 
     it('should not do anything if another page is entered with a pending order', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
       router.navigateByUrl('/checkout/payment');
       tick(500);
 
@@ -431,61 +448,17 @@ describe('Orders Effects', () => {
   });
 
   describe('cleanupRedirectMarker$', () => {
-    beforeEach(() => {
-      sessionStorage.clear();
-    });
-
-    afterEach(() => {
-      sessionStorage.clear();
-    });
-
-    it('should remove the pending order id from the session storage', done => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+    it('should clear the pending order marker via the order service', done => {
       actions$ = of(resetAfterCheckoutPaymentRedirectMarker());
 
       effects.cleanupRedirectMarker$.subscribe({
         next: () => {
-          expect(sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)).toBeNull();
+          verify(orderServiceMock.clearPendingPaymentRedirect()).once();
           done();
         },
         error: fail,
       });
     });
-  });
-
-  describe('reloadAfterRedirectAbortion$', () => {
-    beforeEach(() => {
-      sessionStorage.clear();
-    });
-
-    afterEach(() => {
-      sessionStorage.clear();
-    });
-
-    // jsdom neither implements nor allows mocking location.reload
-    // eslint-disable-next-line jest/no-disabled-tests
-    xit('should reload if the page is restored from the back/forward cache with a pending order', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
-
-      effects.reloadAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
-      window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
-
-      expect(window.location.reload).toHaveBeenCalledTimes(1);
-    }));
-
-    it('should not reload if the page is not restored from the back/forward cache', fakeAsync(() => {
-      sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
-
-      effects.reloadAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
-      const event = new Event('pageshow') as PageTransitionEvent;
-      Object.defineProperty(event, 'persisted', { value: false });
-      window.dispatchEvent(event);
-    }));
-
-    it('should not reload if there is no pending order', fakeAsync(() => {
-      effects.reloadAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
-      window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
-    }));
   });
 
   describe('returnFromRedirectAfterOrderCreation$', () => {

@@ -43,8 +43,6 @@ import {
 } from './orders.actions';
 import { getOrder, getOrderListQuery, getSelectedOrder } from './orders.selectors';
 
-export const REDIRECT_PENDING_ORDER_ID = 'redirect-pending-order-id';
-
 @Injectable()
 export class OrdersEffects {
   constructor(
@@ -86,7 +84,7 @@ export class OrdersEffects {
             order.orderCreation.stopAction.type === 'Redirect' &&
             order.orderCreation.stopAction.redirectUrl
           ) {
-            sessionStorage.setItem(REDIRECT_PENDING_ORDER_ID, order.id);
+            this.orderService.markPendingPaymentRedirect(order.id);
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else if (
@@ -204,32 +202,6 @@ export class OrdersEffects {
   );
 
   /**
-   * Reloads the application if the checkout review page is restored from the back/forward cache while a
-   * payment provider redirect is still pending.
-   *
-   * Going back from the payment provider shortly after the redirect restores the previous document instead of
-   * loading it again. The application is therefore never bootstrapped, no routing happens and
-   * cancelOrderAfterRedirectAbortion$ would not notice the return at all.
-   *
-   * Whether a document is taken from the back/forward cache is browser specific, so the restore is only
-   * detectable via the 'persisted' flag of the pageshow event. To bypass the cache exclusively for the
-   * aborted redirect, the reload additionally requires the pending order marker and the review page url,
-   * which has to be read from the store since the restored document does not trigger a navigation.
-   */
-  reloadAfterRedirectAbortion$ =
-    !SSR &&
-    createEffect(
-      () =>
-        fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
-          filter(event => event.persisted && !!sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)),
-          concatLatestFrom(() => this.store.pipe(select(selectUrl))),
-          filter(([, url]) => /^\/checkout\/review/.test(url)),
-          map(() => location.reload())
-        ),
-      { dispatch: false }
-    );
-
-  /**
    * Cancels an order whose payment provider redirect has been aborted by the customer.
    *
    * After order creation the customer is redirected to the payment provider by leaving the application.
@@ -238,30 +210,47 @@ export class OrdersEffects {
    * 'STOPPED' state and the basket would remain blocked.
    *
    * Returning to the checkout review page without the 'redirect' and 'orderId' query parameters is therefore
-   * treated as an abortion: the id of the pending order is read from the session storage and the regular
+   * treated as an abortion: the id of the pending order is read from the order service and the regular
    * cancellation flow is entered by navigating to the cancel URL, which finally sends the CANCEL status to
    * the server.
    * Since the basket only reappears with that cancellation, the navigation cannot wait for it and may be
    * rejected by the checkout guard, so the marker is kept until the navigation actually succeeded.
+   *
+   * The return is detected from two sources so that no forced reload is required: a regular router
+   * navigation covers a freshly loaded document, while the 'pageshow' event with its 'persisted' flag
+   * covers a restore from the back/forward cache, where the previous document is shown again without any
+   * navigation. The current url has to be read from the store in the cache case, since the restored
+   * document does not trigger one.
    */
   cancelOrderAfterRedirectAbortion$ = createEffect(
-    () =>
-      this.store.pipe(
+    () => {
+      const navigatedBackToReview$ = this.store.pipe(
         ofUrl(/^\/checkout\/review/),
         select(selectQueryParams),
         // the redirect/orderId parameters mean the provider redirected back on its own, which the regular flow handles
-        filter(
-          queryParams =>
-            !queryParams.redirect && !queryParams.orderId && !!sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)
-        ),
-        map(() => sessionStorage.getItem(REDIRECT_PENDING_ORDER_ID)),
+        filter(queryParams => !queryParams.redirect && !queryParams.orderId)
+      );
+
+      // a restore from the back/forward cache does not trigger a navigation, so react to the pageshow event and
+      // read the current url from the store instead
+      const restoredReviewFromCache$ = SSR
+        ? EMPTY
+        : fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
+            filter(event => event.persisted),
+            concatLatestFrom(() => this.store.pipe(select(selectUrl))),
+            filter(([, url]) => /^\/checkout\/review/.test(url))
+          );
+
+      return merge(navigatedBackToReview$, restoredReviewFromCache$).pipe(
+        map(() => this.orderService.getPendingPaymentRedirectOrderId()),
         whenTruthy(),
         // prevents a retry loop if the navigation below is rejected by the checkout guard
         distinctUntilChanged(),
         concatMap(orderId =>
           from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel', orderId } }))
         )
-      ),
+      );
+    },
     { dispatch: false }
   );
 
@@ -270,7 +259,7 @@ export class OrdersEffects {
    *
    * The marker is only consumed when the customer actually returns from the payment provider. If the redirect
    * never takes place or the flow ends somewhere else, the marker would survive in the session storage and let
-   * cancelOrderAfterRedirectAbortion$ or reloadAfterRedirectAbortion$ act on an order that is no longer pending.
+   * cancelOrderAfterRedirectAbortion$ act on an order that is no longer pending.
    *
    * A successfully loaded basket proves that no order blocks the checkout anymore, so it is the earliest point
    * at which the marker can be dropped without cutting off the cancellation retry of a still pending order.
@@ -279,7 +268,7 @@ export class OrdersEffects {
     () =>
       this.actions$.pipe(
         ofType(resetAfterCheckoutPaymentRedirectMarker),
-        map(() => sessionStorage.removeItem(REDIRECT_PENDING_ORDER_ID))
+        map(() => this.orderService.clearPendingPaymentRedirect())
       ),
     { dispatch: false }
   );

@@ -44,6 +44,8 @@ export class OrderService {
     @Inject(APP_BASE_HREF) private baseHref: string
   ) {}
 
+  private static readonly PENDING_PAYMENT_REDIRECT_ORDER_ID = 'redirect-pending-order-id';
+
   private orderHeaders = new HttpHeaders({
     'content-type': 'application/json',
     Accept: 'application/vnd.intershop.order.v1+json',
@@ -246,6 +248,32 @@ export class OrderService {
         }
       )
       .pipe(map(() => orderId));
+  }
+
+  /**
+   * Remembers the order whose payment provider redirect is still pending so that an aborted redirect
+   * (e.g. via the browser back button) can be detected and cancelled after returning to the shop.
+   */
+  markPendingPaymentRedirect(orderId: string): void {
+    if (!SSR) {
+      sessionStorage.setItem(OrderService.PENDING_PAYMENT_REDIRECT_ORDER_ID, orderId);
+    }
+  }
+
+  /**
+   * Returns the id of the order whose payment provider redirect is still pending, if any.
+   */
+  getPendingPaymentRedirectOrderId(): string | undefined {
+    return SSR ? undefined : (sessionStorage.getItem(OrderService.PENDING_PAYMENT_REDIRECT_ORDER_ID) ?? undefined);
+  }
+
+  /**
+   * Clears the pending payment provider redirect marker.
+   */
+  clearPendingPaymentRedirect(): void {
+    if (!SSR) {
+      sessionStorage.removeItem(OrderService.PENDING_PAYMENT_REDIRECT_ORDER_ID);
+    }
   }
 
   /**
