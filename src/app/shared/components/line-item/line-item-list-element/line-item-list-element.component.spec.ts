@@ -44,7 +44,6 @@ describe('Line Item List Element Component', () => {
     when(appFacade.serverSetting$(anything())).thenReturn(EMPTY);
     updateBasketItem = jest.fn();
     TestBed.configureTestingModule({
-      declarations: [LineItemListElementComponent],
       providers: [
         { provide: AppFacade, useValue: instance(appFacade) },
         { provide: CheckoutFacade, useValue: { updateBasketItem } },
