@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/ssr';
+import { RenderMode, provideServerRendering, withRoutes } from '@angular/ssr';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
@@ -38,6 +38,11 @@ class SSRErrorHandler implements ErrorHandler {
   constructor(private requestId: string | undefined) {}
 
   handleError(error: unknown): void {
+    // Angular aborts outstanding Fetch requests when tearing down a completed server render.
+    if (error instanceof Error && error.name === 'AbortError') {
+      return;
+    }
+
     // Base data with request ID for tracing
     const baseData = this.requestId ? { trace: { id: this.requestId } } : {};
 
@@ -74,9 +79,8 @@ class SSRErrorHandler implements ErrorHandler {
 }
 
 const providers = [
-  provideServerRendering(),
-  // Conditionally add provideHttpClient(withFetch()) based on environment variable
-  ...(/on|1|true|yes/.test(process.env.ALLOW_H2?.toLowerCase()) ? [provideHttpClient(withFetch())] : []),
+  provideServerRendering(withRoutes([{ path: '**', renderMode: RenderMode.Server }])),
+  provideHttpClient(withFetch()),
   ...(process.env.ICM_BASE_URL_SSR
     ? [{ provide: HTTP_INTERCEPTORS, useClass: SSRInternalBackendInterceptor, multi: true }]
     : []),

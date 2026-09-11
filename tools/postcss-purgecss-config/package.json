@@ -1,0 +1,9 @@
+{
+  "name": "@intershop/postcss-purgecss-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.cjs",
+  "peerDependencies": {
+    "@fullhuman/postcss-purgecss": "^8.0.0"
+  }
+}

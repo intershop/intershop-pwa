@@ -97,7 +97,8 @@ describe('Lazy Component Schematic', () => {
     });
 
     it('should load component via module', async () => {
-      expect(componentContent).toContain('import(`../../ext.module`)');
+      expect(componentContent).toContain("import('../../ext.module')");
+      expect(componentContent).toContain('modulePromise ??= loadModule()');
     });
 
     it('should check if extension is enabled', async () => {

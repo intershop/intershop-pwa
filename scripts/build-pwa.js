@@ -1,40 +1,66 @@
-const fs = require('fs');
-const execSync = require('child_process').execSync;
+const { readFileSync } = require('fs');
+const { sync: spawnSync } = require('cross-spawn');
 
-const angularJson = JSON.parse(fs.readFileSync('./angular.json', { encoding: 'utf-8' }));
-const defaultProject = Object.keys(angularJson.projects).find(project => angularJson.projects[project].root === '');
+const args = process.argv.slice(2);
+const clientOnly = args.includes('client');
+const buildArguments = args.filter(argument => argument !== 'client');
+const configurationIndex = buildArguments.findIndex(
+  argument => argument === '--configuration' || argument.startsWith('--configuration=')
+);
 
-// https://stackoverflow.com/questions/51388921/pass-command-line-args-to-npm-scripts-in-package-json/64694166#64694166
-let configuration = process.env.npm_config_configuration;
-
-if (configuration === 'true') {
-  console.error('it seems you missed the equal sign in "--configuration=<config>"');
+let requestedConfiguration = process.env.npm_config_configuration;
+if (requestedConfiguration === 'true') {
+  console.error('It seems you missed the equal sign in "--configuration=<config>".');
   process.exit(1);
 }
 
-let configString = '';
-
-if (configuration) {
-  configString = '-c ' + configuration;
+if (configurationIndex !== -1) {
+  const configurationArgument = buildArguments[configurationIndex];
+  requestedConfiguration = configurationArgument.includes('=')
+    ? configurationArgument.slice(configurationArgument.indexOf('=') + 1)
+    : buildArguments[configurationIndex + 1];
+  buildArguments.splice(configurationIndex, configurationArgument.includes('=') ? 1 : 2);
 }
 
-const processArgs = process.argv.slice(2);
-const client = processArgs.includes('client') || !processArgs.includes('server');
-const server = processArgs.includes('server') || !processArgs.includes('client');
-const remainingArgs = processArgs.filter(a => a !== 'client' && a !== 'server');
-
-if (client) {
-  execSync(`npm run ng -- build ${configString} ${remainingArgs.join(' ')}`, {
-    stdio: 'inherit',
-  });
+const workspace = JSON.parse(readFileSync('angular.json', 'utf8'));
+const project = Object.entries(workspace.projects).find(([, definition]) => definition.root === '')?.[0];
+if (!project) {
+  console.error('Could not find the main Angular project.');
+  process.exit(1);
 }
 
-if (configuration) {
-  configString = ':' + configuration;
+const build = workspace.projects[project].architect?.build ?? workspace.projects[project].targets?.build;
+const configurations = (requestedConfiguration || build?.defaultConfiguration || 'b2b,production')
+  .split(',')
+  .filter(Boolean);
+
+if (!configurations.includes('development') && !configurations.includes('production')) {
+  configurations.push('production');
+}
+if (clientOnly) {
+  const ssrIndex = configurations.indexOf('ssr');
+  if (ssrIndex !== -1) {
+    configurations.splice(ssrIndex, 1);
+  }
+} else if (!configurations.includes('ssr')) {
+  configurations.push('ssr');
 }
 
-if (server) {
-  execSync(`npm run ng -- run ${defaultProject}:server${configString} ${remainingArgs.join(' ')}`, {
-    stdio: 'inherit',
-  });
+const result = spawnSync(
+  'node',
+  [
+    '--require',
+    './scripts/remove-data-testing-attributes.cjs',
+    './node_modules/@angular/cli/bin/ng.js',
+    'run',
+    `${project}:build:${configurations.join(',')}`,
+    ...buildArguments,
+  ],
+  { stdio: 'inherit' }
+);
+
+if (result.error) {
+  throw result.error;
 }
+
+process.exit(result.status ?? 1);

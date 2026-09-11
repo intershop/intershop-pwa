@@ -27,6 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TESTING: true
+    strategy:
+      matrix:
+        theme: ['b2b', 'b2c']
 
     steps:
       - name: Checkout
@@ -42,13 +45,13 @@ jobs:
         run: npm ci
 
       - name: Build SSR
-        run: npm run build:multi
+        run: npm run build -- --configuration=${{ matrix.theme }} --output-path=dist/${{ matrix.theme }}
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v7
         with:
-          name: dist
-          path: dist
+          name: dist-${{ matrix.theme }}
+          path: dist/${{ matrix.theme }}
 
   SSR:
     needs: [Build]
@@ -56,7 +59,7 @@ jobs:
 
     strategy:
       matrix:
-        test: ['b2c', 'b2b']
+        theme: ['b2c', 'b2b']
 
     steps:
       - name: Checkout
@@ -71,27 +74,20 @@ jobs:
       - name: Download Build Output
         uses: actions/download-artifact@v8
         with:
-          name: dist
-          path: dist
+          name: dist-${{ matrix.theme }}
+          path: dist/${{ matrix.theme }}
 
       - name: Set Environment
         run: |
           echo "LOGLEVEL=error" >> $GITHUB_ENV
           echo "LOGFORMAT=text" >> $GITHUB_ENV
-
-      - name: Set B2C Environment
-        if: matrix.test == 'b2c'
-        run: |
-          echo "THEME=b2c" >> $GITHUB_ENV
-
-      - name: Set B2B Environment
-        if: matrix.test == 'b2b'
-        run: |
-          echo "THEME=b2b" >> $GITHUB_ENV
+          echo "THEME=${{ matrix.theme }}" >> $GITHUB_ENV
+          echo "BROWSER_FOLDER=dist/${{ matrix.theme }}/browser" >> $GITHUB_ENV
+          echo "DIST_FOLDER=dist/${{ matrix.theme }}" >> $GITHUB_ENV
 
       - name: Test SSR
         run: |
-          node dist/$THEME/run-standalone &
+          node dist/${{ matrix.theme }}/server/server.mjs &
           sh e2e/test-ssr.sh
 
   Cypress:
@@ -101,7 +97,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ['b2c', 'b2b']
+        theme: ['b2c', 'b2b']
 
     steps:
       - name: Checkout
@@ -119,27 +115,20 @@ jobs:
       - name: Download Build Output
         uses: actions/download-artifact@v8
         with:
-          name: dist
-          path: dist
+          name: dist-${{ matrix.theme }}
+          path: dist/${{ matrix.theme }}
 
       - name: Set Environment
         run: |
           echo "PWA_BASE_URL=http://localhost:4200" >> $GITHUB_ENV
           echo "BROWSER=chrome" >> $GITHUB_ENV
-
-      - name: Set B2C Environment
-        if: matrix.test == 'b2c'
-        run: |
-          echo "THEME=b2c" >> $GITHUB_ENV
-
-      - name: Set B2B Environment
-        if: matrix.test == 'b2b'
-        run: |
-          echo "THEME=b2b" >> $GITHUB_ENV
+          echo "THEME=${{ matrix.theme }}" >> $GITHUB_ENV
+          echo "BROWSER_FOLDER=dist/${{ matrix.theme }}/browser" >> $GITHUB_ENV
+          echo "DIST_FOLDER=dist/${{ matrix.theme }}" >> $GITHUB_ENV
 
       - name: Start SSR
         run: |
-          node dist/$THEME/run-standalone &
+          node dist/${{ matrix.theme }}/server/server.mjs &
 
       - name: Cypress
         uses: cypress-io/github-action@v7
@@ -148,20 +137,20 @@ jobs:
           wait-on: 'http://localhost:4200'
           wait-on-timeout: 180
           working-directory: e2e
-          command: npx ts-node cypress-ci-e2e **/*${{ matrix.test }}*.e2e-spec.ts
+          command: npx ts-node cypress-ci-e2e **/*${{ matrix.theme }}*.e2e-spec.ts
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: screenshots_${{ matrix.test }}
+          name: screenshots_${{ matrix.theme }}
           path: e2e/cypress/screenshots
 
       - name: Upload Videos
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: videos_${{ matrix.test }}
+          name: videos_${{ matrix.theme }}
           path: e2e/cypress/videos
 
   Shellspec:
