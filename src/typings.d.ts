@@ -1,5 +1,9 @@
 declare module 'express-robots-txt';
 
+declare module '@mixmark-io/domino' {
+  export function createDocument(html?: string, force?: boolean): Document;
+}
+
 declare const PRODUCTION_MODE: boolean;
 
 declare const NGRX_RUNTIME_CHECKS: boolean;

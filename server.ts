@@ -26,6 +26,7 @@ import {
   environment,
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
+import { registerMarkdownMirror, toMarkdownMirrorUrl } from './src/ssr/markdown-mirror';
 
 const logger = getLogger('Server');
 
@@ -42,6 +43,21 @@ function getBaseLogData(req: express.Request) {
       domain: req.get('host'),
     },
   };
+}
+
+// extract last baseHref from matrix params only (;baseHref=...), ignore query string
+function extractBaseHref(url: string): string {
+  const pathPart = url.split('?')[0];
+  const baseHrefRegex = /;baseHref=([^;]*)/g;
+  let baseHref = '/';
+  for (let match: RegExpExecArray; (match = baseHrefRegex.exec(pathPart));) {
+    baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
+  }
+  // only allow simple path segments to prevent base href hijacking
+  if (!/^\/([a-zA-Z0-9][a-zA-Z0-9\-._/]*)?$/.test(baseHref)) {
+    baseHref = '/';
+  }
+  return baseHref;
 }
 
 process.on('SIGUSR2', () => {
@@ -401,6 +417,16 @@ export function app() {
     }
   }
 
+  // Markdown mirror route: render the underlying PWA page and return its main content as Markdown.
+  // Registered before the static file handlers so that URLs ending in `.md` are not treated as static assets.
+  registerMarkdownMirror(server, {
+    commonEngine,
+    browserFolder: BROWSER_FOLDER,
+    getRequestId,
+    getBaseLogData,
+    extractBaseHref,
+  });
+
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
     logger.warn('SOURCE_MAPS are active - never use this in production!');
@@ -497,17 +523,7 @@ export function app() {
       }
     }
 
-    // extract last baseHref from matrix params only (;baseHref=...), ignore query string
-    const pathPart = req.originalUrl.split('?')[0];
-    const baseHrefRegex = /;baseHref=([^;]*)/g;
-    let baseHref = '/';
-    for (let match: RegExpExecArray; (match = baseHrefRegex.exec(pathPart));) {
-      baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
-    }
-    // only allow simple path segments to prevent base href hijacking
-    if (!/^\/([a-zA-Z0-9][a-zA-Z0-9\-._/]*)?$/.test(baseHref)) {
-      baseHref = '/';
-    }
+    const baseHref = extractBaseHref(req.originalUrl);
 
     commonEngine
       .render({
@@ -537,6 +553,8 @@ export function app() {
 
           newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
 
+          // advertise the Markdown mirror of this page (RFC 8288); append to keep any preload links
+          res.append('Link', `<${toMarkdownMirrorUrl(req.originalUrl)}>; rel="alternate"; type="text/markdown"`);
           res.status(res.statusCode).send(newHtml);
         } else {
           const errorMsg = `SSR rendering failed: No HTML generated for ${req.originalUrl}`;
@@ -567,7 +585,8 @@ export function app() {
           },
           'SSR rendering error'
         );
-        res.status(500).send(err.message);
+        // send a generic message; details are logged, never exposed to the client (OWASP A05:2021)
+        res.status(500).send('Internal Server Error');
       });
   };
 

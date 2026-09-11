@@ -98,3 +98,7 @@ kb_sync_latest_only
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
 - [Guide - E-Mail Marketing/Newsletter Subscription](./guides/newsletter-subscription.md)
 - [Guide - Well-Known Resources](./guides/well-known-resources.md)
+
+## Agent Readiness
+
+- [Guide - Markdown Mirrors](./guides/markdown-mirrors.md)
