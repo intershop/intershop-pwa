@@ -103,6 +103,7 @@ export class CartPage {
             .find('input[data-testing-id="quantity"]:visible')
             .eq(idx)
             .click()
+            .wait(1000)
             .type('{selectAll}')
             .type(num.toString());
 
