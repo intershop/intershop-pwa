@@ -1,1 +1,37 @@
-<p>I'm the product advisor</p>
+<div class="container product-advisor">
+  <div class="row d-none d-lg-flex">
+    <div class="col-8 px-0 pe-4">
+      <ish-product-advisor-chat />
+    </div>
+    <div class="col-4">
+      <ish-product-advisor-results />
+    </div>
+  </div>
+
+  <div class="d-lg-none">
+    <div class="advisor-title-card">
+      <div class="advisor-icon">
+        <i class="bi bi-stars"></i>
+      </div>
+      <div>
+        <p class="advisor-title-card-title">{{ 'copilot.product_advisor.title' | translate }}</p>
+        <p class="advisor-title-card-text">{{ 'copilot.product_advisor.subtitle' | translate }}</p>
+      </div>
+    </div>
+    <nav #nav="ngbNav" class="nav-tabs" ngbNav>
+      <li ngbNavItem role="presentation">
+        <a ngbNavLink>{{ 'copilot.product_advisor.tab.chat' | translate }}</a>
+        <ng-template ngbNavContent>
+          <ish-product-advisor-chat />
+        </ng-template>
+      </li>
+      <li ngbNavItem role="presentation">
+        <a ngbNavLink>{{ 'copilot.product_advisor.tab.products' | translate }}</a>
+        <ng-template ngbNavContent>
+          <ish-product-advisor-results />
+        </ng-template>
+      </li>
+    </nav>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>
