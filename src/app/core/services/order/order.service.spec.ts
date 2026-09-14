@@ -189,15 +189,15 @@ describe('Order Service', () => {
       expect(orderService.getPendingPaymentRedirectOrderId()).toEqual('order-1');
     });
 
-    it('should return undefined when no payment redirect is pending', () => {
-      expect(orderService.getPendingPaymentRedirectOrderId()).toBeUndefined();
+    it('should return no order id when no payment redirect is pending', () => {
+      expect(orderService.getPendingPaymentRedirectOrderId()).toBeFalsy();
     });
 
     it('should clear the pending order id', () => {
       orderService.markPendingPaymentRedirect('order-1');
       orderService.clearPendingPaymentRedirect();
 
-      expect(orderService.getPendingPaymentRedirectOrderId()).toBeUndefined();
+      expect(orderService.getPendingPaymentRedirectOrderId()).toBeFalsy();
     });
   });
 });

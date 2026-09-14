@@ -51,8 +51,8 @@ export const selectOrderAfterRedirectFail = createAction(
 
 export const resetOrderErrors = createAction('[Order Internal] Reset Order Errors');
 
-export const resetAfterCheckoutPaymentRedirectMarker = createAction(
-  '[Orders Internal] Reset After Checkout Payment Redirect Marker'
+export const clearPendingPaymentRedirectMarker = createAction(
+  '[Orders Internal] Clear Pending Payment Redirect Marker'
 );
 
 export const startPaypalOrderCreation = createAction('[Orders] Start Paypal Order Creation');

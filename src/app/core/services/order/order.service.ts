@@ -253,6 +253,8 @@ export class OrderService {
   /**
    * Remembers the order whose payment provider redirect is still pending so that an aborted redirect
    * (e.g. via the browser back button) can be detected and cancelled after returning to the shop.
+   *
+   * @param orderId  The id of the order whose payment provider redirect is pending.
    */
   markPendingPaymentRedirect(orderId: string): void {
     if (!SSR) {
@@ -263,8 +265,8 @@ export class OrderService {
   /**
    * Returns the id of the order whose payment provider redirect is still pending, if any.
    */
-  getPendingPaymentRedirectOrderId(): string | undefined {
-    return SSR ? undefined : (sessionStorage.getItem(OrderService.PENDING_PAYMENT_REDIRECT_ORDER_ID) ?? undefined);
+  getPendingPaymentRedirectOrderId(): string {
+    return SSR ? undefined : sessionStorage.getItem(OrderService.PENDING_PAYMENT_REDIRECT_ORDER_ID);
   }
 
   /**

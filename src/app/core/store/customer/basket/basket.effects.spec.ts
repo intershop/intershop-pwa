@@ -14,7 +14,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { resetAfterCheckoutPaymentRedirectMarker, resetOrderErrors } from 'ish-core/store/customer/orders';
+import { clearPendingPaymentRedirectMarker, resetOrderErrors } from 'ish-core/store/customer/orders';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -111,7 +111,7 @@ describe('Basket Effects', () => {
       const id = 'BID';
       const action = loadBasket();
       const completion1 = loadBasketSuccess({ basket: { id } as Basket });
-      const completion2 = resetAfterCheckoutPaymentRedirectMarker();
+      const completion2 = clearPendingPaymentRedirectMarker();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
