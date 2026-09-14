@@ -38,7 +38,7 @@ function main(icm, ssrImage, nginxImage) {
 
   data.services.nginx.image = nginxImage;
   data.services.nginx.environment.ICM_BASE_URL = icm;
-  data.services.nginx.environment.CACHE = 1;
+  data.services.nginx.environment.CACHE = 0;
 
   writeDockerComposeFile('./dist', stringify(data));
 }

@@ -6,7 +6,7 @@ on:
       icm_base_url:
         description: 'ICM Base URL'
         required: false
-        default: 'https://review.icm.intershop.de'
+        default: 'https://develop.icm.intershop.de'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
