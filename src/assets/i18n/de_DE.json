@@ -1083,6 +1083,7 @@
   "copilot.footer.text": "verwendet KI |",
   "copilot.max_chars_warning_message": "Sie haben das Zeichenlimit überschritten. Bitte geben Sie weniger als 200 Zeichen ein.",
   "copilot.placeholder": "Geben Sie Ihre Frage ein",
+  "copilot.product_advisor.link": "KI-Produktberater",
   "copilot.starter_prompt_1": "Wie kannst du mir helfen?",
   "copilot.starter_prompt_2": "Öffne den Warenkorb.",
   "copilot.title": "Intershop Copilot für Käufer",

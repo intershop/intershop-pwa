@@ -1083,6 +1083,7 @@
   "copilot.footer.text": "utilise l’IA |",
   "copilot.max_chars_warning_message": "Vous avez dépassé la limite de caractères. Veuillez saisir moins de 200 caractères.",
   "copilot.placeholder": "Saisissez votre question",
+  "copilot.product_advisor.link": "Conseiller produit IA",
   "copilot.starter_prompt_1": "Comment peux-tu m’aider ?",
   "copilot.starter_prompt_2": "Ouvre le panier.",
   "copilot.title": "Intershop copilot pour acheteurs",
