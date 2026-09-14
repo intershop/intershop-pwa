@@ -80,6 +80,25 @@ header {
         color: $CORPORATE-PRIMARY;
       }
     }
+
+    .ai-product-advisor {
+      padding-top: divide($space-default * 2, 3);
+      padding-right: $space-default;
+
+      .ai-product-advisor-link {
+        font-family: $font-family-bold;
+        text-transform: uppercase;
+
+        .bi.header-icon {
+          padding-right: divide($space-default, 3);
+          color: $CORPORATE-PRIMARY;
+        }
+      }
+    }
+
+    .ai-product-advisor + .search-container {
+      flex-grow: 1;
+    }
   }
 
   &.homepage {
