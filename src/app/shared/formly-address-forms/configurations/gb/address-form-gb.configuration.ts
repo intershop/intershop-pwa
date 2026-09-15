@@ -26,7 +26,8 @@ export class AddressFormGBConfiguration extends AddressFormConfiguration {
       'addressLine3',
       'postalCode',
       'city',
-      'phoneHome'
+      'phoneHome',
+      'email'
     );
   }
 
@@ -66,6 +67,7 @@ export class AddressFormGBConfiguration extends AddressFormConfiguration {
           },
         },
       ],
+      this.businessCustomer && this.email ? 'email' : undefined,
       !this.shortForm ? 'phoneHome' : undefined,
     ]);
   }

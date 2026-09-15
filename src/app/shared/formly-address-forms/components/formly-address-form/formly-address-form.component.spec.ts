@@ -52,6 +52,15 @@ const configurations: Record<string, FormlyFieldConfig[]> = {
       },
     },
   ],
+  email: [
+    {
+      key: 'email',
+      type: 'ish-text-input-field',
+      props: {
+        label: 'email',
+      },
+    },
+  ],
 };
 
 const models = {
@@ -72,14 +81,14 @@ class AddressFormDefaultConfigurationMock extends AddressFormConfiguration {
 
   getModel() {
     if (this.businessCustomer) {
-      return models.b2b;
+      return this.email ? { ...models.b2b, email: '' } : models.b2b;
     }
     return models.default;
   }
 
   getFieldConfiguration() {
     if (this.businessCustomer) {
-      return configurations.b2b;
+      return this.email ? [...configurations.b2b, ...configurations.email] : configurations.b2b;
     }
     return configurations.default;
   }
@@ -175,5 +184,26 @@ describe('Formly Address Form Component', () => {
     component.businessCustomer = true;
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="companyName1"')).toBeTruthy();
+  });
+
+  it('should display email field if businessCustomer and email flags are true', () => {
+    component.businessCustomer = true;
+    component.email = true;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="email"]')).toBeTruthy();
+  });
+
+  it('should not display email field if email flag is false', () => {
+    component.businessCustomer = true;
+    component.email = false;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="email"]')).toBeFalsy();
+  });
+
+  it('should not display email field if businessCustomer flag is false', () => {
+    component.businessCustomer = false;
+    component.email = true;
+    fixture.detectChanges();
+    expect(element.querySelector('[data-testing-id="email"]')).toBeFalsy();
   });
 });

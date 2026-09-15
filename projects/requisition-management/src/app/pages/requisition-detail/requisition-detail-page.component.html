@@ -51,7 +51,7 @@
         <div class="row d-flex">
           <!-- Invoice Address -->
           <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.billing-address.heading">
-            <ish-address [address]="requisition.invoiceToAddress" [displayEmail]="true" />
+            <ish-address [address]="requisition.invoiceToAddress" />
           </ish-info-box>
 
           <!-- Payment Method -->
@@ -70,7 +70,7 @@
         <div class="row d-flex">
           <!-- Shipping Address -->
           <ish-info-box class="infobox-wrapper col-md-6" heading="checkout.widget.shipping-address.heading">
-            <ish-address [address]="requisition.commonShipToAddress" />
+            <ish-address [address]="requisition.commonShipToAddress" [displayEmail]="false" />
           </ish-info-box>
 
           <!-- Shipping Method -->
