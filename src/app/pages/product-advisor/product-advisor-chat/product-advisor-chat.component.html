@@ -1,12 +1,13 @@
 <div class="product-advisor-chat h-100 bg-light p-4 d-flex flex-column justify-content-between">
   <div class="advisor-welcome">
-    <!-- icon and headline only for desktop version -->
-    <div class="advisor-welcome-header d-none d-lg-flex">
-      <div class="advisor-icon advisor-icon-lg">
-        <i class="bi bi-stars"></i>
+    @if (deviceType !== 'mobile') {
+      <div class="advisor-welcome-header d-flex">
+        <div class="advisor-icon advisor-icon-lg">
+          <i class="bi bi-stars"></i>
+        </div>
+        <h1>{{ 'copilot.product_advisor.headline' | translate }}</h1>
       </div>
-      <h1>{{ 'copilot.product_advisor.headline' | translate }}</h1>
-    </div>
+    }
 
     <p class="advisor-intro">{{ 'copilot.product_advisor.intro' | translate }}</p>
 
