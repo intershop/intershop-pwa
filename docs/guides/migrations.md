@@ -98,6 +98,30 @@ The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/pref
 The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
+**Store Devtools production configuration**
+
+Store Devtools are now configured through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of through a production file replacement in `angular.json`.
+
+The production-only `store-devtools.module.production.ts` file has been removed.
+If you maintain custom Angular build configurations, remove any remaining file replacements that reference this file.
+
+The default behavior is unchanged:
+
+- Store Devtools are enabled in development.
+- Store Devtools are disabled in production.
+
+If you previously enabled Store Devtools in production by removing the file replacement, update the conditional registration in `store-devtools.module.ts` instead.
+When enabling instrumentation in both development and production, retain the production-specific options:
+
+```typescript
+StoreDevtoolsModule.instrument({
+  maxAge: PRODUCTION_MODE ? 25 : 200,
+  logOnly: PRODUCTION_MODE,
+  actionsBlocklist: [loadPromotion.type, loadProductIfNotLoaded.type, setStickyHeader.type, suggestSearch.type],
+  connectInZone: true,
+});
+```
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
