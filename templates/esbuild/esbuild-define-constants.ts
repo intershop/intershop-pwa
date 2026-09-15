@@ -3,8 +3,6 @@ import type { Plugin } from 'esbuild';
 
 import { activeThemes, version } from '../../package.json';
 
-const buildDate = new Date();
-
 interface BuilderOptions {
   buildTarget?: string;
 }
@@ -16,6 +14,34 @@ const themes = activeThemes
   .filter(Boolean);
 
 const modes = ['development', 'production'] as const;
+
+/**
+ * esbuild plugin that resolves the active theme and mode from the build configuration
+ * and injects them, along with related build-time flags, as global `define` constants
+ */
+export default (builderOptions: BuilderOptions, target: Target): Plugin => {
+  const configurations = getBuildConfigurations(builderOptions, target);
+  const theme = getSingleConfiguration(configurations, themes, 'theme');
+  const mode = getSingleConfiguration(configurations, modes, 'mode');
+  const production = mode === 'production';
+  process.env.PURGE_CSS ??= String(production);
+
+  const pwaVersion = `${version} built ${new Date().toISOString().slice(0, 16).replace('T', ' ')} - configuration:${theme},${mode}`;
+
+  return {
+    name: 'define-build-constants',
+    setup(build) {
+      build.initialOptions.define = {
+        ...build.initialOptions.define,
+        NGRX_RUNTIME_CHECKS: String(process.env.TESTING === 'true' || !production),
+        PRODUCTION_MODE: String(production),
+        PWA_VERSION: JSON.stringify(pwaVersion),
+        SSR: String(build.initialOptions.platform === 'node'),
+        THEME: JSON.stringify(theme),
+      };
+    },
+  };
+};
 
 // Falls back to the first active theme in production so no theme name is hardcoded.
 const defaultConfiguration = `${themes[0]},production`;
@@ -44,28 +70,3 @@ function getSingleConfiguration<const T extends string>(
 
   return selected[0];
 }
-
-export default (builderOptions: BuilderOptions, target: Target): Plugin => {
-  const configurations = getBuildConfigurations(builderOptions, target);
-  const theme = getSingleConfiguration(configurations, themes, 'theme');
-  const mode = getSingleConfiguration(configurations, modes, 'mode');
-  const production = mode === 'production';
-  process.env.PURGE_CSS ??= String(production);
-  const serviceWorker = false;
-  const pwaVersion = `${version} built ${buildDate} - configuration:${theme},${mode} service-worker:${serviceWorker}`;
-
-  return {
-    name: 'define-build-constants',
-    setup(build) {
-      build.initialOptions.define = {
-        ...build.initialOptions.define,
-        NGRX_RUNTIME_CHECKS: String(process.env.TESTING === 'true' || !production),
-        PRODUCTION_MODE: String(production),
-        PWA_VERSION: JSON.stringify(pwaVersion),
-        SERVICE_WORKER: String(serviceWorker),
-        SSR: String(build.initialOptions.platform === 'node'),
-        THEME: JSON.stringify(theme),
-      };
-    },
-  };
-};
