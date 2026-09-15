@@ -25,7 +25,7 @@
             "browser": "src/main.ts",
             "polyfills": ["src/polyfills.ts", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
-            "plugins": ["./templates/esbuild/define-build-constants.ts"],
+            "plugins": ["./templates/esbuild/esbuild-define-constants.ts"],
             "assets": [
               "src/assets",
               {
@@ -173,7 +173,7 @@
             "browser": "projects/organization-management/src/main.ts",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "projects/organization-management/tsconfig.app.json",
-            "plugins": ["./templates/esbuild/define-build-constants.ts"],
+            "plugins": ["./templates/esbuild/esbuild-define-constants.ts"],
             "aot": false,
             "styles": ["src/styles/themes/b2b/style.scss"],
             "stylePreprocessorOptions": {
@@ -224,7 +224,7 @@
             "browser": "projects/requisition-management/src/main.ts",
             "polyfills": ["src/polyfills.ts"],
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
-            "plugins": ["./templates/esbuild/define-build-constants.ts"],
+            "plugins": ["./templates/esbuild/esbuild-define-constants.ts"],
             "aot": false,
             "styles": ["src/styles/themes/b2b/style.scss"],
             "stylePreprocessorOptions": {

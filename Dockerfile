@@ -12,7 +12,7 @@ RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs .postcssrc.json /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
-COPY templates/esbuild/define-build-constants.ts /workspace/templates/esbuild/define-build-constants.ts
+COPY templates/esbuild/esbuild-define-constants.ts /workspace/templates/esbuild/esbuild-define-constants.ts
 COPY projects /workspace/projects
 COPY src /workspace/src
 COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-pwa.js scripts/build-ssr-runtime.js scripts/remove-data-testing-attributes.cjs /workspace/scripts/

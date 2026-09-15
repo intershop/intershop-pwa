@@ -21,7 +21,7 @@ The main benefits are significantly faster cold builds and rebuilds, faster `ng 
 - The custom webpack builder `@angular-builders/custom-webpack` was replaced by `@angular-builders/custom-esbuild` in [`angular.json`](../../angular.json).
 - The large custom webpack configuration in `templates/webpack/webpack.custom.ts` was removed.
   Its responsibilities were split into small, focused pieces:
-  - Build-time constants (`PRODUCTION_MODE`, `PWA_VERSION`, `THEME`, `SSR`, ...) are now provided by the esbuild plugin [`templates/esbuild/define-build-constants.ts`](../../templates/esbuild/define-build-constants.ts).
+  - Build-time constants (`PRODUCTION_MODE`, `PWA_VERSION`, `THEME`, `SSR`, ...) are now provided by the esbuild plugin [`templates/esbuild/esbuild-define-constants.ts`](../../templates/esbuild/esbuild-define-constants.ts).
   - CSS tree-shaking moved from `purgecss-webpack-plugin` to a PostCSS plugin in [`tools/postcss-purgecss-config`](../../tools/postcss-purgecss-config/index.cjs), which is opt-in via the `PURGE_CSS` environment variable (enabled for production builds).
   - Removing `data-testing-*` attributes from templates for production is now handled by the preload script [`scripts/remove-data-testing-attributes.cjs`](../../scripts/remove-data-testing-attributes.cjs) instead of a webpack loader.
 - Theme file replacements (environment and theme-specific files) are now expressed through the standard `fileReplacements` of the `build` target configurations in [`angular.json`](../../angular.json).
@@ -56,7 +56,7 @@ ng serve --build-target=intershop-pwa:build:b2c,development,ssr
 ```
 
 The build target must always name exactly one theme (`b2b` or `b2c`) and one mode (`development` or `production`).
-This is enforced by the [`define-build-constants.ts`](../../templates/esbuild/define-build-constants.ts) esbuild plugin, which derives the `THEME` and `PRODUCTION_MODE` constants from the resolved configuration.
+This is enforced by the [`esbuild-define-constants.ts`](../../templates/esbuild/esbuild-define-constants.ts) esbuild plugin, which derives the `THEME` and `PRODUCTION_MODE` constants from the resolved configuration.
 Therefore a theme-less `serve` or SSR command is not possible; omitting the theme fails the build with an `Expected exactly one theme configuration` error.
 
 ### Serving with SSR

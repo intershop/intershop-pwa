@@ -148,7 +148,7 @@ src/assets/mock-data
 templates/*
 !templates/esbuild/
 templates/esbuild/*
-!templates/esbuild/define-build-constants.ts
+!templates/esbuild/esbuild-define-constants.ts
 
 scripts
 !scripts/build-multi-pwa.js
