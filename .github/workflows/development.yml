@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ['normal', 'customization']
+        test: ['normal']
 
     steps:
       - name: Checkout

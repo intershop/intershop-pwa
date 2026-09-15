@@ -9,8 +9,6 @@ services:
       # args:
       #   activeThemes: b2b
       #   activeThemes: b2c
-    # command: ['node', 'dist/b2c/run-standalone']
-    # command: ['node', 'dist/b2b/run-standalone']
     # ports:
     #   - '4201:4200'
     #   - '9113:9113'
