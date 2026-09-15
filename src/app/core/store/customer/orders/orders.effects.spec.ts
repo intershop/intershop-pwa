@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
+import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
@@ -20,10 +21,11 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { loginUserSuccess } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
+import { routerTestNavigatedAction, routerTestNavigationAction } from 'ish-core/utils/dev/routing';
 
 import {
   cancelPaypalOrderCreation,
+  clearPendingPaymentRedirectMarker,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -76,6 +78,7 @@ describe('Orders Effects', () => {
             children: [
               { path: 'receipt', children: [] },
               { path: 'payment', children: [] },
+              { path: 'review', children: [] },
             ],
           },
           { path: 'account/orders/:orderId', children: [] },
@@ -167,22 +170,27 @@ describe('Orders Effects', () => {
       expect(location.path()).toEqual('/checkout/receipt?recurringOrderId=BID');
     }));
 
-    // eslint-disable-next-line jest/no-disabled-tests
-    xit('should navigate to an external url after CreateOrderSuccess if there is redirect required', fakeAsync(() => {
-      const action = createOrderSuccess({
-        order: {
-          id: '123',
-          orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
-        } as Order,
-        basketId: 'BID',
-      });
-      actions$ = of(action);
+    it('should mark the order before navigating to an external URL after CreateOrderSuccess', fakeAsync(() => {
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(noop);
 
-      effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
+      try {
+        const action = createOrderSuccess({
+          order: {
+            id: '123',
+            orderCreation: { status: 'STOPPED', stopAction: { type: 'Redirect', redirectUrl: 'http://test' } },
+          } as Order,
+          basketId: 'BID',
+        });
+        actions$ = of(action);
 
-      tick(500);
+        effects.continueAfterOrderCreation$.subscribe({ next: noop, error: fail, complete: noop });
 
-      expect(window.location.assign).toHaveBeenCalled();
+        tick(500);
+
+        verify(orderServiceMock.markPendingPaymentRedirect('123')).once();
+      } finally {
+        consoleErrorSpy.mockRestore();
+      }
     }));
   });
 
@@ -361,6 +369,132 @@ describe('Orders Effects', () => {
 
       tick(2000);
     }));
+  });
+
+  describe('cancelOrderAfterRedirectAbortion$', () => {
+    beforeEach(() => {
+      sessionStorage.clear();
+    });
+
+    afterEach(() => {
+      sessionStorage.clear();
+    });
+
+    it('should navigate to the payment page with cancel parameters when the browser back button returns to the cart page', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      router.navigateByUrl('/basket');
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
+      window.dispatchEvent(new PopStateEvent('popstate'));
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
+    }));
+
+    it('should not navigate to the payment page on ordinary navigation with a pending order', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      router.navigateByUrl('/checkout/payment');
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
+
+      tick(500);
+    }));
+
+    it('should navigate to the payment page if the page is restored from the back/forward cache with a pending order', fakeAsync(() => {
+      router.navigateByUrl('/checkout/review');
+      tick(500);
+
+      // no pending order yet, so the initial navigation must not trigger a cancellation
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
+      tick(500);
+
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }));
+
+      tick(500);
+
+      expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
+    }));
+
+    it('should navigate to the payment page after a non-BFCache history reload triggers the first router navigation with a pending order', fakeAsync(() => {
+      const originalGetEntriesByType = performance.getEntriesByType;
+      performance.getEntriesByType = jest
+        .fn()
+        .mockReturnValue([{ type: 'back_forward' } as PerformanceNavigationTiming]);
+
+      try {
+        when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+        router.navigateByUrl('/checkout/review');
+        tick(500);
+
+        // the effect evaluates isHistoryReload() at construction time, so build a fresh instance after mocking
+        const historyReloadEffects = new OrdersEffects(
+          new Actions(of(routerTestNavigationAction({ routerState: { url: '/checkout/review' } }))),
+          instance(orderServiceMock),
+          router,
+          store,
+          TestBed.inject(TranslateService)
+        );
+
+        historyReloadEffects.cancelOrderAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
+
+        tick(500);
+
+        expect(location.path()).toEqual('/checkout/payment?redirect=cancel&orderId=1');
+      } finally {
+        performance.getEntriesByType = originalGetEntriesByType;
+      }
+    }));
+
+    it('should not clear the pending order marker itself', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      router.navigateByUrl('/checkout/review');
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: noop, error: fail });
+      window.dispatchEvent(new PopStateEvent('popstate'));
+
+      tick(500);
+
+      verify(orderServiceMock.clearPendingPaymentRedirect()).never();
+    }));
+
+    it('should not do anything if there is no pending order', fakeAsync(() => {
+      router.navigateByUrl('/checkout/review');
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
+
+      tick(500);
+    }));
+
+    it('should not do anything if the provider redirected back on its own with query params', fakeAsync(() => {
+      when(orderServiceMock.getPendingPaymentRedirectOrderId()).thenReturn(order.id);
+      router.navigate(['checkout', 'review'], { queryParams: { redirect: 'cancel', orderId: order.id } });
+      tick(500);
+
+      effects.cancelOrderAfterRedirectAbortion$.subscribe({ next: fail, error: fail });
+      window.dispatchEvent(new PopStateEvent('popstate'));
+
+      tick(500);
+    }));
+  });
+
+  describe('cleanupRedirectMarker$', () => {
+    it('should clear the pending order marker via the order service', done => {
+      actions$ = of(clearPendingPaymentRedirectMarker());
+
+      effects.cleanupRedirectMarker$.subscribe({
+        next: () => {
+          verify(orderServiceMock.clearPendingPaymentRedirect()).once();
+          done();
+        },
+        error: fail,
+      });
+    });
   });
 
   describe('returnFromRedirectAfterOrderCreation$', () => {

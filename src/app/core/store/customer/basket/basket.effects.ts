@@ -26,7 +26,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getCustomFieldsForScope } from 'ish-core/store/core/server-config';
-import { resetOrderErrors } from 'ish-core/store/customer/orders';
+import { clearPendingPaymentRedirectMarker, resetOrderErrors } from 'ish-core/store/customer/orders';
 import { getLoggedInCustomer, loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
@@ -97,6 +97,17 @@ export class BasketEffects {
               mapErrorToAction(loadBasketFail)
             )
       )
+    )
+  );
+
+  /**
+   * Clears the pending payment redirect marker once a basket has been successfully restored,
+   * regardless of which loading branch produced the loadBasketSuccess.
+   */
+  clearPendingPaymentRedirectMarkerAfterBasketLoad$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketSuccess),
+      map(() => clearPendingPaymentRedirectMarker())
     )
   );
 
