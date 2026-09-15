@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { routerNavigatedAction } from '@ngrx/router-store';
+import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
@@ -11,7 +11,7 @@ import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, swi
 
 import { Order } from 'ish-core/models/order/order.model';
 import { OrderService } from 'ish-core/services/order/order.service';
-import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam, selectUrl } from 'ish-core/store/core/router';
+import { ofUrl, selectQueryParam, selectQueryParams, selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import {
   continueCheckoutWithIssues,
@@ -208,22 +208,20 @@ export class OrdersEffects {
     !SSR &&
     createEffect(
       () => {
-        const navigatedBackToReview$ = this.store.pipe(
-          ofUrl(/^\/checkout\/review/),
-          select(selectQueryParams),
+        const restoredFromHistory$ = fromEvent<PopStateEvent>(window, 'popstate');
+
+        const restoredFromCache$ = fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
+          filter(event => event.persisted)
+        );
+
+        const restoredAfterHistoryReload$ = this.isHistoryReload()
+          ? this.actions$.pipe(ofType(routerNavigationAction), take(1))
+          : EMPTY;
+
+        return merge(restoredFromHistory$, restoredFromCache$, restoredAfterHistoryReload$).pipe(
+          concatLatestFrom(() => this.store.pipe(select(selectQueryParams))),
           // the redirect/orderId parameters mean the provider redirected back on its own, which the regular flow handles
-          filter(queryParams => !queryParams.redirect && !queryParams.orderId)
-        );
-
-        // a restore from the back/forward cache does not trigger a navigation, so react to the pageshow event and
-        // read the current url from the store instead
-        const restoredReviewFromCache$ = fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
-          filter(event => event.persisted),
-          concatLatestFrom(() => this.store.pipe(select(selectUrl))),
-          filter(([, url]) => /^\/checkout\/review/.test(url))
-        );
-
-        return merge(navigatedBackToReview$, restoredReviewFromCache$).pipe(
+          filter(([, queryParams]) => !queryParams.redirect && !queryParams.orderId),
           map(() => this.orderService.getPendingPaymentRedirectOrderId()),
           whenTruthy(),
           // prevents a retry loop if the navigation below is rejected by the checkout guard
@@ -388,6 +386,15 @@ export class OrdersEffects {
   private getPaypalOrderId(order: Order): string {
     return (
       order.orderCreation?.redirect?.parameters?.find((p: { name: string }) => p.name === 'PayPalOrderID')?.value || ''
+    );
+  }
+
+  private isHistoryReload(): boolean {
+    return (
+      typeof performance.getEntriesByType === 'function' &&
+      performance
+        .getEntriesByType('navigation')
+        .some(entry => (entry as PerformanceNavigationTiming).type === 'back_forward')
     );
   }
 }

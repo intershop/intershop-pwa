@@ -93,10 +93,21 @@ export class BasketEffects {
         !SSR && sessionStorage.getItem('basket-id')
           ? of(loadBasketWithId({ basketId: sessionStorage.getItem('basket-id') }))
           : this.basketService.getBasket().pipe(
-              mergeMap(basket => [loadBasketSuccess({ basket }), clearPendingPaymentRedirectMarker()]),
+              map(basket => loadBasketSuccess({ basket })),
               mapErrorToAction(loadBasketFail)
             )
       )
+    )
+  );
+
+  /**
+   * Clears the pending payment redirect marker once a basket has been successfully restored,
+   * regardless of which loading branch produced the loadBasketSuccess.
+   */
+  clearPendingPaymentRedirectMarkerAfterBasketLoad$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadBasketSuccess),
+      map(() => clearPendingPaymentRedirectMarker())
     )
   );
 

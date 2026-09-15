@@ -110,10 +110,9 @@ describe('Basket Effects', () => {
     it('should map to action of type LoadBasketSuccess', () => {
       const id = 'BID';
       const action = loadBasket();
-      const completion1 = loadBasketSuccess({ basket: { id } as Basket });
-      const completion2 = clearPendingPaymentRedirectMarker();
+      const completion = loadBasketSuccess({ basket: { id } as Basket });
       actions$ = hot('-a', { a: action });
-      const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
+      const expected$ = cold('-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
     });
@@ -180,6 +179,17 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketWithId$).toBeObservable(expected$);
+    });
+  });
+
+  describe('clearPendingPaymentRedirectMarkerAfterBasketLoad$', () => {
+    it('should clear the pending payment redirect marker on any LoadBasketSuccess', () => {
+      const action = loadBasketSuccess({ basket: { id: 'BID' } as Basket });
+      const completion = clearPendingPaymentRedirectMarker();
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
+
+      expect(effects.clearPendingPaymentRedirectMarkerAfterBasketLoad$).toBeObservable(expected$);
     });
   });
 
