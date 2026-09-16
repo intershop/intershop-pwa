@@ -25,7 +25,6 @@ import { routerTestNavigatedAction, routerTestNavigationAction } from 'ish-core/
 
 import {
   cancelPaypalOrderCreation,
-  clearPendingPaymentRedirectMarker,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -485,7 +484,7 @@ describe('Orders Effects', () => {
 
   describe('cleanupRedirectMarker$', () => {
     it('should clear the pending order marker via the order service', done => {
-      actions$ = of(clearPendingPaymentRedirectMarker());
+      actions$ = of(loadBasketSuccess({ basket: { id: 'BID' } as Basket }));
 
       effects.cleanupRedirectMarker$.subscribe({
         next: () => {

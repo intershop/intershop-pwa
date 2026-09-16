@@ -14,7 +14,7 @@ import { BasketService } from 'ish-core/services/basket/basket.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
-import { clearPendingPaymentRedirectMarker, resetOrderErrors } from 'ish-core/store/customer/orders';
+import { resetOrderErrors } from 'ish-core/store/customer/orders';
 import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -111,8 +111,8 @@ describe('Basket Effects', () => {
       const id = 'BID';
       const action = loadBasket();
       const completion = loadBasketSuccess({ basket: { id } as Basket });
-      actions$ = hot('-a', { a: action });
-      const expected$ = cold('-c', { c: completion });
+      actions$ = hot('-a-a-a', { a: action });
+      const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasket$).toBeObservable(expected$);
     });
@@ -179,17 +179,6 @@ describe('Basket Effects', () => {
       const expected$ = cold('-c-c-c', { c: completion });
 
       expect(effects.loadBasketWithId$).toBeObservable(expected$);
-    });
-  });
-
-  describe('clearPendingPaymentRedirectMarkerAfterBasketLoad$', () => {
-    it('should clear the pending payment redirect marker on any LoadBasketSuccess', () => {
-      const action = loadBasketSuccess({ basket: { id: 'BID' } as Basket });
-      const completion = clearPendingPaymentRedirectMarker();
-      actions$ = hot('-a-a-a', { a: action });
-      const expected$ = cold('-c-c-c', { c: completion });
-
-      expect(effects.clearPendingPaymentRedirectMarkerAfterBasketLoad$).toBeObservable(expected$);
     });
   });
 

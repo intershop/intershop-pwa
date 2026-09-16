@@ -18,13 +18,13 @@ import {
   emitPaypalOrderId,
   getCurrentBasketId,
   loadBasket,
+  loadBasketSuccess,
 } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import {
   cancelPaypalOrderCreation,
-  clearPendingPaymentRedirectMarker,
   createOrder,
   createOrderFail,
   createOrderSuccess,
@@ -240,7 +240,7 @@ export class OrdersEffects {
   cleanupRedirectMarker$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(clearPendingPaymentRedirectMarker),
+        ofType(loadBasketSuccess),
         map(() => this.orderService.clearPendingPaymentRedirect())
       ),
     { dispatch: false }
