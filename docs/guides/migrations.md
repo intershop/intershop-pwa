@@ -100,27 +100,11 @@ Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remai
 
 **Store Devtools production configuration**
 
-Store Devtools are now configured through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of through a production file replacement in `angular.json`.
+Store Devtools are now configured through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in _angular.json_, and the obsolete _store-devtools.module.production.ts_ file has been removed.
+The default behavior is unchanged (enabled in development, disabled in production).
 
-The production-only `store-devtools.module.production.ts` file has been removed.
-If you maintain custom Angular build configurations, remove any remaining file replacements that reference this file.
-
-The default behavior is unchanged:
-
-- Store Devtools are enabled in development.
-- Store Devtools are disabled in production.
-
-If you previously enabled Store Devtools in production by removing the file replacement, update the conditional registration in `store-devtools.module.ts` instead.
-When enabling instrumentation in both development and production, retain the production-specific options:
-
-```typescript
-StoreDevtoolsModule.instrument({
-  maxAge: PRODUCTION_MODE ? 25 : 200,
-  logOnly: PRODUCTION_MODE,
-  actionsBlocklist: [loadPromotion.type, loadProductIfNotLoaded.type, setStickyHeader.type, suggestSearch.type],
-  connectInZone: true,
-});
-```
+If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
+To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
 
 ## From 12.0.0 to 12.1.0
 
