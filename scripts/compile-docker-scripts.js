@@ -4,18 +4,12 @@ const path = require('path');
 const { globSync } = require('glob');
 const fs = require('fs');
 
-if (!fs.existsSync('src/ssr/server-scripts/ecosystem-ports.json')) {
-  console.error('ecosystem-ports.json not found. You have to execute "npm run build:multi" before.');
-  process.exit(1);
-}
-
 const lockFile = JSON.parse(fs.readFileSync('./package-lock.json', { encoding: 'utf-8' }));
 fs.writeFileSync(
   'dist/package.json',
   JSON.stringify(
     {
       dependencies: {
-        pm2: lockFile.packages['node_modules/pm2'].version,
         express: lockFile.packages['node_modules/express'].version,
       },
     },
@@ -33,7 +27,6 @@ globSync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file =>
       target: 'node',
       mode: 'production',
       externals: {
-        pm2: 'commonjs pm2',
         express: 'commonjs express',
       },
       optimization: {

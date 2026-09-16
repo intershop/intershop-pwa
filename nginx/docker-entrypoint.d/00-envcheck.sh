@@ -7,9 +7,9 @@ then
   rm /etc/nginx/conf.d/default.conf
 fi
 
-if [ -z "$UPSTREAM_PWA" ]
+if [ -z "$UPSTREAMS" ]
 then
-  echo "UPSTREAM_PWA is not set"
+  echo "UPSTREAMS is not set"
   exit 1
 fi
 

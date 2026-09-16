@@ -161,7 +161,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Production Build PWA Image
-        run: docker compose build pwa
+        run: docker build -t intershophub/intershop-pwa-ssr .
 
   Nginx:
     needs: [Quality, Jest]
@@ -172,4 +172,4 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Build Nginx Image
-        run: docker compose build nginx
+        run: docker build -t intershophub/intershop-pwa-nginx nginx

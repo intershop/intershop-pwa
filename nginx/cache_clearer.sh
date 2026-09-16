@@ -8,8 +8,8 @@ if [ -z "$ICM_BASE_URL" ]; then
     echo "Error: ICM_BASE_URL is not set."
     exit 1
 fi
-if [ -z "$UPSTREAM_PWA" ]; then
-    echo "Error: UPSTREAM_PWA is not set."
+if [ -z "$UPSTREAMS" ]; then
+    echo "Error: UPSTREAMS is not set."
     exit 2
 fi
 
@@ -35,7 +35,7 @@ MULTI_CHANNEL_SITES=$(echo "$MULTI_CHANNEL_CONF" | grep -oE 'channel: [^ ]+' | a
 echo "Info: Sites from MULTI_CHANNEL configuration found: '$MULTI_CHANNEL_SITES'"
 
 # get_endpoints() gets k8s endpoints for upstream pwa service
-# fallback to UPSTREAM_PWA if not on k8s or if k8s endpoints can not be retrieved
+# fallback to UPSTREAMS if not on k8s or if k8s endpoints can not be retrieved
 # return codes:
 #   0   successfully determined the endpoints
 #   1   not able to determine k8s via /var/run/secrets/kubernetes.io/
@@ -44,30 +44,38 @@ get_endpoints() {
     local ca_cert="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
     local ns_file="/var/run/secrets/kubernetes.io/serviceaccount/namespace"
 
+    IFS="," read -ra UPSTREAM_LIST <<< $UPSTREAMS
+
     if [[ -f "$token_file" && -f "$ca_cert" && -f "$ns_file" ]]; then
         local namespace service protocol token
         namespace=$(<"$ns_file")
-        service=$(echo "$UPSTREAM_PWA" | awk -F[/:] '{print $4}')
-        protocol=$(echo "$UPSTREAM_PWA" | awk -F[/:] '{print $1}')
         token=$(<"$token_file")
-        local response
-        response=$(curl -sS --cacert "$ca_cert" \
-            -H "Authorization: Bearer $token" \
-            "https://kubernetes.default.svc/api/v1/namespaces/$namespace/endpoints/$service")
-        local ips ports
-        ips=$(echo "$response" | grep -o '"ip":[[:space:]]*"[^"]*"' | sed 's/.*"ip":[[:space:]]*"\([^"]*\)".*/\1/')
-        ports=$(echo "$response" | grep -o '"port":[[:space:]]*[0-9]*' | sed 's/[^0-9]*//g')
-        if [[ -n "$ips" && -n "$ports" ]]; then
-            for port in $ports; do
-                for ip in $ips; do
-                    echo "$protocol://$ip:$port"
+        for UPSTREAM in "${UPSTREAM_LIST[@]}"; do
+            # UPSTREAM is like "b2c=ssr-b2c:4200", we only need the service name in the middle
+            service=$(echo "${UPSTREAM}" | sed -E "s/.+=(.+):.*/\1/")
+            local response
+            response=$(curl -sS --cacert "$ca_cert" \
+                -H "Authorization: Bearer ${token}" \
+                "https://kubernetes.default.svc/api/v1/namespaces/${namespace}/endpoints/${service}")
+            local ips ports
+            ips=$(echo "$response" | grep -o '"ip":[[:space:]]*"[^"]*"' | sed 's/.*"ip":[[:space:]]*"\([^"]*\)".*/\1/')
+            ports=$(echo "$response" | grep -o '"port":[[:space:]]*[0-9]*' | sed 's/[^0-9]*//g')
+            if [[ -n "$ips" && -n "$ports" ]]; then
+                for port in $ports; do
+                    for ip in $ips; do
+                        echo "http://${ip}:${port}"
+                    done
+                    break
                 done
-                break
-            done
-            return 0
-        fi
+            fi
+        done
+        return 0
     fi
-    echo "$UPSTREAM_PWA"
+    for UPSTREAM in "${UPSTREAM_LIST[@]}"; do
+        # UPSTREAM is like "b2c=ssr-b2c:4200", we need the service name and port
+        local endpoint=$(echo "${UPSTREAM}" | sed -E "s/.+=(.+)/\1/")
+        echo "http://${endpoint}"
+    done
     return 1
 }
 
@@ -89,7 +97,7 @@ purge_icm_calls_cache() {
 echo "Info: Starting nginx cache clear monitor based on ICM webadapter statistics from $ICM_BASE_URL"
 ENDPOINTS=$(get_endpoints)
 if [ $? -ne 0 ]; then
-    MESSAGE="by using environment UPSTREAM_PWA"
+    MESSAGE="by using environment UPSTREAMS"
 else
     MESSAGE="by using k8s endpoints API"
 fi
