@@ -16,6 +16,30 @@ It is intentionally not exhaustive and will be extended as the migration settles
 Angular's `@angular-devkit/build-angular:browser` (webpack) is superseded by the `@angular/build:application` builder, which uses esbuild for bundling and Vite for the development server.
 The main benefits are significantly faster cold builds and rebuilds, faster `ng serve` startup, and less custom build configuration to maintain.
 
+## Preparations before switching builders
+
+Incorporate these preparations while still using webpack to reduce the scope of the esbuild migration.
+If your PWA version already includes them, only adapt the corresponding client customizations.
+
+### SSR request handling ([#2191](https://github.com/intershop/intershop-pwa/pull/2191))
+
+- Import `REQUEST` from `@angular/core` and adapt custom consumers and mocks from Express to the Web `Request` API, including URL and header access.
+- In custom Express SSR bootstraps, provide `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` from `@angular/ssr/node`.
+- Preserve the fallback when no request is available, including `document.baseURI` for browser SEO URLs.
+
+### Translation and font imports ([#2193](https://github.com/intershop/intershop-pwa/pull/2193))
+
+- Return the default export of dynamically imported translation JSON with `.then(module => module.default)`, including custom language loaders.
+- Replace webpack-specific `~` font URLs with paths to the files in `node_modules`, relative to each stylesheet.
+
+### Store Devtools configuration ([#2182](https://github.com/intershop/intershop-pwa/pull/2182))
+
+- Use `PRODUCTION_MODE` for conditional registration in `store-devtools.module.ts`, and remove the obsolete `store-devtools.module.production.ts` and its file replacements from custom Angular configurations.
+- Adapt any intentional production enablement to the new conditional registration; the default remains development only.
+
+Before switching builders, run the project's tests and webpack development and production builds for all active themes.
+Verify SSR SEO URLs behind the project's proxy and after browser navigation, translations, font loading, and the expected Store Devtools availability.
+
 ## Builder and configuration
 
 - The custom webpack builder `@angular-builders/custom-webpack` was replaced by `@angular-builders/custom-esbuild` in [`angular.json`](../../angular.json).
