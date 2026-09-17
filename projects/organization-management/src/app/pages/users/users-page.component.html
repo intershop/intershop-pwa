@@ -41,16 +41,18 @@
           <div class="col-1 list-item text-end order-sm-4 order-3">
             @if (user.login !== (currentUser$ | async)?.login) {
               <div class="float-end">
+                @let dialogDeleteLabel =
+                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName };
+
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="remove-user"
-                  title="{{
-                    'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
-                  }}"
+                  title="{{ dialogDeleteLabel }}"
                   type="button"
+                  [attr.aria-label]="dialogDeleteLabel"
                   (click)="modalDialog.show(user)"
                 >
-                  <i class="bi bi-trash-fill"></i>
+                  <i aria-hidden="true" class="bi bi-trash-fill"></i>
                 </button>
 
                 <ish-modal-dialog

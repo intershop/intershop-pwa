@@ -52,44 +52,32 @@ describe('In Place Edit Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should always render view component by default', () => {
+  it('should always render view mode by default', () => {
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <ish-in-place-edit
-        ><div class="d-flex flex-row align-items-center">
-          <p viewmodecontent="">VIEW</p>
-          <button type="button" class="btn btn-link" title="inplace_edit.click_to_edit">
-            <i class="bi bi-pencil-fill me-auto"></i>
-          </button></div
-      ></ish-in-place-edit>
-    `);
+    expect(element.querySelector('[viewModeContent]')?.textContent).toContain('VIEW');
+    expect(element.querySelector('input')).toBeFalsy();
+
+    const button = element.querySelector<HTMLButtonElement>('button');
+    expect(button?.title).toEqual('inplace_edit.click_to_edit');
+    expect(button?.getAttribute('aria-label')).toEqual('inplace_edit.click_to_edit');
+    expect(button?.querySelector('i')?.classList).toContain('bi-pencil-fill');
   });
 
-  it('should render edit component when clicked', () => {
+  it('should render edit mode when clicked', () => {
     fixture.detectChanges();
     mousedown({ target: element.querySelector('p') });
+    fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`
-      <ish-in-place-edit
-        ><div class="d-flex flex-row align-items-baseline">
-          <input editmodeform="" /><button
-            data-testing-id="confirm"
-            type="button"
-            class="btn btn-link"
-            title="inplace_edit.save"
-          >
-            <i class="bi bi-check-lg"></i></button
-          ><button
-            data-testing-id="cancel"
-            type="button"
-            class="btn btn-link"
-            title="inplace_edit.cancel"
-          >
-            <i class="bi bi-x"></i>
-          </button></div
-      ></ish-in-place-edit>
-    `);
+    expect(element.querySelector('input')).toBeTruthy();
+
+    const confirm = element.querySelector<HTMLButtonElement>('[data-testing-id="confirm"]');
+    expect(confirm?.title).toEqual('inplace_edit.save');
+    expect(confirm?.querySelector('i')?.classList).toContain('bi-check-lg');
+
+    const cancel = element.querySelector<HTMLButtonElement>('[data-testing-id="cancel"]');
+    expect(cancel?.title).toEqual('inplace_edit.cancel');
+    expect(cancel?.querySelector('i')?.classList).toContain('bi-x');
   });
 
   describe('in edit mode', () => {

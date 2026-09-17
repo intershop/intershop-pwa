@@ -9,7 +9,13 @@
           {{ options.titleText }}
         </h2>
       }
-      <button class="btn-close" type="button" [title]="'dialog.close.text' | translate" (click)="hide()"></button>
+      <button
+        class="btn-close"
+        type="button"
+        [attr.aria-label]="'dialog.close.text' | translate"
+        [title]="'dialog.close.text' | translate"
+        (click)="hide()"
+      ></button>
     </div>
   </ng-content>
 

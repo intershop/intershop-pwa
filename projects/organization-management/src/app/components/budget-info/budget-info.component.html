@@ -13,9 +13,10 @@
     data-testing-id="budgetPriceTypeInfoTestingID"
     placement="auto"
     type="button"
+    [attr.aria-label]="'account.organization.budget_price_type.icon' | translate"
     [ngbPopover]="BudgetPriceTypeInfo"
     [title]="'account.organization.budget_price_type.icon' | translate"
   >
-    <i class="bi bi-info-circle-fill"></i>
+    <i aria-hidden="true" class="bi bi-info-circle-fill"></i>
   </button>
 }

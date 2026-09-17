@@ -3,6 +3,7 @@
     class="btn add-to-compare"
     type="button"
     [attr.aria-hidden]="ariaHidden"
+    [attr.aria-label]="displayType === 'icon' ? ('product.compare.link' | translate) : ''"
     [class.is-selected]="isInCompareList$ | async"
     [ngClass]="cssClass"
     [tabindex]="ariaHidden ? -1 : 0"
@@ -10,7 +11,7 @@
     (click)="toggleCompare()"
   >
     @if (displayType === 'icon') {
-      <i class="bi bi-arrow-left-right"></i>
+      <i aria-hidden="true" class="bi bi-arrow-left-right"></i>
     } @else {
       {{ 'product.compare.link' | translate }}
     }

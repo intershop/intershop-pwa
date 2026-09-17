@@ -70,9 +70,10 @@
               class="link-print"
               href="javascript:window.print();"
               rel="nofollow"
+              [attr.aria-label]="'checkout.receipt.print.button.label' | translate"
               [title]="'checkout.receipt.print.button.label' | translate"
             >
-              <i class="bi bi-printer-fill"></i>
+              <i aria-hidden="true" class="bi bi-printer-fill"></i>
             </a>
           </li>
         </ul>

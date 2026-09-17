@@ -22,9 +22,10 @@
             class="link-print"
             href="javascript:window.print();"
             rel="nofollow"
+            [attr.aria-label]="'product.print_page.link' | translate"
             [title]="'product.print_page.link' | translate"
           >
-            <i class="bi bi-printer-fill"></i>
+            <i aria-hidden="true" class="bi bi-printer-fill"></i>
           </a>
         </li>
         <li>
@@ -36,9 +37,10 @@
                 : ('email.recommended_product.heading.no_channel' | translate)
             }}
           &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
+            [attr.aria-label]="'product.email_a_friend.link' | translate"
             [title]="'product.email_a_friend.link' | translate"
           >
-            <i class="bi bi-share-fill"></i>
+            <i aria-hidden="true" class="bi bi-share-fill"></i>
           </a>
         </li>
       </ul>

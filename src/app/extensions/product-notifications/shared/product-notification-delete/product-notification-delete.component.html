@@ -1,11 +1,12 @@
 <button
   data-testing-id="product-notification-delete"
   type="button"
+  [attr.aria-label]="'product.notification.delete.link.title' | translate"
   [ngClass]="cssClass"
   [title]="'product.notification.delete.link.title' | translate"
   (click)="openConfirmationDialog(deleteDialog)"
 >
-  <i class="bi bi-trash-fill"></i>
+  <i aria-hidden="true" class="bi bi-trash-fill"></i>
 </button>
 
 <ish-modal-dialog

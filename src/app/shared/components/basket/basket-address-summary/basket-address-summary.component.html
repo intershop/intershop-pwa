@@ -4,9 +4,12 @@
     <a
       class="float-end btn-tool"
       routerLink="/checkout/address"
+      [attr.aria-label]="
+        'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }
+      "
       [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
     <h3 class="h5 float-start">{{ 'checkout.address.billing.label' | translate }}</h3>
   </div>
@@ -19,9 +22,12 @@
     <a
       class="float-end btn-tool"
       routerLink="/checkout/address"
+      [attr.aria-label]="
+        'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }
+      "
       [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
     <h3 class="h5">{{ 'checkout.address.shipping.label' | translate }}</h3>
   </div>

@@ -8,11 +8,12 @@
           class="btn"
           data-testing-id="product-notification-edit"
           type="button"
+          [attr.aria-label]="'product.notification.edit.link.title' | translate"
           [ngClass]="cssClass"
           [title]="'product.notification.edit.link.title' | translate"
           (click)="openModal(modal)"
         >
-          <i class="bi bi-pencil-fill"></i>
+          <i aria-hidden="true" class="bi bi-pencil-fill"></i>
         </button>
       </div>
     }

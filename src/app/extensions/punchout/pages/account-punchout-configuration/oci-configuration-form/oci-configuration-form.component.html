@@ -20,10 +20,11 @@
           placement="bottom"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
           type="button"
+          [attr.aria-label]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
           [ngbPopover]="OciConfigurationPlaceholder"
           [title]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i aria-hidden="true" class="bi bi-info-circle-fill"></i>
         </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
@@ -39,10 +40,11 @@
           placement="bottom"
           popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
           type="button"
+          [attr.aria-label]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
           [ngbPopover]="OciConfigurationMapping"
           [title]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
         >
-          <i class="bi bi-info-circle-fill"></i>
+          <i aria-hidden="true" class="bi bi-info-circle-fill"></i>
         </button>
       </div>
       <div class="col-md-3 list-header-item no-seperator">
