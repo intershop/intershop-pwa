@@ -8,6 +8,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   selector: 'ish-product-advisor-page',
   standalone: false,
   templateUrl: './product-advisor-page.component.html',
+  styleUrls: ['./product-advisor-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAdvisorPageComponent implements OnInit {

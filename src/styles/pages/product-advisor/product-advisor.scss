@@ -1,6 +1,7 @@
+// Shared advisor icon: base (small) is the default; the enlarged variant is
+// used within the chat welcome header. Global because it is reused across the
+// separate product-advisor components.
 .product-advisor {
-  margin-top: $space-default;
-
   .advisor-icon {
     display: flex;
     align-items: center;
@@ -12,146 +13,13 @@
     color: $color-inverse;
     background-color: $CORPORATE-PRIMARY;
     border-radius: 10px;
-
-    &.advisor-icon-lg {
-      width: 56px;
-      height: 56px;
-      margin-right: 0;
-      font-size: 28px;
-      border-radius: 16px;
-    }
   }
 
-  .advisor-welcome {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: ($space-default * 10);
-
-    .advisor-welcome-header {
-      flex-direction: column;
-      align-items: center;
-      margin: 0 0 ($space-default * 2);
-
-      h1 {
-        margin-top: ($space-default * 1.5);
-      }
-    }
-
-    .advisor-intro {
-      font-size: $font-size-lg;
-      text-align: center;
-    }
-  }
-
-  .advisor-prompt-badges {
-    width: 100%;
-    padding-top: ($space-default * 1.5);
-
-    .advisor-prompt-badge-row + .advisor-prompt-badge-row {
-      margin-top: $space-default;
-    }
-
-    .advisor-prompt-badge {
-      display: flex;
-      flex: 1 0 0;
-      align-items: center;
-      padding: ($space-default * 0.75);
-      font-size: $font-size-base;
-      color: $text-color-primary;
-      text-align: left;
-      white-space: normal;
-      background-color: $color-inverse;
-      border: 1px solid $color-inverse;
-      border-radius: ($space-default * 0.75);
-
-      // hanging indent so wrapped lines align after the leading emoji
-      span {
-        padding-left: 1.5em;
-        line-height: $line-height-base;
-        text-indent: -1.5em;
-      }
-
-      &:hover {
-        border-color: $CORPORATE-PRIMARY;
-      }
-    }
-  }
-
-  .advisor-input {
-    .advisor-input-field {
-      position: relative;
-      flex: 1 0 0;
-
-      .advisor-input-camera {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        margin-right: 0;
-        margin-bottom: 0;
-        color: $text-color-tertiary;
-      }
-    }
-
-    .advisor-input-send {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 0 !important;
-      margin-bottom: 0;
-      color: $CORPORATE-PRIMARY;
-      background-color: $color-inverse;
-      border: 1px solid $CORPORATE-PRIMARY;
-
-      .bi {
-        transform: rotate(45deg);
-      }
-    }
-
-    button {
-      width: auto;
-      font-size: 18px;
-
-      &:not(.btn-link):not(.input-group-text) {
-        @media (max-width: $screen-xs-max) {
-          width: auto;
-        }
-      }
-    }
-  }
-
-  .advisor-title-card {
-    display: flex;
-    align-items: center;
-    padding: ($space-default * 0.75) 0;
-
-    .advisor-title-card-title {
-      margin: 0;
-      font-family: $font-family-bold;
-      font-size: 16px;
-      line-height: 20px;
-      text-transform: uppercase;
-    }
-
-    .advisor-title-card-text {
-      padding-top: divide($space-default, 8);
-      margin: 0;
-      font-size: 12px;
-      line-height: 16px;
-      color: $text-color-tertiary;
-    }
-  }
-}
-
-.product-advisor-results {
-  .advisor-results-header {
-    margin-bottom: ($space-default * 0.75);
-
-    .advisor-results-subtitle {
-      color: $text-color-tertiary;
-    }
+  .advisor-welcome .advisor-icon {
+    width: 56px;
+    height: 56px;
+    margin-right: 0;
+    font-size: 28px;
+    border-radius: 16px;
   }
 }
