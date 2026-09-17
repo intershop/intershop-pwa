@@ -236,11 +236,11 @@ Alternatively, the source can be supplied by setting `ADDITIONAL_HEADERS_SOURCE`
 
 For every entry, NGINX will add this header to every possible response.
 
-To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [`additional-headers.yaml`](../../nginx/additional-headers.yaml) file.
+To make the additional headers available during build-time, the value for the environment variable `ADDITIONAL_HEADERS` can be put into the [_additional-headers.yaml_](../../nginx/additional-headers.yaml) file.
 
 #### Content Security Policy
 
-The standard PWA ships a permissive baseline Content Security Policy (plus `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`) in [`additional-headers.yaml`](../../nginx/additional-headers.yaml).
+The standard PWA ships a permissive baseline Content Security Policy (plus `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, and `Cross-Origin-Opener-Policy`) in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
 
 It is intentionally lenient so that scanners see the headers while typical projects keep working, and it is applied through the same `ADDITIONAL_HEADERS` mechanism described above.
 
