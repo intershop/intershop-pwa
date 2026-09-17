@@ -205,7 +205,7 @@
   "account.login.productnotification.message": "Melden Sie sich mit Ihrem Benutzernamen an, um eine Benachrichtigung zu erstellen.",
   "account.login.profile_settings.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Profileinstellungen zu aktualisieren.",
   "account.login.quotes.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Preisangebote zu benutzen.",
-  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt anmelden</a>",
+  "account.login.register_now": "Sie haben noch kein Benutzerkonto?<br/><a href=\"{{0}}\">Jetzt registrieren</a>",
   "account.login.review.message": "Melden Sie sich mit Ihrem Benutzernamen an, um Rezensionen zu schreiben.",
   "account.login.session_timeout.message": "Sie wurden aufgrund einer langen Inaktivitätsdauer automatisch abgemeldet. Bitte melden Sie sich erneut an, um den Einkauf fortzusetzen.",
   "account.login.signin.heading": "Anmelden",
