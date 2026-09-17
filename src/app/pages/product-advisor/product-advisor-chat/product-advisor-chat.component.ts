@@ -6,6 +6,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
   selector: 'ish-product-advisor-chat',
   standalone: false,
   templateUrl: './product-advisor-chat.component.html',
+  styleUrls: ['./product-advisor-chat.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductAdvisorChatComponent {

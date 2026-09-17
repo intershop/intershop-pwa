@@ -1,30 +1,32 @@
-<div class="product-advisor-chat h-100 bg-light p-4 d-flex flex-column justify-content-between">
+<div class="product-advisor-chat">
   <div class="advisor-welcome">
     @if (deviceType !== 'mobile') {
-      <div class="advisor-welcome-header d-flex">
-        <div class="advisor-icon advisor-icon-lg">
-          <i class="bi bi-stars"></i>
-        </div>
-        <h1>{{ 'copilot.product_advisor.headline' | translate }}</h1>
+      <div class="advisor-icon">
+        <i class="bi bi-stars"></i>
       </div>
+      <h1>{{ 'copilot.product_advisor.headline' | translate }}</h1>
     }
 
-    <p class="advisor-intro">{{ 'copilot.product_advisor.intro' | translate }}</p>
+    <p>{{ 'copilot.product_advisor.intro' | translate }}</p>
 
-    <div class="advisor-prompt-badges">
-      <div class="advisor-prompt-badge-row d-flex flex-column flex-sm-row">
-        <button class="badge advisor-prompt-badge mb-3 mb-sm-0 me-sm-3" type="button">
+    <div class="advisor-prompt-badges row">
+      <div class="col-12 col-sm-6">
+        <button class="badge" type="button">
           <span>{{ 'copilot.product_advisor.prompt_1' | translate }}</span>
         </button>
-        <button class="badge advisor-prompt-badge" type="button">
+      </div>
+      <div class="col-12 col-sm-6">
+        <button class="badge" type="button">
           <span>{{ 'copilot.product_advisor.prompt_2' | translate }}</span>
         </button>
       </div>
-      <div class="advisor-prompt-badge-row d-flex flex-column flex-sm-row">
-        <button class="badge advisor-prompt-badge mb-3 mb-sm-0 me-sm-3" type="button">
+      <div class="col-12 col-sm-6">
+        <button class="badge" type="button">
           <span>{{ 'copilot.product_advisor.prompt_3' | translate }}</span>
         </button>
-        <button class="badge advisor-prompt-badge" type="button">
+      </div>
+      <div class="col-12 col-sm-6">
+        <button class="badge" type="button">
           <span>{{ 'copilot.product_advisor.prompt_4' | translate }}</span>
         </button>
       </div>
@@ -34,19 +36,11 @@
   <div class="advisor-input input-group">
     <div class="advisor-input-field">
       <input class="form-control" type="text" [placeholder]="'copilot.product_advisor.input.placeholder' | translate" />
-      <button
-        class="btn advisor-input-camera"
-        type="button"
-        [attr.aria-label]="'copilot.product_advisor.input.camera' | translate"
-      >
+      <button class="btn" type="button" [attr.aria-label]="'copilot.product_advisor.input.camera' | translate">
         <i class="bi bi-camera-fill"></i>
       </button>
     </div>
-    <button
-      class="btn advisor-input-send"
-      type="button"
-      [attr.aria-label]="'copilot.product_advisor.input.send' | translate"
-    >
+    <button class="btn" type="button" [attr.aria-label]="'copilot.product_advisor.input.send' | translate">
       <i class="bi bi-send-fill"></i>
     </button>
   </div>
