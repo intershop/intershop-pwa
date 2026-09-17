@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
@@ -8,7 +18,6 @@ import {
   ProductAdvisorChatMessage,
   ProductAdvisorChatSession,
   ProductAdvisorResponse,
-  ProductAdvisorStreamEvent,
   ProductAdvisorToolCall,
 } from '../../models/product-advisor/product-advisor.model';
 
@@ -31,7 +40,9 @@ function generateSessionId(): string {
   templateUrl: './product-advisor-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAdvisorPageComponent implements OnInit {
+export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
+  @ViewChild('chatWindow') private chatWindow: ElementRef<HTMLElement>;
+
   form: FormGroup;
 
   loading = false;
@@ -39,12 +50,12 @@ export class ProductAdvisorPageComponent implements OnInit {
 
   messages: ProductAdvisorChatMessage[] = [];
   pendingAnswer = '';
-  events: ProductAdvisorStreamEvent[] = [];
   toolErrors: { tool: string; error: string }[] = [];
-  usedFallback = false;
 
   private chatId: string;
   private chatflowid: string;
+  private stickToBottom = true;
+  private scrollPending = false;
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -61,8 +72,28 @@ export class ProductAdvisorPageComponent implements OnInit {
     this.productAdvisorFacade.configuration$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(config => {
       this.chatflowid = config?.chatflowid;
       this.restoreSession();
+      this.scrollPending = true;
       this.cdRef.markForCheck();
     });
+  }
+
+  ngAfterViewChecked() {
+    if (this.scrollPending) {
+      this.scrollPending = false;
+      if (this.stickToBottom) {
+        this.scrollToBottom();
+      }
+    }
+  }
+
+  /**
+   * Keeps auto-scroll active only while the user is near the bottom of the transcript.
+   */
+  onChatScroll() {
+    const el = this.chatWindow?.nativeElement;
+    if (el) {
+      this.stickToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+    }
   }
 
   /**
@@ -73,7 +104,6 @@ export class ProductAdvisorPageComponent implements OnInit {
     this.messages = [];
     this.chatId = undefined;
     this.pendingAnswer = '';
-    this.events = [];
     this.toolErrors = [];
     this.error = undefined;
     this.clearStoredSession();
@@ -125,9 +155,9 @@ export class ProductAdvisorPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: event => {
-          this.events = [...this.events, event];
           if (event.event === 'token' && typeof event.data === 'string') {
             this.pendingAnswer += event.data;
+            this.scrollPending = true;
           } else if (event.event === 'usedTools' && Array.isArray(event.data)) {
             streamedTools = event.data as ProductAdvisorToolCall[];
           } else if (event.event === 'metadata' && this.isMetadata(event.data)) {
@@ -151,7 +181,6 @@ export class ProductAdvisorPageComponent implements OnInit {
   }
 
   private fetchFinalAnswer(request: { question: string; sessionId: string }) {
-    this.usedFallback = true;
     this.productAdvisorFacade
       .sendMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId })
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -180,10 +209,9 @@ export class ProductAdvisorPageComponent implements OnInit {
 
     this.loading = true;
     this.error = undefined;
-    this.events = [];
     this.toolErrors = [];
-    this.usedFallback = false;
     this.pendingAnswer = '';
+    this.stickToBottom = true;
 
     this.addMessage({ message: trimmed, type: 'userMessage' });
     this.form.get('question').reset('');
@@ -198,7 +226,15 @@ export class ProductAdvisorPageComponent implements OnInit {
 
   private addMessage(message: ProductAdvisorChatMessage) {
     this.messages = [...this.messages, message];
+    this.scrollPending = true;
     this.saveSession();
+  }
+
+  private scrollToBottom() {
+    const el = this.chatWindow?.nativeElement;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
   }
 
   private getOrCreateSessionId(): string {
