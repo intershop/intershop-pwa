@@ -18,7 +18,7 @@ kb_sync_latest_only
 
 ## Overview
 
-`llms.txt` is a proposed standard (see [llmstxt.org](https://llmstxt.org/)) that provides a curated, LLM-friendly index of a website at `/llms.txt`.
+_llms.txt_ is a proposed standard (see [llmstxt.org](https://llmstxt.org/)) that provides a curated, LLM-friendly index of a website at _/llms.txt_.
 It helps large language models and AI agents discover the most relevant pages of a store without having to crawl the full HTML site.
 
 The PWA follows the [v2 revision of the proposal (August 2026)](https://llmstxt.org/changes.html).
@@ -30,7 +30,7 @@ It is served as static content by the Nginx layer and does not require server-si
 The content files are located in the `nginx/llms/` folder.
 Each file is named after the channel it belongs to, following the pattern `<channel>_llms.txt`.
 
-This naming links every file to a channel from the [multi-channel configuration](./multi-site-configurations.md), so the correct file is served automatically for each domain.
+This naming links every file to a channel from the [multi-channel configuration](./multi-site-configurations.md) so that the correct file is served automatically for each domain.
 If no file matches a domain's channel, Nginx falls back to `nginx/llms/default_llms.txt`.
 For example:
 
@@ -44,13 +44,13 @@ For example:
 
 The [v2 revision](https://llmstxt.org/changes.html) adds a way for agents to find the `llms.txt` file that covers a page without guessing the URL: the page links to it with the `rel="describedby"` link relation.
 
-The PWA declares this once in [`src/index.html`](../../src/index.html), so every route of the single-page application advertises it — in both client-side and server-side rendered responses:
+The PWA declares this once in [`src/index.html`](../../src/index.html) so that every route of the single-page application advertises it, in both client-side and server-side rendered responses:
 
 ```html
 <link href="/llms.txt" rel="describedby" />
 ```
 
-The root-relative `/llms.txt` href intentionally ignores the `<base href>`, so it always resolves to the domain root file that Nginx serves for the current channel — including in [Multi-Base-Href Setups](#multi-base-href-setup) where the base href becomes `/en`, `/de`, and so on.
+The root-relative `/llms.txt` href intentionally ignores the `<base href>` so that it always resolves to the domain root file that Nginx serves for the current channel, including in [Multi-Base-Href Setups](#multi-base-href-setup) where the base href becomes `/en`, `/de`, etc.
 
 > [!NOTE]
 > The `rel="alternate" type="text/markdown"` relation from v2 points to a Markdown version of an individual page.
@@ -81,7 +81,7 @@ However, setting `MULTI_CHANNEL` is optional for this case.
 > In a concrete deployment, map its domains to real channels and provide the corresponding `<channel>_llms.txt` files.
 
 Alternatively, set the single channel to a specific, named channel instead of `default`.
-In that case, `/llms.txt` serves that channel's file — for example, `nginx/llms/inSPIRED-inTRONICS_Business-Site_llms.txt`:
+In that case, `/llms.txt` serves that channel's file,for example, `nginx/llms/inSPIRED-inTRONICS_Business-Site_llms.txt`:
 
 ```yaml
 MULTI_CHANNEL: |
@@ -108,7 +108,7 @@ MULTI_CHANNEL: |
 
 ## Multi-Base-Href Setup
 
-A single domain can also serve several channels under different base href paths (for example `/en`, `/de`, `/fr`, and `/b2c`), as configured in a list in the [multi-channel configuration](./multi-site-configurations.md).
+A single domain can also serve several channels under different base href paths (for example, `/en`, `/de`, `/fr`, and `/b2c`), as configured in a list in the [multi-channel configuration](./multi-site-configurations.md).
 In this case, there is only **one** `/llms.txt` at the domain root, and it uses the channel of the **first** list entry.
 As with all other setups, a missing channel file falls back to `nginx/llms/default_llms.txt`.
 
@@ -116,7 +116,7 @@ For example, if the first list entry uses `inSPIRED-inTRONICS_Business-Site`, th
 The individual base href paths (such as `/b2c`) do **not** get their own `llms.txt`.
 
 > [!NOTE]
-> When the base href paths represent different languages (for example `/en`, `/de`, `/fr` with distinct `lang` values), this affects localization.
+> When the base href paths represent different languages (for example, `/en`, `/de`, `/fr` with distinct `lang` values), this affects localization.
 > Because only the domain root serves `/llms.txt` and it always uses the **first** list entry's channel, there is a single file whose language is effectively determined by the first entry.
 
 The matching multi-channel configuration looks as follows:
