@@ -278,6 +278,7 @@ export class OrdersEffects {
         this.orderService.updateOrderPayment(params.orderId, params).pipe(
           map(orderId => {
             if (params.redirect === 'success') {
+              this.orderService.clearPendingPaymentRedirect();
               return selectOrder({ orderId });
             } else {
               // cancelled payment
