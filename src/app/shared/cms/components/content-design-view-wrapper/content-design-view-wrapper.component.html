@@ -18,23 +18,25 @@
         <!-- pagelet -->
         @case ('pagelet') {
           @if (pagelet$ | async; as pagelet) {
+            @let editLinkTitle =
+              ('designview.edit.link.title' | translate) + (pagelet.displayName ? ` ${pagelet.displayName}` : '');
             <button
               class="btn"
-              title="{{
-                ('designview.edit.link.title' | translate) + (pagelet.displayName ? ` ${pagelet.displayName}` : '')
-              }}"
+              title="{{ editLinkTitle }}"
               type="button"
+              [attr.aria-label]="editLinkTitle"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"
             >
-              <i class="bi bi-pencil-fill"></i>
+              <i aria-hidden="true" class="bi bi-pencil-fill"></i>
             </button>
             <!--
             <button
-              (click)="triggerAction(pagelet.id, 'pageletDelete')"
               class="btn"
               title="{{ 'designview.delete.link.title' | translate }}"
-              >
-              <i class="bi bi-trash-fill"></i>
+              [attr.aria-label]="'designview.delete.link.title' | translate"
+              (click)="triggerAction(pagelet.id, 'pageletDelete')"
+            >
+              <i aria-hidden="true" class="bi bi-trash-fill"></i>
             </button>
             -->
           }
@@ -46,9 +48,10 @@
             class="btn"
             title="{{ 'designview.add.link.title' | translate }}"
             type="button"
+            [attr.aria-label]="'designview.add.link.title' | translate"
             (click)="triggerAction(slotId, 'slotAdd')"
           >
-            <i class="bi bi-plus"></i>
+            <i aria-hidden="true" class="bi bi-plus"></i>
           </button>
         }
         <!-- include -->
@@ -58,9 +61,10 @@
             class="btn"
             title="{{ 'designview.add.link.title' | translate }}"
             type="button"
+            [attr.aria-label]="'designview.add.link.title' | translate"
             (click)="triggerAction(include.id, 'includeAdd')"
           >
-            <i class="bi bi-plus"></i>
+            <i aria-hidden="true" class="bi bi-plus"></i>
           </button>
         }
       }

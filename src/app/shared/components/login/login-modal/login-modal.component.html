@@ -5,6 +5,7 @@
       class="btn-close"
       ngbAutofocus
       type="button"
+      [attr.aria-label]="'dialog.close.text' | translate"
       [title]="'dialog.close.text' | translate"
       (click)="hide()"
     ></button>

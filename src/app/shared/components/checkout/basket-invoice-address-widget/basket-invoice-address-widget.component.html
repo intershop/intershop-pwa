@@ -9,10 +9,13 @@
         class="btn-tool btn-link float-end"
         data-testing-id="edit-invoice-address-link"
         type="button"
+        [attr.aria-label]="
+          'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }
+        "
         [title]="'checkout.address.update.title' | translate: { '0': 'checkout.address.billing.label' | translate }"
         (click)="showAddressForm(address)"
       >
-        <i class="bi bi-pencil-fill"></i>
+        <i aria-hidden="true" class="bi bi-pencil-fill"></i>
       </button>
     }
     <!-- display invoice address -->

@@ -13,9 +13,10 @@
         class="btn-tool btn-link m-2"
         title="{{ 'quickorder.page.remove.row' | translate }}"
         type="button"
+        [attr.aria-label]="'quickorder.page.remove.row' | translate"
         (click)="removeRow(i)"
       >
-        <i class="bi bi-trash-fill"></i>
+        <i aria-hidden="true" class="bi bi-trash-fill"></i>
       </button>
     </div>
   </div>

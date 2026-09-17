@@ -42,9 +42,10 @@
             class="btn-tool"
             data-testing-id="edit-cost-center"
             routerLink="edit"
+            [attr.aria-label]="'account.costcenter.update.link' | translate: { '0': costCenter.name }"
             [title]="'account.costcenter.update.link' | translate: { '0': costCenter.name }"
           >
-            <i class="bi bi-pencil-fill"></i>
+            <i aria-hidden="true" class="bi bi-pencil-fill"></i>
           </a>
         </div>
       }

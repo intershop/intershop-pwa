@@ -23,19 +23,21 @@
           class="btn-tool btn-link"
           data-testing-id="move-order-template"
           type="button"
+          [attr.aria-label]="'account.order_template.table.options.move_to_template' | translate"
           [title]="'account.order_template.table.options.move_to_template' | translate"
           (click)="emitMoveClicked()"
         >
-          <i class="bi bi-arrows-move"></i>
+          <i aria-hidden="true" class="bi bi-arrows-move"></i>
         </button>
         <button
           class="btn-tool btn-link"
           data-testing-id="delete-order-template"
           type="button"
+          [attr.aria-label]="'modal.heading.remove.order.template' | translate"
           [title]="'modal.heading.remove.order.template' | translate"
           (click)="removeProductFromOrderTemplate(orderTemplateItemData.sku)"
         >
-          <i class="bi bi-trash-fill"></i>
+          <i aria-hidden="true" class="bi bi-trash-fill"></i>
         </button>
       </div>
     </div>
