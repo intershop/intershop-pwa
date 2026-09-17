@@ -66,6 +66,12 @@ describe('Filter Navigation Mapper', () => {
       expect(model.filter[0].facets).toHaveLength(0);
     });
 
+    it('should replace whitespace in the id with underscores since it is used as an HTML id attribute', () => {
+      const data = { elements: [{ id: 'Aspect Ratio' }] } as FilterNavigationData;
+      const model = mapper.fromData(data);
+      expect(model.filter[0].id).toEqual('Aspect_Ratio');
+    });
+
     it('should use "-" as fallback when currentLocale is undefined for image filter values', () => {
       const data = {
         elements: [
