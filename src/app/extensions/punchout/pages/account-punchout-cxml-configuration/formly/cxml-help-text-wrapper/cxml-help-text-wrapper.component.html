@@ -1,17 +1,18 @@
 <div class="cxml-text-container">
   @if (helpText) {
+    @let buttonLabel =
+      isCollapsed
+        ? ('account.punchout.cxml.toggle.helptext_close.title' | translate)
+        : ('account.punchout.cxml.toggle.helptext_open.title' | translate);
     <button
       class="btn btn-link cxml-text-toggle top-0 mt-2"
       type="button"
       [attr.aria-expanded]="isCollapsed"
-      [title]="
-        isCollapsed
-          ? ('account.punchout.cxml.toggle.helptext_close.title' | translate)
-          : ('account.punchout.cxml.toggle.helptext_open.title' | translate)
-      "
+      [attr.aria-label]="buttonLabel"
+      [title]="buttonLabel"
       (click)="isCollapsed = !isCollapsed"
     >
-      <i class="bi" [ngClass]="isCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+      <i aria-hidden="true" class="bi" [ngClass]="isCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
     </button>
   }
 

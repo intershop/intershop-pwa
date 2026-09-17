@@ -19,9 +19,12 @@
       class="btn-tool"
       data-testing-id="edit-email"
       routerLink="/account/profile/email"
+      [attr.aria-label]="
+        'account.profile.update.link' | translate: { '0': 'account.profile.email.heading' | translate }
+      "
       [title]="'account.profile.update.link' | translate: { '0': 'account.profile.email.heading' | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
@@ -44,9 +47,12 @@
       class="btn-tool"
       data-testing-id="edit-password"
       routerLink="/account/profile/password"
+      [attr.aria-label]="
+        'account.profile.update.link' | translate: { '0': 'account.profile.password.heading' | translate }
+      "
       [title]="'account.profile.update.link' | translate: { '0': 'account.profile.password.heading' | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>
@@ -91,9 +97,12 @@
       class="btn-tool"
       data-testing-id="edit-user"
       routerLink="/account/profile/user"
+      [attr.aria-label]="
+        'account.profile.update.link' | translate: { '0': 'account.profile.detail.heading' | translate }
+      "
       [title]="'account.profile.update.link' | translate: { '0': 'account.profile.detail.heading' | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
   </div>
 </div>

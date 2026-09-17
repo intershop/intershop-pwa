@@ -2,10 +2,11 @@
   @if (editRouterLink) {
     <a
       class="float-end btn-tool"
+      [attr.aria-label]="'infobox.update.title' | translate: { '0': heading | translate }"
       [routerLink]="editRouterLink"
       [title]="'infobox.update.title' | translate: { '0': heading | translate }"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </a>
   }
   @if (heading) {

@@ -42,6 +42,7 @@
         data-testing-id="grid-view-link"
         queryParamsHandling="merge"
         role="button"
+        [attr.aria-label]="'product.items.view.grid_view.aria_label' | translate"
         [fragment]="fragmentOnRouting"
         [ngClass]="{ 'grid-active': gridView }"
         [queryParams]="{ view: 'grid' }"
@@ -49,13 +50,14 @@
         [routerLink]="[]"
         [title]="'product.items.view.grid_view.aria_label' | translate"
       >
-        <i class="bi bi-grid-3x3-gap-fill"></i>
+        <i aria-hidden="true" class="bi bi-grid-3x3-gap-fill"></i>
       </a>
       <a
         class="list-view-link"
         data-testing-id="list-view-link"
         queryParamsHandling="merge"
         role="button"
+        [attr.aria-label]="'product.items.view.list_view.aria_label' | translate"
         [fragment]="fragmentOnRouting"
         [ngClass]="{ 'list-active': listView }"
         [queryParams]="{ view: 'list' }"
@@ -63,7 +65,7 @@
         [routerLink]="[]"
         [title]="'product.items.view.list_view.aria_label' | translate"
       >
-        <i class="bi bi-list-ul"></i>
+        <i aria-hidden="true" class="bi bi-list-ul"></i>
       </a>
     </div>
   </div>

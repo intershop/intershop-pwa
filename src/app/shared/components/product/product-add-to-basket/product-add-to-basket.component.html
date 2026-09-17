@@ -6,6 +6,7 @@
       name="addProduct"
       type="submit"
       [attr.aria-hidden]="ariaHidden"
+      [attr.aria-label]="displayIcon ? (translationKey$ | async | translate) : null"
       [class.btn-primary]="!displayIcon"
       [disabled]="buttonDisabled$ | async"
       [ngClass]="cssClass"
@@ -17,12 +18,12 @@
       @if ((displaySpinner$ | async) !== true) {
         <!-- Add to Cart button -->
         @if (displayIcon) {
-          <i class="bi bi-cart-fill"></i>
+          <i aria-hidden="true" class="bi bi-cart-fill"></i>
         } @else {{{ translationKey$ | async | translate }}}
       }
       @else {
         <!-- button with spinning animation after Add to Cart -->
-        <i class="bi bi-arrow-clockwise spin-icon"></i>
+        <i aria-hidden="true" class="bi bi-arrow-clockwise spin-icon"></i>
         @if (!displayIcon) {
           <span>{{ 'common.button.spinning.label' | translate }}</span>
         }
