@@ -1,0 +1,19 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.product-advisor-results {
+  padding: 0 divide($space-default, 3);
+
+  .advisor-results-header {
+    margin-bottom: ($space-default * 0.75);
+
+    p {
+      color: $text-color-tertiary;
+    }
+  }
+
+  .advisor-results-intro {
+    font-size: $font-size-lg;
+  }
+}
