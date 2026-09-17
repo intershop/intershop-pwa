@@ -103,7 +103,7 @@ Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remai
 The NGINX image now ships a permissive set of default security headers in [`additional-headers.yaml`](../../nginx/additional-headers.yaml).
 Previously, no headers were sent by default.
 The default headers are intentionally lenient so that typical storefronts using third-party analytics, payment providers, or CDNs continue to work.
-Clickjacking protection is deliberately disabled so the PWA can still be embedded in the ICM design preview and the IAP design view.
+Clickjacking protection is deliberately disabled so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
 Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the entire header list rather than merging with the default headers.
 Review and tighten the baseline headers for your domains.
 For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
