@@ -3,7 +3,12 @@
     Reset
   </button>
 
-  <div #chatWindow class="p-3 mb-2" style="height: 420px; overflow-y: auto" (scroll)="onChatScroll()">
+  <div
+    #chatWindow
+    class="p-3 mb-2"
+    style="height: 420px; overflow-y: auto; border: 1px solid #ccc"
+    (scroll)="onChatScroll()"
+  >
     @for (message of messages; track $index) {
       <div class="mb-2" [class.text-end]="message.type === 'userMessage'">
         <div
@@ -53,6 +58,16 @@
           </li>
         }
       </ul>
+    </div>
+  }
+
+  @if (products.length) {
+    <div class="mt-3">
+      <div class="product-list d-flex flex-wrap gap-3">
+        @for (product of products; track product.sku) {
+          <ish-product-item ishProductContext [sku]="product.sku" />
+        }
+      </div>
     </div>
   }
 </div>

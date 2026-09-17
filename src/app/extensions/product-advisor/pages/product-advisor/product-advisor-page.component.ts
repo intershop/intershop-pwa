@@ -14,6 +14,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
 import { ProductAdvisorFacade } from '../../facades/product-advisor.facade';
+import { extractProductsFromToolCalls } from '../../models/product-advisor-product/product-advisor-product.helper';
+import { ProductAdvisorProduct } from '../../models/product-advisor-product/product-advisor-product.model';
 import {
   ProductAdvisorChatMessage,
   ProductAdvisorChatSession,
@@ -51,6 +53,7 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
   messages: ProductAdvisorChatMessage[] = [];
   pendingAnswer = '';
   toolErrors: { tool: string; error: string }[] = [];
+  products: ProductAdvisorProduct[] = [];
 
   private chatId: string;
   private chatflowid: string;
@@ -105,6 +108,7 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
     this.chatId = undefined;
     this.pendingAnswer = '';
     this.toolErrors = [];
+    this.products = [];
     this.error = undefined;
     this.clearStoredSession();
 
@@ -221,6 +225,10 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
 
   private addApiMessage(message: string, usedTools: ProductAdvisorToolCall[], messageId?: string) {
     this.toolErrors = this.collectToolErrors(usedTools);
+    const products = extractProductsFromToolCalls(usedTools);
+    if (products.length) {
+      this.products = products;
+    }
     this.addMessage({ message, type: 'apiMessage', usedTools, messageId, dateTime: new Date().toISOString() });
   }
 
@@ -267,9 +275,20 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
       const session = JSON.parse(raw) as ProductAdvisorChatSession;
       this.messages = session.chatHistory ?? [];
       this.chatId = session.chatId;
+      this.products = this.latestProducts(this.messages);
     } catch {
       // ignore corrupt storage
     }
+  }
+
+  private latestProducts(messages: ProductAdvisorChatMessage[]): ProductAdvisorProduct[] {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const products = extractProductsFromToolCalls(messages[i].usedTools);
+      if (products.length) {
+        return products;
+      }
+    }
+    return [];
   }
 
   private saveSession() {
