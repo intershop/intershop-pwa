@@ -1,17 +1,10 @@
-import {
-  AfterViewChecked,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { ProductAdvisorFacade } from '../../facades/product-advisor.facade';
 import { extractProductsFromToolCalls } from '../../models/product-advisor-product/product-advisor-product.helper';
@@ -30,73 +23,73 @@ function generateSessionId(): string {
 }
 
 /**
- * Interim Product Advisor page to work with the {@link ProductAdvisorFacade} until the final UI
- * components are available. Reachable at `/product-advisor`.
+ * The Product Advisor page orchestrates the conversation state and delegates presentation to the
+ * chat and results components. The REST interaction is handled by the {@link ProductAdvisorFacade}.
  *
- * The rendered transcript and the Flowise `chatId` are persisted to localStorage (keyed by
- * chatflow ID) so the conversation is restored after reload/navigation - mirroring the embed.
+ * The transcript and Flowise `chatId` are persisted to localStorage (keyed by chatflow ID) so the
+ * conversation is restored after reload/navigation.
  */
 @Component({
   selector: 'ish-product-advisor-page',
   standalone: false,
   templateUrl: './product-advisor-page.component.html',
+  styleUrls: ['./product-advisor-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
-  @ViewChild('chatWindow') private chatWindow: ElementRef<HTMLElement>;
-
-  form: FormGroup;
-
-  loading = false;
-  error: string;
+export class ProductAdvisorPageComponent implements OnInit {
+  deviceType$: Observable<DeviceType>;
 
   messages: ProductAdvisorChatMessage[] = [];
   pendingAnswer = '';
+  loading = false;
+  error: string;
   toolErrors: { tool: string; error: string }[] = [];
   products: ProductAdvisorProduct[] = [];
 
+  private sessionId: string;
   private chatId: string;
   private chatflowid: string;
-  private stickToBottom = true;
-  private scrollPending = false;
   private destroyRef = inject(DestroyRef);
 
   constructor(
     private productAdvisorFacade: ProductAdvisorFacade,
+    private appFacade: AppFacade,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.form = new FormGroup({
-      question: new FormControl('I am looking for a laptop for gaming', Validators.required),
-      sessionId: new FormControl(this.getOrCreateSessionId()),
-    });
+    this.deviceType$ = this.appFacade.deviceType$;
+    this.sessionId = this.getOrCreateSessionId();
 
     this.productAdvisorFacade.configuration$.pipe(take(1), takeUntilDestroyed(this.destroyRef)).subscribe(config => {
       this.chatflowid = config?.chatflowid;
       this.restoreSession();
-      this.scrollPending = true;
       this.cdRef.markForCheck();
     });
   }
 
-  ngAfterViewChecked() {
-    if (this.scrollPending) {
-      this.scrollPending = false;
-      if (this.stickToBottom) {
-        this.scrollToBottom();
-      }
-    }
-  }
-
   /**
-   * Keeps auto-scroll active only while the user is near the bottom of the transcript.
+   * Sends a user message to the advisor (streaming when available, otherwise non-streaming).
    */
-  onChatScroll() {
-    const el = this.chatWindow?.nativeElement;
-    if (el) {
-      this.stickToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+  onSend(question: string) {
+    const trimmed = question?.trim();
+    if (!trimmed || this.loading) {
+      return;
     }
+
+    this.loading = true;
+    this.error = undefined;
+    this.toolErrors = [];
+    this.pendingAnswer = '';
+    this.addMessage({ message: trimmed, type: 'userMessage' });
+
+    const request = { question: trimmed, sessionId: this.sessionId };
+    this.productAdvisorFacade
+      .isStreamingAvailable$()
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(streamingAvailable =>
+        streamingAvailable ? this.startStreaming(request) : this.fetchFinalAnswer(request)
+      );
   }
 
   /**
@@ -111,44 +104,8 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
     this.products = [];
     this.error = undefined;
     this.clearStoredSession();
-
-    const sessionId = generateSessionId();
-    this.persistSessionId(sessionId);
-    this.form.get('sessionId').setValue(sessionId);
-  }
-
-  send() {
-    const request = this.prepareRequest();
-    if (!request) {
-      return;
-    }
-
-    this.productAdvisorFacade
-      .sendMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: response => this.finalizeAnswer(response),
-        error: error => this.fail(error),
-      });
-  }
-
-  stream() {
-    const request = this.prepareRequest();
-    if (!request) {
-      return;
-    }
-
-    // only stream when the chatflow supports it, otherwise go straight to non-streaming
-    this.productAdvisorFacade
-      .isStreamingAvailable$()
-      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-      .subscribe(streamingAvailable => {
-        if (streamingAvailable) {
-          this.startStreaming(request);
-        } else {
-          this.fetchFinalAnswer(request);
-        }
-      });
+    this.sessionId = generateSessionId();
+    this.persistSessionId(this.sessionId);
   }
 
   private startStreaming(request: { question: string; sessionId: string }) {
@@ -161,7 +118,6 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
         next: event => {
           if (event.event === 'token' && typeof event.data === 'string') {
             this.pendingAnswer += event.data;
-            this.scrollPending = true;
           } else if (event.event === 'usedTools' && Array.isArray(event.data)) {
             streamedTools = event.data as ProductAdvisorToolCall[];
           } else if (event.event === 'metadata' && this.isMetadata(event.data)) {
@@ -201,28 +157,6 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
     this.finish();
   }
 
-  private prepareRequest(): { question: string; sessionId: string } | undefined {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    const { question, sessionId } = this.form.value;
-    const trimmed = question.trim();
-    this.persistSessionId(sessionId);
-
-    this.loading = true;
-    this.error = undefined;
-    this.toolErrors = [];
-    this.pendingAnswer = '';
-    this.stickToBottom = true;
-
-    this.addMessage({ message: trimmed, type: 'userMessage' });
-    this.form.get('question').reset('');
-
-    return { question: trimmed, sessionId };
-  }
-
   private addApiMessage(message: string, usedTools: ProductAdvisorToolCall[], messageId?: string) {
     this.toolErrors = this.collectToolErrors(usedTools);
     const products = extractProductsFromToolCalls(usedTools);
@@ -234,15 +168,7 @@ export class ProductAdvisorPageComponent implements OnInit, AfterViewChecked {
 
   private addMessage(message: ProductAdvisorChatMessage) {
     this.messages = [...this.messages, message];
-    this.scrollPending = true;
     this.saveSession();
-  }
-
-  private scrollToBottom() {
-    const el = this.chatWindow?.nativeElement;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
-    }
   }
 
   private getOrCreateSessionId(): string {
