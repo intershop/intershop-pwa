@@ -90,6 +90,9 @@
       margin-bottom: $space-default;
       font-size: 13px;
 
+      // preserve \n line breaks from the LLM response, collapse stray spaces
+      white-space: pre-line;
+
       p {
         margin: 0;
       }
