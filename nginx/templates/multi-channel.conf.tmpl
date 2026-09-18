@@ -202,6 +202,19 @@ server {
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
     }
+
+    # llms.txt (LLM-friendly site index) - served per channel, falls back to the default file
+    {{- $llmsChannel := "default" }}
+    {{- if (has $mapping "channel") }}{{ $llmsChannel = $mapping.channel }}{{ else if gt (len $mapping) 0 }}{{ $llmsChannel = (index $mapping 0).channel }}{{ end }}
+    location = /llms.txt {
+        allow all;
+        auth_basic off;
+
+        default_type text/plain;
+        charset utf-8;
+        root /etc/nginx/conf.d/llms;
+        try_files /{{ $llmsChannel }}_llms.txt /default_llms.txt =404;
+    }
   {{ if (has $mapping "channel") }}
     location / {
         {{- tmpl.Exec "LOCATION_TEMPLATE" $mapping }}
