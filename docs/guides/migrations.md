@@ -100,9 +100,9 @@ Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remai
 
 **llms.txt integration**
 
-The Intershop PWA now serves an [llms.txt](https://llmstxt.org/) file, an LLM-friendly site index, as static content via the NGINX container (see [Guide - llms.txt](./llms-txt.md)).
-The content files are located in _nginx/llms/_ and are named per channel following the pattern _`<channel>_llms.txt`_, with a neutral _default_llms.txt_ used as fallback file.
-Every project based on the Intershop PWA - whether newly set up or migrated - needs to rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
+The Intershop PWA now serves an [_llms.txt_](https://llmstxt.org/) file, an LLM-friendly site index, as static content via the NGINX container (see [Guide - llms.txt](./llms-txt.md)).
+The content files are located in _nginx/llms/_ and are named per channel following the pattern `<channel>_llms.txt`, with a neutral _default_llms.txt_ used as fallback file.
+Every project based on the Intershop PWA, whether newly set up or migrated, needs to rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
 
 ## From 12.0.0 to 12.1.0
 

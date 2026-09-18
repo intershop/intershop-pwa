@@ -45,13 +45,13 @@ The store serves three locales. Language is selected via a matrix URL parameter.
 
 - [Sign in](https://intershoppwa-b2c.azurewebsites.net/login.md): Authentication for registered customers.
 - [Register](https://intershoppwa-b2c.azurewebsites.net/register.md): Create a new customer account.
-- [Shopping cart](https://intershoppwa-b2c.azurewebsites.net/basket.md): Current cart contents (session and authentication dependent).
+- [Shopping cart](https://intershoppwa-b2c.azurewebsites.net/basket.md): Current cart contents (session- and authentication-dependent).
 
 ## Policies
 
 - [Demo disclaimer](https://intershoppwa-b2c.azurewebsites.net/page/page.demodisclaimer.md): Notice that this is a non-binding demonstration shop.
 - [Legal notice](https://www.intershop.com/legal-notice): Company and legal information (imprint).
-- [Privacy policy](https://www.intershop.com/privacy-policy): How personal data is processed.
+- [Privacy policy](https://www.intershop.com/privacy-policy): Personal data processing information.
 - [Terms & conditions](https://www.intershop.com/terms-of-use): Terms of use for the store.
 - [Withdrawal from contract](https://intershoppwa-b2c.azurewebsites.net/withdrawal.md): Right of withdrawal information.
 
