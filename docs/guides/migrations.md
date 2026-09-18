@@ -98,6 +98,23 @@ The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/pref
 The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
+**E-mail validator no longer rejects empty values**
+
+`SpecialValidators.email` (used by `ish-email-field`) now treats an empty value as valid.
+This allows optional e-mail fields.
+Required validation is still enforced by the separate `required` validator where configured.
+
+**Invoice e-mail field added to the business customer address form**
+
+The address form now includes an optional invoice e-mail field for business customers.
+If left empty, the customer's login e-mail address is used.
+
+**`displayEmail` default changed for the address component**
+
+The default value of the `displayEmail` input of `AddressComponent` (`ish-address`) has changed from `false` to `true`.
+The e-mail address is now displayed by default.
+Explicitly set `[displayEmail]="false"` to continue hiding the e-mail address.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

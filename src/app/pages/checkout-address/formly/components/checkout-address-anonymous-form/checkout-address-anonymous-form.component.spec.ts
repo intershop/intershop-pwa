@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
@@ -58,5 +59,17 @@ describe('Checkout Address Anonymous Form Component', () => {
 
     expect(component.isShippingAddressFormExpanded).toBeTrue();
     expect(component.parentForm.get('shippingAddress')).toBeTruthy();
+  });
+
+  it('should render address forms without email and delegate the single email field to the extension form', () => {
+    fixture.detectChanges();
+
+    const addressForms = fixture.debugElement.queryAll(By.directive(FormlyAddressFormComponent));
+    expect(addressForms).not.toBeEmpty();
+    addressForms.forEach(addressForm => {
+      expect((addressForm.componentInstance as FormlyAddressFormComponent).email).toBeFalse();
+    });
+
+    expect(fixture.debugElement.query(By.directive(FormlyAddressExtensionFormComponent))).toBeTruthy();
   });
 });

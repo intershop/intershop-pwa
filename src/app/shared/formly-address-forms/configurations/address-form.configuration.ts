@@ -4,12 +4,14 @@ import { Address } from 'ish-core/models/address/address.model';
 
 /*
  * Abstract class that valid address configurations have to extend.
- * The countryCode, businessCustomer and shortForm properties will be set by the AddressFormConfigurationProvider
+ * The countryCode, businessCustomer, shortForm and email properties will be set by the AddressFormConfigurationProvider
  */
 export abstract class AddressFormConfiguration {
   countryCode = 'default';
   businessCustomer = false;
   shortForm = false;
+  // whether the email field is part of this address form (disabled when an external extension form handles it)
+  email = true;
 
   abstract getFieldConfiguration(countryCode?: string): FormlyFieldConfig[];
 
