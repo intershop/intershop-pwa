@@ -98,6 +98,12 @@ The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/pref
 The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
+**Translation and font imports prepared for esbuild**
+
+Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)`.
+Replace webpack-specific `~` font URLs with relative paths to the files in `node_modules`, adjusting the path for your stylesheet's location.
+Both changes work with the existing webpack build and prepare customizations for the esbuild migration.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
