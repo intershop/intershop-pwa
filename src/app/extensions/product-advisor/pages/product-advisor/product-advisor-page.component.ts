@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -84,12 +84,25 @@ export class ProductAdvisorPageComponent implements OnInit {
     this.addMessage({ message: trimmed, type: 'userMessage' });
 
     const request = { question: trimmed, sessionId: this.sessionId };
-    this.productAdvisorFacade
-      .isStreamingAvailable$()
+    this.resolveStreaming$()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(streamingAvailable =>
         streamingAvailable ? this.startStreaming(request) : this.fetchFinalAnswer(request)
       );
+  }
+
+  /**
+   * Resolves whether to stream: honors the `streaming` config override, otherwise probes the chatflow.
+   */
+  private resolveStreaming$(): Observable<boolean> {
+    return this.productAdvisorFacade.configuration$.pipe(
+      take(1),
+      switchMap(config =>
+        typeof config?.streaming === 'boolean'
+          ? of(config.streaming)
+          : this.productAdvisorFacade.isStreamingAvailable$()
+      )
+    );
   }
 
   /**
