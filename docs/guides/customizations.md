@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Specific Concerns](#specific-concerns)
   - [Components](#components)
     - [Theme-Specific Overrides](#theme-specific-overrides)
+      - [Schematic Support](#schematic-support)
   - [Existing Features](#existing-features)
   - [New Features](#new-features)
   - [Data](#data)
@@ -25,7 +26,7 @@ kb_sync_latest_only
 - [Further References](#further-references)
 
 When customizing the PWA, always keep in mind that you may want to upgrade from time to time and will have to merge incoming changes into your codebase.
-We, therefore, suggest not to edit existing files to a large extent and to keep them as intact as possible.
+We therefore suggest not to edit existing files to a large extent and to keep them as intact as possible.
 In this document we provide a couple of rules to follow.
 Generally speaking:
 
@@ -41,14 +42,14 @@ Either mark a changed line like this or use it as a beginning and end marker for
 ## Set up an Intershop PWA-based Project
 
 When initially setting up an Intershop PWA-based project, it is not advisable to clone the complete GitHub repository of the Intershop PWA.
-All that is needed initially is the `master` branch that includes the released versions of the PWA.
+All that is needed initially is the `master` branch, which includes the released versions of the PWA.
 This can be achieved with the following Git command.
 
 ```
 git clone --single-branch --branch master --origin intershop https://github.com/intershop/intershop-pwa.git project-pwa
 ```
 
-This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin` that will be needed later on for the project's own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
+This command clones only the `master` branch from the GitHub repository of the Intershop PWA with the remote name `intershop` (not `origin`, which will be needed later for the project's own remote Git repository) into a folder `project-pwa` (instead of `intershop-pwa`).
 
 Based on this initial version of the Intershop PWA (the latest release), any project customizations can be started.
 
@@ -79,7 +80,7 @@ It will:
 > [!NOTE]
 > If only one theme is active, PM2 will run the theme-specific SSR process in cluster mode on the default port (see [Building Multiple Themes](../guides/ssr-startup.md#building-multiple-themes)).
 
-After that, we recommend to additionally use the prefix `custom` in every component to further help identifying customized components.
+After that, we recommend additionally using the prefix `custom` in every component to further help identifying customized components.
 
 ```bash
 $ ng g c shared/components/basket/custom-basket-display
@@ -94,9 +95,9 @@ CREATE src/app/shared/components/basket/custom-basket-display/custom-basket-disp
 > icmBaseURL: 'https://develop.icm.intershop.de',
 > ```
 >
-> To configure your PWA project to use an own default ICM server, set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
+> To configure your PWA project to use its own default ICM server, set the `icmBaseURL` in your projects `environment.model.ts` accordingly.
 >
-> In the same way, the default `icmChannel` configurations need to be adapted in your theme-specific `environment.<THEME>.ts` files.
+> Similarly, the default `icmChannel` configurations need to be adapted in your theme-specific `environment.<THEME>.ts` files.
 
 ## Specific Concerns
 
@@ -106,7 +107,7 @@ When **adding new functionality**, it is better to encapsulate it in **new compo
 That way the modifications on existing code are most often kept to a single line change only.
 
 When **heavily customizing** existing components, it is better to **copy components** and change all references.
-If 20 % of the component has to be changed, it is already a good idea to duplicate it.
+If 20% of the component has to be changed, it is already a good idea to duplicate it.
 That way, incoming changes will not affect your customizations.
 Typical hot-spots where copying is a good idea are header-related or product-detail-page-related customizations.
 
@@ -143,7 +144,7 @@ You can use the `override` schematic to introduce custom theme overrides:
 ![override](./customizations-ng-g-override-schematic.gif)
 
 > [!IMPORTANT]
-> The different theme names must be distinct and must not be included in another theme name.
+> The different theme names must be distinct and must not be included within another theme name.
 > Otherwise this can lead to problems with the replacement logic, resulting in unintended replacements being used within a theme.
 > This means **intershop** and **intershop**B2B is a problematic theme name combination while `intershopB2C` and `intershopB2B` should work together without problems.
 
@@ -160,18 +161,18 @@ Some of the provided components supply **configuration parameters**, which can b
 
 When adding new independent features to the PWA, it might be a good idea to **add an extension** first.
 Use the provided schematics `ng g extension <name>` to scaffold the extension.
-Adding all related pages, components, models, and services here is less intrusive than adding them to the existing folder structure.
+Adding all related pages, components, models, and services there is less intrusive than adding them to the existing folder structure.
 Add additional artifacts to extensions by supplying the `--extension` flag to schematics calls.
 
 ### Data
 
 When **adding new fields** to PWA data models, add them to interfaces and **map them as early as possible** in mapper classes to model classes.
 That way, the data can be readily used on templates.
-Improving and parsing improper data too late could lead to more modifications on components and templates which will be harder to upgrade later on.
+Improving and parsing improper data too late could lead to more modifications to components and templates which will be harder to upgrade later on.
 
 ### NgRx
 
-Adding **new data** to the state should always almost exclusively be done by adding new stores in **store groups**.
+Adding **new data** to the state should almost always exclusively be done by adding new stores in **store groups**.
 Add one with `ng g store-group <group>`, and then add consecutive stores with `ng g store --feature <group> <store>`.
 Keep modifications to the existing store to a minimum.
 As NgRx is loosely coupled by nature, you can deactivate effects by commenting out the `@Effect` decorator.
@@ -237,7 +238,7 @@ For this file, any theme-specific differences are handled via [theme.service.ts]
 
 ### Dependencies
 
-When updating dependencies and resolving conflicts inside of `package-lock.json`, always **accept Intershop's changes** first.
+When updating dependencies and resolving conflicts in `package-lock.json`, always **accept Intershop's changes** first.
 After that run `npm install` to regenerate the file.
 
 ### Cypress Tests
@@ -254,16 +255,16 @@ The same system can be adopted for customization projects.
 ## Hints
 
 - The Intershop PWA project is configured to follow consistent formatting rules.
-  For a better overview of relevant changes and less merge efforts, it is advised to adhere to these rules during project development as well.
+  For a better overview of relevant changes and fewer merge efforts, it is advised to adhere to these rules during project development as well.
   For this, you need to configure your IDE accordingly.
-  The fitting Visual Studio Code configuration is part of the project.
+  The appropriate Visual Studio Code configuration is part of the project.
 - The Intershop PWA project configures and contains a set of linting rules that also aim to ensure a consistent code style and are intended to prevent any coding patterns that are considered problematic.
   It is advised to follow these rules in customer projects as well.
-  If some rules are actually unwanted in a project, it is best to disable these configurations but to keep all other checks intact and to address any violations.
+  If some rules are actually unwanted in a project, it is best to disable these configurations but keep all other checks intact and to address any violations.
 - Keep the unit tests running and write new ones.
-  This will also help ensuring not to break any existing functionality after a migration.
-- `npm run check` should run through successfully on local development environments after a feature or bug fix or migration has finished.
-  This check can be left to a CI pipeline as well but the task should be configured in a way that fits the requirements of the project.
+  This will also help ensure that existing functionality is not broken after a migration.
+- `npm run check` should complete successfully on local development environments after a feature or bug fix or migration has finished.
+  This check can be left to a CI pipeline as well, but the task should be configured in a way that fits the requirements of the project.
 
 ## Further References
 

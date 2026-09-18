@@ -102,8 +102,8 @@ Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remai
 
 **Generative Engine Optimization (GEO)**
 
-We introduced the Generative Engine Optimization (GEO) integration as a new extension which can be enabled with the feature toggle `geo`.
-The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if according generated data is available at the product.
+We introduced the Generative Engine Optimization (GEO) integration as a new extension that can be enabled with the feature toggle `geo`.
+The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if corresponding generated data is available for the product.
 It also adds [JSON-LD](https://json-ld.org/) information to the HTML header of the product detail page.
 
 ## From 11.2.0 to 12.0.0
@@ -180,7 +180,7 @@ ng g ./schematics/dist/migrations/migrations.json:ngx-translate18
 ```
 
 > [!NOTE]
-> The migration schematics was added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
+> The migration schematics were added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
 
 **Swiper 12 upgrade**
 
