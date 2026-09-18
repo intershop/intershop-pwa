@@ -70,6 +70,10 @@ header {
   }
 
   .mid-header {
+    .search-col {
+      position: relative;
+    }
+
     .quickorder-link {
       padding: ($space-default * 0.5) divide($space-default, 3);
 
@@ -82,8 +86,13 @@ header {
     }
 
     .ai-product-advisor {
-      padding-top: divide($space-default * 2, 3);
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      padding-top: $space-default * 0.75;
       padding-right: $space-default;
+      white-space: nowrap;
+      transform: translateY(-50%);
 
       .ai-product-advisor-link {
         font-family: $font-family-bold;
@@ -94,10 +103,6 @@ header {
           color: $CORPORATE-PRIMARY;
         }
       }
-    }
-
-    .ai-product-advisor + .search-container {
-      flex-grow: 1;
     }
   }
 
@@ -136,6 +141,15 @@ header {
   @include media-breakpoint-down(md) {
     order: 10;
     line-height: $header-height-mobile;
+  }
+
+  .ai-product-advisor-mobile {
+    align-self: center;
+
+    .bi.header-icon {
+      padding-right: 7px;
+      color: $CORPORATE-PRIMARY;
+    }
   }
 }
 
