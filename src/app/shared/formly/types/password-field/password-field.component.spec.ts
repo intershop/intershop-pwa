@@ -1,5 +1,7 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 
@@ -74,5 +76,27 @@ describe('Password Field Component', () => {
   it('should be rendered after creation', () => {
     fixture.detectChanges();
     expect(element.querySelector('ish-password-field')).toBeTruthy();
+  });
+
+  it('should keep the reveal button aria-label constant while its state toggles', () => {
+    fixture.detectChanges();
+    const debugEl = fixture.debugElement.query(By.directive(PasswordFieldComponent));
+    const passwordField = debugEl.componentInstance as PasswordFieldComponent;
+    const changeDetector = debugEl.injector.get(ChangeDetectorRef);
+    passwordField.showButton = true;
+    changeDetector.detectChanges();
+
+    const button = element.querySelector('button[role=switch]');
+    expect(button.getAttribute('aria-label')).toEqual('form.password.show.button.label');
+    expect(button.getAttribute('aria-checked')).toEqual('false');
+    expect(button.getAttribute('title')).toEqual('form.password.show.button.label');
+
+    passwordField.togglePasswordVisibility();
+    changeDetector.detectChanges();
+
+    // accessible name stays stable, only state and tooltip change
+    expect(button.getAttribute('aria-label')).toEqual('form.password.show.button.label');
+    expect(button.getAttribute('aria-checked')).toEqual('true');
+    expect(button.getAttribute('title')).toEqual('form.password.show.button.label.hide');
   });
 });

@@ -77,29 +77,31 @@
           <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-cost-center-buyers-actions" scope="col"></th>
           <td *cdkCellDef="let buyer" cdk-cell class="column-price">
             <!-- Edit buyer -->
+            @let editBuyerLabel =
+              'account.costcenter.details.action.edit' | translate: { '0': buyer.firstName + ' ' + buyer.lastName };
             <button
               class="btn-tool btn-link"
               data-testing-id="cost-center-buyer-edit"
               type="button"
-              [title]="
-                'account.costcenter.details.action.edit' | translate: { '0': buyer.firstName + ' ' + buyer.lastName }
-              "
+              [attr.aria-label]="editBuyerLabel"
+              [title]="editBuyerLabel"
               (click)="openEditCostCenterBuyerDialog(buyer, editCostCenterBuyerDialog)"
             >
-              <i class="bi bi-pencil-fill"></i>
+              <i aria-hidden="true" class="bi bi-pencil-fill"></i>
             </button>
 
             <!-- Remove buyer -->
+            @let removeBuyerLabel =
+              'account.costcenter.remove.button.label' | translate: { '0': buyer.firstName + ' ' + buyer.lastName };
             <button
               class="btn-tool btn-link"
               data-testing-id="cost-center-buyer-remove"
               type="button"
-              [title]="
-                'account.costcenter.remove.button.label' | translate: { '0': buyer.firstName + ' ' + buyer.lastName }
-              "
+              [attr.aria-label]="removeBuyerLabel"
+              [title]="removeBuyerLabel"
               (click)="removeBuyerConfirmation(buyer, removeBuyerDialog)"
             >
-              <i class="bi bi-trash-fill"></i>
+              <i aria-hidden="true" class="bi bi-trash-fill"></i>
             </button>
           </td>
         </ng-container>

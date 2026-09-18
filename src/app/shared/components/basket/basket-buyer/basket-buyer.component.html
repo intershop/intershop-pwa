@@ -15,10 +15,13 @@
         @if (editRouterLink) {
           <a
             class="float-end btn-tool"
+            [attr.aria-label]="
+              'checkout.update.buyer.title' | translate: { '0': 'checkout.widget.buyer.heading' | translate }
+            "
             [routerLink]="editRouterLink"
             [title]="'checkout.update.buyer.title' | translate: { '0': 'checkout.widget.buyer.heading' | translate }"
           >
-            <i class="bi bi-pencil-fill"></i>
+            <i aria-hidden="true" class="bi bi-pencil-fill"></i>
           </a>
         }
         <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>

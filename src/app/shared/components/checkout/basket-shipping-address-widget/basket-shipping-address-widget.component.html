@@ -11,12 +11,15 @@
             class="btn-tool btn-link"
             data-testing-id="edit-shipping-address-link"
             type="button"
+            [attr.aria-label]="
+              'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }
+            "
             [title]="
               'checkout.address.update.title' | translate: { '0': 'checkout.address.shipping.label' | translate }
             "
             (click)="showAddressForm(address)"
           >
-            <i class="bi bi-pencil-fill"></i>
+            <i aria-hidden="true" class="bi bi-pencil-fill"></i>
           </button>
         }
         <!-- delete shipping address -->
@@ -25,9 +28,10 @@
             class="btn-tool btn-link"
             title="{{ 'checkout.address.delete.button.label' | translate }}"
             type="button"
+            [attr.aria-label]="'checkout.address.delete.button.label' | translate"
             (click)="modalDialog.show(address)"
           >
-            <i class="bi bi-trash-fill"></i>
+            <i aria-hidden="true" class="bi bi-trash-fill"></i>
           </button>
         }
         <ish-modal-dialog

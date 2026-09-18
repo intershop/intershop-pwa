@@ -7,9 +7,10 @@
             class="link-print"
             href="javascript:window.print();"
             rel="nofollow"
+            [attr.aria-label]="'account.orderdetails.print_link.text' | translate"
             [title]="'account.orderdetails.print_link.text' | translate"
           >
-            <i class="bi bi-printer-fill"></i>
+            <i aria-hidden="true" class="bi bi-printer-fill"></i>
           </a>
         </li>
       </ul>

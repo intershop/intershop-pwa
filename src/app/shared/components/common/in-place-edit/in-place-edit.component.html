@@ -1,18 +1,19 @@
 @if (viewMode) {
+  @let editLabel =
+    ariaLabelName === ''
+      ? ('inplace_edit.click_to_edit' | translate)
+      : ('inplace_edit.label' | translate: { '0': ariaLabelName | translate });
   <div class="d-flex flex-row align-items-center">
     <ng-content select="[viewModeContent]" />
     <button
       class="btn btn-link"
       type="button"
+      [attr.aria-label]="editLabel"
       [ngClass]="buttonClass"
-      [title]="
-        ariaLabelName === ''
-          ? ('inplace_edit.click_to_edit' | translate)
-          : ('inplace_edit.label' | translate: { '0': ariaLabelName | translate })
-      "
+      [title]="editLabel"
       (click)="toggleEditMode(true)"
     >
-      <i class="bi bi-pencil-fill me-auto"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill me-auto"></i>
     </button>
   </div>
 } @else {
@@ -22,22 +23,24 @@
       class="btn btn-link"
       data-testing-id="confirm"
       type="button"
+      [attr.aria-label]="'inplace_edit.save' | translate"
       [disabled]="confirmDisabled"
       [ngClass]="buttonClass"
       [title]="'inplace_edit.save' | translate"
       (click)="confirm()"
     >
-      <i class="bi bi-check-lg"></i>
+      <i aria-hidden="true" class="bi bi-check-lg"></i>
     </button>
     <button
       class="btn btn-link"
       data-testing-id="cancel"
       type="button"
+      [attr.aria-label]="'inplace_edit.cancel' | translate"
       [ngClass]="buttonClass"
       [title]="'inplace_edit.cancel' | translate"
       (click)="cancel()"
     >
-      <i class="bi bi-x"></i>
+      <i aria-hidden="true" class="bi bi-x"></i>
     </button>
   </div>
 }

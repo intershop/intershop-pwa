@@ -125,26 +125,30 @@
         class="btn btn-reset"
         name="reset"
         type="reset"
+        [attr.aria-label]="'search.searchbox.button.reset.title' | translate"
         [title]="'search.searchbox.button.reset.title' | translate"
         (click)="handleResetButton($event); setFocusOnSearchInput()"
         (focus)="handleFocus(true)"
       >
-        <i class="bi bi-x searchbox-icon"></i>
+        <i aria-hidden="true" class="bi bi-x searchbox-icon"></i>
       </button>
     }
 
     <!-- Search button -->
+    <!-- omit the fixed label when custom button text is visible to satisfy label-in-name -->
+    @let searchButtonLabel = configuration?.buttonText ? null : ('search.searchbox.button.title' | translate);
     <button
       class="btn btn-secondary btn-search"
       name="search"
       type="submit"
-      [title]="'search.searchbox.button.title' | translate"
+      [attr.aria-label]="searchButtonLabel"
+      [attr.title]="searchButtonLabel"
       (click)="submitSearch(searchInput.value)"
       (focus)="handleFocus(true)"
     >
       <!-- search button with icon -->
       @if (!configuration?.buttonText) {
-        <i class="searchbox-icon" [class]="`bi bi-${usedIcon}`"></i>
+        <i aria-hidden="true" class="searchbox-icon" [class]="`bi bi-${usedIcon}`"></i>
       } @else {
         {{ configuration?.buttonText }}
       }

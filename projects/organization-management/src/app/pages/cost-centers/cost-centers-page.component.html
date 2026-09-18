@@ -88,9 +88,10 @@
                 data-testing-id="deactivate-cost-center"
                 title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 type="button"
+                [attr.aria-label]="'account.costcenter.deactivate.button.title' | translate"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
               >
-                <i class="bi bi-ban"></i>
+                <i aria-hidden="true" class="bi bi-ban"></i>
               </button>
             } @else {
               <button
@@ -98,9 +99,10 @@
                 data-testing-id="activate-cost-center"
                 title="{{ 'account.costcenter.activate.button.title' | translate }}"
                 type="button"
+                [attr.aria-label]="'account.costcenter.activate.button.title' | translate"
                 (click)="activate(costCenter)"
               >
-                <i class="bi bi-check-circle"></i>
+                <i aria-hidden="true" class="bi bi-check-circle"></i>
               </button>
             }
 
@@ -116,10 +118,15 @@
                   : ('account.costcenter.delete.disabled.icon' | translate)
               }}"
               type="button"
+              [attr.aria-label]="
+                isDeletable(costCenter)
+                  ? ('account.costcenter.delete.link' | translate)
+                  : ('account.costcenter.delete.disabled.icon' | translate)
+              "
               [ngClass]="{ inactive: !isDeletable(costCenter) }"
               (click)="openConfirmationDialog(costCenter, deleteDialog)"
             >
-              <i class="bi bi-trash-fill"></i>
+              <i aria-hidden="true" class="bi bi-trash-fill"></i>
             </button>
           }
         </td>

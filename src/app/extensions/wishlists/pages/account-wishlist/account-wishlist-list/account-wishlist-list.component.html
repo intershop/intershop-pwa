@@ -37,9 +37,10 @@
           data-testing-id="delete-wishlist"
           title="{{ 'account.wishlist.list.remove' | translate }}"
           type="button"
+          [attr.aria-label]="'account.wishlist.list.remove' | translate"
           (click)="openDeleteConfirmationDialog(wishlist, deleteDialog)"
         >
-          <i class="bi bi-trash-fill"></i>
+          <i aria-hidden="true" class="bi bi-trash-fill"></i>
         </button>
       </div>
     </div>
