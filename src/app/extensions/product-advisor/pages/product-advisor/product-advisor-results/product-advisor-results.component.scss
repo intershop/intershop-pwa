@@ -13,6 +13,14 @@
     }
   }
 
+  .advisor-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-default;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
   .advisor-results-intro {
     font-size: $font-size-lg;
   }
