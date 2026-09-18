@@ -78,7 +78,11 @@
 
   .advisor-messages {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
+    min-height: 0;
+    max-height: 60vh;
+    overflow-y: auto;
 
     .advisor-message {
       max-width: 80%;
