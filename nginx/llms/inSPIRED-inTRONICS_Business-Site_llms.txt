@@ -45,7 +45,7 @@ The store serves three locales. Language is selected via a matrix URL parameter.
 ## Account and ordering
 
 - [Sign in](https://intershoppwa.azurewebsites.net/login.md): Authentication for registered customers.
-- [Register](https://intershoppwa.azurewebsites.net/register.md): Create a new customer account.
+- [Register](https://intershoppwa.azurewebsites.net/register.md): Registration for new customer accounts.
 - [Shopping cart](https://intershoppwa.azurewebsites.net/basket.md): Current cart contents (session- and authentication-dependent).
 
 ## Policies
