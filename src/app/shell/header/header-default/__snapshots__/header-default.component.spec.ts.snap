@@ -43,7 +43,7 @@ exports[`Header Default Component should render normal header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -110,7 +110,7 @@ exports[`Header Default Component should render normal header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4 search-col"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>
@@ -170,7 +170,7 @@ exports[`Header Default Component should render normal header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -226,7 +226,7 @@ exports[`Header Default Component should render sticky header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -285,7 +285,7 @@ exports[`Header Default Component should render sticky header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-4 search-col"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>
@@ -337,7 +337,7 @@ exports[`Header Default Component should render sticky header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
