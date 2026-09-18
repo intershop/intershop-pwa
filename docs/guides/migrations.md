@@ -118,8 +118,8 @@ For more information, see the [Security Headers and Content Security Policy (CSP
 
 **Generative Engine Optimization (GEO)**
 
-We introduced the Generative Engine Optimization (GEO) integration as a new extension which can be enabled with the feature toggle `geo`.
-The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if according generated data is available at the product.
+We introduced the Generative Engine Optimization (GEO) integration as a new extension that can be enabled with the feature toggle `geo`.
+The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if corresponding generated data is available for the product.
 It also adds [JSON-LD](https://json-ld.org/) information to the HTML header of the product detail page.
 
 ## From 11.2.0 to 12.0.0
@@ -133,7 +133,7 @@ In Angular 19, components, directives, and pipes are standalone by default.
 Since the PWA still relies on NgModule-based declarations, the `standalone: false` attribute had to be added to all components, directives, and pipes that are not standalone yet.
 
 To apply this configuration to custom code, run the PWA migration schematics.
-They wrap Angular's `explicit-standalone-flag` migration and additionally cover theme override files, which the Angular migration skips (see [Migration How To](./migrations-how-to.md#run-the-provided-migration-schematics) for the recommended `ng update` command).
+They wrap Angular's `explicit-standalone-flag` migration and additionally cover theme override files which the Angular migration skips (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics) for the recommended `ng update` command).
 To run these migrations on their own:
 
 ```bash
@@ -146,7 +146,8 @@ ng g ./schematics/dist/migrations/migrations.json:standalone-override-flag
 
 Angular's migration determines whether a declaration is standalone based on its NgModule membership (via static analysis).
 As a result, it adds `standalone: false` only to declarations that are part of an NgModule and leaves genuinely standalone components untouched — even those that do not declare `standalone: true` explicitly.
-Make sure the project builds without compilation errors and that all files are covered by a `tsconfig` before running the migration, otherwise affected files are skipped.
+Make sure that the project builds without compilation errors and that all files are covered by a `tsconfig` before running the migration.
+Otherwise, affected files are skipped.
 
 For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3).
 
@@ -154,7 +155,7 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 
 > [!IMPORTANT]
 > The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
-> By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
+> By default, (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
 > For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
 > Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
@@ -182,8 +183,8 @@ In addition, the `TranslateService.currentLang` property has been replaced by th
 For all breaking changes, see the [ngx-translate Migration Guide v16 → v17](https://ngx-translate.org/v17/getting-started/migration-guide/).
 
 With version 18, `TranslateModule` has been removed.
-The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`, and the `forChild()` imports are no longer needed.
-The same applies to test setups, where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
+The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`; the `forChild()` imports are no longer needed.
+The same applies to test setups where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
 `TranslatePipe` and `TranslateDirective` are now standalone and have to be added directly to the `imports` of the consuming modules (or standalone components) where the `translate` pipe or directive is used.
 The element-text-as-key form of the `translate` directive (for example, `<span translate>my.key</span>`) is deprecated in version 18 and removed in version 19; use the `translate` pipe (`{{ 'my.key' | translate }}`) or the bound directive (`[translate]="'my.key'"`) instead.
 The `getCurrentLang()` method can now return `undefined`, so any custom code relying on it must handle that case.
@@ -196,7 +197,7 @@ ng g ./schematics/dist/migrations/migrations.json:ngx-translate18
 ```
 
 > [!NOTE]
-> The migration schematics was added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
+> The migration schematics were added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
 
 **Swiper 12 upgrade**
 
@@ -223,7 +224,7 @@ The component now only provides a "Remove all filters" action.
 **Design View and preview context changes**
 
 The Design View and preview features have been reworked so that they can be used simultaneously.
-Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real preview context data from being used at the same time.
+Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value which prevented real preview context data from being used at the same time.
 Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for preview context data.
 
 **Modal fullscreen and scrollable styling**
@@ -248,7 +249,7 @@ The order template and wishlist selection modals have been reworked for a more c
 **Wishlist and order template performance optimization**
 
 With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
-As a result, the wishlist overview can now be displayed using a single list request.
+As a result, the wishlist overview can now be displayed by using a single list request.
 
 In addition, the `WishlistWidgetComponent` now displays the products of the preferred wishlist.
 If no preferred wishlist exists, the products of all wishlists are displayed instead.
@@ -262,7 +263,7 @@ If you display order templates in custom components, use `OrderTemplatesFacade.o
 **Replace `ProductRatingStarComponent` with `NgbRating`**
 
 The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
-If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
+If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the corresponding commit or migrate to `NgbRating` as well.
 
 **Removal of customer budget type update after registration**
 
@@ -1393,8 +1394,9 @@ To allow for an as easy as possible migration of existing PWA projects, we split
 We advise you to first cherry pick all the `eslint` commits provided by the PWA release before applying the lint rules to the project customizations to fix the issues that reside in the project code.
 If the found issues are too many to address them in an ordered manner, it is probably best to temporarily disable some of the failing rules in `.eslintrc.json` (see [Configuring ESLint](./eslint.md#configuring-eslint) and to only fix one after another.
 
-It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Migration How To](./migrations-how-to.md) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
-After this, all the linter switch commits should be applied and the project should be brought back to a clean state.
+It is recommended to do the PWA 2.0 migration in stages rather than in one go as described in [Performing a Migration](./migrations-how-to.md).
+First, do the commits before the linter switch and bring your project to a clean state (`npm run check`).
+After this, apply all the linter switch commits and bring the project back to a clean state.
 Once this is done, subsequent commits should be migrated.
 If your project contains own custom TSLint rules, you will have to re-implement them as ESLint rules to be able to apply them to your code base (see [Custom ESLint rules](./eslint.md#custom-eslint-rules)).
 

@@ -59,7 +59,7 @@ kb_sync_latest_only
 - [Guide - Customizations](./guides/customizations.md)
 - [Guide - Themes](./guides/themes.md)
 - [Guide - Migration Notes](./guides/migrations.md)
-- [Guide - Migration How To](./guides/migrations-how-to.md)
+- [Guide - Performing a Migration](./guides/migrations-how-to.md)
 - [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
