@@ -59,10 +59,6 @@ const routes: Routes = [
     loadChildren: () => import('./search/search-page.module').then(m => m.SearchPageModule),
   },
   {
-    path: 'advisor',
-    loadChildren: () => import('./product-advisor/product-advisor-page.module').then(m => m.ProductAdvisorPageModule),
-  },
-  {
     path: 'basket',
     loadChildren: () => import('./basket/basket-page.module').then(m => m.BasketPageModule),
     data: {
