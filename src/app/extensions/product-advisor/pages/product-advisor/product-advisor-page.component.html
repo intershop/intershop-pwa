@@ -1,0 +1,65 @@
+<div class="container product-advisor">
+  @if (deviceType$ | async; as deviceType) {
+    @if (deviceType !== 'mobile') {
+      <div class="row">
+        <div class="col-8 px-0 pe-4">
+          <ish-product-advisor-chat
+            [deviceType]="deviceType"
+            [error]="error"
+            [loading]="loading"
+            [messages]="messages"
+            [pendingAnswer]="pendingAnswer"
+            [toolErrors]="toolErrors"
+            (send)="onSend($event)"
+          />
+        </div>
+        <div class="col-4">
+          <ish-product-advisor-results [products]="products" />
+        </div>
+      </div>
+    } @else {
+      <div class="advisor-title-card">
+        <div class="advisor-icon">
+          <i class="bi bi-stars"></i>
+        </div>
+        <div>
+          <p class="advisor-title-card-title">{{ 'copilot.product_advisor.title' | translate }}</p>
+          <p class="advisor-title-card-subtitle">{{ 'copilot.product_advisor.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <nav #nav="ngbNav" class="nav-tabs" ngbNav>
+        <li ngbNavItem role="presentation">
+          <a ngbNavLink>{{ 'copilot.product_advisor.tab.chat' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-advisor-chat
+              [deviceType]="deviceType"
+              [error]="error"
+              [loading]="loading"
+              [messages]="messages"
+              [pendingAnswer]="pendingAnswer"
+              [toolErrors]="toolErrors"
+              (send)="onSend($event)"
+            />
+          </ng-template>
+        </li>
+        <li ngbNavItem role="presentation">
+          <a ngbNavLink>
+            {{ 'copilot.product_advisor.tab.products' | translate }}
+            @if (products.length) {
+              ({{ products.length }})
+            }
+          </a>
+          <ng-template ngbNavContent>
+            <ish-product-advisor-results [products]="products" />
+          </ng-template>
+        </li>
+      </nav>
+      <div [ngbNavOutlet]="nav"></div>
+    }
+  }
+
+  <!-- interim placement; final position to be decided -->
+  <button class="btn btn-link mt-3" type="button" (click)="resetSession()">
+    {{ 'copilot.product_advisor.reset' | translate }}
+  </button>
+</div>

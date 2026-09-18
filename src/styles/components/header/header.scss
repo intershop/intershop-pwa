@@ -70,6 +70,10 @@ header {
   }
 
   .mid-header {
+    .search-col {
+      position: relative;
+    }
+
     .quickorder-link {
       padding: ($space-default * 0.5) divide($space-default, 3);
 
@@ -78,6 +82,26 @@ header {
         font-size: $font-size-corporate;
         vertical-align: middle;
         color: $CORPORATE-PRIMARY;
+      }
+    }
+
+    .ai-product-advisor {
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      padding-top: $space-default * 0.75;
+      padding-right: $space-default;
+      white-space: nowrap;
+      transform: translateY(-50%);
+
+      .ai-product-advisor-link {
+        font-family: $font-family-bold;
+        text-transform: uppercase;
+
+        .bi.header-icon {
+          padding-right: divide($space-default, 3);
+          color: $CORPORATE-PRIMARY;
+        }
       }
     }
   }
@@ -117,6 +141,15 @@ header {
   @include media-breakpoint-down(md) {
     order: 10;
     line-height: $header-height-mobile;
+  }
+
+  .ai-product-advisor-mobile {
+    align-self: center;
+
+    .bi.header-icon {
+      padding-right: 7px;
+      color: $CORPORATE-PRIMARY;
+    }
   }
 }
 
