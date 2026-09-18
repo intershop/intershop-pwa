@@ -23,7 +23,7 @@ It helps large language models and AI agents discover the most relevant pages of
 
 The PWA follows the [v2 revision of the proposal (August 2026)](https://llmstxt.org/changes.html).
 
-The _/llms.txt_ is served as static content by the Nginx layer and does not require server-side rendering.
+The _/llms.txt_ file is served as static content by the Nginx layer and does not require server-side rendering.
 
 ## File Location and Naming
 
