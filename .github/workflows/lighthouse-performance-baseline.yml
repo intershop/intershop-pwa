@@ -65,9 +65,10 @@ jobs:
             curl -sk "$url" >/dev/null
           done
 
-      - name: Run Lighthouse CI performance audits (desktop + mobile)
+      - name: Run Lighthouse CI performance audits (desktop + mobile + mobile no-banner)
         env:
           LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
           npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json
@@ -77,6 +78,10 @@ jobs:
           npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile.lighthouserc.json
           mv .lighthouseci lighthouse-mobile-baseline
 
+          echo "Lighthouse CI (mobile, no cookie banner)"
+          npx lhci autorun --config=.github/lighthouse/configurations/performance-mobile-no-banner.lighthouserc.json
+          mv .lighthouseci lighthouse-mobile-no-banner-baseline
+
       - name: Upload baseline Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v7
@@ -85,6 +90,7 @@ jobs:
           path: |
             lighthouse-desktop-baseline
             lighthouse-mobile-baseline
+            lighthouse-mobile-no-banner-baseline
           if-no-files-found: warn
 
       - name: Generate performance baseline markdown
