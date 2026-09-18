@@ -76,6 +76,63 @@
     }
   }
 
+  .advisor-messages {
+    display: flex;
+    flex-direction: column;
+
+    .advisor-message {
+      max-width: 80%;
+      padding: ($space-default * 1.25) ($space-default * 1.5);
+      margin-bottom: $space-default;
+      font-size: 13px;
+
+      p {
+        margin: 0;
+      }
+
+      &.advisor-message-user {
+        align-self: flex-end;
+        color: $color-inverse;
+        background-color: $CORPORATE-PRIMARY;
+        border-radius: 24px 0 24px 24px;
+      }
+
+      &.advisor-message-bot {
+        align-self: flex-start;
+        color: $text-color-primary;
+        background-color: $color-inverse;
+        border-radius: 24px 24px 24px 0;
+
+        .advisor-chips {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: ($space-default * 0.75);
+
+          .advisor-chip {
+            padding: ($space-default * 0.5) ($space-default * 0.75);
+            margin-right: ($space-default * 0.75);
+            font-size: 14px;
+            line-height: 20px;
+            color: $text-color-primary;
+            background-color: $color-inverse;
+            border: 1px solid $CORPORATE-PRIMARY;
+            border-radius: 12px;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+
+          .advisor-chip-selected {
+            color: $color-inverse;
+            background-color: $CORPORATE-PRIMARY;
+            border-color: $color-inverse;
+          }
+        }
+      }
+    }
+  }
+
   .advisor-input {
     .advisor-input-field {
       position: relative;

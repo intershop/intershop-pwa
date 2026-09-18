@@ -117,7 +117,7 @@
     </div>
     <div class="col-md-6 d-flex align-items-center justify-content-end">
       @if (!isSticky) {
-        <div class="ai-product-advisor">
+        <div *ishFeature="'productAdvisor'" class="ai-product-advisor">
           <a class="ai-product-advisor-link" data-testing-id="ai-product-advisor-link" routerLink="/advisor">
             <i class="bi bi-stars header-icon"></i>
             <span class="d-none d-md-inline">{{ 'copilot.product_advisor.link' | translate }}</span>

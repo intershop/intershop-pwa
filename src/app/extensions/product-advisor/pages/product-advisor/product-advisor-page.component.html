@@ -1,73 +1,60 @@
 <div class="container product-advisor">
-  <button class="btn btn-sm btn-outline-secondary" type="button" [disabled]="loading" (click)="resetSession()">
-    Reset
+  @if (deviceType$ | async; as deviceType) {
+    @if (deviceType !== 'mobile') {
+      <div class="row">
+        <div class="col-8 px-0 pe-4">
+          <ish-product-advisor-chat
+            [deviceType]="deviceType"
+            [error]="error"
+            [loading]="loading"
+            [messages]="messages"
+            [pendingAnswer]="pendingAnswer"
+            [toolErrors]="toolErrors"
+            (send)="onSend($event)"
+          />
+        </div>
+        <div class="col-4">
+          <ish-product-advisor-results [products]="products" />
+        </div>
+      </div>
+    } @else {
+      <div class="advisor-title-card">
+        <div class="advisor-icon">
+          <i class="bi bi-stars"></i>
+        </div>
+        <div>
+          <p class="advisor-title-card-title">{{ 'copilot.product_advisor.title' | translate }}</p>
+          <p class="advisor-title-card-subtitle">{{ 'copilot.product_advisor.subtitle' | translate }}</p>
+        </div>
+      </div>
+      <nav #nav="ngbNav" class="nav-tabs" ngbNav>
+        <li ngbNavItem role="presentation">
+          <a ngbNavLink>{{ 'copilot.product_advisor.tab.chat' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-advisor-chat
+              [deviceType]="deviceType"
+              [error]="error"
+              [loading]="loading"
+              [messages]="messages"
+              [pendingAnswer]="pendingAnswer"
+              [toolErrors]="toolErrors"
+              (send)="onSend($event)"
+            />
+          </ng-template>
+        </li>
+        <li ngbNavItem role="presentation">
+          <a ngbNavLink>{{ 'copilot.product_advisor.tab.products' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-product-advisor-results [products]="products" />
+          </ng-template>
+        </li>
+      </nav>
+      <div [ngbNavOutlet]="nav"></div>
+    }
+  }
+
+  <!-- interim placement; final position to be decided -->
+  <button class="btn btn-link mt-3" type="button" (click)="resetSession()">
+    {{ 'copilot.product_advisor.reset' | translate }}
   </button>
-
-  <div
-    #chatWindow
-    class="p-3 mb-2"
-    style="height: 420px; overflow-y: auto; border: 1px solid #ccc"
-    (scroll)="onChatScroll()"
-  >
-    @for (message of messages; track $index) {
-      <div class="mb-2" [class.text-end]="message.type === 'userMessage'">
-        <div
-          class="d-inline-block p-2"
-          style="white-space: pre-wrap; max-width: 80%"
-          [class.bg-light]="message.type === 'apiMessage'"
-          [class.bg-primary]="message.type === 'userMessage'"
-          [class.text-white]="message.type === 'userMessage'"
-        >
-          {{ message.message }}
-        </div>
-      </div>
-    }
-
-    @if (pendingAnswer) {
-      <div class="mb-2">
-        <div class="d-inline-block p-2" style="white-space: pre-wrap; max-width: 80%">
-          {{ pendingAnswer }}
-        </div>
-      </div>
-    }
-
-    @if (loading && !pendingAnswer) {
-      <p class="text-muted small mb-0"><em>Advisor is typing…</em></p>
-    }
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="stream()">
-    <div class="d-flex gap-2">
-      <input class="form-control" formControlName="question" placeholder="Ask the Product Advisor…" type="text" />
-      <button class="btn btn-primary" type="submit" [disabled]="loading">Send</button>
-    </div>
-  </form>
-
-  @if (error) {
-    <div class="alert alert-danger py-2"><strong>Error:</strong> {{ error }}</div>
-  }
-
-  @if (toolErrors.length) {
-    <div class="alert alert-warning py-2 mb-2">
-      <strong>Chatflow tool error(s):</strong>
-      <ul class="mb-0">
-        @for (toolError of toolErrors; track $index) {
-          <li>
-            <code>{{ toolError.tool }}</code
-            >: {{ toolError.error }}
-          </li>
-        }
-      </ul>
-    </div>
-  }
-
-  @if (products.length) {
-    <div class="mt-3">
-      <div class="product-list d-flex flex-wrap gap-3">
-        @for (product of products; track product.sku) {
-          <ish-product-item ishProductContext [sku]="product.sku" />
-        }
-      </div>
-    </div>
-  }
 </div>
