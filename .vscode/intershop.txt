@@ -68,6 +68,7 @@ foobars
 foos
 formly
 français
+fullhuman
 geolocation
 getmetrics
 giftwrap
@@ -205,6 +206,7 @@ silktide
 sitekey
 skus
 smarttools
+sonda
 sortings
 sparque
 spgid
