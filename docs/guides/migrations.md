@@ -98,6 +98,16 @@ The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/pref
 The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
+**Default security headers in the NGINX image**
+
+The NGINX image now ships a permissive set of default security headers in [`additional-headers.yaml`](../../nginx/additional-headers.yaml).
+Previously, no headers were sent by default.
+The default headers are intentionally lenient so that typical storefronts using third-party analytics, payment providers, or CDNs continue to work.
+Clickjacking protection is deliberately disabled so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
+Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the entire header list rather than merging with the default headers.
+Review and tighten the baseline headers for your domains.
+For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

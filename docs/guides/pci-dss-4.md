@@ -176,7 +176,8 @@ Any custom PWA extension that introduces an external resource therefore requires
 ### PWA CSP Configuration
 
 The Intershop PWA manages its CSP via the NGINX configuration layer.
-Custom CSP directives are set through the environment variable `ADDITIONAL_HEADERS` or in NGINX templates.
+Custom CSP directives are set through the environment variable `ADDITIONAL_HEADERS` or in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
+For the full mechanism, the shipped default headers, and examples for overriding, extending, or removing headers, see the dedicated [Security Headers and Content Security Policy (CSP)](security-headers.md) guide.
 Refer to the [NGINX Startup Guide](../guides/nginx-startup.md#content-security-policy) for the baseline setup.
 
 The relevant directives and their purpose:
