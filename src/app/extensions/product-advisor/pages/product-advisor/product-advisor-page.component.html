@@ -43,7 +43,12 @@
           </ng-template>
         </li>
         <li ngbNavItem role="presentation">
-          <a ngbNavLink>{{ 'copilot.product_advisor.tab.products' | translate }}</a>
+          <a ngbNavLink>
+            {{ 'copilot.product_advisor.tab.products' | translate }}
+            @if (products.length) {
+              ({{ products.length }})
+            }
+          </a>
           <ng-template ngbNavContent>
             <ish-product-advisor-results [products]="products" />
           </ng-template>
