@@ -112,7 +112,7 @@ A single domain can also serve several channels under different base href paths 
 In this case, there is only **one** _/llms.txt_ at the domain root, and it uses the channel of the **first** list entry.
 As with all other setups, a missing channel file falls back to _nginx/llms/default_llms.txt_.
 
-For example, if the first list entry uses `inSPIRED-inTRONICS_Business-Site`, the domain root serves *nginx/llms/inSPIRED-inTRONICS_Business-Site_llms.txt*.
+For example, if the first list entry uses `inSPIRED-inTRONICS_Business-Site`, the domain root serves _nginx/llms/inSPIRED-inTRONICS_Business-Site_llms.txt_.
 The individual base href paths (such as _/b2c_) do **not** get their own _llms.txt_.
 
 > [!NOTE]
