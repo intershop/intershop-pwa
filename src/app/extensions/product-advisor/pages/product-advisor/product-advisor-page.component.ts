@@ -176,6 +176,8 @@ export class ProductAdvisorPageComponent implements OnInit {
     if (products.length) {
       this.products = products;
     }
+    // execute the action tool calls (basket, compare, navigation, order templates)
+    this.productAdvisorFacade.handleToolCalls(usedTools);
     this.addMessage({ message, type: 'apiMessage', usedTools, messageId, dateTime: new Date().toISOString() });
   }
 
