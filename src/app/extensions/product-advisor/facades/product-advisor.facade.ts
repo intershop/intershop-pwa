@@ -6,8 +6,11 @@ import {
   ProductAdvisorRequestOptions,
   ProductAdvisorResponse,
   ProductAdvisorStreamEvent,
+  ProductAdvisorToolCall,
 } from '../models/product-advisor/product-advisor.model';
 import { ProductAdvisorService } from '../services/product-advisor/product-advisor.service';
+
+import { ProductAdvisorToolCallFacade } from './product-advisor-tool-call.facade';
 
 /**
  * Facade for the Product Advisor AI agent, providing components a single injection point for the
@@ -15,7 +18,10 @@ import { ProductAdvisorService } from '../services/product-advisor/product-advis
  */
 @Injectable({ providedIn: 'root' })
 export class ProductAdvisorFacade {
-  constructor(private productAdvisorService: ProductAdvisorService) {}
+  constructor(
+    private productAdvisorService: ProductAdvisorService,
+    private productAdvisorToolCallFacade: ProductAdvisorToolCallFacade
+  ) {}
 
   configuration$: Observable<ProductAdvisorConfig> = this.productAdvisorService.getConfiguration$();
 
@@ -38,5 +44,12 @@ export class ProductAdvisorFacade {
    */
   streamMessage(question: string, options?: ProductAdvisorRequestOptions): Observable<ProductAdvisorStreamEvent> {
     return this.productAdvisorService.streamMessage(question, options);
+  }
+
+  /**
+   * Executes the action tool calls (basket, compare, navigation, order templates) of a response.
+   */
+  handleToolCalls(toolCalls: ProductAdvisorToolCall[] | undefined): void {
+    this.productAdvisorToolCallFacade.handleToolCalls(toolCalls);
   }
 }
