@@ -5,7 +5,7 @@ import { featureToggleGuard } from 'ish-core/feature-toggle.module';
 
 const routes: Routes = [
   {
-    path: 'advisor',
+    path: 'copilot',
     loadChildren: () => import('./product-advisor/product-advisor-page.module').then(m => m.ProductAdvisorPageModule),
     canActivate: [featureToggleGuard],
     data: {

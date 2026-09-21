@@ -76,7 +76,7 @@
         <a
           class="ai-product-advisor-link"
           data-testing-id="ai-product-advisor-link-mobile"
-          routerLink="/advisor"
+          routerLink="/copilot"
           [attr.aria-label]="'copilot.product_advisor.link' | translate"
         >
           <i class="bi bi-stars header-icon"></i>
@@ -131,7 +131,7 @@
     <div class="col-md-4 search-col">
       @if (!isSticky && deviceType !== 'mobile') {
         <div *ishFeature="'productAdvisor'" class="ai-product-advisor">
-          <a class="ai-product-advisor-link" data-testing-id="ai-product-advisor-link" routerLink="/advisor">
+          <a class="ai-product-advisor-link" data-testing-id="ai-product-advisor-link" routerLink="/copilot">
             <i class="bi bi-stars header-icon"></i>
             <span class="d-none d-md-inline">{{ 'copilot.product_advisor.link' | translate }}</span>
           </a>
