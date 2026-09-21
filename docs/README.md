@@ -22,7 +22,6 @@ kb_sync_latest_only
 - [Concept - Configuration](./concepts/configuration.md)
   - [Guide - Propagating Environment Variables](./guides/propagating-environment-variables.md)
 - [Concept - Localization](./concepts/localization.md)
-- [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
 - [Guide - Formly](./guides/formly.md)
 - [Guide - Field Library](./guides/field-library.md)
@@ -99,6 +98,11 @@ kb_sync_latest_only
 - [Guide - E-Mail Marketing/Newsletter Subscription](./guides/newsletter-subscription.md)
 - [Guide - Well-Known Resources](./guides/well-known-resources.md)
 
+## Search Engine Optimization
+
+- [Concept - SEO](./concepts/search-engine-optimization.md)
+
 ## Agent Readiness
 
 - [Guide - Markdown Mirrors](./guides/markdown-mirrors.md)
+- [Guide - llms.txt](./guides/llms-txt.md)
