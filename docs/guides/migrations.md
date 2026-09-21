@@ -104,6 +104,16 @@ The Intershop PWA now serves an [_llms.txt_](https://llmstxt.org/) file, an LLM-
 The content files are located in _nginx/llms/_ and are named per channel following the pattern `<channel>_llms.txt`, with a neutral _default_llms.txt_ used as fallback file.
 Every project based on the Intershop PWA, whether newly set up or migrated, needs to rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
 
+**Default security headers in the NGINX image**
+
+The NGINX image now ships a permissive set of default security headers in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
+Previously, no headers were sent by default.
+The default headers are intentionally lenient so that typical storefronts using third-party analytics, payment providers, or CDNs continue to work.
+Clickjacking protection is deliberately disabled so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
+Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the entire header list rather than merging with the default headers.
+Review and tighten the baseline headers for your domains.
+For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
