@@ -21,6 +21,7 @@
     "build:schematics": "cd schematics && npm run build",
     "ng": "ng",
     "test": "npm run test:scripts && jest --ci",
+    "test:scripts": "node --test scripts/*.test.js",
     "test:watch": "jest --watch -i",
     "test:eslint-rules": "cd eslint-rules && npm run test -- --ci",
     "test:schematics": "cd schematics && npm run test -- --ci",
@@ -48,15 +49,14 @@
     "build:watch": "ng run intershop-pwa:build:b2b,development --watch",
     "build": "node scripts/build-pwa.js",
     "build:multi": "node scripts/build-multi-pwa.js",
+    "build:ssr-runtime": "node scripts/build-ssr-runtime.js",
     "analyze": "npm run build client -- --stats-json --source-map && sonda-angular --projects intershop-pwa",
     "serve": "node dist/server/server.mjs",
+    "serve:multi": "node dist/build-ecosystem.cjs && pm2-runtime dist/ecosystem.json",
     "start": "npm-run-all build serve",
     "dev:ssr": "ng serve --build-target=intershop-pwa:build:b2b,development,ssr",
     "xliff": "node scripts/convert-to-xliff.js",
-    "audit": "better-npm-audit audit",
-    "test:scripts": "node --test scripts/*.test.js",
-    "build:ssr-runtime": "node scripts/build-ssr-runtime.js",
-    "serve:multi": "node dist/build-ecosystem.cjs && pm2-runtime dist/ecosystem.json"
+    "audit": "better-npm-audit audit"
   },
   "dependencies": {
     "@angular-devkit/schematics": "^20.3.37",
@@ -116,6 +116,7 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
+    "@angular-builders/custom-esbuild": "^20.0.0",
     "@angular-devkit/build-angular": "^20.3.34",
     "@angular-eslint/builder": "^20.7.0",
     "@angular-eslint/eslint-plugin": "^20.7.0",
@@ -129,6 +130,8 @@
     "@commitlint/config-conventional": "^21.2.3",
     "@commitlint/cz-commitlint": "^21.2.3",
     "@cspell/eslint-plugin": "^10.3.6",
+    "@fullhuman/postcss-purgecss": "^8.0.0",
+    "@intershop/postcss-purgecss-config": "file:tools/postcss-purgecss-config",
     "@lhci/cli": "^0.15.1",
     "@ngrx/eslint-plugin": "^20.1.0",
     "@phenomnomnominal/tsquery": "^6.2.0",
@@ -150,6 +153,7 @@
     "conventional-changelog": "^8.1.3",
     "cross-spawn": "^7.0.6",
     "cspell": "^10.3.6",
+    "esbuild": "^0.25.12",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-ban": "^2.0.0",
@@ -175,6 +179,7 @@
     "ng-mocks": "^14.18.1",
     "npm-run-all2": "^9.0.3",
     "prettier": "^3.9.9",
+    "sonda": "^0.14.0",
     "sort-json": "^2.0.1",
     "stylelint": "^17.15.0",
     "stylelint-config-recess-order": "^7.8.0",
@@ -190,10 +195,7 @@
     "ts-node": "~10.9.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.71.0",
-    "xliff": "^6.4.0",
-    "@angular-builders/custom-esbuild": "^20.0.0",
-    "esbuild": "^0.25.12",
-    "sonda": "^0.14.0"
+    "xliff": "^6.4.0"
   },
   "overrides": {
     "express-robots-txt": {
