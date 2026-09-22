@@ -6,9 +6,11 @@ import { catchError, map, switchMap, take } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { ProductAdvisorConfig } from '../../models/product-advisor-config/product-advisor-config.model';
 import {
   ProductAdvisorRequestOptions,
@@ -68,8 +70,9 @@ function parseSseEvent(rawEvent: string): ProductAdvisorStreamEvent | undefined 
  *
  * The `restEndpoint`, `currentLocale` and - for logged-in users - the ICM `user_token` are provided
  * as chatflow variables on every request (mirroring the Copilot integration) so the chatflow can
- * call back into ICM as the current user. The current basket contents are appended to the question
- * as a `[CURRENT_BASKET]` marker so the chatflow can update/remove items without a server-side read.
+ * call back into ICM as the current user. The current basket contents and order templates are
+ * appended to the question as `[CURRENT_BASKET]` / `[ORDER_TEMPLATES]` markers so the chatflow can
+ * act on them without a server-side read.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductAdvisorService {
@@ -78,7 +81,9 @@ export class ProductAdvisorService {
     private statePropertiesService: StatePropertiesService,
     private appFacade: AppFacade,
     private apiTokenService: ApiTokenService,
-    private checkoutFacade: CheckoutFacade
+    private checkoutFacade: CheckoutFacade,
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   /**
@@ -165,20 +170,27 @@ export class ProductAdvisorService {
       this.appFacade.currentLocale$,
       this.apiTokenService.apiToken$,
       this.checkoutFacade.basketLineItems$,
+      // order templates are a lazy, feature-gated store; only read them when the feature is enabled
+      this.featureToggleService
+        .enabled$('orderTemplates')
+        .pipe(switchMap(enabled => (enabled ? this.orderTemplatesFacade.orderTemplates$ : of([])))),
     ]).pipe(
       take(1),
-      map(([config, restEndpoint, currentLocale, userToken, lineItems]) => {
+      map(([config, restEndpoint, currentLocale, userToken, lineItems, orderTemplates]) => {
         if (!config?.apiHost || !config?.chatflowid) {
           throw new Error('Product Advisor is not configured (apiHost and chatflowid are required)');
         }
 
-        // current basket snapshot so the chatflow can update/remove without a server-side read;
-        // appended to the question because Flowise does not resolve runtime vars inside the prompt
+        // current PWA context appended to the question because Flowise does not resolve runtime vars
+        // inside the prompt; lets the chatflow act without the failing server-side read tools
         const basket = (lineItems ?? []).map(li => ({ sku: li.productSKU, quantity: li.quantity?.value }));
-        const questionWithBasket = `${question}\n\n[CURRENT_BASKET]=${JSON.stringify(basket)}`;
+        const templates = (orderTemplates ?? []).map(t => ({ id: t.id, title: t.title }));
+        const questionWithContext =
+          `${question}\n\n[CURRENT_BASKET]=${JSON.stringify(basket)}` +
+          `\n[ORDER_TEMPLATES]=${JSON.stringify(templates)}`;
 
         const body: Record<string, unknown> = {
-          question: questionWithBasket,
+          question: questionWithContext,
           streaming,
           ...(options?.chatId ? { chatId: options.chatId } : {}),
           overrideConfig: {
