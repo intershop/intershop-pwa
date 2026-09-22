@@ -99,7 +99,7 @@ intershop.WebServerSecureURL=https://<NGINX>
 
 The server-side rendering process must be started with `SSR_HYBRID=1`.
 
-For Kubernetes deployments of the PWA and the ICM in the same cluster, it is necessary to set a `SSR_HYBRID_BACKEND` URL to the internal service URL of the ICM in addition to the `ICM_BASE_URL`.
+For Kubernetes deployments of the PWA and the ICM in the same cluster, it is necessary to set an `ICM_BASE_URL_SSR` URL to the internal service URL of the ICM in addition to the `ICM_BASE_URL`.
 This URL is used for server-side requests from the PWA to the Responsive Starter Store of the ICM.
 Using the external URL defined in `ICM_BASE_URL` does not work in joint Kubernetes deployments.
 
@@ -112,7 +112,6 @@ For deployments via PWA Helm Chart (requires PWA Helm Chart 0.10.0 or later), th
 ```yaml
 hybrid:
   enabled: true
-  icmInternalURL: https://kubernetes-icm-web-wa:8443 # internal ICM Web Adapter service URL
   pwaExternalPort: 443 # external port used to access the PWA
 ```
 
