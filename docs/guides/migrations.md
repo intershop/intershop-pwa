@@ -114,6 +114,51 @@ Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable 
 Review and tighten the baseline headers for your domains.
 For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
 
+**Angular SSR `REQUEST` token**
+
+The custom `REQUEST` token from [`ish-core/utils/ssr/ssr.tokens`](../../src/app/core/utils/ssr/ssr.tokens.ts) has been replaced by Angular’s `REQUEST` token from `@angular/core`.
+
+Custom SSR code that uses this token must update the import:
+
+```ts
+// before
+import { REQUEST } from 'ish-core/utils/ssr/ssr.tokens';
+
+// after
+import { REQUEST } from '@angular/core';
+```
+
+The injected value is now a standard Web `Request` instead of an Express request.
+Replace Express-specific request access as follows:
+
+- `request.get('host')` with `new URL(request.url).host`
+- `request.protocol` with `new URL(request.url).protocol.slice(0, -1)`
+- `request.get('header-name')` with `request.headers.get('header-name')`
+- `request.path` with `new URL(request.url).pathname`
+
+`request.headers.get(...)` returns `null` when a header is missing, whereas Express’s `request.get(...)` returns `undefined`.
+Adjust any explicit checks accordingly.
+
+`request.url` is now an absolute URL.
+Preserve existing fallback handling for execution outside SSR, where the request may be unavailable.
+
+Custom Express SSR bootstraps must convert the request when registering the provider:
+
+```ts
+import { REQUEST } from '@angular/core';
+import { createWebRequestFromNodeRequest } from '@angular/ssr/node';
+
+{
+  provide: REQUEST,
+  useValue: createWebRequestFromNodeRequest(req, ['x-forwarded-proto']),
+}
+```
+
+Update custom request types and test mocks accordingly.
+The custom `RESPONSE` and `REQUEST_ID` tokens remain unchanged.
+
+Projects without custom SSR request consumers or a custom server bootstrap require no additional changes.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
