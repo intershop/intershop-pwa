@@ -198,7 +198,7 @@ export class SeoEffects {
     if (this.request) {
       url = new URL(this.baseHref, this.request.url).href;
     } else {
-      url = new URL(this.baseHref, this.doc.URL).href;
+      url = this.doc.baseURI;
     }
     return url.endsWith('/') ? url : `${url}/`;
   }
