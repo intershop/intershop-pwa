@@ -62,7 +62,6 @@ describe('Basket Handling', () => {
   it('user adds a promotion code that can be applied yet', () => {
     at(CartPage, page => {
       page.lineItem(0).quantity.set(2);
-      cy.wait(1000);
       page.collapsePromotionForm();
       page.submitPromotionCode('INTERSHOP');
       page.successMessage.message.should('contain', 'applied');
@@ -136,7 +135,7 @@ describe('Basket Handling', () => {
     at(CartPage, page => {
       page.lineItems.should('have.length', 1);
       page.lineItem(0).quantity.set(2);
-      waitLoadingEnd(2000);
+      waitLoadingEnd();
       page.subtotal.should('contain', _.product.price * 2);
       page.lineItem(0).remove();
       waitLoadingEnd(2000);

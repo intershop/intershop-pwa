@@ -35,7 +35,6 @@ describe('Promotion Handling in Cart', () => {
   it('user adds a promotion code that can be applied yet', () => {
     at(CartPage, page => {
       page.lineItem(0).quantity.set(2);
-      cy.wait(1000);
       page.submitPromotionCode('INTERSHOP');
       page.successMessage.message.should('contain', 'applied');
       page.promotion.should('exist');
