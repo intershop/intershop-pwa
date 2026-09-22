@@ -1,6 +1,8 @@
 const http = require('http');
+const { readFileSync } = require('fs');
+const { join } = require('path');
 
-let ports = require('./ecosystem-ports.json');
+let ports = JSON.parse(readFileSync(join(__dirname, 'ecosystem-ports.json'), { encoding: 'utf-8' }));
 
 if (process.env.ACTIVE_THEMES) {
   const activeThemes = process.env.ACTIVE_THEMES.split(',').map(theme => theme.trim());
