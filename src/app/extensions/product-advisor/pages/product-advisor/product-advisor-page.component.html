@@ -18,15 +18,7 @@
         </div>
       </div>
     } @else {
-      <div class="advisor-title-card">
-        <div class="advisor-icon">
-          <i class="bi bi-stars"></i>
-        </div>
-        <div>
-          <p class="advisor-title-card-title">{{ 'copilot.product_advisor.title' | translate }}</p>
-          <p class="advisor-title-card-subtitle">{{ 'copilot.product_advisor.subtitle' | translate }}</p>
-        </div>
-      </div>
+      <ish-product-advisor-header />
       <nav #nav="ngbNav" class="nav-tabs" ngbNav>
         <li ngbNavItem role="presentation">
           <a ngbNavLink>{{ 'copilot.product_advisor.tab.chat' | translate }}</a>

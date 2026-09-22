@@ -1,0 +1,26 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.advisor-header {
+  display: flex;
+  align-items: center;
+  padding: ($space-default * 0.75) 0;
+
+  p {
+    margin: 0;
+  }
+
+  .advisor-header-title {
+    font-family: $font-family-bold;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+
+  .advisor-header-subtitle {
+    padding-top: divide($space-default, 8);
+    font-size: 12px;
+    line-height: 16px;
+    color: $text-color-tertiary;
+  }
+}
