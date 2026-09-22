@@ -50,26 +50,6 @@ function trackRestarts(name, totalRestartCount) {
 const app = express();
 
 app.get('/metrics', (_, res) => {
-  const metricsArr = Object.values(metricsPerWorker);
-  client.register
-    .getMetricsAsJSON()
-    .then(pm2Metrics => {
-      metricsArr.push(pm2Metrics);
-      const registry = client.AggregatorRegistry.aggregate(metricsArr);
-      registry
-        .metrics()
-        .then(content => {
-          res.set('Content-Type', client.contentType);
-          res.send(content);
-        })
-        .catch(error => {
-          res.status(500).send(error.toString());
-        });
-    })
-    .catch(error => {
-      res.status(500).send(error.toString());
-    });
-
   pm2.connect(err1 => {
     if (!err1) {
       pm2.list((err2, list) => {
@@ -107,7 +87,7 @@ app.get('/metrics', (_, res) => {
             pm2SSRMemoryLimit.set(maxMem);
           }
           const pm2Restarts = list.reduce(
-            (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + p.pm2_env.restart_time || 0 }),
+            (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + (p.pm2_env.restart_time || 0) }),
             {}
           );
           Object.entries(pm2Restarts).forEach(([name, value]) => {
@@ -118,15 +98,40 @@ app.get('/metrics', (_, res) => {
       });
     }
   });
+
+  const metricsArr = Object.values(metricsPerWorker);
+  client.register
+    .getMetricsAsJSON()
+    .then(pm2Metrics => {
+      metricsArr.push(pm2Metrics);
+      const registry = client.AggregatorRegistry.aggregate(metricsArr);
+      registry
+        .metrics()
+        .then(content => {
+          res.set('Content-Type', client.contentType);
+          res.send(content);
+        })
+        .catch(error => {
+          res.status(500).send(error.toString());
+        });
+    })
+    .catch(error => {
+      res.status(500).send(error.toString());
+    });
 });
 
 app.listen(9113, () => {
-  process.send('ready');
+  process.send?.('ready');
   console.log('Prometheus reporter listening');
 });
 
 // Listen to messages from theme applications
 pm2.launchBus((err, pm2_bus) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
   pm2_bus.on('process:msg', msg => {
     if (msg?.data?.topic === 'returnMetrics' && msg.process.name && msg.process.pm_id) {
       const worker = `${msg.process.name} ${msg.process.pm_id}`;
