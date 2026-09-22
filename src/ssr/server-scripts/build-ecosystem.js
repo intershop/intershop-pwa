@@ -2,10 +2,8 @@ const fs = require('fs');
 let ports = require('./ecosystem-ports.json');
 
 if (process.env.ACTIVE_THEMES) {
-  const active = process.env.ACTIVE_THEMES.split(',');
-  ports = Object.entries(ports)
-    .filter(([theme]) => active.includes(theme))
-    .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {});
+  const activeThemes = process.env.ACTIVE_THEMES.split(',').map(theme => theme.trim());
+  ports = Object.fromEntries(Object.entries(ports).filter(([theme]) => activeThemes.includes(theme)));
 }
 
 let content = `apps:`;
