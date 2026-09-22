@@ -43,3 +43,9 @@ Thumbs.db
 # Lighthouse
 .lighthouseci/
 /.github/lighthouse/certs/
+
+# Angular build output
+/dist/
+
+# Bundle analyzer output
+/.sonda/
