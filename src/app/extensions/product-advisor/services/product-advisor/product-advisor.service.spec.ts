@@ -6,9 +6,11 @@ import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { ProductAdvisorConfig } from '../../models/product-advisor-config/product-advisor-config.model';
 import { ProductAdvisorResponse } from '../../models/product-advisor/product-advisor.model';
 
@@ -42,11 +44,19 @@ describe('Product Advisor Service', () => {
     const checkoutFacade = mock(CheckoutFacade);
     when(checkoutFacade.basketLineItems$).thenReturn(of(undefined));
 
+    const orderTemplatesFacade = mock(OrderTemplatesFacade);
+    when(orderTemplatesFacade.orderTemplates$).thenReturn(of([]));
+
+    const featureToggleService = mock(FeatureToggleService);
+    when(featureToggleService.enabled$(anything())).thenReturn(of(true));
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
+        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
@@ -80,8 +90,8 @@ describe('Product Advisor Service', () => {
 
     const req = httpTestingController.expectOne(predictionUrl);
     expect(req.request.method).toEqual('POST');
-    // the current basket is appended to the question as a [CURRENT_BASKET] marker
-    expect(req.request.body.question).toEqual('recommend a laptop\n\n[CURRENT_BASKET]=[]');
+    // the current basket and order templates are appended to the question as markers
+    expect(req.request.body.question).toEqual('recommend a laptop\n\n[CURRENT_BASKET]=[]\n[ORDER_TEMPLATES]=[]');
     expect(req.request.body.overrideConfig.sessionId).toEqual('session-1');
     expect(req.request.body.overrideConfig.vars.currentLocale).toEqual('en_US');
     expect(req.request.body.overrideConfig.vars.restEndpoint).toEqual(
