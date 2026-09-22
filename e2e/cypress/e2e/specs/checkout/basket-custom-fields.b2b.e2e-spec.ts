@@ -51,7 +51,7 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
     at(CartPage, page => {
       // wait for late-loading content (marketing includes, cost center) to settle so the click is not lost
       cy.wait(1000);
-      page.basketCustomFieldsToggleLink.click({ scrollBehavior: false });
+      page.basketCustomFieldsToggleLink.click({ scrollBehavior: false, force: true });
       page.basketCustomFieldsForm.should('be.visible');
       cy.wait(500);
       cy.scrollTo('top');
