@@ -5,6 +5,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -38,10 +39,14 @@ describe('Product Advisor Service', () => {
     const apiTokenService = mock(ApiTokenService);
     when(apiTokenService.apiToken$).thenReturn(new BehaviorSubject<string>('icm-token-xyz'));
 
+    const checkoutFacade = mock(CheckoutFacade);
+    when(checkoutFacade.basketLineItems$).thenReturn(of(undefined));
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
@@ -75,7 +80,8 @@ describe('Product Advisor Service', () => {
 
     const req = httpTestingController.expectOne(predictionUrl);
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body.question).toEqual('recommend a laptop');
+    // the current basket is appended to the question as a [CURRENT_BASKET] marker
+    expect(req.request.body.question).toEqual('recommend a laptop\n\n[CURRENT_BASKET]=[]');
     expect(req.request.body.overrideConfig.sessionId).toEqual('session-1');
     expect(req.request.body.overrideConfig.vars.currentLocale).toEqual('en_US');
     expect(req.request.body.overrideConfig.vars.restEndpoint).toEqual(
