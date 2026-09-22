@@ -131,11 +131,16 @@
       display: block;
     }
   }
+}
 
+/* purgecss start ignore */
+.sticky-header {
   @include media-breakpoint-down(lg) {
     @include mobile-navigation;
   }
 }
+
+/* purgecss end ignore */
 
 .homepage.sticky-header {
   header {
