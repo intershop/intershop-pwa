@@ -1,5 +1,8 @@
 <div class="product-advisor-chat">
   @if (messages?.length || pendingAnswer) {
+    @if (deviceType !== 'mobile') {
+      <ish-product-advisor-header />
+    }
     <div #chatWindow class="advisor-messages" (scroll)="onChatScroll()">
       @for (message of messages; track $index) {
         <div

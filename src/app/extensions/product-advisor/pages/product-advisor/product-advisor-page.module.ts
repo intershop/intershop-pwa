@@ -5,6 +5,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ProductAdvisorChatComponent } from './product-advisor-chat/product-advisor-chat.component';
+import { ProductAdvisorHeaderComponent } from './product-advisor-header/product-advisor-header.component';
 import { ProductAdvisorPageComponent } from './product-advisor-page.component';
 import { ProductAdvisorResultsComponent } from './product-advisor-results/product-advisor-results.component';
 
@@ -12,6 +13,11 @@ const productAdvisorPageRoutes: Routes = [{ path: '', component: ProductAdvisorP
 
 @NgModule({
   imports: [NgbNavModule, RouterModule.forChild(productAdvisorPageRoutes), SharedModule],
-  declarations: [ProductAdvisorChatComponent, ProductAdvisorPageComponent, ProductAdvisorResultsComponent],
+  declarations: [
+    ProductAdvisorChatComponent,
+    ProductAdvisorHeaderComponent,
+    ProductAdvisorPageComponent,
+    ProductAdvisorResultsComponent,
+  ],
 })
 export class ProductAdvisorPageModule {}
