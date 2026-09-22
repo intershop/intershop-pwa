@@ -131,6 +131,13 @@ The default value of the `displayEmail` input of `AddressComponent` (`ish-addres
 The e-mail address is now displayed by default.
 Explicitly set `[displayEmail]="false"` to continue hiding the e-mail address.
 
+**Unification of `SSR_HYBRID_BACKEND` into `ICM_BASE_URL_SSR`**
+
+The `SSR_HYBRID_BACKEND` environment variable has been removed and unified with `ICM_BASE_URL_SSR`.
+Both variables pointed to the same target - the internal ICM Web Adapter service URL used for server-side backend requests in joint Kubernetes deployments.
+The `/INTERSHOP` proxy of the SSR server (used in the Hybrid Approach and with `PROXY_ICM`) now uses `ICM_BASE_URL_SSR` instead of `SSR_HYBRID_BACKEND`, falling back to `ICM_BASE_URL` when it is not set.
+Deployments that set `SSR_HYBRID_BACKEND` must rename it to `ICM_BASE_URL_SSR`.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

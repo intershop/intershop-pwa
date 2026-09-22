@@ -150,7 +150,7 @@ const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist',
 export function app() {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
-  const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
+  const ICM_BASE_URL_SSR = process.env.ICM_BASE_URL_SSR || ICM_BASE_URL;
 
   if (!ICM_BASE_URL) {
     logger.fatal('ICM_BASE_URL not set');
@@ -382,7 +382,7 @@ export function app() {
     server.use(/.*/, hybridRedirect);
   }
 
-  const icmProxy = proxy(SSR_HYBRID_BACKEND, {
+  const icmProxy = proxy(ICM_BASE_URL_SSR, {
     // preserve original path
     proxyReqPathResolver: req => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
