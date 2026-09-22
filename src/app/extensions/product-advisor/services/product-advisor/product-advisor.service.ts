@@ -5,6 +5,7 @@ import { Observable, combineLatest, from, of } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -67,7 +68,8 @@ function parseSseEvent(rawEvent: string): ProductAdvisorStreamEvent | undefined 
  *
  * The `restEndpoint`, `currentLocale` and - for logged-in users - the ICM `user_token` are provided
  * as chatflow variables on every request (mirroring the Copilot integration) so the chatflow can
- * call back into ICM as the current user.
+ * call back into ICM as the current user. The current basket contents are appended to the question
+ * as a `[CURRENT_BASKET]` marker so the chatflow can update/remove items without a server-side read.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductAdvisorService {
@@ -75,7 +77,8 @@ export class ProductAdvisorService {
     private httpClient: HttpClient,
     private statePropertiesService: StatePropertiesService,
     private appFacade: AppFacade,
-    private apiTokenService: ApiTokenService
+    private apiTokenService: ApiTokenService,
+    private checkoutFacade: CheckoutFacade
   ) {}
 
   /**
@@ -161,15 +164,21 @@ export class ProductAdvisorService {
       this.appFacade.getRestEndpointWithContext$,
       this.appFacade.currentLocale$,
       this.apiTokenService.apiToken$,
+      this.checkoutFacade.basketLineItems$,
     ]).pipe(
       take(1),
-      map(([config, restEndpoint, currentLocale, userToken]) => {
+      map(([config, restEndpoint, currentLocale, userToken, lineItems]) => {
         if (!config?.apiHost || !config?.chatflowid) {
           throw new Error('Product Advisor is not configured (apiHost and chatflowid are required)');
         }
 
+        // current basket snapshot so the chatflow can update/remove without a server-side read;
+        // appended to the question because Flowise does not resolve runtime vars inside the prompt
+        const basket = (lineItems ?? []).map(li => ({ sku: li.productSKU, quantity: li.quantity?.value }));
+        const questionWithBasket = `${question}\n\n[CURRENT_BASKET]=${JSON.stringify(basket)}`;
+
         const body: Record<string, unknown> = {
-          question,
+          question: questionWithBasket,
           streaming,
           ...(options?.chatId ? { chatId: options.chatId } : {}),
           overrideConfig: {
