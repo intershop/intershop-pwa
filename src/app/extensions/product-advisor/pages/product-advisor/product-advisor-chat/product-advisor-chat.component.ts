@@ -45,11 +45,17 @@ export class ProductAdvisorChatComponent implements OnChanges, AfterViewChecked 
   private stickToBottom = true;
   private scrollPending = false;
 
+  /** Currently ticked options for the most recent multi-select choice prompt. */
+  readonly selectedOptions = new Set<string>();
+
   constructor(private translateService: TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.messages || changes.pendingAnswer) {
       this.scrollPending = true;
+    }
+    if (changes.messages) {
+      this.selectedOptions.clear();
     }
   }
 
@@ -81,6 +87,22 @@ export class ProductAdvisorChatComponent implements OnChanges, AfterViewChecked 
     if (trimmed && !this.loading) {
       this.stickToBottom = true;
       this.send.emit(trimmed);
+    }
+  }
+
+  /** Toggles an option of a multi-select choice prompt. */
+  toggleOption(option: string) {
+    if (this.selectedOptions.has(option)) {
+      this.selectedOptions.delete(option);
+    } else {
+      this.selectedOptions.add(option);
+    }
+  }
+
+  /** Sends the ticked options of a multi-select choice prompt as a single comma-separated answer. */
+  submitSelectedOptions() {
+    if (this.selectedOptions.size) {
+      this.submit([...this.selectedOptions].join(', '));
     }
   }
 
