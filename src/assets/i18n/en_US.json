@@ -1083,6 +1083,7 @@
   "copilot.footer.text": "uses AI |",
   "copilot.max_chars_warning_message": "You’ve exceeded the character limit. Please enter fewer than 200 characters.",
   "copilot.placeholder": "Type your question",
+  "copilot.product_advisor.choices.confirm": "Confirm selection",
   "copilot.product_advisor.headline": "Hi, I'm your AI Product Advisor",
   "copilot.product_advisor.input.camera": "Search by image",
   "copilot.product_advisor.input.placeholder": "Enter your question here",

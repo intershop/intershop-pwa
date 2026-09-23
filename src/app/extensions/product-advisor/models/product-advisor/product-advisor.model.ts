@@ -57,6 +57,18 @@ export interface ProductAdvisorStreamEvent {
 }
 
 /**
+ * A set of predefined answer options the advisor offers for a question, rendered as clickable chips.
+ * Produced by the `PWA_ask_choice` signal tool so the user can tap an answer instead of typing.
+ */
+export interface ProductAdvisorChoicePrompt {
+  /** Optional question shown above the options (the message text usually already contains it). */
+  question?: string;
+  options: string[];
+  /** When true the user may select several options before confirming; otherwise a tap sends immediately. */
+  multiSelect: boolean;
+}
+
+/**
  * A single rendered chat message in the Product Advisor transcript.
  */
 export interface ProductAdvisorChatMessage {
@@ -65,6 +77,8 @@ export interface ProductAdvisorChatMessage {
   usedTools?: ProductAdvisorToolCall[];
   messageId?: string;
   dateTime?: string;
+  /** Predefined answer chips offered with this (bot) message, if any. */
+  choices?: ProductAdvisorChoicePrompt;
 }
 
 /**

@@ -1083,6 +1083,7 @@
   "copilot.footer.text": "verwendet KI |",
   "copilot.max_chars_warning_message": "Sie haben das Zeichenlimit überschritten. Bitte geben Sie weniger als 200 Zeichen ein.",
   "copilot.placeholder": "Geben Sie Ihre Frage ein",
+  "copilot.product_advisor.choices.confirm": "Auswahl bestätigen",
   "copilot.product_advisor.headline": "Hallo, ich bin Ihr KI-Produktberater",
   "copilot.product_advisor.input.camera": "Per Bild suchen",
   "copilot.product_advisor.input.placeholder": "Geben Sie hier Ihre Frage ein",
