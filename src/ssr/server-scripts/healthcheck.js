@@ -1,22 +1,6 @@
 const http = require('http');
 
-if (process.env.TRUST_ICM) {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
-
-let ports = require('./ecosystem-ports.json');
-
-if (process.env.ACTIVE_THEMES) {
-  const activeThemes = process.env.ACTIVE_THEMES.split(',').map(theme => theme.trim());
-  ports = Object.fromEntries(Object.entries(ports).filter(([theme]) => activeThemes.includes(theme)));
-}
-
-const portsToCheck =
-  Object.keys(ports).length > 1
-    ? [Number(process.env.PORT) || 4200, ...Object.values(ports)]
-    : [Number(process.env.PORT) || 4200];
-
-Promise.all(portsToCheck.map(checkPort))
+checkPort(Number(process.env.PORT) || 4200)
   .then(() => process.exit(0))
   .catch(error => {
     console.error(error);

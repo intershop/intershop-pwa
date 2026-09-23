@@ -114,9 +114,6 @@
 # from src/app/shell/shared/.gitignore
 /src/app/shell/shared/**/lazy*
 
-# from src/ssr/server-scripts/.gitignore
-/src/ssr/server-scripts/ecosystem-ports.json
-
 # The content between these markers is generated.
 # It can be synchronized using 'npm run update-dockerignore'
 

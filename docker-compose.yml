@@ -1,63 +1,77 @@
 # export appropriate ICM_BASE_URL and use with
 # docker compose up --build
 
+x-ssr-defaults: &ssr-defaults
+  image: intershophub/intershop-pwa-ssr
+  build:
+    context: .
+    # args:
+    #   serviceWorker: 'false'
+    #   activeThemes: b2c,b2b
+  environment: &ssr-env
+    ICM_BASE_URL: 'https://develop.icm.intershop.de'
+    # additional host names the SSR server accepts besides 'localhost'
+    # ALLOWED_HOSTS: 'shop.example.com,*.example.com'
+    # TRUST_ICM: 'true'
+    # LOGLEVEL: 'info' # trace, debug, info, warn, error, fatal - default: error
+    # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
+    SOURCE_MAPS: 'true'
+    # SSR_HYBRID: 'true'
+    # PROXY_ICM: 'true'
+    # PROMETHEUS: 'true'
+    # METRICS_DETAIL_LEVEL: 'DETAILED'
+    # MULTI_SITE_LOCALE_MAP: |
+    #   en_US: /en
+    #   de_DE: /de
+    #   fr_FR: /fr
+    # FEATURES: |
+    #   - compare
+    #   - rating
+    # IDENTITY_PROVIDER: 'Auth0'
+    IDENTITY_PROVIDERS: |
+      Punchout:
+        type: PUNCHOUT
+      CoBrowse:
+        type: cobrowse
+    #   Auth0:
+    #     type: auth0
+    #     domain: some-domain.auth0.com
+    #     clientID: ASDF12345
+    #
+    # allow backend requests to use HTTP/2 with Fetch API (experimental)
+    # ALLOW_H2: 'true'
+  expose:
+    - '4200'
+  restart: unless-stopped
+
 services:
-  pwa:
-    image: intershophub/intershop-pwa-ssr
-    build:
-      context: .
-      # args:
-      #   activeThemes: b2b
-      #   activeThemes: b2c
-    # command: ['node', 'dist/b2c/run-standalone']
-    # command: ['node', 'dist/b2b/run-standalone']
-    # ports:
-    #   - '4201:4200'
-    #   - '9113:9113'
+  ssr-b2c:
+    <<: *ssr-defaults
     environment:
-      ICM_BASE_URL: 'https://develop.icm.intershop.de'
-      # additional host names the SSR server accepts besides 'localhost'
-      # ALLOWED_HOSTS: 'shop.example.com,*.example.com'
-      # TRUST_ICM: 'true'
-      # LOGLEVEL: 'info' # trace, debug, info, warn, error, fatal - default: error
-      # LOGFORMAT: 'text' # text, json - default: json (ECS-compatible)
-      SOURCE_MAPS: 'true'
-      # SSR_HYBRID: 'true'
-      # PROXY_ICM: 'true'
-      # PROMETHEUS: 'true'
-      # METRICS_DETAIL_LEVEL: 'DETAILED'
-      # MULTI_SITE_LOCALE_MAP: |
-      #   en_US: /en
-      #   de_DE: /de
-      #   fr_FR: /fr
-      # FEATURES: |
-      #   - compare
-      #   - rating
-      # IDENTITY_PROVIDER: 'Auth0'
-      IDENTITY_PROVIDERS: |
-        Punchout:
-          type: PUNCHOUT
-        CoBrowse:
-          type: cobrowse
-      #   Auth0:
-      #     type: auth0
-      #     domain: some-domain.auth0.com
-      #     clientID: ASDF12345
-      #
-      # allow backend requests to use HTTP/2 with Fetch API (experimental)
-      # ALLOW_H2: 'true'
+      <<: *ssr-env
+      THEME: b2c
+    # ports:
+    #   - '9114:9113'
+
+  ssr-b2b:
+    <<: *ssr-defaults
+    environment:
+      <<: *ssr-env
+      THEME: b2b
+    # ports:
+    #   - '9115:9113'
 
   nginx:
     image: intershophub/intershop-pwa-nginx
     build: nginx
     depends_on:
-      - pwa
+      - ssr-b2c
+      - ssr-b2b
     ports:
       - '4200:80'
-      # - '9114:9113'
       # - '443:443'
     environment:
-      UPSTREAM_PWA: 'http://pwa:4200'
+      UPSTREAMS: 'b2c=ssr-b2c:4200,b2b=ssr-b2b:4200'
       ICM_BASE_URL: 'https://develop.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
       CACHE: 0
@@ -84,12 +98,15 @@ services:
           - baseHref: /en
             channel: inSPIRED-inTRONICS_Business-Site
             lang: en_US
+            theme: b2b
           - baseHref: /de
             channel: inSPIRED-inTRONICS_Business-Site
             lang: de_DE
+            theme: b2b
           - baseHref: /fr
             channel: inSPIRED-inTRONICS_Business-Site
             lang: fr_FR
+            theme: b2b
           - baseHref: /b2c
             channel: inSPIRED-inTRONICS-Site
             theme: b2c

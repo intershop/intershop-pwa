@@ -41,8 +41,11 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
-      - name: Build SSR
-        run: npm run build:multi
+      - name: Build SSR client
+        run: npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
+
+      - name: Build SSR server
+        run: npm run build:multi server
 
       - name: Upload Build Output
         uses: actions/upload-artifact@v7
@@ -91,7 +94,7 @@ jobs:
 
       - name: Test SSR
         run: |
-          node dist/$THEME/run-standalone &
+          node dist/$THEME/server/main &
           sh e2e/test-ssr.sh
 
   Cypress:
@@ -139,7 +142,7 @@ jobs:
 
       - name: Start SSR
         run: |
-          node dist/$THEME/run-standalone &
+          node dist/$THEME/server/main &
 
       - name: Cypress
         uses: cypress-io/github-action@v7
