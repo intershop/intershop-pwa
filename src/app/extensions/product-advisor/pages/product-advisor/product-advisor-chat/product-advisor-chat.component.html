@@ -12,6 +12,36 @@
         >
           {{ message.message }}
         </div>
+
+        @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
+          <div class="advisor-choices">
+            @if (message.choices.multiSelect) {
+              @for (option of message.choices.options; track option) {
+                <button
+                  class="advisor-choice-chip"
+                  type="button"
+                  [attr.aria-pressed]="selectedOptions.has(option)"
+                  [class.selected]="selectedOptions.has(option)"
+                  (click)="toggleOption(option)"
+                >
+                  {{ option }}
+                </button>
+              }
+              <button
+                class="advisor-choice-confirm btn btn-primary"
+                type="button"
+                [disabled]="!selectedOptions.size"
+                (click)="submitSelectedOptions()"
+              >
+                {{ 'copilot.product_advisor.choices.confirm' | translate }}
+              </button>
+            } @else {
+              @for (option of message.choices.options; track option) {
+                <button class="advisor-choice-chip" type="button" (click)="submit(option)">{{ option }}</button>
+              }
+            }
+          </div>
+        }
       }
 
       @if (pendingAnswer) {

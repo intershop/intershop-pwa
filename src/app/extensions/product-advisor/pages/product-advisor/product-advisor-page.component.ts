@@ -9,6 +9,7 @@ import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { ProductAdvisorFacade } from '../../facades/product-advisor.facade';
 import { extractProductsFromToolCalls } from '../../models/product-advisor-product/product-advisor-product.helper';
 import { ProductAdvisorProduct } from '../../models/product-advisor-product/product-advisor-product.model';
+import { extractChoicePromptFromToolCalls } from '../../models/product-advisor/product-advisor-choice.helper';
 import {
   ProductAdvisorChatMessage,
   ProductAdvisorChatSession,
@@ -178,7 +179,15 @@ export class ProductAdvisorPageComponent implements OnInit {
     }
     // execute the action tool calls (basket, compare, navigation, order templates)
     this.productAdvisorFacade.handleToolCalls(usedTools);
-    this.addMessage({ message, type: 'apiMessage', usedTools, messageId, dateTime: new Date().toISOString() });
+    const choices = extractChoicePromptFromToolCalls(usedTools);
+    this.addMessage({
+      message,
+      type: 'apiMessage',
+      usedTools,
+      messageId,
+      dateTime: new Date().toISOString(),
+      choices,
+    });
   }
 
   private addMessage(message: ProductAdvisorChatMessage) {

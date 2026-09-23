@@ -138,6 +138,37 @@
         }
       }
     }
+
+    .advisor-choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: ($space-default * 0.75);
+      align-self: flex-start;
+      max-width: 80%;
+      margin-bottom: $space-default;
+
+      .advisor-choice-chip {
+        padding: ($space-default * 0.5) ($space-default * 0.75);
+        font-size: 14px;
+        line-height: 20px;
+        color: $text-color-primary;
+        background-color: $color-inverse;
+        border: 1px solid $CORPORATE-PRIMARY;
+        border-radius: 12px;
+
+        &.selected {
+          color: $color-inverse;
+          background-color: $CORPORATE-PRIMARY;
+          border-color: $color-inverse;
+        }
+      }
+
+      .advisor-choice-confirm {
+        flex-basis: 100%;
+        align-self: flex-start;
+        width: auto;
+      }
+    }
   }
 
   .advisor-input {
