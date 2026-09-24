@@ -99,6 +99,17 @@
         margin: 0;
       }
 
+      .advisor-message-image {
+        display: block;
+        max-width: 100%;
+        margin-bottom: ($space-default * 0.75);
+        border-radius: ($space-default * 0.75);
+
+        &.advisor-message-image-only {
+          margin-bottom: 0;
+        }
+      }
+
       &.advisor-message-user {
         align-self: flex-end;
         color: $color-inverse;
@@ -185,6 +196,37 @@
           color: $text-color-tertiary;
         }
       }
+    }
+  }
+
+  .advisor-upload-preview {
+    display: flex;
+    align-items: center;
+    padding: ($space-default * 0.5) $space-default;
+    margin-bottom: $space-default;
+    background-color: $color-inverse;
+    border: 1px solid $gray-300;
+    border-radius: ($space-default * 0.75);
+
+    img {
+      width: 40px;
+      height: 40px;
+      margin-right: $space-default;
+      object-fit: cover;
+      border-radius: ($space-default * 0.5);
+    }
+
+    .advisor-upload-name {
+      flex: 1 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .advisor-upload-remove {
+      padding: 0 ($space-default * 0.5);
+      color: $text-color-tertiary;
     }
   }
 
