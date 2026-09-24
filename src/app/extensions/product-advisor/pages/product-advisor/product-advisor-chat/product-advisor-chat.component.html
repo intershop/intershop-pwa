@@ -11,37 +11,40 @@
           [class.advisor-message-user]="message.type === 'userMessage'"
         >
           {{ message.message }}
-        </div>
 
-        @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
-          <div class="advisor-choices">
-            @if (message.choices.multiSelect) {
-              @for (option of message.choices.options; track option) {
+          @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
+            <div class="advisor-choices">
+              @if (message.choices.multiSelect) {
+                @for (option of message.choices.options; track option) {
+                  <button
+                    class="advisor-choice-chip"
+                    type="button"
+                    [attr.aria-pressed]="selectedOptions.has(option)"
+                    [class.selected]="selectedOptions.has(option)"
+                    (click)="toggleOption(option)"
+                  >
+                    {{ option }}
+                  </button>
+                }
                 <button
-                  class="advisor-choice-chip"
+                  class="advisor-choice-confirm"
                   type="button"
-                  [attr.aria-pressed]="selectedOptions.has(option)"
-                  [class.selected]="selectedOptions.has(option)"
-                  (click)="toggleOption(option)"
+                  [attr.aria-label]="'copilot.product_advisor.choices.confirm' | translate"
+                  [disabled]="!selectedOptions.size"
+                  (click)="submitSelectedOptions()"
                 >
-                  {{ option }}
+                  <i class="bi bi-arrow-right"></i>
                 </button>
+              } @else {
+                @for (option of message.choices.options; track option) {
+                  <button class="advisor-choice-chip btn-secondary" type="button" (click)="submit(option)">
+                    {{ option }}
+                  </button>
+                }
               }
-              <button
-                class="advisor-choice-confirm btn btn-primary"
-                type="button"
-                [disabled]="!selectedOptions.size"
-                (click)="submitSelectedOptions()"
-              >
-                {{ 'copilot.product_advisor.choices.confirm' | translate }}
-              </button>
-            } @else {
-              @for (option of message.choices.options; track option) {
-                <button class="advisor-choice-chip" type="button" (click)="submit(option)">{{ option }}</button>
-              }
-            }
-          </div>
-        }
+            </div>
+          }
+        </div>
       }
 
       @if (pendingAnswer) {
@@ -102,7 +105,7 @@
       </button>
     </div>
     <button
-      class="btn"
+      class="btn btn-secondary"
       type="button"
       [attr.aria-label]="'copilot.product_advisor.input.send' | translate"
       [disabled]="loading"
