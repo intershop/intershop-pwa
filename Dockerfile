@@ -5,10 +5,11 @@ ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV CI=true
 WORKDIR /workspace
 COPY package.json package-lock.json /workspace/
+COPY tools/postcss-purgecss-config /workspace/tools/postcss-purgecss-config
 RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs /workspace/
+COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs .postcssrc.json /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY templates/esbuild/esbuild-define-constants.ts /workspace/templates/esbuild/esbuild-define-constants.ts
@@ -20,6 +21,8 @@ ARG testing=false
 ENV TESTING=${testing}
 # Empty by default so build:multi falls back to activeThemes in package.json; override with --build-arg activeThemes=...
 ARG activeThemes=
+ARG purgeCss=true
+ENV PURGE_CSS=${purgeCss}
 RUN ACTIVE_THEMES="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 
 FROM node:24.19.0-alpine
