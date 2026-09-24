@@ -24,6 +24,7 @@ export default (builderOptions: BuilderOptions, target: Target): Plugin => {
   const theme = getSingleConfiguration(configurations, themes, 'theme');
   const mode = getSingleConfiguration(configurations, modes, 'mode');
   const production = mode === 'production';
+  process.env.PURGE_CSS ??= String(production);
 
   const pwaVersion = `${version} built ${new Date().toISOString().slice(0, 16).replace('T', ' ')} - configuration:${theme},${mode}`;
 
