@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
@@ -15,6 +16,7 @@ import {
   ProductAdvisorChatSession,
   ProductAdvisorResponse,
   ProductAdvisorToolCall,
+  ProductAdvisorUpload,
 } from '../../models/product-advisor/product-advisor.model';
 
 const SESSION_STORAGE_KEY = 'product_advisor_session_id';
@@ -55,6 +57,7 @@ export class ProductAdvisorPageComponent implements OnInit {
   constructor(
     private productAdvisorFacade: ProductAdvisorFacade,
     private appFacade: AppFacade,
+    private translateService: TranslateService,
     private cdRef: ChangeDetectorRef
   ) {}
 
@@ -72,9 +75,10 @@ export class ProductAdvisorPageComponent implements OnInit {
   /**
    * Sends a user message to the advisor (streaming when available, otherwise non-streaming).
    */
-  onSend(question: string) {
-    const trimmed = question?.trim();
-    if (!trimmed || this.loading) {
+  onSend(payload: { question: string; uploads?: ProductAdvisorUpload[]; thumbnail?: string }) {
+    const trimmed = payload?.question?.trim();
+    const uploads = payload?.uploads?.length ? payload.uploads : undefined;
+    if ((!trimmed && !uploads) || this.loading) {
       return;
     }
 
@@ -82,9 +86,15 @@ export class ProductAdvisorPageComponent implements OnInit {
     this.error = undefined;
     this.toolErrors = [];
     this.pendingAnswer = '';
-    this.addMessage({ message: trimmed, type: 'userMessage' });
+    const imageUrl = uploads ? payload.thumbnail : undefined;
+    this.addMessage({
+      message:
+        trimmed || (imageUrl ? '' : this.translateService.instant('copilot.product_advisor.input.image_message')),
+      type: 'userMessage',
+      imageUrl,
+    });
 
-    const request = { question: trimmed, sessionId: this.sessionId };
+    const request = { question: trimmed ?? '', sessionId: this.sessionId, uploads };
     this.resolveStreaming$()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(streamingAvailable =>
@@ -122,11 +132,11 @@ export class ProductAdvisorPageComponent implements OnInit {
     this.persistSessionId(this.sessionId);
   }
 
-  private startStreaming(request: { question: string; sessionId: string }) {
+  private startStreaming(request: { question: string; sessionId: string; uploads?: ProductAdvisorUpload[] }) {
     let streamedTools: ProductAdvisorToolCall[];
 
     this.productAdvisorFacade
-      .streamMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId })
+      .streamMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId, uploads: request.uploads })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: event => {
@@ -154,9 +164,9 @@ export class ProductAdvisorPageComponent implements OnInit {
       });
   }
 
-  private fetchFinalAnswer(request: { question: string; sessionId: string }) {
+  private fetchFinalAnswer(request: { question: string; sessionId: string; uploads?: ProductAdvisorUpload[] }) {
     this.productAdvisorFacade
-      .sendMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId })
+      .sendMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId, uploads: request.uploads })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => this.finalizeAnswer(response),
@@ -246,7 +256,11 @@ export class ProductAdvisorPageComponent implements OnInit {
       return;
     }
     const session: ProductAdvisorChatSession = { chatId: this.chatId, chatHistory: this.messages };
-    localStorage.setItem(this.chatStorageKey(), JSON.stringify(session));
+    try {
+      localStorage.setItem(this.chatStorageKey(), JSON.stringify(session));
+    } catch {
+      // storage full or unavailable: keep chatting, the transcript just won't survive a reload
+    }
   }
 
   private clearStoredSession() {
