@@ -10,6 +10,14 @@
           [class.advisor-message-bot]="message.type === 'apiMessage'"
           [class.advisor-message-user]="message.type === 'userMessage'"
         >
+          @if (message.imageUrl) {
+            <img
+              class="advisor-message-image"
+              [alt]="'copilot.product_advisor.input.image_message' | translate"
+              [class.advisor-message-image-only]="!message.message"
+              [src]="message.imageUrl"
+            />
+          }
           {{ message.message }}
 
           @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
@@ -91,6 +99,27 @@
     </ul>
   }
 
+  @if (uploadError) {
+    <p class="advisor-upload-error text-danger small mb-1">
+      {{ uploadError | translate: { '0': maxImageSizeMb } }}
+    </p>
+  }
+
+  @if (pendingUpload) {
+    <div class="advisor-upload-preview">
+      <img [alt]="pendingUpload.name" [src]="pendingUpload.data" />
+      <span class="advisor-upload-name">{{ pendingUpload.name }}</span>
+      <button
+        class="btn advisor-upload-remove"
+        type="button"
+        [attr.aria-label]="'copilot.product_advisor.input.remove_image' | translate"
+        (click)="removeUpload()"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  }
+
   <div class="advisor-input input-group">
     <div class="advisor-input-field">
       <input
@@ -100,7 +129,20 @@
         [placeholder]="'copilot.product_advisor.input.placeholder' | translate"
         (keyup.enter)="submit(questionInput.value); questionInput.value = ''"
       />
-      <button class="btn" type="button" [attr.aria-label]="'copilot.product_advisor.input.camera' | translate">
+      <input
+        #imageInput
+        class="advisor-image-input"
+        hidden
+        type="file"
+        [accept]="acceptedImageTypes"
+        (change)="onFileSelected($event)"
+      />
+      <button
+        class="btn"
+        type="button"
+        [attr.aria-label]="'copilot.product_advisor.input.camera' | translate"
+        (click)="imageInput.click()"
+      >
         <i class="bi bi-camera-fill"></i>
       </button>
     </div>

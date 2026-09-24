@@ -126,8 +126,8 @@ export class ProductAdvisorService {
    * @returns         The chatflow response including answer text, used tools and source documents.
    */
   sendMessage(question: string, options?: ProductAdvisorRequestOptions): Observable<ProductAdvisorResponse> {
-    if (!question?.trim()) {
-      throw new Error('sendMessage() called without a question');
+    if (!question?.trim() && !options?.uploads?.length) {
+      throw new Error('sendMessage() called without a question or attachment');
     }
 
     return this.buildRequest$(question, options).pipe(
@@ -146,8 +146,8 @@ export class ProductAdvisorService {
    * @param options   Optional session ID and additional chatflow variables.
    */
   streamMessage(question: string, options?: ProductAdvisorRequestOptions): Observable<ProductAdvisorStreamEvent> {
-    if (!question?.trim()) {
-      throw new Error('streamMessage() called without a question');
+    if (!question?.trim() && !options?.uploads?.length) {
+      throw new Error('streamMessage() called without a question or attachment');
     }
 
     return this.buildRequest$(question, options, true).pipe(
@@ -164,6 +164,7 @@ export class ProductAdvisorService {
     options: ProductAdvisorRequestOptions | undefined,
     streaming = false
   ): Observable<{ url: string; body: Record<string, unknown> }> {
+    const uploads = options?.uploads?.length ? options.uploads : undefined;
     return combineLatest([
       this.getConfiguration$(),
       this.appFacade.getRestEndpointWithContext$,
@@ -192,6 +193,7 @@ export class ProductAdvisorService {
         const body: Record<string, unknown> = {
           question: questionWithContext,
           streaming,
+          ...(uploads ? { uploads } : {}),
           ...(options?.chatId ? { chatId: options.chatId } : {}),
           overrideConfig: {
             ...(options?.sessionId ? { sessionId: options.sessionId } : {}),

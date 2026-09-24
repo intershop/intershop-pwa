@@ -19,6 +19,18 @@ export interface ProductAdvisorSourceDocument {
 }
 
 /**
+ * An image (or file) attachment sent with a prediction request. The shape matches the
+ * `uploads` entries the Flowise Prediction API expects for vision-enabled chat flows.
+ */
+export interface ProductAdvisorUpload {
+  /** Base64-encoded data URL, e.g. `data:image/png;base64,...`. */
+  data: string;
+  type: 'file';
+  name: string;
+  mime: string;
+}
+
+/**
  * Options that influence a single prediction request.
  */
 export interface ProductAdvisorRequestOptions {
@@ -26,6 +38,8 @@ export interface ProductAdvisorRequestOptions {
   sessionId?: string;
   /** Flowise chat instance ID to continue an existing conversation. */
   chatId?: string;
+  /** Image/file attachments forwarded to the chatflow for vision input. */
+  uploads?: ProductAdvisorUpload[];
   /** Additional chatflow variables merged into `overrideConfig.vars` for this request. */
   vars?: Record<string, unknown>;
 }
@@ -79,6 +93,8 @@ export interface ProductAdvisorChatMessage {
   dateTime?: string;
   /** Predefined answer chips offered with this (bot) message, if any. */
   choices?: ProductAdvisorChoicePrompt;
+  /** Small JPEG thumbnail (data URL) of an attached image, shown in the user bubble and persisted. */
+  imageUrl?: string;
 }
 
 /**
