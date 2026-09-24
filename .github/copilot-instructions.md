@@ -39,6 +39,7 @@ Angular 20-based Progressive Web App for enterprise commerce. Built for performa
 - **Error Handling:** See [error handling instructions](./instructions/error-handling.instructions.md)
 - **Performance:** See [performance patterns instructions](./instructions/performance-patterns.instructions.md)
 - **Styling:** See [styles instructions](./instructions/styles.instructions.md)
+- **Forms:** Formly with the PWA's own `ish-*` types, see [Formly guide](../docs/guides/formly.md).
 - **CI/CD Workflows:** See [workflows instructions](./instructions/workflows.instructions.md)
 
 ## Anti-Patterns to Avoid
@@ -66,3 +67,4 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 For comprehensive documentation including developer guides, architectural concepts, and operational setup, see:
 
 - [Documentation Overview](../docs/README.md) - Complete index of all available documentation
+- Changes that require action in customer projects (breaking changes, removed/renamed APIs, new required configuration, changed default behavior) need a migration note in `docs/guides/migrations.md`, see [migration notes instructions](./instructions/migration-notes.instructions.md).
