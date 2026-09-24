@@ -82,6 +82,8 @@
     flex-direction: column;
     min-height: 0;
     max-height: 60vh;
+    padding-right: ($space-default);
+    margin-bottom: ($space-default);
     overflow-y: auto;
 
     .advisor-message {
@@ -106,7 +108,6 @@
 
       &.advisor-message-bot {
         align-self: flex-start;
-        color: $text-color-primary;
         background-color: $color-inverse;
         border-radius: 24px 24px 24px 0;
 
@@ -143,9 +144,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: ($space-default * 0.75);
-      align-self: flex-start;
-      max-width: 80%;
-      margin-bottom: $space-default;
+      padding-top: $space-default;
 
       .advisor-choice-chip {
         padding: ($space-default * 0.5) ($space-default * 0.75);
@@ -160,13 +159,31 @@
           color: $color-inverse;
           background-color: $CORPORATE-PRIMARY;
           border-color: $color-inverse;
+
+          &:hover {
+            color: $text-color-primary;
+            background-color: $color-tertiary;
+            border-color: $CORPORATE-PRIMARY;
+          }
+        }
+
+        &:hover {
+          background-color: $color-tertiary;
         }
       }
 
       .advisor-choice-confirm {
         flex-basis: 100%;
-        align-self: flex-start;
-        width: auto;
+        padding: 0;
+        font-size: 20px;
+        color: $CORPORATE-PRIMARY;
+        text-align: right;
+        background-color: transparent;
+        border: 0;
+
+        &:disabled {
+          color: $text-color-tertiary;
+        }
       }
     }
   }
@@ -195,8 +212,6 @@
       justify-content: center;
       margin-right: 0 !important;
       margin-bottom: 0;
-      color: $CORPORATE-PRIMARY;
-      background-color: $color-inverse;
       border: 1px solid $CORPORATE-PRIMARY;
 
       .bi {
