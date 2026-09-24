@@ -6,7 +6,23 @@
   @if (products.length) {
     <div class="advisor-results-list">
       @for (product of products; track product.sku) {
-        <ish-product-item ishProductContext [sku]="product.sku" />
+        <ish-product-item
+          displayType="row"
+          ishProductContext
+          [configuration]="{
+            promotions: false,
+            quantity: false,
+            inventory: false,
+            shipment: false,
+            variations: false,
+            addToWishlist: false,
+            addToOrderTemplate: false,
+            addToCompare: false,
+            addToQuote: false,
+            addToNotification: false,
+          }"
+          [sku]="product.sku"
+        />
       }
     </div>
   } @else {
