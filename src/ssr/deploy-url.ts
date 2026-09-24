@@ -23,7 +23,7 @@ export function setDeployUrlInFile(deployUrl: string, path: string, input: strin
     }
 
     const javascriptRegex =
-      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles|scripts)[^"]*\.(js|css))"/g;
+      /"(DEPLOY_URL_PLACEHOLDER|\/)?((runtime|vendor|main|polyfills|styles|scripts|chunk)[^"]*\.(js|css))"/g;
     if (javascriptRegex.test(newInput)) {
       newInput = newInput.replace(javascriptRegex, (...args) => `"${deployUrl}${args[2]}"`);
     }
