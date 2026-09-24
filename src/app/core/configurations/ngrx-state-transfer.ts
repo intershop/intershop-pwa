@@ -5,23 +5,23 @@ import { pick } from 'lodash-es';
 import { first, map, take } from 'rxjs/operators';
 
 import { CoreState } from 'ish-core/store/core/core-store';
-import { mergeDeep } from 'ish-core/utils/functions';
+import { mergeDeep, omit } from 'ish-core/utils/functions';
 
 export const NGRX_STATE_SK = makeStateKey<object>('ngrxState');
 
-const STATE_ACTION_TYPE = '[Internal] Import NgRx State';
+export const NGRX_STATE_IMPORT_ACTION_TYPE = '[Internal] Import NgRx State';
 
 let transferredState: Record<string, unknown>;
 
 /**
  * Meta reducer for hydrating server side state on the client side if supplied by SSR.
- * Initially (STATE_ACTION_TYPE) all already registered slices are hydrated, then removed from the transferred state.
+ * Initially (NGRX_STATE_IMPORT_ACTION_TYPE) all already registered slices are hydrated, then removed from the transferred state.
  * On subsequent updates (UPDATE), only features that are still in the transferred state are applied, then removed from the transferred state.
  * This allows to apply the transferred state in parts and only once, e.g. as features are loaded, and prevents transferred state from being lost if the store is updated before a feature is loaded.
  */
 export function ngrxStateTransferMeta(reducer: ActionReducer<CoreState>): ActionReducer<CoreState> {
   return (state: CoreState, action: { payload: Record<string, unknown>; features: string[] } & Action) => {
-    if (action.type === STATE_ACTION_TYPE) {
+    if (action.type === NGRX_STATE_IMPORT_ACTION_TYPE) {
       // keep a mutable copy — slices are removed as they're applied
       transferredState = { ...action.payload };
       const registered = Object.keys(state ?? {});
@@ -64,7 +64,7 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store, ac
       actions.pipe(first()).subscribe(() => {
         const state = transferState.get<object>(NGRX_STATE_SK, undefined);
         transferState.remove(NGRX_STATE_SK);
-        store.dispatch({ type: STATE_ACTION_TYPE, payload: state });
+        store.dispatch({ type: NGRX_STATE_IMPORT_ACTION_TYPE, payload: state });
       });
     } else {
       // server
@@ -73,7 +73,8 @@ export function ngrxStateTransfer(transferState: TransferState, store: Store, ac
         store
           .pipe(
             take(1),
-            map(s => filterState(s, 2))
+            // The browser must route from its own URL, not replay an internal SSR navigation such as a 404 page.
+            map(s => filterState(omit(s, 'router'), 2))
           )
           .subscribe((saveState: object) => {
             state = saveState;

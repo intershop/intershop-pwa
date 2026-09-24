@@ -11,33 +11,27 @@ RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
+COPY templates/esbuild/esbuild-define-constants.ts /workspace/templates/esbuild/esbuild-define-constants.ts
 COPY projects /workspace/projects
 COPY src /workspace/src
-COPY scripts /workspace/scripts/
+COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-pwa.js scripts/build-ssr-runtime.js /workspace/scripts/
 RUN npm run postinstall
-COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
+# Empty by default so build:multi falls back to activeThemes in package.json; override with --build-arg activeThemes=...
 ARG activeThemes=
-RUN if [ ! -z "${activeThemes}" ]; then npm pkg set activeThemes="${activeThemes}"; fi
-RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
-COPY tsconfig.server.json server.ts /workspace/
-COPY babel.config.js /workspace/
-RUN npm run build:multi server
-RUN node scripts/compile-docker-scripts
-COPY dist/* /workspace/dist/
+RUN ACTIVE_THEMES="${activeThemes}" npm run build:multi -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 
 FROM node:24.19.0-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
-RUN cd dist && npm install
 ARG displayVersion=
 LABEL displayVersion="${displayVersion}"
-ENV DISPLAY_VERSION=${displayVersion} NODE_PATH=/dist/node_modules PATH=$PATH:/dist/node_modules/.bin
+ENV DISPLAY_VERSION=${displayVersion}
 ENV LOGLEVEL=error
 ENV LOGFORMAT=json
 EXPOSE 4200 9113
 USER nobody
 HEALTHCHECK --interval=60s --timeout=20s --start-period=2s CMD node /dist/healthcheck.js
-ENTRYPOINT [ "/sbin/tini", "--" ]
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["sh", "/dist/entrypoint.sh"]
