@@ -53,6 +53,11 @@ For the complete list of breaking changes, see the [Angular Update Guide](https:
 The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [`cookies.scss`](../../src/styles/components/cookies.scss).
 `BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`; once this dependency is dropped, the import and the dependency can be removed.
 
+**Formly 8 update**
+
+`@ngx-formly/core` has been updated to version 8, which requires Angular 19 or newer and ships as fesm2022 only.
+For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md).
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
