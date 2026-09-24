@@ -22,21 +22,20 @@ kb_sync_latest_only
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
 Afterward, you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
-All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
+The default build creates the B2B theme in `dist`.
+Use `npm run build --configuration=b2c` to replace that output with the B2C theme.
+`npm run serve` always serves the theme that was built last.
 
 ## Building Multiple Themes
 
 The `package.json` property `activeThemes` determines which themes should be built when running `npm run build:multi`.
 This will build server and client bundles for all active themes and supply them in the `dist` folder.
-The SSR process for each theme can be run individually using the generated scripts `dist/<theme>/run-standalone`.
 
-To run multiple themes with [PM2][pm2], the script `src/ssr/server-scripts/build-ecosystem.js` can be used to generate the ecosystem.
-If only one theme is active, the theme-specific SSR process will be run in cluster mode on the default port.
-If more themes are active, PM2 is provisioned to run a distributor process in front of all theme-specific processes, to direct incoming traffic to the correct SSR process.
+Run each theme in its own process, for example `THEME=b2b node dist/b2b/server/server.mjs`.
+Set a different `PORT` for each process when running multiple themes on the same host.
 
-The preferred way for **production deployments** is to build the `Dockerfile` in the project root and run the created image.
-This will automatically build all active themes and configure [PM2][pm2] for running multiple themes in parallel.
+For production deployments, build the root `Dockerfile` and run one container per theme, selected with `THEME`.
+The supplied Docker Compose configuration routes requests to these containers through nginx.
 
 ## Running
 
@@ -57,7 +56,6 @@ Make sure to use them as written in the table below.
 |                     | parameter             | format               | comment                                                                                                                                                           |
 | ------------------- | --------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **SSR Specific**    | PORT                  | number               | Port for running the application                                                                                                                                  |
-|                     | CONCURRENCY_SSR       | number \| max        | Concurrency for SSR instances per theme (default: 2)                                                                                                              |
 |                     | CACHE_ICM_CALLS       | recommended \| JSON  | Enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)                                                                         |
 |                     | ALLOWED_HOSTS         | comma-separated list | Additional hostnames the SSR server accepts besides `localhost` (which is always allowed). Set to your public hostname(s), e.g., `shop.example.com,*.example.com` |
 | **General**         | ICM_BASE_URL          | string               | Sets the base URL for ICM                                                                                                                                         |
@@ -119,7 +117,7 @@ npm run dev:ssr -- --ssl
 The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
-ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+ng serve --build-target=intershop-pwa:build:b2b,development,ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
 ```
 
 ## Local ICM Cache
@@ -164,8 +162,8 @@ In this example, `/configurations` is cached for 20 minutes and product `/variat
 ### Creation
 
 To analyze memory leaks or high memory usage in the SSR process, you can manually trigger the creation of a heap dump from within the SSR container by sending a `USR2` signal to the running SSR process.
-The heap dump is generated in the `/tmp` directory of the container, named `Heap.<process name from pm2>.<process id>.<date-time as ISOString>.heapsnapshot`.
-To find the process ID of the SSR processes, use `pm2 list` or `ps`, then send the signal with `kill -USR2 <process_id>`.
+The heap dump is generated in the `/tmp` directory of the container, named `Heap.<theme or pid>.<process id>.<date-time as ISOString>.heapsnapshot`.
+To find the process ID of the SSR processes, use `ps`, then send the signal with `kill -USR2 <process_id>`.
 
 ### Analysis
 
@@ -185,10 +183,8 @@ You can download the generated heap dumps from the container and analyze them us
 - [Guide - Themes][themes]
 - [Guide - Google Tag Manager](./google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./prometheus-monitoring.md)
-- [PM2][pm2]
 - Rendering on the Web](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
 
 [concept-hybrid]: ../concepts/hybrid-approach.md
 [concept-deploy-url]: ../concepts/deploy-url.md
 [themes]: ./themes.md
-[pm2]: https://pm2.keymetrics.io
