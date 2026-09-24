@@ -6,7 +6,7 @@
   padding: 0 divide($space-default, 3);
 
   .advisor-results-header {
-    margin-bottom: ($space-default * 0.75);
+    margin-bottom: ($space-default * 2);
 
     p {
       color: $text-color-tertiary;
@@ -18,9 +18,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: $space-default;
+    gap: ($space-default * 2);
     max-height: 60vh;
     overflow-y: auto;
+
+    ish-product-item {
+      display: block;
+    }
   }
 
   .advisor-results-intro {
