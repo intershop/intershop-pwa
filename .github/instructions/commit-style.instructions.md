@@ -2,6 +2,11 @@
 applyTo: '**'
 ---
 
+## Branching
+
+To commit code changes, use a working branch or create one based on `develop`.
+Never commit to `develop` or `master` directly.
+
 ## Commit Message Guidelines (Conventional Commits)
 
 Use semantic prefixes:
