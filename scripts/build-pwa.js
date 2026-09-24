@@ -49,6 +49,8 @@ if (clientOnly) {
 const result = spawnSync(
   'node',
   [
+    '--require',
+    './scripts/remove-data-testing-attributes.cjs',
     './node_modules/@angular/cli/bin/ng.js',
     'run',
     `${project}:build:${configurations.join(',')}`,

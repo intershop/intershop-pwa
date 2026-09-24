@@ -14,7 +14,7 @@ COPY schematics /workspace/schematics
 COPY templates/esbuild/esbuild-define-constants.ts /workspace/templates/esbuild/esbuild-define-constants.ts
 COPY projects /workspace/projects
 COPY src /workspace/src
-COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-pwa.js scripts/build-ssr-runtime.js /workspace/scripts/
+COPY scripts/init-development-environment.js scripts/build-multi-pwa.js scripts/build-pwa.js scripts/build-ssr-runtime.js scripts/remove-data-testing-attributes.cjs /workspace/scripts/
 RUN npm run postinstall
 ARG testing=false
 ENV TESTING=${testing}
