@@ -21,14 +21,16 @@ interface IcmSearchOutput {
  * Extracts the recommended products from a chatflow's tool calls.
  *
  * Reads the `icmSearch` tool output (a JSON string with promotion-grouped products) and flattens it
- * into a simple product list. Unknown/invalid output is ignored.
+ * into a simple product list. Unknown/invalid output is ignored. Products found by several searches
+ * are only listed once (first occurrence wins).
  *
  * @param tools The tool calls of a chatflow response (`usedTools`).
  */
 export function extractProductsFromToolCalls(tools: CopilotEmbeddedToolCall[] | undefined): CopilotEmbeddedProduct[] {
-  return (tools ?? [])
+  const products = (tools ?? [])
     .filter(tool => tool?.tool === 'icmSearch' && !!tool.toolOutput)
     .flatMap(tool => parseIcmSearchOutput(tool.toolOutput));
+  return products.filter((product, index) => products.findIndex(p => p.sku === product.sku) === index);
 }
 
 function parseIcmSearchOutput(toolOutput: string): CopilotEmbeddedProduct[] {
