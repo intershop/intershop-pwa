@@ -1,0 +1,159 @@
+<div class="copilot-embedded-chat">
+  @if (messages?.length || pendingAnswer) {
+    @if (deviceType !== 'mobile') {
+      <ish-copilot-embedded-header />
+    }
+    <div #chatWindow class="copilot-embedded-messages" (scroll)="onChatScroll()">
+      @for (message of messages; track $index) {
+        <div
+          class="copilot-embedded-message"
+          [class.copilot-embedded-message-bot]="message.type === 'apiMessage'"
+          [class.copilot-embedded-message-user]="message.type === 'userMessage'"
+        >
+          @if (message.imageUrl) {
+            <img
+              class="copilot-embedded-message-image"
+              [alt]="'copilot.embedded.input.image_message' | translate"
+              [class.copilot-embedded-message-image-only]="!message.message"
+              [src]="message.imageUrl"
+            />
+          }
+          {{ message.message }}
+
+          @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
+            <div class="copilot-embedded-choices">
+              @if (message.choices.multiSelect) {
+                @for (option of message.choices.options; track option) {
+                  <button
+                    class="copilot-embedded-choice-chip"
+                    type="button"
+                    [attr.aria-pressed]="selectedOptions.has(option)"
+                    [class.selected]="selectedOptions.has(option)"
+                    (click)="toggleOption(option)"
+                  >
+                    {{ option }}
+                  </button>
+                }
+                <button
+                  class="copilot-embedded-choice-confirm"
+                  type="button"
+                  [attr.aria-label]="'copilot.embedded.choices.confirm' | translate"
+                  [disabled]="!selectedOptions.size"
+                  (click)="submitSelectedOptions()"
+                >
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              } @else {
+                @for (option of message.choices.options; track option) {
+                  <button class="copilot-embedded-choice-chip btn-secondary" type="button" (click)="submit(option)">
+                    {{ option }}
+                  </button>
+                }
+              }
+            </div>
+          }
+        </div>
+      }
+
+      @if (pendingAnswer) {
+        <div class="copilot-embedded-message copilot-embedded-message-bot">{{ pendingAnswer }}</div>
+      }
+      @if (loading && !pendingAnswer) {
+        <div class="copilot-embedded-message copilot-embedded-message-bot copilot-embedded-typing">
+          {{ 'copilot.embedded.typing' | translate }}
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="copilot-embedded-welcome">
+      @if (deviceType !== 'mobile') {
+        <div class="copilot-embedded-icon">
+          <i class="bi bi-stars"></i>
+        </div>
+        <h1>{{ 'copilot.embedded.headline' | translate }}</h1>
+      }
+
+      <p>{{ 'copilot.embedded.intro' | translate }}</p>
+
+      <div class="copilot-embedded-prompt-badges row">
+        @for (promptKey of promptKeys; track promptKey) {
+          <div class="col-12 col-sm-6">
+            <button class="badge" type="button" (click)="submitPrompt(promptKey)">
+              <span>{{ promptKey | translate }}</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (error) {
+    <p class="copilot-embedded-error text-danger small mb-1">{{ error }}</p>
+  }
+
+  @if (toolErrors.length) {
+    <ul class="copilot-embedded-tool-errors text-warning small mb-1">
+      @for (toolError of toolErrors; track $index) {
+        <li>{{ toolError.tool }}: {{ toolError.error }}</li>
+      }
+    </ul>
+  }
+
+  @if (uploadError) {
+    <p class="copilot-embedded-upload-error text-danger small mb-1">
+      {{ uploadError | translate: { '0': maxImageSizeMb } }}
+    </p>
+  }
+
+  @if (pendingUpload) {
+    <div class="copilot-embedded-upload-preview">
+      <img [alt]="pendingUpload.name" [src]="pendingUpload.data" />
+      <span class="copilot-embedded-upload-name">{{ pendingUpload.name }}</span>
+      <button
+        class="btn copilot-embedded-upload-remove"
+        type="button"
+        [attr.aria-label]="'copilot.embedded.input.remove_image' | translate"
+        (click)="removeUpload()"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  }
+
+  <div class="copilot-embedded-input input-group">
+    <div class="copilot-embedded-input-field">
+      <input
+        #questionInput
+        class="form-control"
+        type="text"
+        [placeholder]="'copilot.embedded.input.placeholder' | translate"
+        (keyup.enter)="submit(questionInput.value); questionInput.value = ''"
+      />
+      <input
+        #imageInput
+        class="copilot-embedded-image-input"
+        hidden
+        type="file"
+        [accept]="acceptedImageTypes"
+        (change)="onFileSelected($event)"
+      />
+      <button
+        class="btn"
+        type="button"
+        [attr.aria-label]="'copilot.embedded.input.camera' | translate"
+        (click)="imageInput.click()"
+      >
+        <i class="bi bi-camera-fill"></i>
+      </button>
+    </div>
+    <button
+      class="btn btn-secondary"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.input.send' | translate"
+      [disabled]="loading"
+      (click)="submit(questionInput.value); questionInput.value = ''"
+    >
+      <i class="bi bi-send-fill"></i>
+    </button>
+  </div>
+</div>

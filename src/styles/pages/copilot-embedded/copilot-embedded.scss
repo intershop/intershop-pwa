@@ -1,0 +1,89 @@
+// Shared Copilot Embedded icon: base (small) is the default; the enlarged variant is
+// used within the chat welcome header. Global because it is reused across the
+// separate copilot-embedded components.
+.copilot-embedded {
+  .copilot-embedded-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-right: ($space-default * 0.5);
+    font-size: 24px;
+    color: $color-inverse;
+    background-color: $CORPORATE-PRIMARY;
+    border-radius: 10px;
+  }
+
+  .copilot-embedded-welcome .copilot-embedded-icon {
+    width: 56px;
+    height: 56px;
+    margin-right: 0;
+    font-size: 28px;
+    border-radius: 16px;
+  }
+}
+
+// Recommendation tiles reuse the shared product row; these overrides adapt it to
+// the narrow Copilot Embedded panel and must be global to reach the child component DOM.
+.copilot-embedded-results {
+  .copilot-embedded-results-list .product-tile-list {
+    flex-wrap: nowrap;
+    margin-right: 0;
+    margin-left: 0;
+
+    @include media-breakpoint-only(md) {
+      flex-direction: column;
+    }
+
+    > div:first-child {
+      flex: 0 0 auto;
+      width: 125px;
+
+      .product-image {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    > div:last-child {
+      flex: 1 1 auto;
+      width: auto;
+      max-width: none;
+    }
+
+    .row > div {
+      width: 100%;
+      max-width: none;
+
+      &.addtocart-container {
+        padding-right: $space-default;
+        padding-left: $space-default;
+      }
+
+      &.action-container {
+        margin-top: 2px;
+      }
+    }
+
+    ish-product-price {
+      text-align: left;
+
+      :last-child {
+        margin-top: ($space-default * 0.5);
+      }
+    }
+
+    ish-lazy-product-rating {
+      display: none;
+    }
+
+    .product-tile-actions {
+      display: none;
+    }
+
+    .addtocart-container .add-to-cart button {
+      width: 100%;
+    }
+  }
+}

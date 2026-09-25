@@ -72,12 +72,12 @@
     <!-- Sticky Header Mobile Search -->
 
     @if (deviceType === 'mobile') {
-      <div *ishFeature="'productAdvisor'" class="ai-product-advisor-mobile">
+      <div *ishFeature="'copilotEmbedded'" class="copilot-embedded-mobile">
         <a
-          class="ai-product-advisor-link"
-          data-testing-id="ai-product-advisor-link-mobile"
+          class="copilot-embedded-link"
+          data-testing-id="copilot-embedded-link-mobile"
           routerLink="/copilot"
-          [attr.aria-label]="'copilot.product_advisor.link' | translate"
+          [attr.aria-label]="'copilot.embedded.link' | translate"
         >
           <i class="bi bi-stars header-icon"></i>
         </a>
@@ -130,10 +130,10 @@
     </div>
     <div class="col-md-4 search-col">
       @if (!isSticky && deviceType !== 'mobile') {
-        <div *ishFeature="'productAdvisor'" class="ai-product-advisor">
-          <a class="ai-product-advisor-link" data-testing-id="ai-product-advisor-link" routerLink="/copilot">
+        <div *ishFeature="'copilotEmbedded'" class="copilot-embedded-header-link">
+          <a class="copilot-embedded-link" data-testing-id="copilot-embedded-link" routerLink="/copilot">
             <i class="bi bi-stars header-icon"></i>
-            <span class="d-none d-md-inline">{{ 'copilot.product_advisor.link' | translate }}</span>
+            <span class="d-none d-md-inline">{{ 'copilot.embedded.link' | translate }}</span>
           </a>
         </div>
       }
