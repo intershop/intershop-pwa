@@ -8,6 +8,7 @@ import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { MultiSiteLocaleMap } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { AddressDoctorConfig } from '../app/extensions/address-doctor/models/address-doctor/address-doctor-config.model';
+import { CopilotEmbeddedConfig } from '../app/extensions/copilot-embedded/models/copilot-embedded-config/copilot-embedded-config.model';
 import { CopilotConfig } from '../app/extensions/copilot/models/copilot-config/copilot-config.model';
 
 export interface Environment {
@@ -53,6 +54,7 @@ export interface Environment {
     /* Third-party Integrations */
     | 'addressDoctor'
     | 'copilot'
+    | 'copilotEmbedded'
     | 'maps'
     | 'tracking'
   )[];
@@ -70,6 +72,9 @@ export interface Environment {
 
   // Intershop Copilot
   copilot?: CopilotConfig;
+
+  // Copilot Embedded (AI agent, PWA-owned chat UI on top of Flowise)
+  copilotEmbedded?: CopilotEmbeddedConfig;
 
   /* PROGRESSIVE WEB APP CONFIGURATIONS */
 

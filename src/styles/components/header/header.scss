@@ -70,6 +70,10 @@ header {
   }
 
   .mid-header {
+    .search-col {
+      position: relative;
+    }
+
     .quickorder-link {
       padding: ($space-default * 0.5) divide($space-default, 3);
 
@@ -78,6 +82,26 @@ header {
         font-size: $font-size-corporate;
         vertical-align: middle;
         color: $CORPORATE-PRIMARY;
+      }
+    }
+
+    .copilot-embedded-header-link {
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      padding-top: $space-default * 0.75;
+      padding-right: $space-default;
+      white-space: nowrap;
+      transform: translateY(-50%);
+
+      .copilot-embedded-link {
+        font-family: $font-family-bold;
+        text-transform: uppercase;
+
+        .bi.header-icon {
+          padding-right: divide($space-default, 3);
+          color: $CORPORATE-PRIMARY;
+        }
       }
     }
   }
@@ -117,6 +141,16 @@ header {
   @include media-breakpoint-down(md) {
     order: 10;
     line-height: $header-height-mobile;
+  }
+
+  .copilot-embedded-mobile {
+    align-self: center;
+
+    .bi.header-icon {
+      padding-right: 7px;
+      font-size: 22px;
+      color: $CORPORATE-PRIMARY;
+    }
   }
 }
 
