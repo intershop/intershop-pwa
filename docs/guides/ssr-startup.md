@@ -92,12 +92,11 @@ Make sure to use them as written in the table below.
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 ## Development
@@ -140,16 +139,17 @@ pwa:
       }
 ```
 
-Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: CACHE_ICM_CALLS
-    value: |
-      {
-        "/configurations": "20m",
-        "/variations": "2h"
-      }
+app:
+  env:
+    - name: CACHE_ICM_CALLS
+      value: |
+        {
+          "/configurations": "20m",
+          "/variations": "2h"
+        }
 ```
 
 In this example, `/configurations` is cached for 20 minutes and product `/variations` is cached for 2 hours.
