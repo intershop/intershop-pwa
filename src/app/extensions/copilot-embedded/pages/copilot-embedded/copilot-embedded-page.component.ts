@@ -148,7 +148,7 @@ export class CopilotEmbeddedPageComponent implements OnInit {
           }
           this.cdRef.markForCheck();
         },
-        error: error => this.fail(error),
+        error: () => this.fail(),
         complete: () => {
           // Flowise does not always stream the final answer as tokens (e.g. after tool errors);
           // fall back to the non-streaming text so an answer is still shown.
@@ -169,7 +169,7 @@ export class CopilotEmbeddedPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => this.finalizeAnswer(response),
-        error: error => this.fail(error),
+        error: () => this.fail(),
       });
   }
 
@@ -285,8 +285,8 @@ export class CopilotEmbeddedPageComponent implements OnInit {
     this.cdRef.markForCheck();
   }
 
-  private fail(error: unknown) {
-    this.error = error instanceof Error ? error.message : JSON.stringify(error);
+  private fail() {
+    this.error = 'copilot.embedded.error.generic';
     this.finish();
   }
 }

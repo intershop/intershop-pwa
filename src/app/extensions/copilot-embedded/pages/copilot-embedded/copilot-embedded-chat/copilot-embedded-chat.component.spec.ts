@@ -38,6 +38,13 @@ describe('Copilot Embedded Chat Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
+  it('should render the error as a localized message', () => {
+    component.error = 'copilot.embedded.error.generic';
+    fixture.detectChanges();
+
+    expect(element.querySelector('.copilot-embedded-error').textContent.trim()).toBe('copilot.embedded.error.generic');
+  });
+
   describe('choice chips', () => {
     it('should render single-select chips without a confirm button for the last bot message', () => {
       component.messages = [botMessage({ options: ['In the office', 'Hybrid', 'Mobile'], multiSelect: false })];
