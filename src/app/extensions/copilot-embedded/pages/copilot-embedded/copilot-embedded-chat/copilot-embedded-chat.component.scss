@@ -235,6 +235,11 @@
       position: relative;
       flex: 1 0 0;
 
+      // reserve space so the input text does not run under the camera button
+      .form-control {
+        padding-right: ($space-default * 3);
+      }
+
       .btn {
         position: absolute;
         top: 0;
@@ -257,6 +262,7 @@
       border: 1px solid $CORPORATE-PRIMARY;
 
       .bi {
+        margin-left: -4px;
         transform: rotate(45deg);
       }
     }
