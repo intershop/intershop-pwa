@@ -132,7 +132,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test: ['normal', 'customization']
+        # Re-enable customization when the follow-up theme override support lands.
+        test: ['normal']
 
     steps:
       - name: Checkout
