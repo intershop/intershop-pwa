@@ -140,10 +140,10 @@ nginx:
         - Cross-Origin-Opener-Policy: 'same-origin-allow-popups'
 ```
 
-[PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example (use `cache.additionalHeaders` with the same content):
+[PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example (use `proxy.additionalHeaders` with the same content):
 
 ```yaml
-cache:
+proxy:
   additionalHeaders: |
     headers:
       - Content-Security-Policy: "default-src 'self' https://your-icm-host; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none';"

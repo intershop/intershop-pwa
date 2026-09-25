@@ -75,11 +75,11 @@ When starting your own project based on the Intershop PWA that includes customiz
 For production and production-like deployments we provide an [Intershop PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
 > [!NOTE]
-> For a Helm chart deployment, the configuration property `upstream.icmBaseURL` is a required parameter that should point to your own ICM server.
+> For a Helm chart deployment, the configuration property `config.icmBaseUrl` is a required parameter that should point to your own ICM server.
 >
 > ```yaml
-> upstream:
->   icmBaseURL: https://develop.icm.intershop.de
+> config:
+>   icmBaseUrl: https://develop.icm.intershop.de
 > ```
 
 For a simple production-like development or testing deployment of the current project state, the project includes a `docker-compose.yml` that can be deployed with `docker compose up --build` in the project root.

@@ -40,14 +40,15 @@ pwa:
     - GTM_TOKEN=GTM-ABCDEFG
 ```
 
-Example via PWA Helm Chart:
+Example via PWA Helm Chart 1.0.0 or later:
 
 ```yaml
-environment:
-  - name: FEATURES
-    value: tracking
-  - name: GTM_TOKEN
-    value: GTM-ABCDEFG
+app:
+  env:
+    - name: FEATURES
+      value: tracking
+    - name: GTM_TOKEN
+      value: GTM-ABCDEFG
 ```
 
 > [!IMPORTANT]

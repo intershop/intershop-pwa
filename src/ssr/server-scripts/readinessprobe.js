@@ -12,12 +12,12 @@ pm2.connect(err1 => {
   if (!err1) {
     pm2.list((err2, list) => {
       if (!err2) {
-        Object.entries(ports).forEach(([theme]) => {
-          if (!list.find(el => el.name === theme)) {
-            process.exit(1);
-          }
-        });
-        process.exit(0);
+        // Ready only when every theme process is actually serving ('online'), not merely
+        // registered or still 'launching' — otherwise traffic is routed before SSR can serve.
+        const allReady = Object.entries(ports)
+          .map(([theme]) => list.find(el => el.name === theme && el.pm2_env.status === 'online'))
+          .reduce((acc, val) => acc && !!val, true);
+        process.exit(allReady ? 0 : 1);
       } else {
         console.log('pm2 list error:', err2);
         process.exit(1);
