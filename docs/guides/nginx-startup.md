@@ -204,9 +204,6 @@ If no environment variable is set, this feature is disabled.
 
 ### Add Additional Headers
 
-> [!IMPORTANT]
-> To configure additional headers, the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 0.9.3 or above has to be used.
-
 For some security or functional reasons, it is necessary to add additional headers to page responses.
 One such security reason may be a Content Security Policy directive.
 To make such headers configurable, the environment variable `ADDITIONAL_HEADERS` has been introduced.
@@ -222,10 +219,10 @@ nginx:
         - header-b: 'value-b'
 ```
 
-[PWA Helm Cart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
+[PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) example:
 
 ```yaml
-cache:
+proxy:
   additionalHeaders: |
     headers:
       - header-a: 'value-a'
@@ -394,11 +391,11 @@ The modules can also be built using an openresty archive, but in this case the b
 
 ## Environment Variables
 
-NGINX environment variables need to be configured in the `cache.extraEnvVars` section of the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa), e.g.,
+NGINX environment variables need to be configured in the `proxy.env` section of the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa), e.g.,
 
 ```yaml
-cache:
-  extraEnvVars:
+proxy:
+  env:
     - name: NGINX_WORKER_PROCESSES
       value: auto
 ```

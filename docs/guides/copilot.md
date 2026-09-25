@@ -59,19 +59,20 @@ pwa:
       apiHost: "https://<FLOWISE-API-HOST>"
 ```
 
-Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: FEATURES
-    value: copilot
-  - name: COPILOT
-    value: |
-      {
-        "copilotUIFile": "https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js",
-        "chatflowid": "xxxx-xxxx-xxxx-xxxx-xxxx",
-        "apiHost": "https://<FLOWISE-API-HOST>"
-      }
+app:
+  env:
+    - name: FEATURES
+      value: copilot
+    - name: COPILOT
+      value: |
+        {
+          "copilotUIFile": "https://cdn.jsdelivr.net/gh/intershop/ai-flowise-chat-embed@website/demo-store/dist/web.js",
+          "chatflowid": "xxxx-xxxx-xxxx-xxxx-xxxx",
+          "apiHost": "https://<FLOWISE-API-HOST>"
+        }
 ```
 
 ## Additional `chatflowConfig` Variables
@@ -89,16 +90,17 @@ pwa:
       chatflowConfig: { "vars": { "foo": "bar", "hello": "world" } }
 ```
 
-Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: COPILOT
-    value: |
-      {
-        ...
-        "chatflowConfig": { "vars": { "foo": "bar", "hello": "world" } }
-      }
+app:
+  env:
+    - name: COPILOT
+      value: |
+        {
+          ...
+          "chatflowConfig": { "vars": { "foo": "bar", "hello": "world" } }
+        }
 ```
 
 ## Customize Chatbot
@@ -116,16 +118,17 @@ pwa:
       theme: { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple", "size": 60 }, "tooltip": { "showTooltip": true } }
 ```
 
-Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: COPILOT
-    value: |
-      {
-        ...
-        "theme": { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple", "size": 60 }, "tooltip": { "showTooltip": true } }
-      }
+app:
+  env:
+    - name: COPILOT
+      value: |
+        {
+          ...
+          "theme": { "chatWindow": { "title": "Assistant Title" }, "button": { "backgroundColor": "purple", "size": 60 }, "tooltip": { "showTooltip": true } }
+        }
 ```
 
 ## Override Chatbot Styling
