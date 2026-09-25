@@ -935,6 +935,18 @@ export default defineConfig([
           message:
             'Static this usage can be confusing for newcomers. It can also become imprecise when used with extended classes when a static this of a parent class no longer specifically refers to the parent class.',
         },
+        {
+          selector: 'Property[key.name="templateOptions"]',
+          message: 'Deprecated Formly API, use `props` instead.',
+        },
+        {
+          selector: 'Property[key.name="expressionProperties"]',
+          message: 'Deprecated Formly API, use `expressions` instead.',
+        },
+        {
+          selector: 'Property[key.name="hideExpression"]',
+          message: 'Deprecated Formly API, use `expressions: { hide: ... }` instead.',
+        },
       ],
       'no-sequences': 'error',
       'no-shadow': 'off',

@@ -46,7 +46,10 @@ The standard PWA ships a secure-by-default, yet deliberately permissive, baselin
 The default policy intentionally allows `https:` sources so that a typical storefront using third-party analytics, payment providers, or a CDN keeps working out of the box, while vulnerability scanners still see the required headers.
 
 - `'unsafe-inline'` is kept for `script-src` and `style-src` because the PWA and common integrations (e.g., tag managers) rely on inline scripts and styles.
-- `'unsafe-eval'` is not included, because production builds do not require it.
+- `'unsafe-eval'` is not included, because the PWA production build does not require it.
+  Features that evaluate strings at runtime are blocked, e.g.:
+  - Formly string expressions: use function expressions instead (see [Formly](./formly.md#formlyfieldconfig)).
+
 - Clickjacking protection (`frame-ancestors` / `X-Frame-Options`) is deliberately left off so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
 - `Cross-Origin-Opener-Policy` uses `same-origin-allow-popups` so popup-based checkout and payment flows are not broken.
 

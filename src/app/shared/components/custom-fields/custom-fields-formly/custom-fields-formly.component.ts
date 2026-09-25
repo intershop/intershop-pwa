@@ -63,7 +63,7 @@ export class CustomFieldsFormlyComponent extends RxState<ComponentState> impleme
                 map(definition => ({
                   key: field.name,
                   type: 'ish-text-input-field',
-                  templateOptions: {
+                  props: {
                     label: definition.displayName,
                     labelClass: this.labelClass,
                     fieldClass: this.fieldClass,

@@ -66,6 +66,9 @@ const fields: FormlyFieldConfig[] = [
 ];
 ```
 
+Define `expressions` as functions, for example, `'props.disabled': field => field.model.ending !== 'date'`.
+String expressions like `'props.disabled': 'model.ending !== "date"'` are evaluated at runtime and blocked by a Content Security Policy without `'unsafe-eval'` (see [Security Headers](./security-headers.md#rationale-for-the-permissive-defaults)).
+
 ## Customizing Form Logic
 
 There are many ways to change the behavior of a form and its fields.

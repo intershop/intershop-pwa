@@ -53,6 +53,11 @@ For the complete list of breaking changes, see the [Angular Update Guide](https:
 The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [`cookies.scss`](../../src/styles/components/cookies.scss).
 `BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`; once this dependency is dropped, the import and the dependency can be removed.
 
+**Formly 8 update**
+
+`@ngx-formly/core` has been updated to version 8, which requires Angular 19 or newer and ships as fesm2022 only.
+For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md).
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
@@ -106,12 +111,11 @@ Every project based on the Intershop PWA, whether newly set up or migrated, need
 
 **Default security headers in the NGINX image**
 
-The NGINX image now ships a permissive set of default security headers in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
-Previously, no headers were sent by default.
-The default headers are intentionally lenient so that typical storefronts using third-party analytics, payment providers, or CDNs continue to work.
+The NGINX image now sends a lenient set of default security headers, including a Content Security Policy (CSP), defined in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
 Clickjacking protection is deliberately disabled so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
-Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the entire header list rather than merging with the default headers.
-Review and tighten the baseline headers for your domains.
+Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the default headers.
+The default CSP does not allow `'unsafe-eval'`, so custom code or third-party scripts that evaluate strings at runtime (for example, Formly string expressions) are blocked in the browser, even though the server-side rendered page looks correct.
+Check your storefront in the browser console for CSP violations and adjust the headers via `ADDITIONAL_HEADERS` if necessary.
 For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
 
 **E-mail validator no longer rejects empty values**
