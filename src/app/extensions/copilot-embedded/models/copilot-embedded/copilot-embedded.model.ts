@@ -13,7 +13,7 @@ export interface CopilotEmbeddedToolCall {
 /**
  * A source document returned by the chatflow (RAG context, product references, etc.).
  */
-export interface CopilotEmbeddedSourceDocument {
+interface CopilotEmbeddedSourceDocument {
   pageContent?: string;
   metadata?: Record<string, unknown>;
 }
