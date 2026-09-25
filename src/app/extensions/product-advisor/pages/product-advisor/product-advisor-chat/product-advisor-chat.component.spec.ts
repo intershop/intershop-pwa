@@ -138,12 +138,14 @@ describe('Product Advisor Chat Component', () => {
     it('should emit the thumbnail together with the full-size upload', () => {
       const emit = jest.spyOn(component.send, 'emit');
       component.pendingUpload = upload;
-      component.pendingThumbnail = 'data:image/jpeg;base64,THUMB';
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      component['pendingThumbnail'] = 'data:image/jpeg;base64,THUMB';
 
       component.submit('');
 
       expect(emit).toHaveBeenCalledWith({ question: '', uploads: [upload], thumbnail: 'data:image/jpeg;base64,THUMB' });
-      expect(component.pendingThumbnail).toBeUndefined();
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      expect(component['pendingThumbnail']).toBeUndefined();
     });
 
     it('should not emit when there is neither text nor an image', () => {
@@ -156,12 +158,14 @@ describe('Product Advisor Chat Component', () => {
 
     it('should discard the attached image on removeUpload', () => {
       component.pendingUpload = upload;
-      component.pendingThumbnail = 'data:image/jpeg;base64,THUMB';
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      component['pendingThumbnail'] = 'data:image/jpeg;base64,THUMB';
 
       component.removeUpload();
 
       expect(component.pendingUpload).toBeUndefined();
-      expect(component.pendingThumbnail).toBeUndefined();
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      expect(component['pendingThumbnail']).toBeUndefined();
     });
   });
 

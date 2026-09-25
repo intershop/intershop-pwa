@@ -63,7 +63,7 @@ export class ProductAdvisorChatComponent implements OnChanges, AfterViewChecked 
   pendingUpload: ProductAdvisorUpload;
 
   /** Small JPEG version of the attached image, shown in the chat bubble and persisted. */
-  pendingThumbnail: string;
+  private pendingThumbnail: string;
 
   /** Translation key of the reason the last selected file was refused, if any. */
   uploadError: string;
