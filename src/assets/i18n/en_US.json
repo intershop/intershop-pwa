@@ -1079,6 +1079,7 @@
   "copilot.disclaimer.message": "By using this chatbot, you agree to the <a target=\"_blank\" href=\"https://www.intershop.com/en/privacy-policy\">Privacy Policy</a>.",
   "copilot.disclaimer.title": "Disclaimer",
   "copilot.embedded.choices.confirm": "Confirm selection",
+  "copilot.embedded.error.generic": "Sorry, something went wrong. Please try again later.",
   "copilot.embedded.headline": "Hi, I'm your AI Product Advisor",
   "copilot.embedded.input.camera": "Search by image",
   "copilot.embedded.input.image_invalid_type": "Only JPEG, PNG, GIF or WebP images can be uploaded.",

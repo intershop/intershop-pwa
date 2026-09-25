@@ -1079,6 +1079,7 @@
   "copilot.disclaimer.message": "En utilisant ce chatbot, vous acceptez les <a target=\"_blank\" href=\"https://www.intershop.com/fr/protection-des-donnees\">notes sur la protection des données</a>.",
   "copilot.disclaimer.title": "Clause de non-responsabilité",
   "copilot.embedded.choices.confirm": "Confirmer la sélection",
+  "copilot.embedded.error.generic": "Désolé, une erreur s'est produite. Veuillez réessayer plus tard.",
   "copilot.embedded.headline": "Bonjour, je suis votre conseiller produit IA",
   "copilot.embedded.input.camera": "Rechercher par image",
   "copilot.embedded.input.image_invalid_type": "Seules les images JPEG, PNG, GIF ou WebP peuvent être téléchargées.",

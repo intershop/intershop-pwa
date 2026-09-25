@@ -53,6 +53,17 @@ describe('Copilot Embedded Product Helper', () => {
     expect(products[1].sku).toEqual('5767008');
   });
 
+  it('should list products found by several searches only once', () => {
+    const toolOutput = (skus: string[]) =>
+      JSON.stringify({ output: [{ products: skus.map(sku => ({ sku, title: `Product ${sku}` })) }] });
+    const tools: CopilotEmbeddedToolCall[] = [
+      { tool: 'icmSearch', toolInput: { query: 'storage' }, toolOutput: toolOutput(['1', '2']) },
+      { tool: 'icmSearch', toolInput: { query: 'networking' }, toolOutput: toolOutput(['2', '3', '3']) },
+    ];
+
+    expect(extractProductsFromToolCalls(tools).map(product => product.sku)).toEqual(['1', '2', '3']);
+  });
+
   it('should ignore invalid tool output', () => {
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'icmSearch', toolInput: {}, toolOutput: 'not json' }];
 
