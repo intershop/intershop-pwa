@@ -1,0 +1,26 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.copilot-embedded-header {
+  display: flex;
+  align-items: center;
+  padding: ($space-default * 0.75) 0;
+
+  p {
+    margin: 0;
+  }
+
+  .copilot-embedded-header-title {
+    font-family: $font-family-bold;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+
+  .copilot-embedded-header-subtitle {
+    padding-top: divide($space-default, 8);
+    font-size: 12px;
+    line-height: 16px;
+    color: $text-color-tertiary;
+  }
+}
