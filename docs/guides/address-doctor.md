@@ -39,7 +39,7 @@ The Address Doctor configuration can also be supplied via environment variable `
 ADDRESS_DOCTOR='{ "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" }';
 ```
 
-The Address Doctor configuration for `docker-compose` looks like this:
+Example via _docker-compose.yml_ configuration:
 
 ```yaml
 pwa:
@@ -47,15 +47,16 @@ pwa:
     ADDRESS_DOCTOR: '{ "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" }'
 ```
 
-For the current PWA Helm Chart that is also used in the PWA Flux deployments, the Address Doctor configuration looks like this.:
+Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: ADDRESS_DOCTOR
-    value: |
-      {
-        "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5"
-      }
+app:
+  env:
+    - name: ADDRESS_DOCTOR
+      value: |
+        {
+          "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5"
+        }
 ```
 
 ## Workflow
