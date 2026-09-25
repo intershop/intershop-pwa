@@ -1,0 +1,33 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.copilot-embedded-results {
+  padding: 0 divide($space-default, 3);
+
+  .copilot-embedded-results-header {
+    margin-bottom: ($space-default * 2);
+
+    p {
+      color: $text-color-tertiary;
+    }
+  }
+
+  .copilot-embedded-results-list {
+    // contain absolutely-positioned tile descendants so they don't escape the scroll area
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: ($space-default * 2);
+    max-height: 60vh;
+    overflow-y: auto;
+
+    ish-product-item {
+      display: block;
+    }
+  }
+
+  .copilot-embedded-results-intro {
+    font-size: $font-size-lg;
+  }
+}

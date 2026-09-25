@@ -91,7 +91,7 @@ kb_sync_latest_only
 
 - [Guide - SPARQUE.AI](./guides/sparque-ai.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
-- [Guide - Product Advisor](./guides/product-advisor.md)
+- [Guide - Copilot Embedded](./guides/copilot-embedded.md)
 - [Guide - PayPal](./guides/paypal.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
