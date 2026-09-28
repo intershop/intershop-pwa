@@ -90,7 +90,6 @@
       max-width: 80%;
       padding: ($space-default * 1.25) ($space-default * 1.5);
       margin-bottom: $space-default;
-      font-size: 13px;
 
       // preserve \n line breaks from the LLM response, collapse stray spaces
       white-space: pre-line;
@@ -173,8 +172,6 @@
 
           &:hover {
             color: $text-color-primary;
-            background-color: $color-tertiary;
-            border-color: $CORPORATE-PRIMARY;
           }
         }
 
@@ -220,7 +217,6 @@
       flex: 1 1 auto;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 13px;
       white-space: nowrap;
     }
 
