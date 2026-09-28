@@ -28,4 +28,8 @@
   } @else {
     <p class="copilot-embedded-results-intro">{{ 'copilot.embedded.results.intro' | translate }}</p>
   }
+  <button class="copilot-embedded-back-to-chat btn btn-link d-md-none" type="button" (click)="backToChat.emit()">
+    <i class="bi bi-arrow-left"></i>
+    {{ 'copilot.embedded.back_to_chat' | translate }}
+  </button>
 </div>
