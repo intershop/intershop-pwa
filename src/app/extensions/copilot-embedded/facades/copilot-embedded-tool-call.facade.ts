@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
 import { CompareFacade } from '../../compare/facades/compare.facade';
 import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
@@ -31,6 +32,7 @@ export class CopilotEmbeddedToolCallFacade {
   private compareFacade = inject(CompareFacade);
   private accountFacade = inject(AccountFacade);
   private orderTemplatesFacade = inject(OrderTemplatesFacade);
+  private featureToggleService = inject(FeatureToggleService);
 
   /**
    * Handles all action tool calls of a chatflow response.
@@ -47,15 +49,18 @@ export class CopilotEmbeddedToolCallFacade {
         this.handleBasket(toolCall.toolInput);
         break;
       case 'PWA_compare_products':
-        // Note: this will only work if the 'compare' feature is enabled in the PWA
-        this.compareFacade.compareProducts((toolCall.toolInput?.SKUs as string)?.split(';'));
-        this.navigate('/compare');
+        if (this.featureToggleService.enabled('compare')) {
+          this.compareFacade.compareProducts((toolCall.toolInput?.SKUs as string)?.split(';'));
+          this.navigate('/compare');
+        }
         break;
       case 'PWA_navigate_to_page':
         this.handleNavigateToPage(toolCall.toolInput);
         break;
       case 'PWA_order_template_actions':
-        this.handleOrderTemplate(toolCall.toolInput);
+        if (this.featureToggleService.enabled('orderTemplates')) {
+          this.handleOrderTemplate(toolCall.toolInput);
+        }
         break;
       default:
         break;
@@ -138,6 +143,13 @@ export class CopilotEmbeddedToolCallFacade {
       login: () => this.navigate('/login'),
       logout: () => this.accountFacade.logoutUser(),
     };
+    const requiredFeature: Record<string, FeatureToggleType> = {
+      orderTemplates: 'orderTemplates',
+      orderTemplate: 'orderTemplates',
+    };
+    if (requiredFeature[page] && !this.featureToggleService.enabled(requiredFeature[page])) {
+      return;
+    }
     if (navigationMap[page]) {
       navigationMap[page]();
     }
