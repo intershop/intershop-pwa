@@ -6,6 +6,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 
 import { CompareFacade } from '../../compare/facades/compare.facade';
 import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
@@ -20,6 +21,7 @@ describe('Copilot Embedded Tool Call Facade', () => {
   let compareFacade: CompareFacade;
   let orderTemplatesFacade: OrderTemplatesFacade;
   let accountFacade: AccountFacade;
+  let featureToggleService: FeatureToggleService;
 
   beforeEach(() => {
     router = mock(Router);
@@ -28,14 +30,17 @@ describe('Copilot Embedded Tool Call Facade', () => {
     compareFacade = mock(CompareFacade);
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     accountFacade = mock(AccountFacade);
+    featureToggleService = mock(FeatureToggleService);
 
     when(checkoutFacade.basket$).thenReturn(of(undefined));
+    when(featureToggleService.enabled(anything())).thenReturn(true);
 
     TestBed.configureTestingModule({
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
+        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         { provide: Router, useFactory: () => instance(router) },
         { provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) },
@@ -86,6 +91,15 @@ describe('Copilot Embedded Tool Call Facade', () => {
       expect(skus).toEqual(['123', '456']);
       verify(router.navigateByUrl('/compare')).once();
     });
+
+    it('should ignore the tool call if the compare feature is disabled', () => {
+      when(featureToggleService.enabled('compare')).thenReturn(false);
+
+      facade.handleToolCalls([{ tool: 'PWA_compare_products', toolInput: { SKUs: '123;456' } }]);
+
+      verify(compareFacade.compareProducts(anything())).never();
+      verify(router.navigateByUrl(anything())).never();
+    });
   });
 
   describe('PWA_navigate_to_page', () => {
@@ -100,6 +114,14 @@ describe('Copilot Embedded Tool Call Facade', () => {
 
       verify(accountFacade.logoutUser()).once();
     });
+
+    it('should not navigate to order templates if the feature is disabled', () => {
+      when(featureToggleService.enabled('orderTemplates')).thenReturn(false);
+
+      facade.handleToolCalls([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'orderTemplates' } }]);
+
+      verify(router.navigateByUrl(anything())).never();
+    });
   });
 
   describe('PWA_order_template_actions', () => {
@@ -111,6 +133,16 @@ describe('Copilot Embedded Tool Call Facade', () => {
       verify(orderTemplatesFacade.addOrderTemplate(anything())).once();
       const [payload] = capture(orderTemplatesFacade.addOrderTemplate).last();
       expect(payload).toEqual({ title: 'My List' });
+    });
+
+    it('should ignore the tool call if the order templates feature is disabled', () => {
+      when(featureToggleService.enabled('orderTemplates')).thenReturn(false);
+
+      facade.handleToolCalls([
+        { tool: 'PWA_order_template_actions', toolInput: { operation: 'create', title: 'My List' } },
+      ]);
+
+      verify(orderTemplatesFacade.addOrderTemplate(anything())).never();
     });
   });
 });
