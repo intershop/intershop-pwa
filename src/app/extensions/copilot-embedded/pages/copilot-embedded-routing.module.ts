@@ -12,6 +12,7 @@ const routes: Routes = [
     data: {
       feature: 'copilotEmbedded',
       meta: {
+        title: 'copilot.embedded.link',
         robots: 'noindex, nofollow',
       },
     },
