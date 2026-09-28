@@ -19,8 +19,8 @@
       </div>
     } @else {
       <ish-copilot-embedded-header />
-      <nav #nav="ngbNav" class="nav-tabs" ngbNav>
-        <li ngbNavItem role="presentation">
+      <nav #nav="ngbNav" class="nav-tabs" ngbNav (activeIdChange)="activeNavId = $event">
+        <li role="presentation" [ngbNavItem]="'chat'">
           <a ngbNavLink>{{ 'copilot.embedded.tab.chat' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-copilot-embedded-chat
@@ -42,16 +42,18 @@
             }
           </a>
           <ng-template ngbNavContent>
-            <ish-copilot-embedded-results [products]="products" />
+            <ish-copilot-embedded-results [products]="products" (backToChat)="nav.select('chat')" />
           </ng-template>
         </li>
       </nav>
       <div [ngbNavOutlet]="nav"></div>
     }
-  }
 
-  <!-- interim placement; final position to be decided -->
-  <button class="btn btn-link mt-3" type="button" (click)="resetSession()">
-    {{ 'copilot.embedded.reset' | translate }}
-  </button>
+    @if (deviceType !== 'mobile' || activeNavId === 'chat') {
+      <!-- interim placement; final position to be decided -->
+      <button class="btn btn-link mt-3" type="button" (click)="resetSession()">
+        {{ 'copilot.embedded.reset' | translate }}
+      </button>
+    }
+  }
 </div>

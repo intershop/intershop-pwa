@@ -1078,6 +1078,7 @@
   "copilot.disclaimer.buttonText": "Commencer à chatter",
   "copilot.disclaimer.message": "En utilisant ce chatbot, vous acceptez les <a target=\"_blank\" href=\"https://www.intershop.com/fr/protection-des-donnees\">notes sur la protection des données</a>.",
   "copilot.disclaimer.title": "Clause de non-responsabilité",
+  "copilot.embedded.back_to_chat": "Retour au chat",
   "copilot.embedded.choices.confirm": "Confirmer la sélection",
   "copilot.embedded.error.generic": "Désolé, une erreur s'est produite. Veuillez réessayer plus tard.",
   "copilot.embedded.headline": "Bonjour, je suis votre conseiller produit IA",
