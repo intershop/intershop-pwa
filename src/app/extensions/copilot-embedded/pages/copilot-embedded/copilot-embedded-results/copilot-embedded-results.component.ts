@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product/copilot-embedded-product.model';
 
@@ -11,4 +11,6 @@ import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product
 })
 export class CopilotEmbeddedResultsComponent {
   @Input() products: CopilotEmbeddedProduct[] = [];
+
+  @Output() readonly backToChat = new EventEmitter<void>();
 }

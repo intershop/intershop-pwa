@@ -3,7 +3,7 @@
 @import 'bootstrap/scss/variables';
 
 .copilot-embedded-results {
-  padding: 0 divide($space-default, 3);
+  padding: 0 divide($space-default, 3) $space-default;
 
   .copilot-embedded-results-header {
     margin-bottom: ($space-default * 2);
@@ -29,5 +29,18 @@
 
   .copilot-embedded-results-intro {
     font-size: $font-size-lg;
+  }
+
+  .copilot-embedded-back-to-chat {
+    padding: 8px 0;
+    font-family: $font-family-bold;
+    font-size: 13px;
+    text-decoration: none;
+
+    .bi {
+      margin-right: 8px;
+      vertical-align: 0;
+      -webkit-text-stroke: 0.75px currentcolor;
+    }
   }
 }

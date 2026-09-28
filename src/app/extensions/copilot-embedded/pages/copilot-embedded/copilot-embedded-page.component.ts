@@ -49,6 +49,8 @@ export class CopilotEmbeddedPageComponent implements OnInit {
   toolErrors: { tool: string; error: string }[] = [];
   products: CopilotEmbeddedProduct[] = [];
 
+  activeNavId = 'chat';
+
   private sessionId: string;
   private chatId: string;
   private chatflowid: string;
