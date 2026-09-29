@@ -36,7 +36,7 @@
                 ? ('email.recommended_product.heading' | translate: { '0': channelName })
                 : ('email.recommended_product.heading.no_channel' | translate)
             }}
-          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
+          &body={{ 'email.recommended_product.text' | translate: { '0': `${product.name}%0A`, '1': document.URL } }}"
             [attr.aria-label]="'product.email_a_friend.link' | translate"
             [title]="'product.email_a_friend.link' | translate"
           >
