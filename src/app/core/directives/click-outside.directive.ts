@@ -19,7 +19,7 @@ export class ClickOutsideDirective {
    * Method to check click outside of the targetElement. Emits true, when a click outside was checked.
    */
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: ElementRef): void {
+  onClick(targetElement: EventTarget): void {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (!clickedInside) {
       this.isClickedOutside.emit(true);

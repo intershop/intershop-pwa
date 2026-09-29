@@ -67,7 +67,7 @@ describe('Extension Schematic', () => {
           FooRoutingModule, AppLastRoutingModule
         ],
         providers: [
-          provideBrowserGlobalErrorListeners()
+          provideBrowserGlobalErrorListeners(),
         ],
         bootstrap: [AppComponent]
       })

@@ -22,8 +22,9 @@ import { provideNgxMask } from 'ngx-mask';
 })
 export class TextInputFieldComponent extends FieldType<FieldTypeConfig> implements OnInit {
   private textInputFieldTypes = ['text', 'email', 'password', 'tel'];
-  thousandSeparator: string;
-  decimalMarker: ',' | '.';
+  // ngx-mask defaults, binding undefined corrupts the model value of non-separator masks
+  thousandSeparator = ' ';
+  decimalMarker: ',' | '.' | ['.', ','] = ['.', ','];
 
   constructor(private translateService: TranslateService) {
     super();

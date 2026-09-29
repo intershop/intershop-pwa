@@ -111,7 +111,7 @@ For example, see the `QuickorderLinkComponent` and its use as `ish-lazy-quickord
 
 ## Modules
 
-Because [Angular Modules](https://v20.angular.dev/guide/ngmodules/overview) are a rather advanced topic, this section explains, based on the restructured project folder format, which modules exist and where components are declared.
+Because [Angular Modules](https://v21.angular.dev/guide/ngmodules/overview) are a rather advanced topic, this section explains, based on the restructured project folder format, which modules exist and where components are declared.
 The Angular modules are mainly used to feed the Angular dependency injection and with that component factories that populate the templates.
 It has little to do with the bundling of lazy-loaded modules when a production-ready, ahead-of-time build is executed.
 
