@@ -14,7 +14,7 @@ import { RoleToggleModule } from 'ish-core/role-toggle.module';
     <div *ishHasNotRole="['ROLE2', 'ROLE3']">content5</div>
   `,
   // Default change detection for dynamic role test
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class TestComponent {
   dynamicRole: string;

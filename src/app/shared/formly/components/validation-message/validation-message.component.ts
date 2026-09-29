@@ -12,7 +12,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   selector: 'ish-validation-message',
   standalone: false,
   template: '<small class="mt-1" id="{{ field.id }}-validation-error">{{ errorMessage$ | async | translate }} </small>',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationMessageComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) field: FormlyFieldConfig;

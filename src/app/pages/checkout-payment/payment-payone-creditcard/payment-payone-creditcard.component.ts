@@ -30,7 +30,7 @@ declare let Payone: any;
   selector: 'ish-payment-payone-creditcard',
   standalone: false,
   templateUrl: './payment-payone-creditcard.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {
   payoneCreditCardForm = new FormGroup({});
