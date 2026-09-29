@@ -5,11 +5,7 @@
     "outDir": "./node_modules/.out-tsc/app-server",
 
     /* Language & Environment */
-    "types": ["node"],
-
-    /* Modules */
-    "module": "CommonJs",
-    "moduleResolution": "node"
+    "types": ["node"]
   },
   "files": ["src/main.server.ts", "server.ts"]
 }
