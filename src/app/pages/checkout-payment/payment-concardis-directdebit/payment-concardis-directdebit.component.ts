@@ -27,7 +27,7 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-directdebit',
   standalone: false,
   templateUrl: './payment-concardis-directdebit.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {
   constructor(

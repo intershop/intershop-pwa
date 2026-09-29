@@ -11,7 +11,7 @@ import { B2bUser } from '../../models/b2b-user/b2b-user.model';
   selector: 'ish-user-profile-form',
   standalone: false,
   templateUrl: './user-profile-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UserProfileFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;
