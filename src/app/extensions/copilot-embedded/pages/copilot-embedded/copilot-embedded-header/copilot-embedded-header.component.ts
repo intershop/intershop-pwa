@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'ish-copilot-embedded-header',
@@ -7,4 +7,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./copilot-embedded-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopilotEmbeddedHeaderComponent {}
+export class CopilotEmbeddedHeaderComponent {
+  @Input() canReset = true;
+
+  @Output() readonly resetChat = new EventEmitter<void>();
+}
