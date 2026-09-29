@@ -6,4 +6,15 @@
     <p class="copilot-embedded-header-title">{{ 'copilot.embedded.title' | translate }}</p>
     <p class="copilot-embedded-header-subtitle">{{ 'copilot.embedded.subtitle' | translate }}</p>
   </div>
+  @if (canReset) {
+    <button
+      class="copilot-embedded-header-reset btn btn-secondary"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.reset' | translate"
+      [title]="'copilot.embedded.reset' | translate"
+      (click)="resetChat.emit()"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  }
 </div>
