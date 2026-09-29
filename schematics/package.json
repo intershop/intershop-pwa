@@ -18,6 +18,9 @@
     "schematics",
     "intershop"
   ],
+  "peerDependencies": {
+    "intershop-builders": "0.0.0"
+  },
   "schematics": "./dist/collection.json",
   "ng-update": {
     "migrations": "./dist/migrations/migrations.json"

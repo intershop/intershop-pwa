@@ -46,7 +46,9 @@ const failFast = args.includes('--fail-fast') || args.includes('--ff');
 
 const fileArgs = args.filter(arg => !arg.startsWith('--'));
 
-const files = fileArgs.length ? project.getSourceFiles(fileArgs) : project.getSourceFiles();
+const files = (fileArgs.length ? project.getSourceFiles(fileArgs) : project.getSourceFiles()).filter(
+  file => !file.isDeclarationFile()
+);
 
 if (failFast) {
   // shuffle array

@@ -1,19 +1,21 @@
 const { mkdirSync, readFileSync, writeFileSync } = require('fs');
 const { sync: spawnSync } = require('cross-spawn');
+const { readAngularWorkspace, resolveActiveThemes } = require('intershop-builders/dist/theme-configuration.js');
 
 const packageJson = JSON.parse(readFileSync('package.json', { encoding: 'utf-8' }));
-const activeThemes = (process.env.ACTIVE_THEMES || packageJson.activeThemes)
-  .split(',')
-  .map(theme => theme.trim())
-  .filter(Boolean);
-const clientOnly = process.argv.includes('client');
-const buildArguments = process.argv.slice(2).filter(argument => argument !== 'client');
+const workspace = readAngularWorkspace(process.cwd());
+const configuredThemes = process.env.ACTIVE_THEMES || process.env.npm_config_active_themes || packageJson.activeThemes;
 
-if (!activeThemes.length) {
-  console.error('No active themes configured.');
+let activeThemes;
+try {
+  activeThemes = resolveActiveThemes(workspace, configuredThemes);
+} catch (error) {
+  console.error(error.message);
   process.exit(1);
 }
 
+const clientOnly = process.argv.includes('client');
+const buildArguments = process.argv.slice(2).filter(argument => argument !== 'client');
 const ports = {};
 
 activeThemes.forEach((theme, index) => {
