@@ -127,7 +127,7 @@ A simple example wrapper that adds a label to the field could look like this:
     </label>
     <ng-template #fieldComponent />
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ExampleLabelWrapperComponent extends FieldWrapper {}
 ```

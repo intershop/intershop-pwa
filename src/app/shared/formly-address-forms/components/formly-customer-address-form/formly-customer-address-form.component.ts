@@ -33,7 +33,7 @@ import { Address } from 'ish-core/models/address/address.model';
   selector: 'ish-formly-customer-address-form',
   standalone: false,
   templateUrl: './formly-customer-address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   @Input() address: Partial<Address>;

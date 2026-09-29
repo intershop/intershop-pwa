@@ -64,7 +64,7 @@ describe('Checkout Payment Component', () => {
       ],
     })
       .overrideComponent(CheckoutPaymentComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+        set: { changeDetection: ChangeDetectionStrategy.Eager },
       })
       .compileComponents();
   });

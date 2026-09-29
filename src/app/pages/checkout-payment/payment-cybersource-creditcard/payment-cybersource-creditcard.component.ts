@@ -28,7 +28,7 @@ declare let Flex: any;
   standalone: false,
   templateUrl: './payment-cybersource-creditcard.component.html',
   styleUrls: ['./payment-cybersource-creditcard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {
   cyberSourceCreditCardForm: FormGroup;

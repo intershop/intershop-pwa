@@ -24,7 +24,7 @@ export type ConcardisErrorMessageType =
   selector: 'ish-payment-concardis',
   standalone: false,
   template: ' ',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PaymentConcardisComponent implements OnInit, OnChanges {
   constructor(
