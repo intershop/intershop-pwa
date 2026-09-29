@@ -10,6 +10,7 @@
             [messages]="messages"
             [pendingAnswer]="pendingAnswer"
             [toolErrors]="toolErrors"
+            (resetChat)="resetSession()"
             (send)="onSend($event)"
           />
         </div>
@@ -18,7 +19,10 @@
         </div>
       </div>
     } @else {
-      <ish-copilot-embedded-header />
+      <ish-copilot-embedded-header
+        [canReset]="messages.length > 0 && activeNavId === 'chat'"
+        (resetChat)="resetSession()"
+      />
       <nav #nav="ngbNav" class="nav-tabs" ngbNav (activeIdChange)="activeNavId = $event">
         <li role="presentation" [ngbNavItem]="'chat'">
           <a ngbNavLink>{{ 'copilot.embedded.tab.chat' | translate }}</a>
@@ -47,13 +51,6 @@
         </li>
       </nav>
       <div [ngbNavOutlet]="nav"></div>
-    }
-
-    @if (deviceType !== 'mobile' || activeNavId === 'chat') {
-      <!-- interim placement; final position to be decided -->
-      <button class="btn btn-link mt-3" type="button" (click)="resetSession()">
-        {{ 'copilot.embedded.reset' | translate }}
-      </button>
     }
   }
 </div>
