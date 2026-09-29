@@ -48,6 +48,16 @@ Angular 20 introduces several breaking changes that may require adaptations in c
 
 For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
 
+**`ChangeDetectionStrategy.Default` replaced by `Eager`**
+
+Angular 21 deprecates `ChangeDetectionStrategy.Default` in favor of the equivalent `ChangeDetectionStrategy.Eager`, and Angular provides no migration for it.
+All PWA usages have been replaced.
+To apply this change to custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
+```
+
 **Deprecated `@angular/animations` usage removed**
 
 The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [`cookies.scss`](../../src/styles/components/cookies.scss).
