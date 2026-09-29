@@ -36,7 +36,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   selector: 'ish-checkout-payment',
   standalone: false,
   templateUrl: './checkout-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
