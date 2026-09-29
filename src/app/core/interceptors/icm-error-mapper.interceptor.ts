@@ -122,6 +122,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       // handle all other error responses with error object
       return {
         ...responseError,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated -- TODO: drop statusText fallback (always 'OK' under HTTP/2)
         code: httpError.error?.code || httpError.statusText,
         message: httpError.error?.message || httpError.message,
       };

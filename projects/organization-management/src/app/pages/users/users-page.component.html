@@ -42,7 +42,7 @@
             @if (user.login !== (currentUser$ | async)?.login) {
               <div class="float-end">
                 @let dialogDeleteLabel =
-                  'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName };
+                  'account.user.delete_user_dialog.header' | translate: { '0': `${user.firstName} ${user.lastName}` };
 
                 <button
                   class="btn-tool btn-link"
@@ -60,7 +60,7 @@
                   [options]="{
                     titleText:
                       'account.user.delete_user_dialog.header'
-                      | translate: { '0': user.firstName + ' ' + user.lastName },
+                      | translate: { '0': `${user.firstName} ${user.lastName}` },
                     confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                     rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate,
                   }"

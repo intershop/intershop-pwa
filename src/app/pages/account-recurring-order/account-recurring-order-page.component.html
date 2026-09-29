@@ -70,7 +70,7 @@
                   'account.recurring_order.details.approved.text'
                     | translate
                       : {
-                          name: approval.approver.firstName + ' ' + approval.approver.lastName,
+                          name: `${approval.approver.firstName} ${approval.approver.lastName}`,
                           date: approval.approvalDate | ishDate: 'shortDate',
                         }
                 }}@if (!last) {, }
