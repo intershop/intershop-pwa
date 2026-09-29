@@ -27,22 +27,28 @@ for (const project in angularJson.projects) {
 }
 
 const architect = angularJson.projects[project].architect;
-architect.build.configurations[theme] = {};
-architect.serve.configurations[theme] = {
-  buildTarget: 'intershop-pwa:build:' + theme,
+architect.build.configurations[theme] = {
+  styles: [`src/styles/themes/${theme}/style.scss`],
+  stylePreprocessorOptions: {
+    ...architect.build.options.stylePreprocessorOptions,
+    includePaths: [`src/styles/themes/${theme}`],
+  },
+  fileReplacements: [
+    {
+      replace: 'src/environments/environment.ts',
+      with: `src/environments/environment.${theme}.ts`,
+    },
+  ],
 };
-architect.server.configurations[theme] = {};
-architect['serve-ssr'].configurations[theme] = {
-  buildTarget: `intershop-pwa:build:${theme},development`,
-  serverTarget: `intershop-pwa:server:${theme},development`,
+architect.serve.configurations[theme] = {
+  buildTarget: `${project}:build:${theme},development`,
+  hmr: true,
 };
 
 if (setDefault) {
   console.log('setting', theme, 'as default for targets');
   architect.build.defaultConfiguration = theme + ',production';
-  architect.serve.defaultConfiguration = theme + ',development';
-  architect.server.defaultConfiguration = theme + ',production';
-  architect['serve-ssr'].defaultConfiguration = theme;
+  architect.serve.defaultConfiguration = theme;
 }
 
 fs.writeFileSync('./angular.json', stringify(angularJson, null, 2));

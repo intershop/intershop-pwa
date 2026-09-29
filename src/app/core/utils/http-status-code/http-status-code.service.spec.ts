@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
+import { RESPONSE_INIT } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { noop } from 'rxjs';
 import { anyNumber, spy, verify } from 'ts-mockito';
 
@@ -80,6 +81,7 @@ describe('Http Status Code Service', () => {
           provideRouter([
             { path: 'error', children: [] },
             { path: 'maintenance', children: [] },
+            { path: ':missing', children: [] },
           ]),
         ],
       });
@@ -99,12 +101,16 @@ describe('Http Status Code Service', () => {
         expect(location.path()).toBeEmpty();
       }));
 
-      it('should set status and redirect for normal errors', fakeAsync(() => {
-        httpStatusCodeService.setStatus(404);
-        tick(500);
+      it.each(['/prdERROAR', '/ctgERROAR'])('should render not found without changing %s', async url => {
+        const router = TestBed.inject(Router);
+        await router.navigateByUrl(url);
+
+        await httpStatusCodeService.setStatus(404);
+
         verify(resSpy.status(404)).once();
-        expect(location.path()).toEqual('/error');
-      }));
+        expect(router.url).toEqual('/error');
+        expect(location.path()).toEqual(url);
+      });
 
       it('should redirect to error page for server errors', fakeAsync(() => {
         httpStatusCodeService.setStatus(500);
@@ -119,6 +125,19 @@ describe('Http Status Code Service', () => {
         verify(resSpy.status(503)).once();
         expect(location.path()).toEqual('/maintenance');
       }));
+    });
+  });
+
+  describe.onSSREnvironment('on Angular dev server', () => {
+    it('should set the standard response status', () => {
+      const responseInit: ResponseInit = {};
+      TestBed.configureTestingModule({
+        providers: [{ provide: RESPONSE_INIT, useValue: responseInit }],
+      });
+
+      TestBed.inject(HttpStatusCodeService).setStatus(404, false);
+
+      expect(responseInit.status).toBe(404);
     });
   });
 });
