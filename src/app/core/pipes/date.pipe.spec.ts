@@ -27,14 +27,14 @@ describe('Date Pipe', () => {
   });
 
   describe.each`
-    date                           | format          | en                | de
-    ${undefined}                   | ${undefined}    | ${'undefined'}    | ${'undefined'}
-    ${1000}                        | ${undefined}    | ${'Jan 1, 1970'}  | ${'01.01.1970'}
-    ${new Date(1000)}              | ${'shortDate'}  | ${'1/1/70'}       | ${'01.01.70'}
-    ${'1971-01-01T00:00:01+00:00'} | ${'mediumTime'} | ${'12:00:01 AM'}  | ${'00:00:01'}
-    ${32452435234}                 | ${undefined}    | ${'Jan 11, 1971'} | ${'11.01.1971'}
-    ${new Date(32452435234)}       | ${'shortDate'}  | ${'1/11/71'}      | ${'11.01.71'}
-    ${'1971-01-11T14:33:55+00:00'} | ${'mediumTime'} | ${'2:33:55 PM'}   | ${'14:33:55'}
+    date                           | format          | en                    | de
+    ${undefined}                   | ${undefined}    | ${'undefined'}        | ${'undefined'}
+    ${1000}                        | ${undefined}    | ${'Jan 1, 1970'}      | ${'01.01.1970'}
+    ${new Date(1000)}              | ${'shortDate'}  | ${'1/1/70'}           | ${'01.01.70'}
+    ${'1971-01-01T00:00:01+00:00'} | ${'mediumTime'} | ${'12:00:01\u202fAM'} | ${'00:00:01'}
+    ${32452435234}                 | ${undefined}    | ${'Jan 11, 1971'}     | ${'11.01.1971'}
+    ${new Date(32452435234)}       | ${'shortDate'}  | ${'1/11/71'}          | ${'11.01.71'}
+    ${'1971-01-11T14:33:55+00:00'} | ${'mediumTime'} | ${'2:33:55\u202fPM'}  | ${'14:33:55'}
   `('should transform $date to', ({ date, format, en, de }) => {
     test(`${en} with format ${format} for english local`, () => {
       translateService.use('en');
