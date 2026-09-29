@@ -10,7 +10,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker should have been provided to you. If `docs/agents/issue-tracker.md` is missing, tell the user to run `/setup-matt-pocock-skills`.
+Issues and pull requests live on GitHub in `intershop/intershop-pwa`; commit messages reference them as `(#1234)`.
 
 ## Process
 
@@ -26,14 +26,20 @@ Before going further, confirm the fixed point resolves (`git rev-parse <fixed-po
 
 Look for the originating spec, in this order:
 
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in `docs/agents/issue-tracker.md`.
+1. Issue or pull request references in the commit messages (`#123`, `Closes #45`), fetched from GitHub `intershop/intershop-pwa`. If you cannot fetch them, ask the user to paste the issue text.
 2. A path the user passed as an argument.
 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
 ### 3. Identify the standards sources
 
-Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
+This repo documents how code should be written in:
+
+- `.github/copilot-instructions.md`
+- `.github/instructions/*.instructions.md`: apply each file only to changed paths matching its `applyTo` glob.
+- `CONTRIBUTING.md`
+
+ESLint (`eslint.config.mjs`, including the custom rules in `eslint-rules/`), Prettier, and Stylelint are the tooling referred to below.
 
 On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
