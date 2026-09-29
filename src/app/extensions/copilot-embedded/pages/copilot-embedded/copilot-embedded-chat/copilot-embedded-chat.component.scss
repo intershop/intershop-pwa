@@ -246,6 +246,11 @@
         margin-right: 0;
         margin-bottom: 0;
         color: $text-color-tertiary;
+
+        &:hover,
+        &:focus {
+          color: $text-color-corporate;
+        }
       }
     }
 

@@ -47,6 +47,8 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
     thumbnail?: string;
   }>();
 
+  @Output() readonly resetChat = new EventEmitter<void>();
+
   @ViewChild('chatWindow') private chatWindow: ElementRef<HTMLElement>;
 
   readonly promptKeys = [
