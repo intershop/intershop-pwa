@@ -176,6 +176,18 @@ The `ish-captcha-field` Formly type now defines `captcha` as default key, so its
 If you register the `ish-captcha-field` type in a custom module, add `key: 'captcha'` to its `defaultOptions` as done in [`types.module.ts`](../../src/app/shared/formly/types/types.module.ts).
 As a consequence, the CAPTCHA token is now also written to the `captcha` property of the Formly model.
 
+**Angular 21 upgrade**
+
+Following the Angular 20 upgrade described above, Intershop PWA 13.0.0 is updated to Angular 21 and its compatible companion libraries, for example, NgRx 21 and `zone.js` 0.16.
+Because Angular 21 no longer enables zone-based change detection by default, the PWA enables it with the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), which must remain the first import of the `AppModule`.
+The [`tsconfig.spec.json`](../../tsconfig.spec.json) now also uses the `bundler` module resolution of the base [`tsconfig.json`](../../tsconfig.json).
+For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=20.0-21.0&l=3).
+
+The server-side rendering build required two adaptations that projects with a customized webpack or Babel configuration need to keep:
+
+- [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
+- [`babel.config.js`](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

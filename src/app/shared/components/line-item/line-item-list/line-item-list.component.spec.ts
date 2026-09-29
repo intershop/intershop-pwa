@@ -47,7 +47,7 @@ describe('Line Item List Component', () => {
 
   it('should render sub components if basket changes', () => {
     const changes: SimpleChanges = {
-      lineItems: new SimpleChange(false, component.lineItems, false),
+      lineItems: new SimpleChange(undefined, component.lineItems, false),
     };
 
     component.ngOnChanges(changes);
@@ -64,7 +64,7 @@ describe('Line Item List Component', () => {
     component.pageSize = 1;
     component.lineItems = [BasketMockData.getBasketItem(), BasketMockData.getBasketItem()];
     const changes: SimpleChanges = {
-      lineItems: new SimpleChange(false, component.lineItems, false),
+      lineItems: new SimpleChange(undefined, component.lineItems, false),
     };
 
     component.ngOnChanges(changes);
