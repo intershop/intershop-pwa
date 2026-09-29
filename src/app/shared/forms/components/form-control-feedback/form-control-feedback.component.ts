@@ -7,7 +7,7 @@ type FormErrorMessages = Record<string, string>;
   selector: 'ish-form-control-feedback',
   standalone: false,
   templateUrl: './form-control-feedback.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class FormControlFeedbackComponent implements DoCheck {
   @Input({ required: true }) control: AbstractControl;

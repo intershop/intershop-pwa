@@ -18,7 +18,7 @@ import { AddressDoctorModalComponent } from '../address-doctor-modal/address-doc
   selector: 'ish-address-doctor',
   standalone: false,
   templateUrl: './address-doctor.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 @GenerateLazyComponent()
 export class AddressDoctorComponent implements AfterViewInit {
