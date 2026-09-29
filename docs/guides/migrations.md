@@ -188,6 +188,16 @@ The server-side rendering build required two adaptations that projects with a cu
 - [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
 - [`babel.config.js`](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
 
+**`ChangeDetectionStrategy.Default` replaced by `ChangeDetectionStrategy.Eager`**
+
+Angular 21 deprecates `ChangeDetectionStrategy.Default` in favor of the equivalent `ChangeDetectionStrategy.Eager`but does not provide a migration for this change.
+All PWA usages have been replaced.
+To apply this change to custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
+```
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
