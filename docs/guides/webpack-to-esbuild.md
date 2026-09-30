@@ -16,6 +16,62 @@ It is intentionally not exhaustive and will be extended as the migration settles
 Angular's `@angular-devkit/build-angular:browser` (webpack) is superseded by the `@angular/build:application` builder, which uses esbuild for bundling and Vite for the development server.
 The main benefits are significantly faster cold builds and rebuilds, faster `ng serve` startup, and less custom build configuration to maintain.
 
+## Goal of the experimental branch
+
+<!-- cspell:ignore expirement -->
+
+`expirement/esbuild-cleanup` provides a migration that can be reviewed by purpose, while retaining the PWA's B2B/B2C builds, browser and SSR behavior, production optimizations, and PM2 deployment.
+It replaces the custom webpack pipeline with Angular's application builder and Vite development server.
+Custom theme overrides remain a separate follow-up.
+
+The branch starts with preparations that can be reviewed and merged into `develop` while it still uses webpack.
+`expirement/esbuild-preparations-clean` contains those seven commits without the builder migration.
+Three already have preparation PRs; the remaining four also have independent branches.
+Some preparations remove compatibility obstacles, while others fix existing runtime or test behavior.
+They should not all be treated as requirements for esbuild.
+
+### Preparation commits and their purpose
+
+| Commit      | Preparation                           | Reason for including it before the migration                                                                                                                                                                                                                                                   |
+| ----------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `2d5861380` | Translation and font imports          | Reads dynamically imported JSON through its default export and replaces webpack-specific `~` font URLs. These changes remove import and asset-resolution assumptions that do not carry over to esbuild. See [#2193](https://github.com/intershop/intershop-pwa/pull/2193).                     |
+| `f384fbad9` | Store Devtools configuration          | Uses `PRODUCTION_MODE` instead of a replacement module. This simplifies the configurations carried into the new builder and keeps Devtools disabled in production. Esbuild does not require this particular implementation. See [#2182](https://github.com/intershop/intershop-pwa/pull/2182). |
+| `397aabb55` | Angular SSR request token             | Uses Angular's `REQUEST` and the Web `Request` API in SEO and Markdown rendering. Vite SSR supplies this standard token; custom Express SSR provides it by converting the Node request. See [#2191](https://github.com/intershop/intershop-pwa/pull/2191).                                     |
+| `08f7a4022` | Active-theme routing and cache purges | Fixes routing for inactive and hyphenated themes and waits for upstream purge responses. This is an independent runtime fix for the multi-theme deployment retained by the migration. Branch: `fix/ssr-active-theme-routing`.                                                                  |
+| `0d720c696` | SSR health checks                     | Makes health checks run without an explicit `ICM_BASE_URL`, terminate timed-out requests, and wait for successful probes before reporting success. This is an independent deployment fix. Branch: `fix/ssr-health-checks`.                                                                     |
+| `27c78854c` | PM2 metrics collection                | Fixes restart-count accumulation when worker data is missing and handles bus failures and startup without IPC. These monitoring fixes can be reviewed independently of the new SSR packaging. Branch: `fix/pm2-metrics-collection`.                                                            |
+| `9b7ce49fc` | Basket and CMS test synchronization   | Waits for the basket update response and targets the intended homepage CMS request when simulating errors. This reduces timing assumptions and unrelated intercepted failures. Branch: `test/stabilize-basket-and-cms-errors`.                                                                 |
+
+### What the removal tests established
+
+Each of the last four preparations was removed separately from the migration, with the other preparations retained.
+Every variant passed the B2C development browser/SSR build and runtime packaging.
+Chrome checks confirmed browser configuration loading, a working home page, and missing product/category pages returning 404 while preserving their URLs.
+
+The distributor, health-check, and metrics removals reproduced the operational defects described above, but did not prevent the tested build or storefront behavior.
+Metrics failure checks used controlled PM2 data with the real metrics library.
+The seven existing REST-error Cypress tests and three focused basket quantity persistence checks passed both with and without the test preparation.
+These runs did not demonstrate that the test changes are required, and do not establish reliability under every network timing condition.
+
+The checks tested individual removals, not removal of all four together.
+They did not repeat production builds, Docker validation, a live PM2 cluster, or the full Cypress suite.
+Keep the runtime fixes as independent improvements rather than describing them as esbuild prerequisites.
+
+### Migration commits after the preparations
+
+Review the migration in this order:
+
+1. `1cd5dcc75` switches Angular builders, build scripts, and the SSR runtime layout together.
+2. `ac0d75594` restores production removal of `data-testing-*` attributes before Angular compiles the templates.
+3. `79756aa79` restores production CSS purging through PostCSS, including dependencies, activation, and safelisting.
+4. `9fa55f916` adapts Docker, CI, and documentation to the new output and commands.
+5. `431495ece` fixes error-URL preservation and state transfer for the new SSR lifecycle.
+
+The final SSR fix belongs with the migration because Angular's Vite SSR engine interprets a changed server location as an HTTP redirect.
+It uses `skipLocationChange` when rendering missing-resource errors and supports Angular's `RESPONSE_INIT` when no custom Express response is available.
+It also excludes router state from NgRx transfer so the browser keeps its own URL and emits the navigation action used to load configuration.
+Using `take(1)` instead of `first()` lets route extraction finish without a navigation action or an `EmptyError`.
+
 ## Preparations before switching builders
 
 Incorporate these preparations while still using webpack to reduce the scope of the esbuild migration.
