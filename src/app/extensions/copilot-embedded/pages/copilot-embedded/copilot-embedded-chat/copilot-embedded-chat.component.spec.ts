@@ -45,6 +45,31 @@ describe('Copilot Embedded Chat Component', () => {
     expect(element.querySelector('.copilot-embedded-error').textContent.trim()).toBe('copilot.embedded.error.generic');
   });
 
+  it('should show the welcome prompts before a conversation starts', () => {
+    fixture.detectChanges();
+
+    expect(element.querySelector('.copilot-embedded-welcome')).toBeTruthy();
+    expect(element.querySelectorAll('.copilot-embedded-prompt-badges button')).toHaveLength(4);
+  });
+
+  it('should disable sending and show the typing indicator while loading', () => {
+    component.messages = [{ message: 'Question', type: 'userMessage' }];
+    component.loading = true;
+    fixture.detectChanges();
+
+    expect(element.querySelector('.copilot-embedded-typing')).toBeTruthy();
+    expect(element.querySelector<HTMLButtonElement>('[aria-label="copilot.embedded.input.send"]').disabled).toBeTrue();
+  });
+
+  it('should not emit a message while loading', () => {
+    const emit = jest.spyOn(component.send, 'emit');
+    component.loading = true;
+
+    component.submit('please wait');
+
+    expect(emit).not.toHaveBeenCalled();
+  });
+
   describe('choice chips', () => {
     it('should render single-select chips without a confirm button for the last bot message', () => {
       component.messages = [botMessage({ options: ['In the office', 'Hybrid', 'Mobile'], multiSelect: false })];
