@@ -24,6 +24,8 @@ function intershopPurgeCss(options = {}) {
         /\bcarousel\b/,
         /\bslide\b/,
         /\bnav-tabs\b/,
+        /\btab-content\b/,
+        /\btab-pane\b/,
         /\bnav-link\b/,
         /\bpopover\b/,
         /\btable\b/,
