@@ -1,6 +1,7 @@
 // cspell:ignore chatflows
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, from, of } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
 
@@ -8,7 +9,7 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
@@ -17,6 +18,7 @@ import {
   CopilotEmbeddedResponse,
   CopilotEmbeddedStreamEvent,
 } from '../../models/copilot-embedded/copilot-embedded.model';
+import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config/copilot-embedded-config.selectors';
 
 /**
  * Parses a single raw SSE event block into a {@link CopilotEmbeddedStreamEvent}.
@@ -78,7 +80,7 @@ function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent | undefined
 export class CopilotEmbeddedService {
   constructor(
     private httpClient: HttpClient,
-    private statePropertiesService: StatePropertiesService,
+    private store: Store,
     private appFacade: AppFacade,
     private apiTokenService: ApiTokenService,
     private checkoutFacade: CheckoutFacade,
@@ -87,13 +89,11 @@ export class CopilotEmbeddedService {
   ) {}
 
   /**
-   * The effective Copilot Embedded configuration from server state, environment variable or `environment.ts`.
+   * The Copilot Embedded configuration from the store (server state, environment variable or `environment.ts`).
+   * Emits once the lazily loaded store slice holds the configuration.
    */
   getConfiguration$(): Observable<CopilotEmbeddedConfig> {
-    return this.statePropertiesService.getStateOrEnvOrDefault<CopilotEmbeddedConfig>(
-      'COPILOT_EMBEDDED',
-      'copilotEmbedded'
-    );
+    return this.store.pipe(select(getCopilotEmbeddedConfig), whenTruthy());
   }
 
   /**
