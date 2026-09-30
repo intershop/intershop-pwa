@@ -126,6 +126,7 @@
     "@angular/language-service": "^21.2.24",
     "@babel/plugin-proposal-decorators": "^7.29.7",
     "@babel/plugin-transform-class-properties": "^7.29.7",
+    "@babel/plugin-transform-class-static-block": "^7.29.7",
     "@babel/plugin-transform-private-methods": "^7.29.7",
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
