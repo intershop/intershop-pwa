@@ -25,21 +25,7 @@
   }
 
   .copilot-embedded-header-reset {
-    width: auto;
-    padding: 0;
     margin-left: auto;
-    font-size: 20px;
-    line-height: 1;
-    text-align: right;
-
-    // reuse btn-secondary hover/focus color, but without its border/background
-    &,
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: transparent;
-      border-color: transparent;
-    }
 
     .bi::before {
       vertical-align: 0;
