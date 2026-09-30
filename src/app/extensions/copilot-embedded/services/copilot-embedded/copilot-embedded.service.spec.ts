@@ -1,6 +1,7 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -8,11 +9,11 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
 import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import { CopilotEmbeddedResponse } from '../../models/copilot-embedded/copilot-embedded.model';
+import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config/copilot-embedded-config.selectors';
 
 import { CopilotEmbeddedService } from './copilot-embedded.service';
 
@@ -28,12 +29,8 @@ const predictionUrl = 'https://flowise.example.com/api/v1/prediction/chatflow-12
 describe('Copilot Embedded Service', () => {
   let copilotEmbeddedService: CopilotEmbeddedService;
   let httpTestingController: HttpTestingController;
-  let statePropertiesService: StatePropertiesService;
 
   beforeEach(() => {
-    statePropertiesService = mock(StatePropertiesService);
-    when(statePropertiesService.getStateOrEnvOrDefault(anything(), anything())).thenReturn(of(copilotEmbeddedConfig));
-
     const appFacade = mock(AppFacade);
     when(appFacade.getRestEndpointWithContext$).thenReturn(of('http://example.org/WFS/site/-;loc=en_US;cur=USD'));
     when(appFacade.currentLocale$).thenReturn(of('en_US'));
@@ -57,9 +54,9 @@ describe('Copilot Embedded Service', () => {
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideMockStore({ selectors: [{ selector: getCopilotEmbeddedConfig, value: copilotEmbeddedConfig }] }),
       ],
     });
 
