@@ -160,34 +160,59 @@
         padding: ($space-default * 0.5) ($space-default * 0.75);
         font-size: 14px;
         line-height: 20px;
-        color: $text-color-primary;
+        color: $CORPORATE-PRIMARY;
         background-color: $color-inverse;
         border: 1px solid $CORPORATE-PRIMARY;
         border-radius: 12px;
 
+        // inactive chip behaves like a secondary button
+        &:hover,
+        &:focus,
+        &.focus {
+          color: $CORPORATE-SECONDARY;
+          background-color: $color-tertiary;
+          border-color: $CORPORATE-SECONDARY;
+          box-shadow: none;
+        }
+
+        &:focus-visible {
+          box-shadow: none;
+        }
+
+        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled).active {
+          color: $CORPORATE-DARK;
+          background-color: $color-quaternary;
+          border-color: $CORPORATE-DARK;
+          box-shadow: none;
+        }
+
+        // selected chip behaves like a primary button
         &.selected {
           color: $color-inverse;
           background-color: $CORPORATE-PRIMARY;
-          border-color: $color-inverse;
+          border-color: $CORPORATE-PRIMARY;
 
-          &:hover {
-            color: $text-color-primary;
+          &:hover,
+          &:focus,
+          &.focus {
+            background-color: $CORPORATE-SECONDARY;
+            border-color: $CORPORATE-SECONDARY;
+            box-shadow: none;
           }
-        }
 
-        &:hover {
-          background-color: $color-tertiary;
+          &:not(:disabled):not(.disabled):active,
+          &:not(:disabled):not(.disabled).active {
+            background-color: $CORPORATE-DARK;
+            border-color: $CORPORATE-DARK;
+            box-shadow: none;
+          }
         }
       }
 
       .copilot-embedded-choice-confirm {
         flex-basis: 100%;
-        padding: 0;
-        font-size: 20px;
-        color: $CORPORATE-PRIMARY;
         text-align: right;
-        background-color: transparent;
-        border: 0;
 
         &:disabled {
           color: $text-color-tertiary;
