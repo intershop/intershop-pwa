@@ -141,6 +141,10 @@ The deprecated `typeface-roboto` and `typeface-roboto-condensed` packages have b
 The `@font-face` rules in `roboto.scss` now only reference `woff2` files and the webpack-specific `~` font URLs have been replaced with relative paths to the files in `node_modules` (esbuild compatibility preparation).
 Custom stylesheets referencing files from the old packages must be updated to the new paths, for example `@fontsource/roboto/files/roboto-latin-400-normal.woff2`.
 
+**Translation imports prepared for esbuild**
+
+Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)` (esbuild compatibility preparation).
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
