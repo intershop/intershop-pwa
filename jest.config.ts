@@ -17,6 +17,8 @@ export default {
   ...createCjsPreset(),
   testRunner: 'jest-jasmine2',
   maxWorkers: process.env.JEST_MAX_WORKERS || '75%', // keep some cpu for moving the mouse
+  // recycle workers with growing memory, otherwise the GitHub runner runs out of memory
+  workerIdleMemoryLimit: '512MB',
   roots: ['src', 'projects'],
   setupFilesAfterEnv: ['<rootDir>/src/setupJest.ts'],
   transformIgnorePatterns: [`node_modules/(?!${esModules.join('|')})`],

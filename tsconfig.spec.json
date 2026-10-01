@@ -10,7 +10,11 @@
     /* Modules */
     "module": "CommonJs",
     "moduleResolution": "node",
-    "allowJs": true
+    "allowJs": true,
+
+    /* Interop Constraints */
+    // transpile only, type checking is done by "npm run compile"
+    "isolatedModules": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }
