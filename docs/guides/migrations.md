@@ -135,6 +135,12 @@ The default value of the `displayEmail` input of `AddressComponent` (`ish-addres
 The e-mail address is now displayed by default.
 Explicitly set `[displayEmail]="false"` to continue hiding the e-mail address.
 
+**Roboto fonts switched to Fontsource**
+
+The deprecated `typeface-roboto` and `typeface-roboto-condensed` packages have been replaced by [`@fontsource/roboto`](https://fontsource.org/fonts/roboto) and [`@fontsource/roboto-condensed`](https://fontsource.org/fonts/roboto-condensed).
+The `@font-face` rules in `roboto.scss` now only reference `woff2` files and the webpack-specific `~` font URLs have been replaced with relative paths to the files in `node_modules` (esbuild compatibility preparation).
+Custom stylesheets referencing files from the old packages must be updated to the new paths, for example `@fontsource/roboto/files/roboto-latin-400-normal.woff2`.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
