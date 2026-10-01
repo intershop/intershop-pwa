@@ -45,6 +45,65 @@ describe('Copilot Embedded Chat Component', () => {
     expect(element.querySelector('.copilot-embedded-error').textContent.trim()).toBe('copilot.embedded.error.generic');
   });
 
+  it('should announce loading and completed replies without announcing streamed tokens', () => {
+    fixture.componentRef.setInput('messages', [{ message: 'Question', type: 'userMessage' }]);
+    fixture.componentRef.setInput('loading', true);
+    fixture.detectChanges();
+
+    const status = element.querySelector('[role="status"]');
+    expect(status.getAttribute('aria-live')).toBe('polite');
+    expect(status.textContent.trim()).toBe('copilot.embedded.typing');
+
+    fixture.componentRef.setInput('pendingAnswer', 'A partial answer');
+    fixture.detectChanges();
+    expect(status.textContent.trim()).toBe('copilot.embedded.typing');
+
+    fixture.componentRef.setInput('messages', [
+      { message: 'Question', type: 'userMessage' },
+      { message: 'A complete answer', type: 'apiMessage' },
+    ]);
+    fixture.detectChanges();
+    expect(status.textContent.trim()).toBe('copilot.embedded.typing');
+
+    fixture.componentRef.setInput('loading', false);
+    fixture.detectChanges();
+    expect(status.textContent.trim()).toBe('A complete answer');
+  });
+
+  it('should announce when recommended products are available', () => {
+    fixture.componentRef.setInput('messages', [
+      {
+        ...botMessage(),
+        usedTools: [
+          {
+            tool: 'icmSearch',
+            toolInput: {},
+            toolOutput: JSON.stringify({ output: [{ products: [{ sku: 'product-1' }] }] }),
+          },
+        ],
+      },
+    ]);
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]').textContent.trim()).toBe(
+      'How do these employees mainly work? copilot.embedded.results.announcement'
+    );
+  });
+
+  it('should not announce product availability when a reply has no recommended products', () => {
+    fixture.componentRef.setInput('messages', [botMessage()]);
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]').textContent.trim()).toBe('How do these employees mainly work?');
+  });
+
+  it('should announce request errors', () => {
+    fixture.componentRef.setInput('error', 'copilot.embedded.error.generic');
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]').textContent.trim()).toBe('copilot.embedded.error.generic');
+  });
+
   it('should show the welcome prompts before a conversation starts', () => {
     fixture.detectChanges();
 
