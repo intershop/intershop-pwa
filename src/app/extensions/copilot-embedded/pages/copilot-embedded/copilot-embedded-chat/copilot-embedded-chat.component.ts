@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
+import { extractProductsFromToolCalls } from '../../../models/copilot-embedded-product/copilot-embedded-product.helper';
 import { createImageThumbnail } from '../../../models/copilot-embedded/copilot-embedded-image.helper';
 import {
   CopilotEmbeddedChatMessage,
@@ -41,6 +42,9 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
   @Input() error: string;
   @Input() toolErrors: { tool: string; error: string }[] = [];
 
+  /** Necessary for a11y: text of the screen reader live region */
+  announcement = '';
+
   @Output() readonly send = new EventEmitter<{
     question: string;
     uploads?: CopilotEmbeddedUpload[];
@@ -50,6 +54,9 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
   @Output() readonly resetChat = new EventEmitter<void>();
 
   @ViewChild('chatWindow') private chatWindow: ElementRef<HTMLElement>;
+  /** Necessary for a11y: choicesGroup and questionInput are only read to manage focus */
+  @ViewChild('choicesGroup') private choicesGroup: ElementRef<HTMLElement>;
+  @ViewChild('questionInput') private questionInput: ElementRef<HTMLInputElement>;
 
   readonly promptKeys = [
     'copilot.embedded.prompt_1',
@@ -60,6 +67,8 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
 
   private stickToBottom = true;
   private scrollPending = false;
+  /** Necessary for a11y: the chip group is focused once it has been rendered. */
+  private focusChoicesPending = false;
 
   /** Currently ticked options for the most recent multi-select choice prompt. */
   readonly selectedOptions = new Set<string>();
@@ -88,6 +97,41 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
     if (changes.messages) {
       this.selectedOptions.clear();
     }
+
+    this.updateAnnouncement(changes);
+  }
+
+  /**
+   * Necessary for a11y: Keeps the live region on the request state.
+   * Streamed tokens are skipped to avoid a flood of updates.
+   */
+  private updateAnnouncement(changes: SimpleChanges) {
+    if (changes.error && this.error) {
+      this.announcement = this.translateService.instant(this.error);
+    } else if (changes.loading && this.loading) {
+      this.announcement = this.translateService.instant('copilot.embedded.typing');
+    } else if ((changes.messages || changes.loading) && !this.loading) {
+      const lastMessage = this.messages?.at(-1);
+      this.announcement = lastMessage?.type === 'apiMessage' ? this.announcementFor(lastMessage) : '';
+      this.focusChoicesPending = !!lastMessage?.choices?.options?.length;
+    }
+  }
+
+  /** Necessary for a11y: announce available recommendations and answer choices with the reply. */
+  private announcementFor(message: CopilotEmbeddedChatMessage): string {
+    const announcements = [message.message];
+    if (extractProductsFromToolCalls(message.usedTools).length) {
+      announcements.push(this.translateService.instant('copilot.embedded.results.announcement'));
+    }
+    const options = message.choices?.options;
+    if (options?.length) {
+      announcements.push(
+        this.translateService.instant('copilot.embedded.choices.announcement', {
+          '0': options.join(', '),
+        })
+      );
+    }
+    return announcements.join(' ');
   }
 
   ngAfterViewChecked() {
@@ -95,6 +139,13 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
       this.scrollPending = false;
       if (this.stickToBottom) {
         this.scrollToBottom();
+      }
+    }
+    /** Necessary for a11y: focus ahead of the chips so the next Tab enters them instead of the input toolbar */
+    if (this.focusChoicesPending) {
+      this.focusChoicesPending = false;
+      if (!this.questionInput?.nativeElement.value) {
+        this.choicesGroup?.nativeElement.focus({ preventScroll: true });
       }
     }
   }
