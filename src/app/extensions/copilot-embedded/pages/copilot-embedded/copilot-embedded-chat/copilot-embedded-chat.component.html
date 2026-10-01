@@ -1,4 +1,5 @@
 <div class="copilot-embedded-chat">
+  <div aria-atomic="true" aria-live="polite" class="visually-hidden" role="status">{{ announcement }}</div>
   @if (messages?.length || pendingAnswer) {
     @if (deviceType !== 'mobile') {
       <ish-copilot-embedded-header (resetChat)="resetChat.emit()" />
@@ -21,7 +22,13 @@
           {{ message.message }}
 
           @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
-            <div class="copilot-embedded-choices">
+            <div
+              #choicesGroup
+              class="copilot-embedded-choices"
+              role="group"
+              tabindex="-1"
+              [attr.aria-label]="'copilot.embedded.choices.label' | translate"
+            >
               @if (message.choices.multiSelect) {
                 @for (option of message.choices.options; track option) {
                   <button
@@ -122,9 +129,13 @@
 
   <div class="copilot-embedded-input input-group">
     <div class="copilot-embedded-input-field">
+      <label class="visually-hidden" for="copilot-embedded-question">
+        {{ 'copilot.embedded.input.placeholder' | translate }}
+      </label>
       <input
         #questionInput
         class="form-control"
+        id="copilot-embedded-question"
         type="text"
         [placeholder]="'copilot.embedded.input.placeholder' | translate"
         (keyup.enter)="submit(questionInput.value); questionInput.value = ''"
@@ -141,6 +152,7 @@
         class="btn"
         type="button"
         [attr.aria-label]="'copilot.embedded.input.camera' | translate"
+        [title]="'copilot.embedded.input.camera' | translate"
         (click)="imageInput.click()"
       >
         <i class="bi bi-card-image"></i>
@@ -151,6 +163,7 @@
       type="button"
       [attr.aria-label]="'copilot.embedded.input.send' | translate"
       [disabled]="loading"
+      [title]="'copilot.embedded.input.send' | translate"
       (click)="submit(questionInput.value); questionInput.value = ''"
     >
       <i class="bi bi-send-fill"></i>

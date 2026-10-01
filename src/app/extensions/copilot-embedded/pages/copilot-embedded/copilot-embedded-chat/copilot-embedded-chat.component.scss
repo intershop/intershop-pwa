@@ -156,6 +156,10 @@
       gap: ($space-default * 0.75);
       padding-top: $space-default;
 
+      &:focus {
+        outline: none;
+      }
+
       .copilot-embedded-choice-chip {
         padding: ($space-default * 0.5) ($space-default * 0.75);
         font-size: 14px;
@@ -256,9 +260,12 @@
       position: relative;
       flex: 1 0 0;
 
-      // reserve space so the input text does not run under the camera button
       .form-control {
         padding-right: ($space-default * 3);
+
+        @include media-breakpoint-down(sm) {
+          font-size: 16px; // prevent page zoom on mobile devices
+        }
       }
 
       .btn {
@@ -303,5 +310,9 @@
         }
       }
     }
+  }
+
+  .copilot-embedded-tool-errors {
+    display: none;
   }
 }
