@@ -10,11 +10,25 @@ const tsConfig = require('comment-json').parse(fs.readFileSync('./tsconfig.json'
 
 const esModules = ['lodash-es/.*', 'uuid', 'rxjs', '@angular/common/locales/.*\\.js$', '.*\\.mjs$'];
 
+const preset = createCjsPreset();
+
 export default {
   globals: {
     SSR: false,
   },
-  ...createCjsPreset(),
+  ...preset,
+  transform: {
+    // downlevel native async/await like the Angular CLI does for zone.js apps, so fakeAsync can track router navigation
+    'node_modules[\\\\/]@angular[\\\\/]router[\\\\/].+\\.mjs$': [
+      'babel-jest',
+      {
+        configFile: false,
+        babelrc: false,
+        plugins: ['@babel/plugin-transform-async-to-generator', '@babel/plugin-transform-modules-commonjs'],
+      },
+    ],
+    ...preset.transform,
+  },
   testRunner: 'jest-jasmine2',
   maxWorkers: process.env.JEST_MAX_WORKERS || '75%', // keep some cpu for moving the mouse
   // recycle workers with growing memory, otherwise the GitHub runner runs out of memory
