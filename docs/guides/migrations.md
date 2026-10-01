@@ -152,6 +152,14 @@ Custom code injecting the token must update the import and replace Express-speci
 Custom server bootstraps must provide the request via `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` as done in [`server.ts`](../../server.ts).
 The `RESPONSE` and `REQUEST_ID` tokens remain unchanged.
 
+**Store Devtools production configuration**
+
+Store Devtools are now configured through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in _angular.json_, and the obsolete _store-devtools.module.production.ts_ file has been removed.
+The default behavior is unchanged (enabled in development, disabled in production).
+
+If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
+To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
