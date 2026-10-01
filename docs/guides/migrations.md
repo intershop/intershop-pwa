@@ -145,6 +145,13 @@ Custom stylesheets referencing files from the old packages must be updated to th
 
 Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)` (esbuild compatibility preparation).
 
+**Angular SSR `REQUEST` token**
+
+The custom `REQUEST` token from `ish-core/utils/ssr/ssr.tokens` has been replaced by Angular's [`REQUEST`](https://angular.dev/api/core/REQUEST) token from `@angular/core`, which provides a standard Web `Request` instead of an Express request.
+Custom code injecting the token must update the import and replace Express-specific access, for example `request.get('host')` with `new URL(request.url).host` and `request.get('header-name')` with `request.headers.get('header-name')`.
+Custom server bootstraps must provide the request via `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` as done in [`server.ts`](../../server.ts).
+The `RESPONSE` and `REQUEST_ID` tokens remain unchanged.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

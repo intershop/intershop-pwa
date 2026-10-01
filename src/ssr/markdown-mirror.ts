@@ -7,12 +7,13 @@
  * only registers the route and renders the underlying PWA page via the Angular SSR engine.
  */
 
-import { CommonEngine } from '@angular/ssr/node';
+import { REQUEST } from '@angular/core';
+import { CommonEngine, createWebRequestFromNodeRequest } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'path';
 
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
+import { REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { APP_BASE_HREF } from '../main.server';
 
@@ -63,7 +64,7 @@ export function registerMarkdownMirror(server: express.Application, deps: Markdo
         inlineCriticalCss: false,
         providers: [
           { provide: APP_BASE_HREF, useValue: baseHref },
-          { provide: REQUEST, useValue: req },
+          { provide: REQUEST, useValue: createWebRequestFromNodeRequest(req, ['x-forwarded-proto']) },
           { provide: RESPONSE, useValue: res },
           { provide: REQUEST_ID, useValue: getRequestId(req) },
         ],
