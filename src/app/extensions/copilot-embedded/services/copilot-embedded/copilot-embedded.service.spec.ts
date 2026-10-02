@@ -87,14 +87,28 @@ describe('Copilot Embedded Service', () => {
 
     const req = httpTestingController.expectOne(predictionUrl);
     expect(req.request.method).toEqual('POST');
-    // the current basket and order templates are appended to the question as markers
-    expect(req.request.body.question).toEqual('recommend a laptop\n\n[CURRENT_BASKET]=[]\n[ORDER_TEMPLATES]=[]');
+    // the current basket, order templates and shown products are appended to the question as markers
+    expect(req.request.body.question).toEqual(
+      'recommend a laptop\n\n[CURRENT_BASKET]=[]\n[ORDER_TEMPLATES]=[]\n[SHOWN_PRODUCTS]=[]'
+    );
     expect(req.request.body.overrideConfig.sessionId).toEqual('session-1');
     expect(req.request.body.overrideConfig.vars.currentLocale).toEqual('en_US');
     expect(req.request.body.overrideConfig.vars.restEndpoint).toEqual(
       'http://example.org/WFS/site/-;loc=en_US;cur=USD'
     );
     req.flush(response);
+  });
+
+  it('should append the shown products to the question', done => {
+    copilotEmbeddedService
+      .sendMessage('add the first one', { shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }] })
+      .subscribe(() => done());
+
+    const req = httpTestingController.expectOne(predictionUrl);
+    expect(req.request.body.question).toEndWith(
+      '\n[SHOWN_PRODUCTS]=[{"sku":"201807204","title":"Microsoft Surface Laptop"}]'
+    );
+    req.flush({ text: 'ok' });
   });
 
   it('should merge additional request vars into the chatflow variables', done => {

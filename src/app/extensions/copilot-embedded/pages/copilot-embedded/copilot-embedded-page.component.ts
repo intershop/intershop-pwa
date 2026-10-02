@@ -14,12 +14,20 @@ import { extractChoicePromptFromToolCalls } from '../../models/copilot-embedded/
 import {
   CopilotEmbeddedChatMessage,
   CopilotEmbeddedChatSession,
+  CopilotEmbeddedRequestOptions,
   CopilotEmbeddedResponse,
   CopilotEmbeddedToolCall,
   CopilotEmbeddedUpload,
 } from '../../models/copilot-embedded/copilot-embedded.model';
 
 const SESSION_STORAGE_KEY = 'copilot_embedded_session_id';
+
+interface CopilotEmbeddedPageRequest {
+  question: string;
+  sessionId: string;
+  uploads?: CopilotEmbeddedUpload[];
+  shownProducts: { sku: string; title?: string }[];
+}
 
 function generateSessionId(): string {
   return `pa-${crypto.randomUUID()}`;
@@ -95,7 +103,8 @@ export class CopilotEmbeddedPageComponent implements OnInit {
       imageUrl,
     });
 
-    const request = { question: trimmed ?? '', sessionId: this.sessionId, uploads };
+    const shownProducts = this.products.map(product => ({ sku: product.sku, title: product.title }));
+    const request = { question: trimmed ?? '', sessionId: this.sessionId, uploads, shownProducts };
     this.resolveStreaming$()
       .pipe(take(1), takeUntilDestroyed(this.destroyRef))
       .subscribe(streamingAvailable =>
@@ -133,11 +142,11 @@ export class CopilotEmbeddedPageComponent implements OnInit {
     this.persistSessionId(this.sessionId);
   }
 
-  private startStreaming(request: { question: string; sessionId: string; uploads?: CopilotEmbeddedUpload[] }) {
+  private startStreaming(request: CopilotEmbeddedPageRequest) {
     let streamedTools: CopilotEmbeddedToolCall[];
 
     this.copilotEmbeddedFacade
-      .streamMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId, uploads: request.uploads })
+      .streamMessage(request.question, this.requestOptions(request))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: event => {
@@ -165,9 +174,9 @@ export class CopilotEmbeddedPageComponent implements OnInit {
       });
   }
 
-  private fetchFinalAnswer(request: { question: string; sessionId: string; uploads?: CopilotEmbeddedUpload[] }) {
+  private fetchFinalAnswer(request: CopilotEmbeddedPageRequest) {
     this.copilotEmbeddedFacade
-      .sendMessage(request.question, { sessionId: request.sessionId, chatId: this.chatId, uploads: request.uploads })
+      .sendMessage(request.question, this.requestOptions(request))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => this.finalizeAnswer(response),
@@ -180,6 +189,15 @@ export class CopilotEmbeddedPageComponent implements OnInit {
     this.addApiMessage(response.text, response.usedTools, response.chatMessageId);
     this.pendingAnswer = '';
     this.finish();
+  }
+
+  private requestOptions(request: CopilotEmbeddedPageRequest): CopilotEmbeddedRequestOptions {
+    return {
+      sessionId: request.sessionId,
+      chatId: this.chatId,
+      uploads: request.uploads,
+      shownProducts: request.shownProducts,
+    };
   }
 
   private addApiMessage(message: string, usedTools: CopilotEmbeddedToolCall[], messageId?: string) {
