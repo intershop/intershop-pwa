@@ -42,14 +42,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate self-signed TLS certificate for HTTP/2
+      - name: Install certificate trust tooling
         run: |
-          mkdir -p .github/lighthouse/certs
-          openssl req -x509 -newkey rsa:2048 -sha256 -nodes \
-            -keyout .github/lighthouse/certs/key.pem \
-            -out .github/lighthouse/certs/cert.pem \
-            -days 365 -subj '/CN=localhost' \
-            -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+          sudo apt-get update
+          sudo apt-get install --yes libnss3-tools
+
+      - name: Generate and trust TLS certificate for HTTP/2
+        run: bash .github/lighthouse/scripts/setup-trusted-certificate.sh
 
       - name: Run docker compose to start SSR and nginx
         uses: hoverkraft-tech/compose-action@v3
@@ -63,8 +62,23 @@ jobs:
           urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
           for url in $urls; do
             echo "Warming up $url"
-            curl -sk "$url" >/dev/null
+            curl --fail --silent --show-error "$url" >/dev/null
           done
+
+      - name: Verify trusted Chrome HTTPS and HTTP/2
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          http_version=$(curl --fail --silent --show-error --output /dev/null --write-out '%{http_version}' https://localhost:4200/home)
+          test "$http_version" = '2'
+
+          "$CHROME_PATH" \
+            --headless=new \
+            --no-sandbox \
+            --disable-dev-shm-usage \
+            --dump-dom \
+            https://localhost:4200/home >chrome-home.html
+          grep --quiet '<ish-root' chrome-home.html
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)
         env:
