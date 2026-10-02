@@ -66,9 +66,12 @@ Additionally, the PWA appends the current context to each question, because Flow
 ```text
 [CURRENT_BASKET]=[{"sku":"1234","quantity":2}]
 [ORDER_TEMPLATES]=[{"id":"abc","title":"My List"}]
+[SHOWN_PRODUCTS]=[{"sku":"201807204","title":"Microsoft Surface Laptop"}]
 ```
 
 The chatflow prompt can use these markers, e.g., to add products to the basket or to an existing order template without calling ICM first.
+`[SHOWN_PRODUCTS]` lists the products of the results panel in display order.
+The chatflow memory does not keep tool results, so this marker is the chatflow's source for the SKUs of products the user refers to, e.g., "add the first one".
 If the `orderTemplates` feature toggle is disabled, `[ORDER_TEMPLATES]` is always an empty list.
 
 ## Image Upload
