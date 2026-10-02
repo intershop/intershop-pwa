@@ -160,11 +160,12 @@ export class PaymentPaypalService {
           failureUrl: `${loc}/checkout/payment;lang=${lang}?redirect=failure`,
         };
 
-        const body = { paymentInstrument, redirect };
+        const existingToken = this.getPaypalTokenFromRedirectUrl(basket.payment?.redirectUrl);
+        const refreshExistingToken = existingToken && basket.payment?.paymentInstrument?.id === paymentInstrument;
 
-        return basket.payment?.redirectUrl?.split('token=')[1]
-          ? this.refreshPaypalToken(body)
-          : this.createPaypalToken(body);
+        return refreshExistingToken
+          ? this.refreshPaypalToken({ redirect })
+          : this.createPaypalToken({ paymentInstrument, redirect });
       })
     );
   }
@@ -192,7 +193,6 @@ export class PaymentPaypalService {
    * @returns An Observable emitting the PayPal token string, or an empty string if no token is available.
    */
   private refreshPaypalToken(body: {
-    paymentInstrument: string;
     redirect: { successUrl: string; cancelUrl: string; failureUrl: string };
   }): Observable<string> {
     return this.apiService
