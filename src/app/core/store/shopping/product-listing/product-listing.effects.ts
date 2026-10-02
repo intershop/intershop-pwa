@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { Store, select } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
 import {
   debounceTime,
@@ -44,6 +44,29 @@ import {
   setViewType,
 } from './product-listing.actions';
 import { getProductListingViewType } from './product-listing.selectors';
+
+/**
+ * Shape used for deduplication comparisons in product-listing effect streams.
+ */
+interface ListingDistinctData {
+  id?: { type?: string };
+  type?: string;
+}
+
+/**
+ * Treat requests as duplicates for non-search listing types only.
+ * Search requests are intentionally excluded so repeated identical searches are re-dispatched.
+ */
+function isDuplicateForNonSearch<T extends ListingDistinctData>(previous: T, current: T) {
+  const previousType = previous.id?.type || previous.type;
+  const currentType = current.id?.type || current.type;
+
+  return previousType !== 'search' && currentType !== 'search' && isEqual(previous, current);
+}
+
+function isDuplicateForNonSearchAction(previous: Action, current: Action) {
+  return previous.type !== searchProducts.type && current.type !== searchProducts.type && isEqual(previous, current);
+}
 
 @Injectable()
 export class ProductListingEffects {
@@ -156,7 +179,7 @@ export class ProductListingEffects {
           )
         );
       }),
-      distinctUntilChanged(isEqual),
+      distinctUntilChanged(isDuplicateForNonSearch),
       // prevent an unnecessary loadMoreProductsForParamsAction in case a new search is triggered and a query parameter like a filter had been previously been set
       debounceTime(1),
       map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
@@ -167,7 +190,7 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
-      distinctUntilChanged(isEqual),
+      distinctUntilChanged(isDuplicateForNonSearch),
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
@@ -186,7 +209,7 @@ export class ProductListingEffects {
         }
       }),
       whenTruthy(),
-      distinctUntilChanged(isEqual)
+      distinctUntilChanged(isDuplicateForNonSearchAction)
     )
   );
 
@@ -195,8 +218,8 @@ export class ProductListingEffects {
       ofType(loadMoreProductsForParams),
       mapToPayload(),
       map(({ id, filters }) => ({ type: id.type, value: id.value, filters })),
+      distinctUntilChanged(isDuplicateForNonSearch),
       concatLatestFrom(() => this.store.pipe(select(getUserAuthorized))),
-      distinctUntilChanged(isEqual),
 
       // TODO: (Sparque handling) temporary solution until the category navigation will be handled by Sparque
       concatLatestFrom(() => this.productsServiceProvider.isSparqueSearchEnabled()),
