@@ -1,7 +1,7 @@
 import { Component, Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -32,7 +32,7 @@ describe('Requisition Management Breadcrumb Service', () => {
     class DummyComponent {}
     reqFacade = mock(RequisitionManagementFacade);
     TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router', 'configuration']), TranslatePipe],
+      imports: [CoreStoreModule.forTesting(['router', 'configuration'])],
       providers: [
         { provide: RequisitionManagementFacade, useFactory: () => instance(reqFacade) },
         provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),
