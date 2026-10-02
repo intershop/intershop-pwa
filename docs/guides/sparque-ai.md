@@ -62,20 +62,21 @@ pwa:
       features: ['search', 'suggestions', 'recommendations']
 ```
 
-Example for the specification of the SPARQUE configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example for the specification of the SPARQUE configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: SPARQUE
-    value: |
-      {
-        "serverUrl": "<sparque connection url>",
-        "workspaceName": "<name of the workspace>",
-        "apiName": "<used sparque api>",
-        "config": "<optional parameter => default>",
-        "channelId": "<channel configured in sparque workspace>"
-        "features": "['search', 'suggestions', 'recommendations']"
-      }
+app:
+  env:
+    - name: SPARQUE
+      value: |
+        {
+          "serverUrl": "<sparque connection url>",
+          "workspaceName": "<name of the workspace>",
+          "apiName": "<used sparque api>",
+          "config": "<optional parameter => default>",
+          "channelId": "<channel configured in sparque workspace>"
+          "features": "['search', 'suggestions', 'recommendations']"
+        }
 ```
 
 ### Configuration Parameters Explained

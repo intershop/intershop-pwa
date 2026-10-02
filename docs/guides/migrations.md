@@ -9,6 +9,13 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**PWA Helm Chart 1.0.0**
+
+For Kubernetes deployments, we recommend using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) 1.0.0 or later.
+With this major release, the chart has been renamed from `pwa-main` to `pwa` and its values have been restructured, e.g., `environment` moved to `app.env`, `cache.*` moved to `proxy.*`, and `upstream.icmBaseURL` moved to `config.icmBaseUrl`.
+All Helm configuration examples in the PWA documentation refer to the PWA Helm Chart 1.0.0 values structure.
+To migrate existing deployment configurations, follow the [Migration to 1.0.0](https://github.com/intershop/helm-charts/blob/main/charts/pwa/docs/migrate-to-1.0.0.md) guide, which also provides a migration script for Flux `HelmRelease` and values files.
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.
@@ -160,6 +167,14 @@ The default behavior is unchanged (enabled in development, disabled in productio
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
 To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
 
+**Unification of `SSR_HYBRID_BACKEND` into `ICM_BASE_URL_SSR`**
+
+The `SSR_HYBRID_BACKEND` environment variable has been removed and unified with `ICM_BASE_URL_SSR`.
+Both variables pointed to the same target - the internal ICM Web Adapter service URL used for server-side backend requests in joint Kubernetes deployments.
+The `/INTERSHOP` proxy of the SSR server (used in the Hybrid Approach and with `PROXY_ICM`) now uses `ICM_BASE_URL_SSR` instead of `SSR_HYBRID_BACKEND`, falling back to `ICM_BASE_URL` when it is not set.
+Deployments that set `SSR_HYBRID_BACKEND` must rename it to `ICM_BASE_URL_SSR`.
+For Helm deployments, use the PWA Helm Chart 1.0.0 or later and configure the internal ICM Web Adapter service URL via `config.icmBaseUrlSsr` instead of `hybrid.icmInternalURL`.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
@@ -207,12 +222,11 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 **ESLint Perfectionist plugin**

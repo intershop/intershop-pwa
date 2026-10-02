@@ -99,12 +99,11 @@ Read on for a step-by-step walkthrough of the initial connection request.
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 ## Deployment Without Nginx
