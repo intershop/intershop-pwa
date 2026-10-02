@@ -40,6 +40,8 @@ export interface CopilotEmbeddedRequestOptions {
   chatId?: string;
   /** Image/file attachments forwarded to the chatflow for vision input. */
   uploads?: CopilotEmbeddedUpload[];
+  /** Products currently shown in the results panel, in display order. */
+  shownProducts?: { sku: string; title?: string }[];
   /** Additional chatflow variables merged into `overrideConfig.vars` for this request. */
   vars?: Record<string, unknown>;
 }

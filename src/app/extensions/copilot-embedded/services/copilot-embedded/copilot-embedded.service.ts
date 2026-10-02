@@ -72,9 +72,10 @@ function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent | undefined
  *
  * The `restEndpoint`, `currentLocale` and - for logged-in users - the ICM `user_token` are provided
  * as chatflow variables on every request (mirroring the Copilot integration) so the chatflow can
- * call back into ICM as the current user. The current basket contents and order templates are
- * appended to the question as `[CURRENT_BASKET]` / `[ORDER_TEMPLATES]` markers so the chatflow can
- * act on them without a server-side read.
+ * call back into ICM as the current user. The current basket contents, order templates and the
+ * products shown in the results panel are appended to the question as `[CURRENT_BASKET]` /
+ * `[ORDER_TEMPLATES]` / `[SHOWN_PRODUCTS]` markers so the chatflow can act on them without a
+ * server-side read.
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedService {
@@ -165,6 +166,8 @@ export class CopilotEmbeddedService {
     streaming = false
   ): Observable<{ url: string; body: Record<string, unknown> }> {
     const uploads = options?.uploads?.length ? options.uploads : undefined;
+    // the chatflow memory keeps no tool output, so this is its only source for the SKUs of shown products
+    const shownProducts = JSON.stringify(options?.shownProducts ?? []);
     return combineLatest([
       this.getConfiguration$(),
       this.appFacade.getRestEndpointWithContext$,
@@ -188,7 +191,8 @@ export class CopilotEmbeddedService {
         const templates = (orderTemplates ?? []).map(t => ({ id: t.id, title: t.title }));
         const questionWithContext =
           `${question}\n\n[CURRENT_BASKET]=${JSON.stringify(basket)}` +
-          `\n[ORDER_TEMPLATES]=${JSON.stringify(templates)}`;
+          `\n[ORDER_TEMPLATES]=${JSON.stringify(templates)}` +
+          `\n[SHOWN_PRODUCTS]=${shownProducts}`;
 
         const body: Record<string, unknown> = {
           question: questionWithContext,

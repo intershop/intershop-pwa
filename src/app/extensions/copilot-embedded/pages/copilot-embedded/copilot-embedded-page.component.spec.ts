@@ -79,9 +79,22 @@ describe('Copilot Embedded Page Component', () => {
       sessionId: expect.any(String),
       chatId: undefined,
       uploads: undefined,
+      shownProducts: [],
     });
     expect(component.messages.map(message => message.message)).toEqual(['find laptops', 'A recommendation']);
     expect(component.loading).toBeFalse();
+  });
+
+  it('should forward the products shown in the results panel with the request', () => {
+    createPage();
+    component.products = [{ sku: '201807204', title: 'Microsoft Surface Laptop', price: 1999 }];
+
+    component.onSend({ question: 'add the recommended one' });
+
+    expect(facade.sendMessage).toHaveBeenCalledWith(
+      'add the recommended one',
+      expect.objectContaining({ shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }] })
+    );
   });
 
   it('should append streamed tokens and persist the resulting conversation', () => {
@@ -115,6 +128,7 @@ describe('Copilot Embedded Page Component', () => {
       sessionId: expect.any(String),
       chatId: 'stream-chat-2',
       uploads: undefined,
+      shownProducts: [],
     });
     expect(component.messages.at(-1)).toMatchObject({ message: 'Fallback answer', type: 'apiMessage' });
     expect(component.loading).toBeFalse();
