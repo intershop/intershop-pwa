@@ -1,4 +1,3 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { createSelector } from '@ngrx/store';
@@ -154,7 +153,6 @@ describe('Shopping Store', () => {
         { provide: SparqueRecommendationsService, useFactory: () => instance(sparqueRecommendationsServiceMock) },
         { provide: SparqueSuggestionsService, useFactory: () => instance(sparqueSuggestionsServiceMock) },
         { provide: SuggestService, useFactory: () => instance(suggestServiceMock) },
-        provideHttpClient(withInterceptorsFromDi()),
         provideRouter([
           {
             path: 'home',

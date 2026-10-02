@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgbModule, NgbRating } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { provideTranslateService } from '@ngx-translate/core';
 
 import { FormlyTestingComponentsModule } from 'ish-shared/formly/dev/testing/formly-testing-components.module';
 import { FormlyTestingContainerComponent } from 'ish-shared/formly/dev/testing/formly-testing-container/formly-testing-container.component';
@@ -30,7 +29,6 @@ describe('Rating Stars Field Component', () => {
         NgbModule,
       ],
       declarations: [RatingStarsFieldComponent],
-      providers: [provideTranslateService()],
     }).compileComponents();
   });
 
