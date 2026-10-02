@@ -129,6 +129,19 @@ describe('Copilot Embedded Chat Component', () => {
     expect(emit).not.toHaveBeenCalled();
   });
 
+  it('should not submit or clear the question on Enter while loading', () => {
+    const emit = jest.spyOn(component.send, 'emit');
+    component.loading = true;
+    fixture.detectChanges();
+
+    const input = element.querySelector<HTMLInputElement>('#copilot-embedded-question');
+    input.value = 'please wait';
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+
+    expect(emit).not.toHaveBeenCalled();
+    expect(input.value).toBe('please wait');
+  });
+
   describe('choice chips', () => {
     it('should render single-select chips without a confirm button for the last bot message', () => {
       component.messages = [botMessage({ options: ['In the office', 'Hybrid', 'Mobile'], multiSelect: false })];
