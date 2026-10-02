@@ -1,0 +1,20 @@
+<div class="copilot-embedded-header">
+  <div class="copilot-embedded-icon">
+    <i class="bi bi-stars"></i>
+  </div>
+  <div>
+    <p class="copilot-embedded-header-title">{{ 'copilot.embedded.title' | translate }}</p>
+    <p class="copilot-embedded-header-subtitle">{{ 'copilot.embedded.subtitle' | translate }}</p>
+  </div>
+  @if (canReset) {
+    <button
+      class="copilot-embedded-header-reset btn btn-link btn-tool"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.reset' | translate"
+      [title]="'copilot.embedded.reset' | translate"
+      (click)="resetChat.emit()"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  }
+</div>

@@ -1,0 +1,36 @@
+<div class="copilot-embedded-results">
+  <div class="copilot-embedded-results-header">
+    <h2>{{ 'copilot.embedded.results.title' | translate }}</h2>
+    <p>{{ 'copilot.embedded.results.subtitle' | translate }}</p>
+  </div>
+  @if (products.length) {
+    <div class="copilot-embedded-results-list">
+      @for (product of products; track product.sku) {
+        <ish-product-item
+          displayType="row"
+          ishProductContext
+          [configuration]="{
+            promotions: false,
+            quantity: false,
+            inventory: false,
+            shipment: false,
+            variations: false,
+            description: false,
+            addToWishlist: false,
+            addToOrderTemplate: false,
+            addToCompare: false,
+            addToQuote: false,
+            addToNotification: false,
+          }"
+          [sku]="product.sku"
+        />
+      }
+    </div>
+  } @else {
+    <p>{{ 'copilot.embedded.results.intro' | translate }}</p>
+  }
+  <button class="copilot-embedded-back-to-chat btn btn-link d-md-none" type="button" (click)="backToChat.emit()">
+    <i class="bi bi-arrow-left"></i>
+    {{ 'copilot.embedded.back_to_chat' | translate }}
+  </button>
+</div>
