@@ -1,5 +1,4 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -98,7 +97,6 @@ describe('Customer Store', () => {
         { provide: InventoryService, useFactory: () => instance(inventoryServiceMock) },
         { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
-        provideHttpClient(withInterceptorsFromDi()),
         provideRouter([
           {
             path: 'account',

@@ -3,12 +3,11 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlSerializer, provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { mock, when } from 'ts-mockito';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 import { ConfigurationService } from 'ish-core/services/configuration/configuration.service';
-import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { applyConfiguration, getFeatures, getRestEndpoint } from 'ish-core/store/core/configuration';
 import { ConfigurationEffects } from 'ish-core/store/core/configuration/configuration.effects';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -35,7 +34,6 @@ describe('Configuration Integration', () => {
         ),
       ],
       providers: [
-        { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },
         { provide: UrlSerializer, useClass: PWAUrlSerializer },
         provideRouter([{ path: 'home', children: [] }]),
         provideStoreSnapshots(),
