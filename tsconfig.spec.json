@@ -8,8 +8,6 @@
     "types": ["jest", "jest-extended", "node"],
 
     /* Modules */
-    "module": "CommonJs",
-    "moduleResolution": "node",
     "allowJs": true,
 
     /* Interop Constraints */

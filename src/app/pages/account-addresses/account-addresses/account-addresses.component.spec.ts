@@ -93,7 +93,7 @@ describe('Account Addresses Component', () => {
         providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
       })
         .overrideComponent(AccountAddressesComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
+          set: { changeDetection: ChangeDetectionStrategy.Eager },
         })
         .compileComponents();
     });
@@ -317,7 +317,7 @@ describe('Account Addresses Component', () => {
         ],
       })
         .overrideComponent(AccountAddressesComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
+          set: { changeDetection: ChangeDetectionStrategy.Eager },
         })
         .compileComponents();
     });

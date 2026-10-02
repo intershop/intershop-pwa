@@ -23,7 +23,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
   selector: 'ish-select-field',
   standalone: false,
   templateUrl: './select-field.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {

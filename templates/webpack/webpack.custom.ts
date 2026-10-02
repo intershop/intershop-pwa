@@ -171,6 +171,12 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
     (config.resolve.alias as Record<string, false | string>)['elastic-apm-node'] = false;
+    // zone.js 0.16 ESM node bundle uses a dynamic require webpack can't resolve, silently skipping its EventEmitter/fs patches
+    (config.resolve.alias as Record<string, false | string>)['zone.js/node$'] = join(
+      path.dirname(require.resolve('zone.js/package.json')),
+      'bundles',
+      'zone-node.umd.js'
+    );
   }
 
   logger.log('setting production:', production);

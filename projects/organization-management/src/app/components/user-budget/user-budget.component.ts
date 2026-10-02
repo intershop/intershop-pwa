@@ -11,7 +11,7 @@ import { UserBudget } from '../../models/user-budget/user-budget.model';
   selector: 'ish-user-budget',
   standalone: false,
   templateUrl: './user-budget.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UserBudgetComponent implements OnChanges {
   @Input() budget: UserBudget;

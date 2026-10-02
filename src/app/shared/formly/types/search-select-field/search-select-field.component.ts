@@ -11,7 +11,7 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
   selector: 'ish-search-select-field',
   standalone: false,
   templateUrl: './search-select-field.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SearchSelectFieldComponent extends FieldType<FieldTypeConfig> {
   defaultOptions = {
