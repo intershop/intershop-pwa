@@ -1,10 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpHeaders,
-  HttpParams,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Action, Store } from '@ngrx/store';
@@ -44,7 +38,6 @@ describe('Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: FeatureToggleService, useFactory: () => instance(featureToggleServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -194,7 +187,6 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -400,7 +392,6 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -556,7 +547,7 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CoreStoreModule.forTesting(['configuration', 'serverConfig'])],
-        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+        providers: [provideHttpClientTesting()],
       });
 
       apiService = TestBed.inject(ApiService);
@@ -679,7 +670,6 @@ describe('Api Service', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
