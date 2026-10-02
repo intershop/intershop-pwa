@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlSerializer, provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -33,7 +33,6 @@ describe('Configuration Integration', () => {
           [ConfigurationEffects],
           [configurationMeta]
         ),
-        TranslatePipe,
       ],
       providers: [
         { provide: LocalizationsService, useFactory: () => instance(mock(LocalizationsService)) },

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,7 +18,6 @@ describe('Budget Bar Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       declarations: [BudgetBarComponent, PricePipe],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
