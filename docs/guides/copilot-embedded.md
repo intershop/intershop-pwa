@@ -61,6 +61,11 @@ The PWA sends the following variables with every request (`overrideConfig.vars`)
 - `user_token` - ICM access token of the logged-in user, so the chatflow can call ICM on behalf of the user.
   It is only sent if a user is logged in.
 
+> [!IMPORTANT]
+> The ICM tools of the chatflow use their own ICM configuration, which is independent of the PWA.
+> Make sure that the PWA and the chatflow use the same ICM host and the same site (channel).
+> Otherwise, the chatflow recommends products that the PWA cannot load, and basket actions fail.
+
 Additionally, the PWA appends the current context to each question, because Flowise does not resolve runtime variables inside the prompt:
 
 ```text
