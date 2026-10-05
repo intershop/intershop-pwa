@@ -33,20 +33,26 @@ TypeScript has been updated to version 5.8 (required by Angular 20) and to 5.9 t
 The stricter type inference of TypeScript 5.8 reports object literal properties and function expressions initialized with `undefined` or `[]` as implicitly `any`.
 Check your custom code for new `TS7018`/`TS7011` compiler errors and add the appropriate type annotations.
 
-**Angular 20 upgrade**
+**Angular 20 and Angular 21 upgrade**
 
-With Intershop PWA 13.0.0, the project is updated to Angular 20.
-Companion libraries are updated to their Angular 20 compatible versions as well, for example NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
+With Intershop PWA 13.0.0, the project is updated to Angular 21 (via Angular 20).
+Companion libraries are updated to their Angular 21 compatible versions as well, for example NgRx 21, `@angular-eslint` 21, `@ng-bootstrap/ng-bootstrap` 20, and `zone.js` 0.16.
 
 Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
-The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.server.json` and `tsconfig.spec.json` keep `"node"`).
+The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"`, and `tsconfig.server.json` and `tsconfig.spec.json` no longer override `module` and `moduleResolution`.
 
-Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
+Angular 20 and 21 introduce several breaking changes that may require adaptations in custom code, for example:
 
 - `platformBrowserDynamic()` from `@angular/platform-browser-dynamic` is deprecated; use `platformBrowser()` from `@angular/platform-browser` for bootstrapping instead.
 - The `ng-reflect-*` attributes are no longer emitted; snapshot tests relying on them need to be updated.
 
-For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
+For the complete list of breaking changes, see the Angular Update Guide for [Angular 20](https://angular.dev/update-guide?v=19.0-20.0&l=3) and [Angular 21](https://angular.dev/update-guide?v=20.0-21.0&l=3).
+
+**Zone-based change detection provided explicitly**
+
+Angular 21 no longer provides zone-based change detection implicitly.
+The PWA keeps using `zone.js` and therefore provides `provideZoneChangeDetection()` via the new [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), which must stay the first import of the `AppModule`.
+Custom applications bootstrapped separately, for example the `main.ts` files of the [projects](../../projects), have to pass `provideZoneChangeDetection()` as application provider to `bootstrapModule()`.
 
 **`ChangeDetectionStrategy.Default` replaced by `Eager`**
 
