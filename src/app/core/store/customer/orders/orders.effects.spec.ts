@@ -4,7 +4,7 @@ import { Router, provideRouter } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, noop, of, throwError } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
@@ -62,11 +62,7 @@ describe('Orders Effects', () => {
     when(orderServiceMock.getOrderByToken(anyString(), anyString())).thenReturn(of(order));
 
     TestBed.configureTestingModule({
-      imports: [
-        CoreStoreModule.forTesting(['router']),
-        CustomerStoreModule.forTesting('user', 'orders', 'basket'),
-        TranslatePipe,
-      ],
+      imports: [CoreStoreModule.forTesting(['router']), CustomerStoreModule.forTesting('user', 'orders', 'basket')],
       providers: [
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         OrdersEffects,
