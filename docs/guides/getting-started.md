@@ -160,4 +160,4 @@ The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free
 
 For the PWA FAQ, refer to [Support Article - PWA FAQ](https://knowledge.intershop.com/kb/index.php/Display/KB0013287) in the Intershop Knowledge Base.
 
-To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://angular.dev/tools/cli).
+To get more help on the Angular CLI, use `ng help` or check out the [Angular CLI Documentation](https://github.com/angular/angular-cli/wiki).
