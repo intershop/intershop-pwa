@@ -9,6 +9,28 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**Angular 21 upgrade**
+
+Following the Angular 20 upgrade described below, Intershop PWA 13.0.0 is updated to Angular 21 and its compatible companion libraries, for example NgRx 21, and `zone.js` 0.16.
+Since Angular 21 no longer enables zone-based change detection by default, the PWA enables it with the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), which must remain the first import of the `AppModule`.
+The [`tsconfig.server.json`](../../tsconfig.server.json) and [`tsconfig.spec.json`](../../tsconfig.spec.json) now also use the `bundler` module resolution of the base [`tsconfig.json`](../../tsconfig.json).
+For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=20.0-21.0&l=3).
+
+The server-side rendering build required two adaptations that projects with a customized webpack or Babel configuration need to keep:
+
+- [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
+- [`babel.config.js`](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
+
+**`ChangeDetectionStrategy.Default` replaced by `Eager`**
+
+Angular 21 deprecates `ChangeDetectionStrategy.Default` in favor of the equivalent `ChangeDetectionStrategy.Eager`.
+All PWA usages have been replaced.
+To apply this change to custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
+```
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.
@@ -39,7 +61,7 @@ With Intershop PWA 13.0.0, the project is updated to Angular 20.
 Companion libraries are updated to their Angular 20 compatible versions as well, for example NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
 
 Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
-The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.server.json` and `tsconfig.spec.json` keep `"node"`).
+The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"`.
 
 Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
 
@@ -47,16 +69,6 @@ Angular 20 introduces several breaking changes that may require adaptations in c
 - The `ng-reflect-*` attributes are no longer emitted; snapshot tests relying on them need to be updated.
 
 For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
-
-**`ChangeDetectionStrategy.Default` replaced by `Eager`**
-
-Angular 21 deprecates `ChangeDetectionStrategy.Default` in favor of the equivalent `ChangeDetectionStrategy.Eager`, and Angular provides no migration for it.
-All PWA usages have been replaced.
-To apply this change to custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
-
-```bash
-ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
-```
 
 **Deprecated `@angular/animations` usage removed**
 

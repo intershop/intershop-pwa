@@ -24,8 +24,8 @@ However we recommend creating [InjectionTokens][angular-injectiontoken] and [pro
 This option provides the easiest approach.
 Different configurations can be provided while building the sources with Angular CLI.
 
-[angular-injectiontoken]: https://v20.angular.dev/api/core/InjectionToken
-[angular-injectiontoken-provide]: https://v20.angular.dev/guide/di/defining-dependency-providers
+[angular-injectiontoken]: https://v21.angular.dev/api/core/InjectionToken
+[angular-injectiontoken-provide]: https://v21.angular.dev/guide/di/defining-dependency-providers
 
 ## URL Parameters
 
