@@ -5,7 +5,7 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'ish-formly-testing-example',
   standalone: false,
   templateUrl: './formly-testing-example.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 // eslint-disable-next-line ish-custom-rules/require-formly-code-documentation
 export class FormlyTestingExampleComponent extends FieldType {}

@@ -35,7 +35,7 @@ import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
   selector: 'ish-lazy-captcha',
   standalone: false,
   templateUrl: './lazy-captcha.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class LazyCaptchaComponent implements OnInit, AfterViewInit {
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;

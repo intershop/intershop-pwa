@@ -10,6 +10,6 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-tooltip-wrapper',
   standalone: false,
   templateUrl: './tooltip-wrapper.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TooltipWrapperComponent extends FieldWrapper {}

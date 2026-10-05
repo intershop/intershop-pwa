@@ -11,7 +11,7 @@
     "prebuild": "npm run generate:schemas",
     "build": "tsc",
     "postbuild": "node scripts/copy-dist-files.mjs",
-    "test": "npx jest -i",
+    "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning ../node_modules/jest/bin/jest.js -i",
     "generate:schemas": "node scripts/generate-schema-defs.mjs"
   },
   "keywords": [

@@ -19,7 +19,7 @@ interface UserBudgetModel {
   selector: 'ish-user-budget-form',
   standalone: false,
   templateUrl: './user-budget-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UserBudgetFormComponent implements OnInit {
   @Input({ required: true }) form: FormGroup;

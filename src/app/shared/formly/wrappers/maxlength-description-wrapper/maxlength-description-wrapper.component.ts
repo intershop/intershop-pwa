@@ -17,7 +17,7 @@ import { startWith, switchMap, throttleTime } from 'rxjs/operators';
   selector: 'ish-maxlength-description-wrapper',
   standalone: false,
   templateUrl: './maxlength-description-wrapper.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class MaxlengthDescriptionWrapperComponent extends FieldWrapper implements OnInit {
   description$: Observable<string>;
