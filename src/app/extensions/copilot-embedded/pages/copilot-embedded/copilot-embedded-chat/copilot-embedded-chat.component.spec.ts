@@ -2,6 +2,7 @@ import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
+import { anything, capture, spy, verify } from 'ts-mockito';
 
 import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded/copilot-embedded.model';
 import { CopilotEmbeddedHeaderComponent } from '../copilot-embedded-header/copilot-embedded-header.component';
@@ -121,24 +122,39 @@ describe('Copilot Embedded Chat Component', () => {
   });
 
   it('should not emit a message while loading', () => {
-    const emit = jest.spyOn(component.send, 'emit');
+    const emitter = spy(component.send);
     component.loading = true;
 
     component.submit('please wait');
 
-    expect(emit).not.toHaveBeenCalled();
+    verify(emitter.emit(anything())).never();
+  });
+
+  it('should submit and clear the question on Enter keydown', () => {
+    const emitter = spy(component.send);
+    fixture.detectChanges();
+
+    const input = element.querySelector<HTMLInputElement>('#copilot-embedded-question');
+    input.value = 'Test question';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+
+    verify(emitter.emit(anything())).once();
+    const [payload] = capture(emitter.emit).last();
+    expect(payload).toEqual({ question: 'Test question' });
+    expect(input.value).toBeEmpty();
   });
 
   it('should not submit or clear the question on Enter while loading', () => {
-    const emit = jest.spyOn(component.send, 'emit');
+    const emitter = spy(component.send);
     component.loading = true;
     fixture.detectChanges();
 
     const input = element.querySelector<HTMLInputElement>('#copilot-embedded-question');
     input.value = 'please wait';
-    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 
-    expect(emit).not.toHaveBeenCalled();
+    verify(emitter.emit(anything())).never();
     expect(input.value).toBe('please wait');
   });
 
@@ -153,17 +169,19 @@ describe('Copilot Embedded Chat Component', () => {
     });
 
     it('should emit the option label when a single-select chip is clicked', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
       component.messages = [botMessage({ options: ['Hybrid', 'In the office'], multiSelect: false })];
       fixture.detectChanges();
 
       element.querySelector<HTMLButtonElement>('.copilot-embedded-choice-chip').click();
 
-      expect(emit).toHaveBeenCalledWith({ question: 'Hybrid' });
+      verify(emitter.emit(anything())).once();
+      const [payload] = capture(emitter.emit).last();
+      expect(payload).toEqual({ question: 'Hybrid' });
     });
 
     it('should render a confirm button for multi-select and emit the joined selection', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
       component.messages = [botMessage({ options: ['Docking station', 'Headset', 'Monitor'], multiSelect: true })];
       fixture.detectChanges();
 
@@ -176,7 +194,9 @@ describe('Copilot Embedded Chat Component', () => {
       expect(confirm.disabled).toBeFalse();
       confirm.click();
 
-      expect(emit).toHaveBeenCalledWith({ question: 'Docking station, Headset' });
+      verify(emitter.emit(anything())).once();
+      const [payload] = capture(emitter.emit).last();
+      expect(payload).toEqual({ question: 'Docking station, Headset' });
     });
 
     it('should keep the confirm button disabled while nothing is selected', () => {
@@ -221,43 +241,49 @@ describe('Copilot Embedded Chat Component', () => {
     const upload = { data: 'data:image/png;base64,AAAA', type: 'file' as const, name: 'photo.png', mime: 'image/png' };
 
     it('should emit the attached image together with the question', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
       component.pendingUpload = upload;
 
       component.submit('what is this?');
 
-      expect(emit).toHaveBeenCalledWith({ question: 'what is this?', uploads: [upload] });
+      verify(emitter.emit(anything())).once();
+      const [payload] = capture(emitter.emit).last();
+      expect(payload).toEqual({ question: 'what is this?', uploads: [upload] });
       expect(component.pendingUpload).toBeUndefined();
     });
 
     it('should emit an image without any question text', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
       component.pendingUpload = upload;
 
       component.submit('');
 
-      expect(emit).toHaveBeenCalledWith({ question: '', uploads: [upload] });
+      verify(emitter.emit(anything())).once();
+      const [payload] = capture(emitter.emit).last();
+      expect(payload).toEqual({ question: '', uploads: [upload] });
     });
 
     it('should emit the thumbnail together with the full-size upload', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
       component.pendingUpload = upload;
       // eslint-disable-next-line @typescript-eslint/dot-notation
       component['pendingThumbnail'] = 'data:image/jpeg;base64,THUMB';
 
       component.submit('');
 
-      expect(emit).toHaveBeenCalledWith({ question: '', uploads: [upload], thumbnail: 'data:image/jpeg;base64,THUMB' });
+      verify(emitter.emit(anything())).once();
+      const [payload] = capture(emitter.emit).last();
+      expect(payload).toEqual({ question: '', uploads: [upload], thumbnail: 'data:image/jpeg;base64,THUMB' });
       // eslint-disable-next-line @typescript-eslint/dot-notation
       expect(component['pendingThumbnail']).toBeUndefined();
     });
 
     it('should not emit when there is neither text nor an image', () => {
-      const emit = jest.spyOn(component.send, 'emit');
+      const emitter = spy(component.send);
 
       component.submit('   ');
 
-      expect(emit).not.toHaveBeenCalled();
+      verify(emitter.emit(anything())).never();
     });
 
     it('should discard the attached image on removeUpload', () => {

@@ -234,6 +234,10 @@
       position: relative;
       flex: 1 0 0;
 
+      &:focus-within {
+        z-index: 3;
+      }
+
       .form-control {
         padding-right: ($space-default * 3);
 

@@ -138,7 +138,7 @@
         id="copilot-embedded-question"
         type="text"
         [placeholder]="'copilot.embedded.input.placeholder' | translate"
-        (keyup.enter)="!loading && submit(questionInput.value); !loading && (questionInput.value = '')"
+        (keydown.enter)="!loading && submit(questionInput.value); !loading && (questionInput.value = '')"
       />
       <input
         #imageInput
