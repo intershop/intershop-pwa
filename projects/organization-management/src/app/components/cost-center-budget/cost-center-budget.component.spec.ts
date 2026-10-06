@@ -1,4 +1,3 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
@@ -11,7 +10,6 @@ describe('Cost Center Budget Component', () => {
   let component: CostCenterBudgetComponent;
   let fixture: ComponentFixture<CostCenterBudgetComponent>;
   let element: HTMLElement;
-  let costCenterChange: SimpleChanges<CostCenterBudgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,7 +24,7 @@ describe('Cost Center Budget Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.costCenter = {
+    fixture.componentRef.setInput('costCenter', {
       budget: {
         value: 5000,
         currency: 'USD',
@@ -44,11 +42,7 @@ describe('Cost Center Budget Component', () => {
         type: 'Money',
       },
       name: 'Oil Corp Headquarter',
-    } as CostCenter;
-
-    costCenterChange = {
-      costCenter: new SimpleChange(undefined, component.costCenter, false),
-    };
+    } as CostCenter);
   });
 
   it('should be created', () => {
@@ -58,7 +52,6 @@ describe('Cost Center Budget Component', () => {
   });
 
   it('should display budget progress bar when rendering', () => {
-    component.ngOnChanges(costCenterChange);
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="cost-center-budget-popover"]')).toBeTruthy();
   });

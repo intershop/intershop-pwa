@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -10,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Subject, map, startWith, switchMap, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -28,12 +28,17 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
   model: { orderReferenceId: string } = { orderReferenceId: '' };
   fields: FormlyFieldConfig[];
 
-  showSuccessMessage = false;
+  private successMessageTrigger$ = new Subject<void>();
+  showSuccessMessage$ = this.successMessageTrigger$.pipe(
+    switchMap(() =>
+      timer(5000).pipe(
+        map(() => false),
+        startWith(true)
+      )
+    )
+  );
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.fields = [
@@ -74,11 +79,7 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
       basketChange?.previousValue?.externalOrderReference !== basketChange?.currentValue?.externalOrderReference &&
       !basketChange?.firstChange
     ) {
-      this.showSuccessMessage = true;
-      setTimeout(() => {
-        this.showSuccessMessage = false;
-        this.cd.markForCheck();
-      }, 5000);
+      this.successMessageTrigger$.next();
     }
   }
 

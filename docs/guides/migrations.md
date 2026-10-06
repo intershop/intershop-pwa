@@ -203,6 +203,18 @@ ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eage
 A new `no-restricted-syntax` lint rule enforces Angular 21's typed `SimpleChanges<T>` in `ngOnChanges`.
 Change untyped signatures in custom code to typed signatures, for example, `ngOnChanges(changes: SimpleChanges<MyComponent>)`.
 
+**Inputs of dynamically created components set via `setInput()`**
+
+The `ContentPageletComponent` and the generated lazy components now pass inputs to dynamically created components with [`ComponentRef.setInput()`](https://angular.dev/api/core/ComponentRef#setInput) instead of assigning properties and calling `ngOnChanges` manually.
+Angular now calls `ngOnChanges` of these components during change detection and only for inputs that actually changed.
+Custom CMS components must therefore declare `pagelet` as `@Input()`, and the optional `ngOnChanges` signature has been removed from the `CMSComponent` interface.
+Lazy components are regenerated automatically on `npm install`.
+
+**Basket success messages provided as observable**
+
+The `showSuccessMessage` property of the `BasketDesiredDeliveryDateComponent`, `BasketMerchantMessageComponent`, and `BasketOrderReferenceComponent` has been replaced by the `showSuccessMessage$` observable.
+Customized templates of these components must use `showSuccessMessage$ | async` instead.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
