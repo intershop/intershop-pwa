@@ -99,7 +99,7 @@ describe('Formly Customer Address Form Component', () => {
         countryCode: new FormControl('foo', Validators.required),
       }),
     });
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<FormlyCustomerAddressFormComponent> = {
       resetForm: new SimpleChange(false, true, false),
     };
     component.ngOnChanges(changes);
@@ -113,7 +113,7 @@ describe('Formly Customer Address Form Component', () => {
         countryCode: new FormControl('foo', Validators.required),
       }),
     });
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<FormlyCustomerAddressFormComponent> = {
       resetForm: new SimpleChange(false, false, false),
     };
     component.ngOnChanges(changes);

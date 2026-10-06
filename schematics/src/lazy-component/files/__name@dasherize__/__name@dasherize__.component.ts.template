@@ -82,7 +82,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   }
 
 <% if (inputNames.length) { %>
-  ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<% } %>) {
+  ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<<%= classify(name) %>Component><% } %>) {
     if (this.component) {
       <% for (let name of inputNames) { %>
         this.component.instance.<%= name %> = this.<%= name %>;

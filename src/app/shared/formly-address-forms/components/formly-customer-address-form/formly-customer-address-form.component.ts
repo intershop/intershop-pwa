@@ -85,7 +85,7 @@ export class FormlyCustomerAddressFormComponent implements OnInit, OnChanges {
   /**
    * Trigger reset form from parent.
    */
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<FormlyCustomerAddressFormComponent>) {
     this.doResetForm(c.resetForm?.currentValue);
 
     this.extensionModel = this.address ? { email: this.address.email } : undefined;

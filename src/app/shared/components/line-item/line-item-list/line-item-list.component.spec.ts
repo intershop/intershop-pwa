@@ -46,7 +46,7 @@ describe('Line Item List Component', () => {
   });
 
   it('should render sub components if basket changes', () => {
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<LineItemListComponent> = {
       lineItems: new SimpleChange(undefined, component.lineItems, false),
     };
 
@@ -63,7 +63,7 @@ describe('Line Item List Component', () => {
   it('should display the paging bar if the number of lineitems exceeds the page size', () => {
     component.pageSize = 1;
     component.lineItems = [BasketMockData.getBasketItem(), BasketMockData.getBasketItem()];
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<LineItemListComponent> = {
       lineItems: new SimpleChange(undefined, component.lineItems, false),
     };
 

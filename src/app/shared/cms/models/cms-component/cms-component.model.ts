@@ -4,5 +4,5 @@ import { ContentPageletView } from 'ish-core/models/content-view/content-view.mo
 
 export interface CMSComponent {
   pagelet: ContentPageletView;
-  ngOnChanges?(changes?: { pagelet: SimpleChange }): void;
+  ngOnChanges?(changes?: { pagelet: SimpleChange<ContentPageletView> }): void;
 }

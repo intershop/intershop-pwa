@@ -52,7 +52,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<BasketMerchantMessageComponent>) {
     if (this.basket) {
       this.successMessage(changes.basket);
       this.model = {
@@ -62,7 +62,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
     }
   }
 
-  private successMessage(basketChange: SimpleChange) {
+  private successMessage(basketChange: SimpleChange<Basket>) {
     if (
       basketChange?.previousValue?.messageToMerchant !== basketChange?.currentValue?.messageToMerchant &&
       !basketChange?.firstChange

@@ -66,7 +66,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     this.parentForm?.setControl('address', this.addressForm);
   }
 
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<FormlyAddressFormComponent>) {
     if (c.prefilledAddress) {
       this.fillForm(c.prefilledAddress.currentValue);
     }

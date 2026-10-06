@@ -359,5 +359,9 @@ export class DummyComponent implements OnChanges {
     it('should import SimpleChanges', () => {
       expect(componentContent).toContain('SimpleChanges');
     });
+
+    it('should use typed SimpleChanges', () => {
+      expect(componentContent).toContain('ngOnChanges(changes: SimpleChanges<LazyDummyComponent>)');
+    });
   });
 });
