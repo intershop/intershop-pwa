@@ -65,7 +65,7 @@ export function createLazyComponent(options: Options): Rule {
     options = findDeclaringModule(host, options);
     options = determineArtifactName('component', host, options);
 
-    let inputNames: string[] = [];
+    let inputs: { name: string; alias: string }[] = [];
 
     const componentContent = host.read(componentPath).toString('utf-8');
     const componentSource = ts.createSourceFile(componentPath, componentContent, ts.ScriptTarget.Latest, true);
@@ -80,27 +80,17 @@ export function createLazyComponent(options: Options): Rule {
       .replace(originalName.replace(`${project.prefix}-`, ''), options.name.replace(`${project.prefix}-`, ''));
 
     if (componentContent.includes('@Input(')) {
-      inputNames = tsquery(componentSource, 'PropertyDeclaration:has(Decorator Identifier[text=Input])').map(
-        (node: ts.PropertyDeclaration) => node.name.getText()
+      inputs = tsquery(componentSource, 'PropertyDeclaration:has(Decorator Identifier[text=Input])').map(
+        (node: ts.PropertyDeclaration) => {
+          const alias = tsquery(
+            node,
+            'Decorator CallExpression > StringLiteral, Decorator PropertyAssignment:has(Identifier[text=alias]) > StringLiteral'
+          )[0] as ts.StringLiteral;
+          return { name: node.name.getText(), alias: alias?.text ?? node.name.getText() };
+        }
       );
     }
 
-    let onChanges: 'complex' | 'simple';
-
-    if (componentContent.includes('ngOnChanges')) {
-      const ngOnChangesDeclaration = tsquery(
-        componentSource,
-        'MethodDeclaration:has(Identifier[name=ngOnChanges])'
-      )[0] as ts.MethodDeclaration;
-
-      if (ngOnChangesDeclaration) {
-        if (ngOnChangesDeclaration.parameters.length) {
-          onChanges = 'complex';
-        } else {
-          onChanges = 'simple';
-        }
-      }
-    }
     const exportsModuleName = `${declaringModule}-exports`;
     const exportsModuleExists = host.exists(`/${options.path}/${exportsModuleName}.module.ts`);
 
@@ -167,10 +157,9 @@ export function createLazyComponent(options: Options): Rule {
           applyTemplates({
             ...strings,
             ...options,
-            inputNames,
+            inputs,
             originalPath,
             originalName,
-            onChanges,
             isShared,
             guardDisplay,
             componentImportPath,

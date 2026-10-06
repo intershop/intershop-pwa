@@ -31,6 +31,18 @@ To apply this change to custom code, run the PWA migration schematics (see [Perf
 ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
 ```
 
+**Inputs of dynamically created components set via `setInput()`**
+
+The `ContentPageletComponent` and the generated lazy components now pass inputs to dynamically created components with [`ComponentRef.setInput()`](https://angular.dev/api/core/ComponentRef#setInput) instead of assigning properties and calling `ngOnChanges` manually.
+Angular now calls `ngOnChanges` of these components during change detection and only for inputs that actually changed.
+Custom CMS components must therefore declare `pagelet` as `@Input()`, and the optional `ngOnChanges` signature has been removed from the `CMSComponent` interface.
+Lazy components are regenerated automatically on `npm install`.
+
+**Basket success messages provided as observable**
+
+The `showSuccessMessage` property of the `BasketDesiredDeliveryDateComponent`, `BasketMerchantMessageComponent`, and `BasketOrderReferenceComponent` has been replaced by the `showSuccessMessage$` observable.
+Customized templates of these components must use `showSuccessMessage$ | async` instead.
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.

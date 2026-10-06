@@ -1,4 +1,3 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
@@ -48,12 +47,11 @@ describe('Basket Order Reference Component', () => {
   });
 
   it('should read the order reference id from the basket', () => {
-    component.basket = {
+    fixture.componentRef.setInput('basket', {
       externalOrderReference: '4711',
-    } as Basket;
+    } as Basket);
 
     fixture.detectChanges();
-    component.ngOnChanges({ basket: new SimpleChange(undefined, component.basket, false) });
 
     expect(component.model.orderReferenceId).toBe('4711');
   });
