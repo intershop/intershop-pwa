@@ -1,8 +1,10 @@
 import {
   AfterViewChecked,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -10,8 +12,11 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  inject,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
+import { debounceTime, fromEvent, merge } from 'rxjs';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
@@ -34,7 +39,7 @@ const MAX_IMAGE_SIZE_MB = 5;
   styleUrls: ['./copilot-embedded-chat.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked {
+export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewInit, AfterViewChecked {
   @Input() deviceType: DeviceType;
   @Input() messages: CopilotEmbeddedChatMessage[] = [];
   @Input() pendingAnswer = '';
@@ -66,6 +71,7 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
   ];
 
   private stickToBottom = true;
+  private destroyRef = inject(DestroyRef);
   private scrollPending = false;
   /** Necessary for a11y: the chip group is focused once it has been rendered. */
   private focusChoicesPending = false;
@@ -89,6 +95,21 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewChecked
     private translateService: TranslateService,
     private cdRef: ChangeDetectorRef
   ) {}
+
+  /** Keeps the focused mobile input visible after the keyboard animation settles. */
+  ngAfterViewInit() {
+    if (SSR) {
+      return;
+    }
+    const input = this.questionInput.nativeElement;
+    merge(fromEvent(input, 'focus'), fromEvent(window.visualViewport ?? window, 'resize'))
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        if (this.deviceType === 'mobile' && input.ownerDocument.activeElement === input) {
+          input.scrollIntoView({ block: 'end', behavior: 'instant' });
+        }
+      });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.messages || changes.pendingAnswer) {
