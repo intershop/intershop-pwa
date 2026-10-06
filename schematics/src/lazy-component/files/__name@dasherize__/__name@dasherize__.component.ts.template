@@ -2,9 +2,8 @@ import {
   ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
   Injector,
   ComponentRef,
-  <% if (inputNames.length) { %>Input, OnChanges, <% } %>
+  <% if (inputs.length) { %>Input, OnChanges, <% } %>
   <% if (guardDisplay) { %>inject, DestroyRef,<% } %>
-  <% if (onChanges === 'complex') { %>SimpleChange, SimpleChanges, <% } %>
 } from '@angular/core';
 
 <% if(guardDisplay) { %>
@@ -20,7 +19,7 @@ import type { <%= classify(originalName) %>Component as OriginalComponent } from
   templateUrl: './<%= dasherize(name) %>.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class <%= classify(name) %>Component implements OnInit <% if (inputNames.length) { %>, OnChanges <% } %>{
+export class <%= classify(name) %>Component implements OnInit <% if (inputs.length) { %>, OnChanges <% } %>{
   /*
    * WARNING!
    *
@@ -33,8 +32,8 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
 
   @ViewChild('anchor', { read: ViewContainerRef, static: true }) anchor: ViewContainerRef;
 
-<% for (let name of inputNames) { %>
-  @Input() <%= name %>: OriginalComponent['<%= name %>'];
+<% for (let input of inputs) { %>
+  @Input() <%= input.name %>: OriginalComponent['<%= input.name %>'];
 <% } %>
 
   private component: ComponentRef<OriginalComponent>;
@@ -68,30 +67,17 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
     const ngModuleRef = createNgModule(module, this.injector);
 
     this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
-  <% if (inputNames.length) { %>
-    this.ngOnChanges(
-      <% if (onChanges === 'complex') { %>{
-        <% for (let name of inputNames) { %>
-          <%= name %>: new SimpleChange(undefined, this.<%= name %>, true),
-        <% } %>
-        }
-      <% } %>
-    );
+  <% if (inputs.length) { %>
+    this.ngOnChanges();
   <% } %>
     this.component.changeDetectorRef.markForCheck();
   }
 
-<% if (inputNames.length) { %>
-  ngOnChanges(<% if (onChanges === 'complex') { %>changes: SimpleChanges<<%= classify(name) %>Component><% } %>) {
+<% if (inputs.length) { %>
+  ngOnChanges() {
     if (this.component) {
-      <% for (let name of inputNames) { %>
-        this.component.instance.<%= name %> = this.<%= name %>;
-      <% } %>
-
-      <% if (onChanges === 'simple') { %>
-        this.component.instance.ngOnChanges();
-      <% } else if (onChanges === 'complex') { %>
-        this.component.instance.ngOnChanges(changes);
+      <% for (let input of inputs) { %>
+        this.component.setInput('<%= input.alias %>', this.<%= input.name %>);
       <% } %>
     }
   }

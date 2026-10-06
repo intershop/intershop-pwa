@@ -1,4 +1,3 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
@@ -30,9 +29,9 @@ describe('Basket Desired Delivery Date Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.basket = {
+    fixture.componentRef.setInput('basket', {
       attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
-    } as Basket;
+    } as Basket);
 
     when(checkoutFacade.setDesiredDeliveryDate(anything())).thenReturn();
   });
@@ -49,17 +48,16 @@ describe('Basket Desired Delivery Date Component', () => {
   });
 
   it('should not display desired delivery date input fields for recurring order', () => {
-    component.basket = {
+    fixture.componentRef.setInput('basket', {
       recurrence: { interval: 'P7M' },
       attributes: [{ name: 'desiredDeliveryDate', value: '2022-03-17' }],
-    } as Basket;
+    } as Basket);
     fixture.detectChanges();
     expect(element.innerHTML).not.toContain('desiredDeliveryDate');
   });
 
   it('should show current desired delivery date from the store', () => {
     fixture.detectChanges();
-    component.ngOnChanges({ basket: new SimpleChange(undefined, component.basket, false) });
 
     expect(component.model.desiredDeliveryDate?.toISOString()).toMatch(/^2022-03-17/);
   });
