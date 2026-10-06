@@ -228,7 +228,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges<BasketOrderRecurrenceEditComponent>): void {
-    if (!isEqual(changes.recurrence.currentValue, changes.recurrence.previousValue)) {
+    if (!isEqual(changes.recurrence?.currentValue, changes.recurrence?.previousValue)) {
       this.model = this.getModel(this.recurrence);
     }
   }
