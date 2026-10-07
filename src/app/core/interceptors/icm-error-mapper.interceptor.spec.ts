@@ -166,7 +166,7 @@ describe('Icm Error Mapper Interceptor', () => {
                 "status": "400",
               },
             ],
-            "message": "<div>The value must be a tab-separated list of 'value1;value2' pairs.</div><div>The value must be two lowercase letters for language and two uppercase letters for region.</div>",
+            "message": "The value must be a tab-separated list of 'value1;value2' pairs. The value must be two lowercase letters for language and two uppercase letters for region.",
             "name": "HttpErrorResponse",
             "status": 422,
           }
@@ -213,7 +213,7 @@ describe('Icm Error Mapper Interceptor', () => {
                 "status": "404",
               },
             ],
-            "message": "<div>The order could not be found.</div>",
+            "message": "The order could not be found.",
             "name": "HttpErrorResponse",
             "status": 404,
           }

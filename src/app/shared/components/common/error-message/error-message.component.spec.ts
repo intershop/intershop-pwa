@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { MessageFacade } from 'ish-core/facades/message.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -45,6 +45,16 @@ describe('Error Message Component', () => {
     expect(element.querySelector('[role="alert"]')).toBeTruthy();
   });
 
+  it('should render the error message as text and not as HTML', () => {
+    component.error = makeHttpError({ message: '<img src=x onerror="alert(1)">' });
+    component.toast = false;
+
+    component.ngOnChanges();
+    fixture.detectChanges();
+    expect(element.querySelector('img')).toBeFalsy();
+    expect(element.querySelector('[role="alert"]').textContent).toContain('<img src=x onerror="alert(1)">');
+  });
+
   it('should trigger error toast if an error occurs and toast is true', () => {
     component.error = makeHttpError({ message: 'Test Error' });
     component.toast = true;
@@ -52,5 +62,49 @@ describe('Error Message Component', () => {
     component.ngOnChanges();
     fixture.detectChanges();
     verify(messageFacade.error(anything())).once();
+  });
+
+  it('should trigger error toast with HTML disabled for an error message', () => {
+    component.error = makeHttpError({ message: '<img src=x onerror="alert(1)">' });
+
+    component.ngOnChanges();
+    expect(capture(messageFacade.error).last()).toMatchInlineSnapshot(`
+      [
+        {
+          "enableHtml": false,
+          "message": "<img src=x onerror="alert(1)">",
+        },
+      ]
+    `);
+  });
+
+  it('should trigger error toasts with HTML disabled for error causes', () => {
+    component.error = makeHttpError({
+      errors: [{ code: 'basket.error', message: '<img src=x onerror="alert(1)">' }],
+    });
+
+    component.ngOnChanges();
+    expect(capture(messageFacade.error).last()).toMatchInlineSnapshot(`
+      [
+        {
+          "enableHtml": false,
+          "message": "<img src=x onerror="alert(1)">",
+        },
+      ]
+    `);
+  });
+
+  it('should trigger error toast with HTML enabled for a translated error code', () => {
+    component.error = makeHttpError({ code: 'error.key' });
+
+    component.ngOnChanges();
+    expect(capture(messageFacade.error).last()).toMatchInlineSnapshot(`
+      [
+        {
+          "enableHtml": true,
+          "message": "error.key",
+        },
+      ]
+    `);
   });
 });
