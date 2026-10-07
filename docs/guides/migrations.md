@@ -160,6 +160,14 @@ The default behavior is unchanged (enabled in development, disabled in productio
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
 To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
 
+**ICM error messages rendered as text**
+
+To prevent cross-site scripting, the `ErrorMessageComponent` (`ish-error-message`) now renders `error.message` and the messages of `error.errors` as plain text instead of HTML, both inline and in toasts.
+Translated error codes (`error.code`) are still rendered as HTML.
+For this purpose, the `MessagesPayloadType` has a new optional `enableHtml` property (default: `true`) that controls whether a toast message is rendered as HTML.
+In addition, the `ICMErrorMapperInterceptor` no longer wraps the messages of the ADR error format in `<div>` elements but joins them with spaces.
+Custom code or tests that rely on HTML in `error.message` must be adapted.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
