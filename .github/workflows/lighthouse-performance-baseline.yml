@@ -58,16 +58,15 @@ jobs:
 
       - name: Warm up nginx cache
         run: |
-          sleep 10 # additional wait to ensure docker services are ready
           urls=$(jq -r '.ci.collect.url[]' .github/lighthouse/configurations/performance-desktop.lighthouserc.json)
           for url in $urls; do
             echo "Warming up $url"
-            curl -sk "$url" >/dev/null
+            curl --fail --silent --show-error --insecure --retry 10 --retry-connrefused --retry-delay 2 "$url" >/dev/null
           done
 
       - name: Run Lighthouse CI performance audits (desktop + mobile)
         env:
-          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
           npx lhci autorun --config=.github/lighthouse/configurations/performance-desktop.lighthouserc.json

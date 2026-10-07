@@ -52,7 +52,7 @@ jobs:
       - name: Run Lighthouse CI accessibility audits (desktop + mobile)
         id: run-lighthouse
         env:
-          LHCI_COLLECT__CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: |
           echo "Lighthouse CI (desktop)"
           npx lhci autorun --config=.github/lighthouse/configurations/accessibility-desktop.lighthouserc.json
