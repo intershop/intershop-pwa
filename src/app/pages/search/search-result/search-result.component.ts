@@ -37,7 +37,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     this.isCollapsed = this.deviceType === 'mobile';
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<SearchResultComponent>) {
     this.scroller.scrollToPosition([0, 0]);
     if (changes.deviceType) {
       this.isCollapsed = this.deviceType === 'mobile';

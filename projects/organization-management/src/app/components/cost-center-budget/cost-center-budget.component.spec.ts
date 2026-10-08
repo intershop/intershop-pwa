@@ -11,7 +11,7 @@ describe('Cost Center Budget Component', () => {
   let component: CostCenterBudgetComponent;
   let fixture: ComponentFixture<CostCenterBudgetComponent>;
   let element: HTMLElement;
-  let basketChange: SimpleChanges;
+  let costCenterChange: SimpleChanges<CostCenterBudgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ describe('Cost Center Budget Component', () => {
       name: 'Oil Corp Headquarter',
     } as CostCenter;
 
-    basketChange = {
+    costCenterChange = {
       costCenter: new SimpleChange(undefined, component.costCenter, false),
     };
   });
@@ -58,7 +58,7 @@ describe('Cost Center Budget Component', () => {
   });
 
   it('should display budget progress bar when rendering', () => {
-    component.ngOnChanges(basketChange);
+    component.ngOnChanges(costCenterChange);
     fixture.detectChanges();
     expect(element.querySelector('[data-testing-id="cost-center-budget-popover"]')).toBeTruthy();
   });

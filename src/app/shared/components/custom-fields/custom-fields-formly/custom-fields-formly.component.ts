@@ -42,7 +42,7 @@ export class CustomFieldsFormlyComponent extends RxState<ComponentState> impleme
     super();
   }
 
-  ngOnChanges(s: SimpleChanges): void {
+  ngOnChanges(s: SimpleChanges<CustomFieldsFormlyComponent>): void {
     // reset model if the user has cancelled the form
     if (s.form?.currentValue && !s.form.firstChange) {
       this.setModel();

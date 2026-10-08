@@ -50,7 +50,7 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     element.insertAdjacentHTML('afterbegin', val);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges<ServerHtmlDirective>): void {
     if (changes.ishServerHtml && !changes.ishServerHtml.firstChange) {
       this.patchElements();
     }

@@ -15,7 +15,7 @@ export class CostCenterBudgetComponent implements OnChanges {
   spentBudgetPercentage: number;
   remainingBudgetPercentage: number;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<CostCenterBudgetComponent>) {
     if (changes.costCenter) {
       this.calculate();
     }
