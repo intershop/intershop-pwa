@@ -30,6 +30,5 @@ jobs:
 
       - name: Remove containerized WebApp
         env:
-          APP: '${{ env.AZURE_DEMO_RESOURCEGROUP }}-${{ github.event.pull_request.number }}'
           GROUP: ${{ env.AZURE_DEMO_RESOURCEGROUP }}
         run: test -z "$(az webapp show -g $GROUP -n $APP_NAME)" || az webapp delete -g $GROUP --name $APP_NAME

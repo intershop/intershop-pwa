@@ -206,6 +206,7 @@ serializability
 setcontext
 setuprequest
 silktide
+sitecontainers
 sitekey
 skus
 smarttools
