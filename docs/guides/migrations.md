@@ -43,6 +43,11 @@ Lazy components are regenerated automatically on `npm install`.
 The `showSuccessMessage` property of the `BasketDesiredDeliveryDateComponent`, `BasketMerchantMessageComponent`, and `BasketOrderReferenceComponent` has been replaced by the `showSuccessMessage$` observable.
 Customized templates of these components must use `showSuccessMessage$ | async` instead.
 
+**Typed `SimpleChanges` in `ngOnChanges`**
+
+A new `no-restricted-syntax` lint rule enforces Angular 21's typed `SimpleChanges<T>` in `ngOnChanges`.
+Change untyped signatures in custom code to, for example, `ngOnChanges(changes: SimpleChanges<MyComponent>)`.
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.

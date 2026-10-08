@@ -947,6 +947,11 @@ export default defineConfig([
           selector: 'Property[key.name="hideExpression"]',
           message: 'Deprecated Formly API, use `expressions: { hide: ... }` instead.',
         },
+        {
+          selector:
+            'MethodDefinition[key.name="ngOnChanges"] TSTypeReference[typeName.name="SimpleChanges"]:not([typeArguments])',
+          message: 'Use typed `SimpleChanges<T>` with the component or directive class as `T`.',
+        },
       ],
       'no-sequences': 'error',
       'no-shadow': 'off',
