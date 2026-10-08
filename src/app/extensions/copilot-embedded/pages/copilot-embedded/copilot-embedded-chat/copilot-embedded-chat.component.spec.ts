@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
@@ -20,9 +21,9 @@ describe('Copilot Embedded Chat Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
+      imports: [RouterModule, TranslatePipe],
       declarations: [CopilotEmbeddedChatComponent, MockComponent(CopilotEmbeddedHeaderComponent)],
-      providers: [provideTranslateService()],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });
 

@@ -129,6 +129,14 @@ header {
   .navbar-toggler {
     order: 20;
   }
+
+  &.mobile .navbar-toggler {
+    flex-shrink: 0;
+    align-self: flex-start;
+    height: $header-height-mobile;
+    padding-top: divide($header-height-mobile - 23px, 2);
+    padding-bottom: divide($header-height-mobile - 23px, 2);
+  }
 }
 
 .header-utility {
@@ -206,6 +214,36 @@ header {
   line-height: unset;
   vertical-align: middle;
   color: $text-color-quinary;
+}
+
+@media (width < 410px) {
+  .header.mobile {
+    .mid-header .search-col {
+      display: none;
+    }
+
+    .header-utility {
+      flex-grow: 0;
+      margin-left: auto;
+
+      .bi.header-icon {
+        padding-right: 4px;
+        padding-left: 0;
+      }
+
+      .copilot-embedded-mobile .bi.header-icon {
+        padding-right: 4px;
+      }
+    }
+
+    .mobile-logo {
+      margin-right: $space-default;
+    }
+
+    .navbar-toggler {
+      margin-left: 0;
+    }
+  }
 }
 
 .logo {

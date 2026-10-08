@@ -42,7 +42,7 @@ describe('Copilot Embedded Results Component', () => {
   it('should show the introductory message when there are no products', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('.copilot-embedded-results-intro').textContent.trim()).toBe(
+    expect(element.querySelector('.copilot-embedded-results > p').textContent.trim()).toBe(
       'copilot.embedded.results.intro'
     );
     expect(element.querySelectorAll('ish-product-item')).toHaveLength(0);
@@ -56,7 +56,7 @@ describe('Copilot Embedded Results Component', () => {
     const productItems = fixture.debugElement.queryAll(By.directive(ProductItemComponent));
     expect(productItems).toHaveLength(2);
     expect(productItems.map(item => item.componentInstance.displayType)).toEqual(['row', 'row']);
-    expect(element.querySelector('.copilot-embedded-results-intro')).toBeNull();
+    expect(element.querySelector('.copilot-embedded-results > p')).toBeNull();
   });
 
   it('should emit backToChat when the back action is clicked', () => {
