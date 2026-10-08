@@ -1,6 +1,6 @@
 # Third-Party Notice
 
-The skills `diagnosing-bugs`, `research`, `resolving-merge-conflicts`, `review-changes`, and `writing-for-agents` in this folder are adapted from [mattpocock/skills](https://github.com/mattpocock/skills), used under the following license:
+The skills `diagnosing-bugs`, `research`, `resolving-merge-conflicts`, `review-changes`, and `writing-for-agents` in this folder are adapted from [mattpocock/skills](https://github.com/mattpocock/skills), last synced with commit [`b0618bc`](https://github.com/mattpocock/skills/commit/b0618bc), used under the following license:
 
 ```text
 MIT License
