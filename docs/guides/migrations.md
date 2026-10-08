@@ -198,6 +198,11 @@ To apply this change to custom code, run the PWA migration schematics (see [Perf
 ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
 ```
 
+**Typed `SimpleChanges` in `ngOnChanges`**
+
+A new `no-restricted-syntax` lint rule enforces Angular 21's typed `SimpleChanges<T>` in `ngOnChanges`.
+Change untyped signatures in custom code to typed signatures, for example, `ngOnChanges(changes: SimpleChanges<MyComponent>)`.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

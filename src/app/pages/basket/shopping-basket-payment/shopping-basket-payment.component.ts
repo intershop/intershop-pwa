@@ -41,7 +41,7 @@ export class ShoppingBasketPaymentComponent implements OnInit, OnChanges {
     this.redirectStatus$ = this.route.queryParamMap.pipe(map(params => params.get('redirect') || ''));
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges<ShoppingBasketPaymentComponent>): void {
     if (
       changes.basket &&
       (changes.basket.previousValue?.recurrence !== changes.basket.currentValue?.recurrence ||

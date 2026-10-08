@@ -62,17 +62,16 @@ export class BasketOrderReferenceComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<BasketOrderReferenceComponent>) {
     if (this.basket) {
       this.successMessage(changes.basket);
       this.model = { ...this.model, orderReferenceId: this.basket.externalOrderReference };
     }
   }
 
-  private successMessage(basketChange: SimpleChange) {
+  private successMessage(basketChange: SimpleChange<Basket>) {
     if (
-      (basketChange?.previousValue as Basket)?.externalOrderReference !==
-        (basketChange?.currentValue as Basket)?.externalOrderReference &&
+      basketChange?.previousValue?.externalOrderReference !== basketChange?.currentValue?.externalOrderReference &&
       !basketChange?.firstChange
     ) {
       this.showSuccessMessage = true;

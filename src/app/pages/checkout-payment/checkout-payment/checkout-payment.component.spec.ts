@@ -33,7 +33,7 @@ describe('Checkout Payment Component', () => {
   let component: CheckoutPaymentComponent;
   let fixture: ComponentFixture<CheckoutPaymentComponent>;
   let element: HTMLElement;
-  let paymentMethodChange: SimpleChanges;
+  let paymentMethodChange: SimpleChanges<CheckoutPaymentComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

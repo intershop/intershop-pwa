@@ -87,13 +87,13 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<BasketDesiredDeliveryDateComponent>) {
     const previous = this.getDesiredDeliveryDate(changes.basket?.previousValue);
     const current = this.getDesiredDeliveryDate(changes.basket?.currentValue);
 
     // we only care about the ddd, so only do anything if it has changed
     if (current && !isEqual(previous, current)) {
-      if (!changes.basket.isFirstChange()) {
+      if (!changes.basket.firstChange) {
         this.displaySuccessMessage();
       }
       this.model = {

@@ -101,7 +101,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<CheckoutPaymentComponent>) {
     this.setPaymentSelectionFromBasket(c);
 
     if (c.paymentMethods) {
@@ -119,7 +119,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
    * Should be used for initialization when basket data is changed
    * invoked by `ngOnChanges()`, important in case of an error
    */
-  private setPaymentSelectionFromBasket(c: SimpleChanges) {
+  private setPaymentSelectionFromBasket(c: SimpleChanges<CheckoutPaymentComponent>) {
     if (c.basket && !this.paymentForm) {
       return;
     }
