@@ -18,6 +18,6 @@ RUN npm i --no-save jscpd-html-reporter && node reports/jscpd-report
 RUN npm i -g webpack-bundle-analyzer
 RUN rm -Rf dist && npm run build client -- --progress false --stats-json && webpack-bundle-analyzer dist/browser/stats.json dist/browser -r reports/bundle_prod/index.html -m static
 
-FROM danjellz/http-server
-COPY --from=buildstep /workspace/reports /public
-COPY --from=buildstep /workspace/docs /public/docs
+FROM nginxinc/nginx-unprivileged:stable-alpine
+COPY --from=buildstep /workspace/reports /usr/share/nginx/html
+COPY --from=buildstep /workspace/docs /usr/share/nginx/html/docs
