@@ -290,6 +290,12 @@
     }
   }
 
+  .copilot-embedded-disclaimer {
+    margin-top: divide($space-default, 3);
+    color: $text-color-secondary;
+    text-align: center;
+  }
+
   .copilot-embedded-tool-errors {
     display: none;
   }

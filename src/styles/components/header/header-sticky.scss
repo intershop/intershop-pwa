@@ -109,6 +109,11 @@
           font-size: 22px;
           color: $text-color-tertiary;
 
+          @media (width < 410px) {
+            padding-right: 6px;
+            padding-left: 0;
+          }
+
           &.bi-search {
             font-size: 18px;
           }
@@ -122,6 +127,16 @@
 
       .mini-cart {
         top: -2px !important;
+      }
+
+      @media (width < 410px) {
+        .header-utility ish-mini-basket {
+          margin-right: ($space-default);
+        }
+
+        .sticky-header-icon .rounded-pill {
+          left: 16px;
+        }
       }
     }
   }
