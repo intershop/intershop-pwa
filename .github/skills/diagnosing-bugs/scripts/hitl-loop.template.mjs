@@ -2,11 +2,13 @@
 // Copy this file, edit the steps below, and run it with `node <copy>.mjs`.
 // The agent runs the script; the user follows the prompts in their terminal.
 //
-// Two helpers:
-//   await step('<instruction>')         -> show instruction, wait for Enter
-//   await capture('KEY', '<question>')  -> show question, store the answer under KEY
+// Three helpers:
+//   await step('<instruction>')              -> show instruction, wait for Enter
+//   await capture('KEY', '<question>')       -> show question, store the one-line answer under KEY
+//   await captureLines('KEY', '<question>')  -> like capture, for multi-line answers such as stack traces;
+//                                               the user ends the answer with a line containing only `.`
 //
-// At the end, captured values are printed as KEY=VALUE for the agent to parse.
+// At the end, captured values are printed as JSON for the agent to parse.
 //
 // `capture` prints its value back to the terminal, where the agent reads it,
 // so capture observations, and leave signing in to the user as a `step`.
@@ -33,19 +35,30 @@ async function capture(key, question) {
   captured[key] = await ask(`\n>>> ${question}\n    > `);
 }
 
+async function captureLines(key, question) {
+  output.write(`\n>>> ${question}\n    [finish with a line containing only .]\n`);
+  const answer = [];
+  for (;;) {
+    const { value, done } = await lines.next();
+    if (done || value.trim() === '.') {
+      break;
+    }
+    answer.push(value);
+  }
+  captured[key] = answer.join('\n');
+}
+
 // --- edit below ---------------------------------------------------------
 
 await step('Open the PWA at http://localhost:4200 and sign in.');
 
 await capture('ERRORED', 'Add a product to the cart. Did an error appear? (y/n)');
 
-await capture('ERROR_MSG', "Paste the error message (or 'none'):");
+await captureLines('ERROR_MSG', "Paste the error message or stack trace (or 'none'):");
 
 // --- edit above ---------------------------------------------------------
 
 rl.close();
 
 console.log('\n--- Captured ---');
-for (const [key, value] of Object.entries(captured)) {
-  console.log(`${key}=${value}`);
-}
+console.log(JSON.stringify(captured, null, 2));
