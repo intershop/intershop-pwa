@@ -160,6 +160,12 @@ The default behavior is unchanged (enabled in development, disabled in productio
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
 To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
 
+**Non-blocking initial navigation**
+
+The router no longer uses `initialNavigation: 'enabledBlocking'`, which [conflicts with hydration](https://angular.dev/api/router/InitialNavigation) and caused the `NG05001` warning.
+The root component is now created before the initial navigation completes, and the router state is no longer transferred from SSR to the browser.
+Custom code that relies on a resolved route or router state during application startup has to wait for the first navigation instead.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
