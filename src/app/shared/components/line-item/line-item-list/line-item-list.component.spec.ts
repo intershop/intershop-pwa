@@ -1,4 +1,3 @@
-import { SimpleChange, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective, MockPipe } from 'ng-mocks';
@@ -36,7 +35,7 @@ describe('Line Item List Component', () => {
     fixture = TestBed.createComponent(LineItemListComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.lineItems = [BasketMockData.getBasketItem()];
+    fixture.componentRef.setInput('lineItems', [BasketMockData.getBasketItem()]);
   });
 
   it('should be created', () => {
@@ -46,11 +45,6 @@ describe('Line Item List Component', () => {
   });
 
   it('should render sub components if basket changes', () => {
-    const changes: SimpleChanges = {
-      lineItems: new SimpleChange(false, component.lineItems, false),
-    };
-
-    component.ngOnChanges(changes);
     fixture.detectChanges();
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [
@@ -61,13 +55,8 @@ describe('Line Item List Component', () => {
   });
 
   it('should display the paging bar if the number of lineitems exceeds the page size', () => {
-    component.pageSize = 1;
-    component.lineItems = [BasketMockData.getBasketItem(), BasketMockData.getBasketItem()];
-    const changes: SimpleChanges = {
-      lineItems: new SimpleChange(false, component.lineItems, false),
-    };
-
-    component.ngOnChanges(changes);
+    fixture.componentRef.setInput('pageSize', 1);
+    fixture.componentRef.setInput('lineItems', [BasketMockData.getBasketItem(), BasketMockData.getBasketItem()]);
     fixture.detectChanges();
     expect(element.querySelector('ish-paging')).toBeTruthy();
   });
@@ -81,7 +70,7 @@ describe('Line Item List Component', () => {
 
     it('should not render totals if no line items present', () => {
       component.total = { value: 1 } as Price;
-      component.lineItems = [];
+      fixture.componentRef.setInput('lineItems', []);
       fixture.detectChanges();
       expect(element.textContent).not.toContain('quote.items.total.label');
     });

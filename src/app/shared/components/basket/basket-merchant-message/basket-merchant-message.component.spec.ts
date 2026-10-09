@@ -1,4 +1,3 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, instance, mock, when } from 'ts-mockito';
@@ -46,12 +45,11 @@ describe('Basket Merchant Message Component', () => {
   });
 
   it('should read the  message to merchant from the basket', () => {
-    component.basket = {
+    fixture.componentRef.setInput('basket', {
       messageToMerchant: 'please deliver soon',
-    } as Basket;
+    } as Basket);
 
     fixture.detectChanges();
-    component.ngOnChanges({ basket: new SimpleChange(undefined, component.basket, false) });
 
     expect(component.model.messageToMerchant).toBe('please deliver soon');
   });

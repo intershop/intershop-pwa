@@ -9,12 +9,12 @@
   <!-- the recursively used template to render the tree nodes -->
   <ng-template #pageTreeNode let-counter="counter" let-treeNodes="treeNodes">
     @for (treeNode of treeNodes; track treeNode.contentPageId) {
-      <li [ngClass]="{ 'page-navigation-active': treeNode.contentPageId === currentContentPage.id }">
+      <li [class.page-navigation-active]="treeNode.contentPageId === currentContentPage.id">
         <a class="link-decoration-hover" [routerLink]="treeNode | ishContentPageRoute" [title]="treeNode.name">{{
           treeNode.name
         }}</a>
         @if (treeNode.children.length && depth > counter) {
-          <ul [ngClass]="`page-navigation-${counter}`">
+          <ul [class]="`page-navigation-${counter}`">
             <ng-container
               [ngTemplateOutlet]="pageTreeNode"
               [ngTemplateOutletContext]="{ treeNodes: treeNode.children, counter: counter + 1 }"

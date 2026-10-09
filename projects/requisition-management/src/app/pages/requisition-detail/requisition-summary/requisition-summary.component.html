@@ -92,6 +92,7 @@
 
           <dt class="col-6">{{ 'approval.detailspage.approval_status.label' | translate }}</dt>
           <dd class="col-6">
+            <!-- ngClass on purpose: [class] does not support space-separated classes in one key -->
             <span
               class="border border-secondary badge bg-secondary text-capitalize"
               [ngClass]="{

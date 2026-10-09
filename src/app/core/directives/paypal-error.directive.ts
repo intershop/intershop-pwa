@@ -24,7 +24,7 @@ export class PaypalErrorDirective implements OnChanges {
     private renderer: Renderer2
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges<PaypalErrorDirective>): void {
     if (changes.hasError) {
       this.updateErrorState(this.hasError);
     }

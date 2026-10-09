@@ -1,10 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpHeaders,
-  HttpParams,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
@@ -74,7 +68,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -185,7 +178,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -248,7 +240,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -344,7 +335,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -461,7 +451,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -497,7 +486,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -523,7 +511,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -549,7 +536,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -576,7 +562,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -610,7 +595,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -637,7 +621,6 @@ describe('Sparque Api Service', () => {
       TestBed.configureTestingModule({
         providers: [
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -675,7 +658,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [
@@ -718,7 +700,6 @@ describe('Sparque Api Service', () => {
             },
           },
           { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
-          provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
           provideMockStore({
             selectors: [

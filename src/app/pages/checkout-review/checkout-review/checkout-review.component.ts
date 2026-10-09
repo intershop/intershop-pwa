@@ -55,7 +55,7 @@ export class CheckoutReviewComponent implements OnInit, OnChanges {
     this.paypalPaymentMethod$ = this.checkoutFacade.getBasketPaypalPaymentMethod();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<CheckoutReviewComponent>) {
     if (changes.basket) {
       this.multipleBuckets = !this.basket?.commonShippingMethod || !this.basket?.commonShipToAddress;
     }

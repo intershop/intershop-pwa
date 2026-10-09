@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -10,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Subject, map, startWith, switchMap, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -31,12 +31,18 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
   form = new FormGroup({});
   model: { messageToMerchant: string } = { messageToMerchant: '' };
   fields: FormlyFieldConfig[];
-  showSuccessMessage = false;
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private cd: ChangeDetectorRef
-  ) {}
+  private successMessageTrigger$ = new Subject<void>();
+  showSuccessMessage$ = this.successMessageTrigger$.pipe(
+    switchMap(() =>
+      timer(5000).pipe(
+        map(() => false),
+        startWith(true)
+      )
+    )
+  );
+
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.fields = [
@@ -52,7 +58,7 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<BasketMerchantMessageComponent>) {
     if (this.basket) {
       this.successMessage(changes.basket);
       this.model = {
@@ -62,16 +68,12 @@ export class BasketMerchantMessageComponent implements OnInit, OnChanges {
     }
   }
 
-  private successMessage(basketChange: SimpleChange) {
+  private successMessage(basketChange: SimpleChange<Basket>) {
     if (
       basketChange?.previousValue?.messageToMerchant !== basketChange?.currentValue?.messageToMerchant &&
       !basketChange?.firstChange
     ) {
-      this.showSuccessMessage = true;
-      setTimeout(() => {
-        this.showSuccessMessage = false;
-        this.cd.markForCheck();
-      }, 5000);
+      this.successMessageTrigger$.next();
     }
   }
 

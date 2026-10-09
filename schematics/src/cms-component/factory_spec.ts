@@ -45,13 +45,13 @@ describe('CMS Component Schematic', () => {
         exports: [],
         providers: [
           {
-                provide: CMS_COMPONENT,
-                useValue: {
-                  definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
-                  class: CMSFooComponent,
-                },
-                multi: true,
-              }
+            provide: CMS_COMPONENT,
+            useValue: {
+              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
+              class: CMSFooComponent,
+            },
+            multi: true,
+          }
         ]
       })
       export class CmsModule { }
@@ -94,13 +94,13 @@ describe('CMS Component Schematic', () => {
         exports: [],
         providers: [
           {
-                provide: CMS_COMPONENT,
-                useValue: {
-                  definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
-                  class: FooComponent,
-                },
-                multi: true,
-              }
+            provide: CMS_COMPONENT,
+            useValue: {
+              definitionQualifiedName: 'app_sf_base_cm:component.common.foo.pagelet2-Component',
+              class: FooComponent,
+            },
+            multi: true,
+          }
         ]
       })
       export class CmsModule { }

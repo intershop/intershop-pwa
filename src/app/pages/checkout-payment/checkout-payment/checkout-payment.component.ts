@@ -36,7 +36,7 @@ import { markAsDirtyRecursive } from 'ish-shared/forms/utils/form-utils';
   selector: 'ish-checkout-payment',
   standalone: false,
   templateUrl: './checkout-payment.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CheckoutPaymentComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
@@ -101,7 +101,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<CheckoutPaymentComponent>) {
     this.setPaymentSelectionFromBasket(c);
 
     if (c.paymentMethods) {
@@ -119,7 +119,7 @@ export class CheckoutPaymentComponent implements OnInit, OnChanges {
    * Should be used for initialization when basket data is changed
    * invoked by `ngOnChanges()`, important in case of an error
    */
-  private setPaymentSelectionFromBasket(c: SimpleChanges) {
+  private setPaymentSelectionFromBasket(c: SimpleChanges<CheckoutPaymentComponent>) {
     if (c.basket && !this.paymentForm) {
       return;
     }

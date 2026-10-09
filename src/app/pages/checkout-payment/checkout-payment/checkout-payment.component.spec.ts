@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, SimpleChange, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { provideRouter } from '@angular/router';
@@ -33,7 +33,6 @@ describe('Checkout Payment Component', () => {
   let component: CheckoutPaymentComponent;
   let fixture: ComponentFixture<CheckoutPaymentComponent>;
   let element: HTMLElement;
-  let paymentMethodChange: SimpleChanges;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -64,7 +63,7 @@ describe('Checkout Payment Component', () => {
       ],
     })
       .overrideComponent(CheckoutPaymentComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+        set: { changeDetection: ChangeDetectionStrategy.Eager },
       })
       .compileComponents();
   });
@@ -73,8 +72,8 @@ describe('Checkout Payment Component', () => {
     fixture = TestBed.createComponent(CheckoutPaymentComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-    component.basket = BasketMockData.getBasket();
-    component.paymentMethods = [
+    fixture.componentRef.setInput('basket', BasketMockData.getBasket());
+    fixture.componentRef.setInput('paymentMethods', [
       {
         id: 'ISH_INVOICE',
         serviceId: 'ISH_INVOICE',
@@ -96,10 +95,7 @@ describe('Checkout Payment Component', () => {
         parameters: [{ key: 'key1', name: 'name' }],
       },
       BasketMockData.getPaymentMethod(),
-    ];
-    paymentMethodChange = {
-      paymentMethods: new SimpleChange(undefined, component.paymentMethods, false),
-    };
+    ]);
 
     fixture.detectChanges();
   });
@@ -111,8 +107,6 @@ describe('Checkout Payment Component', () => {
   });
 
   it('should render available payment methods on page', () => {
-    component.ngOnChanges(paymentMethodChange);
-    fixture.detectChanges();
     expect(element.querySelector('#payment-accordion')).toBeTruthy();
   });
 
@@ -187,8 +181,8 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw createPaymentInstrument event when the user submits a valid parameter form and saving is not allowed', () => {
-      component.basket.payment = undefined;
-      component.ngOnChanges(paymentMethodChange);
+      fixture.componentRef.setInput('basket', { ...component.basket, payment: undefined });
+      fixture.detectChanges();
       component.openPaymentParameterForm(1);
 
       const emitter = spy(component.createPaymentInstrument);
@@ -216,9 +210,8 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should throw createUserPaymentInstrument event when the user submits a valid parameter form and saving is allowed', () => {
-      component.basket.payment = undefined;
-
-      component.ngOnChanges(paymentMethodChange);
+      fixture.componentRef.setInput('basket', { ...component.basket, payment: undefined });
+      fixture.detectChanges();
       component.openPaymentParameterForm(3);
 
       const emitter = spy(component.createPaymentInstrument);
@@ -258,10 +251,9 @@ describe('Checkout Payment Component', () => {
     });
 
     it('should render standard parameter form for standard parametrized form', () => {
-      component.basket.payment = undefined;
       component.openPaymentParameterForm(1);
 
-      component.ngOnChanges(paymentMethodChange);
+      fixture.componentRef.setInput('basket', { ...component.basket, payment: undefined });
       fixture.detectChanges();
       expect(element.querySelector('formly-form')).toBeTruthy();
     });
@@ -269,9 +261,6 @@ describe('Checkout Payment Component', () => {
 
   describe('should display selectable and deleteable payment instruments for parametrized payment methods', () => {
     it('should display payment instruments when parametrized payment methods are available', () => {
-      component.ngOnChanges(paymentMethodChange);
-      fixture.detectChanges();
-
       expect(element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard]')).toBeTruthy();
       expect(
         element.querySelector('[data-testing-id=payment-parameter-form-ISH_CreditCard] input[type=radio]')

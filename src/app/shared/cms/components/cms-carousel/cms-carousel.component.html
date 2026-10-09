@@ -1,7 +1,7 @@
 @if (pagelet) {
-  <div [ngClass]="pagelet.stringParam('CSSClass')">
+  <div [class]="pagelet.stringParam('CSSClass')">
     <ish-content-slot [pagelet]="pagelet" [slot]="'app_sf_base_cm:slot.carousel.items.pagelet2-Slot'" [wrapper]="true">
-      <div [ngClass]="pagelet.stringParam('CarouselCSSClass')">
+      <div [class]="pagelet.stringParam('CarouselCSSClass')">
         <ngb-carousel
           #ngbCarousel
           [interval]="0"
@@ -12,7 +12,7 @@
             <ng-template ngbSlide>
               <div class="row">
                 @for (slidePageletId of slidePagelets; track slidePageletId) {
-                  <div [ngClass]="`col-sm-${itemGridSize}`">
+                  <div [class]="`col-sm-${itemGridSize}`">
                     <ish-content-pagelet [pageletId]="slidePageletId" />
                   </div>
                 }

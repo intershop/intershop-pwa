@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.component.ts'
+applyTo: '**/*.component.{ts,html}'
 ---
 
 ## Component Patterns
@@ -10,6 +10,7 @@ applyTo: '**/*.component.ts'
 - Never inject the store directly - use facades instead
 - Implement proper subscription cleanup with `takeUntilDestroyed` pattern
 - Use built-in control flow syntax in templates (`@if`, `@for`, etc.)
+- Use native `[class]`/`[style]` bindings instead of `ngClass`/`ngStyle` (exception: `ngClass` object keys with space-separated classes)
 - Keep templates simple - delegate business logic to facades
 - Prefer `async` pipe over manual subscriptions
 - Use `formly` forms when creating forms

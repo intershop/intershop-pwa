@@ -37,7 +37,7 @@ export class LineItemListComponent implements OnChanges {
   currentPage = 1;
   displayItems: Partial<LineItemView & OrderLineItem>[] = [];
 
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<LineItemListComponent>) {
     if (c.lineItems) {
       this.goToPage(this.currentPage);
     }

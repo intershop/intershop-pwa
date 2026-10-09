@@ -243,13 +243,13 @@ export class DummyComponent {
     });
 
     it('should transfer inputs', () => {
-      expect(componentContent).toContain('component.instance.simpleTyped = this.simpleTyped');
-      expect(componentContent).toContain('component.instance.simpleTypedInitialized = this.simpleTypedInitialized');
-      expect(componentContent).toContain('component.instance.complexTyped = this.complexTyped');
-      expect(componentContent).toContain('component.instance.complexTypedInitialized = this.complexTypedInitialized');
-      expect(componentContent).toContain('component.instance.importTyped = this.importTyped');
-      expect(componentContent).toContain('component.instance.importComplexTyped = this.importComplexTyped');
-      expect(componentContent).toContain('component.instance.importGenericTyped = this.importGenericTyped');
+      expect(componentContent).toContain("component.setInput('simpleTyped', this.simpleTyped)");
+      expect(componentContent).toContain("component.setInput('simpleTypedInitialized', this.simpleTypedInitialized)");
+      expect(componentContent).toContain("component.setInput('complexTyped', this.complexTyped)");
+      expect(componentContent).toContain("component.setInput('complexTypedInitialized', this.complexTypedInitialized)");
+      expect(componentContent).toContain("component.setInput('importTyped', this.importTyped)");
+      expect(componentContent).toContain("component.setInput('importComplexTyped', this.importComplexTyped)");
+      expect(componentContent).toContain("component.setInput('importGenericTyped', this.importGenericTyped)");
     });
   });
 
@@ -275,16 +275,14 @@ export class DummyComponent {
     });
   });
 
-  describe('component with ngOnChanges without SimpleChanges', () => {
+  describe('component with ngOnChanges and aliased inputs', () => {
     let tree: UnitTestTree;
     let componentContent: string;
 
     beforeEach(async () => {
       appTree.overwrite(
         '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
-        `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output } from '@angular/core';
-
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
+        `import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'ish-dummy',
@@ -293,8 +291,10 @@ import { Product, ProductHelper } from 'ish-core/models/product/product.model';
 })
 export class DummyComponent implements OnChanges {
   @Input() input: boolean;
+  @Input('stringAlias') stringAliased: boolean;
+  @Input({ alias: 'objectAlias', required: true }) objectAliased: boolean;
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges<DummyComponent>) {
     // do something
   }
 }
@@ -309,55 +309,15 @@ export class DummyComponent implements OnChanges {
       componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
     });
 
-    it('should call ngOnChanges', () => {
-      expect(componentContent).toContain('component.instance.ngOnChanges()');
+    it('should not call ngOnChanges of the original component', () => {
+      expect(componentContent).not.toContain('instance.ngOnChanges');
+      expect(componentContent).not.toContain('SimpleChange');
     });
 
-    it('should not import SimpleChanges', () => {
-      expect(componentContent).not.toContain('SimpleChanges');
-    });
-  });
-
-  describe('component with ngOnChanges with SimpleChanges', () => {
-    let tree: UnitTestTree;
-    let componentContent: string;
-
-    beforeEach(async () => {
-      appTree.overwrite(
-        '/src/app/extensions/ext/shared/dummy/dummy.component.ts',
-        `import { ChangeDetectionStrategy, Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-
-import { Product, ProductHelper } from 'ish-core/models/product/product.model';
-
-@Component({
-  selector: 'ish-dummy',
-  templateUrl: './dummy.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class DummyComponent implements OnChanges {
-  @Input() input: boolean;
-
-  ngOnChanges(changes: SimpleChanges) {
-    // do something
-  }
-}
-`
-      );
-      tree = await schematicRunner.runSchematic(
-        'lazy-component',
-        { ...defaultOptions, path: 'extensions/ext/shared/dummy/dummy.component.ts' },
-        appTree
-      );
-
-      componentContent = tree.readContent('/src/app/extensions/ext/exports/lazy-dummy/lazy-dummy.component.ts');
-    });
-
-    it('should call ngOnChanges with parameter', () => {
-      expect(componentContent).toMatch(/component\.instance\.ngOnChanges\(\w+\)/);
-    });
-
-    it('should import SimpleChanges', () => {
-      expect(componentContent).toContain('SimpleChanges');
+    it('should transfer inputs via their public names', () => {
+      expect(componentContent).toContain("component.setInput('input', this.input)");
+      expect(componentContent).toContain("component.setInput('stringAlias', this.stringAliased)");
+      expect(componentContent).toContain("component.setInput('objectAlias', this.objectAliased)");
     });
   });
 });

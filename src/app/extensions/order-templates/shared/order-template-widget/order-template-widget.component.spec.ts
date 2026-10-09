@@ -8,7 +8,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
 import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';
@@ -49,7 +48,6 @@ describe('Order Template Widget Component', () => {
       declarations: [
         MockComponent(InfoBoxComponent),
         MockComponent(LoadingComponent),
-        MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         OrderTemplateWidgetComponent,
       ],

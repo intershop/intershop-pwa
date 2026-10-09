@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
-import { TranslateCompiler, TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { PWATranslateCompiler } from 'ish-core/utils/translate/pwa-translate-compiler';
 
@@ -15,7 +15,6 @@ describe('Frequency Pipe', () => {
     registerLocaleData(localeDe);
 
     TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [
         FrequencyPipe,
         provideTranslateService({

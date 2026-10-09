@@ -104,7 +104,7 @@ export class DummyTwoComponent {}
           AppRoutingModule
         ],
         providers: [
-          provideBrowserGlobalErrorListeners()
+          provideBrowserGlobalErrorListeners(),
         ],
         bootstrap: [AppComponent]
       })

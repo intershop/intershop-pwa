@@ -2,7 +2,7 @@
   class="btn shadow back-to-top-btn"
   type="button"
   [attr.aria-label]="'back_to_top.title' | translate"
-  [ngClass]="('copilot' | ishFeature) ? 'btn-secondary' : 'btn-primary'"
+  [class]="('copilot' | ishFeature) ? 'btn-secondary' : 'btn-primary'"
   [style.display]="isVisible ? 'block' : 'none'"
   [title]="'back_to_top.title' | translate"
   (click)="jump()"

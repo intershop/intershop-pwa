@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -18,7 +18,6 @@ describe('Budget Bar Component', () => {
     when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       declarations: [BudgetBarComponent, PricePipe],
       providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
     }).compileComponents();
@@ -63,12 +62,12 @@ describe('Budget Bar Component', () => {
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(`
       <div class="budget-bar-overflow">
-        <div class="overflow-indicator" title="$500.00" style="width: 71%">
+        <div class="overflow-indicator" style="width: 71%" title="$500.00">
           <span class="overflow-display">71%</span>
         </div>
       </div>
       <div class="budget-bar">
-        <div aria-hidden="true" class="budget-bar-used bg-danger" title="$700.00" style="width: 140%">
+        <div aria-hidden="true" class="budget-bar-used bg-danger" style="width: 140%" title="$700.00">
           $700.00
         </div>
       </div>
@@ -89,8 +88,8 @@ describe('Budget Bar Component', () => {
         aria-hidden="true"
         role="progressbar"
         class="budget-bar-used budget-bar-used-additional border-start bg-danger"
-        title="$300.00"
         style="width: 30%"
+        title="$300.00"
       >
         <span>$300.00</span>
       </div>

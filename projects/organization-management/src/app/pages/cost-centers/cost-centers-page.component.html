@@ -123,7 +123,7 @@
                   ? ('account.costcenter.delete.link' | translate)
                   : ('account.costcenter.delete.disabled.icon' | translate)
               "
-              [ngClass]="{ inactive: !isDeletable(costCenter) }"
+              [class.inactive]="!isDeletable(costCenter)"
               (click)="openConfirmationDialog(costCenter, deleteDialog)"
             >
               <i aria-hidden="true" class="bi bi-trash-fill"></i>

@@ -49,7 +49,7 @@ describe('Component Schematic', () => {
           AppRoutingModule
         ],
         providers: [
-          provideBrowserGlobalErrorListeners()
+          provideBrowserGlobalErrorListeners(),
         ],
         bootstrap: [AppComponent]
       })

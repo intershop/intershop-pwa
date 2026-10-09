@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockDirective } from 'ng-mocks';
 
-import { IntersectionObserverDirective } from 'ish-core/directives/intersection-observer.directive';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 
 import { DeferredItemComponent } from './deferred-item.component';
@@ -28,12 +26,7 @@ describe('Deferred Item Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        DeferredItemComponent,
-        LazyLoadingContentDirective,
-        MockDirective(IntersectionObserverDirective),
-        TestHostComponent,
-      ],
+      declarations: [DeferredItemComponent, LazyLoadingContentDirective, TestHostComponent],
     }).compileComponents();
   });
 

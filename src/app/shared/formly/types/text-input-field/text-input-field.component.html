@@ -5,11 +5,11 @@
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
   [attr.data-testing-id]="field.key"
+  [class]="props.inputClass"
   [decimalMarker]="decimalMarker"
   [formControl]="formControl"
   [formlyAttributes]="field"
   [mask]="props.mask"
-  [ngClass]="props.inputClass"
   [thousandSeparator]="thousandSeparator"
   [type]="props.type"
 />

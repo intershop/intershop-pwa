@@ -28,7 +28,7 @@ export class LineItemListElementComponent implements OnChanges {
     private checkoutFacade: CheckoutFacade
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges<LineItemListElementComponent>): void {
     if (changes.pli) {
       if (this.updateSubscription) {
         // eslint-disable-next-line ban/ban

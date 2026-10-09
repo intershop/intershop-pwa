@@ -4,9 +4,9 @@
       class="form-check-input float-none"
       type="radio"
       [attr.data-testing-id]="`radio-${opt.label}`"
+      [class]="props.inputClass"
       [formControl]="formControl"
       [id]="`${id}_${opt.value}`"
-      [ngClass]="props.inputClass"
       [value]="opt.value"
     />
     <label class="form-check-label pe-3" [attr.for]="`${id}_${opt.value}`">{{ opt.label }}</label>

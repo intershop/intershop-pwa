@@ -10,7 +10,7 @@ import { ProductHelper } from 'ish-core/models/product/product.model';
   selector: 'ish-product-price',
   standalone: false,
   templateUrl: './product-price.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ProductPriceComponent implements OnInit {
   @Input() showInformationalPrice: boolean;

@@ -1,5 +1,5 @@
 @if (productSKUs?.length) {
-  <div class="product-list-container" [ngClass]="pagelet.stringParam('CSSClass')">
+  <div class="product-list-container" [class]="pagelet.stringParam('CSSClass')">
     @if (pagelet.stringParam('Title')) {
       <h2>{{ pagelet.stringParam('Title') }}</h2>
     }

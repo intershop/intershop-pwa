@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
@@ -24,7 +15,7 @@ import { SpecialValidators } from 'ish-shared/forms/validators/special-validator
   templateUrl: './account-profile-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountProfilePasswordComponent implements OnInit, OnChanges {
+export class AccountProfilePasswordComponent implements OnInit {
   @Input() error: HttpError;
 
   @Output() readonly updatePassword = new EventEmitter<{ password: string; currentPassword: string }>();
@@ -46,11 +37,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
               required: true,
               hideRequiredMarker: true,
               label: 'account.password.label',
-            },
-            validation: {
-              messages: {
-                incorrect: 'account.update_password.old_password.error.incorrect',
-              },
             },
           },
           {
@@ -86,18 +72,6 @@ export class AccountProfilePasswordComponent implements OnInit, OnChanges {
         ],
       },
     ];
-  }
-
-  ngOnChanges(c: SimpleChanges) {
-    this.handleErrors(c);
-  }
-
-  private handleErrors(c: SimpleChanges) {
-    if (c.error?.currentValue?.error && c.error.currentValue.status === 401) {
-      this.accountProfilePasswordForm.get('currentPassword').setErrors({ incorrect: true });
-      this.accountProfilePasswordForm.get('currentPassword').markAsDirty();
-      this.accountProfilePasswordForm.get('currentPassword').markAsTouched();
-    }
   }
 
   /**

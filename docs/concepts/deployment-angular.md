@@ -56,6 +56,6 @@ A `Dockerfile` is provided for building the [SSR Image][concept-building-blocks]
 - [Angular - SSR][angular-ssr]
 
 [angular-deployment]: https://angular.dev/tools/cli/deployment
-[angular-ssr]: https://v20.angular.dev/guide/ssr
+[angular-ssr]: https://v21.angular.dev/guide/ssr
 [concept-building-blocks]: ./pwa-building-blocks.md
 [concept-progressive-web-app]: ./progressive-web-app.md

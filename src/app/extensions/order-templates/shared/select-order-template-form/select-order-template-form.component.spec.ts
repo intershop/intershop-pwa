@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -26,7 +26,7 @@ describe('Select Order Template Form Component', () => {
     orderTemplatesFacade = mock(OrderTemplatesFacade);
     await TestBed.configureTestingModule({
       declarations: [SelectOrderTemplateFormComponent],
-      imports: [FormlyTestingModule, TranslatePipe],
+      imports: [FormlyTestingModule],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
         provideTranslateService(),

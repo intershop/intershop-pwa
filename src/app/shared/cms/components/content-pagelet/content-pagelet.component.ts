@@ -7,7 +7,6 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChange,
   ViewChild,
   ViewContainerRef,
   inject,
@@ -20,7 +19,6 @@ import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
 import { CMSComponentProvider, CMS_COMPONENT } from 'ish-shared/cms/configurations/injection-keys';
-import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
 
 /**
  * The Content Pagelet Component renders the pagelet for the given 'pageletId'.
@@ -74,8 +72,7 @@ export class ContentPageletComponent implements OnChanges, OnInit {
     const mappedComponent = components.find(c => c.definitionQualifiedName === pagelet.definitionQualifiedName);
 
     if (mappedComponent) {
-      const componentRef = this.createComponent(mappedComponent);
-      this.initializeComponent(componentRef.instance, pagelet);
+      this.createComponent(mappedComponent).setInput('pagelet', pagelet);
     } else {
       console.warn(`did not find mapping for ${pagelet.id} (${pagelet.definitionQualifiedName})`);
     }
@@ -84,14 +81,5 @@ export class ContentPageletComponent implements OnChanges, OnInit {
   private createComponent(mappedComponent: CMSComponentProvider) {
     this.cmsOutlet.clear();
     return this.cmsOutlet.createComponent(mappedComponent.class);
-  }
-
-  private initializeComponent(instance: CMSComponent, pagelet: ContentPageletView) {
-    instance.pagelet = pagelet;
-
-    // OnChanges has to be manually invoked on dynamically created components
-    if (instance.ngOnChanges) {
-      instance.ngOnChanges({ pagelet: new SimpleChange(undefined, pagelet, true) });
-    }
   }
 }

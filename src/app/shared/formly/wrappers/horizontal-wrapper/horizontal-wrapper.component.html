@@ -1,11 +1,11 @@
 <div class="form-group row" [attr.data-testing-id]="`${keyString}-wrapper`" [class.has-error]="showError">
   <!-- prettier-ignore -->
   @if (props.label) {
-    <label class="col-form-label" [attr.for]="id" [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
+    <label class="col-form-label" [attr.for]="id" [class]="props.labelClass ? props.labelClass : dprops.labelClass"
       >{{ props.labelNoTranslate ? props.label : (props.label | translate) }}@if (props.required && !props.hideRequiredMarker) {<span aria-hidden="true" class="required">*</span>}
     </label>
   }
-  <div [ngClass]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
+  <div [class]="props.fieldClass ? props.fieldClass : dprops.fieldClass">
     <ng-template #fieldComponent />
   </div>
 </div>

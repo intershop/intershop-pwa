@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
@@ -24,12 +23,7 @@ describe('Header Default Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FeatureToggleModule.forTesting('compare'),
-        MockComponent(SearchBoxComponent),
-        TranslatePipe,
-      ],
+      imports: [FeatureToggleModule.forTesting('compare'), MockComponent(SearchBoxComponent), TranslatePipe],
       declarations: [
         HeaderDefaultComponent,
         MockComponent(HeaderNavigationComponent),

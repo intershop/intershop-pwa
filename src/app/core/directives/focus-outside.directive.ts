@@ -19,7 +19,7 @@ export class FocusOutsideDirective {
    * Method to check if focus is outside of the targetElement. Emits true when focus moves outside.
    */
   @HostListener('document:focusin', ['$event.target'])
-  onFocusIn(targetElement: ElementRef): void {
+  onFocusIn(targetElement: EventTarget): void {
     if (!this.elementRef.nativeElement.contains(targetElement)) {
       this.isFocusedOutside.emit(true);
     }

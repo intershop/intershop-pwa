@@ -3,7 +3,7 @@
     <h2 class="h3">{{ 'checkout.desired_delivery_date.title' | translate }}</h2>
     <form [formGroup]="form" (ngSubmit)="submitForm()">
       <div class="row">
-        @if (showSuccessMessage) {
+        @if (showSuccessMessage$ | async) {
           <div class="col-md-12">
             <ish-success-message message="checkout.desired_delivery_date.success.message" [toast]="false" />
           </div>

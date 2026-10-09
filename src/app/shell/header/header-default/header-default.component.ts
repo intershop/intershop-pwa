@@ -35,7 +35,7 @@ export class HeaderDefaultComponent implements OnChanges {
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<HeaderDefaultComponent>) {
     if (changes.reset) {
       this.activeComponent = 'search';
     }

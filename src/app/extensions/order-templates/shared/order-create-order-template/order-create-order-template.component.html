@@ -3,8 +3,8 @@
     class="btn btn-secondary"
     data-testing-id="addOrderToOrderTemplateButton"
     type="button"
+    [class]="cssClass"
     [disabled]="displaySpinner()"
-    [ngClass]="cssClass"
     (click)="openModal(modal)"
   >
     @if (displaySpinner() !== true) {

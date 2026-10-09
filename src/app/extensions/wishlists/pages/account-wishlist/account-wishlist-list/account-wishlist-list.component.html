@@ -23,7 +23,7 @@
         @if (wishlist.shared) {
           <span
             class="input-help"
-            [ngClass]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
+            [class]="{ 'link-separator': wishlist.preferred && wishlist.shared, 'ps-3': !wishlist.preferred }"
             >{{ 'account.wishlists.table.shared' | translate }}</span
           >
         }

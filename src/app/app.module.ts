@@ -6,6 +6,7 @@ import { UrlSerializer } from '@angular/router';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
+import { ZoneChangeDetectionModule } from 'ish-core/zone-change-detection.module';
 
 import { environment } from '../environments/environment';
 
@@ -27,6 +28,7 @@ import { ShellModule } from './shell/shell.module';
   // Order matters: AppLastRoutingModule must be last because it contains the wildcard route.
   /* eslint-disable perfectionist/sort-arrays */
   imports: [
+    ZoneChangeDetectionModule,
     AppRoutingModule,
     // BrowserAnimationsModule is still required by ngx-toastr's default animated toast component
     // TODO: Keep until ngx-toastr no longer depends on @angular/animations, then this and the dependency can be removed.

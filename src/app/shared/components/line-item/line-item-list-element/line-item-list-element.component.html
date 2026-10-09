@@ -103,7 +103,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100 text-end" [ngClass]="{ 'pe-2': !editable }">
+    <div class="form-group w-100 text-end" [class.pe-2]="!editable">
       @if (editable) {
         <ish-product-quantity [elementId]="`pli-quantity_${pli.position}`" />
       } @else {

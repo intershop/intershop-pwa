@@ -33,7 +33,7 @@
         @if (costCenter.spentBudget && ccVal) {
           <dl class="row dl-horizontal dl-separator">
             <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-            <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentage > 1 }">
+            <dd class="col-6" [class.text-danger]="ccVal.spentPercentage > 1">
               {{ costCenter.spentBudget | ishPrice }} ({{ ccVal.spentPercentage | percent }})
             </dd>
           </dl>
@@ -42,7 +42,7 @@
           <dl class="row dl-horizontal dl-separator">
             <!-- prettier-ignore -->
             <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-            <dd class="col-6" [ngClass]="{ 'text-danger': ccVal.spentPercentageIncludingThisRequisition > 1 }">
+            <dd class="col-6" [class.text-danger]="ccVal.spentPercentageIncludingThisRequisition > 1">
               {{ ccVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
                 ccVal.spentPercentageIncludingThisRequisition | percent
               }})
@@ -80,7 +80,7 @@
           @if (buyer.spentBudget) {
             <dl class="row dl-horizontal dl-separator">
               <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-              <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentage > 1 }">
+              <dd class="col-6" [class.text-danger]="bVal.spentPercentage > 1">
                 {{ buyer.spentBudget | ishPrice }} ({{ bVal.spentPercentage | percent }})
               </dd>
             </dl>
@@ -89,7 +89,7 @@
             <dl class="row dl-horizontal dl-separator">
               <!-- prettier-ignore -->
               <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-              <dd class="col-6" [ngClass]="{ 'text-danger': bVal.spentPercentageIncludingThisRequisition > 1 }">
+              <dd class="col-6" [class.text-danger]="bVal.spentPercentageIncludingThisRequisition > 1">
                 {{ bVal.spentBudgetIncludingThisRequisition | ishPrice }} ({{
                   bVal.spentPercentageIncludingThisRequisition | percent
                 }})

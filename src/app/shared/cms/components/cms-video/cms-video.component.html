@@ -1,8 +1,9 @@
 @if (pagelet.hasParam('Video')) {
   <div
     class="video-container"
-    [ngClass]="pagelet.stringParam('CSSClass')"
-    [ngStyle]="{ 'width.px': videoWidth, 'height.px': videoHeight }"
+    [class]="pagelet.stringParam('CSSClass')"
+    [style.height.px]="videoHeight"
+    [style.width.px]="videoWidth"
   >
     @if (iframeVideoUrl) {
       <div class="video-wrapper">
