@@ -11,12 +11,12 @@
     [attr.aria-invalid]="showError ? 'true' : undefined"
     [attr.aria-label]="props.ariaLabel | translate"
     [attr.aria-required]="props.required ? 'true' : undefined"
+    [class]="props.inputClass"
     [formControl]="formControl"
     [formlyAttributes]="field"
     [markDisabled]="markDateDisable$ | async"
     [maxDate]="maxDate$ | async"
     [minDate]="minDate$ | async"
-    [ngClass]="props.inputClass"
   />
 
   <button

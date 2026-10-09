@@ -5,10 +5,10 @@
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
   [attr.data-testing-id]="field.key"
+  [class]="props.inputClass"
   [compareWith]="props.compareWith ? props.compareWith : defaultOptions.props.compareWith"
   [formControl]="formControl"
   [formlyAttributes]="field"
-  [ngClass]="props.inputClass"
 >
   @if (props.options && props.options | formlySelectOptions: field | async; as opts) {
     @for (opt of opts; track opt.value) {

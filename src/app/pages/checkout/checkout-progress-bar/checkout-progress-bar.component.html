@@ -2,7 +2,7 @@
   <ul class="progress-steps">
     @for (checkoutStep of checkoutSteps; track $index) {
       <li
-        [ngClass]="{
+        [class]="{
           'progress-active': checkoutStep.step === step,
           'progress-complete': checkoutStep.step < step,
         }"

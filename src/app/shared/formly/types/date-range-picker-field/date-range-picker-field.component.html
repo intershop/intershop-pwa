@@ -12,12 +12,12 @@
           outsideDays="collapsed"
           tabindex="-1"
           [autoClose]="'outside'"
+          [class]="props.inputClass"
           [dayTemplate]="t"
           [displayMonths]="2"
           [formlyAttributes]="field"
           [maxDate]="maxDate$ | async"
           [minDate]="minDate$ | async"
-          [ngClass]="props.inputClass"
           [startDate]="startDate$ | async"
           (dateSelect)="onDateSelection($event)"
         />

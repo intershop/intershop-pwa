@@ -9,7 +9,7 @@
       <div class="col-md-8 col-xl-6 list-header-item list-header-item-descr">
         {{ 'shopping_cart.product_description.heading' | translate }}
       </div>
-      <div class="col-xl-2 d-none d-xl-flex list-header-item" [ngClass]="{ 'justify-content-end': editable$ | async }">
+      <div class="col-xl-2 d-none d-xl-flex list-header-item" [class.justify-content-end]="editable$ | async">
         {{ 'shopping_cart.qty.heading' | translate }}
       </div>
       <div class="col-md-2 list-header-item column-price">{{ 'shopping_cart.price.heading' | translate }}</div>

@@ -11,7 +11,7 @@
   />
 </ng-template>
 
-<div class="header container" [ngClass]="deviceType">
+<div class="header container" [class]="deviceType">
   @if (!isSticky) {
     <ul class="user-links">
       @if (!isSticky && deviceType !== 'mobile') {
@@ -49,7 +49,7 @@
         class="btn btn-link search-toggler sticky-header-icon"
         role="button"
         [attr.aria-label]="'search.searchbox.button.sticky_header.aria_label' | translate"
-        [ngClass]="{ 'active-search': showSearch }"
+        [class.active-search]="showSearch"
         [tabindex]="isSticky ? 0 : -1"
         (click)="scrollTopAndFocusSearch()"
         (keydown.enter)="scrollTopAndFocusSearch()"
@@ -59,11 +59,7 @@
         }
       </a>
       @if (isSticky || showSearch) {
-        <div
-          class="search-container header-search-container"
-          [ngClass]="{ show: !isSticky }"
-          [ngbCollapse]="!showSearch"
-        >
+        <div class="search-container header-search-container" [class.show]="!isSticky" [ngbCollapse]="!showSearch">
           <ng-container *ngTemplateOutlet="searchBoxTemplate" />
         </div>
       }
@@ -84,13 +80,9 @@
       class="d-none"
       data-testing-id="mini-basket-desktop"
       view="full"
-      [ngClass]="isSticky ? 'd-lg-block' : 'd-md-block'"
+      [class]="isSticky ? 'd-lg-block' : 'd-md-block'"
     />
-    <ish-mini-basket
-      data-testing-id="mini-basket-mobile"
-      view="small"
-      [ngClass]="isSticky ? 'd-lg-none' : 'd-md-none'"
-    />
+    <ish-mini-basket data-testing-id="mini-basket-mobile" view="small" [class]="isSticky ? 'd-lg-none' : 'd-md-none'" />
   </div>
   <div class="mid-header row align-items-center justify-content-between">
     <div class="col-md-3 logo-col">
@@ -126,7 +118,7 @@
 
   <button class="navbar-toggler" type="button" (click)="toggle('navbar')">
     <span class="visually-hidden">{{ 'common.button.navbarCollapsed.text' | translate }}</span>
-    <div class="hamburger-menu" [ngClass]="{ open: showNavBar }">
+    <div class="hamburger-menu" [class.open]="showNavBar">
       <!--- strokes of the hamburger menu -->
       <span></span> <span></span> <span></span>
     </div>

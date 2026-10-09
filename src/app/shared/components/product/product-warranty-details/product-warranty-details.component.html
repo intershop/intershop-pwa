@@ -1,7 +1,7 @@
 @if (warranty) {
   <ish-modal-dialog-link
+    class="details-link"
     linkText="product.warranty.detail.text"
-    [ngClass]="'details-link'"
     [options]="{ titleText: warranty.name, size: 'md' }"
     (click)="getWarrantyDetails()"
   >
