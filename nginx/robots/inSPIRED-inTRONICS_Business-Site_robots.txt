@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /error
+Disallow: /maintenance
+Disallow: /account
+Disallow: /search
+Disallow: /compare
+Disallow: /recently
+Disallow: /basket
+Disallow: /checkout
+Disallow: /register
+Disallow: /login
+Disallow: /logout
+Disallow: /forgotPassword
+Disallow: /gdpr-requests
+Disallow: /contact
