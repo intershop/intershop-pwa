@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -63,6 +63,7 @@ export class CopilotEmbeddedPageComponent implements OnInit {
   private chatId: string;
   private chatflowid: string;
   private destroyRef = inject(DestroyRef);
+  private activeRequestCancellation = { cancel$: new Subject<void>(), cancelled: false };
 
   constructor(
     private copilotEmbeddedFacade: CopilotEmbeddedFacade,
@@ -105,10 +106,15 @@ export class CopilotEmbeddedPageComponent implements OnInit {
 
     const shownProducts = this.products.map(product => ({ sku: product.sku, title: product.title }));
     const request = { question: trimmed ?? '', sessionId: this.sessionId, uploads, shownProducts };
+    // Keep every stage of this request cancellable as one unit.
+    const requestCancellation = { cancel$: new Subject<void>(), cancelled: false };
+    this.activeRequestCancellation = requestCancellation;
     this.resolveStreaming$()
-      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .pipe(take(1), takeUntil(requestCancellation.cancel$), takeUntilDestroyed(this.destroyRef))
       .subscribe(streamingAvailable =>
-        streamingAvailable ? this.startStreaming(request) : this.fetchFinalAnswer(request)
+        streamingAvailable
+          ? this.startStreaming(request, requestCancellation)
+          : this.fetchFinalAnswer(request, requestCancellation)
       );
   }
 
@@ -131,6 +137,11 @@ export class CopilotEmbeddedPageComponent implements OnInit {
    * persisted chat (clears the chatflow memory).
    */
   resetSession() {
+    this.activeRequestCancellation.cancelled = true;
+    this.activeRequestCancellation.cancel$.next();
+    this.activeRequestCancellation.cancel$.complete();
+    this.activeRequestCancellation = { cancel$: new Subject<void>(), cancelled: false };
+    this.loading = false;
     this.messages = [];
     this.chatId = undefined;
     this.pendingAnswer = '';
@@ -142,12 +153,15 @@ export class CopilotEmbeddedPageComponent implements OnInit {
     this.persistSessionId(this.sessionId);
   }
 
-  private startStreaming(request: CopilotEmbeddedPageRequest) {
+  private startStreaming(
+    request: CopilotEmbeddedPageRequest,
+    requestCancellation: { cancel$: Subject<void>; cancelled: boolean }
+  ) {
     let streamedTools: CopilotEmbeddedToolCall[];
 
     this.copilotEmbeddedFacade
       .streamMessage(request.question, this.requestOptions(request))
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntil(requestCancellation.cancel$), takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: event => {
           if (event.event === 'token' && typeof event.data === 'string') {
@@ -161,10 +175,13 @@ export class CopilotEmbeddedPageComponent implements OnInit {
         },
         error: () => this.fail(),
         complete: () => {
+          if (requestCancellation.cancelled) {
+            return;
+          }
           // Flowise does not always stream the final answer as tokens (e.g. after tool errors);
           // fall back to the non-streaming text so an answer is still shown.
           if (!this.pendingAnswer) {
-            this.fetchFinalAnswer(request);
+            this.fetchFinalAnswer(request, requestCancellation);
           } else {
             this.addApiMessage(this.pendingAnswer, streamedTools);
             this.pendingAnswer = '';
@@ -174,10 +191,13 @@ export class CopilotEmbeddedPageComponent implements OnInit {
       });
   }
 
-  private fetchFinalAnswer(request: CopilotEmbeddedPageRequest) {
+  private fetchFinalAnswer(
+    request: CopilotEmbeddedPageRequest,
+    requestCancellation: { cancel$: Subject<void>; cancelled: boolean }
+  ) {
     this.copilotEmbeddedFacade
       .sendMessage(request.question, this.requestOptions(request))
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntil(requestCancellation.cancel$), takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: response => this.finalizeAnswer(response),
         error: () => this.fail(),
