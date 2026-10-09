@@ -248,6 +248,7 @@ export class CopilotEmbeddedChatComponent implements OnChanges, AfterViewInit, A
     }
   }
 
+  /** Scrolls the transcript container itself; ViewportScroller only scrolls the window. */
   private scrollToBottom() {
     const el = this.chatWindow?.nativeElement;
     if (el) {
