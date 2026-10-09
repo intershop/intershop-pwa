@@ -590,7 +590,7 @@
   "account.update_password.new_password.error.length": "Your password must be at least {{0}} characters in length.",
   "account.update_password.newpassword.label": "New password",
   "account.update_password.newpassword_confirmation.label": "Confirm new password",
-  "account.update_password.old_password.error.incorrect": "The password you entered is incorrect.",
+  "account.update_password.old_password.error.incorrect": "The current password is incorrect. Please verify your input and try again.",
   "account.update_password.old_password.error.required": "Please enter your account password.",
   "account.update_password.question.text": "What happens if I edit my password?",
   "account.update_profile.breadcrumb": "Edit your profile",
