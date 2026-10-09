@@ -590,7 +590,7 @@
   "account.update_password.new_password.error.length": "Votre mot de passe doit avoir une longueur minimale de {{0}} caractères.",
   "account.update_password.newpassword.label": "Nouveau mot de passe",
   "account.update_password.newpassword_confirmation.label": "Confirmez le nouveau mot de passe",
-  "account.update_password.old_password.error.incorrect": "Le mot de passe saisi est incorrect.",
+  "account.update_password.old_password.error.incorrect": "Le mot de passe actuel est incorrect. Veuillez vérifier votre saisie et réessayer.",
   "account.update_password.old_password.error.required": "Veuillez saisir le mot de passe de votre compte.",
   "account.update_password.question.text": "Que se passe-t-il si je modifie mon mot de passe ?",
   "account.update_profile.breadcrumb": "Modifier votre profil",

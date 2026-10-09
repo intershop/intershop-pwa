@@ -590,7 +590,7 @@
   "account.update_password.new_password.error.length": "Ihr Kennwort muss aus mindestens {{0}} Zeichen bestehen.",
   "account.update_password.newpassword.label": "Neues Kennwort",
   "account.update_password.newpassword_confirmation.label": "Neues Kennwort bestätigen",
-  "account.update_password.old_password.error.incorrect": "Das eingegebene Kennwort ist nicht korrekt.",
+  "account.update_password.old_password.error.incorrect": "Das aktuelle Kennwort ist nicht korrekt. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",
   "account.update_password.old_password.error.required": "Bitte geben Sie Ihr Benutzer-Kennwort ein.",
   "account.update_password.question.text": "Was passiert, wenn ich mein Kennwort ändere?",
   "account.update_profile.breadcrumb": "Ihr Profil bearbeiten",
