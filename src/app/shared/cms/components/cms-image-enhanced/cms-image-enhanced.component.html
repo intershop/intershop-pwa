@@ -13,7 +13,7 @@
 }
 
 <ng-template #imageEnhanced>
-  <div class="enhanced-image-container" [ngClass]="pagelet.stringParam('CSSClass')">
+  <div class="enhanced-image-container" [class]="pagelet.stringParam('CSSClass')">
     <picture class="enhanced-image">
       @if (pagelet.hasParam('ImageXS')) {
         <source media="(max-width: 767px)" [srcset]="pagelet.stringParam('ImageXS')" />

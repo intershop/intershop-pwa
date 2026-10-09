@@ -5,9 +5,9 @@
   [attr.aria-label]="props.ariaLabel | translate"
   [attr.aria-required]="props.required ? 'true' : undefined"
   [attr.data-testing-id]="field.key"
+  [class]="props.inputClass"
   [cols]="props.cols"
   [formControl]="formControl"
   [formlyAttributes]="field"
-  [ngClass]="props.inputClass"
   [rows]="props.rows"
 ></textarea>

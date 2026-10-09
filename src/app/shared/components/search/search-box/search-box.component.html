@@ -1,4 +1,4 @@
-<div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
+<div #searchBox class="search clearfix" [class]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
   @let inputSearchTerm = inputSearchTerms$ | async;
   <input
     #searchInput
@@ -17,12 +17,7 @@
   @if (configuration?.autoSuggest && suggestions$ | async; as results) {
     @if ((searchBoxResults$ | async) && (hasMinimumCharCount$ | async)) {
       <div aria-labelledby="header-search-input" class="search-suggest-container" id="search-suggest-layer">
-        <div
-          class="col-12 d-flex flex-column"
-          [ngClass]="{
-            'col-md-5': results.products?.length,
-          }"
-        >
+        <div class="col-12 d-flex flex-column" [class.col-md-5]="results.products?.length">
           @if (results.keywords?.length) {
             <ish-suggest-keywords
               [inputTerms$]="inputSearchTerms$"
@@ -51,7 +46,7 @@
         @if (results.products?.length) {
           <div
             class="col-12"
-            [ngClass]="{
+            [class]="{
               'col-md-7': results.keywords.length || results.brands.length || results.categories.length,
               'products-only': !results.keywords.length && !results.brands.length && !results.categories.length,
             }"
@@ -158,4 +153,4 @@
   </div>
 </div>
 
-<div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
+<div class="search-suggest-backdrop" [class.show]="searchBoxFocus"></div>

@@ -7,7 +7,7 @@
 
 <div [formGroup]="parameterForm">
   <!-- Credit card number -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cardNumber?.message }">
+  <div class="row form-group" [class.has-error]="errorMessage.cardNumber?.message">
     <label class="col-form-label col-md-4" for="cardpanInput"
       >{{ 'checkout.credit_card.number.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
@@ -20,10 +20,11 @@
   </div>
 
   <!-- Expiration date (month/Year)  -->
+  <!-- 'undefined' instead of 'false' keeps the 'has-error' class set by ishShowFormFeedback -->
   <div
     class="row form-group has-feedback"
+    [class.has-error]="errorMessage.expiryMonth?.message ? true : undefined"
     [ishShowFormFeedback]="[parameterForm.controls.expirationMonth, parameterForm.controls.expirationYear]"
-    [ngClass]="{ 'has-error': errorMessage.expiryMonth?.message }"
   >
     <label class="col-form-label col-md-4" for="month"
       >{{ 'checkout.credit_card.expiration_date.label' | translate
@@ -77,7 +78,7 @@
   </div>
 
   <!-- CVC -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.cvc?.message }">
+  <div class="row form-group" [class.has-error]="errorMessage.cvc?.message">
     <label class="col-form-label col-md-4" for="cvcInput"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >

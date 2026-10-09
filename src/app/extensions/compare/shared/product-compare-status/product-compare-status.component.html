@@ -7,7 +7,7 @@
 >
   <i class="bi bi-arrow-left-right header-icon"></i>
   <span class="badge rounded-pill" data-testing-id="product-compare-count">{{ productCompareCount }}</span>
-  <span [ngClass]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
+  <span [class]="{ 'd-none': view === 'auto' || view === 'small', 'd-md-inline': view === 'auto' }">{{
     'product.compare.link' | translate
   }}</span>
 </a>

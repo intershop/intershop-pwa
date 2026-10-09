@@ -8,8 +8,8 @@
       [attr.aria-label]="
         displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : null
       "
+      [class]="cssClass"
       [disabled]="disabled$ | async"
-      [ngClass]="cssClass"
       [tabindex]="ariaHidden ? -1 : 0"
       [title]="displayType === 'icon' ? ('quote.add_product_to_quote.button.add_to_quote.label' | translate) : ''"
       (click)="addToQuote()"

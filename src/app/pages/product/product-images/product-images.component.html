@@ -6,7 +6,7 @@
           <div
             class="product-thumb-set"
             tabindex="0"
-            [ngClass]="{ active: isActiveSlide(i) }"
+            [class.active]="isActiveSlide(i)"
             (click)="setActiveSlide(i)"
             (keydown.enter)="setActiveSlide(i)"
           >
@@ -30,9 +30,9 @@
                   >
                     <ish-product-image
                       imageType="L"
+                      [class.product-image-zoom]="zoomImageIds$ | async"
                       [imageView]="imageView"
                       [loading]="i === 0 ? 'eager' : 'lazy'"
-                      [ngClass]="{ 'product-image-zoom': zoomImageIds$ | async }"
                     />
                   </div>
                 </div>

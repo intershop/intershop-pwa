@@ -11,8 +11,8 @@
   } @else {
     <!-- details link and dialog -->
     <ish-modal-dialog-link
+      class="details-link promotion-details-link"
       linkText="promotion.detailslink.text"
-      [ngClass]="'details-link promotion-details-link'"
       [options]="{ titleText: 'promotion.detaillist.title' | translate }"
     >
       @if (promotion.longTitle) {

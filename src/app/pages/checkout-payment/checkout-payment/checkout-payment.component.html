@@ -35,7 +35,7 @@
             <ul class="payment-methods list-unstyled" id="payment-accordion">
               @for (paymentMethod of filteredPaymentMethods; track paymentMethod; let i = $index) {
                 <li class="panel">
-                  <div [ngClass]="{ 'form-check': !paymentMethod.parameters }">
+                  <div [class.form-check]="!paymentMethod.parameters">
                     <strong>
                       {{ paymentMethod.displayName }}
                       @if (!paymentMethod.displayName) {

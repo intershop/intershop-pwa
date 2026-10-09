@@ -59,7 +59,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100" [ngClass]="{ 'text-end': editable }">
+    <div class="form-group w-100" [class.text-end]="editable">
       @if (editable) {
         <ish-product-quantity />
       } @else {

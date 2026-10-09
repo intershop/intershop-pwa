@@ -48,6 +48,11 @@ Customized templates of these components must use `showSuccessMessage$ | async` 
 A new `no-restricted-syntax` lint rule enforces Angular 21's typed `SimpleChanges<T>` in `ngOnChanges`.
 Change untyped signatures in custom code to, for example, `ngOnChanges(changes: SimpleChanges<MyComponent>)`.
 
+**`ngClass` and `ngStyle` replaced by `[class]` and `[style]` bindings**
+
+All PWA templates now use native [class and style bindings](https://angular.dev/guide/templates/binding) instead of the `NgClass` and `NgStyle` directives, as recommended by Angular.
+We encourage projects to migrate their customized templates as well, since the PWA will enforce native bindings with lint rules after the Angular 22 upgrade.
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.

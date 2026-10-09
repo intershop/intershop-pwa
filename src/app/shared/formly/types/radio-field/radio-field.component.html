@@ -6,8 +6,8 @@
   [attr.aria-required]="props.required ? 'true' : undefined"
   [attr.data-testing-id]="`radio-${props.label}`"
   [attr.name]="radioName"
+  [class]="props.inputClass"
   [formControl]="formControl"
   [id]="id"
-  [ngClass]="props.inputClass"
   [value]="props.value"
 />

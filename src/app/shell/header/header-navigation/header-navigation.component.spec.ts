@@ -46,12 +46,12 @@ describe('Header Navigation Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ul class="navbar-nav main-navigation-list">
         <li class="dropdown first">
-          <a class="main-navigation-link" data-testing-id="A-link" style="width: 100%" href="/cat/A">
+          <a class="main-navigation-link" style="width: 100%" data-testing-id="A-link" href="/cat/A">
             CAT_A
           </a>
         </li>
         <li class="dropdown">
-          <a class="main-navigation-link" data-testing-id="C-link" style="width: 100%" href="/cat/C">
+          <a class="main-navigation-link" style="width: 100%" data-testing-id="C-link" href="/cat/C">
             CAT_C
           </a>
         </li>

@@ -58,7 +58,7 @@ describe('Product Variation Select Swatch Component', () => {
         </li>
         <li>
           <a tabindex="0" title="White"
-            ><span class="light-color" style="background-color: rgb(255, 255, 255)"></span
+            ><span style="background-color: rgb(255, 255, 255)" class="light-color"></span
           ></a>
         </li>
       </ul>

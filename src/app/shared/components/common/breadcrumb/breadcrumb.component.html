@@ -4,7 +4,7 @@
   id="nav-breadcrumbs"
   tabindex="-1"
   [attr.aria-label]="'breadcrumbs.aria_label' | translate"
-  [ngStyle]="dividerStyle"
+  [style]="dividerStyle"
 >
   <ol class="breadcrumb">
     @let trail = trail$ | async;
@@ -28,7 +28,7 @@
       <li
         class="breadcrumb-item"
         [attr.aria-current]="last && !item.link ? 'page' : null"
-        [ngClass]="{ active: last && !item.link }"
+        [class.active]="last && !item.link"
       >
         @if (item.link) {
           <a [queryParams]="item.linkParams" [routerLink]="item.link">{{ item.text || (item.key | translate) }}</a>

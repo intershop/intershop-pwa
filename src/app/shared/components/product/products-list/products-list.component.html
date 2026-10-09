@@ -27,7 +27,7 @@
   } @else {
     <div class="product-list row">
       @for (sku of products; track $index) {
-        <div class="product-list-item" [ngClass]="listItemCSSClass">
+        <div class="product-list-item" [class]="listItemCSSClass">
           <ish-product-item
             ishProductContext
             [configuration]="listItemConfiguration"

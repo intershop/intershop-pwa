@@ -55,7 +55,7 @@ describe('Cms Navigation Link Component', () => {
     });
     fixture.detectChanges();
     expect(element).toMatchInlineSnapshot(
-      `<li class="dropdown nav-link"><a href="https://test.com" style="width: 100%"> External </a></li>`
+      `<li class="dropdown nav-link"><a style="width: 100%" href="https://test.com"> External </a></li>`
     );
   });
 

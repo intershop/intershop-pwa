@@ -30,7 +30,7 @@
             <p
               class="form-control-plaintext w-auto"
               viewModeContent
-              [ngClass]="{ 'fst-italic': !form.get('displayName').value }"
+              [class.fst-italic]="!form.get('displayName').value"
             >
               {{ form.get('displayName').value || 'quote.edit.unsubmitted.enter_an_optional_name.text' | translate }}
             </p>
@@ -61,7 +61,7 @@
             <p
               class="form-control-plaintext w-auto"
               viewModeContent
-              [ngClass]="{ 'fst-italic': !form.get('description').value }"
+              [class.fst-italic]="!form.get('description').value"
             >
               {{ form.get('description').value || 'quote.edit.unsubmitted.provide_comment.text' | translate }}
             </p>

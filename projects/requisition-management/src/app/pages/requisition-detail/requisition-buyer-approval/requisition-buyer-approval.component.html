@@ -57,7 +57,7 @@
           @if (requisition.userBudget?.spentBudget?.value !== undefined) {
             <dl class="row dl-horizontal dl-separator">
               <dt class="col-6">{{ 'account.budget.already_spent.label' | translate }}</dt>
-              <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentage > 1 }">
+              <dd class="col-6" [class.text-danger]="spentPercentage > 1">
                 {{ requisition.userBudget.spentBudget | ishPrice }}
                 <!-- prettier-ignore -->
                 @if (requisition.userBudget.budget) {({{ spentPercentage | percent }})}
@@ -68,7 +68,7 @@
             <dl class="row dl-horizontal dl-separator">
               <!-- prettier-ignore -->
               <dt class="col-6">{{ 'approval.detailspage.budget.including_order.label' | translate : { recurring: !requisition.requisitionNo } }}</dt>
-              <dd class="col-6" [ngClass]="{ 'text-danger': spentPercentageIncludingThisRequisition > 1 }">
+              <dd class="col-6" [class.text-danger]="spentPercentageIncludingThisRequisition > 1">
                 {{
                   requisition.userBudget?.spentBudgetIncludingThisRequisition || requisition.totals.total
                     | ishPrice: 'gross'

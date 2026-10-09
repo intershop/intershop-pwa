@@ -3,8 +3,8 @@
     class="btn btn-secondary"
     data-testing-id="addOrderToBasketButton"
     type="button"
+    [class]="cssClass"
     [disabled]="displaySpinner()"
-    [ngClass]="cssClass"
     (click)="addOrderToBasket()"
   >
     @if (displaySpinner() !== true) {

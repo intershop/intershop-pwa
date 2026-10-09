@@ -19,8 +19,8 @@
       }
       <!-- details link and dialog -->
       <ish-modal-dialog-link
+        class="details-link"
         linkText="product.ready_for_shipment.detail.text"
-        [ngClass]="'details-link'"
         [options]="{ titleText: 'shopping.product.readyforshipment.details.title' | translate, size: 'lg' }"
       >
         <ish-content-include *ishLazyLoadingContent includeId="include.dialog.readyForShipment.pagelet2-Include" />
