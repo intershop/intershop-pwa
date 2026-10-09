@@ -28,6 +28,7 @@
 **/*.rej
 **/*.orig
 /dev.bat
+/.scratch/
 **/.lighthouseci/
 /.github/lighthouse/certs/
 
