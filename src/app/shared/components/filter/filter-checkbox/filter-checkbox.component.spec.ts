@@ -10,9 +10,7 @@ describe('Filter Checkbox Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [FilterCheckboxComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {
