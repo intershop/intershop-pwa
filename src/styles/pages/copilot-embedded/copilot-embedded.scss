@@ -37,7 +37,7 @@
       flex-direction: column;
     }
 
-    > div:first-child {
+    > :has(> .product-image-container) {
       flex: 0 0 auto;
       width: 125px;
 
@@ -47,7 +47,7 @@
       }
     }
 
-    > div:last-child {
+    > :has(> .row) {
       flex: 1 1 auto;
       width: auto;
       max-width: none;

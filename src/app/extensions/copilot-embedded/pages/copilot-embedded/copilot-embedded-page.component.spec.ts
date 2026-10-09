@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, Subject, of, throwError } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 
@@ -143,6 +143,36 @@ describe('Copilot Embedded Page Component', () => {
     expect(component.error).toBe('copilot.embedded.error.generic');
     expect(component.loading).toBeFalse();
     expect(component.messages).toHaveLength(1);
+  });
+
+  it('should ignore a non-streaming response that arrives after the session is reset', () => {
+    const response$ = new Subject<{ text: string; chatId: string }>();
+    facade.sendMessage.mockReturnValue(response$);
+    createPage();
+
+    component.onSend({ question: 'find products' });
+    component.resetSession();
+    response$.next({ text: 'Late answer', chatId: 'old-chat' });
+
+    expect(component.messages).toBeEmpty();
+    expect(component.loading).toBeFalse();
+    expect(facade.handleToolCalls).not.toHaveBeenCalled();
+  });
+
+  it('should ignore streamed events that arrive after the session is reset', () => {
+    facade.configuration$ = of({ chatflowid: 'flow-1', streaming: true });
+    const stream$ = new Subject<{ event: string; data: string }>();
+    facade.streamMessage.mockReturnValue(stream$);
+    createPage();
+
+    component.onSend({ question: 'find products' });
+    component.resetSession();
+    stream$.next({ event: 'token', data: 'Late answer' });
+
+    expect(component.messages).toBeEmpty();
+    expect(component.pendingAnswer).toBeEmpty();
+    expect(component.loading).toBeFalse();
+    expect(facade.handleToolCalls).not.toHaveBeenCalled();
   });
 
   it('should restore the saved transcript and clear it when the session is reset', () => {
