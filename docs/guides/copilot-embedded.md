@@ -14,6 +14,7 @@ Unlike the [Intershop Copilot for Buyers](./copilot.md) - which embeds a pre-bui
 ## Configuration
 
 Enable the `copilotEmbedded` feature toggle and provide the Flowise connection details.
+The `copilotEmbedded` configuration is required whenever the feature toggle is enabled.
 
 Example via _environment.ts_ file:
 
