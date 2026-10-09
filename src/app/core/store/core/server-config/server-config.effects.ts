@@ -4,7 +4,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
-import { concatMap, filter, first, map, switchMap, take, takeWhile } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, take, takeWhile } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
@@ -45,12 +45,12 @@ export class ServerConfigEffects {
   ) {}
 
   /**
-   * get server configuration on routing event, if it is not already loaded
+   * Get server configuration on navigation, if it is not already loaded.
    */
   loadServerConfigOnInit$ = createEffect(() =>
     this.actions$.pipe(
       ofType(routerNavigationAction),
-      SSR ? first() : identity,
+      SSR ? take(1) : identity,
       switchMap(() => this.store.pipe(select(isServerConfigurationLoaded))),
       whenFalsy(),
       map(() => loadServerConfig())

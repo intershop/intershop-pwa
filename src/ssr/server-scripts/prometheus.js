@@ -1,6 +1,9 @@
+const { readFileSync } = require('fs');
+const { join } = require('path');
+
 const express = require('express');
 const pm2 = require('pm2');
-const ports = require('./ecosystem-ports.json');
+const ports = JSON.parse(readFileSync(join(__dirname, 'ecosystem-ports.json'), { encoding: 'utf-8' }));
 
 const client = require('prom-client');
 const metricsPerWorker = {};
