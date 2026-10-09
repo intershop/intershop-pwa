@@ -1,0 +1,56 @@
+<div class="container copilot-embedded">
+  @if (deviceType$ | async; as deviceType) {
+    @if (deviceType !== 'mobile') {
+      <div class="row">
+        <div class="col-8 px-0 pe-4">
+          <ish-copilot-embedded-chat
+            [deviceType]="deviceType"
+            [error]="error"
+            [loading]="loading"
+            [messages]="messages"
+            [pendingAnswer]="pendingAnswer"
+            [toolErrors]="toolErrors"
+            (resetChat)="resetSession()"
+            (send)="onSend($event)"
+          />
+        </div>
+        <div class="col-4">
+          <ish-copilot-embedded-results [products]="products" />
+        </div>
+      </div>
+    } @else {
+      <ish-copilot-embedded-header
+        [canReset]="messages.length > 0 && activeNavId === 'chat'"
+        (resetChat)="resetSession()"
+      />
+      <nav #nav="ngbNav" class="nav-tabs" ngbNav (activeIdChange)="activeNavId = $event">
+        <li role="presentation" [ngbNavItem]="'chat'">
+          <a ngbNavLink>{{ 'copilot.embedded.tab.chat' | translate }}</a>
+          <ng-template ngbNavContent>
+            <ish-copilot-embedded-chat
+              [deviceType]="deviceType"
+              [error]="error"
+              [loading]="loading"
+              [messages]="messages"
+              [pendingAnswer]="pendingAnswer"
+              [toolErrors]="toolErrors"
+              (send)="onSend($event)"
+            />
+          </ng-template>
+        </li>
+        <li ngbNavItem role="presentation">
+          <a ngbNavLink>
+            {{ 'copilot.embedded.tab.products' | translate }}
+            @if (products.length) {
+              ({{ products.length }})
+            }
+          </a>
+          <ng-template ngbNavContent>
+            <ish-copilot-embedded-results [products]="products" (backToChat)="nav.select('chat')" />
+          </ng-template>
+        </li>
+      </nav>
+      <div [ngbNavOutlet]="nav"></div>
+    }
+  }
+</div>
