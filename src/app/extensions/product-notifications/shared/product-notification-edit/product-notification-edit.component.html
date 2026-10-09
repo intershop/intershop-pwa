@@ -9,7 +9,7 @@
           data-testing-id="product-notification-edit"
           type="button"
           [attr.aria-label]="'product.notification.edit.link.title' | translate"
-          [ngClass]="cssClass"
+          [class]="cssClass"
           [title]="'product.notification.edit.link.title' | translate"
           (click)="openModal(modal)"
         >
@@ -23,7 +23,7 @@
         <button
           data-testing-id="product-notification-edit"
           type="button"
-          [ngClass]="cssClass"
+          [class]="cssClass"
           [title]="buttonKey('title') | async | translate"
           (click)="openModal(modal)"
         >

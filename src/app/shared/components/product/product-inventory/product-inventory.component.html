@@ -15,7 +15,7 @@
             @for (supStock of supplierStock; track supStock.id) {
               <div class="row">
                 <span class="col-6 stock-label">{{ supStock.displayName }}</span>
-                <span class="col-6 stock-level" [ngClass]="getStockLevel(supStock.availableStock)">
+                <span class="col-6 stock-level" [class]="getStockLevel(supStock.availableStock)">
                   <!-- keep-localization-pattern: ^product\.inventory\.stock_level\..*$ -->
                   {{
                     `product.inventory.stock_level.${getStockLevel(supStock.availableStock)}`

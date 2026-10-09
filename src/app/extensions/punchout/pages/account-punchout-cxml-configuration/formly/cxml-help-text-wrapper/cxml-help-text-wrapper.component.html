@@ -12,7 +12,7 @@
       [title]="buttonLabel"
       (click)="isCollapsed = !isCollapsed"
     >
-      <i aria-hidden="true" class="bi" [ngClass]="isCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+      <i aria-hidden="true" class="bi" [class]="isCollapsed ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
     </button>
   }
 

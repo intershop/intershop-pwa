@@ -2,12 +2,12 @@
   <div
     class="design-view-wrapper"
     scrollContainer="root"
-    [ishScroll]="shouldScroll$ | async"
-    [ngClass]="[
+    [class]="[
       type,
       (isPageletSelected$ | async) ? 'pagelet-selected' : '',
       (isPageletPreviewed$ | async) ? 'pagelet-previewed' : '',
     ]"
+    [ishScroll]="shouldScroll$ | async"
     [scrollDuration]="500"
     [scrollSpacing]="50"
     (mouseenter)="onPageletHover()"

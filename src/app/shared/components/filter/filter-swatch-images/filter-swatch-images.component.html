@@ -1,6 +1,6 @@
 <ul class="filter-list clearfix" [id]="filterElement.id">
   @for (facet of filterElement.facets; track facet.name) {
-    <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
+    <li class="filter-item filter-color" [class.filter-selected]="facet.selected">
       <button
         class="filter-swatch btn btn-link btn-link-action"
         type="button"

@@ -1,6 +1,6 @@
 @if (captchaSiteKey$ | async; as captchaSiteKey) {
   <div>
-    <div [ngClass]="cssClass">
+    <div [class]="cssClass">
       <re-captcha class="captcha" [siteKey]="captchaSiteKey" (resolved)="resolved($event)" />
     </div>
   </div>

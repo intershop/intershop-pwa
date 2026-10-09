@@ -1,6 +1,6 @@
-<div class="row" [ngClass]="{ 'form-group': field.type === 'ish-checkbox-field' }">
+<div class="row" [class.form-group]="field.type === 'ish-checkbox-field'">
   @if (props.title) {
-    <div class="col-form-label" [ngClass]="props.titleClass ? props.titleClass : dprops.titleClass">
+    <div class="col-form-label" [class]="props.titleClass ? props.titleClass : dprops.titleClass">
       {{ props.titleNoTranslate ? props.title : (props.title | translate) }}
       @if (props.required && !props.hideRequiredMarker) {
         <span aria-hidden="true" class="required">*</span>
@@ -9,11 +9,8 @@
   }
   <div
     class="col-form-label"
+    [class]="`${props.fieldClass ? props.fieldClass : dprops.fieldClass} ${props.title || props.fieldClass ? '' : dprops.noTitleClass}`"
     [class.has-error]="showError"
-    [ngClass]="[
-      props.fieldClass ? props.fieldClass : dprops.fieldClass,
-      props.title || props.fieldClass ? '' : dprops.noTitleClass,
-    ]"
   >
     <div class="form-check" [attr.data-testing-id]="`${keyString}-wrapper`">
       <ng-template #fieldComponent />
@@ -21,7 +18,7 @@
         <label
           class="form-check-label"
           [attr.for]="id"
-          [ngClass]="props.labelClass ? props.labelClass : dprops.labelClass"
+          [class]="props.labelClass ? props.labelClass : dprops.labelClass"
         >
           @if (props.label) {
             <span>{{ props.labelNoTranslate ? props.label : (props.label | translate) }}</span>

@@ -79,6 +79,13 @@ There is an exception for direct string value bindings where we use, for example
 </div>
 ```
 
+For CSS classes and inline styles, use the native `[class]` and `[style]` bindings instead of the `NgClass` and `NgStyle` directives, see [CSS class and style property bindings](https://angular.dev/guide/templates/binding).
+Use `ngClass` only where it is required, for example, for object keys containing multiple space-separated classes, which `[class]` does not support.
+
+```html
+<div class="product-tile" [class.active]="isActive" [class]="cssClass" [style.width.px]="width"></div>
+```
+
 ## No Manual Unsubscribing
 
 Do not unsubscribe; use the takeUntilDestroyed operator instead.
