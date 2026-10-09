@@ -5,7 +5,7 @@
     <li
       #subMenu
       class="dropdown"
-      [ngClass]="{ open: isOpened(category.uniqueId), first: isFirst }"
+      [class]="{ open: isOpened(category.uniqueId), first: isFirst }"
       (click)="subMenuHide(subMenu)"
       (mouseenter)="subMenuShow(subMenu)"
       (mouseleave)="subMenuHide(subMenu)"
@@ -13,8 +13,8 @@
       <a
         class="main-navigation-link"
         [attr.data-testing-id]="`${category.uniqueId}-link`"
-        [ngStyle]="{ width: !(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : '' }"
         [routerLink]="category.url"
+        [style.width]="!(0 < mainNavigationMaxSubCategoriesDepth && category.hasChildren) ? '100%' : ''"
       >
         {{ category.name }}
       </a>

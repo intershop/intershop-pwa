@@ -1,6 +1,6 @@
 <ul>
   @for (option of group.options; track option.value) {
-    <li [ngClass]="{ selected: option.active }">
+    <li [class.selected]="option.active">
       <a
         tabindex="0"
         [title]="option.label"
@@ -9,8 +9,8 @@
       >
         @if (group.attributeType === 'colorCode') {
           <span
-            [ngClass]="{ 'light-color': (option.label | lowercase) === 'white' }"
-            [ngStyle]="{ 'background-color': `#${option.metaData}` }"
+            [class.light-color]="(option.label | lowercase) === 'white'"
+            [style.background-color]="`#${option.metaData}`"
           ></span>
         }
         @if (group.attributeType === 'swatchImage') {

@@ -52,7 +52,7 @@ describe('Cms Container Component', () => {
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
-      <div class="content-container col-12 col-md-6 col-lg-4 float-start foo-class">
+      <div class="content-container col-12 col-lg-4 col-md-6 float-start foo-class">
         <ish-content-slot
           ><ish-content-pagelet></ish-content-pagelet><ish-content-pagelet></ish-content-pagelet
         ></ish-content-slot>

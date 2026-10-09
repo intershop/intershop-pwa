@@ -215,6 +215,11 @@ Lazy components are regenerated automatically on `npm install`.
 The `showSuccessMessage` property of the `BasketDesiredDeliveryDateComponent`, `BasketMerchantMessageComponent`, and `BasketOrderReferenceComponent` has been replaced by the `showSuccessMessage$` observable.
 Customized templates of these components must use `showSuccessMessage$ | async` instead.
 
+**`ngClass` and `ngStyle` replaced by `[class]` and `[style]` bindings**
+
+All PWA templates now use native [class and style bindings](https://angular.dev/guide/templates/binding) instead of the `NgClass` and `NgStyle` directives, as recommended by Angular.
+Projects are encouraged to migrate their customized templates as well, because the PWA will enforce native bindings with lint rules after the Angular 22 upgrade.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

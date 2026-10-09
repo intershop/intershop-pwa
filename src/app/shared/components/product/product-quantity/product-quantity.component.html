@@ -1,6 +1,6 @@
 @if (visible$ | async) {
   @let hasQuantityError = hasQuantityError$ | async;
-  <div class="quantity-input" [ngClass]="{ 'has-error': hasQuantityError }">
+  <div class="quantity-input" [class.has-error]="hasQuantityError">
     @switch (type) {
       @case ('select') {
         <select

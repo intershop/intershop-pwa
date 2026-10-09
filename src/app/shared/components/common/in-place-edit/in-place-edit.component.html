@@ -9,7 +9,7 @@
       class="btn btn-link"
       type="button"
       [attr.aria-label]="editLabel"
-      [ngClass]="buttonClass"
+      [class]="buttonClass"
       [title]="editLabel"
       (click)="toggleEditMode(true)"
     >
@@ -24,8 +24,8 @@
       data-testing-id="confirm"
       type="button"
       [attr.aria-label]="'inplace_edit.save' | translate"
+      [class]="buttonClass"
       [disabled]="confirmDisabled"
-      [ngClass]="buttonClass"
       [title]="'inplace_edit.save' | translate"
       (click)="confirm()"
     >
@@ -36,7 +36,7 @@
       data-testing-id="cancel"
       type="button"
       [attr.aria-label]="'inplace_edit.cancel' | translate"
-      [ngClass]="buttonClass"
+      [class]="buttonClass"
       [title]="'inplace_edit.cancel' | translate"
       (click)="cancel()"
     >

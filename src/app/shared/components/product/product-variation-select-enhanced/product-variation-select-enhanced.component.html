@@ -42,14 +42,14 @@
   @if (group.attributeType === 'defaultAndColorCode') {
     <span
       class="color-code"
-      [ngClass]="{ 'light-color': (option.label | lowercase) === 'white' }"
-      [ngStyle]="{ 'background-color': `#${option.metaData}` }"
+      [class.light-color]="(option.label | lowercase) === 'white'"
+      [style.background-color]="`#${option.metaData}`"
     ></span>
   }
   @if (group.attributeType === 'defaultAndSwatchImage') {
     <img alt="{{ option.label }}" class="image-swatch" [src]="option.metaData" />
   }
-  <span class="label" [ngClass]="{ selected: option.active }"
+  <span class="label" [class.selected]="option.active"
     >{{ option.label }}
     @if (option.alternativeCombination) {
       -

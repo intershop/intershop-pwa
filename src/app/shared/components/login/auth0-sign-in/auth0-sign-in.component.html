@@ -1,5 +1,5 @@
 <div class="row form-group">
-  <div [ngClass]="signInClass || 'col-md-auto'">
+  <div [class]="signInClass || 'col-md-auto'">
     <a class="btn btn-secondary" routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">
       {{ 'account.signin.auth0.button.label' | translate }}
     </a>

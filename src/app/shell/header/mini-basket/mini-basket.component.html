@@ -7,7 +7,7 @@
   ishClickOutside
   ngbDropdown
   placement="bottom-right"
-  [ngClass]="{ 'd-none': view !== 'full', 'd-md-block': view !== 'small' }"
+  [class]="{ 'd-none': view !== 'full', 'd-md-block': view !== 'small' }"
   (isClickedOutside)="collapse()"
 >
   <button
@@ -38,7 +38,7 @@
       [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount }"
     >
       <i class="bi bi-cart-fill header-icon"></i>
-      <span class="badge rounded-pill" [ngClass]="basketAnimation">{{ itemCount }}</span>
+      <span class="badge rounded-pill" [class]="basketAnimation">{{ itemCount }}</span>
     </a>
   } @else {
     <a
@@ -54,7 +54,7 @@
       (keyup.enter)="p.open()"
     >
       <i class="bi bi-cart-fill header-icon"></i>
-      <span class="badge rounded-pill" [ngClass]="basketAnimation">0</span>
+      <span class="badge rounded-pill" [class]="basketAnimation">0</span>
     </a>
   }
 }
