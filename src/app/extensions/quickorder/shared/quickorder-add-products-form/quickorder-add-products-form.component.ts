@@ -16,7 +16,7 @@ import { SkuQuantityType } from 'ish-core/models/product/product.helper';
   selector: 'ish-quickorder-add-products-form',
   standalone: false,
   templateUrl: './quickorder-add-products-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickorderAddProductsFormComponent implements OnInit {
   quickOrderForm: FormGroup = new FormGroup({});

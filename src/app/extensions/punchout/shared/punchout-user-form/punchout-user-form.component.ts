@@ -10,7 +10,7 @@ import { PunchoutType, PunchoutUser } from '../../models/punchout-user/punchout-
   selector: 'ish-punchout-user-form',
   standalone: false,
   templateUrl: './punchout-user-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PunchoutUserFormComponent implements OnInit {
   @Input() punchoutUser: PunchoutUser;
