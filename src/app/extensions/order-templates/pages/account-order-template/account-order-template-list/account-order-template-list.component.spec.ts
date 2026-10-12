@@ -8,7 +8,6 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 
@@ -58,7 +57,6 @@ describe('Account Order Template List Component', () => {
       declarations: [
         AccountOrderTemplateListComponent,
         MockComponent(ModalDialogComponent),
-        MockComponent(ProductAddToBasketComponent),
         MockDirective(ProductContextDirective),
         MockPipe(DatePipe),
       ],

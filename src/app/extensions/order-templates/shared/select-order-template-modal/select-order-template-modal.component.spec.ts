@@ -1,15 +1,12 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
-import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
-import { SelectOrderTemplateFormComponent } from '../select-order-template-form/select-order-template-form.component';
 
 import { SelectOrderTemplateModalComponent } from './select-order-template-modal.component';
 
@@ -50,12 +47,8 @@ describe('Select Order Template Modal Component', () => {
     orderTemplateFacadeMock = mock(OrderTemplatesFacade);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        MockComponent(ModalDialogComponent),
-        MockComponent(SelectOrderTemplateFormComponent),
-        SelectOrderTemplateModalComponent,
-      ],
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      declarations: [MockComponent(ModalDialogComponent), SelectOrderTemplateModalComponent],
+      imports: [TranslatePipe],
       providers: [
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplateFacadeMock) },
         provideTranslateService(),

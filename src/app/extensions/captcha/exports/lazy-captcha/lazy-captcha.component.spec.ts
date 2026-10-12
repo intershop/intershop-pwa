@@ -8,7 +8,6 @@ import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';
 import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../shared/captcha-v2/captcha-v2.component';
@@ -21,20 +20,15 @@ describe('Lazy Captcha Component', () => {
   let component: LazyCaptchaComponent;
   let element: HTMLElement;
   let captchaFacade: CaptchaFacade;
-  let appFacade: AppFacade;
 
   beforeEach(async () => {
     captchaFacade = mock(CaptchaFacade);
-    appFacade = mock(AppFacade);
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: CaptchaFacade, useFactory: () => instance(captchaFacade) },
-      ],
+      providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ReplaySubject, Subject, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -29,7 +29,6 @@ describe('Search Box Component', () => {
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
