@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
@@ -16,7 +16,7 @@ describe('Wishlist Preferences Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [MockComponent(ModalDialogComponent), WishlistPreferencesDialogComponent],
       providers: [provideTranslateService()],
     }).compileComponents();

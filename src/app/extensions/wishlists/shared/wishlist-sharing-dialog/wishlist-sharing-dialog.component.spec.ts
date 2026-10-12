@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
-import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
@@ -18,10 +17,9 @@ describe('Wishlist Sharing Dialog Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [
         MockComponent(ModalDialogComponent),
-        MockDirective(FormSubmitDirective),
         MockDirective(ServerHtmlDirective),
         WishlistSharingDialogComponent,
       ],
