@@ -17,10 +17,12 @@ Done when you can state the motivation in one sentence and account for every fil
 
 ## 2. Fill the sections
 
+Favor brevity over completeness: keep each section to its essential information, in a few tight bullets rather than exhaustive lists.
+
 - **Description**: lead with the problem or motivation, then the solution in two or three sentences. Keep `Closes #<issue>` only with a known issue number, otherwise remove the line.
-- **Detailed Changes**: one bullet per logical change, grouped by purpose and naming the files. Add the evidence that exists: test results, before/after measurements as a table.
+- **Detailed Changes**: one bullet per logical change, grouped by purpose. Describe what changed, not which files; the PR's file view already lists them. Add the evidence that exists: test results, before/after measurements as a table.
 - **Notes**: breaking changes, required migrations, configuration changes, known limitations, effects on projects based on the PWA. When a change needs a migration note and `docs/guides/migrations.md` is not part of the diff, say so here and add an open task.
-- **Open Tasks**: everything still to do before merging, as `- [ ]` items: follow-ups from the conversation, a missing migration note, pending reviews. Keep a template item only when it applies: documentation or localization changes need the documentation team review, visual changes need the VD / IAD approval.
+- **Open Tasks**: everything still to do before merging, as `- [ ]` items: follow-ups from the conversation, a missing migration note. Leave out peer review, it always happens. Keep a template item only when it applies: documentation or localization changes need the documentation team review, visual changes need the VD / IAD approval.
 - **Other Information**: keep the heading and leave the section empty. The Azure work item link is added there automatically.
 
 Remove the template's HTML comments.
