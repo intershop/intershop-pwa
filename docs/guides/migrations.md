@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.1.0 to 14.0.0
+
+**`OnPush` change detection for Formly components**
+
+All Formly field types, wrappers and validation components of the PWA now use `ChangeDetectionStrategy.OnPush`, since Formly triggers their change detection on form control and form submit events.
+Customized child components of these parts that read form state such as `dirty`, `errors` or `submitted` have to trigger their change detection themselves, see the [`ValidationIconsComponent`](../../src/app/shared/formly/components/validation-icons/validation-icons.component.ts) for an example.
+
 ## From 13.0.0 to 13.1.0
 
 **Node.js 24 update**
