@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, ReplaySubject, combineLatest, filter, map, switchMap } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, filter, map, of, switchMap } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { CustomFieldDefinition } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
@@ -31,12 +31,14 @@ export class CustomFieldsViewComponent implements OnInit {
   ngOnInit(): void {
     this.data$ = this.fields$.pipe(
       filter(fields => fields?.length > 0),
+      map(fields => fields.filter(field => this.showEmpty || field.value !== undefined)),
+      // combineLatest of an empty array completes without emitting, which would keep outdated values displayed
       switchMap(fields =>
-        combineLatest(
-          fields
-            .filter(field => this.showEmpty || field.value !== undefined)
-            .map(field => this.checkoutFacade.customField$(field.name).pipe(map(def => ({ ...def, ...field }))))
-        )
+        fields.length
+          ? combineLatest(
+              fields.map(field => this.checkoutFacade.customField$(field.name).pipe(map(def => ({ ...def, ...field }))))
+            )
+          : of([])
       )
     );
   }

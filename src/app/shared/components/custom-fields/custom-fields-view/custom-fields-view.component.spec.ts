@@ -85,4 +85,15 @@ describe('Custom Fields View Component', () => {
       </dl>
     `);
   });
+
+  it('should not display custom fields anymore after all values have been removed', () => {
+    fixture.detectChanges();
+    component.fields = [
+      { name: 'field1', value: undefined },
+      { name: 'field2', value: undefined },
+      { name: 'field3', value: undefined },
+    ];
+    fixture.detectChanges();
+    expect(element.querySelector('.custom-fields-view')).toBeFalsy();
+  });
 });
