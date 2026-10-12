@@ -10,7 +10,7 @@ import { registerTranslateSelectOptionsExtension } from './translate-select-opti
 @NgModule({
   imports: [
     FormlyBaseModule.forChild({
-      extensions: [{ name: 'hide-if-empty-options-extension', extension: hideIfEmptyOptionsExtension }],
+      extensions: [{ name: 'hide-if-empty-options', extension: hideIfEmptyOptionsExtension }],
     }),
   ],
   providers: [
