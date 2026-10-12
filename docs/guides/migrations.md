@@ -58,6 +58,11 @@ The `@angular/animations`-based `bottomOut` trigger of the cookie banner has bee
 `@ngx-formly/core` has been updated to version 8, which requires Angular 19 or newer and ships as fesm2022 only.
 For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md).
 
+**`OnPush` change detection for Formly components**
+
+All Formly field types, wrappers and validation components of the PWA now use `ChangeDetectionStrategy.OnPush`, since Formly triggers their change detection on form control and form submit events.
+Customized child components of these parts that read form state such as `dirty`, `errors` or `submitted` have to trigger their change detection themselves, see the [`ValidationIconsComponent`](../../src/app/shared/formly/components/validation-icons/validation-icons.component.ts) for an example.
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
