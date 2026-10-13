@@ -63,6 +63,13 @@ For more information, see the [Formly changelog](https://github.com/ngx-formly/n
 All Formly field types, wrappers and validation components of the PWA now use `ChangeDetectionStrategy.OnPush`, since Formly triggers their change detection on form control and form submit events.
 Customized child components of these parts that read form state such as `dirty`, `errors` or `submitted` have to trigger their change detection themselves, see the [`ValidationIconsComponent`](../../src/app/shared/formly/components/validation-icons/validation-icons.component.ts) for an example.
 
+**`OnPush` change detection for all components**
+
+All PWA components except the payment provider components and the `FormControlFeedbackComponent` now use `ChangeDetectionStrategy.OnPush`.
+Customizations of these components that change displayed state outside of inputs, template events or observables have to call `markForCheck()` themselves.
+The ESLint rule `@angular-eslint/prefer-on-push-component-change-detection` now reports components without `OnPush`, except in `*.spec.ts` and `*.module.ts` files, and replaces the custom rule `ish-custom-rules/use-component-change-detection`.
+Switch custom components to `OnPush` or disable the rule for the affected line with a reason.
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.

@@ -30,6 +30,7 @@ declare let Payone: any;
   selector: 'ish-payment-payone-creditcard',
   standalone: false,
   templateUrl: './payment-payone-creditcard.component.html',
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- payment provider script updates the form outside of Angular
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, OnInit {

@@ -7,6 +7,7 @@ type FormErrorMessages = Record<string, string>;
   selector: 'ish-form-control-feedback',
   standalone: false,
   templateUrl: './form-control-feedback.component.html',
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- checks the state of the bound form control on every change detection run
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormControlFeedbackComponent implements DoCheck {

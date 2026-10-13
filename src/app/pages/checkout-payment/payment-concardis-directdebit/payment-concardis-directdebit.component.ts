@@ -27,6 +27,7 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-directdebit',
   standalone: false,
   templateUrl: './payment-concardis-directdebit.component.html',
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- payment provider script updates the form outside of Angular
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisDirectdebitComponent extends PaymentConcardisComponent implements OnInit {

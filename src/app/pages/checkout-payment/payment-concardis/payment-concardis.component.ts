@@ -24,6 +24,7 @@ export type ConcardisErrorMessageType =
   selector: 'ish-payment-concardis',
   standalone: false,
   template: ' ',
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- payment provider script updates the form outside of Angular
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentConcardisComponent implements OnInit, OnChanges {
