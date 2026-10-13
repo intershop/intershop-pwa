@@ -1,0 +1,102 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+.copilot-embedded-upload-preview {
+  display: flex;
+  align-items: center;
+  padding: ($space-default * 0.5) $space-default;
+  margin-bottom: $space-default;
+  background-color: $color-inverse;
+  border: 1px solid $gray-300;
+  border-radius: ($space-default * 0.75);
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin-right: $space-default;
+    object-fit: cover;
+    border-radius: ($space-default * 0.5);
+  }
+
+  .copilot-embedded-upload-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .copilot-embedded-upload-remove {
+    padding: 0 ($space-default * 0.5);
+    color: $text-color-tertiary;
+  }
+}
+
+.copilot-embedded-input {
+  .copilot-embedded-input-field {
+    position: relative;
+    flex: 1 0 0;
+
+    &:focus-within {
+      z-index: 3;
+    }
+
+    .form-control {
+      padding-right: ($space-default * 3);
+
+      @include media-breakpoint-down(sm) {
+        font-size: 16px; // prevent page zoom on mobile devices
+      }
+    }
+
+    .btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      margin-right: 0;
+      margin-bottom: 0;
+      color: $text-color-tertiary;
+
+      &:hover,
+      &:focus {
+        color: $text-color-corporate;
+      }
+    }
+  }
+
+  > .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0 !important;
+    margin-bottom: 0;
+    border: 1px solid $CORPORATE-PRIMARY;
+
+    .bi {
+      margin-left: -4px;
+      transform: rotate(45deg);
+    }
+  }
+
+  button {
+    width: auto;
+    font-size: 18px;
+
+    &:not(.btn-link):not(.input-group-text) {
+      @include media-breakpoint-down(md) {
+        width: auto;
+      }
+    }
+  }
+}
+
+.copilot-embedded-disclaimer {
+  display: block;
+  margin-top: divide($space-default, 3);
+  color: $text-color-secondary;
+  text-align: center;
+}

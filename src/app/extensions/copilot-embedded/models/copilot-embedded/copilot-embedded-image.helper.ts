@@ -1,9 +1,11 @@
+import { CopilotEmbeddedUpload } from './copilot-embedded.model';
+
 const THUMBNAIL_MAX_SIZE = 200;
 
 const THUMBNAIL_QUALITY = 0.7;
 
 /**
- * Downscales an image data URL to a small JPEG data URL (longest side at most `maxSize` px), so it
+ * Converts an image data URL to a small JPEG data URL (longest side at most `maxSize` px), so it
  * can be persisted with the chat transcript without filling up localStorage.
  *
  * Resolves `undefined` when the image cannot be decoded or the browser has no canvas support.
@@ -29,5 +31,21 @@ export function createImageThumbnail(dataUrl: string, maxSize = THUMBNAIL_MAX_SI
     };
     image.onerror = () => resolve(undefined);
     image.src = dataUrl;
+  });
+}
+
+/**
+ * Reads an image file into a base64 data URL upload for the chatflow, together with a small thumbnail of it.
+ */
+export function readImageUpload(file: File): Promise<{ upload: CopilotEmbeddedUpload; thumbnail: string }> {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const data = reader.result as string;
+      createImageThumbnail(data).then(thumbnail =>
+        resolve({ upload: { data, type: 'file', name: file.name, mime: file.type }, thumbnail })
+      );
+    };
+    reader.readAsDataURL(file);
   });
 }

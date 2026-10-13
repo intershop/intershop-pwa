@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { TranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
 import { Observable, Subject, of, throwError } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -10,7 +9,6 @@ import { CopilotEmbeddedFacade } from '../../facades/copilot-embedded.facade';
 import { CopilotEmbeddedChatMessage } from '../../models/copilot-embedded/copilot-embedded.model';
 
 import { CopilotEmbeddedChatComponent } from './copilot-embedded-chat/copilot-embedded-chat.component';
-import { CopilotEmbeddedHeaderComponent } from './copilot-embedded-header/copilot-embedded-header.component';
 import { CopilotEmbeddedPageComponent } from './copilot-embedded-page.component';
 import { CopilotEmbeddedResultsComponent } from './copilot-embedded-results/copilot-embedded-results.component';
 
@@ -42,13 +40,10 @@ describe('Copilot Embedded Page Component', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [NgbNavModule],
       declarations: [
         CopilotEmbeddedPageComponent,
         MockComponent(CopilotEmbeddedChatComponent),
-        MockComponent(CopilotEmbeddedHeaderComponent),
         MockComponent(CopilotEmbeddedResultsComponent),
-        MockPipe(TranslatePipe),
       ],
       providers: [
         { provide: AppFacade, useValue: { deviceType$: of('desktop') } },
