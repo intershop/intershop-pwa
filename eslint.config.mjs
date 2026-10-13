@@ -117,6 +117,7 @@ export default defineConfig([
         },
       ],
       '@angular-eslint/prefer-output-readonly': 'warn',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'error',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
       '@angular-eslint/prefer-inject': 'off',
@@ -715,7 +716,6 @@ export default defineConfig([
       'ish-custom-rules/use-alias-imports': 'error',
       'ish-custom-rules/use-async-synchronization-in-tests': 'warn',
       'ish-custom-rules/use-camel-case-environment-properties': 'error',
-      'ish-custom-rules/use-component-change-detection': 'warn',
       'ish-custom-rules/use-correct-component-overrides': 'warn',
       'ish-custom-rules/use-jest-extended-matchers-in-tests': 'warn',
       'ish-custom-rules/use-ssr-variable-instead-of-platform-id': 'warn',
@@ -1003,10 +1003,11 @@ export default defineConfig([
       '@typescript-eslint/member-ordering': 'off',
     },
   },
-  // module and spec file overrides - allow multiple classes for:
+  // module and spec file overrides - allow multiple classes and Eager change detection for test components
   {
     files: ['**/*.module.ts', '**/*.spec.ts'],
     rules: {
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
       '@cspell/spellchecker': 'off',
       'max-classes-per-file': 'off',
       'max-lines': 'off',
