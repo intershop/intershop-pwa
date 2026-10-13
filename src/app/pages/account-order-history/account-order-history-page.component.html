@@ -10,7 +10,7 @@
 
 <ish-account-order-filters
   fragmentOnRouting="order-list-top"
-  [ngClass]="{ 'd-none': !filtersActive && !(orders$ | async)?.length }"
+  [class.d-none]="!filtersActive && !(orders$ | async)?.length"
   (modelChange)="loadFilteredOrders($event)"
 />
 

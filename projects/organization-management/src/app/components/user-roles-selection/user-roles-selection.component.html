@@ -7,7 +7,7 @@
         <div class="row" [formGroup]="form">
           @for (item of form.controls | keyvalue: unsorted; track item.key; let i = $index) {
             @if (role$(item.key) | async; as role) {
-              <div class="col-12" [ngClass]="{ 'd-none': hideRole(form.get(item.key)) }">
+              <div class="col-12" [class.d-none]="hideRole(form.get(item.key))">
                 <div class="form-control-checkbox">
                   <div class="form-check form-control">
                     <label class="mb-2" [for]="item.key">

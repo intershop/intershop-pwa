@@ -4,12 +4,12 @@
   <li
     #subMenu
     [class]="`dropdown ${pagelet.stringParam('CSSClass', '')}`"
-    [ngClass]="{ open: isOpened(category.uniqueId) }"
+    [class.open]="isOpened(category.uniqueId)"
     (click)="subMenuHide(subMenu)"
     (mouseenter)="subMenuShow(subMenu)"
     (mouseleave)="subMenuHide(subMenu)"
   >
-    <a [ngStyle]="{ width: !showSubMenu(category.children?.length) ? '100%' : '' }" [routerLink]="category.url">
+    <a [routerLink]="category.url" [style.width]="!showSubMenu(category.children?.length) ? '100%' : ''">
       @if (pagelet.hasParam('DisplayName')) {
         {{ pagelet.stringParam('DisplayName') }}
       } @else {
@@ -33,10 +33,10 @@
 
       <!-- the recursively used template to render the tree nodes -->
       <ng-template #treeNodeTemplate let-depth="depth" let-treeNode="treeNode">
-        <ul class="category-level{{ depth }}" [ngClass]="{ 'dropdown-menu': depth === 1 }">
+        <ul class="category-level{{ depth }}" [class.dropdown-menu]="depth === 1">
           @for (node of treeNode.children; track node.uniqueId) {
-            <li class="main-navigation-level{{ depth }}-item" [ngClass]="{ open: isOpened(node.uniqueId) }">
-              <a [ngStyle]="{ width: !node.children?.length ? '100%' : '' }" [routerLink]="node.url">
+            <li class="main-navigation-level{{ depth }}-item" [class.open]="isOpened(node.uniqueId)">
+              <a [routerLink]="node.url" [style.width]="!node.children?.length ? '100%' : ''">
                 {{ node.name }}
               </a>
               @if (node.children?.length) {

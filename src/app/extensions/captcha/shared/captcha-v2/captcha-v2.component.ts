@@ -17,7 +17,7 @@ import { CaptchaFacade } from '../../facades/captcha.facade';
   selector: 'ish-captcha-v2',
   standalone: false,
   templateUrl: './captcha-v2.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CaptchaV2Component implements OnInit {
   @Input({ required: true }) parentForm: FormGroup;

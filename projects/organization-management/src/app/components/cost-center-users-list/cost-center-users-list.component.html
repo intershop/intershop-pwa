@@ -78,7 +78,7 @@
           <td *cdkCellDef="let buyer" cdk-cell class="column-price">
             <!-- Edit buyer -->
             @let editBuyerLabel =
-              'account.costcenter.details.action.edit' | translate: { '0': buyer.firstName + ' ' + buyer.lastName };
+              'account.costcenter.details.action.edit' | translate: { '0': `${buyer.firstName} ${buyer.lastName}` };
             <button
               class="btn-tool btn-link"
               data-testing-id="cost-center-buyer-edit"
@@ -92,7 +92,7 @@
 
             <!-- Remove buyer -->
             @let removeBuyerLabel =
-              'account.costcenter.remove.button.label' | translate: { '0': buyer.firstName + ' ' + buyer.lastName };
+              'account.costcenter.remove.button.label' | translate: { '0': `${buyer.firstName} ${buyer.lastName}` };
             <button
               class="btn-tool btn-link"
               data-testing-id="cost-center-buyer-remove"
@@ -127,7 +127,7 @@
     rejectText: 'account.cancel.button.label' | translate,
     titleText:
       'account.costcenter.remove_buyer_dialog.header'
-      | translate: { '0': selectedBuyer?.firstName + ' ' + selectedBuyer?.lastName },
+      | translate: { '0': `${selectedBuyer?.firstName} ${selectedBuyer?.lastName}` },
   }"
   (confirmed)="removeBuyerFromCostCenter()"
 >

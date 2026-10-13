@@ -1,4 +1,4 @@
-<div class="align-items-start flex-nowrap" [ngClass]="{ 'input-group': props.addonLeft || props.addonRight }">
+<div class="align-items-start flex-nowrap" [class.input-group]="props.addonLeft || props.addonRight">
   @if (props.addonLeft) {
     <span class="input-group-text">{{ addonLeftText | async | translate }}</span>
   }

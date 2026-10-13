@@ -30,7 +30,7 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
   selector: 'ish-formly-address-form',
   standalone: false,
   templateUrl: './formly-address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class FormlyAddressFormComponent implements OnInit, OnChanges {
   @Input({ required: true }) parentForm: FormGroup;
@@ -66,7 +66,7 @@ export class FormlyAddressFormComponent implements OnInit, OnChanges {
     this.parentForm?.setControl('address', this.addressForm);
   }
 
-  ngOnChanges(c: SimpleChanges) {
+  ngOnChanges(c: SimpleChanges<FormlyAddressFormComponent>) {
     if (c.prefilledAddress) {
       this.fillForm(c.prefilledAddress.currentValue);
     }

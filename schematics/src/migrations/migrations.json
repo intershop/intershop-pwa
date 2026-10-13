@@ -16,6 +16,11 @@
       "version": "12.0.0",
       "description": "Migrates custom code to the ngx-translate 17/18 breaking changes: TranslateService API renames and the removal of TranslateModule in favor of TranslatePipe and provideTranslateService.",
       "factory": "./ngx-translate18/factory#migrateNgxTranslate"
+    },
+    "change-detection-strategy-eager": {
+      "version": "13.0.0",
+      "description": "Replaces the deprecated `ChangeDetectionStrategy.Default` with `ChangeDetectionStrategy.Eager` in custom code (Angular 21).",
+      "factory": "./change-detection-strategy-eager/factory#migrateChangeDetectionStrategyEager"
     }
   }
 }

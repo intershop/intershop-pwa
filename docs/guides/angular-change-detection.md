@@ -36,6 +36,10 @@ This includes things like XHR calls, `setTimeout()`, and basically all user even
 
 When async events happen in the application, the zone informs Angular, which then triggers change detection.
 
+> [!NOTE]
+> Since Angular 21, applications bootstrap without Zone.js (zoneless) by default.
+> The Intershop PWA explicitly enables zone-based change detection with `provideZoneChangeDetection()` in the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), so the concepts described in this guide still apply.
+
 ## Zone Stability
 
 The zone tracks all ongoing async events and also knows whether there are pending tasks in the queue.

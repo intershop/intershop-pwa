@@ -20,7 +20,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   selector: 'ish-basket-shipping-address-widget',
   standalone: false,
   templateUrl: './basket-shipping-address-widget.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
