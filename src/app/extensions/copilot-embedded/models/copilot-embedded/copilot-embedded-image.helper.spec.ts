@@ -1,4 +1,4 @@
-import { createImageThumbnail } from './copilot-embedded-image.helper';
+import { createImageThumbnail, readImageUpload } from './copilot-embedded-image.helper';
 
 class FakeImage {
   static width = 800;
@@ -70,5 +70,19 @@ describe('Copilot Embedded Image Helper', () => {
     jest.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(undefined);
 
     expect(await createImageThumbnail('data:image/png;base64,AAAA')).toBeUndefined();
+  });
+
+  it('should read an image file into an upload with its thumbnail', async () => {
+    const file = new File(['image'], 'photo.png', { type: 'image/png' });
+
+    const { upload, thumbnail } = await readImageUpload(file);
+
+    expect(upload).toEqual({
+      data: expect.stringMatching(/^data:image\/png;base64,/),
+      type: 'file',
+      name: 'photo.png',
+      mime: 'image/png',
+    });
+    expect(thumbnail).toBe('data:image/jpeg;base64,THUMB');
   });
 });
