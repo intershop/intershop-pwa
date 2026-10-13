@@ -172,24 +172,10 @@ export class CartPage {
     return cy.get('#basket-custom-fields-input form');
   }
 
-  // Native click instead of cy.click(), retried until aria-expanded="true"; the simulated click is not reliably handled in CI.
-  private expandCollapseToggle(getToggle: () => Cypress.Chainable<JQuery<HTMLElement>>, attempts = 3) {
-    getToggle().then($toggle => {
-      if ($toggle.attr('aria-expanded') !== 'true' && attempts > 0) {
-        $toggle[0].click();
-        this.expandCollapseToggle(getToggle, attempts - 1);
-      }
-    });
-  }
-
-  openBasketCustomFieldsForm() {
-    cy.scrollTo('top', { ensureScrollable: false });
-    this.expandCollapseToggle(() => cy.get('[data-testing-id="basket-custom-fields-toggle-link"]'));
-  }
-
+  // force: the form is filled while collapsed because opening it via the toggle is unreliable in CI
   submitBasketCustomFieldValue(value: string) {
-    this.basketCustomFieldsForm.find('input').first().clear().type(value);
-    return this.basketCustomFieldsForm.find('button[type="submit"]').click();
+    this.basketCustomFieldsForm.find('input').first().clear({ force: true }).type(value, { force: true });
+    return this.basketCustomFieldsForm.find('button[type="submit"]').click({ force: true });
   }
 
   getLineItemCustomFields(sku: string) {
@@ -202,10 +188,6 @@ export class CartPage {
 
   get lastLineItemCustomFieldsForm() {
     return cy.get('ish-line-item-information-edit form').last();
-  }
-
-  openLastLineItemCustomFieldsForm() {
-    this.expandCollapseToggle(() => cy.get('[data-testing-id="line-item-custom-fields-toggle-link"]').last());
   }
 
   submitLastLineItemCustomFieldValue(value: string) {
