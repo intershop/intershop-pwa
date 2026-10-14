@@ -41,8 +41,10 @@ export function override(options: Options): Rule {
     }
 
     if (options.html) {
+      const originalHtml = from.replace(/([^\\/]+).ts$/, '$1.html');
       const target = from.replace(/([^\\/]+).ts$/, `$1.${options.theme}.html`);
-      host.create(target, 'OVERRIDE');
+      const original = host.read(originalHtml);
+      host.create(target, original ? `OVERRIDE\n${original.toString()}` : 'OVERRIDE');
     }
 
     const operations = [];
