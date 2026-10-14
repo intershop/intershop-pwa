@@ -87,7 +87,7 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
           componentRef.instance.parentForm = this.form as FormGroup;
           componentRef.changeDetectorRef.markForCheck();
         } else if (version === 2) {
-          this.formControl.setValidators([Validators.required]);
+          this.formControl.addValidators(Validators.required);
           this.formControl.updateValueAndValidity();
 
           // eslint-disable-next-line @typescript-eslint/naming-convention

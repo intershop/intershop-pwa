@@ -25,7 +25,8 @@ export class CaptchaFieldComponent extends FieldType implements OnInit {
   private registerControls() {
     const form = this.form as FormGroup;
     if (!form.get('captcha')) {
-      form.addControl('captcha', new FormControl(''));
+      // reuse the field control so that the formly validation reflects the captcha state
+      form.addControl('captcha', this.formControl ?? new FormControl(''));
     }
 
     if (!form.get('captchaAction')) {

@@ -39,6 +39,9 @@ export class CaptchaV2Component implements OnInit {
    */
   resolved(captchaResponse: string) {
     this.formControl.setValue(captchaResponse);
+    this.formControl.markAsTouched();
+    this.formControl.markAsDirty();
+    this.formControl.updateValueAndValidity();
   }
 
   private get formControl(): AbstractControl {
