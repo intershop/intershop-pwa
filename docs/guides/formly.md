@@ -72,12 +72,12 @@ String expressions such as `'props.disabled': 'model.ending !== "date"'` are eva
 ## Customizing Form Logic
 
 There are many ways to change the behavior of a form and its fields.
-The PWA registers its field types, wrappers and extensions using the `forChild()` function in [types.module.ts](../../src/app/shared/formly/types/types.module.ts), [wrappers.module.ts](../../src/app/shared/formly/wrappers/wrappers.module.ts) and [extensions.module.ts](../../src/app/shared/formly/extensions/extensions.module.ts).
+The PWA registers its field types, wrappers, and extensions using the `forChild()` function in [types.module.ts](../../src/app/shared/formly/types/types.module.ts), [wrappers.module.ts](../../src/app/shared/formly/wrappers/wrappers.module.ts), and [extensions.module.ts](../../src/app/shared/formly/extensions/extensions.module.ts).
 These modules and the extras are combined in [formly.module.ts](../../src/app/shared/formly/formly.module.ts).
 Since this module is also called `FormlyModule`, the modules in `src/app/shared/formly` import Formly's `FormlyModule` as `FormlyBaseModule`.
 For more information about what can be done in the `forChild()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts) type definition.
 Note that we use the `forChild` method here instead of the normal `forRoot` approach.
-This is because the only difference between the two approaches is that `forRoot` additionally provides the `FormlyConfig` service which is provided in root anyways.
+The only difference is that `forRoot` additionally provides the `FormlyConfig` service, which is already provided at the root level.
 Using `forChild` allows us to solve some injection issues in lazy loaded modules.
 
 If you need to completely override the Formly configuration in a module lower in the injection tree, feel free to use the `forRoot` method and thus provide a fresh instance of the `FormlyConfig` service.
@@ -104,7 +104,7 @@ export class ExampleInputFieldComponent extends FieldType<FieldTypeConfig> {}
 <input [formControl]="formControl" [formlyAttributes]="field" [type]="props.type" />
 ```
 
-Declare the component in a module and register the custom type in its `forChild()` function, for example in `types.module.ts`:
+Declare the component in a module and register the custom type in its `forChild()` function, for example, in `types.module.ts`:
 
 ```typescript
 FormlyModule.forChild({
