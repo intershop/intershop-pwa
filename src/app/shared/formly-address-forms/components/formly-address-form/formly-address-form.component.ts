@@ -30,7 +30,7 @@ import { AddressFormConfigurationProvider } from 'ish-shared/formly-address-form
   selector: 'ish-formly-address-form',
   standalone: false,
   templateUrl: './formly-address-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyAddressFormComponent implements OnInit, OnChanges {
   @Input({ required: true }) parentForm: FormGroup;

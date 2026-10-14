@@ -28,6 +28,7 @@ declare let Flex: any;
   standalone: false,
   templateUrl: './payment-cybersource-creditcard.component.html',
   styleUrls: ['./payment-cybersource-creditcard.component.scss'],
+  // eslint-disable-next-line @angular-eslint/prefer-on-push-component-change-detection -- payment provider script updates the form outside of Angular
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class PaymentCybersourceCreditcardComponent implements OnChanges, OnInit {

@@ -15,7 +15,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-validation-wrapper',
   standalone: false,
   templateUrl: './validation-wrapper.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValidationWrapperComponent extends FieldWrapper {
   showValidationIcons() {

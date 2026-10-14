@@ -20,7 +20,7 @@ import { FormsService } from 'ish-shared/forms/utils/forms.service';
   selector: 'ish-basket-shipping-address-widget',
   standalone: false,
   templateUrl: './basket-shipping-address-widget.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasketShippingAddressWidgetComponent implements OnInit {
   @Input({ required: true }) eligibleAddresses$: Observable<Address[]>;
@@ -125,7 +125,11 @@ export class BasketShippingAddressWidgetComponent implements OnInit {
         }
       });
 
-    this.shippingAddress$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => (this.collapse = true));
+    this.shippingAddress$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.collapse = true;
+      // ng-select keeps displaying a selected value that is no longer part of its options, undefined shows the placeholder
+      this.form.get('id')?.setValue(undefined, { emitEvent: false });
+    });
   }
   showAddressForm(address?: Address) {
     if (address) {

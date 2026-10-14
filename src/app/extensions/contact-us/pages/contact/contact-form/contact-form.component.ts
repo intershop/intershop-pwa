@@ -20,7 +20,7 @@ import { ContactUsFacade } from '../../../facades/contact-us.facade';
   selector: 'ish-contact-form',
   standalone: false,
   templateUrl: './contact-form.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContactFormComponent implements OnInit {
   /** The contact request to send. */
