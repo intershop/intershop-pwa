@@ -201,6 +201,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | wishlists                    | Wishlist product list feature                                                                                                                   |
 | **Third-party Integrations** |                                                                                                                                                 |
 | copilot                      | Intershop Copilot integration for embedded chatbot (requires an additional `copilot` configuration)                                             |
+| copilotEmbedded              | Copilot Embedded integration with a PWA-owned chat page (requires an additional `copilotEmbedded` configuration)                                |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
 | tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                                           |
 | **ICM compatibility**        |                                                                                                                                                 |
