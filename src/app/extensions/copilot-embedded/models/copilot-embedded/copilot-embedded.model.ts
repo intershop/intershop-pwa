@@ -47,6 +47,24 @@ export interface CopilotEmbeddedRequestOptions {
 }
 
 /**
+ * A chat message with the PWA context resolved, ready to be sent to the Flowise chatflow.
+ */
+export interface CopilotEmbeddedChatRequest {
+  question: string;
+  sessionId?: string;
+  chatId?: string;
+  uploads?: CopilotEmbeddedUpload[];
+  /** Chatflow variables sent as `overrideConfig.vars`. */
+  vars: Record<string, unknown>;
+  /** Current basket, appended to the question as `[CURRENT_BASKET]` marker. */
+  basket: { sku: string; quantity: number }[];
+  /** Order templates of the user, appended to the question as `[ORDER_TEMPLATES]` marker. */
+  orderTemplates: { id: string; title: string }[];
+  /** Products shown in the results panel, appended to the question as `[SHOWN_PRODUCTS]` marker. */
+  shownProducts: { sku: string; title?: string }[];
+}
+
+/**
  * The response of a non-streaming Flowise prediction request
  * (`POST {apiHost}/api/v1/prediction/{chatflowid}`).
  */
