@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
@@ -30,7 +30,7 @@ describe('Cost Center Buyer Edit Dialog Component', () => {
     organizationManagementFacade = mock(OrganizationManagementFacade);
 
     await TestBed.configureTestingModule({
-      imports: [FormlyTestingModule, ReactiveFormsModule, TranslatePipe],
+      imports: [FormlyTestingModule, TranslatePipe],
       declarations: [CostCenterBuyerEditDialogComponent, MockComponent(ModalDialogComponent)],
       providers: [
         { provide: AppFacade, useFactory: () => instance(appFacade) },

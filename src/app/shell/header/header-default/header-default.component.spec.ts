@@ -10,7 +10,6 @@ import { SearchBoxComponent } from 'ish-shared/components/search/search-box/sear
 import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
 import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
 import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
-import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
 import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';
@@ -36,7 +35,6 @@ describe('Header Default Component', () => {
         MockComponent(LanguageSwitchComponent),
         MockComponent(LazyProductCompareStatusComponent),
         MockComponent(LoginStatusComponent),
-        MockComponent(MiniBasketComponent),
         MockComponent(UserInformationMobileComponent),
         MockDirective(NgbCollapse),
       ],

@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TestBed } from '@angular/core/testing';
-import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
+import { TranslateService, provideTranslateService } from '@ngx-translate/core';
 
 import { DatePipe } from './date.pipe';
 
@@ -13,7 +13,6 @@ describe('Date Pipe', () => {
     registerLocaleData(localeDe);
 
     TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [DatePipe, provideTranslateService()],
     });
     datePipe = TestBed.inject(DatePipe);
