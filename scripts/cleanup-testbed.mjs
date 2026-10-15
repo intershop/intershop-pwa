@@ -125,19 +125,29 @@ if (!files.length) {
 
   const tasks = files.map(file => `cleanup-testbed ${file.replace(/\\/g, '/')}`);
 
-  runAll(tasks, {
-    parallel: cores > 1,
-    maxParallel: cores,
-    silent: true,
-    stdout: process.stdout,
-    stderr: process.stderr,
-  }).then(results => {
-    if (results.some(r => r.code !== 0)) {
+  const reportResults = results => {
+    const failed = (results || []).filter(r => r.code !== 0);
+    if (failed.length) {
+      console.error(`\n${failed.length} test file(s) failed during cleanup:`);
+      for (const r of failed) {
+        console.error(`  - ${r.name.replace(/^cleanup-testbed /, '')}`);
+      }
       process.exit(1);
     } else {
       console.log(`cleaned up ${files.length} test files`);
     }
-  });
+  };
+
+  runAll(tasks, {
+    parallel: cores > 1,
+    maxParallel: cores,
+    continueOnError: true,
+    silent: true,
+    stdout: process.stdout,
+    stderr: process.stderr,
+  })
+    .then(reportResults)
+    .catch(error => reportResults(error?.results));
 } else {
   const project = new Project({
     tsConfigFilePath: 'tsconfig.all.json',
@@ -238,6 +248,11 @@ if (!files.length) {
   rimraf.sync(copySnapshotPath);
 
   if (foundSomething) {
-    execSync(`npx eslint --fix ${filePath}`);
+    try {
+      execSync(`npx eslint --fix ${filePath}`, { stdio: 'ignore' });
+    } catch {
+      // fixable changes are still applied when eslint exits non-zero
+      console.warn(`eslint --fix reported unfixable issues in ${filePath}`);
+    }
   }
 }
