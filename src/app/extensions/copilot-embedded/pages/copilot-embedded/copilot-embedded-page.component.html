@@ -1,26 +1,28 @@
 <div class="container copilot-embedded">
-  @if (deviceType$ | async; as deviceType) {
+  @let deviceType = deviceType$ | async;
+  @let context = context$ | async;
+  @if (deviceType && context) {
     @if (deviceType !== 'mobile') {
       <div class="row">
         <div class="col-8 px-0 pe-4">
           <ish-copilot-embedded-chat
             [deviceType]="deviceType"
-            [error]="error"
-            [loading]="loading"
-            [messages]="messages"
-            [pendingAnswer]="pendingAnswer"
-            [toolErrors]="toolErrors"
+            [error]="context.error"
+            [loading]="context.loading"
+            [messages]="context.messages"
+            [pendingAnswer]="context.pendingAnswer"
+            [toolErrors]="context.toolErrors"
             (resetChat)="resetSession()"
             (send)="onSend($event)"
           />
         </div>
         <div class="col-4">
-          <ish-copilot-embedded-results [products]="products" />
+          <ish-copilot-embedded-results [products]="context.products" />
         </div>
       </div>
     } @else {
       <ish-copilot-embedded-header
-        [canReset]="messages.length > 0 && activeNavId === 'chat'"
+        [canReset]="context.messages.length > 0 && activeNavId === 'chat'"
         (resetChat)="resetSession()"
       />
       <nav #nav="ngbNav" class="nav-tabs" ngbNav (activeIdChange)="activeNavId = $event">
@@ -29,11 +31,11 @@
           <ng-template ngbNavContent>
             <ish-copilot-embedded-chat
               [deviceType]="deviceType"
-              [error]="error"
-              [loading]="loading"
-              [messages]="messages"
-              [pendingAnswer]="pendingAnswer"
-              [toolErrors]="toolErrors"
+              [error]="context.error"
+              [loading]="context.loading"
+              [messages]="context.messages"
+              [pendingAnswer]="context.pendingAnswer"
+              [toolErrors]="context.toolErrors"
               (send)="onSend($event)"
             />
           </ng-template>
@@ -41,12 +43,12 @@
         <li ngbNavItem role="presentation">
           <a ngbNavLink>
             {{ 'copilot.embedded.tab.products' | translate }}
-            @if (products.length) {
-              ({{ products.length }})
+            @if (context.products.length) {
+              ({{ context.products.length }})
             }
           </a>
           <ng-template ngbNavContent>
-            <ish-copilot-embedded-results [products]="products" (backToChat)="nav.select('chat')" />
+            <ish-copilot-embedded-results [products]="context.products" (backToChat)="nav.select('chat')" />
           </ng-template>
         </li>
       </nav>

@@ -1,19 +1,12 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import { BehaviorSubject, of } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
 
-import { AppFacade } from 'ish-core/facades/app.facade';
-import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { FeatureToggleService } from 'ish-core/feature-toggle.module';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-
-import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
-import { CopilotEmbeddedResponse } from '../../models/copilot-embedded/copilot-embedded.model';
-import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config/copilot-embedded-config.selectors';
+import {
+  CopilotEmbeddedChatRequest,
+  CopilotEmbeddedResponse,
+} from '../../models/copilot-embedded/copilot-embedded.model';
 
 import { CopilotEmbeddedService } from './copilot-embedded.service';
 
@@ -24,6 +17,10 @@ const copilotEmbeddedConfig: CopilotEmbeddedConfig = {
 
 const predictionUrl = 'https://flowise.example.com/api/v1/prediction/chatflow-123';
 
+function chatRequest(overrides: Partial<CopilotEmbeddedChatRequest> = {}): CopilotEmbeddedChatRequest {
+  return { question: 'hi', vars: {}, basket: [], orderTemplates: [], shownProducts: [], ...overrides };
+}
+
 // testing here is handled by http testing controller
 
 describe('Copilot Embedded Service', () => {
@@ -31,33 +28,8 @@ describe('Copilot Embedded Service', () => {
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    const appFacade = mock(AppFacade);
-    when(appFacade.getRestEndpointWithContext$).thenReturn(of('http://example.org/WFS/site/-;loc=en_US;cur=USD'));
-    when(appFacade.currentLocale$).thenReturn(of('en_US'));
-
-    const apiTokenService = mock(ApiTokenService);
-    when(apiTokenService.apiToken$).thenReturn(new BehaviorSubject<string>('icm-token-xyz'));
-
-    const checkoutFacade = mock(CheckoutFacade);
-    when(checkoutFacade.basketLineItems$).thenReturn(of(undefined));
-
-    const orderTemplatesFacade = mock(OrderTemplatesFacade);
-    when(orderTemplatesFacade.orderTemplates$).thenReturn(of([]));
-
-    const featureToggleService = mock(FeatureToggleService);
-    when(featureToggleService.enabled$(anything())).thenReturn(of(true));
-
     TestBed.configureTestingModule({
-      providers: [
-        { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
-        { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
-        { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        provideMockStore({ selectors: [{ selector: getCopilotEmbeddedConfig, value: copilotEmbeddedConfig }] }),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     copilotEmbeddedService = TestBed.inject(CopilotEmbeddedService);
@@ -73,17 +45,30 @@ describe('Copilot Embedded Service', () => {
   });
 
   it('should throw when sending a message without a question', () => {
-    expect(() => copilotEmbeddedService.sendMessage('')).toThrow();
-    expect(() => copilotEmbeddedService.sendMessage('   ')).toThrow();
+    expect(() => copilotEmbeddedService.sendMessage(copilotEmbeddedConfig, chatRequest({ question: '' }))).toThrow();
+    expect(() => copilotEmbeddedService.sendMessage(copilotEmbeddedConfig, chatRequest({ question: '   ' }))).toThrow();
+  });
+
+  it('should throw when the chatflow is not configured', () => {
+    expect(() => copilotEmbeddedService.sendMessage({ apiHost: '', chatflowid: '' }, chatRequest())).toThrow();
   });
 
   it('should post the question to the Flowise prediction endpoint', done => {
     const response: CopilotEmbeddedResponse = { text: 'Here is a recommendation', chatId: 'abc' };
 
-    copilotEmbeddedService.sendMessage('recommend a laptop', { sessionId: 'session-1' }).subscribe(result => {
-      expect(result).toEqual(response);
-      done();
-    });
+    copilotEmbeddedService
+      .sendMessage(
+        copilotEmbeddedConfig,
+        chatRequest({
+          question: 'recommend a laptop',
+          sessionId: 'session-1',
+          vars: { currentLocale: 'en_US', user_token: 'icm-token-xyz' },
+        })
+      )
+      .subscribe(result => {
+        expect(result).toEqual(response);
+        done();
+      });
 
     const req = httpTestingController.expectOne(predictionUrl);
     expect(req.request.method).toEqual('POST');
@@ -91,44 +76,38 @@ describe('Copilot Embedded Service', () => {
     expect(req.request.body.question).toEqual(
       'recommend a laptop\n\n[CURRENT_BASKET]=[]\n[ORDER_TEMPLATES]=[]\n[SHOWN_PRODUCTS]=[]'
     );
-    expect(req.request.body.overrideConfig.sessionId).toEqual('session-1');
-    expect(req.request.body.overrideConfig.vars.currentLocale).toEqual('en_US');
-    expect(req.request.body.overrideConfig.vars.restEndpoint).toEqual(
-      'http://example.org/WFS/site/-;loc=en_US;cur=USD'
-    );
+    expect(req.request.body.streaming).toBeFalse();
+    expect(req.request.body.overrideConfig).toEqual({
+      sessionId: 'session-1',
+      vars: { currentLocale: 'en_US', user_token: 'icm-token-xyz' },
+    });
     req.flush(response);
   });
 
-  it('should append the shown products to the question', done => {
+  it('should append the PWA context to the question', done => {
     copilotEmbeddedService
-      .sendMessage('add the first one', { shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }] })
+      .sendMessage(
+        copilotEmbeddedConfig,
+        chatRequest({
+          question: 'add the first one',
+          basket: [{ sku: '123', quantity: 2 }],
+          orderTemplates: [{ id: 'ot-1', title: 'Office' }],
+          shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }],
+        })
+      )
       .subscribe(() => done());
 
     const req = httpTestingController.expectOne(predictionUrl);
-    expect(req.request.body.question).toEndWith(
-      '\n[SHOWN_PRODUCTS]=[{"sku":"201807204","title":"Microsoft Surface Laptop"}]'
+    expect(req.request.body.question).toEqual(
+      'add the first one\n\n[CURRENT_BASKET]=[{"sku":"123","quantity":2}]' +
+        '\n[ORDER_TEMPLATES]=[{"id":"ot-1","title":"Office"}]' +
+        '\n[SHOWN_PRODUCTS]=[{"sku":"201807204","title":"Microsoft Surface Laptop"}]'
     );
-    req.flush({ text: 'ok' });
-  });
-
-  it('should merge additional request vars into the chatflow variables', done => {
-    copilotEmbeddedService.sendMessage('hi', { vars: { foo: 'bar' } }).subscribe(() => done());
-
-    const req = httpTestingController.expectOne(predictionUrl);
-    expect(req.request.body.overrideConfig.vars.foo).toEqual('bar');
-    req.flush({ text: 'ok' });
-  });
-
-  it('should forward the ICM access token as the user_token variable', done => {
-    copilotEmbeddedService.sendMessage('hi').subscribe(() => done());
-
-    const req = httpTestingController.expectOne(predictionUrl);
-    expect(req.request.body.overrideConfig.vars.user_token).toEqual('icm-token-xyz');
     req.flush({ text: 'ok' });
   });
 
   it('should probe whether the chatflow supports streaming', done => {
-    copilotEmbeddedService.isStreamingAvailable$().subscribe(available => {
+    copilotEmbeddedService.isStreamingAvailable$(copilotEmbeddedConfig).subscribe(available => {
       expect(available).toBeTrue();
       done();
     });

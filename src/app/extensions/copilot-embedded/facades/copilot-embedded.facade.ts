@@ -1,49 +1,85 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { FeatureToggleService } from 'ish-core/feature-toggle.module';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { whenTruthy } from 'ish-core/utils/operators';
+
+import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedConfig } from '../models/copilot-embedded-config/copilot-embedded-config.model';
 import {
+  CopilotEmbeddedChatRequest,
   CopilotEmbeddedRequestOptions,
   CopilotEmbeddedResponse,
   CopilotEmbeddedStreamEvent,
   CopilotEmbeddedToolCall,
 } from '../models/copilot-embedded/copilot-embedded.model';
 import { CopilotEmbeddedService } from '../services/copilot-embedded/copilot-embedded.service';
+import { getCopilotEmbeddedConfig } from '../store/copilot-embedded-config/copilot-embedded-config.selectors';
 
 import { CopilotEmbeddedToolCallFacade } from './copilot-embedded-tool-call.facade';
 
 /**
- * Facade for the Copilot Embedded AI agent, providing components a single injection point for the
- * Flowise chat interaction without depending on the underlying {@link CopilotEmbeddedService}.
+ * Facade for the Copilot Embedded AI agent. Provides the configuration and enriches every chat
+ * request with the current PWA context before it is sent to the Flowise chatflow.
+ *
+ * The `restEndpoint`, `currentLocale` and - for logged-in users - the ICM `user_token` are provided
+ * as chatflow variables on every request (mirroring the Copilot integration) so the chatflow can
+ * call back into ICM as the current user.
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedFacade {
   constructor(
+    private store: Store,
+    private appFacade: AppFacade,
+    private apiTokenService: ApiTokenService,
+    private checkoutFacade: CheckoutFacade,
+    private orderTemplatesFacade: OrderTemplatesFacade,
+    private featureToggleService: FeatureToggleService,
     private copilotEmbeddedService: CopilotEmbeddedService,
     private copilotEmbeddedToolCallFacade: CopilotEmbeddedToolCallFacade
   ) {}
 
-  configuration$: Observable<CopilotEmbeddedConfig> = this.copilotEmbeddedService.getConfiguration$();
+  /**
+   * The Copilot Embedded configuration (server state, environment variable or `environment.ts`).
+   * Emits once the lazily loaded store slice holds the configuration.
+   */
+  configuration$: Observable<CopilotEmbeddedConfig> = this.store.pipe(select(getCopilotEmbeddedConfig), whenTruthy());
 
   /**
-   * Whether the configured chatflow supports streaming responses.
+   * Whether to stream the responses: honors the `streaming` configuration, otherwise probes the chatflow.
    */
   isStreamingAvailable$(): Observable<boolean> {
-    return this.copilotEmbeddedService.isStreamingAvailable$();
+    return this.configuration$.pipe(
+      take(1),
+      switchMap(config =>
+        typeof config.streaming === 'boolean'
+          ? of(config.streaming)
+          : this.copilotEmbeddedService.isStreamingAvailable$(config)
+      )
+    );
   }
 
   /**
    * Sends a message to the Copilot Embedded and returns the complete response.
    */
   sendMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedResponse> {
-    return this.copilotEmbeddedService.sendMessage(question, options);
+    return this.chatRequest$(question, options).pipe(
+      switchMap(([config, request]) => this.copilotEmbeddedService.sendMessage(config, request))
+    );
   }
 
   /**
    * Sends a message to the Copilot Embedded and streams the response as it is generated.
    */
   streamMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedStreamEvent> {
-    return this.copilotEmbeddedService.streamMessage(question, options);
+    return this.chatRequest$(question, options).pipe(
+      switchMap(([config, request]) => this.copilotEmbeddedService.streamMessage(config, request))
+    );
   }
 
   /**
@@ -51,5 +87,48 @@ export class CopilotEmbeddedFacade {
    */
   handleToolCalls(toolCalls: CopilotEmbeddedToolCall[] | undefined): void {
     this.copilotEmbeddedToolCallFacade.handleToolCalls(toolCalls);
+  }
+
+  private chatRequest$(
+    question: string,
+    options: CopilotEmbeddedRequestOptions | undefined
+  ): Observable<[CopilotEmbeddedConfig, CopilotEmbeddedChatRequest]> {
+    return combineLatest([
+      this.configuration$,
+      this.appFacade.getRestEndpointWithContext$,
+      this.appFacade.currentLocale$,
+      this.apiTokenService.apiToken$,
+      this.checkoutFacade.basketLineItems$,
+      // order templates are a lazy, feature-gated store; only read them when the feature is enabled
+      this.featureToggleService
+        .enabled$('orderTemplates')
+        .pipe(switchMap(enabled => (enabled ? this.orderTemplatesFacade.orderTemplates$ : of([])))),
+    ]).pipe(
+      take(1),
+      map(
+        ([config, restEndpoint, currentLocale, userToken, lineItems, orderTemplates]): [
+          CopilotEmbeddedConfig,
+          CopilotEmbeddedChatRequest,
+        ] => [
+          config,
+          {
+            question,
+            sessionId: options?.sessionId,
+            chatId: options?.chatId,
+            uploads: options?.uploads,
+            vars: {
+              restEndpoint,
+              currentLocale,
+              ...(userToken ? { user_token: userToken } : {}),
+              ...config.chatflowConfig?.vars,
+              ...options?.vars,
+            },
+            basket: (lineItems ?? []).map(li => ({ sku: li.productSKU, quantity: li.quantity?.value })),
+            orderTemplates: (orderTemplates ?? []).map(t => ({ id: t.id, title: t.title })),
+            shownProducts: options?.shownProducts ?? [],
+          },
+        ]
+      )
+    );
   }
 }
