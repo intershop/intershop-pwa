@@ -78,7 +78,6 @@ describe('Captcha V3 Component', () => {
   let wrapperFixture: ComponentFixture<WrapperComponent>;
   let wrapper: WrapperComponent;
   let recaptchaV3Service: ReCaptchaV3Service;
-  const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
   beforeEach(async () => {
     recaptchaV3Service = mock(ReCaptchaV3Service);
@@ -88,7 +87,6 @@ describe('Captcha V3 Component', () => {
       declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective), WrapperComponent],
       imports: [ReactiveFormsModule, TranslatePipe],
       providers: [
-        { provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey },
         { provide: ReCaptchaV3Service, useFactory: () => instance(recaptchaV3Service) },
         provideTranslateService(),
       ],
