@@ -82,6 +82,7 @@ Make sure to use them as written in the table below.
 |                     | IDENTITY_PROVIDERS    | JSON                 | Configuration of additional identity providers besides the default `ICM`                                                                                          |
 |                     | ADDRESS_DOCTOR        | JSON                 | Configuration of address doctor with `url`, `login`, `password` and `maxResultCount`                                                                              |
 |                     | COPILOT               | JSON                 | Configuration of Intershop Copilot for Buyers                                                                                                                     |
+|                     | COPILOT_EMBEDDED      | JSON                 | Configuration of Copilot Embedded                                                                                                                                 |
 |                     | ALLOW_H2              | switch               | Enables HTTP/2 support via Fetch API for REST requests done by the SSR, e.g., to ICM or SPARQUE                                                                   |
 
 > [!IMPORTANT]

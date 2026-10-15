@@ -14,6 +14,7 @@ kb_sync_latest_only
 - [`handleToolCall` Actions](#handletoolcall-actions)
 
 The Intershop PWA provides an integration with Intershop Copilot for Buyers.
+For an integration where the PWA renders the chat UI itself, see [Guide - Copilot Embedded](./copilot-embedded.md).
 
 Official Intershop Documentation: [Overview - Intershop Copilot for Buyers](https://knowledge.intershop.com/kb/index.php/Display/31N345)
 

@@ -47,11 +47,14 @@ Optionally, the following values can be added to the configuration:
   `true` always streams the answer, `false` always waits for the complete answer.
   If omitted, the PWA checks whether the chatflow supports streaming.
 - `chatflowConfig` - additional chatflow variables that are sent with every request, provided as `vars` object.
-  They extend the default variables described in [Chatflow Integration](#chatflow-integration).
+  They extend the default variables described in [Chatflow Integration](#chatflow-integration) below.
 
 The Copilot Embedded is reachable at `/copilot`.
-If the feature toggle is enabled, the header shows a link to this page.
-The link text and the page title use the localization key `copilot.embedded.link`, so a project can rename the feature by changing this translation.
+The header link and the page title use the localization key `copilot.embedded.link`.
+
+> [!NOTE]
+> The texts of the chat page, e.g., the starter prompts, are demo content of the Intershop B2B demo shop.
+> Adapt the `copilot.embedded.*` localizations to the project's catalog and chatflow.
 
 ## Chatflow Integration
 
@@ -76,23 +79,11 @@ Additionally, the PWA appends the current context to each question, because Flow
 ```
 
 The chatflow prompt can use these markers, e.g., to add products to the basket or to an existing order template without calling ICM first.
-`[SHOWN_PRODUCTS]` lists the products of the results panel in display order.
-The chatflow memory does not keep tool results, so this marker is the chatflow's source for the SKUs of products the user refers to, e.g., "add the first one".
-If the `orderTemplates` feature toggle is disabled, `[ORDER_TEMPLATES]` is always an empty list.
+`[SHOWN_PRODUCTS]` lists the products of the results panel in display order, so the chatflow can resolve references like "add the first one".
 
-## Image Upload
+Image uploads require a chatflow with image uploads enabled on a vision-capable chat model.
 
-Users can attach an image (JPEG, PNG, GIF, or WebP, up to 5 MB) to a question.
-This requires a chatflow with image uploads enabled on a vision-capable chat model.
-
-## Chat History
-
-The chat history is stored in the browser's localStorage, so a conversation survives a page reload:
-
-- `copilot_embedded_chat_<chatflowid>` - transcript, including image thumbnails and the Flowise `chatId`.
-- `copilot_embedded_session_id` - session ID that links the conversation to the chatflow memory.
-
-The _Start a new conversation_ button clears the transcript and creates a new session ID, so the chatflow starts without memory of the previous conversation.
+The chat history is stored in the browser's localStorage.
 
 ## `handleToolCall` Actions
 
@@ -105,13 +96,9 @@ If a feature is disabled, e.g., order templates in a B2C shop, the tool call is 
 - `compare` - required for the `PWA_compare_products` tool.
 - `orderTemplates` - required for the `PWA_order_template_actions` tool and for navigating to the order template pages via `PWA_navigate_to_page`.
 
-Additionally, the Copilot Embedded supports the `PWA_ask_choice` tool.
-It renders predefined answers as clickable choice chips below the bot message, so the user can select an answer instead of typing it.
+Additionally, the Copilot Embedded supports the `PWA_ask_choice` tool, which renders predefined answers as clickable choices.
 The tool accepts the following input parameters:
 
 - `question` - optional question the choices refer to.
 - `options` - pipe-separated list of answers, e.g., `In the office|Hybrid|Mobile`.
-- `multiSelect` - if `true`, the user can select multiple chips and confirm them. The selected options are sent as a comma-separated answer.
-  Otherwise, a click on a chip sends the answer immediately.
-
-The chips are only shown for the latest bot message.
+- `multiSelect` - if `true`, the user can select multiple options, which are sent as a comma-separated answer.
