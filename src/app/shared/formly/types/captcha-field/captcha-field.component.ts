@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldType } from '@ngx-formly/core';
 
@@ -18,8 +19,26 @@ import { FieldType } from '@ngx-formly/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptchaFieldComponent extends FieldType implements OnInit {
+  private destroyRef = inject(DestroyRef);
+
   ngOnInit() {
     this.registerControls();
+    this.syncFieldControl();
+  }
+
+  /**
+   * Formly creates a separate form control for this field (it has no key), which is used to display the validation message.
+   * Its value is kept in sync with the ``captcha`` form control so the 'required' error disappears once the captcha is solved.
+   */
+  private syncFieldControl() {
+    const captchaControl = this.form.get('captcha');
+    if (!this.formControl || this.formControl === captchaControl) {
+      return;
+    }
+
+    captchaControl.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => this.formControl.setValue(value));
   }
 
   private registerControls() {
