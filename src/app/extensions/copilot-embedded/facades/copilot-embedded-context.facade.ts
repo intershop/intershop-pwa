@@ -56,9 +56,7 @@ function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbedded
   return [];
 }
 
-function collectToolErrors(
-  tools: CopilotEmbeddedToolCall[] | undefined
-): Pick<CopilotEmbeddedToolCall, 'error' | 'tool'>[] {
+function collectToolErrors(tools: CopilotEmbeddedToolCall[]): Pick<CopilotEmbeddedToolCall, 'error' | 'tool'>[] {
   return (tools ?? []).filter(tool => !!tool?.error).map(tool => ({ tool: tool.tool, error: tool.error }));
 }
 
