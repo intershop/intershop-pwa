@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
@@ -36,13 +35,12 @@ describe('Copilot Embedded Page Component', () => {
     when(context.select()).thenReturn(of(state));
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       declarations: [
         CopilotEmbeddedPageComponent,
         MockComponent(CopilotEmbeddedChatComponent),
         MockComponent(CopilotEmbeddedResultsComponent),
       ],
-      providers: [{ provide: AppFacade, useValue: { deviceType$: of('desktop') } }, provideTranslateService()],
+      providers: [{ provide: AppFacade, useValue: { deviceType$: of('desktop') } }],
     })
       .overrideComponent(CopilotEmbeddedPageComponent, {
         set: { providers: [{ provide: CopilotEmbeddedContextFacade, useFactory: () => instance(context) }] },
