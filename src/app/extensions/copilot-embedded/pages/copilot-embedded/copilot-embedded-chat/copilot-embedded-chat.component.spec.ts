@@ -3,8 +3,10 @@ import { By } from '@angular/platform-browser';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
-import { anything, capture, spy, verify } from 'ts-mockito';
+import { BehaviorSubject } from 'rxjs';
+import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
+import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded/copilot-embedded.model';
 import { CopilotEmbeddedHeaderComponent } from '../copilot-embedded-header/copilot-embedded-header.component';
 import { CopilotEmbeddedInputComponent } from '../copilot-embedded-input/copilot-embedded-input.component';
@@ -16,12 +18,36 @@ describe('Copilot Embedded Chat Component', () => {
   let component: CopilotEmbeddedChatComponent;
   let fixture: ComponentFixture<CopilotEmbeddedChatComponent>;
   let element: HTMLElement;
+  let context: CopilotEmbeddedContextFacade;
+  let state: CopilotEmbeddedContext;
+  let state$: BehaviorSubject<CopilotEmbeddedContext>;
 
   function botMessage(choices?: CopilotEmbeddedChatMessage['choices']): CopilotEmbeddedChatMessage {
     return { message: 'How do these employees mainly work?', type: 'apiMessage', choices };
   }
 
+  function setState(patch: Partial<CopilotEmbeddedContext>) {
+    state = { ...state, ...patch };
+    state$.next(state);
+    fixture.detectChanges();
+  }
+
   beforeEach(async () => {
+    state = {
+      chatflowid: 'flow-1',
+      sessionId: 'session-1',
+      chatId: undefined,
+      messages: [],
+      pendingAnswer: '',
+      loading: false,
+      error: undefined,
+      toolErrors: [],
+      products: [],
+    };
+    state$ = new BehaviorSubject(state);
+    context = mock(CopilotEmbeddedContextFacade);
+    when(context.select()).thenReturn(state$);
+
     await TestBed.configureTestingModule({
       imports: [RouterModule, TranslatePipe],
       declarations: [
@@ -30,7 +56,11 @@ describe('Copilot Embedded Chat Component', () => {
         MockComponent(CopilotEmbeddedHeaderComponent),
         MockComponent(CopilotEmbeddedMessagesComponent),
       ],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        { provide: CopilotEmbeddedContextFacade, useFactory: () => instance(context) },
+        provideRouter([]),
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -48,51 +78,48 @@ describe('Copilot Embedded Chat Component', () => {
   });
 
   it('should render the error as a localized message', () => {
-    component.error = 'copilot.embedded.error.generic';
-    fixture.detectChanges();
+    setState({ error: 'copilot.embedded.error.generic' });
 
     expect(element.querySelector('.copilot-embedded-error').textContent.trim()).toBe('copilot.embedded.error.generic');
   });
 
   it('should announce loading and completed replies without announcing streamed tokens', () => {
-    fixture.componentRef.setInput('messages', [{ message: 'Question', type: 'userMessage' }]);
-    fixture.componentRef.setInput('loading', true);
-    fixture.detectChanges();
+    setState({ messages: [{ message: 'Question', type: 'userMessage' }], loading: true });
 
     const status = element.querySelector('[role="status"]');
     expect(status.getAttribute('aria-live')).toBe('polite');
     expect(status.textContent.trim()).toBe('copilot.embedded.typing');
 
-    fixture.componentRef.setInput('pendingAnswer', 'A partial answer');
-    fixture.detectChanges();
+    setState({ pendingAnswer: 'A partial answer' });
     expect(status.textContent.trim()).toBe('copilot.embedded.typing');
 
-    fixture.componentRef.setInput('messages', [
-      { message: 'Question', type: 'userMessage' },
-      { message: 'A complete answer', type: 'apiMessage' },
-    ]);
-    fixture.detectChanges();
+    setState({
+      messages: [
+        { message: 'Question', type: 'userMessage' },
+        { message: 'A complete answer', type: 'apiMessage' },
+      ],
+    });
     expect(status.textContent.trim()).toBe('copilot.embedded.typing');
 
-    fixture.componentRef.setInput('loading', false);
-    fixture.detectChanges();
+    setState({ loading: false, pendingAnswer: '' });
     expect(status.textContent.trim()).toBe('A complete answer');
   });
 
   it('should announce when recommended products are available', () => {
-    fixture.componentRef.setInput('messages', [
-      {
-        ...botMessage(),
-        usedTools: [
-          {
-            tool: 'icmSearch',
-            toolInput: {},
-            toolOutput: JSON.stringify({ output: [{ products: [{ sku: 'product-1' }] }] }),
-          },
-        ],
-      },
-    ]);
-    fixture.detectChanges();
+    setState({
+      messages: [
+        {
+          ...botMessage(),
+          usedTools: [
+            {
+              tool: 'icmSearch',
+              toolInput: {},
+              toolOutput: JSON.stringify({ output: [{ products: [{ sku: 'product-1' }] }] }),
+            },
+          ],
+        },
+      ],
+    });
 
     expect(element.querySelector('[role="status"]').textContent.trim()).toBe(
       'How do these employees mainly work? copilot.embedded.results.announcement'
@@ -100,15 +127,13 @@ describe('Copilot Embedded Chat Component', () => {
   });
 
   it('should not announce product availability when a reply has no recommended products', () => {
-    fixture.componentRef.setInput('messages', [botMessage()]);
-    fixture.detectChanges();
+    setState({ messages: [botMessage()] });
 
     expect(element.querySelector('[role="status"]').textContent.trim()).toBe('How do these employees mainly work?');
   });
 
   it('should announce request errors', () => {
-    fixture.componentRef.setInput('error', 'copilot.embedded.error.generic');
-    fixture.detectChanges();
+    setState({ error: 'copilot.embedded.error.generic' });
 
     expect(element.querySelector('[role="status"]').textContent.trim()).toBe('copilot.embedded.error.generic');
   });
@@ -120,10 +145,17 @@ describe('Copilot Embedded Chat Component', () => {
     expect(element.querySelectorAll('.copilot-embedded-prompt-badges button')).toHaveLength(4);
   });
 
+  it('should reset the conversation from the header', () => {
+    setState({ messages: [botMessage()] });
+
+    fixture.debugElement.query(By.directive(CopilotEmbeddedHeaderComponent)).componentInstance.resetChat.emit();
+
+    verify(context.reset()).once();
+  });
+
   describe('sending', () => {
     it('should disable sending while loading', () => {
-      fixture.componentRef.setInput('loading', true);
-      fixture.detectChanges();
+      setState({ loading: true });
 
       expect(
         element.querySelector<HTMLButtonElement>('[aria-label="copilot.embedded.input.send"]').disabled
@@ -131,44 +163,36 @@ describe('Copilot Embedded Chat Component', () => {
     });
 
     it('should send the typed question', () => {
-      const emitter = spy(component.send);
       fixture.detectChanges();
 
       const input = element.querySelector<HTMLInputElement>('#copilot-embedded-question');
       input.value = 'Test question';
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 
-      verify(emitter.emit(anything())).once();
-      expect(capture(emitter.emit).last()).toEqual([{ question: 'Test question' }]);
+      verify(context.send(deepEqual({ question: 'Test question' }))).once();
     });
 
     it('should send a welcome prompt', () => {
-      const emitter = spy(component.send);
       fixture.detectChanges();
 
       element.querySelector<HTMLButtonElement>('.copilot-embedded-prompt-badges button').click();
 
-      verify(emitter.emit(anything())).once();
-      expect(capture(emitter.emit).last()).toEqual([{ question: 'copilot.embedded.prompt_1' }]);
+      verify(context.send(deepEqual({ question: 'copilot.embedded.prompt_1' }))).once();
     });
 
     it('should send the chosen answer', () => {
-      const emitter = spy(component.send);
-      component.messages = [botMessage({ options: ['Hybrid', 'In the office'], multiSelect: false })];
-      fixture.detectChanges();
+      setState({ messages: [botMessage({ options: ['Hybrid', 'In the office'], multiSelect: false })] });
 
       fixture.debugElement
         .query(By.directive(CopilotEmbeddedMessagesComponent))
         .componentInstance.answer.emit('Hybrid');
 
-      verify(emitter.emit(anything())).once();
-      expect(capture(emitter.emit).last()).toEqual([{ question: 'Hybrid' }]);
+      verify(context.send(deepEqual({ question: 'Hybrid' }))).once();
     });
   });
 
   it('should render the messages once a conversation has started', () => {
-    component.messages = [botMessage()];
-    fixture.detectChanges();
+    setState({ messages: [botMessage()] });
 
     expect(element.querySelector('ish-copilot-embedded-messages')).toBeTruthy();
     expect(element.querySelector('.copilot-embedded-welcome')).toBeFalsy();
