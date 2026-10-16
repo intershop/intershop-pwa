@@ -13,7 +13,7 @@ export class CopilotEmbeddedProductMapper {
    *
    * @param tools The tool calls of a chatflow response (`usedTools`).
    */
-  static fromToolCalls(tools: CopilotEmbeddedToolCall[] | undefined): CopilotEmbeddedProduct[] {
+  static fromToolCalls(tools: CopilotEmbeddedToolCall[]): CopilotEmbeddedProduct[] {
     const products = (tools ?? [])
       .filter(tool => tool?.tool === SEARCH_TOOL && !!tool.toolOutput)
       .flatMap(tool => CopilotEmbeddedProductMapper.fromSearchOutput(tool.toolOutput));

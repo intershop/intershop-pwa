@@ -39,7 +39,7 @@ export class CopilotEmbeddedToolCallService {
    *
    * @param toolCalls The `usedTools` of the response.
    */
-  handleToolCalls(toolCalls: CopilotEmbeddedToolCall[] | undefined): void {
+  handleToolCalls(toolCalls: CopilotEmbeddedToolCall[]): void {
     (toolCalls ?? []).forEach(toolCall => this.handleToolCall(toolCall));
   }
 

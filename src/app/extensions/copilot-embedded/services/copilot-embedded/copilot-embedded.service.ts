@@ -34,8 +34,8 @@ interface PredictionRequestBody {
  * Flowise wraps the payload as JSON in the `data:` field, e.g. `data:{"event":"token","data":"Hi"}`.
  * Falls back to the SSE `event:` field and raw string data if the payload is not JSON.
  */
-function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent | undefined {
-  let eventName: string | undefined;
+function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent {
+  let eventName: string;
   const dataLines: string[] = [];
 
   for (const line of rawEvent.split('\n')) {
