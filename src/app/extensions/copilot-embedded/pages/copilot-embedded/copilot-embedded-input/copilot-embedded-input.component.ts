@@ -16,8 +16,8 @@ import { debounceTime, fromEvent, merge } from 'rxjs';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-import { readImageUpload } from '../../../models/copilot-embedded/copilot-embedded-image.helper';
-import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded/copilot-embedded.model';
+import { readImageUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.helper';
+import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.model';
 
 // mirrors the Flowise embed defaults for vision uploads (imgUploadSizeAndTypes)
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];

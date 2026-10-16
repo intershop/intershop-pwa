@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 
 @Component({
   selector: 'ish-copilot-embedded-messages',

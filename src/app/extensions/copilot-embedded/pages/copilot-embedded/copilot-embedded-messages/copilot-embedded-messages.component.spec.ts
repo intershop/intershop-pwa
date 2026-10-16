@@ -4,7 +4,7 @@ import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
-import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedChoicesComponent } from '../copilot-embedded-choices/copilot-embedded-choices.component';
 
 import { CopilotEmbeddedMessagesComponent } from './copilot-embedded-messages.component';

@@ -1,17 +1,17 @@
-import { CopilotEmbeddedToolCall } from '../copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
-import { extractProductsFromToolCalls } from './copilot-embedded-product.helper';
+import { CopilotEmbeddedProductMapper } from './copilot-embedded-product.mapper';
 
-describe('Copilot Embedded Product Helper', () => {
+describe('Copilot Embedded Product Mapper', () => {
   it('should return an empty array when there are no tool calls', () => {
-    expect(extractProductsFromToolCalls(undefined)).toBeEmpty();
-    expect(extractProductsFromToolCalls([])).toBeEmpty();
+    expect(CopilotEmbeddedProductMapper.fromToolCalls(undefined)).toBeEmpty();
+    expect(CopilotEmbeddedProductMapper.fromToolCalls([])).toBeEmpty();
   });
 
   it('should ignore tools that are not icmSearch', () => {
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'product_detail_page', toolInput: {}, toolOutput: '{}' }];
 
-    expect(extractProductsFromToolCalls(tools)).toBeEmpty();
+    expect(CopilotEmbeddedProductMapper.fromToolCalls(tools)).toBeEmpty();
   });
 
   it('should flatten promotion-grouped products from the icmSearch output', () => {
@@ -38,7 +38,7 @@ describe('Copilot Embedded Product Helper', () => {
     });
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'icmSearch', toolInput: {}, toolOutput }];
 
-    const products = extractProductsFromToolCalls(tools);
+    const products = CopilotEmbeddedProductMapper.fromToolCalls(tools);
 
     expect(products).toHaveLength(2);
     expect(products[0]).toEqual({
@@ -61,12 +61,12 @@ describe('Copilot Embedded Product Helper', () => {
       { tool: 'icmSearch', toolInput: { query: 'networking' }, toolOutput: toolOutput(['2', '3', '3']) },
     ];
 
-    expect(extractProductsFromToolCalls(tools).map(product => product.sku)).toEqual(['1', '2', '3']);
+    expect(CopilotEmbeddedProductMapper.fromToolCalls(tools).map(product => product.sku)).toEqual(['1', '2', '3']);
   });
 
   it('should ignore invalid tool output', () => {
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'icmSearch', toolInput: {}, toolOutput: 'not json' }];
 
-    expect(extractProductsFromToolCalls(tools)).toBeEmpty();
+    expect(CopilotEmbeddedProductMapper.fromToolCalls(tools)).toBeEmpty();
   });
 });

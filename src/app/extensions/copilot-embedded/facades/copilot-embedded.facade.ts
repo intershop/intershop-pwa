@@ -10,14 +10,16 @@ import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
+import {
+  CopilotEmbeddedAnswerData,
+  CopilotEmbeddedStreamEvent,
+} from '../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 import { CopilotEmbeddedConfig } from '../models/copilot-embedded-config/copilot-embedded-config.model';
 import {
   CopilotEmbeddedChatRequest,
   CopilotEmbeddedRequestOptions,
-  CopilotEmbeddedResponse,
-  CopilotEmbeddedStreamEvent,
-  CopilotEmbeddedToolCall,
-} from '../models/copilot-embedded/copilot-embedded.model';
+} from '../models/copilot-embedded-request/copilot-embedded-request.model';
+import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 import { CopilotEmbeddedService } from '../services/copilot-embedded/copilot-embedded.service';
 import { getCopilotEmbeddedConfig } from '../store/copilot-embedded-config/copilot-embedded-config.selectors';
 
@@ -67,7 +69,7 @@ export class CopilotEmbeddedFacade {
   /**
    * Sends a message to the Copilot Embedded and returns the complete response.
    */
-  sendMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedResponse> {
+  sendMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedAnswerData> {
     return this.chatRequest$(question, options).pipe(
       switchMap(([config, request]) => this.copilotEmbeddedService.sendMessage(config, request))
     );

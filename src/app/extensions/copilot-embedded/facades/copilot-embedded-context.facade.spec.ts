@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, of, throwError } from 'rxjs';
 
-import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 
 import { CopilotEmbeddedContextFacade } from './copilot-embedded-context.facade';
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';

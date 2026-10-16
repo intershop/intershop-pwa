@@ -1,4 +1,4 @@
-import { createImageThumbnail, readImageUpload } from './copilot-embedded-image.helper';
+import { createImageThumbnail, readImageUpload } from './copilot-embedded-upload.helper';
 
 class FakeImage {
   static width = 800;
@@ -15,7 +15,7 @@ class FakeImage {
   }
 }
 
-describe('Copilot Embedded Image Helper', () => {
+describe('Copilot Embedded Upload Helper', () => {
   const originalImage = window.Image;
   let context: { fillRect: jest.Mock; drawImage: jest.Mock; fillStyle: string };
 

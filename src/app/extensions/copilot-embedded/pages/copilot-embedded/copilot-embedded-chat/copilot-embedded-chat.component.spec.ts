@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 
 import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
-import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedHeaderComponent } from '../copilot-embedded-header/copilot-embedded-header.component';
 import { CopilotEmbeddedInputComponent } from '../copilot-embedded-input/copilot-embedded-input.component';
 import { CopilotEmbeddedMessagesComponent } from '../copilot-embedded-messages/copilot-embedded-messages.component';

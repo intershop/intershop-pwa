@@ -4,12 +4,12 @@ import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import {
-  CopilotEmbeddedChatRequest,
-  CopilotEmbeddedResponse,
+  CopilotEmbeddedAnswerData,
   CopilotEmbeddedStreamEvent,
-} from '../../models/copilot-embedded/copilot-embedded.model';
+} from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
+import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
+import { CopilotEmbeddedChatRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 
 /**
  * Parses a single raw SSE event block into a {@link CopilotEmbeddedStreamEvent}.
@@ -93,9 +93,12 @@ export class CopilotEmbeddedService {
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    * @returns        The chatflow response including answer text, used tools and source documents.
    */
-  sendMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedChatRequest): Observable<CopilotEmbeddedResponse> {
+  sendMessage(
+    config: CopilotEmbeddedConfig,
+    request: CopilotEmbeddedChatRequest
+  ): Observable<CopilotEmbeddedAnswerData> {
     const { url, body } = this.buildRequest(config, request);
-    return this.httpClient.post<CopilotEmbeddedResponse>(url, body);
+    return this.httpClient.post<CopilotEmbeddedAnswerData>(url, body);
   }
 
   /**

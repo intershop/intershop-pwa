@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { CopilotEmbeddedChoicePrompt } from '../../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChoicePrompt } from '../../../models/copilot-embedded-choice/copilot-embedded-choice.model';
 
 @Component({
   selector: 'ish-copilot-embedded-choices',
