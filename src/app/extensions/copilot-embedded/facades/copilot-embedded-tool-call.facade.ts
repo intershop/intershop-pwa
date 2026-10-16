@@ -19,8 +19,8 @@ import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/co
  *
  * Note: the `icmSearch` tool is intentionally NOT handled here. Unlike the Copilot bubble (which
  * navigates to the search results page), the Copilot Embedded renders the found products in its
- * results panel on the same page - that happens in the `CopilotEmbeddedContextFacade` via
- * `CopilotEmbeddedProductMapper`, so no navigation is required.
+ * results panel on the same page - the products are mapped by the `CopilotEmbeddedService`, so no
+ * navigation is required.
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedToolCallFacade {

@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
-import { EMPTY, Observable, Subject, concat, defer, of } from 'rxjs';
-import { catchError, ignoreElements, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, defer, of } from 'rxjs';
+import { catchError, defaultIfEmpty, map, switchMap, take, takeLast, takeUntil, tap } from 'rxjs/operators';
 
-import { CopilotEmbeddedAnswerData } from '../models/copilot-embedded-answer/copilot-embedded-answer.interface';
+import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import {
   CopilotEmbeddedChatMessage,
   CopilotEmbeddedChatSession,
 } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
-import { CopilotEmbeddedChoiceMapper } from '../models/copilot-embedded-choice/copilot-embedded-choice.mapper';
-import { CopilotEmbeddedProductMapper } from '../models/copilot-embedded-product/copilot-embedded-product.mapper';
 import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copilot-embedded-product.model';
 import { CopilotEmbeddedRequestOptions } from '../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
@@ -44,8 +42,8 @@ function generateSessionId(): string {
 
 function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbeddedProduct[] {
   for (let i = messages.length - 1; i >= 0; i--) {
-    const products = CopilotEmbeddedProductMapper.fromToolCalls(messages[i].usedTools);
-    if (products.length) {
+    const products = messages[i].products;
+    if (products?.length) {
       return products;
     }
   }
@@ -54,10 +52,6 @@ function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbedded
 
 function collectToolErrors(tools: CopilotEmbeddedToolCall[] | undefined): { tool: string; error: string }[] {
   return (tools ?? []).filter(tool => !!tool?.error).map(tool => ({ tool: tool.tool, error: tool.error }));
-}
-
-function isMetadata(data: unknown): data is { chatId?: string } {
-  return !!data && typeof data === 'object';
 }
 
 /**
@@ -156,41 +150,27 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     });
   }
 
-  private answer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
+  private answer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
     return this.copilotEmbeddedFacade
       .isStreamingAvailable$()
       .pipe(switchMap(streaming => (streaming ? this.streamAnswer$(message) : this.fetchAnswer$(message))));
   }
 
-  private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
+  private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
     return defer(() => this.copilotEmbeddedFacade.sendMessage(message.question, this.requestOptions(message)));
   }
 
-  private streamAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
-    return defer(() => {
-      let usedTools: CopilotEmbeddedToolCall[];
-      return concat(
-        this.copilotEmbeddedFacade.streamMessage(message.question, this.requestOptions(message)).pipe(
-          tap(({ event, data }) => {
-            if (event === 'token' && typeof data === 'string') {
-              this.set('pendingAnswer', state => state.pendingAnswer + data);
-            } else if (event === 'usedTools' && Array.isArray(data)) {
-              usedTools = data as CopilotEmbeddedToolCall[];
-            } else if (event === 'metadata' && isMetadata(data)) {
-              this.set('chatId', state => data.chatId ?? state.chatId);
-            }
-          }),
-          ignoreElements()
-        ),
+  private streamAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
+    return defer(() =>
+      this.copilotEmbeddedFacade.streamMessage(message.question, this.requestOptions(message)).pipe(
+        tap(answer => this.set(state => ({ pendingAnswer: answer.text, chatId: answer.chatId ?? state.chatId }))),
+        takeLast(1),
+        defaultIfEmpty(undefined),
         // Flowise does not always stream the final answer as tokens (e.g. after tool errors);
         // fall back to the non-streaming text so an answer is still shown.
-        defer(() =>
-          this.get('pendingAnswer')
-            ? of<CopilotEmbeddedAnswerData>({ text: this.get('pendingAnswer'), usedTools })
-            : this.fetchAnswer$(message)
-        )
-      );
-    });
+        switchMap(answer => (answer?.text ? of(answer) : this.fetchAnswer$(message)))
+      )
+    );
   }
 
   private requestOptions(message: PendingMessage): CopilotEmbeddedRequestOptions {
@@ -202,24 +182,22 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     };
   }
 
-  private addAnswer(response: CopilotEmbeddedAnswerData) {
-    const usedTools = response.usedTools;
+  private addAnswer(answer: CopilotEmbeddedAnswer) {
     // execute the action tool calls (basket, compare, navigation, order templates)
-    this.copilotEmbeddedFacade.handleToolCalls(usedTools);
-    const products = CopilotEmbeddedProductMapper.fromToolCalls(usedTools);
-    const answer: CopilotEmbeddedChatMessage = {
-      message: response.text,
+    this.copilotEmbeddedFacade.handleToolCalls(answer.usedTools);
+    const message: CopilotEmbeddedChatMessage = {
+      message: answer.text,
       type: 'apiMessage',
-      usedTools,
-      messageId: response.chatMessageId,
+      messageId: answer.messageId,
       dateTime: new Date().toISOString(),
-      choices: CopilotEmbeddedChoiceMapper.fromToolCalls(usedTools),
+      products: answer.products.length ? answer.products : undefined,
+      choices: answer.choices,
     };
     this.set(state => ({
-      chatId: response.chatId ?? state.chatId,
-      toolErrors: collectToolErrors(usedTools),
-      products: products.length ? products : state.products,
-      messages: [...state.messages, answer],
+      chatId: answer.chatId ?? state.chatId,
+      toolErrors: collectToolErrors(answer.usedTools),
+      products: answer.products.length ? answer.products : state.products,
+      messages: [...state.messages, message],
       pendingAnswer: '',
       loading: false,
     }));
