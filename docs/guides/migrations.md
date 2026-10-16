@@ -58,6 +58,11 @@ The `@angular/animations`-based `bottomOut` trigger of the cookie banner has bee
 `@ngx-formly/core` has been updated to version 8, which requires Angular 19 or newer and ships as fesm2022 only.
 For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md).
 
+**Formly 9 update**
+
+`@ngx-formly/core` has been updated to version 9, which requires Angular 20 or newer.
+For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md) and the [Formly 9 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v9.0.0/UPGRADE-9.0.md).
+
 **Replace custom pagination markup with `NgbPagination`**
 
 The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
