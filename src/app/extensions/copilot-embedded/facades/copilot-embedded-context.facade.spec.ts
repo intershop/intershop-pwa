@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject, of, throwError } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
+import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service';
 
 import { CopilotEmbeddedContextFacade } from './copilot-embedded-context.facade';
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
@@ -14,18 +16,19 @@ function answer(overrides: Partial<CopilotEmbeddedAnswer> = {}): CopilotEmbedded
 
 describe('Copilot Embedded Context Facade', () => {
   let context: CopilotEmbeddedContextFacade;
-  let facade: {
-    configuration$: Observable<{ chatflowid: string }>;
+  let chatService: {
     isStreamingAvailable$: jest.Mock;
     sendMessage: jest.Mock;
     streamMessage: jest.Mock;
-    handleToolCalls: jest.Mock;
   };
+  let toolCallService: { handleToolCalls: jest.Mock };
 
   function createContext() {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CopilotEmbeddedFacade, useValue: facade },
+        { provide: CopilotEmbeddedChatService, useValue: chatService },
+        { provide: CopilotEmbeddedFacade, useValue: { configuration$: of({ chatflowid: 'flow-1' }) } },
+        { provide: CopilotEmbeddedToolCallService, useValue: toolCallService },
         { provide: TranslateService, useValue: { instant: (key: string) => key } },
         CopilotEmbeddedContextFacade,
       ],
@@ -35,13 +38,12 @@ describe('Copilot Embedded Context Facade', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    facade = {
-      configuration$: of({ chatflowid: 'flow-1' }),
+    chatService = {
       isStreamingAvailable$: jest.fn(() => of(false)),
       sendMessage: jest.fn(() => of(answer({ text: 'A recommendation', chatId: 'chat-1' }))),
       streamMessage: jest.fn(() => of(answer({ text: 'A streamed answer' }))),
-      handleToolCalls: jest.fn(),
     };
+    toolCallService = { handleToolCalls: jest.fn() };
   });
 
   afterEach(() => localStorage.clear());
@@ -59,8 +61,8 @@ describe('Copilot Embedded Context Facade', () => {
 
     context.send({ question: '  find laptops  ' });
 
-    expect(facade.streamMessage).not.toHaveBeenCalled();
-    expect(facade.sendMessage).toHaveBeenCalledWith('find laptops', {
+    expect(chatService.streamMessage).not.toHaveBeenCalled();
+    expect(chatService.sendMessage).toHaveBeenCalledWith('find laptops', {
       sessionId: context.get('sessionId'),
       chatId: undefined,
       uploads: undefined,
@@ -76,7 +78,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     context.send({ question: '   ' });
 
-    expect(facade.sendMessage).not.toHaveBeenCalled();
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
     expect(context.get('messages')).toBeEmpty();
   });
 
@@ -86,7 +88,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     context.send({ question: 'add the recommended one' });
 
-    expect(facade.sendMessage).toHaveBeenCalledWith(
+    expect(chatService.sendMessage).toHaveBeenCalledWith(
       'add the recommended one',
       expect.objectContaining({ shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }] })
     );
@@ -94,22 +96,22 @@ describe('Copilot Embedded Context Facade', () => {
 
   it('should execute tool calls and show the recommended products of an answer', () => {
     const usedTools = [{ tool: 'PWA_basket', toolInput: {}, error: 'failed' }];
-    facade.sendMessage.mockReturnValue(
+    chatService.sendMessage.mockReturnValue(
       of(answer({ text: 'Here you go', usedTools, products: [{ sku: 'product-1' }] }))
     );
     createContext();
 
     context.send({ question: 'find laptops' });
 
-    expect(facade.handleToolCalls).toHaveBeenCalledWith(usedTools);
+    expect(toolCallService.handleToolCalls).toHaveBeenCalledWith(usedTools);
     expect(context.get('products').map(product => product.sku)).toEqual(['product-1']);
     expect(context.get('messages').at(-1).products).toEqual([{ sku: 'product-1' }]);
     expect(context.get('toolErrors')).toEqual([{ tool: 'PWA_basket', error: 'failed' }]);
   });
 
   it('should show the streamed answer and persist the resulting conversation', () => {
-    facade.isStreamingAvailable$.mockReturnValue(of(true));
-    facade.streamMessage.mockReturnValue(
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    chatService.streamMessage.mockReturnValue(
       of(
         answer({ text: 'A ' }),
         answer({ text: 'A ', chatId: 'stream-chat-1' }),
@@ -120,7 +122,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     context.send({ question: 'recommend something' });
 
-    expect(facade.sendMessage).not.toHaveBeenCalled();
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
     expect(context.get('messages').map(message => message.message)).toEqual([
       'recommend something',
       'A streamed answer',
@@ -131,14 +133,14 @@ describe('Copilot Embedded Context Facade', () => {
   });
 
   it('should fetch a complete answer when the stream ends without tokens', () => {
-    facade.isStreamingAvailable$.mockReturnValue(of(true));
-    facade.streamMessage.mockReturnValue(of(answer({ chatId: 'stream-chat-2' })));
-    facade.sendMessage.mockReturnValue(of(answer({ text: 'Fallback answer', chatId: 'final-chat-2' })));
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    chatService.streamMessage.mockReturnValue(of(answer({ chatId: 'stream-chat-2' })));
+    chatService.sendMessage.mockReturnValue(of(answer({ text: 'Fallback answer', chatId: 'final-chat-2' })));
     createContext();
 
     context.send({ question: 'show me options' });
 
-    expect(facade.sendMessage).toHaveBeenCalledWith('show me options', {
+    expect(chatService.sendMessage).toHaveBeenCalledWith('show me options', {
       sessionId: context.get('sessionId'),
       chatId: 'stream-chat-2',
       uploads: undefined,
@@ -149,7 +151,7 @@ describe('Copilot Embedded Context Facade', () => {
   });
 
   it('should expose a generic error and stop loading when a request fails', () => {
-    facade.sendMessage.mockReturnValue(throwError(() => new Error('offline')));
+    chatService.sendMessage.mockReturnValue(throwError(() => new Error('offline')));
     createContext();
 
     context.send({ question: 'help' });
@@ -160,7 +162,7 @@ describe('Copilot Embedded Context Facade', () => {
   });
 
   it('should accept new messages after a failed request', () => {
-    facade.sendMessage.mockReturnValueOnce(throwError(() => new Error('offline')));
+    chatService.sendMessage.mockReturnValueOnce(throwError(() => new Error('offline')));
     createContext();
 
     context.send({ question: 'help' });
@@ -172,7 +174,7 @@ describe('Copilot Embedded Context Facade', () => {
 
   it('should ignore a non-streaming response that arrives after the session is reset', () => {
     const response$ = new Subject<CopilotEmbeddedAnswer>();
-    facade.sendMessage.mockReturnValue(response$);
+    chatService.sendMessage.mockReturnValue(response$);
     createContext();
 
     context.send({ question: 'find products' });
@@ -181,13 +183,13 @@ describe('Copilot Embedded Context Facade', () => {
 
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(facade.handleToolCalls).not.toHaveBeenCalled();
+    expect(toolCallService.handleToolCalls).not.toHaveBeenCalled();
   });
 
   it('should ignore streamed events that arrive after the session is reset', () => {
-    facade.isStreamingAvailable$.mockReturnValue(of(true));
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
     const stream$ = new Subject<CopilotEmbeddedAnswer>();
-    facade.streamMessage.mockReturnValue(stream$);
+    chatService.streamMessage.mockReturnValue(stream$);
     createContext();
 
     context.send({ question: 'find products' });
@@ -197,7 +199,7 @@ describe('Copilot Embedded Context Facade', () => {
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('pendingAnswer')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(facade.handleToolCalls).not.toHaveBeenCalled();
+    expect(toolCallService.handleToolCalls).not.toHaveBeenCalled();
   });
 
   it('should restore the saved transcript and clear it when the session is reset', () => {

@@ -88,7 +88,7 @@ The chat history is stored in the browser's localStorage.
 ## `handleToolCall` Actions
 
 The Copilot Embedded handles the same PWA tool calls as the Intershop Copilot for Buyers, see [`handleToolCall` Actions](./copilot.md#handletoolcall-actions).
-The handlers are implemented in the [_copilot-embedded-tool-call.facade.ts_](../../src/app/extensions/copilot-embedded/facades/copilot-embedded-tool-call.facade.ts).
+The handlers are implemented in the [_copilot-embedded-tool-call.service.ts_](../../src/app/extensions/copilot-embedded/utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service.ts).
 
 Unlike the Intershop Copilot for Buyers, the Copilot Embedded checks the feature toggles that some tool calls depend on.
 If a feature is disabled, e.g., order templates in a B2C shop, the tool call is ignored instead of leading to an error page:
