@@ -1,6 +1,32 @@
-import { filterState } from './ngrx-state-transfer';
+import { TransferState } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { Actions } from '@ngrx/effects';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
+import { EMPTY } from 'rxjs';
+
+import { NGRX_STATE_SK, filterState, ngrxStateTransfer } from './ngrx-state-transfer';
 
 describe('Ngrx State Transfer', () => {
+  describe('ngrxStateTransfer', () => {
+    it('should not transfer the router state from the server to the browser', () => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideMockActions(EMPTY),
+          provideMockStore({
+            initialState: { configuration: { lang: 'en_US' }, router: { state: { url: '/error' } } },
+          }),
+        ],
+      });
+      const transferState = TestBed.inject(TransferState);
+
+      ngrxStateTransfer(transferState, TestBed.inject(Store), TestBed.inject(Actions))();
+
+      expect(JSON.parse(transferState.toJson())[NGRX_STATE_SK]).toEqual({ configuration: { lang: 'en_US' } });
+    });
+  });
+
   describe('filterState', () => {
     it('should omit keys starting with underscore when copying state (simple)', () => {
       const input = {
