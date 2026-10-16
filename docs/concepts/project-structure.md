@@ -77,6 +77,7 @@ Each extension module can have multiple sub folders:
 - `shared`: components shared among pages for this extension
 - `models`: models specific for this extension
 - `services`: services specific for this extension
+- `utils`: utility services and functions specific for this extension
 - `store`: ngrx handling (State, Effects, Reducer, Actions, Selectors)
 - `facades`: providing access to the state management
 
