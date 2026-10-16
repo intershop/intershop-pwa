@@ -11,7 +11,7 @@ export class CopilotEmbeddedUploadHelper {
    *
    * Resolves `undefined` when the image cannot be decoded or the browser has no canvas support.
    */
-  static createImageThumbnail(dataUrl: string, maxSize = THUMBNAIL_MAX_SIZE): Promise<string | undefined> {
+  static createImageThumbnail(dataUrl: string, maxSize = THUMBNAIL_MAX_SIZE): Promise<string> {
     return new Promise(resolve => {
       const image = new Image();
       image.onload = () => {

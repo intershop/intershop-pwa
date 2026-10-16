@@ -71,7 +71,7 @@ export class CopilotEmbeddedChatService {
 
   private chatRequest$(
     question: string,
-    options: CopilotEmbeddedRequestOptions | undefined
+    options: CopilotEmbeddedRequestOptions
   ): Observable<[CopilotEmbeddedConfig, CopilotEmbeddedChatRequest]> {
     return combineLatest([
       this.copilotEmbeddedFacade.configuration$,

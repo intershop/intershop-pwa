@@ -40,7 +40,7 @@ export class CopilotEmbeddedAnswerMapper {
   }
 
   private static fromToolCalls(
-    usedTools: CopilotEmbeddedToolCall[] | undefined
+    usedTools: CopilotEmbeddedToolCall[]
   ): Pick<CopilotEmbeddedAnswer, 'choices' | 'products' | 'usedTools'> {
     return {
       usedTools: usedTools ?? [],

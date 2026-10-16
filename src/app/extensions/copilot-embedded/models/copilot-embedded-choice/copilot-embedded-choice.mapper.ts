@@ -19,12 +19,12 @@ export class CopilotEmbeddedChoiceMapper {
    * @param tools The tool calls of a chatflow response (`usedTools`).
    * @returns     The choice prompt or `undefined` when the tool was not called or carries no usable options.
    */
-  static fromToolCalls(tools: CopilotEmbeddedToolCall[] | undefined): CopilotEmbeddedChoicePrompt | undefined {
+  static fromToolCalls(tools: CopilotEmbeddedToolCall[]): CopilotEmbeddedChoicePrompt {
     const call = tools?.find(tool => tool?.tool === CHOICE_TOOL);
     return call ? CopilotEmbeddedChoiceMapper.fromData(call.toolInput as CopilotEmbeddedChoiceData) : undefined;
   }
 
-  private static fromData(data: CopilotEmbeddedChoiceData | undefined): CopilotEmbeddedChoicePrompt | undefined {
+  private static fromData(data: CopilotEmbeddedChoiceData): CopilotEmbeddedChoicePrompt {
     const options = parseOptions(data?.options);
     if (!options.length) {
       return;
