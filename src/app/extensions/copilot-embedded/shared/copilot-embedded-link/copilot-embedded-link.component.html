@@ -1,0 +1,8 @@
+<div [class]="view === 'small' ? 'copilot-embedded-mobile' : 'copilot-embedded-header-link'">
+  <a routerLink="/copilot" [attr.aria-label]="'copilot.embedded.link' | translate">
+    <i class="bi bi-stars header-icon"></i>
+    @if (view !== 'small') {
+      <span class="d-none d-md-inline">{{ 'copilot.embedded.link' | translate }}</span>
+    }
+  </a>
+</div>

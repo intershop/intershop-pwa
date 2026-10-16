@@ -82,6 +82,9 @@
 # from src/app/extensions/compare/exports/.gitignore
 /src/app/extensions/compare/exports/**/lazy*
 
+# from src/app/extensions/copilot-embedded/exports/.gitignore
+/src/app/extensions/copilot-embedded/exports/**/lazy*
+
 # from src/app/extensions/copilot/exports/.gitignore
 /src/app/extensions/copilot/exports/**/lazy*
 

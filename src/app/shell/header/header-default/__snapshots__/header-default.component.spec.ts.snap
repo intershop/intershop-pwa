@@ -44,6 +44,9 @@ exports[`Header Default Component should render normal header adequately for des
       </div>
     </div>
     <div class="col-md-4 search-col">
+      <ish-lazy-copilot-embedded-link
+        data-testing-id="copilot-embedded-link"
+      ></ish-lazy-copilot-embedded-link>
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -83,6 +86,10 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="search-container header-search-container show">
       <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
+    <ish-lazy-copilot-embedded-link
+      data-testing-id="copilot-embedded-link-mobile"
+      view="small"
+    ></ish-lazy-copilot-embedded-link>
     <div class="language-switch-container">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -171,6 +178,9 @@ exports[`Header Default Component should render normal header adequately for tab
       </div>
     </div>
     <div class="col-md-4 search-col">
+      <ish-lazy-copilot-embedded-link
+        data-testing-id="copilot-embedded-link"
+      ></ish-lazy-copilot-embedded-link>
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -260,6 +270,10 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="search-container header-search-container">
       <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
+    <ish-lazy-copilot-embedded-link
+      data-testing-id="copilot-embedded-link-mobile"
+      view="small"
+    ></ish-lazy-copilot-embedded-link>
     <div class="language-switch-container"></div>
     <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket

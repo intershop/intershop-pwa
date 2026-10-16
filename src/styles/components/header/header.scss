@@ -84,26 +84,6 @@ header {
         color: $CORPORATE-PRIMARY;
       }
     }
-
-    .copilot-embedded-header-link {
-      position: absolute;
-      top: 50%;
-      right: 100%;
-      padding-top: $space-default * 0.75;
-      padding-right: $space-default;
-      white-space: nowrap;
-      transform: translateY(-50%);
-
-      .copilot-embedded-link {
-        font-family: $font-family-bold;
-        text-transform: uppercase;
-
-        .bi.header-icon {
-          padding-right: divide($space-default, 3);
-          color: $CORPORATE-PRIMARY;
-        }
-      }
-    }
   }
 
   &.homepage {
@@ -149,16 +129,6 @@ header {
   @include media-breakpoint-down(md) {
     order: 10;
     line-height: $header-height-mobile;
-  }
-
-  .copilot-embedded-mobile {
-    align-self: center;
-
-    .bi.header-icon {
-      padding-right: 7px;
-      font-size: 22px;
-      color: $CORPORATE-PRIMARY;
-    }
   }
 }
 
@@ -229,10 +199,6 @@ header {
       .bi.header-icon {
         padding-right: 4px;
         padding-left: 0;
-      }
-
-      .copilot-embedded-mobile .bi.header-icon {
-        padding-right: 4px;
       }
     }
 
