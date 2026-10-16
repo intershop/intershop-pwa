@@ -1,5 +1,16 @@
 import { CopilotEmbeddedChoicePrompt } from '../copilot-embedded-choice/copilot-embedded-choice.model';
 import { CopilotEmbeddedProduct } from '../copilot-embedded-product/copilot-embedded-product.model';
+import { CopilotEmbeddedUpload } from '../copilot-embedded-upload/copilot-embedded-upload.model';
+
+/**
+ * The input the user sends, which becomes a user chat message.
+ */
+export interface CopilotEmbeddedUserInput {
+  question: string;
+  uploads?: CopilotEmbeddedUpload[];
+  /** Small JPEG thumbnail of the attached image, kept as `imageUrl` of the chat message. */
+  thumbnail?: string;
+}
 
 /**
  * A single rendered chat message in the Copilot Embedded transcript.

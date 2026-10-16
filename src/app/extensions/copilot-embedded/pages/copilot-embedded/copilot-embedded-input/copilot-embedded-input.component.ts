@@ -16,7 +16,8 @@ import { debounceTime, fromEvent, merge } from 'rxjs';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-import { readImageUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.helper';
+import { CopilotEmbeddedUserInput } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedUploadHelper } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.helper';
 import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.model';
 
 // mirrors the Flowise embed defaults for vision uploads (imgUploadSizeAndTypes)
@@ -35,11 +36,7 @@ export class CopilotEmbeddedInputComponent implements AfterViewInit {
   @Input() deviceType: DeviceType;
   @Input() loading = false;
 
-  @Output() readonly send = new EventEmitter<{
-    question: string;
-    uploads?: CopilotEmbeddedUpload[];
-    thumbnail?: string;
-  }>();
+  @Output() readonly send = new EventEmitter<CopilotEmbeddedUserInput>();
 
   @ViewChild('questionInput') private questionInput: ElementRef<HTMLInputElement>;
 
@@ -105,7 +102,7 @@ export class CopilotEmbeddedInputComponent implements AfterViewInit {
       return;
     }
     this.uploadError = undefined;
-    readImageUpload(file).then(({ upload, thumbnail }) => {
+    CopilotEmbeddedUploadHelper.readImageUpload(file).then(({ upload, thumbnail }) => {
       this.pendingUpload = upload;
       this.pendingThumbnail = thumbnail;
       this.cdRef.markForCheck();

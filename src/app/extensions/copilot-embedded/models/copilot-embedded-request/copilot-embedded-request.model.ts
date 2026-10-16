@@ -1,4 +1,10 @@
+import { CopilotEmbeddedProduct } from '../copilot-embedded-product/copilot-embedded-product.model';
 import { CopilotEmbeddedUpload } from '../copilot-embedded-upload/copilot-embedded-upload.model';
+
+/**
+ * A product shown in the results panel, as sent to the chatflow.
+ */
+export type CopilotEmbeddedShownProduct = Pick<CopilotEmbeddedProduct, 'sku' | 'title'>;
 
 /**
  * Options that influence a single chat request.
@@ -11,7 +17,7 @@ export interface CopilotEmbeddedRequestOptions {
   /** Image/file attachments forwarded to the chatflow for vision input. */
   uploads?: CopilotEmbeddedUpload[];
   /** Products currently shown in the results panel, in display order. */
-  shownProducts?: { sku: string; title?: string }[];
+  shownProducts?: CopilotEmbeddedShownProduct[];
   /** Additional chatflow variables merged into `overrideConfig.vars` for this request. */
   vars?: Record<string, unknown>;
 }
@@ -31,5 +37,5 @@ export interface CopilotEmbeddedChatRequest {
   /** Order templates of the user, appended to the question as `[ORDER_TEMPLATES]` marker. */
   orderTemplates: { id: string; title: string }[];
   /** Products shown in the results panel, appended to the question as `[SHOWN_PRODUCTS]` marker. */
-  shownProducts: { sku: string; title?: string }[];
+  shownProducts: CopilotEmbeddedShownProduct[];
 }
