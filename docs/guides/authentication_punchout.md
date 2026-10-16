@@ -59,18 +59,19 @@ nginx:
           type: Punchout
 ```
 
-For the current PWA Helm Chart that is also used in the PWA Flux deployments, the same punchout configuration would look like this:
+For the PWA Helm Chart 1.0.0 or later that is also used in the PWA Flux deployments, the same punchout configuration would look like this:
 
 ```yaml
-environment:
-  - name: IDENTITY_PROVIDERS
-    value: |
-      {
-        "Punchout": {"type": "PUNCHOUT"}
-      }
+app:
+  env:
+    - name: IDENTITY_PROVIDERS
+      value: |
+        {
+          "Punchout": {"type": "PUNCHOUT"}
+        }
 
-cache:
-  extraEnvVars:
+proxy:
+  env:
     - name: OVERRIDE_IDENTITY_PROVIDERS
       value: |
         .+:
@@ -82,8 +83,8 @@ cache:
 > The `OVERRIDE_IDENTITY_PROVIDERS` matching pattern (in the example `.+`) must exactly match a `MULTI_CHANNEL` matching pattern, or it can be configured as a RegEx that matches several `MULTI_CHANNEL` matching patterns.
 
 ```yaml
-cache:
-  extraEnvVars:
+proxy:
+  env:
     - name: OVERRIDE_IDENTITY_PROVIDERS
       value: |
         .+:

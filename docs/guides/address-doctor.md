@@ -47,15 +47,16 @@ pwa:
     ADDRESS_DOCTOR: '{ "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5" }'
 ```
 
-For the current PWA Helm Chart that is also used in the PWA Flux deployments, the Address Doctor configuration looks like this.:
+For the PWA Helm Chart 1.0.0 or later that is also used in the PWA Flux deployments, the Address Doctor configuration looks like this:
 
 ```yaml
-environment:
-  - name: ADDRESS_DOCTOR
-    value: |
-      {
-        "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5"
-      }
+app:
+  env:
+    - name: ADDRESS_DOCTOR
+      value: |
+        {
+          "url": "<addressDoctor-url>", "login": "<addressDoctor-login>", "password": "<addressDoctor-password>", "maxResultCount": "5"
+        }
 ```
 
 ## Workflow

@@ -61,7 +61,7 @@ Make sure to use them as written in the table below.
 |                     | CACHE_ICM_CALLS       | recommended \| JSON  | Enable caching for ICM calls, see [Local ICM Cache](#local-icm-cache) (default: disabled)                                                                         |
 |                     | ALLOWED_HOSTS         | comma-separated list | Additional hostnames the SSR server accepts besides `localhost` (which is always allowed). Set to your public hostname(s), e.g., `shop.example.com,*.example.com` |
 | **General**         | ICM_BASE_URL          | string               | Sets the base URL for ICM                                                                                                                                         |
-|                     | ICM_BASE_URL_SSR      | string               | Sets the base URL for the ICM used in SSR for Kubernetes internal backend request routing (optional)                                                              |
+|                     | ICM_BASE_URL_SSR      | string               | Sets the base URL for the ICM used in SSR for Kubernetes internal backend request routing, also used for the `/INTERSHOP` proxy in the Hybrid Approach (optional) |
 |                     | ICM_CHANNEL           | string               | Overrides the default channel                                                                                                                                     |
 |                     | ICM_APPLICATION       | string               | Overrides the default application                                                                                                                                 |
 |                     | FEATURES              | comma-separated list | Overrides active features                                                                                                                                         |
@@ -73,7 +73,6 @@ Make sure to use them as written in the table below.
 |                     | LOGFORMAT             | string               | Log format: `json` (ECS-compatible) or `text` (default: `json`)                                                                                                   |
 |                     | SOURCE_MAPS           | switch               | Exposes source maps if activated                                                                                                                                  |
 | **Hybrid Approach** | SSR_HYBRID            | any                  | Enables running PWA and ICM in the [Hybrid Approach][concept-hybrid]                                                                                              |
-|                     | SSR_HYBRID_BACKEND    | URL                  | When running in K8S, this contains the ICM WA service URL. For none-K8S you can use ICM_BASE_URL                                                                  |
 |                     | PROXY_ICM             | any \| URL           | Proxy ICM via `/INTERSHOP` (enabled if SSR_HYBRID is active)                                                                                                      |
 | **Third party**     | GTM_TOKEN             | string               | Token for Google Tag Manager                                                                                                                                      |
 |                     | GMA_KEY               | string               | API key for Google Maps                                                                                                                                           |
@@ -93,12 +92,11 @@ Make sure to use them as written in the table below.
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 ## Development
@@ -141,16 +139,17 @@ pwa:
       }
 ```
 
-Example via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: CACHE_ICM_CALLS
-    value: |
-      {
-        "/configurations": "20m",
-        "/variations": "2h"
-      }
+app:
+  env:
+    - name: CACHE_ICM_CALLS
+      value: |
+        {
+          "/configurations": "20m",
+          "/variations": "2h"
+        }
 ```
 
 In this example, `/configurations` is cached for 20 minutes and product `/variations` is cached for 2 hours.
