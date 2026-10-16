@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
-import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
+import { instance, mock, verify, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 
@@ -62,25 +62,19 @@ describe('Copilot Embedded Page Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should pass the conversation state to the chat and results', () => {
+  it('should provide the conversation context to the chat and results', () => {
     fixture.detectChanges();
 
-    const chat: CopilotEmbeddedChatComponent = fixture.debugElement.query(
-      By.directive(CopilotEmbeddedChatComponent)
-    ).componentInstance;
-    const results: CopilotEmbeddedResultsComponent = fixture.debugElement.query(
-      By.directive(CopilotEmbeddedResultsComponent)
-    ).componentInstance;
-
-    expect(chat.messages).toEqual(state.messages);
-    expect(results.products).toEqual(state.products);
+    expect(element.querySelector('ish-copilot-embedded-chat')).toBeTruthy();
+    expect(element.querySelector('ish-copilot-embedded-results')).toBeTruthy();
+    expect(
+      fixture.debugElement.query(By.directive(CopilotEmbeddedChatComponent)).injector.get(CopilotEmbeddedContextFacade)
+    ).toBe(fixture.debugElement.injector.get(CopilotEmbeddedContextFacade));
   });
 
-  it('should delegate sending and resetting to the context', () => {
-    component.onSend({ question: 'find laptops' });
+  it('should delegate resetting to the context', () => {
     component.resetSession();
 
-    verify(context.send(deepEqual({ question: 'find laptops' }))).once();
     verify(context.reset()).once();
   });
 });

@@ -2,10 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { BehaviorSubject } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
+import { CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product/copilot-embedded-product.model';
 
 import { CopilotEmbeddedResultsComponent } from './copilot-embedded-results.component';
@@ -14,8 +17,13 @@ describe('Copilot Embedded Results Component', () => {
   let component: CopilotEmbeddedResultsComponent;
   let fixture: ComponentFixture<CopilotEmbeddedResultsComponent>;
   let element: HTMLElement;
+  let products$: BehaviorSubject<CopilotEmbeddedProduct[]>;
 
   beforeEach(async () => {
+    products$ = new BehaviorSubject<CopilotEmbeddedProduct[]>([]);
+    const context = mock(CopilotEmbeddedContextFacade);
+    when(context.select('products')).thenReturn(products$);
+
     await TestBed.configureTestingModule({
       declarations: [
         CopilotEmbeddedResultsComponent,
@@ -23,7 +31,10 @@ describe('Copilot Embedded Results Component', () => {
         MockDirective(ProductContextDirective),
       ],
       imports: [TranslatePipe],
-      providers: [provideTranslateService()],
+      providers: [
+        { provide: CopilotEmbeddedContextFacade, useFactory: () => instance(context) },
+        provideTranslateService(),
+      ],
     }).compileComponents();
   });
 
@@ -49,8 +60,7 @@ describe('Copilot Embedded Results Component', () => {
   });
 
   it('should render one row product item for each result', () => {
-    const products: CopilotEmbeddedProduct[] = [{ sku: 'SKU-1' }, { sku: 'SKU-2' }];
-    component.products = products;
+    products$.next([{ sku: 'SKU-1' }, { sku: 'SKU-2' }]);
     fixture.detectChanges();
 
     const productItems = fixture.debugElement.queryAll(By.directive(ProductItemComponent));

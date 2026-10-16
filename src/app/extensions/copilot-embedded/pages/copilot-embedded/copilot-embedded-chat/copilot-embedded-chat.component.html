@@ -1,13 +1,14 @@
 <div class="copilot-embedded-chat">
-  <div aria-atomic="true" aria-live="polite" class="visually-hidden" role="status">{{ announcement }}</div>
-  @if (messages?.length || pendingAnswer) {
+  <div aria-atomic="true" aria-live="polite" class="visually-hidden" role="status">{{ announcement$ | async }}</div>
+  @let context = context$ | async;
+  @if (context?.messages.length || context?.pendingAnswer) {
     @if (deviceType !== 'mobile') {
-      <ish-copilot-embedded-header (resetChat)="resetChat.emit()" />
+      <ish-copilot-embedded-header (resetChat)="resetChat()" />
     }
     <ish-copilot-embedded-messages
-      [loading]="loading"
-      [messages]="messages"
-      [pendingAnswer]="pendingAnswer"
+      [loading]="context.loading"
+      [messages]="context.messages"
+      [pendingAnswer]="context.pendingAnswer"
       (answer)="chatInput.submit($event)"
     />
   } @else {
@@ -34,17 +35,17 @@
     </div>
   }
 
-  @if (error) {
-    <p class="copilot-embedded-error text-danger small mb-1">{{ error | translate }}</p>
+  @if (context?.error) {
+    <p class="copilot-embedded-error text-danger small mb-1">{{ context.error | translate }}</p>
   }
 
-  @if (toolErrors.length) {
+  @if (context?.toolErrors.length) {
     <ul class="copilot-embedded-tool-errors text-warning small mb-1">
-      @for (toolError of toolErrors; track $index) {
+      @for (toolError of context.toolErrors; track $index) {
         <li>{{ toolError.tool }}: {{ toolError.error }}</li>
       }
     </ul>
   }
 
-  <ish-copilot-embedded-input #chatInput [deviceType]="deviceType" [loading]="loading" (send)="send.emit($event)" />
+  <ish-copilot-embedded-input #chatInput [deviceType]="deviceType" [loading]="context?.loading" (send)="send($event)" />
 </div>

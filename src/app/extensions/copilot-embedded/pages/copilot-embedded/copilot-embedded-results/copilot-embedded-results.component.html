@@ -3,7 +3,8 @@
     <h2>{{ 'copilot.embedded.results.title' | translate }}</h2>
     <p>{{ 'copilot.embedded.results.subtitle' | translate }}</p>
   </div>
-  @if (products.length) {
+  @let products = products$ | async;
+  @if (products?.length) {
     <div class="copilot-embedded-results-list">
       @for (product of products; track product.sku) {
         <ish-product-item
