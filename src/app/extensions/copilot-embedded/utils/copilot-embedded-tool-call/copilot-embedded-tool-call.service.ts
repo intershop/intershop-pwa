@@ -8,9 +8,9 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 
-import { CompareFacade } from '../../compare/facades/compare.facade';
-import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
-import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
+import { CompareFacade } from '../../../compare/facades/compare.facade';
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
+import { CopilotEmbeddedToolCall } from '../../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 /**
  * Reacts to the action tool calls a Flowise chatflow reports (`usedTools`) and triggers the
@@ -23,7 +23,7 @@ import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/co
  * navigation is required.
  */
 @Injectable({ providedIn: 'root' })
-export class CopilotEmbeddedToolCallFacade {
+export class CopilotEmbeddedToolCallService {
   private destroyRef = inject(DestroyRef);
   private ngZone = inject(NgZone);
   private router = inject(Router);
