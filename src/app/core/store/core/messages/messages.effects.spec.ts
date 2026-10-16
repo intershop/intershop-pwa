@@ -3,9 +3,9 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
+import { IndividualConfig, ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
-import { anything, instance, mock, verify } from 'ts-mockito';
+import { anything, capture, instance, mock, verify } from 'ts-mockito';
 
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { isStickyHeader } from 'ish-core/store/core/viewconf';
@@ -49,6 +49,27 @@ describe('Messages Effects', () => {
 
     effects.successToast$.subscribe(() => {
       verify(toastrServiceMock.success(anything(), anything(), anything())).once();
+      done();
+    });
+  });
+
+  it('should render messages as HTML by default', done => {
+    actions$ = of(displaySuccessMessage({ message: 'test' }));
+
+    effects.successToast$.subscribe(() => {
+      const [, , options] = capture<string, string, Partial<IndividualConfig>>(toastrServiceMock.success).last();
+      expect(options.enableHtml).toBeTrue();
+      done();
+    });
+  });
+
+  it('should render messages as text if HTML is disabled', done => {
+    actions$ = of(displaySuccessMessage({ message: '<img src=x onerror="alert(1)">', enableHtml: false }));
+
+    effects.successToast$.subscribe(() => {
+      const [message, , options] = capture<string, string, Partial<IndividualConfig>>(toastrServiceMock.success).last();
+      expect(message).toEqual('<img src=x onerror="alert(1)">');
+      expect(options.enableHtml).toBeFalse();
       done();
     });
   });

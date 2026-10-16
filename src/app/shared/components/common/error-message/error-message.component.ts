@@ -31,12 +31,14 @@ export class ErrorMessageComponent implements OnChanges {
     if (err && !err.errors) {
       this.messageFacade.error({
         message: err.message || err.code,
+        enableHtml: !err.message,
       });
     }
     if (err?.errors) {
       err?.errors.map(cause => {
         this.messageFacade.error({
           message: cause.message,
+          enableHtml: false,
         });
       });
     }
