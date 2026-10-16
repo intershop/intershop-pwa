@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { FormlyFieldConfig, FormlyForm } from '@ngx-formly/core';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { EMPTY, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -15,6 +17,8 @@ describe('Contact Form Component', () => {
   let component: ContactFormComponent;
   let fixture: ComponentFixture<ContactFormComponent>;
   let element: HTMLElement;
+  let captchaV2Runnable$: BehaviorSubject<boolean>;
+  let captchaContactUsEnabled$: BehaviorSubject<boolean>;
 
   beforeEach(async () => {
     const accountFacade = mock(AccountFacade);
@@ -24,8 +28,15 @@ describe('Contact Form Component', () => {
     const contactUsFacade = mock(ContactUsFacade);
     when(contactUsFacade.contactSubjects$()).thenReturn(of(['subject1', 'subject2']));
 
+    captchaV2Runnable$ = new BehaviorSubject<boolean>(false);
+    captchaContactUsEnabled$ = new BehaviorSubject<boolean>(false);
+
     const mockAppFacade = mock(AppFacade);
     when(mockAppFacade.serverSetting$<boolean>(anyString())).thenReturn(of(false));
+    when(mockAppFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable')).thenReturn(
+      captchaV2Runnable$
+    );
+    when(mockAppFacade.serverSetting$<boolean>('captcha.contactUs')).thenReturn(captchaContactUsEnabled$);
 
     await TestBed.configureTestingModule({
       declarations: [ContactFormComponent],
@@ -74,5 +85,21 @@ describe('Contact Form Component', () => {
     component.contactForm.get('comment').setValue('want to return stuff');
     component.submitForm();
     verify(emitter.emit(anything())).once();
+  });
+
+  it('should make captcha field required when server configuration is loaded after initialization', () => {
+    const captchaField = () =>
+      fixture.debugElement
+        .query(By.directive(FormlyForm))
+        .componentInstance.fields.find((field: FormlyFieldConfig) => field.type === 'ish-captcha-field');
+
+    fixture.detectChanges();
+    expect(captchaField().props.required).toBeFalse();
+
+    captchaV2Runnable$.next(true);
+    captchaContactUsEnabled$.next(true);
+    fixture.detectChanges();
+
+    expect(captchaField().props.required).toBeTrue();
   });
 });
