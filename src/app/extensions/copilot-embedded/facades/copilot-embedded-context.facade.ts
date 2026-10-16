@@ -8,9 +8,13 @@ import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot
 import {
   CopilotEmbeddedChatMessage,
   CopilotEmbeddedChatSession,
+  CopilotEmbeddedUserInput,
 } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copilot-embedded-product.model';
-import { CopilotEmbeddedRequestOptions } from '../models/copilot-embedded-request/copilot-embedded-request.model';
+import {
+  CopilotEmbeddedRequestOptions,
+  CopilotEmbeddedShownProduct,
+} from '../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 import { CopilotEmbeddedUpload } from '../models/copilot-embedded-upload/copilot-embedded-upload.model';
 import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
@@ -28,14 +32,14 @@ export interface CopilotEmbeddedContext {
   pendingAnswer: string;
   loading: boolean;
   error: string;
-  toolErrors: { tool: string; error: string }[];
+  toolErrors: Pick<CopilotEmbeddedToolCall, 'error' | 'tool'>[];
   products: CopilotEmbeddedProduct[];
 }
 
 interface PendingMessage {
   question: string;
   uploads?: CopilotEmbeddedUpload[];
-  shownProducts: { sku: string; title?: string }[];
+  shownProducts: CopilotEmbeddedShownProduct[];
 }
 
 function generateSessionId(): string {
@@ -52,7 +56,9 @@ function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbedded
   return [];
 }
 
-function collectToolErrors(tools: CopilotEmbeddedToolCall[] | undefined): { tool: string; error: string }[] {
+function collectToolErrors(
+  tools: CopilotEmbeddedToolCall[] | undefined
+): Pick<CopilotEmbeddedToolCall, 'error' | 'tool'>[] {
   return (tools ?? []).filter(tool => !!tool?.error).map(tool => ({ tool: tool.tool, error: tool.error }));
 }
 
@@ -109,7 +115,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   /**
    * Sends a user message to the Copilot Embedded (streaming when available, otherwise non-streaming).
    */
-  send(payload: { question: string; uploads?: CopilotEmbeddedUpload[]; thumbnail?: string }) {
+  send(payload: CopilotEmbeddedUserInput) {
     const question = payload?.question?.trim() ?? '';
     const uploads = payload?.uploads?.length ? payload.uploads : undefined;
     if ((!question && !uploads) || this.get('loading')) {

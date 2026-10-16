@@ -1,4 +1,4 @@
-import { createImageThumbnail, readImageUpload } from './copilot-embedded-upload.helper';
+import { CopilotEmbeddedUploadHelper } from './copilot-embedded-upload.helper';
 
 class FakeImage {
   static width = 800;
@@ -37,7 +37,7 @@ describe('Copilot Embedded Upload Helper', () => {
   });
 
   it('should downscale to a JPEG thumbnail keeping the aspect ratio', async () => {
-    const thumbnail = await createImageThumbnail('data:image/png;base64,AAAA');
+    const thumbnail = await CopilotEmbeddedUploadHelper.createImageThumbnail('data:image/png;base64,AAAA');
 
     expect(thumbnail).toBe('data:image/jpeg;base64,THUMB');
     expect(context.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0, 200, 100);
@@ -45,7 +45,7 @@ describe('Copilot Embedded Upload Helper', () => {
   });
 
   it('should fill a white background so transparent areas do not turn black', async () => {
-    await createImageThumbnail('data:image/png;base64,AAAA');
+    await CopilotEmbeddedUploadHelper.createImageThumbnail('data:image/png;base64,AAAA');
 
     expect(context.fillStyle).toBe('#fff');
     expect(context.fillRect).toHaveBeenCalledWith(0, 0, 200, 100);
@@ -55,7 +55,7 @@ describe('Copilot Embedded Upload Helper', () => {
     FakeImage.width = 120;
     FakeImage.height = 80;
 
-    await createImageThumbnail('data:image/png;base64,AAAA');
+    await CopilotEmbeddedUploadHelper.createImageThumbnail('data:image/png;base64,AAAA');
 
     expect(context.drawImage).toHaveBeenCalledWith(expect.anything(), 0, 0, 120, 80);
   });
@@ -63,19 +63,19 @@ describe('Copilot Embedded Upload Helper', () => {
   it('should resolve undefined when the image cannot be decoded', async () => {
     FakeImage.fail = true;
 
-    expect(await createImageThumbnail('data:image/png;base64,broken')).toBeUndefined();
+    expect(await CopilotEmbeddedUploadHelper.createImageThumbnail('data:image/png;base64,broken')).toBeUndefined();
   });
 
   it('should resolve undefined when canvas is not supported', async () => {
     jest.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(undefined);
 
-    expect(await createImageThumbnail('data:image/png;base64,AAAA')).toBeUndefined();
+    expect(await CopilotEmbeddedUploadHelper.createImageThumbnail('data:image/png;base64,AAAA')).toBeUndefined();
   });
 
   it('should read an image file into an upload with its thumbnail', async () => {
     const file = new File(['image'], 'photo.png', { type: 'image/png' });
 
-    const { upload, thumbnail } = await readImageUpload(file);
+    const { upload, thumbnail } = await CopilotEmbeddedUploadHelper.readImageUpload(file);
 
     expect(upload).toEqual({
       data: expect.stringMatching(/^data:image\/png;base64,/),

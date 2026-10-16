@@ -6,8 +6,10 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
-import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
-import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.model';
+import {
+  CopilotEmbeddedChatMessage,
+  CopilotEmbeddedUserInput,
+} from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 
 /**
  * Displays the conversation held by the {@link CopilotEmbeddedContextFacade} of the surrounding page.
@@ -46,7 +48,7 @@ export class CopilotEmbeddedChatComponent implements OnInit {
     );
   }
 
-  send(payload: { question: string; uploads?: CopilotEmbeddedUpload[]; thumbnail?: string }) {
+  send(payload: CopilotEmbeddedUserInput) {
     this.context.send(payload);
   }
 
