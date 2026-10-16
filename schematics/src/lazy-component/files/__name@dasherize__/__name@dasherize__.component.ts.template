@@ -14,6 +14,10 @@ import {
 
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
 
+const loadModule = () =>
+  import('../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module').then(m => m.<%= classify(declaringModule) %>Module);
+let modulePromise: ReturnType<typeof loadModule>;
+
 @Component({
   selector: '<%= selector %>',
   standalone: false,
@@ -61,7 +65,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   }
 
   private async renderComponent() {
-    const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
+    const module = await (modulePromise ??= loadModule());
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 

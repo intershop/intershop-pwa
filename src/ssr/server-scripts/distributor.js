@@ -7,8 +7,8 @@ const express = require('express');
 const proxy = require('express-http-proxy');
 
 const app = express();
-const distFolder = path.join(process.cwd(), 'dist');
-let ports = require('./ecosystem-ports.json');
+const distFolder = __dirname;
+let ports = require(path.join(distFolder, 'ecosystem-ports.json'));
 
 if (process.env.ACTIVE_THEMES) {
   const activeThemes = process.env.ACTIVE_THEMES.split(',').map(theme => theme.trim());

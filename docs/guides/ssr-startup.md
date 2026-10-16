@@ -22,16 +22,16 @@ kb_sync_latest_only
 To **simply** build the Intershop PWA in server-side rendering mode, you can use the _package.json_ script `npm run build`, which builds the Intershop PWA with the `production` configuration of the `angular.json` with the default theme.
 Afterward, you can start the application with `npm run serve` (or do both by using `npm run start`).
 
-To build a specific theme (see [Guide - Themes][themes]), you can build (and run) via `npm` using the `--configuration=` argument.
-All `configuration` options must be in the format `--configuration=<theme>,(production|development)`.
+The default build creates the B2B theme in `dist`.
+Use `npm run build --configuration=b2c` to replace that output with the B2C theme.
+`npm run serve` always serves the theme that was built last.
 
 ## Building Multiple Themes
 
 The `package.json` property `activeThemes` determines which themes should be built when running `npm run build:multi`.
 This will build server and client bundles for all active themes and supply them in the `dist` folder.
-The SSR process for each theme can be run individually using the generated scripts `dist/<theme>/run-standalone`.
 
-To run multiple themes with [PM2][pm2], the script `src/ssr/server-scripts/build-ecosystem.js` can be used to generate the ecosystem.
+Run the multi-theme output with `npm run serve:multi`, which generates the [PM2][pm2] ecosystem before starting it.
 If only one theme is active, the theme-specific SSR process will be run in cluster mode on the default port.
 If more themes are active, PM2 is provisioned to run a distributor process in front of all theme-specific processes, to direct incoming traffic to the correct SSR process.
 
@@ -119,7 +119,7 @@ npm run dev:ssr -- --ssl
 The following is an example command for how to provide specific certificates that can be valid in your local development environment:
 
 ```
-ng run intershop-pwa:serve-ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
+ng serve --build-target=intershop-pwa:build:b2b,development,ssr --ssl --ssl-cert ~/work/wildcard-certificates/wildcard_localdev.de/cert.pem --ssl-key ~/work/wildcard-certificates/wildcard_localdev.de/privkey.pem --host host.localdev.de
 ```
 
 ## Local ICM Cache

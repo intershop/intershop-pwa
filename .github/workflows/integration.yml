@@ -91,7 +91,7 @@ jobs:
 
       - name: Test SSR
         run: |
-          node dist/$THEME/run-standalone &
+          BROWSER_FOLDER=dist/$THEME/browser DIST_FOLDER=dist/$THEME node dist/$THEME/server/server.mjs &
           sh e2e/test-ssr.sh
 
   Cypress:
@@ -139,7 +139,7 @@ jobs:
 
       - name: Start SSR
         run: |
-          node dist/$THEME/run-standalone &
+          BROWSER_FOLDER=dist/$THEME/browser DIST_FOLDER=dist/$THEME node dist/$THEME/server/server.mjs &
 
       - name: Cypress
         uses: cypress-io/github-action@v7

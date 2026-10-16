@@ -10,7 +10,7 @@ kb_sync_latest_only
 ## NGINX Optimizations
 
 - [NGINX Optimizations](#nginx-optimizations)
-- [Custom Webpack Build](#custom-webpack-build)
+- [Production Build](#production-build)
 - [PurgeCSS](#purgecss)
   - [Safelisting](#safelisting)
   - [Development](#development)
@@ -26,15 +26,13 @@ The configuration of the module is described in [Guide - Building and Running NG
 > [!NOTE]
 > Brotli compression is typically only used over HTTPS connections. This is because most modern web browsers only advertise support for Brotli encoding to servers when the connection is secure (HTTPS).
 
-## Custom Webpack Build
+## Production Build
 
-The PWA uses a customized webpack build, that allows for additional optimizations.
-The build can be customized in the file [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts).
+The PWA uses Angular's esbuild application builder with additional production optimizations.
 
-If the PWA is built using `production` configuration (either by building with `--configuration=<other>,production` or by building the Docker image with `--build-arg configuration=<other>,production`), the following optimizations are applied:
+When building with `npm run build --configuration=<theme>,production` or building the Docker image, the following optimizations are applied:
 
-- Angular CLI [build-optimizer](https://github.com/angular/angular-cli/tree/master/packages/angular_devkit/build_optimizer#angular-build-optimizer)
-- Webpack [SplitChunksPlugin](https://webpack.js.org/plugins/split-chunks-plugin/) is instructed to produce only `main`, `vendor`, `polyfills` and one `common` bundle for the code for optimized compression and download of the application.
+- Angular's application builder optimizes JavaScript and CSS and splits lazy-loaded code into separate chunks.
 - All `data-testing` attributes are removed from the HTML templates to reduce output.
 - [PurgeCSS](https://purgecss.com) is used to remove unused CSS classes from the CSS output.
 
@@ -58,7 +56,7 @@ Also style selectors that are dynamically generated would not be found.
 To solve this problem, PurgeCSS provides different [options for safelisting](https://purgecss.com/safelisting.html) specific styles.
 This can either be done in the plugin configuration or directly in your SCSS/CSS files with special comments.
 
-The PurgeCSS plugin configuration can be found in the project’s [`webpack.custom.ts`](https://github.com/intershop/intershop-pwa/blob/3.1.0/templates/webpack/webpack.custom.ts#L231-L246).
+The PurgeCSS plugin configuration can be found in [`tools/postcss-purgecss-config/index.cjs`](../../tools/postcss-purgecss-config/index.cjs).
 This method is used and recommended to include required styles of the third-party libraries used, which would otherwise be purged.
 For the different [configuration options](https://purgecss.com/configuration.html), refer to the PurgeCSS documentation.
 
@@ -69,13 +67,9 @@ To include nested SCSS definitions, use `/* purgecss start ignore */` and `/* pu
 
 When using the standard way of developing the PWA with `ng s`, PurgeCSS is not activated and styling should work as expected.
 This way, styling issues because of PurgeCSS often first show up in deployed environments.
-To test or develop with enabled PurgeCSS, the development server needs to be started with `ng s -c=b2b,production` (or your desired theme instead of `b2b`).
+To test or develop with enabled PurgeCSS, start the development server with `ng serve --build-target=intershop-pwa:build:b2b,production` (or your desired theme instead of `b2b`).
 
-In this startup process the following line can be read, indicating the usage of PurgeCSS similar to the deployed builds:
-
-```
-serve@b2b,production: setting up purgecss CSS minification
-```
+Set `PURGE_CSS=false` to disable purging for a production build when investigating styling issues.
 
 ## Further References
 

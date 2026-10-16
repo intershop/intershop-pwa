@@ -7,5 +7,10 @@
     /* Language & Environment */
     "types": ["jest", "jest-extended", "node"]
   },
-  "include": ["src/**/*.ts", "projects/**/*.ts", "server.ts", "src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "projects/**/*.ts",
+    "tools/**/*.ts",
+    "src/**/*.d.ts"
+  ]
 }

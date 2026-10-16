@@ -698,7 +698,7 @@ export default defineConfig([
             '.*.spec.ts$',
             'tslint-rules/',
             'scripts/',
-            'templates/',
+            'tools/',
             'utils/dev/',
             'core/utils/',
             '.*.actions.ts$',
