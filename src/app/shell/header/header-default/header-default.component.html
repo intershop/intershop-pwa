@@ -14,7 +14,7 @@
 <div class="header container" [class]="deviceType">
   @if (!isSticky) {
     <ul class="user-links">
-      @if (!isSticky && deviceType !== 'mobile') {
+      @if (deviceType !== 'mobile') {
         <li>
           <ish-login-status data-testing-id="user-status-desktop" />
         </li>
@@ -64,8 +64,6 @@
         </div>
       }
     }
-
-    <!-- Sticky Header Mobile Search -->
 
     @if (deviceType === 'mobile') {
       <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link-mobile" view="small" />
