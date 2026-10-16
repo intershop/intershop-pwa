@@ -12,6 +12,21 @@ import { CopilotEmbeddedAnswerMapper } from '../../models/copilot-embedded-answe
 import { CopilotEmbeddedAnswer } from '../../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import { CopilotEmbeddedChatRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
+import { CopilotEmbeddedUpload } from '../../models/copilot-embedded-upload/copilot-embedded-upload.model';
+
+/**
+ * Request body of the Flowise Prediction API.
+ */
+interface PredictionRequestBody {
+  question: string;
+  streaming: boolean;
+  uploads?: CopilotEmbeddedUpload[];
+  chatId?: string;
+  overrideConfig: {
+    sessionId?: string;
+    vars: Record<string, unknown>;
+  };
+}
 
 /**
  * Parses a single raw SSE event block into a {@link CopilotEmbeddedStreamEvent}.
@@ -130,7 +145,7 @@ export class CopilotEmbeddedService {
     config: CopilotEmbeddedConfig,
     request: CopilotEmbeddedChatRequest,
     streaming = false
-  ): { url: string; body: Record<string, unknown> } {
+  ): { url: string; body: PredictionRequestBody } {
     if (!request.question?.trim() && !request.uploads?.length) {
       throw new Error('Copilot Embedded request without a question or attachment');
     }
@@ -145,7 +160,7 @@ export class CopilotEmbeddedService {
       `\n[ORDER_TEMPLATES]=${JSON.stringify(request.orderTemplates)}` +
       `\n[SHOWN_PRODUCTS]=${JSON.stringify(request.shownProducts)}`;
 
-    const body: Record<string, unknown> = {
+    const body: PredictionRequestBody = {
       question: questionWithContext,
       streaming,
       ...(request.uploads?.length ? { uploads: request.uploads } : {}),
@@ -162,7 +177,7 @@ export class CopilotEmbeddedService {
   /**
    * Performs the streaming prediction request via the fetch API and parses the Server-Sent Events.
    */
-  private streamPrediction(url: string, body: Record<string, unknown>): Observable<CopilotEmbeddedStreamEvent> {
+  private streamPrediction(url: string, body: PredictionRequestBody): Observable<CopilotEmbeddedStreamEvent> {
     return new Observable<CopilotEmbeddedStreamEvent>(subscriber => {
       const abortController = new AbortController();
 
