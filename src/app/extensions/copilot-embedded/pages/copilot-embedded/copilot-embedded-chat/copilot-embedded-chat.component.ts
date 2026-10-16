@@ -6,11 +6,9 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
 import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
-import { extractProductsFromToolCalls } from '../../../models/copilot-embedded-product/copilot-embedded-product.helper';
-import {
-  CopilotEmbeddedChatMessage,
-  CopilotEmbeddedUpload,
-} from '../../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedProductMapper } from '../../../models/copilot-embedded-product/copilot-embedded-product.mapper';
+import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.model';
 
 /**
  * Displays the conversation held by the {@link CopilotEmbeddedContextFacade} of the surrounding page.
@@ -75,7 +73,7 @@ export class CopilotEmbeddedChatComponent implements OnInit {
   /** Necessary for a11y: announce available recommendations and answer choices with the reply. */
   private replyAnnouncement(message: CopilotEmbeddedChatMessage): string {
     const announcements = [message.message];
-    if (extractProductsFromToolCalls(message.usedTools).length) {
+    if (CopilotEmbeddedProductMapper.fromToolCalls(message.usedTools).length) {
       announcements.push(this.translateService.instant('copilot.embedded.results.announcement'));
     }
     const options = message.choices?.options;

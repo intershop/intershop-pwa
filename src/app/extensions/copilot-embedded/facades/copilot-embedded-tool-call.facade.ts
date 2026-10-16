@@ -10,7 +10,7 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
 
 import { CompareFacade } from '../../compare/facades/compare.facade';
 import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
-import { CopilotEmbeddedToolCall } from '../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 /**
  * Reacts to the action tool calls a Flowise chatflow reports (`usedTools`) and triggers the
@@ -20,7 +20,7 @@ import { CopilotEmbeddedToolCall } from '../models/copilot-embedded/copilot-embe
  * Note: the `icmSearch` tool is intentionally NOT handled here. Unlike the Copilot bubble (which
  * navigates to the search results page), the Copilot Embedded renders the found products in its
  * results panel on the same page - that happens in the `CopilotEmbeddedContextFacade` via
- * `extractProductsFromToolCalls`, so no navigation is required.
+ * `CopilotEmbeddedProductMapper`, so no navigation is required.
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedToolCallFacade {

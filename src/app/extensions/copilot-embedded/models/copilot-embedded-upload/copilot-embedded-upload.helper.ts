@@ -1,4 +1,4 @@
-import { CopilotEmbeddedUpload } from './copilot-embedded.model';
+import { CopilotEmbeddedUpload } from './copilot-embedded-upload.model';
 
 const THUMBNAIL_MAX_SIZE = 200;
 
