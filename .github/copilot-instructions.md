@@ -16,7 +16,7 @@ Angular 20-based Progressive Web App for enterprise commerce. Built for performa
 - Business logic in services/facades
 - NgRx for state, EntityAdapter for normalization
 - SSR via Angular SSR + Express
-- Lazy loaded modules for performance
+- Extension code (components, templates, styles) stays in `src/app/extensions/<name>/`; `shell`, `pages` and `shared` integrate it only via lazy components, see [Integrating Extensions](../docs/concepts/project-structure.md#integrating-extensions)
 
 ## Naming & Structure
 
