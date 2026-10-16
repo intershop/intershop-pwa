@@ -50,7 +50,9 @@ describe('Copilot Embedded Facade', () => {
     when(featureToggleService.enabled$(anything())).thenReturn(of(true));
 
     copilotEmbeddedService = mock(CopilotEmbeddedService);
-    when(copilotEmbeddedService.sendMessage(anything(), anything())).thenReturn(of({ text: 'ok' }));
+    when(copilotEmbeddedService.sendMessage(anything(), anything())).thenReturn(
+      of({ text: 'ok', usedTools: [], products: [] })
+    );
     when(copilotEmbeddedService.isStreamingAvailable$(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({

@@ -64,7 +64,14 @@ describe('Copilot Embedded Service', () => {
         })
       )
       .subscribe(result => {
-        expect(result).toEqual(response);
+        expect(result).toEqual({
+          text: 'Here is a recommendation',
+          chatId: 'abc',
+          messageId: undefined,
+          usedTools: [],
+          products: [],
+          choices: undefined,
+        });
         done();
       });
 
