@@ -68,16 +68,7 @@
     <!-- Sticky Header Mobile Search -->
 
     @if (deviceType === 'mobile') {
-      <div *ishFeature="'copilotEmbedded'" class="copilot-embedded-mobile">
-        <a
-          class="copilot-embedded-link"
-          data-testing-id="copilot-embedded-link-mobile"
-          routerLink="/copilot"
-          [attr.aria-label]="'copilot.embedded.link' | translate"
-        >
-          <i class="bi bi-stars header-icon"></i>
-        </a>
-      </div>
+      <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link-mobile" view="small" />
     }
 
     <div class="language-switch-container">
@@ -121,15 +112,10 @@
       </div>
     </div>
     <div class="col-md-4 search-col">
-      @if (!isSticky && deviceType !== 'mobile') {
-        <div *ishFeature="'copilotEmbedded'" class="copilot-embedded-header-link">
-          <a class="copilot-embedded-link" data-testing-id="copilot-embedded-link" routerLink="/copilot">
-            <i class="bi bi-stars header-icon"></i>
-            <span class="d-none d-md-inline">{{ 'copilot.embedded.link' | translate }}</span>
-          </a>
-        </div>
-      }
       @if (deviceType !== 'mobile') {
+        @if (!isSticky) {
+          <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link" />
+        }
         <div class="search-container header-search-container">
           <ng-container *ngTemplateOutlet="searchBoxTemplate" />
         </div>
