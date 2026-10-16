@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
 import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
+import { CopilotEmbeddedRoutingModule } from './extensions/copilot-embedded/pages/copilot-embedded-routing.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
@@ -38,6 +39,7 @@ import { ShellModule } from './shell/shell.module';
     CopilotExportsModule,
     CoreModule,
     PunchoutRoutingModule,
+    CopilotEmbeddedRoutingModule,
     QuickorderRoutingModule,
     QuotingRoutingModule,
     RecentlyRoutingModule,

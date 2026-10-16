@@ -1,0 +1,32 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.copilot-embedded-header-link {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  padding-top: $space-default * 0.75;
+  padding-right: $space-default;
+  white-space: nowrap;
+  transform: translateY(-50%);
+
+  a {
+    font-family: $font-family-bold;
+    text-transform: uppercase;
+  }
+
+  .bi {
+    padding-right: divide($space-default, 3);
+    color: $CORPORATE-PRIMARY;
+  }
+}
+
+.copilot-embedded-mobile .bi {
+  padding-right: 7px;
+  font-size: 22px;
+  color: $CORPORATE-PRIMARY;
+
+  @media (width < 410px) {
+    padding-right: 4px;
+  }
+}

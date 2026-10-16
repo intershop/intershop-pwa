@@ -1,0 +1,69 @@
+@if (uploadError) {
+  <p class="copilot-embedded-upload-error text-danger small mb-1">
+    {{ uploadError | translate: { '0': maxImageSizeMb } }}
+  </p>
+}
+
+@if (pendingUpload) {
+  <div class="copilot-embedded-upload-preview">
+    <img [alt]="pendingUpload.name" [src]="pendingUpload.data" />
+    <span class="copilot-embedded-upload-name">{{ pendingUpload.name }}</span>
+    <button
+      class="btn copilot-embedded-upload-remove"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.input.remove_image' | translate"
+      (click)="removeUpload()"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+}
+
+<div class="copilot-embedded-input input-group">
+  <div class="copilot-embedded-input-field">
+    <label class="visually-hidden" for="copilot-embedded-question">
+      {{ 'copilot.embedded.input.placeholder' | translate }}
+    </label>
+    <input
+      #questionInput
+      class="form-control"
+      id="copilot-embedded-question"
+      type="text"
+      [placeholder]="'copilot.embedded.input.placeholder' | translate"
+      (keydown.enter)="submit()"
+    />
+    <input
+      #imageInput
+      class="copilot-embedded-image-input"
+      hidden
+      type="file"
+      [accept]="acceptedImageTypes"
+      (change)="onFileSelected($event)"
+    />
+    <button
+      class="btn"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.input.camera' | translate"
+      [title]="'copilot.embedded.input.camera' | translate"
+      (click)="imageInput.click()"
+    >
+      <i class="bi bi-card-image"></i>
+    </button>
+  </div>
+  <button
+    class="btn btn-secondary"
+    type="button"
+    [attr.aria-label]="'copilot.embedded.input.send' | translate"
+    [disabled]="loading"
+    [title]="'copilot.embedded.input.send' | translate"
+    (click)="submit()"
+  >
+    <i class="bi bi-send-fill"></i>
+  </button>
+</div>
+<small class="copilot-embedded-disclaimer">
+  {{ 'copilot.footer.text' | translate }}
+  <a rel="noopener" target="_blank" [routerLink]="['/page', 'page.privacyPolicy.pagelet2-Page']">
+    {{ 'copilot.footer.company' | translate }}
+  </a>
+</small>

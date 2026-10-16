@@ -1,0 +1,51 @@
+<div class="copilot-embedded-chat">
+  <div aria-atomic="true" aria-live="polite" class="visually-hidden" role="status">{{ announcement$ | async }}</div>
+  @let context = context$ | async;
+  @if (context?.messages.length || context?.pendingAnswer) {
+    @if (deviceType !== 'mobile') {
+      <ish-copilot-embedded-header (resetChat)="resetChat()" />
+    }
+    <ish-copilot-embedded-messages
+      [loading]="context.loading"
+      [messages]="context.messages"
+      [pendingAnswer]="context.pendingAnswer"
+      (answer)="chatInput.submit($event)"
+    />
+  } @else {
+    <div class="copilot-embedded-welcome">
+      @if (deviceType !== 'mobile') {
+        <div class="copilot-embedded-icon">
+          <i class="bi bi-stars"></i>
+        </div>
+        <h1>{{ 'copilot.embedded.headline' | translate }}</h1>
+      }
+
+      <p>{{ 'copilot.embedded.intro' | translate }}</p>
+
+      <div class="copilot-embedded-prompt-badges row">
+        @for (promptKey of promptKeys; track promptKey) {
+          @let prompt = promptKey | translate;
+          <div class="col-12 col-sm-6">
+            <button class="badge" type="button" (click)="chatInput.submit(prompt)">
+              <span>{{ prompt }}</span>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (context?.error) {
+    <p class="copilot-embedded-error text-danger small mb-1">{{ context.error | translate }}</p>
+  }
+
+  @if (context?.toolErrors.length) {
+    <ul class="copilot-embedded-tool-errors text-warning small mb-1">
+      @for (toolError of context.toolErrors; track $index) {
+        <li>{{ toolError.tool }}: {{ toolError.error }}</li>
+      }
+    </ul>
+  }
+
+  <ish-copilot-embedded-input #chatInput [deviceType]="deviceType" [loading]="context?.loading" (send)="send($event)" />
+</div>
