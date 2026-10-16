@@ -23,6 +23,7 @@ Angular 20-based Progressive Web App for enterprise commerce. Built for performa
 - **Naming Patterns:** See [naming patterns instructions](./instructions/naming-patterns.instructions.md)
 - **Components:** `src/app/pages/`, `src/app/shared/components/`
 - **Services:** `src/app/core/services/`
+- **Utility services:** `src/app/core/utils/`
 - **State:** `src/app/core/store/`
 - **Models:** `src/app/core/models/`
 - **Guards:** `src/app/core/guards/`
