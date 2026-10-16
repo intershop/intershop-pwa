@@ -9,17 +9,16 @@ import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { LineItemView } from 'ish-core/models/line-item/line-item.model';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 
-import { OrderTemplatesFacade } from '../../order-templates/facades/order-templates.facade';
-import { OrderTemplate } from '../../order-templates/models/order-template/order-template.model';
-import { CopilotEmbeddedConfig } from '../models/copilot-embedded-config/copilot-embedded-config.model';
-import { CopilotEmbeddedService } from '../services/copilot-embedded/copilot-embedded.service';
-import { getCopilotEmbeddedConfig } from '../store/copilot-embedded-config/copilot-embedded-config.selectors';
+import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
+import { OrderTemplate } from '../../../order-templates/models/order-template/order-template.model';
+import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
+import { CopilotEmbeddedService } from '../../services/copilot-embedded/copilot-embedded.service';
+import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config/copilot-embedded-config.selectors';
 
-import { CopilotEmbeddedToolCallFacade } from './copilot-embedded-tool-call.facade';
-import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
+import { CopilotEmbeddedChatService } from './copilot-embedded-chat.service';
 
-describe('Copilot Embedded Facade', () => {
-  let facade: CopilotEmbeddedFacade;
+describe('Copilot Embedded Chat Service', () => {
+  let chatService: CopilotEmbeddedChatService;
   let copilotEmbeddedService: CopilotEmbeddedService;
   let featureToggleService: FeatureToggleService;
 
@@ -27,7 +26,7 @@ describe('Copilot Embedded Facade', () => {
     TestBed.configureTestingModule({
       providers: [provideMockStore({ selectors: [{ selector: getCopilotEmbeddedConfig, value: config }] })],
     });
-    facade = TestBed.inject(CopilotEmbeddedFacade);
+    chatService = TestBed.inject(CopilotEmbeddedChatService);
   }
 
   beforeEach(() => {
@@ -61,7 +60,6 @@ describe('Copilot Embedded Facade', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CopilotEmbeddedService, useFactory: () => instance(copilotEmbeddedService) },
-        { provide: CopilotEmbeddedToolCallFacade, useFactory: () => instance(mock(CopilotEmbeddedToolCallFacade)) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
         { provide: OrderTemplatesFacade, useFactory: () => instance(orderTemplatesFacade) },
       ],
@@ -72,7 +70,7 @@ describe('Copilot Embedded Facade', () => {
     const config = { apiHost: 'https://flowise.example.com', chatflowid: 'flow-1', chatflowConfig: { vars: { a: 1 } } };
     setup(config);
 
-    facade
+    chatService
       .sendMessage('hi', { sessionId: 'session-1', shownProducts: [{ sku: '456' }], vars: { b: 2 } })
       .subscribe(() => {
         const [sentConfig, request] = capture(copilotEmbeddedService.sendMessage).last();
@@ -101,7 +99,7 @@ describe('Copilot Embedded Facade', () => {
     when(featureToggleService.enabled$(anything())).thenReturn(of(false));
     setup({ apiHost: 'https://flowise.example.com', chatflowid: 'flow-1' });
 
-    facade.sendMessage('hi').subscribe(() => {
+    chatService.sendMessage('hi').subscribe(() => {
       expect(capture(copilotEmbeddedService.sendMessage).last()[1].orderTemplates).toBeEmpty();
       done();
     });
@@ -110,7 +108,7 @@ describe('Copilot Embedded Facade', () => {
   it('should honor the streaming configuration without probing the chatflow', done => {
     setup({ apiHost: 'https://flowise.example.com', chatflowid: 'flow-1', streaming: false });
 
-    facade.isStreamingAvailable$().subscribe(streaming => {
+    chatService.isStreamingAvailable$().subscribe(streaming => {
       expect(streaming).toBeFalse();
       verify(copilotEmbeddedService.isStreamingAvailable$(anything())).never();
       done();
@@ -120,7 +118,7 @@ describe('Copilot Embedded Facade', () => {
   it('should probe the chatflow when streaming is not configured', done => {
     setup({ apiHost: 'https://flowise.example.com', chatflowid: 'flow-1' });
 
-    facade.isStreamingAvailable$().subscribe(streaming => {
+    chatService.isStreamingAvailable$().subscribe(streaming => {
       expect(streaming).toBeTrue();
       verify(copilotEmbeddedService.isStreamingAvailable$(anything())).once();
       done();

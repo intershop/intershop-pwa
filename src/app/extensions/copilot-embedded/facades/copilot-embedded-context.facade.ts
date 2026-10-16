@@ -13,6 +13,8 @@ import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copil
 import { CopilotEmbeddedRequestOptions } from '../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 import { CopilotEmbeddedUpload } from '../models/copilot-embedded-upload/copilot-embedded-upload.model';
+import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
+import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service';
 
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
 
@@ -67,6 +69,8 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
   constructor(
     private copilotEmbeddedFacade: CopilotEmbeddedFacade,
+    private chatService: CopilotEmbeddedChatService,
+    private toolCallService: CopilotEmbeddedToolCallService,
     private translateService: TranslateService
   ) {
     super();
@@ -151,18 +155,18 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   }
 
   private answer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
-    return this.copilotEmbeddedFacade
+    return this.chatService
       .isStreamingAvailable$()
       .pipe(switchMap(streaming => (streaming ? this.streamAnswer$(message) : this.fetchAnswer$(message))));
   }
 
   private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
-    return defer(() => this.copilotEmbeddedFacade.sendMessage(message.question, this.requestOptions(message)));
+    return defer(() => this.chatService.sendMessage(message.question, this.requestOptions(message)));
   }
 
   private streamAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
     return defer(() =>
-      this.copilotEmbeddedFacade.streamMessage(message.question, this.requestOptions(message)).pipe(
+      this.chatService.streamMessage(message.question, this.requestOptions(message)).pipe(
         tap(answer => this.set(state => ({ pendingAnswer: answer.text, chatId: answer.chatId ?? state.chatId }))),
         takeLast(1),
         defaultIfEmpty(undefined),
@@ -184,7 +188,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
   private addAnswer(answer: CopilotEmbeddedAnswer) {
     // execute the action tool calls (basket, compare, navigation, order templates)
-    this.copilotEmbeddedFacade.handleToolCalls(answer.usedTools);
+    this.toolCallService.handleToolCalls(answer.usedTools);
     const message: CopilotEmbeddedChatMessage = {
       message: answer.text,
       type: 'apiMessage',
