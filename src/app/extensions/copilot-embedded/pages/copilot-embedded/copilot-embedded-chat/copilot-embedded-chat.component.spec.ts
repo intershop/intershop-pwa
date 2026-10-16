@@ -107,18 +107,7 @@ describe('Copilot Embedded Chat Component', () => {
 
   it('should announce when recommended products are available', () => {
     setState({
-      messages: [
-        {
-          ...botMessage(),
-          usedTools: [
-            {
-              tool: 'icmSearch',
-              toolInput: {},
-              toolOutput: JSON.stringify({ output: [{ products: [{ sku: 'product-1' }] }] }),
-            },
-          ],
-        },
-      ],
+      messages: [{ ...botMessage(), products: [{ sku: 'product-1' }] }],
     });
 
     expect(element.querySelector('[role="status"]').textContent.trim()).toBe(
