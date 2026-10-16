@@ -4,17 +4,17 @@ import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, Subject, concat, defer, of } from 'rxjs';
 import { catchError, ignoreElements, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
-import { extractProductsFromToolCalls } from '../models/copilot-embedded-product/copilot-embedded-product.helper';
-import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copilot-embedded-product.model';
-import { extractChoicePromptFromToolCalls } from '../models/copilot-embedded/copilot-embedded-choice.helper';
+import { CopilotEmbeddedAnswerData } from '../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 import {
   CopilotEmbeddedChatMessage,
   CopilotEmbeddedChatSession,
-  CopilotEmbeddedRequestOptions,
-  CopilotEmbeddedResponse,
-  CopilotEmbeddedToolCall,
-  CopilotEmbeddedUpload,
-} from '../models/copilot-embedded/copilot-embedded.model';
+} from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedChoiceMapper } from '../models/copilot-embedded-choice/copilot-embedded-choice.mapper';
+import { CopilotEmbeddedProductMapper } from '../models/copilot-embedded-product/copilot-embedded-product.mapper';
+import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copilot-embedded-product.model';
+import { CopilotEmbeddedRequestOptions } from '../models/copilot-embedded-request/copilot-embedded-request.model';
+import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
+import { CopilotEmbeddedUpload } from '../models/copilot-embedded-upload/copilot-embedded-upload.model';
 
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
 
@@ -44,7 +44,7 @@ function generateSessionId(): string {
 
 function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbeddedProduct[] {
   for (let i = messages.length - 1; i >= 0; i--) {
-    const products = extractProductsFromToolCalls(messages[i].usedTools);
+    const products = CopilotEmbeddedProductMapper.fromToolCalls(messages[i].usedTools);
     if (products.length) {
       return products;
     }
@@ -156,17 +156,17 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     });
   }
 
-  private answer$(message: PendingMessage): Observable<CopilotEmbeddedResponse> {
+  private answer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
     return this.copilotEmbeddedFacade
       .isStreamingAvailable$()
       .pipe(switchMap(streaming => (streaming ? this.streamAnswer$(message) : this.fetchAnswer$(message))));
   }
 
-  private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedResponse> {
+  private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
     return defer(() => this.copilotEmbeddedFacade.sendMessage(message.question, this.requestOptions(message)));
   }
 
-  private streamAnswer$(message: PendingMessage): Observable<CopilotEmbeddedResponse> {
+  private streamAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswerData> {
     return defer(() => {
       let usedTools: CopilotEmbeddedToolCall[];
       return concat(
@@ -186,7 +186,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
         // fall back to the non-streaming text so an answer is still shown.
         defer(() =>
           this.get('pendingAnswer')
-            ? of<CopilotEmbeddedResponse>({ text: this.get('pendingAnswer'), usedTools })
+            ? of<CopilotEmbeddedAnswerData>({ text: this.get('pendingAnswer'), usedTools })
             : this.fetchAnswer$(message)
         )
       );
@@ -202,18 +202,18 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     };
   }
 
-  private addAnswer(response: CopilotEmbeddedResponse) {
+  private addAnswer(response: CopilotEmbeddedAnswerData) {
     const usedTools = response.usedTools;
     // execute the action tool calls (basket, compare, navigation, order templates)
     this.copilotEmbeddedFacade.handleToolCalls(usedTools);
-    const products = extractProductsFromToolCalls(usedTools);
+    const products = CopilotEmbeddedProductMapper.fromToolCalls(usedTools);
     const answer: CopilotEmbeddedChatMessage = {
       message: response.text,
       type: 'apiMessage',
       usedTools,
       messageId: response.chatMessageId,
       dateTime: new Date().toISOString(),
-      choices: extractChoicePromptFromToolCalls(usedTools),
+      choices: CopilotEmbeddedChoiceMapper.fromToolCalls(usedTools),
     };
     this.set(state => ({
       chatId: response.chatId ?? state.chatId,

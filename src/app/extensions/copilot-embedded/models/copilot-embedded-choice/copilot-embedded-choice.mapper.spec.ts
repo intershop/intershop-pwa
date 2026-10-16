@@ -1,17 +1,17 @@
-import { CopilotEmbeddedToolCall } from '../copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
-import { extractChoicePromptFromToolCalls } from './copilot-embedded-choice.helper';
+import { CopilotEmbeddedChoiceMapper } from './copilot-embedded-choice.mapper';
 
-describe('Copilot Embedded Choice Helper', () => {
+describe('Copilot Embedded Choice Mapper', () => {
   it('should return undefined when there are no tool calls', () => {
-    expect(extractChoicePromptFromToolCalls(undefined)).toBeUndefined();
-    expect(extractChoicePromptFromToolCalls([])).toBeUndefined();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(undefined)).toBeUndefined();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls([])).toBeUndefined();
   });
 
   it('should ignore tools that are not PWA_ask_choice', () => {
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'icmSearch', toolInput: {} }];
 
-    expect(extractChoicePromptFromToolCalls(tools)).toBeUndefined();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)).toBeUndefined();
   });
 
   it('should parse a single-select prompt from a pipe-separated options string', () => {
@@ -22,7 +22,7 @@ describe('Copilot Embedded Choice Helper', () => {
       },
     ];
 
-    expect(extractChoicePromptFromToolCalls(tools)).toEqual({
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)).toEqual({
       question: 'How do these employees mainly work?',
       options: ['In the office', 'Hybrid', 'Mobile'],
       multiSelect: false,
@@ -37,7 +37,7 @@ describe('Copilot Embedded Choice Helper', () => {
       },
     ];
 
-    expect(extractChoicePromptFromToolCalls(tools)).toEqual({
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)).toEqual({
       question: 'Which products?',
       options: ['Headset', 'Monitor'],
       multiSelect: true,
@@ -49,13 +49,13 @@ describe('Copilot Embedded Choice Helper', () => {
       { tool: 'PWA_ask_choice', toolInput: { options: 'A|B', multiSelect: 'true' } },
     ];
 
-    expect(extractChoicePromptFromToolCalls(tools)?.multiSelect).toBeTrue();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)?.multiSelect).toBeTrue();
   });
 
   it('should trim options and drop empty ones', () => {
     const tools: CopilotEmbeddedToolCall[] = [{ tool: 'PWA_ask_choice', toolInput: { options: ' A | | B  |' } }];
 
-    expect(extractChoicePromptFromToolCalls(tools)?.options).toEqual(['A', 'B']);
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)?.options).toEqual(['A', 'B']);
   });
 
   it('should return undefined when there are no usable options', () => {
@@ -63,7 +63,7 @@ describe('Copilot Embedded Choice Helper', () => {
       { tool: 'PWA_ask_choice', toolInput: { question: 'Empty?', options: ' | ' } },
     ];
 
-    expect(extractChoicePromptFromToolCalls(tools)).toBeUndefined();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)).toBeUndefined();
   });
 
   it('should omit an empty question', () => {
@@ -71,6 +71,6 @@ describe('Copilot Embedded Choice Helper', () => {
       { tool: 'PWA_ask_choice', toolInput: { question: '  ', options: 'A|B' } },
     ];
 
-    expect(extractChoicePromptFromToolCalls(tools)?.question).toBeUndefined();
+    expect(CopilotEmbeddedChoiceMapper.fromToolCalls(tools)?.question).toBeUndefined();
   });
 });

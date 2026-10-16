@@ -2,11 +2,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
+import { CopilotEmbeddedAnswerData } from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
-import {
-  CopilotEmbeddedChatRequest,
-  CopilotEmbeddedResponse,
-} from '../../models/copilot-embedded/copilot-embedded.model';
+import { CopilotEmbeddedChatRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 
 import { CopilotEmbeddedService } from './copilot-embedded.service';
 
@@ -54,7 +52,7 @@ describe('Copilot Embedded Service', () => {
   });
 
   it('should post the question to the Flowise prediction endpoint', done => {
-    const response: CopilotEmbeddedResponse = { text: 'Here is a recommendation', chatId: 'abc' };
+    const response: CopilotEmbeddedAnswerData = { text: 'Here is a recommendation', chatId: 'abc' };
 
     copilotEmbeddedService
       .sendMessage(
