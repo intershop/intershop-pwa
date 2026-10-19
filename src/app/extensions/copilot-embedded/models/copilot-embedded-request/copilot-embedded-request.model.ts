@@ -27,9 +27,6 @@ export interface CopilotEmbeddedRequestOptions {
  */
 export interface CopilotEmbeddedChatRequest {
   question: string;
-  sessionId?: string;
-  chatId?: string;
-  uploads?: CopilotEmbeddedUpload[];
   /** Chatflow variables sent as `overrideConfig.vars`. */
   vars: Record<string, unknown>;
   /** Current basket, appended to the question as `[CURRENT_BASKET]` marker. */
@@ -38,4 +35,7 @@ export interface CopilotEmbeddedChatRequest {
   orderTemplates: { id: string; title: string }[];
   /** Products shown in the results panel, appended to the question as `[SHOWN_PRODUCTS]` marker. */
   shownProducts: CopilotEmbeddedShownProduct[];
+  sessionId?: string;
+  chatId?: string;
+  uploads?: CopilotEmbeddedUpload[];
 }

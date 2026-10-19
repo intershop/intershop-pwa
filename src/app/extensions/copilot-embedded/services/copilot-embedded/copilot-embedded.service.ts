@@ -20,12 +20,12 @@ import { CopilotEmbeddedUpload } from '../../models/copilot-embedded-upload/copi
 interface PredictionRequestBody {
   question: string;
   streaming: boolean;
+  overrideConfig: {
+    vars: Record<string, unknown>;
+    sessionId?: string;
+  };
   uploads?: CopilotEmbeddedUpload[];
   chatId?: string;
-  overrideConfig: {
-    sessionId?: string;
-    vars: Record<string, unknown>;
-  };
 }
 
 /**
