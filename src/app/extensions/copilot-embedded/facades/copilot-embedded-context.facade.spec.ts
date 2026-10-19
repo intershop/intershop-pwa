@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, of, throwError } from 'rxjs';
 
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
@@ -14,6 +16,20 @@ function answer(overrides: Partial<CopilotEmbeddedAnswer> = {}): CopilotEmbedded
   return { text: '', usedTools: [], products: [], ...overrides };
 }
 
+const STORAGE_KEY = 'copilot_embedded_chat_flow-1';
+
+function storeChat(minutesAgo: number) {
+  const chatHistory: CopilotEmbeddedChatMessage[] = [{ message: 'Saved reply', type: 'apiMessage' }];
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      sync: Date.now() - minutesAgo * 60 * 1000,
+      data: { sessionId: 'pa-saved', chatId: 'saved-chat', chatHistory },
+    })
+  );
+  return chatHistory;
+}
+
 describe('Copilot Embedded Context Facade', () => {
   let context: CopilotEmbeddedContextFacade;
   let chatService: {
@@ -23,12 +39,13 @@ describe('Copilot Embedded Context Facade', () => {
   };
   let toolCallService: { handleToolCalls: jest.Mock };
 
-  function createContext() {
+  function createContext(dataRetention: { copilotEmbedded?: number } = { copilotEmbedded: 60 }) {
     TestBed.configureTestingModule({
       providers: [
         { provide: CopilotEmbeddedChatService, useValue: chatService },
         { provide: CopilotEmbeddedFacade, useValue: { configuration$: of({ chatflowid: 'flow-1' }) } },
         { provide: CopilotEmbeddedToolCallService, useValue: toolCallService },
+        { provide: DATA_RETENTION_POLICY, useValue: dataRetention },
         { provide: TranslateService, useValue: { instant: (key: string) => key } },
         CopilotEmbeddedContextFacade,
       ],
@@ -129,7 +146,10 @@ describe('Copilot Embedded Context Facade', () => {
     ]);
     expect(context.get('pendingAnswer')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(JSON.parse(localStorage.getItem('copilot_embedded_chat_flow-1')).chatId).toBe('stream-chat-1');
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)).data).toMatchObject({
+      sessionId: context.get('sessionId'),
+      chatId: 'stream-chat-1',
+    });
   });
 
   it('should fetch a complete answer when the stream ends without tokens', () => {
@@ -202,28 +222,43 @@ describe('Copilot Embedded Context Facade', () => {
     expect(toolCallService.handleToolCalls).not.toHaveBeenCalled();
   });
 
-  it('should restore the saved transcript and clear it when the session is reset', () => {
-    const history: CopilotEmbeddedChatMessage[] = [{ message: 'Saved reply', type: 'apiMessage' }];
-    localStorage.setItem(
-      'copilot_embedded_chat_flow-1',
-      JSON.stringify({ chatId: 'saved-chat', chatHistory: history })
-    );
+  it('should restore the saved conversation and clear it when the session is reset', () => {
+    const history = storeChat(30);
     createContext();
-    const sessionId = context.get('sessionId');
 
     expect(context.get('messages')).toEqual(history);
+    expect(context.get('sessionId')).toBe('pa-saved');
     expect(context.get('chatId')).toBe('saved-chat');
 
     context.reset();
 
     expect(context.get('messages')).toBeEmpty();
-    expect(context.get('sessionId')).not.toBe(sessionId);
-    expect(localStorage.getItem('copilot_embedded_chat_flow-1')).toBeNull();
-    expect(localStorage.getItem('copilot_embedded_session_id')).toBe(context.get('sessionId'));
+    expect(context.get('sessionId')).not.toBe('pa-saved');
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+  });
+
+  it('should discard a saved conversation that exceeded its lifetime', () => {
+    storeChat(61);
+    createContext();
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('sessionId')).not.toBe('pa-saved');
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+  });
+
+  it('should not persist the conversation without a retention lifetime', () => {
+    storeChat(0);
+    createContext({});
+
+    expect(context.get('messages')).toBeEmpty();
+
+    context.send({ question: 'find laptops' });
+
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)).data.chatHistory).toHaveLength(1);
   });
 
   it('should ignore a malformed saved transcript', () => {
-    localStorage.setItem('copilot_embedded_chat_flow-1', '{invalid json');
+    localStorage.setItem(STORAGE_KEY, '{invalid json');
     createContext();
 
     expect(context.get('messages')).toBeEmpty();
