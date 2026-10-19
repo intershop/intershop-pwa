@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, Subject, defer, of } from 'rxjs';
 import { catchError, defaultIfEmpty, map, switchMap, take, takeLast, takeUntil, tap } from 'rxjs/operators';
+
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { InjectSingle } from 'ish-core/utils/injection';
 
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import {
@@ -22,8 +25,6 @@ import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-c
 
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
 
-const SESSION_STORAGE_KEY = 'copilot_embedded_session_id';
-
 export interface CopilotEmbeddedContext {
   chatflowid: string;
   sessionId: string;
@@ -40,6 +41,11 @@ interface PendingMessage {
   question: string;
   uploads?: CopilotEmbeddedUpload[];
   shownProducts: CopilotEmbeddedShownProduct[];
+}
+
+interface StoredChatSession {
+  sync: number;
+  data: CopilotEmbeddedChatSession;
 }
 
 function generateSessionId(): string {
@@ -63,8 +69,8 @@ function collectToolErrors(tools: CopilotEmbeddedToolCall[]): Pick<CopilotEmbedd
 /**
  * Holds the state of a Copilot Embedded conversation for the providing component and its children.
  *
- * The transcript and Flowise `chatId` are persisted to localStorage (keyed by chatflow ID) so the
- * conversation is restored after reload/navigation.
+ * The transcript and the Flowise session and chat IDs are persisted to localStorage (keyed by chatflow ID) for the
+ * `dataRetention.copilotEmbedded` lifetime, so the conversation is restored after reload/navigation.
  */
 @Injectable()
 export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext> {
@@ -75,12 +81,13 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     private copilotEmbeddedFacade: CopilotEmbeddedFacade,
     private chatService: CopilotEmbeddedChatService,
     private toolCallService: CopilotEmbeddedToolCallService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
   ) {
     super();
 
     this.set({
-      sessionId: this.getOrCreateSessionId(),
+      sessionId: generateSessionId(),
       messages: [],
       pendingAnswer: '',
       loading: false,
@@ -144,10 +151,8 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
    */
   reset() {
     this.reset$.next();
-    const sessionId = generateSessionId();
-    this.persistSessionId(sessionId);
     this.set({
-      sessionId,
+      sessionId: generateSessionId(),
       chatId: undefined,
       messages: [],
       pendingAnswer: '',
@@ -215,24 +220,9 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     this.set({ error: 'copilot.embedded.error.generic', loading: false });
   }
 
-  private getOrCreateSessionId(): string {
-    const stored = !SSR ? localStorage.getItem(SESSION_STORAGE_KEY) : undefined;
-    if (stored) {
-      return stored;
-    }
-    const sessionId = generateSessionId();
-    this.persistSessionId(sessionId);
-    return sessionId;
-  }
-
-  private persistSessionId(sessionId: string) {
-    if (!SSR) {
-      localStorage.setItem(SESSION_STORAGE_KEY, sessionId);
-    }
-  }
-
   private restoreSession(chatflowid: string): Partial<CopilotEmbeddedContext> {
-    if (SSR || !chatflowid) {
+    const lifetimeMinutes = this.lifetimeMinutes;
+    if (!lifetimeMinutes || !chatflowid) {
       return {};
     }
     const raw = localStorage.getItem(this.chatStorageKey(chatflowid));
@@ -240,9 +230,18 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
       return {};
     }
     try {
-      const session = JSON.parse(raw) as CopilotEmbeddedChatSession;
-      const messages = session.chatHistory ?? [];
-      return { messages, chatId: session.chatId, products: latestProducts(messages) };
+      const stored = JSON.parse(raw) as StoredChatSession;
+      if (stored.sync + lifetimeMinutes * 60 * 1000 < Date.now()) {
+        localStorage.removeItem(this.chatStorageKey(chatflowid));
+        return {};
+      }
+      const messages = stored.data.chatHistory ?? [];
+      return {
+        messages,
+        sessionId: stored.data.sessionId,
+        chatId: stored.data.chatId,
+        products: latestProducts(messages),
+      };
     } catch {
       // ignore corrupt storage
       return {};
@@ -251,19 +250,29 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
   private persistSession(messages: CopilotEmbeddedChatMessage[]) {
     const chatflowid = this.get('chatflowid');
-    if (SSR || !chatflowid) {
+    if (!this.lifetimeMinutes || !chatflowid) {
       return;
     }
     if (!messages.length) {
       localStorage.removeItem(this.chatStorageKey(chatflowid));
       return;
     }
-    const session: CopilotEmbeddedChatSession = { chatId: this.get('chatId'), chatHistory: messages };
+    const stored: StoredChatSession = {
+      sync: Date.now(),
+      data: { sessionId: this.get('sessionId'), chatId: this.get('chatId'), chatHistory: messages },
+    };
     try {
-      localStorage.setItem(this.chatStorageKey(chatflowid), JSON.stringify(session));
+      localStorage.setItem(this.chatStorageKey(chatflowid), JSON.stringify(stored));
     } catch {
       // storage full or unavailable: keep chatting, the transcript just won't survive a reload
     }
+  }
+
+  /**
+   * Lifetime of the persisted chat, `undefined` if the chat is not persisted.
+   */
+  private get lifetimeMinutes(): number {
+    return SSR ? undefined : this.dataRetention?.copilotEmbedded;
   }
 
   private chatStorageKey(chatflowid: string): string {

@@ -29,10 +29,10 @@ export interface CopilotEmbeddedChatMessage {
 }
 
 /**
- * The persisted conversation: the rendered transcript plus the Flowise chat instance ID.
- * Mirrors the embed's `{chatflowid}_EXTERNAL` localStorage entry.
+ * The persisted conversation: the rendered transcript plus the Flowise session and chat instance IDs.
  */
 export interface CopilotEmbeddedChatSession {
+  sessionId: string;
   chatId?: string;
   chatHistory: CopilotEmbeddedChatMessage[];
 }
