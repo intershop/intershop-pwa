@@ -39,8 +39,8 @@ export interface CopilotEmbeddedContext {
 
 interface PendingMessage {
   question: string;
-  uploads?: CopilotEmbeddedUpload[];
   shownProducts: CopilotEmbeddedShownProduct[];
+  uploads?: CopilotEmbeddedUpload[];
 }
 
 interface StoredChatSession {

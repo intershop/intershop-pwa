@@ -7,12 +7,12 @@ import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-e
  */
 export interface CopilotEmbeddedAnswer {
   text: string;
-  chatId?: string;
-  messageId?: string;
   /** Tool calls executed by the chatflow; the action tools still have to be performed by the PWA. */
   usedTools: CopilotEmbeddedToolCall[];
   /** Products recommended by the `icmSearch` tool. */
   products: CopilotEmbeddedProduct[];
+  chatId?: string;
+  messageId?: string;
   /** Predefined answer options offered by the `PWA_ask_choice` tool. */
   choices?: CopilotEmbeddedChoicePrompt;
 }

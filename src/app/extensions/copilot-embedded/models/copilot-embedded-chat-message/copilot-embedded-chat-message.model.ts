@@ -33,6 +33,6 @@ export interface CopilotEmbeddedChatMessage {
  */
 export interface CopilotEmbeddedChatSession {
   sessionId: string;
-  chatId?: string;
   chatHistory: CopilotEmbeddedChatMessage[];
+  chatId?: string;
 }
