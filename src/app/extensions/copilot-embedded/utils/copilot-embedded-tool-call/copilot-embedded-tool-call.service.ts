@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
@@ -30,7 +29,6 @@ export class CopilotEmbeddedToolCallService {
   private shoppingFacade = inject(ShoppingFacade);
   private checkoutFacade = inject(CheckoutFacade);
   private compareFacade = inject(CompareFacade);
-  private accountFacade = inject(AccountFacade);
   private orderTemplatesFacade = inject(OrderTemplatesFacade);
   private featureToggleService = inject(FeatureToggleService);
 
@@ -141,7 +139,7 @@ export class CopilotEmbeddedToolCallService {
       contact: () => this.navigate('/contact'),
       imprint: () => this.navigate('/page/page.legalnotice'),
       login: () => this.navigate('/login'),
-      logout: () => this.accountFacade.logoutUser(),
+      logout: () => this.navigate('/logout'),
     };
     const requiredFeature: Record<string, FeatureToggleType> = {
       orderTemplates: 'orderTemplates',
