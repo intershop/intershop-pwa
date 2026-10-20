@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, Subject, defer, of } from 'rxjs';
 import { catchError, defaultIfEmpty, map, switchMap, take, takeLast, takeUntil, tap } from 'rxjs/operators';
+import { v4 as uuid } from 'uuid';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { InjectSingle } from 'ish-core/utils/injection';
@@ -49,10 +50,6 @@ interface StoredChatSession {
   data: CopilotEmbeddedChatSession;
 }
 
-function generateSessionId(): string {
-  return `pa-${crypto.randomUUID()}`;
-}
-
 function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbeddedProduct[] {
   for (let i = messages.length - 1; i >= 0; i--) {
     const products = messages[i].products;
@@ -88,7 +85,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     super();
 
     this.set({
-      sessionId: generateSessionId(),
+      sessionId: uuid(),
       messages: [],
       pendingAnswer: '',
       loading: false,
@@ -153,7 +150,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   reset() {
     this.reset$.next();
     this.set({
-      sessionId: generateSessionId(),
+      sessionId: uuid(),
       chatId: undefined,
       messages: [],
       pendingAnswer: '',

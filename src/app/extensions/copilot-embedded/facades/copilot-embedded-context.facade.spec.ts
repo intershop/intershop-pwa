@@ -24,7 +24,7 @@ function storeChat(minutesAgo: number) {
     STORAGE_KEY,
     JSON.stringify({
       sync: Date.now() - minutesAgo * 60 * 1000,
-      data: { sessionId: 'pa-saved', chatId: 'saved-chat', chatHistory },
+      data: { sessionId: 'saved-session', chatId: 'saved-chat', chatHistory },
     })
   );
   return chatHistory;
@@ -70,7 +70,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     expect(context).toBeTruthy();
     expect(context.get('messages')).toBeEmpty();
-    expect(context.get('sessionId')).toStartWith('pa-');
+    expect(context.get('sessionId')).toHaveLength(36);
   });
 
   it('should use the non-streaming request when streaming is not available', () => {
@@ -227,13 +227,13 @@ describe('Copilot Embedded Context Facade', () => {
     createContext();
 
     expect(context.get('messages')).toEqual(history);
-    expect(context.get('sessionId')).toBe('pa-saved');
+    expect(context.get('sessionId')).toBe('saved-session');
     expect(context.get('chatId')).toBe('saved-chat');
 
     context.reset();
 
     expect(context.get('messages')).toBeEmpty();
-    expect(context.get('sessionId')).not.toBe('pa-saved');
+    expect(context.get('sessionId')).not.toBe('saved-session');
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
@@ -242,7 +242,7 @@ describe('Copilot Embedded Context Facade', () => {
     createContext();
 
     expect(context.get('messages')).toBeEmpty();
-    expect(context.get('sessionId')).not.toBe('pa-saved');
+    expect(context.get('sessionId')).not.toBe('saved-session');
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
