@@ -3,6 +3,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { CopilotEmbeddedChatEffects } from './copilot-embedded-chat/copilot-embedded-chat.effects';
 import { CopilotEmbeddedConfigEffects } from './copilot-embedded-config/copilot-embedded-config.effects';
 import { copilotEmbeddedConfigReducer } from './copilot-embedded-config/copilot-embedded-config.reducer';
 import { CopilotEmbeddedState } from './copilot-embedded-store';
@@ -11,7 +12,7 @@ const copilotEmbeddedReducers: ActionReducerMap<CopilotEmbeddedState> = {
   copilotEmbeddedConfig: copilotEmbeddedConfigReducer,
 };
 
-const copilotEmbeddedEffects = [CopilotEmbeddedConfigEffects];
+const copilotEmbeddedEffects = [CopilotEmbeddedChatEffects, CopilotEmbeddedConfigEffects];
 
 @NgModule({
   imports: [

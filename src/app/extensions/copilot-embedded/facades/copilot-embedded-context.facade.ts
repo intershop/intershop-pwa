@@ -9,6 +9,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
 
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import {
+  COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX,
   CopilotEmbeddedChatMessage,
   CopilotEmbeddedChatSession,
   CopilotEmbeddedUserInput,
@@ -276,6 +277,6 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   }
 
   private chatStorageKey(chatflowid: string): string {
-    return `copilot_embedded_chat_${chatflowid}`;
+    return `${COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX}${chatflowid}`;
   }
 }

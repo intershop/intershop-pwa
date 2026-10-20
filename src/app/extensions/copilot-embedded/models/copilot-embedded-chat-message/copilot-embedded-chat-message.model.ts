@@ -29,6 +29,11 @@ export interface CopilotEmbeddedChatMessage {
 }
 
 /**
+ * localStorage key prefix of the persisted conversations, completed by the chatflow ID.
+ */
+export const COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX = 'copilot_embedded_chat_';
+
+/**
  * The persisted conversation: the rendered transcript plus the Flowise session and chat instance IDs.
  */
 export interface CopilotEmbeddedChatSession {
