@@ -152,7 +152,7 @@ export class MessagesEffects {
               extendedTimeOut: 3000,
               progressBar: false,
               closeButton: timeOut === 0,
-              enableHtml: true,
+              enableHtml: payload.enableHtml ?? true,
               tapToDismiss: true,
               positionClass: deviceType === 'desktop' ? 'toast-top-full-width' : 'toast-bottom-center',
             },

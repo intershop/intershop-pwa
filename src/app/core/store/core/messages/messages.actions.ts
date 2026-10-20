@@ -27,6 +27,11 @@ export interface MessagesPayloadType {
    * duration in ms
    */
   duration?: number;
+
+  /**
+   * render message as HTML (default: true), set to false for untrusted content, e.g. server messages (title is always text)
+   */
+  enableHtml?: boolean;
 }
 
 export const displayInfoMessage = createAction('[Message] Info Toast', payload<MessagesPayloadType>());
