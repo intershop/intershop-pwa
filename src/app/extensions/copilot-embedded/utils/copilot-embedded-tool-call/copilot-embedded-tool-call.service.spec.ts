@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
-import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
@@ -20,7 +19,6 @@ describe('Copilot Embedded Tool Call Service', () => {
   let checkoutFacade: CheckoutFacade;
   let compareFacade: CompareFacade;
   let orderTemplatesFacade: OrderTemplatesFacade;
-  let accountFacade: AccountFacade;
   let featureToggleService: FeatureToggleService;
 
   beforeEach(() => {
@@ -29,7 +27,6 @@ describe('Copilot Embedded Tool Call Service', () => {
     checkoutFacade = mock(CheckoutFacade);
     compareFacade = mock(CompareFacade);
     orderTemplatesFacade = mock(OrderTemplatesFacade);
-    accountFacade = mock(AccountFacade);
     featureToggleService = mock(FeatureToggleService);
 
     when(checkoutFacade.basket$).thenReturn(of(undefined));
@@ -37,7 +34,6 @@ describe('Copilot Embedded Tool Call Service', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AccountFacade, useFactory: () => instance(accountFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: CompareFacade, useFactory: () => instance(compareFacade) },
         { provide: FeatureToggleService, useFactory: () => instance(featureToggleService) },
@@ -109,10 +105,10 @@ describe('Copilot Embedded Tool Call Service', () => {
       verify(router.navigateByUrl('/product/123')).once();
     });
 
-    it('should log out on page "logout"', () => {
+    it('should navigate to the logout route on page "logout"', () => {
       toolCallService.handleToolCalls([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'logout' } }]);
 
-      verify(accountFacade.logoutUser()).once();
+      verify(router.navigateByUrl('/logout')).once();
     });
 
     it('should not navigate to order templates if the feature is disabled', () => {
