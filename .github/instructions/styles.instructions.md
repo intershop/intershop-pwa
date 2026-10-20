@@ -35,5 +35,6 @@ applyTo: '**/*.scss,**/*.html'
 
 ### Misc
 
+- Put static styles in the component stylesheet instead of `style` attributes; use `[style.*]` bindings only for values computed at runtime (e.g. progress widths, swatch colors).
 - Use `!important` only with a one-line comment stating why a specificity fix doesn't work.
 - Style a child component from its own style sheet. When a rule must reach into another component's view (e.g. projected or third-party content), put it in a global partial (see _Stylesheets & scope_) instead of using `::ng-deep`.
