@@ -13,3 +13,4 @@ applyTo: '**'
 - ❌ Mutate inputs or observable streams directly
 - ❌ Use inline style manipulation
 - ❌ Use hardcoded magic strings (use constants or enums instead)
+- ❌ Use `crypto.randomUUID()` (generate UUIDs with `import { v4 as uuid } from 'uuid'`; `crypto.randomUUID()` is only available in secure contexts)
