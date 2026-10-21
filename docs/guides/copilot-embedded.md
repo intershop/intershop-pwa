@@ -11,6 +11,14 @@ The Intershop PWA provides an integration with the Copilot Embedded, an AI agent
 
 Unlike the [Intershop Copilot for Buyers](./copilot.md) - which embeds a pre-built chat UI - the PWA owns the whole Copilot Embedded UI and all REST interaction with the underlying [Flowise](https://flowiseai.com/) chatflow.
 
+> [!NOTE]
+> The Product Advisor is an experimental feature. Its functionality and configuration can change in future releases.
+
+> [!IMPORTANT]
+> Before enabling the Product Advisor, review its data flows and applicable privacy requirements for your deployment.
+> Inform users about chat data stored in the browser and sent to the configured Flowise chatflow.
+> Provide any privacy notice or consent mechanism required for your deployment.
+
 ## Configuration
 
 Enable the `copilotEmbedded` feature toggle and provide the Flowise connection details.
