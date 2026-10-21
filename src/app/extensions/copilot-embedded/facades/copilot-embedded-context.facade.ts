@@ -2,7 +2,17 @@ import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
 import { EMPTY, Observable, Subject, defer, of } from 'rxjs';
-import { catchError, defaultIfEmpty, map, switchMap, take, takeLast, takeUntil, tap } from 'rxjs/operators';
+import {
+  catchError,
+  defaultIfEmpty,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  takeLast,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
@@ -74,6 +84,7 @@ function collectToolErrors(tools: CopilotEmbeddedToolCall[]): Pick<CopilotEmbedd
 export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext> {
   private send$ = new Subject<PendingMessage>();
   private reset$ = new Subject<void>();
+  private streamingAvailable$: Observable<boolean>;
 
   constructor(
     private copilotEmbeddedFacade: CopilotEmbeddedFacade,
@@ -83,6 +94,8 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
     @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
   ) {
     super();
+
+    this.streamingAvailable$ = defer(() => this.chatService.isStreamingAvailable$()).pipe(shareReplay(1));
 
     this.set({
       sessionId: uuid(),
@@ -162,9 +175,9 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   }
 
   private answer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {
-    return this.chatService
-      .isStreamingAvailable$()
-      .pipe(switchMap(streaming => (streaming ? this.streamAnswer$(message) : this.fetchAnswer$(message))));
+    return this.streamingAvailable$.pipe(
+      switchMap(streaming => (streaming ? this.streamAnswer$(message) : this.fetchAnswer$(message)))
+    );
   }
 
   private fetchAnswer$(message: PendingMessage): Observable<CopilotEmbeddedAnswer> {

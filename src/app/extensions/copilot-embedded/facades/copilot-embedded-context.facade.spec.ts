@@ -181,6 +181,16 @@ describe('Copilot Embedded Context Facade', () => {
     expect(context.get('messages')).toHaveLength(1);
   });
 
+  it('should check the streaming availability only once', () => {
+    createContext();
+
+    context.send({ question: 'find laptops' });
+    context.send({ question: 'find tablets' });
+
+    expect(chatService.isStreamingAvailable$).toHaveBeenCalledTimes(1);
+    expect(chatService.sendMessage).toHaveBeenCalledTimes(2);
+  });
+
   it('should accept new messages after a failed request', () => {
     chatService.sendMessage.mockReturnValueOnce(throwError(() => new Error('offline')));
     createContext();
