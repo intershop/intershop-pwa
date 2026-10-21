@@ -181,6 +181,20 @@ describe('Copilot Embedded Context Facade', () => {
     expect(context.get('messages')).toHaveLength(1);
   });
 
+  it('should drop the partial answer when a stream fails', () => {
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    const stream$ = new Subject<CopilotEmbeddedAnswer>();
+    chatService.streamMessage.mockReturnValue(stream$);
+    createContext();
+
+    context.send({ question: 'help' });
+    stream$.next(answer({ text: 'A partial' }));
+    stream$.error(new Error('offline'));
+
+    expect(context.get('error')).toBe('copilot.embedded.error.generic');
+    expect(context.get('pendingAnswer')).toBeEmpty();
+  });
+
   it('should check the streaming availability only once', () => {
     createContext();
 
@@ -267,10 +281,11 @@ describe('Copilot Embedded Context Facade', () => {
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY)).data.chatHistory).toHaveLength(1);
   });
 
-  it('should ignore a malformed saved transcript', () => {
+  it('should discard a malformed saved transcript', () => {
     localStorage.setItem(STORAGE_KEY, '{invalid json');
     createContext();
 
     expect(context.get('messages')).toBeEmpty();
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 });

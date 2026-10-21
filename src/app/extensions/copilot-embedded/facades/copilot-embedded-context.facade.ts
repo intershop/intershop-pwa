@@ -158,7 +158,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
   /**
    * Starts a fresh conversation: cancels a running request, clears the transcript, rotates the
-   * session ID and drops the persisted chat (clears the chatflow memory).
+   * session ID and drops the persisted chat (starts a new chatflow memory).
    */
   reset() {
     this.reset$.next();
@@ -228,7 +228,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
   }
 
   private fail() {
-    this.set({ error: 'copilot.embedded.error.generic', loading: false });
+    this.set({ error: 'copilot.embedded.error.generic', loading: false, pendingAnswer: '' });
   }
 
   private restoreSession(chatflowid: string): Partial<CopilotEmbeddedContext> {
@@ -254,7 +254,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
         products: latestProducts(messages),
       };
     } catch {
-      // ignore corrupt storage
+      localStorage.removeItem(this.chatStorageKey(chatflowid));
       return {};
     }
   }
