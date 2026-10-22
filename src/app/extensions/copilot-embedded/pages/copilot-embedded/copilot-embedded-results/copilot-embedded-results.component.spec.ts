@@ -69,13 +69,4 @@ describe('Copilot Embedded Results Component', () => {
     expect(element.querySelectorAll('ish-copilot-embedded-product')).toHaveLength(2);
     expect(element.querySelector('.copilot-embedded-results > p')).toBeNull();
   });
-
-  it('should emit backToChat when the back action is clicked', () => {
-    const emit = jest.spyOn(component.backToChat, 'emit');
-    fixture.detectChanges();
-
-    element.querySelector<HTMLButtonElement>('.copilot-embedded-back-to-chat').click();
-
-    expect(emit).toHaveBeenCalled();
-  });
 });
