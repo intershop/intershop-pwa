@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+
+import { CopilotEmbeddedIconComponent } from '../copilot-embedded-icon/copilot-embedded-icon.component';
 
 import { CopilotEmbeddedHeaderComponent } from './copilot-embedded-header.component';
 
@@ -11,7 +14,7 @@ describe('Copilot Embedded Header Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TranslatePipe],
-      declarations: [CopilotEmbeddedHeaderComponent],
+      declarations: [CopilotEmbeddedHeaderComponent, MockComponent(CopilotEmbeddedIconComponent)],
       providers: [provideTranslateService()],
     }).compileComponents();
   });

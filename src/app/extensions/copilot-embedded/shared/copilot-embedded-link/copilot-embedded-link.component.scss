@@ -17,16 +17,18 @@
 
   .bi {
     padding-right: divide($space-default, 3);
-    color: $CORPORATE-PRIMARY;
   }
 }
 
 .copilot-embedded-mobile .bi {
-  padding-right: 7px;
+  padding-right: ($space-default * 0.5);
   font-size: 22px;
-  color: $CORPORATE-PRIMARY;
 
   @media (width < 410px) {
-    padding-right: 4px;
+    padding-right: divide($space-default, 4);
   }
+}
+
+.bi {
+  color: $CORPORATE-PRIMARY;
 }

@@ -1,0 +1,20 @@
+@let product = product$ | async;
+@if (product && !product.failed) {
+  <div class="copilot-embedded-product" [attr.data-testing-sku]="product.sku">
+    <div class="copilot-embedded-product-image">
+      <ish-product-image imageType="S" [link]="true" />
+      <ish-product-label />
+    </div>
+    <div class="copilot-embedded-product-details">
+      <ish-product-name />
+      <ish-product-id />
+      <ish-product-price [showInformationalPrice]="true" />
+      <ish-product-item-variations />
+      <ish-product-add-to-basket cssClass="w-100" />
+      <ish-product-choose-variation />
+    </div>
+  </div>
+}
+@if (loading$ | async) {
+  <ish-loading />
+}

@@ -1,5 +1,5 @@
 @if (uploadError) {
-  <p class="copilot-embedded-upload-error text-danger small mb-1">
+  <p class="copilot-embedded-upload-error">
     {{ uploadError | translate: { '0': maxImageSizeMb } }}
   </p>
 }
@@ -9,7 +9,7 @@
     <img [alt]="pendingUpload.name" [src]="pendingUpload.data" />
     <span class="copilot-embedded-upload-name">{{ pendingUpload.name }}</span>
     <button
-      class="btn copilot-embedded-upload-remove"
+      class="btn btn-link copilot-embedded-upload-remove"
       type="button"
       [attr.aria-label]="'copilot.embedded.input.remove_image' | translate"
       (click)="removeUpload()"
@@ -41,7 +41,7 @@
       (change)="onFileSelected($event)"
     />
     <button
-      class="btn"
+      class="btn btn-link"
       type="button"
       [attr.aria-label]="'copilot.embedded.input.camera' | translate"
       [title]="'copilot.embedded.input.camera' | translate"
