@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -8,7 +8,6 @@ import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../faca
 
 /**
  * The Copilot Embedded page lays out the chat and results components.
- * The conversation state is held by the {@link CopilotEmbeddedContextFacade}.
  */
 @Component({
   selector: 'ish-copilot-embedded-page',
@@ -18,9 +17,9 @@ import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../faca
   providers: [CopilotEmbeddedContextFacade],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopilotEmbeddedPageComponent implements OnInit {
-  deviceType$: Observable<DeviceType>;
-  context$: Observable<CopilotEmbeddedContext>;
+export class CopilotEmbeddedPageComponent {
+  deviceType$: Observable<DeviceType> = this.appFacade.deviceType$;
+  context$: Observable<CopilotEmbeddedContext> = this.context.select();
 
   activeNavId = 'chat';
 
@@ -28,11 +27,6 @@ export class CopilotEmbeddedPageComponent implements OnInit {
     private appFacade: AppFacade,
     private context: CopilotEmbeddedContextFacade
   ) {}
-
-  ngOnInit() {
-    this.deviceType$ = this.appFacade.deviceType$;
-    this.context$ = this.context.select();
-  }
 
   resetSession() {
     this.context.reset();
