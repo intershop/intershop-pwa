@@ -6,13 +6,14 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedFacade } from '../../facades/copilot-embedded.facade';
 import { CopilotEmbeddedAnswer } from '../../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import {
-  CopilotEmbeddedChatRequest,
+  CopilotEmbeddedRequest,
   CopilotEmbeddedRequestOptions,
 } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedService } from '../../services/copilot-embedded/copilot-embedded.service';
@@ -42,6 +43,7 @@ export class CopilotEmbeddedChatService {
    */
   isStreamingAvailable$(): Observable<boolean> {
     return this.copilotEmbeddedFacade.configuration$.pipe(
+      whenTruthy(),
       take(1),
       switchMap(config =>
         typeof config.streaming === 'boolean'
@@ -72,9 +74,9 @@ export class CopilotEmbeddedChatService {
   private chatRequest$(
     question: string,
     options: CopilotEmbeddedRequestOptions
-  ): Observable<[CopilotEmbeddedConfig, CopilotEmbeddedChatRequest]> {
+  ): Observable<[CopilotEmbeddedConfig, CopilotEmbeddedRequest]> {
     return combineLatest([
-      this.copilotEmbeddedFacade.configuration$,
+      this.copilotEmbeddedFacade.configuration$.pipe(whenTruthy()),
       this.appFacade.getRestEndpointWithContext$,
       this.appFacade.currentLocale$,
       this.apiTokenService.apiToken$,
@@ -88,7 +90,7 @@ export class CopilotEmbeddedChatService {
       map(
         ([config, restEndpoint, currentLocale, userToken, lineItems, orderTemplates]): [
           CopilotEmbeddedConfig,
-          CopilotEmbeddedChatRequest,
+          CopilotEmbeddedRequest,
         ] => [
           config,
           {

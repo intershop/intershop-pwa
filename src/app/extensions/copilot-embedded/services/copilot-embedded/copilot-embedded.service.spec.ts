@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CopilotEmbeddedAnswerData } from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
-import { CopilotEmbeddedChatRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
+import { CopilotEmbeddedRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 
 import { CopilotEmbeddedService } from './copilot-embedded.service';
 
@@ -15,7 +15,7 @@ const copilotEmbeddedConfig: CopilotEmbeddedConfig = {
 
 const predictionUrl = 'https://flowise.example.com/api/v1/prediction/chatflow-123';
 
-function chatRequest(overrides: Partial<CopilotEmbeddedChatRequest> = {}): CopilotEmbeddedChatRequest {
+function chatRequest(overrides: Partial<CopilotEmbeddedRequest> = {}): CopilotEmbeddedRequest {
   return { question: 'hi', vars: {}, basket: [], orderTemplates: [], shownProducts: [], ...overrides };
 }
 

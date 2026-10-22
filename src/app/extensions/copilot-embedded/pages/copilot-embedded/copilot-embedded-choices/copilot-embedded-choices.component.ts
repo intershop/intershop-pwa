@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { CopilotEmbeddedChoicePrompt } from '../../../models/copilot-embedded-choice/copilot-embedded-choice.model';
+import { CopilotEmbeddedChoice } from '../../../models/copilot-embedded-choice/copilot-embedded-choice.model';
 
 @Component({
   selector: 'ish-copilot-embedded-choices',
@@ -19,7 +19,7 @@ import { CopilotEmbeddedChoicePrompt } from '../../../models/copilot-embedded-ch
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopilotEmbeddedChoicesComponent implements AfterViewInit {
-  @Input({ required: true }) choices: CopilotEmbeddedChoicePrompt;
+  @Input({ required: true }) choices: CopilotEmbeddedChoice;
 
   @Output() readonly answer = new EventEmitter<string>();
 

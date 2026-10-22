@@ -1,4 +1,4 @@
-import { CopilotEmbeddedChoicePrompt } from '../copilot-embedded-choice/copilot-embedded-choice.model';
+import { CopilotEmbeddedChoice } from '../copilot-embedded-choice/copilot-embedded-choice.model';
 import { CopilotEmbeddedProduct } from '../copilot-embedded-product/copilot-embedded-product.model';
 import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
@@ -14,5 +14,5 @@ export interface CopilotEmbeddedAnswer {
   chatId?: string;
   messageId?: string;
   /** Predefined answer options offered by the `PWA_ask_choice` tool. */
-  choices?: CopilotEmbeddedChoicePrompt;
+  choices?: CopilotEmbeddedChoice;
 }

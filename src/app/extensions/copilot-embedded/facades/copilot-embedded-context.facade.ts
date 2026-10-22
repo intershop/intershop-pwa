@@ -17,14 +17,10 @@ import { v4 as uuid } from 'uuid';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { InjectSingle } from 'ish-core/utils/injection';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
-import {
-  COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX,
-  CopilotEmbeddedChatMessage,
-  CopilotEmbeddedChatSession,
-  CopilotEmbeddedUserInput,
-} from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedProduct } from '../models/copilot-embedded-product/copilot-embedded-product.model';
 import {
   CopilotEmbeddedRequestOptions,
@@ -32,10 +28,21 @@ import {
 } from '../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedToolCall } from '../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 import { CopilotEmbeddedUpload } from '../models/copilot-embedded-upload/copilot-embedded-upload.model';
+import { COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX } from '../utils/copilot-embedded-chat/copilot-embedded-chat-storage.helper';
 import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
 import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service';
 
 import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
+
+/**
+ * The input the user sends, which becomes a user chat message.
+ */
+export interface CopilotEmbeddedUserInput {
+  question: string;
+  uploads?: CopilotEmbeddedUpload[];
+  /** Small JPEG thumbnail of the attached image, kept as `imageUrl` of the chat message. */
+  thumbnail?: string;
+}
 
 export interface CopilotEmbeddedContext {
   chatflowid: string;
@@ -58,6 +65,15 @@ interface PendingMessage {
 interface StoredChatSession {
   sync: number;
   data: CopilotEmbeddedChatSession;
+}
+
+/**
+ * The persisted conversation: the rendered transcript plus the Flowise session and chat instance IDs.
+ */
+interface CopilotEmbeddedChatSession {
+  sessionId: string;
+  chatHistory: CopilotEmbeddedChatMessage[];
+  chatId?: string;
 }
 
 function latestProducts(messages: CopilotEmbeddedChatMessage[]): CopilotEmbeddedProduct[] {
@@ -108,6 +124,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
     this.connect(
       this.copilotEmbeddedFacade.configuration$.pipe(
+        whenTruthy(),
         take(1),
         map(config => ({ chatflowid: config.chatflowid, ...this.restoreSession(config.chatflowid) }))
       )

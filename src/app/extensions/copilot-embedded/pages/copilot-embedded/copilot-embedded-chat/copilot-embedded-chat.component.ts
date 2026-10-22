@@ -5,11 +5,12 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import {
-  CopilotEmbeddedChatMessage,
+  CopilotEmbeddedContext,
+  CopilotEmbeddedContextFacade,
   CopilotEmbeddedUserInput,
-} from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+} from '../../../facades/copilot-embedded-context.facade';
+import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 
 /**
  * Displays the conversation held by the {@link CopilotEmbeddedContextFacade} of the surrounding page.

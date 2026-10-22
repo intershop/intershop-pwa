@@ -25,7 +25,7 @@ export interface CopilotEmbeddedRequestOptions {
 /**
  * A chat message with the PWA context resolved, ready to be sent to the Flowise chatflow.
  */
-export interface CopilotEmbeddedChatRequest {
+export interface CopilotEmbeddedRequest {
   question: string;
   /** Chatflow variables sent as `overrideConfig.vars`. */
   vars: Record<string, unknown>;

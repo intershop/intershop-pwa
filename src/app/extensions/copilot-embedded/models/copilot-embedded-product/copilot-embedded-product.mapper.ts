@@ -1,7 +1,14 @@
 import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
-import { CopilotEmbeddedProductData, CopilotEmbeddedProductSearchOutput } from './copilot-embedded-product.interface';
+import { CopilotEmbeddedProductData } from './copilot-embedded-product.interface';
 import { CopilotEmbeddedProduct } from './copilot-embedded-product.model';
+
+/**
+ * Raw `icmSearch` tool output: products are grouped by promotions under `output`.
+ */
+interface CopilotEmbeddedProductSearchOutput {
+  output?: { products?: CopilotEmbeddedProductData[] }[];
+}
 
 const SEARCH_TOOL = 'icmSearch';
 
