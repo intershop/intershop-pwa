@@ -6,11 +6,10 @@
   flex-direction: column;
   min-height: 0;
   padding-right: $space-default;
-  padding-left: $space-default;
+  padding-left: $space-default * 0.5;
   overflow-y: auto;
 
   .copilot-embedded-message {
-    max-width: 80%;
     padding: ($space-default * 1.25) ($space-default * 1.5);
     margin-bottom: $space-default;
 
@@ -34,12 +33,14 @@
 
     &.copilot-embedded-message-user {
       align-self: flex-end;
+      max-width: 80%; // constrain user messages to 80% of the container width
       color: $color-inverse;
       background-color: $CORPORATE-PRIMARY;
       border-radius: 24px 0 24px 24px;
     }
 
     &.copilot-embedded-message-bot {
+      // width can be 100% because bot messages are aligned to the start and do not need to be constrained like user messages
       align-self: flex-start;
       background-color: $color-inverse;
       border-radius: 24px 24px 24px 0;

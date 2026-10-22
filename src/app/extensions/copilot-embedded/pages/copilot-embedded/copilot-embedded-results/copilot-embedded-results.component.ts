@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
@@ -15,8 +15,6 @@ import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopilotEmbeddedResultsComponent implements OnInit {
-  @Output() readonly backToChat = new EventEmitter<void>();
-
   products$: Observable<CopilotEmbeddedProduct[]>;
 
   constructor(private context: CopilotEmbeddedContextFacade) {}
