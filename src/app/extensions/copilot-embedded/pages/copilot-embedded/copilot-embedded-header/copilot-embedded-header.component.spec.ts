@@ -31,7 +31,7 @@ describe('Copilot Embedded Header Component', () => {
   it('should display the title and subtitle', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('.copilot-embedded-header-title').textContent.trim()).toBe('copilot.embedded.title');
+    expect(element.querySelector('h1').textContent.trim()).toBe('copilot.embedded.title');
     expect(element.querySelector('.copilot-embedded-header-subtitle').textContent.trim()).toBe(
       'copilot.embedded.subtitle'
     );

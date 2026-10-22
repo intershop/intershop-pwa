@@ -6,15 +6,15 @@
   align-items: center;
   padding: ($space-default * 0.75) 0;
 
+  h1,
   p {
     margin: 0;
   }
 
-  .copilot-embedded-header-title {
+  h1 {
     font-family: $font-family-bold;
     font-size: 16px;
     line-height: 20px;
-    text-transform: uppercase;
   }
 
   .copilot-embedded-header-subtitle {
