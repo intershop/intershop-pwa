@@ -9,6 +9,7 @@ import { deepEqual, instance, mock, verify, when } from 'ts-mockito';
 import { CopilotEmbeddedContext, CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
 import { CopilotEmbeddedHeaderComponent } from '../copilot-embedded-header/copilot-embedded-header.component';
+import { CopilotEmbeddedIconComponent } from '../copilot-embedded-icon/copilot-embedded-icon.component';
 import { CopilotEmbeddedInputComponent } from '../copilot-embedded-input/copilot-embedded-input.component';
 import { CopilotEmbeddedMessagesComponent } from '../copilot-embedded-messages/copilot-embedded-messages.component';
 
@@ -54,6 +55,7 @@ describe('Copilot Embedded Chat Component', () => {
         CopilotEmbeddedChatComponent,
         CopilotEmbeddedInputComponent,
         MockComponent(CopilotEmbeddedHeaderComponent),
+        MockComponent(CopilotEmbeddedIconComponent),
         MockComponent(CopilotEmbeddedMessagesComponent),
       ],
       providers: [
@@ -131,7 +133,7 @@ describe('Copilot Embedded Chat Component', () => {
     fixture.detectChanges();
 
     expect(element.querySelector('.copilot-embedded-welcome')).toBeTruthy();
-    expect(element.querySelectorAll('.copilot-embedded-prompt-badges button')).toHaveLength(4);
+    expect(element.querySelectorAll('.copilot-embedded-prompts button')).toHaveLength(4);
   });
 
   it('should reset the conversation from the header', () => {
@@ -164,7 +166,7 @@ describe('Copilot Embedded Chat Component', () => {
     it('should send a welcome prompt', () => {
       fixture.detectChanges();
 
-      element.querySelector<HTMLButtonElement>('.copilot-embedded-prompt-badges button').click();
+      element.querySelector<HTMLButtonElement>('.copilot-embedded-prompts button').click();
 
       verify(context.send(deepEqual({ question: 'copilot.embedded.prompt_1' }))).once();
     });

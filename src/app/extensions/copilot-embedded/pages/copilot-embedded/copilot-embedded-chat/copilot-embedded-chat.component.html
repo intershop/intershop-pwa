@@ -14,19 +14,17 @@
   } @else {
     <div class="copilot-embedded-welcome">
       @if (deviceType !== 'mobile') {
-        <div class="copilot-embedded-icon">
-          <i class="bi bi-stars"></i>
-        </div>
+        <ish-copilot-embedded-icon size="large" />
         <h1>{{ 'copilot.embedded.headline' | translate }}</h1>
       }
 
       <p>{{ 'copilot.embedded.intro' | translate }}</p>
 
-      <div class="copilot-embedded-prompt-badges row">
+      <div class="copilot-embedded-prompts row">
         @for (promptKey of promptKeys; track promptKey) {
           @let prompt = promptKey | translate;
           <div class="col-12 col-sm-6">
-            <button class="badge" type="button" (click)="chatInput.submit(prompt)">
+            <button type="button" (click)="chatInput.submit(prompt)">
               <span>{{ prompt }}</span>
             </button>
           </div>
@@ -36,7 +34,7 @@
   }
 
   @if (context?.error) {
-    <p class="copilot-embedded-error text-danger small mb-1">{{ context.error | translate }}</p>
+    <p class="copilot-embedded-error">{{ context.error | translate }}</p>
   }
 
   @if (context?.toolErrors.length) {

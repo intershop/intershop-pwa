@@ -78,6 +78,18 @@ describe('Copilot Embedded Choices Component', () => {
       expect(capture(emitter.emit).last()).toEqual(['Docking station, Headset']);
     });
 
+    it('should render a selected chip as primary button', () => {
+      fixture.detectChanges();
+
+      const chip = element.querySelectorAll<HTMLButtonElement>('.copilot-embedded-choice-chip')[0];
+      chip.click();
+      fixture.detectChanges();
+
+      expect(chip.classList).toContain('btn-primary');
+      expect(chip.classList).not.toContain('btn-secondary');
+      expect(chip.getAttribute('aria-pressed')).toBe('true');
+    });
+
     it('should deselect an option on a second click', () => {
       fixture.detectChanges();
 

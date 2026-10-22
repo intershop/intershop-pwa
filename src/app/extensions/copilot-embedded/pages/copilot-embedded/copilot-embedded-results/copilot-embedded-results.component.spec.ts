@@ -6,10 +6,10 @@ import { BehaviorSubject } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
-import { ProductItemComponent } from 'ish-shared/components/product/product-item/product-item.component';
 
 import { CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product/copilot-embedded-product.model';
+import { CopilotEmbeddedProductComponent } from '../copilot-embedded-product/copilot-embedded-product.component';
 
 import { CopilotEmbeddedResultsComponent } from './copilot-embedded-results.component';
 
@@ -27,7 +27,7 @@ describe('Copilot Embedded Results Component', () => {
     await TestBed.configureTestingModule({
       declarations: [
         CopilotEmbeddedResultsComponent,
-        MockComponent(ProductItemComponent),
+        MockComponent(CopilotEmbeddedProductComponent),
         MockDirective(ProductContextDirective),
       ],
       imports: [TranslatePipe],
@@ -56,16 +56,17 @@ describe('Copilot Embedded Results Component', () => {
     expect(element.querySelector('.copilot-embedded-results > p').textContent.trim()).toBe(
       'copilot.embedded.results.intro'
     );
-    expect(element.querySelectorAll('ish-product-item')).toHaveLength(0);
+    expect(element.querySelectorAll('ish-copilot-embedded-product')).toHaveLength(0);
   });
 
-  it('should render one row product item for each result', () => {
+  it('should render one product for each result', () => {
     products$.next([{ sku: 'SKU-1' }, { sku: 'SKU-2' }]);
     fixture.detectChanges();
 
-    const productItems = fixture.debugElement.queryAll(By.directive(ProductItemComponent));
-    expect(productItems).toHaveLength(2);
-    expect(productItems.map(item => item.componentInstance.displayType)).toEqual(['row', 'row']);
+    const products = fixture.debugElement.queryAll(By.directive(ProductContextDirective));
+    expect(products).toHaveLength(2);
+    expect(products.map(product => product.injector.get(ProductContextDirective).sku)).toEqual(['SKU-1', 'SKU-2']);
+    expect(element.querySelectorAll('ish-copilot-embedded-product')).toHaveLength(2);
     expect(element.querySelector('.copilot-embedded-results > p')).toBeNull();
   });
 

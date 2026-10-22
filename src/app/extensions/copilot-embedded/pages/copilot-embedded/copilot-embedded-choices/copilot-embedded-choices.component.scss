@@ -10,57 +10,16 @@
     outline: none;
   }
 
+  // chips reuse the secondary/primary button appearance; only the chip shape differs
   .copilot-embedded-choice-chip {
+    width: auto;
     padding: ($space-default * 0.5) ($space-default * 0.75);
-    font-size: 14px;
+    margin: 0;
+    font-family: $font-family-regular;
+    font-size: $font-size-base;
     line-height: 20px;
-    color: $CORPORATE-PRIMARY;
-    background-color: $color-inverse;
-    border: 1px solid $CORPORATE-PRIMARY;
-    border-radius: 12px;
-
-    // inactive chip behaves like a secondary button
-    &:hover,
-    &:focus,
-    &.focus {
-      color: $CORPORATE-SECONDARY;
-      background-color: $color-tertiary;
-      border-color: $CORPORATE-SECONDARY;
-      box-shadow: none;
-    }
-
-    &:focus-visible {
-      box-shadow: none;
-    }
-
-    &:not(:disabled):not(.disabled):active,
-    &:not(:disabled):not(.disabled).active {
-      background-color: $color-quaternary;
-      border-color: $CORPORATE-DARK;
-      box-shadow: none;
-    }
-
-    // selected chip behaves like a primary button
-    &.selected {
-      color: $color-inverse;
-      background-color: $CORPORATE-PRIMARY;
-      border-color: $CORPORATE-PRIMARY;
-
-      &:hover,
-      &:focus,
-      &.focus {
-        background-color: $CORPORATE-SECONDARY;
-        border-color: $CORPORATE-SECONDARY;
-        box-shadow: none;
-      }
-
-      &:not(:disabled):not(.disabled):active,
-      &:not(:disabled):not(.disabled).active {
-        background-color: $CORPORATE-DARK;
-        border-color: $CORPORATE-DARK;
-        box-shadow: none;
-      }
-    }
+    text-transform: none;
+    border-radius: ($space-default * 0.75);
   }
 
   .copilot-embedded-choice-confirm {

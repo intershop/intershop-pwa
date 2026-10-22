@@ -8,10 +8,11 @@
   @if (choices.multiSelect) {
     @for (option of choices.options; track option) {
       <button
-        class="copilot-embedded-choice-chip"
+        class="copilot-embedded-choice-chip btn"
         type="button"
         [attr.aria-pressed]="selectedOptions.has(option)"
-        [class.selected]="selectedOptions.has(option)"
+        [class.btn-primary]="selectedOptions.has(option)"
+        [class.btn-secondary]="!selectedOptions.has(option)"
         (click)="toggleOption(option)"
       >
         {{ option }}
@@ -28,7 +29,7 @@
     </button>
   } @else {
     @for (option of choices.options; track option) {
-      <button class="copilot-embedded-choice-chip btn-secondary" type="button" (click)="answer.emit(option)">
+      <button class="copilot-embedded-choice-chip btn btn-secondary" type="button" (click)="answer.emit(option)">
         {{ option }}
       </button>
     }
