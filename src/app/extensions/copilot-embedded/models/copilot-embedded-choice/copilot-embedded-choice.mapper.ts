@@ -1,7 +1,7 @@
 import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 import { CopilotEmbeddedChoiceData } from './copilot-embedded-choice.interface';
-import { CopilotEmbeddedChoicePrompt } from './copilot-embedded-choice.model';
+import { CopilotEmbeddedChoice } from './copilot-embedded-choice.model';
 
 const CHOICE_TOOL = 'PWA_ask_choice';
 
@@ -19,12 +19,12 @@ export class CopilotEmbeddedChoiceMapper {
    * @param tools The tool calls of a chatflow response (`usedTools`).
    * @returns     The choice prompt or `undefined` when the tool was not called or carries no usable options.
    */
-  static fromToolCalls(tools: CopilotEmbeddedToolCall[]): CopilotEmbeddedChoicePrompt {
+  static fromToolCalls(tools: CopilotEmbeddedToolCall[]): CopilotEmbeddedChoice {
     const call = tools?.find(tool => tool?.tool === CHOICE_TOOL);
     return call ? CopilotEmbeddedChoiceMapper.fromData(call.toolInput as CopilotEmbeddedChoiceData) : undefined;
   }
 
-  private static fromData(data: CopilotEmbeddedChoiceData): CopilotEmbeddedChoicePrompt {
+  private static fromData(data: CopilotEmbeddedChoiceData): CopilotEmbeddedChoice {
     const options = parseOptions(data?.options);
     if (!options.length) {
       return;

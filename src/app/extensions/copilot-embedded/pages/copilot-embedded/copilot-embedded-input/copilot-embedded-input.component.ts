@@ -16,7 +16,7 @@ import { debounceTime, fromEvent, merge } from 'rxjs';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 
-import { CopilotEmbeddedUserInput } from '../../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedUserInput } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedUploadHelper } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.helper';
 import { CopilotEmbeddedUpload } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.model';
 

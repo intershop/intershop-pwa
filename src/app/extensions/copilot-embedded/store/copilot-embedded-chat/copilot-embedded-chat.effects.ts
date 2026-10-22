@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs/operators';
 
 import { resetUserData } from 'ish-core/store/customer/user';
 
-import { COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX } from '../../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { COPILOT_EMBEDDED_CHAT_STORAGE_KEY_PREFIX } from '../../utils/copilot-embedded-chat/copilot-embedded-chat-storage.helper';
 
 @Injectable()
 export class CopilotEmbeddedChatEffects {

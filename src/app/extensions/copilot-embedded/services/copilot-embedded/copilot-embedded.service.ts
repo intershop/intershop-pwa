@@ -11,7 +11,7 @@ import {
 import { CopilotEmbeddedAnswerMapper } from '../../models/copilot-embedded-answer/copilot-embedded-answer.mapper';
 import { CopilotEmbeddedAnswer } from '../../models/copilot-embedded-answer/copilot-embedded-answer.model';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
-import { CopilotEmbeddedChatRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
+import { CopilotEmbeddedRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedUpload } from '../../models/copilot-embedded-upload/copilot-embedded-upload.model';
 
 /**
@@ -110,7 +110,7 @@ export class CopilotEmbeddedService {
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    * @returns        The chatflow answer including the recommended products and answer choices.
    */
-  sendMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedChatRequest): Observable<CopilotEmbeddedAnswer> {
+  sendMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
     const { url, body } = this.buildRequest(config, request);
     return this.httpClient
       .post<CopilotEmbeddedAnswerData>(url, body)
@@ -127,7 +127,7 @@ export class CopilotEmbeddedService {
    * @param config   The Copilot Embedded configuration.
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    */
-  streamMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedChatRequest): Observable<CopilotEmbeddedAnswer> {
+  streamMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
     const { url, body } = this.buildRequest(config, request, true);
     return this.streamPrediction(url, body).pipe(
       scan(
@@ -143,7 +143,7 @@ export class CopilotEmbeddedService {
    */
   private buildRequest(
     config: CopilotEmbeddedConfig,
-    request: CopilotEmbeddedChatRequest,
+    request: CopilotEmbeddedRequest,
     streaming = false
   ): { url: string; body: PredictionRequestBody } {
     if (!request.question?.trim() && !request.uploads?.length) {

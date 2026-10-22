@@ -3,8 +3,8 @@
  * so the shape is expected but not guaranteed.
  */
 export interface CopilotEmbeddedChoiceData {
-  question?: string;
   /** Either an array or a pipe-separated string (the resilient Flowise schema shape). */
   options?: string | string[];
   multiSelect?: boolean | string;
+  question?: string;
 }

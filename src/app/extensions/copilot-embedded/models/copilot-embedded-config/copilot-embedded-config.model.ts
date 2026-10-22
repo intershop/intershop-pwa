@@ -1,9 +1,5 @@
 /**
  * Configuration for the Copilot Embedded Flowise integration.
- *
- * Unlike the Copilot, the Copilot Embedded does not load a pre-built chat UI (`web.js`).
- * The PWA owns the UI and talks to the Flowise Prediction API directly, so only the
- * connection details and optional chatflow variables are needed here.
  */
 export interface CopilotEmbeddedConfig {
   /** URL of the Flowise API host, e.g. `https://<FLOWISE-API-HOST>`. */
