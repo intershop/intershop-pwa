@@ -11,6 +11,9 @@ import {
 
 import { CopilotEmbeddedChoice } from '../../../models/copilot-embedded-choice/copilot-embedded-choice.model';
 
+/**
+ * Displays the answer options of a chatflow question as chips; multi-select options are sent together as one answer.
+ */
 @Component({
   selector: 'ish-copilot-embedded-choices',
   standalone: false,

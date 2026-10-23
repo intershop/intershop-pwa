@@ -6,6 +6,7 @@ applyTo: '**/*.component.{ts,html}'
 
 - Always use `OnPush` change detection
 - Use `ish-` prefix for selectors
+- Give exported shared components a short JSDoc class description, see [Document Only When Needed](../../docs/guides/code-documentation.md#document-only-when-needed)
 - Mark inputs that the component cannot work without as `@Input({ required: true })`; inputs with a sensible default stay optional
 - Use facades instead of direct service calls where possible
 - Never inject the store directly - use facades instead

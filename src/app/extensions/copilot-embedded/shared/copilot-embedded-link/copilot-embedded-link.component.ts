@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
+/**
+ * Displays the header link to the Copilot Embedded page, as icon only in the `small` view (mobile header).
+ */
 @Component({
   selector: 'ish-copilot-embedded-link',
   standalone: false,
