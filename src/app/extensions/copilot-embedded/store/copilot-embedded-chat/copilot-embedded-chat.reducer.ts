@@ -6,7 +6,7 @@ import { CopilotEmbeddedChat } from '../../models/copilot-embedded-chat/copilot-
 
 import { copilotEmbeddedChatActions } from './copilot-embedded-chat.actions';
 
-export const initialState: CopilotEmbeddedChat = {
+const initialState: CopilotEmbeddedChat = {
   chatflowid: undefined,
   sessionId: undefined,
   chatId: undefined,
