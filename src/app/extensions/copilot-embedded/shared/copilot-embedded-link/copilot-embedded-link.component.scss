@@ -17,18 +17,11 @@
 
   .bi {
     padding-right: divide($space-default, 3);
+    color: $CORPORATE-PRIMARY;
   }
 }
 
-.copilot-embedded-mobile .bi {
-  padding-right: ($space-default * 0.5);
-  font-size: 22px;
-
-  @media (width < 410px) {
-    padding-right: divide($space-default, 4);
-  }
-}
-
-.bi {
+// the mobile link shares the spacing and size of the other header icons (`sticky-header-icon`), only its color differs
+.copilot-embedded-mobile .sticky-header-icon .bi {
   color: $CORPORATE-PRIMARY;
 }

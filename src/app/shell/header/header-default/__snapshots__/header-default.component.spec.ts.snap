@@ -117,7 +117,6 @@ exports[`Header Default Component should render normal header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4 search-col"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>
@@ -299,7 +298,6 @@ exports[`Header Default Component should render sticky header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4 search-col"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>

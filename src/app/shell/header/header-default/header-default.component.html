@@ -117,16 +117,16 @@
         }
       </div>
     </div>
-    <div class="col-md-4 search-col">
-      @if (deviceType !== 'mobile') {
+    @if (deviceType !== 'mobile') {
+      <div class="col-md-4 search-col">
         @if (!isSticky) {
           <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link" />
         }
         <div class="search-container header-search-container">
           <ng-container *ngTemplateOutlet="searchBoxTemplate" />
         </div>
-      }
-    </div>
+      </div>
+    }
   </div>
 
   <button class="navbar-toggler" type="button" (click)="toggle('navbar')">

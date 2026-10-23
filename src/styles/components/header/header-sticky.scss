@@ -109,11 +109,6 @@
           font-size: 22px;
           color: $text-color-tertiary;
 
-          @media (width < 410px) {
-            padding-right: 6px;
-            padding-left: 0;
-          }
-
           &.bi-search {
             font-size: 18px;
           }
@@ -129,13 +124,20 @@
         top: -2px !important;
       }
 
-      @media (width < 410px) {
+      @media (width < $header-compact-breakpoint) {
         .header-utility ish-mini-basket {
-          margin-right: ($space-default);
+          margin-right: $space-default;
         }
 
-        .sticky-header-icon .rounded-pill {
-          left: 16px;
+        .sticky-header-icon {
+          .bi:not(.searchbox-icon) {
+            padding-right: 6px;
+            padding-left: 0;
+          }
+
+          .rounded-pill {
+            left: 16px;
+          }
         }
       }
     }
