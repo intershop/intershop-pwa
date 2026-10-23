@@ -11,7 +11,6 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
 import { CopilotEmbeddedFacade } from '../../facades/copilot-embedded.facade';
 import { CopilotEmbeddedAnswer } from '../../models/copilot-embedded-answer/copilot-embedded-answer.model';
-import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import {
   CopilotEmbeddedRequest,
   CopilotEmbeddedRequestOptions,
@@ -48,7 +47,7 @@ export class CopilotEmbeddedChatService {
       switchMap(config =>
         typeof config.streaming === 'boolean'
           ? of(config.streaming)
-          : this.copilotEmbeddedService.isStreamingAvailable$(config)
+          : this.copilotEmbeddedService.isStreamingAvailable$()
       )
     );
   }
@@ -58,7 +57,7 @@ export class CopilotEmbeddedChatService {
    */
   sendMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedAnswer> {
     return this.chatRequest$(question, options).pipe(
-      switchMap(([config, request]) => this.copilotEmbeddedService.sendMessage(config, request))
+      switchMap(request => this.copilotEmbeddedService.sendMessage(request))
     );
   }
 
@@ -67,14 +66,11 @@ export class CopilotEmbeddedChatService {
    */
   streamMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedAnswer> {
     return this.chatRequest$(question, options).pipe(
-      switchMap(([config, request]) => this.copilotEmbeddedService.streamMessage(config, request))
+      switchMap(request => this.copilotEmbeddedService.streamMessage(request))
     );
   }
 
-  private chatRequest$(
-    question: string,
-    options: CopilotEmbeddedRequestOptions
-  ): Observable<[CopilotEmbeddedConfig, CopilotEmbeddedRequest]> {
+  private chatRequest$(question: string, options: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedRequest> {
     return combineLatest([
       this.copilotEmbeddedFacade.configuration$.pipe(whenTruthy()),
       this.appFacade.getRestEndpointWithContext$,
@@ -87,30 +83,22 @@ export class CopilotEmbeddedChatService {
         .pipe(switchMap(enabled => (enabled ? this.orderTemplatesFacade.orderTemplates$ : of([])))),
     ]).pipe(
       take(1),
-      map(
-        ([config, restEndpoint, currentLocale, userToken, lineItems, orderTemplates]): [
-          CopilotEmbeddedConfig,
-          CopilotEmbeddedRequest,
-        ] => [
-          config,
-          {
-            question,
-            sessionId: options?.sessionId,
-            chatId: options?.chatId,
-            uploads: options?.uploads,
-            vars: {
-              restEndpoint,
-              currentLocale,
-              ...(userToken ? { user_token: userToken } : {}),
-              ...config.chatflowConfig?.vars,
-              ...options?.vars,
-            },
-            basket: (lineItems ?? []).map(li => ({ sku: li.productSKU, quantity: li.quantity?.value })),
-            orderTemplates: (orderTemplates ?? []).map(t => ({ id: t.id, title: t.title })),
-            shownProducts: options?.shownProducts ?? [],
-          },
-        ]
-      )
+      map(([config, restEndpoint, currentLocale, userToken, lineItems, orderTemplates]): CopilotEmbeddedRequest => ({
+        question,
+        sessionId: options?.sessionId,
+        chatId: options?.chatId,
+        uploads: options?.uploads,
+        vars: {
+          restEndpoint,
+          currentLocale,
+          ...(userToken ? { user_token: userToken } : {}),
+          ...config.chatflowConfig?.vars,
+          ...options?.vars,
+        },
+        basket: (lineItems ?? []).map(li => ({ sku: li.productSKU, quantity: li.quantity?.value })),
+        orderTemplates: (orderTemplates ?? []).map(t => ({ id: t.id, title: t.title })),
+        shownProducts: options?.shownProducts ?? [],
+      }))
     );
   }
 }
