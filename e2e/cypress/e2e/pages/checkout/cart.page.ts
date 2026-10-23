@@ -172,10 +172,9 @@ export class CartPage {
     return cy.get('#basket-custom-fields-input form');
   }
 
-  // force: the form is filled while collapsed because opening it via the toggle is unreliable in CI
   submitBasketCustomFieldValue(value: string) {
-    this.basketCustomFieldsForm.find('input').first().clear({ force: true }).type(value, { force: true });
-    return this.basketCustomFieldsForm.find('button[type="submit"]').click({ force: true });
+    this.basketCustomFieldsForm.find('input').first().clear().type(value);
+    return this.basketCustomFieldsForm.find('button[type="submit"]').click();
   }
 
   getLineItemCustomFields(sku: string) {

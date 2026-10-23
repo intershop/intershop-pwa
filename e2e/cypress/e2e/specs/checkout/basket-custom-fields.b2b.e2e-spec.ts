@@ -49,7 +49,12 @@ describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
 
   it('should allow the user to enter a basket custom form field value', () => {
     at(CartPage, page => {
+      page.basketCustomFieldsToggleLink.click();
+      page.basketCustomFieldsToggleLink.should('have.attr', 'aria-expanded', 'true');
+      page.basketCustomFieldsForm.should('be.visible');
+
       page.submitBasketCustomFieldValue(_.projectNumber);
+      page.basketCustomFieldsForm.should('not.be.visible');
       page.basketCustomFields.should('contain', _.projectNumber);
     });
   });
