@@ -1,11 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject, of, throwError } from 'rxjs';
-
-import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
 
 import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
-import { CopilotEmbeddedChatMessage } from '../models/copilot-embedded-chat-message/copilot-embedded-chat-message.model';
+import { CopilotEmbeddedChat } from '../models/copilot-embedded-chat/copilot-embedded-chat.model';
 import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
 import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service';
 
@@ -16,19 +14,14 @@ function answer(overrides: Partial<CopilotEmbeddedAnswer> = {}): CopilotEmbedded
   return { text: '', usedTools: [], products: [], ...overrides };
 }
 
-const STORAGE_KEY = 'copilot_embedded_chat_flow-1';
+const emptyChat: CopilotEmbeddedChat = { chatflowid: undefined, sessionId: undefined, chatId: undefined, messages: [] };
 
-function storeChat(minutesAgo: number) {
-  const chatHistory: CopilotEmbeddedChatMessage[] = [{ message: 'Saved reply', type: 'apiMessage' }];
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({
-      sync: Date.now() - minutesAgo * 60 * 1000,
-      data: { sessionId: 'saved-session', chatId: 'saved-chat', chatHistory },
-    })
-  );
-  return chatHistory;
-}
+const savedChat: CopilotEmbeddedChat = {
+  chatflowid: 'flow-1',
+  sessionId: 'saved-session',
+  chatId: 'saved-chat',
+  messages: [{ message: 'Saved reply', type: 'apiMessage', products: [{ sku: 'saved-product' }] }],
+};
 
 describe('Copilot Embedded Context Facade', () => {
   let context: CopilotEmbeddedContextFacade;
@@ -38,14 +31,16 @@ describe('Copilot Embedded Context Facade', () => {
     streamMessage: jest.Mock;
   };
   let toolCallService: { handleToolCalls: jest.Mock };
+  let chat$: BehaviorSubject<CopilotEmbeddedChat>;
+  let copilotEmbeddedFacade: { configuration$: unknown; chat$: unknown; setChat: jest.Mock; resetChat: jest.Mock };
 
-  function createContext(dataRetention: { copilotEmbedded?: number } = { copilotEmbedded: 60 }) {
+  function createContext(chat: CopilotEmbeddedChat = emptyChat) {
+    chat$.next(chat);
     TestBed.configureTestingModule({
       providers: [
         { provide: CopilotEmbeddedChatService, useValue: chatService },
-        { provide: CopilotEmbeddedFacade, useValue: { configuration$: of({ chatflowid: 'flow-1' }) } },
+        { provide: CopilotEmbeddedFacade, useValue: copilotEmbeddedFacade },
         { provide: CopilotEmbeddedToolCallService, useValue: toolCallService },
-        { provide: DATA_RETENTION_POLICY, useValue: dataRetention },
         { provide: TranslateService, useValue: { instant: (key: string) => key } },
         CopilotEmbeddedContextFacade,
       ],
@@ -54,16 +49,20 @@ describe('Copilot Embedded Context Facade', () => {
   }
 
   beforeEach(() => {
-    localStorage.clear();
     chatService = {
       isStreamingAvailable$: jest.fn(() => of(false)),
       sendMessage: jest.fn(() => of(answer({ text: 'A recommendation', chatId: 'chat-1' }))),
       streamMessage: jest.fn(() => of(answer({ text: 'A streamed answer' }))),
     };
     toolCallService = { handleToolCalls: jest.fn() };
+    chat$ = new BehaviorSubject(emptyChat);
+    copilotEmbeddedFacade = {
+      configuration$: of({ chatflowid: 'flow-1' }),
+      chat$,
+      setChat: jest.fn(chat => chat$.next(chat)),
+      resetChat: jest.fn(() => chat$.next(emptyChat)),
+    };
   });
-
-  afterEach(() => localStorage.clear());
 
   it('should be created', () => {
     createContext();
@@ -146,9 +145,11 @@ describe('Copilot Embedded Context Facade', () => {
     ]);
     expect(context.get('pendingAnswer')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)).data).toMatchObject({
+    expect(copilotEmbeddedFacade.setChat).toHaveBeenLastCalledWith({
+      chatflowid: 'flow-1',
       sessionId: context.get('sessionId'),
       chatId: 'stream-chat-1',
+      messages: context.get('messages'),
     });
   });
 
@@ -247,45 +248,33 @@ describe('Copilot Embedded Context Facade', () => {
   });
 
   it('should restore the saved conversation and clear it when the session is reset', () => {
-    const history = storeChat(30);
-    createContext();
+    createContext(savedChat);
 
-    expect(context.get('messages')).toEqual(history);
+    expect(context.get('messages')).toEqual(savedChat.messages);
     expect(context.get('sessionId')).toBe('saved-session');
     expect(context.get('chatId')).toBe('saved-chat');
+    expect(context.get('products')).toEqual([{ sku: 'saved-product' }]);
 
     context.reset();
 
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('sessionId')).not.toBe('saved-session');
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+    expect(copilotEmbeddedFacade.resetChat).toHaveBeenCalled();
   });
 
-  it('should discard a saved conversation that exceeded its lifetime', () => {
-    storeChat(61);
-    createContext();
+  it('should not restore a saved conversation of another chatflow', () => {
+    createContext({ ...savedChat, chatflowid: 'other-flow' });
 
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('sessionId')).not.toBe('saved-session');
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 
-  it('should not persist the conversation without a retention lifetime', () => {
-    storeChat(0);
-    createContext({});
+  it('should drop the open conversation when the persisted chat is cleared on logout', () => {
+    createContext(savedChat);
+
+    chat$.next(emptyChat);
 
     expect(context.get('messages')).toBeEmpty();
-
-    context.send({ question: 'find laptops' });
-
-    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)).data.chatHistory).toHaveLength(1);
-  });
-
-  it('should discard a malformed saved transcript', () => {
-    localStorage.setItem(STORAGE_KEY, '{invalid json');
-    createContext();
-
-    expect(context.get('messages')).toBeEmpty();
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+    expect(context.get('sessionId')).not.toBe('saved-session');
   });
 });

@@ -141,8 +141,7 @@ export interface Environment {
 
   // enable and configure data persistence for specific features (compare, recently, copilotEmbedded)
   // values: lifetime in minutes (localStorage), 'session' (sessionStorage), 'forever' (localStorage), not set = no persistence
-  // copilotEmbedded supports a lifetime in minutes only
-  dataRetention: { copilotEmbedded?: number } & DataRetentionPolicy;
+  dataRetention: DataRetentionPolicy;
 
   /** Price update mechanism:
    * - 'always': fetch fresh price information all the time

@@ -4,7 +4,7 @@ import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copi
 
 import { copilotEmbeddedConfigInternalActions } from './copilot-embedded-config.actions';
 
-export const copilotEmbeddedConfigReducer = createReducer(
+export const copilotEmbeddedConfigReducer = createReducer<CopilotEmbeddedConfig>(
   undefined,
   on(
     copilotEmbeddedConfigInternalActions.setCopilotEmbeddedConfig,
