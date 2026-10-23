@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
+/**
+ * Displays the Copilot icon, title and subtitle, with an optional button that resets the chat.
+ */
 @Component({
   selector: 'ish-copilot-embedded-header',
   standalone: false,

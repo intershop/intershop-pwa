@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
@@ -50,7 +51,7 @@ describe('Copilot Embedded Chat Component', () => {
     when(context.select()).thenReturn(state$);
 
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
+      imports: [ReactiveFormsModule, RouterModule, TranslatePipe],
       declarations: [
         CopilotEmbeddedChatComponent,
         CopilotEmbeddedInputComponent,
@@ -158,7 +159,8 @@ describe('Copilot Embedded Chat Component', () => {
 
       const input = element.querySelector<HTMLInputElement>('#copilot-embedded-question');
       input.value = 'Test question';
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      input.dispatchEvent(new Event('input'));
+      element.querySelector('ish-copilot-embedded-input form').dispatchEvent(new Event('submit'));
 
       verify(context.send(deepEqual({ question: 'Test question' }))).once();
     });

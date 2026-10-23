@@ -23,7 +23,7 @@ import { CopilotEmbeddedChatMessage } from '../../../models/copilot-embedded-cha
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CopilotEmbeddedChatComponent implements OnInit {
-  @Input() deviceType: DeviceType;
+  @Input({ required: true }) deviceType: DeviceType;
 
   context$: Observable<CopilotEmbeddedContext>;
   /** Necessary for a11y: text of the screen reader live region */

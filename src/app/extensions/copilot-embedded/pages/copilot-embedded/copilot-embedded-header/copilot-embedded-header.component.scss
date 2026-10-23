@@ -15,12 +15,6 @@
     margin: 0;
   }
 
-  h1 {
-    font-family: $font-family-bold;
-    font-size: 16px;
-    line-height: 20px;
-  }
-
   .copilot-embedded-header-subtitle {
     padding-top: divide($space-default, 8);
     font-size: $font-size-sm;

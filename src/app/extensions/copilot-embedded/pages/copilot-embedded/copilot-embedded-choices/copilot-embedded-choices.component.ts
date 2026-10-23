@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -7,6 +6,7 @@ import {
   Input,
   Output,
   ViewChild,
+  afterNextRender,
 } from '@angular/core';
 
 import { CopilotEmbeddedChoice } from '../../../models/copilot-embedded-choice/copilot-embedded-choice.model';
@@ -18,7 +18,7 @@ import { CopilotEmbeddedChoice } from '../../../models/copilot-embedded-choice/c
   styleUrls: ['./copilot-embedded-choices.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopilotEmbeddedChoicesComponent implements AfterViewInit {
+export class CopilotEmbeddedChoicesComponent {
   @Input({ required: true }) choices: CopilotEmbeddedChoice;
 
   @Output() readonly answer = new EventEmitter<string>();
@@ -28,9 +28,9 @@ export class CopilotEmbeddedChoicesComponent implements AfterViewInit {
   /** Currently ticked options of a multi-select choice prompt. */
   readonly selectedOptions = new Set<string>();
 
-  /** Necessary for a11y: focus ahead of the chips so the next Tab enters them. */
-  ngAfterViewInit() {
-    this.choicesGroup.nativeElement.focus({ preventScroll: true });
+  constructor() {
+    // Necessary for a11y: focus ahead of the chips so the next Tab enters them.
+    afterNextRender(() => this.choicesGroup.nativeElement.focus({ preventScroll: true }));
   }
 
   toggleOption(option: string) {

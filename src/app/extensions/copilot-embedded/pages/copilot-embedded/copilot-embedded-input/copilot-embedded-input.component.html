@@ -1,5 +1,5 @@
 @if (uploadError) {
-  <p class="copilot-embedded-upload-error">
+  <p class="invalid-feedback d-block mb-1">
     {{ uploadError | translate: { '0': maxImageSizeMb } }}
   </p>
 }
@@ -19,7 +19,7 @@
   </div>
 }
 
-<div class="copilot-embedded-input input-group">
+<form class="copilot-embedded-input input-group" [formGroup]="form" (ngSubmit)="submit()">
   <div class="copilot-embedded-input-field">
     <label class="visually-hidden" for="copilot-embedded-question">
       {{ 'copilot.embedded.input.placeholder' | translate }}
@@ -27,10 +27,10 @@
     <input
       #questionInput
       class="form-control"
+      formControlName="question"
       id="copilot-embedded-question"
       type="text"
       [placeholder]="'copilot.embedded.input.placeholder' | translate"
-      (keydown.enter)="submit()"
     />
     <input
       #imageInput
@@ -52,15 +52,14 @@
   </div>
   <button
     class="btn btn-secondary"
-    type="button"
+    type="submit"
     [attr.aria-label]="'copilot.embedded.input.send' | translate"
     [disabled]="loading"
     [title]="'copilot.embedded.input.send' | translate"
-    (click)="submit()"
   >
     <i class="bi bi-send-fill"></i>
   </button>
-</div>
+</form>
 <small class="copilot-embedded-disclaimer">
   {{ 'copilot.footer.text' | translate }}
   <a rel="noopener" target="_blank" [routerLink]="['/page', 'page.privacyPolicy.pagelet2-Page']">

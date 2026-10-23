@@ -16,10 +16,6 @@
     // preserve \n line breaks from the LLM response, collapse stray spaces
     white-space: pre-line;
 
-    p {
-      margin: 0;
-    }
-
     .copilot-embedded-message-image {
       display: block;
       max-width: 100%;
