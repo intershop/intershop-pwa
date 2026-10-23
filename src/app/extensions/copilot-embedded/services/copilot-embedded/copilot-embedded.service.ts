@@ -1,18 +1,13 @@
-// cspell:ignore chatflows
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
-import { catchError, distinctUntilChanged, map, scan, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, scan } from 'rxjs/operators';
 
-import {
-  CopilotEmbeddedAnswerData,
-  CopilotEmbeddedStreamEvent,
-} from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
+import { CopilotEmbeddedAnswerData } from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 import { CopilotEmbeddedAnswerMapper } from '../../models/copilot-embedded-answer/copilot-embedded-answer.mapper';
 import { CopilotEmbeddedAnswer } from '../../models/copilot-embedded-answer/copilot-embedded-answer.model';
-import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import { CopilotEmbeddedRequest } from '../../models/copilot-embedded-request/copilot-embedded-request.model';
 import { CopilotEmbeddedUpload } from '../../models/copilot-embedded-upload/copilot-embedded-upload.model';
+import { CopilotEmbeddedApiService } from '../copilot-embedded-api/copilot-embedded-api.service';
 
 /**
  * Request body of the Flowise Prediction API.
@@ -29,51 +24,12 @@ interface PredictionRequestBody {
 }
 
 /**
- * Parses a single raw SSE event block into a {@link CopilotEmbeddedStreamEvent}.
- *
- * Flowise wraps the payload as JSON in the `data:` field, e.g. `data:{"event":"token","data":"Hi"}`.
- * Falls back to the SSE `event:` field and raw string data if the payload is not JSON.
- */
-function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent {
-  let eventName: string;
-  const dataLines: string[] = [];
-
-  for (const line of rawEvent.split('\n')) {
-    if (line.startsWith('event:')) {
-      eventName = line.slice(6).trim();
-    } else if (line.startsWith('data:')) {
-      dataLines.push(line.slice(5).trim());
-    }
-  }
-
-  const dataString = dataLines.join('\n');
-  if (!dataString && !eventName) {
-    return;
-  }
-  if (dataString === '[DONE]') {
-    return { event: 'end', data: undefined };
-  }
-
-  try {
-    const parsed = JSON.parse(dataString);
-    if (parsed && typeof parsed === 'object' && 'event' in parsed) {
-      return parsed as CopilotEmbeddedStreamEvent;
-    }
-    return { event: eventName ?? 'message', data: parsed };
-  } catch {
-    return { event: eventName ?? 'message', data: dataString };
-  }
-}
-
-/**
  * The Copilot Embedded Service handles the REST interaction with the Flowise chatflow that
  * powers the Copilot Embedded AI agent.
  *
  * In contrast to the Copilot - which embeds a pre-built chat UI (`web.js`) that calls Flowise
  * itself - the PWA owns the whole Copilot Embedded UI. This service therefore talks to the
- * Flowise Prediction API directly:
- *
- * `POST {apiHost}/api/v1/prediction/{chatflowid}`
+ * Flowise Prediction API directly via the {@link CopilotEmbeddedApiService}.
  *
  * It supports both a non-streaming request ({@link sendMessage}) and a streaming, token-by-token
  * request via Server-Sent Events ({@link streamMessage}).
@@ -84,36 +40,27 @@ function parseSseEvent(rawEvent: string): CopilotEmbeddedStreamEvent {
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private copilotEmbeddedApiService: CopilotEmbeddedApiService) {}
 
   /**
    * Checks whether the configured chatflow has streaming enabled.
-   * Mirrors the embed's `GET /api/v1/chatflows-streaming/{chatflowid}` probe; resolves to `false`
-   * when the chatflow is not configured or the probe fails.
    */
-  isStreamingAvailable$(config: CopilotEmbeddedConfig): Observable<boolean> {
-    if (!config?.apiHost || !config?.chatflowid) {
-      return of(false);
-    }
-    return this.httpClient
-      .get<{ isStreaming: boolean }>(`${config.apiHost}/api/v1/chatflows-streaming/${config.chatflowid}`)
-      .pipe(
-        map(response => !!response?.isStreaming),
-        catchError(() => of(false))
-      );
+  isStreamingAvailable$(): Observable<boolean> {
+    return this.copilotEmbeddedApiService.get<{ isStreaming: boolean }>('chatflows-streaming').pipe(
+      map(response => !!response?.isStreaming),
+      catchError(() => of(false))
+    );
   }
 
   /**
    * Sends a message to the Copilot Embedded chatflow and returns the complete response.
    *
-   * @param config   The Copilot Embedded configuration.
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    * @returns        The chatflow answer including the recommended products and answer choices.
    */
-  sendMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
-    const { url, body } = this.buildRequest(config, request);
-    return this.httpClient
-      .post<CopilotEmbeddedAnswerData>(url, body)
+  sendMessage(request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
+    return this.copilotEmbeddedApiService
+      .post<CopilotEmbeddedAnswerData>('prediction', this.buildRequestBody(request))
       .pipe(map(response => CopilotEmbeddedAnswerMapper.fromData(response)));
   }
 
@@ -124,12 +71,10 @@ export class CopilotEmbeddedService {
    * changes it. Completes when the stream ends and errors on network/HTTP failures. Streaming only works
    * in the browser.
    *
-   * @param config   The Copilot Embedded configuration.
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    */
-  streamMessage(config: CopilotEmbeddedConfig, request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
-    const { url, body } = this.buildRequest(config, request, true);
-    return this.streamPrediction(url, body).pipe(
+  streamMessage(request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
+    return this.copilotEmbeddedApiService.stream('prediction', this.buildRequestBody(request, true)).pipe(
       scan(
         (answer, event) => CopilotEmbeddedAnswerMapper.fromStreamEvent(answer, event),
         CopilotEmbeddedAnswerMapper.fromData({ text: '' })
@@ -139,18 +84,11 @@ export class CopilotEmbeddedService {
   }
 
   /**
-   * Builds the Flowise prediction URL and request body.
+   * Builds the Flowise prediction request body.
    */
-  private buildRequest(
-    config: CopilotEmbeddedConfig,
-    request: CopilotEmbeddedRequest,
-    streaming = false
-  ): { url: string; body: PredictionRequestBody } {
+  private buildRequestBody(request: CopilotEmbeddedRequest, streaming = false): PredictionRequestBody {
     if (!request.question?.trim() && !request.uploads?.length) {
       throw new Error('Copilot Embedded request without a question or attachment');
-    }
-    if (!config?.apiHost || !config.chatflowid) {
-      throw new Error('Copilot Embedded is not configured (apiHost and chatflowid are required)');
     }
 
     // Flowise does not resolve runtime vars inside the prompt, so the PWA context is appended to the question;
@@ -160,7 +98,7 @@ export class CopilotEmbeddedService {
       `\n[ORDER_TEMPLATES]=${JSON.stringify(request.orderTemplates)}` +
       `\n[SHOWN_PRODUCTS]=${JSON.stringify(request.shownProducts)}`;
 
-    const body: PredictionRequestBody = {
+    return {
       question: questionWithContext,
       streaming,
       ...(request.uploads?.length ? { uploads: request.uploads } : {}),
@@ -170,83 +108,5 @@ export class CopilotEmbeddedService {
         vars: request.vars,
       },
     };
-
-    return { url: `${config.apiHost}/api/v1/prediction/${config.chatflowid}`, body };
-  }
-
-  /**
-   * Performs the streaming prediction request via the fetch API and parses the Server-Sent Events.
-   */
-  private streamPrediction(url: string, body: PredictionRequestBody): Observable<CopilotEmbeddedStreamEvent> {
-    return new Observable<CopilotEmbeddedStreamEvent>(subscriber => {
-      const abortController = new AbortController();
-
-      from(
-        fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-          body: JSON.stringify(body),
-          signal: abortController.signal,
-        })
-      )
-        .pipe(switchMap(response => this.readEventStream(response)))
-        .subscribe({
-          next: event => subscriber.next(event),
-          error: error => subscriber.error(error),
-          complete: () => subscriber.complete(),
-        });
-
-      return () => abortController.abort();
-    });
-  }
-
-  /**
-   * Reads a `text/event-stream` response body and emits the parsed Copilot Embedded events.
-   */
-  private readEventStream(response: Response): Observable<CopilotEmbeddedStreamEvent> {
-    return new Observable<CopilotEmbeddedStreamEvent>(subscriber => {
-      if (!response.ok) {
-        subscriber.error(new Error(`Copilot Embedded request failed with status ${response.status}`));
-        return;
-      }
-      if (!response.body) {
-        subscriber.error(new Error('Copilot Embedded response does not provide a readable stream'));
-        return;
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      const pump = (): Promise<void> =>
-        reader.read().then(({ done, value }) => {
-          if (done) {
-            subscriber.complete();
-            return;
-          }
-
-          buffer += decoder.decode(value, { stream: true });
-
-          // SSE events are separated by a blank line.
-          let boundary = buffer.indexOf('\n\n');
-          while (boundary !== -1) {
-            const rawEvent = buffer.slice(0, boundary);
-            buffer = buffer.slice(boundary + 2);
-            const event = parseSseEvent(rawEvent);
-            if (event) {
-              subscriber.next(event);
-            }
-            boundary = buffer.indexOf('\n\n');
-          }
-
-          return pump();
-        });
-
-      pump().catch(error => subscriber.error(error));
-
-      return () => {
-        reader.cancel();
-      };
-    });
   }
 }

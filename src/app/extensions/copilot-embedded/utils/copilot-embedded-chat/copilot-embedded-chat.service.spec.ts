@@ -49,10 +49,8 @@ describe('Copilot Embedded Chat Service', () => {
     when(featureToggleService.enabled$(anything())).thenReturn(of(true));
 
     copilotEmbeddedService = mock(CopilotEmbeddedService);
-    when(copilotEmbeddedService.sendMessage(anything(), anything())).thenReturn(
-      of({ text: 'ok', usedTools: [], products: [] })
-    );
-    when(copilotEmbeddedService.isStreamingAvailable$(anything())).thenReturn(of(true));
+    when(copilotEmbeddedService.sendMessage(anything())).thenReturn(of({ text: 'ok', usedTools: [], products: [] }));
+    when(copilotEmbeddedService.isStreamingAvailable$()).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       providers: [
@@ -73,8 +71,7 @@ describe('Copilot Embedded Chat Service', () => {
     chatService
       .sendMessage('hi', { sessionId: 'session-1', shownProducts: [{ sku: '456' }], vars: { b: 2 } })
       .subscribe(() => {
-        const [sentConfig, request] = capture(copilotEmbeddedService.sendMessage).last();
-        expect(sentConfig).toEqual(config);
+        const [request] = capture(copilotEmbeddedService.sendMessage).last();
         expect(request).toEqual({
           question: 'hi',
           sessionId: 'session-1',
@@ -100,7 +97,7 @@ describe('Copilot Embedded Chat Service', () => {
     setup({ apiHost: 'https://flowise.example.com', chatflowid: 'flow-1' });
 
     chatService.sendMessage('hi').subscribe(() => {
-      expect(capture(copilotEmbeddedService.sendMessage).last()[1].orderTemplates).toBeEmpty();
+      expect(capture(copilotEmbeddedService.sendMessage).last()[0].orderTemplates).toBeEmpty();
       done();
     });
   });
@@ -110,7 +107,7 @@ describe('Copilot Embedded Chat Service', () => {
 
     chatService.isStreamingAvailable$().subscribe(streaming => {
       expect(streaming).toBeFalse();
-      verify(copilotEmbeddedService.isStreamingAvailable$(anything())).never();
+      verify(copilotEmbeddedService.isStreamingAvailable$()).never();
       done();
     });
   });
@@ -120,7 +117,7 @@ describe('Copilot Embedded Chat Service', () => {
 
     chatService.isStreamingAvailable$().subscribe(streaming => {
       expect(streaming).toBeTrue();
-      verify(copilotEmbeddedService.isStreamingAvailable$(anything())).once();
+      verify(copilotEmbeddedService.isStreamingAvailable$()).once();
       done();
     });
   });
