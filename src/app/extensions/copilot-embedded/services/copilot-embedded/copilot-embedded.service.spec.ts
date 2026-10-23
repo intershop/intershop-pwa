@@ -142,5 +142,38 @@ describe('Copilot Embedded Service', () => {
           done();
         });
     });
+
+    it('should error on a chatflow error event after the answers received so far', done => {
+      when(apiService.stream(anything(), anything())).thenReturn(
+        of(
+          { event: 'token', data: 'A partial' },
+          { event: 'error', data: '401 Unauthorized' },
+          { event: 'end', data: undefined }
+        )
+      );
+      const answers: string[] = [];
+
+      copilotEmbeddedService.streamMessage(chatRequest()).subscribe({
+        next: answer => answers.push(answer.text),
+        error: error => {
+          expect(answers).toEqual(['A partial']);
+          expect(error.message).toContain('401 Unauthorized');
+          done();
+        },
+      });
+    });
+
+    it('should error on a chatflow error event without any token', done => {
+      when(apiService.stream(anything(), anything())).thenReturn(
+        of({ event: 'error', data: 'model not available' }, { event: 'end', data: undefined })
+      );
+
+      copilotEmbeddedService.streamMessage(chatRequest()).subscribe({
+        error: error => {
+          expect(error.message).toContain('model not available');
+          done();
+        },
+      });
+    });
   });
 });

@@ -68,13 +68,19 @@ export class CopilotEmbeddedService {
    * Sends a message to the Copilot Embedded chatflow and streams the response as Server-Sent Events.
    *
    * Emits the answer received so far whenever a Flowise event (`token`, `usedTools`, `metadata`, ...)
-   * changes it. Completes when the stream ends and errors on network/HTTP failures. Streaming only works
-   * in the browser.
+   * changes it. Completes when the stream ends and errors on network/HTTP failures and on `error` events of the
+   * chatflow, so a partial answer is not taken as complete. Streaming only works in the browser.
    *
    * @param request  The user's message with the resolved PWA context. Requires a question or an upload.
    */
   streamMessage(request: CopilotEmbeddedRequest): Observable<CopilotEmbeddedAnswer> {
     return this.copilotEmbeddedApiService.stream('prediction', this.buildRequestBody(request, true)).pipe(
+      map(event => {
+        if (event.event === 'error') {
+          throw new Error(`Copilot Embedded chatflow error: ${event.data}`);
+        }
+        return event;
+      }),
       scan(
         (answer, event) => CopilotEmbeddedAnswerMapper.fromStreamEvent(answer, event),
         CopilotEmbeddedAnswerMapper.fromData({ text: '' })

@@ -118,6 +118,48 @@ describe('Copilot Embedded Api Service', () => {
         });
     });
 
+    it('should parse events with CRLF line endings, also when a CRLF is split across chunks', done => {
+      mockFetch(['data:{"event":"token","data":"Hel"}\r\n\r', '\ndata:{"event":"token","data":"lo"}\r', '\n\r\n']);
+
+      apiService
+        .stream('prediction', {})
+        .pipe(toArray())
+        .subscribe(events => {
+          expect(events).toEqual([
+            { event: 'token', data: 'Hel' },
+            { event: 'token', data: 'lo' },
+          ]);
+          done();
+        });
+    });
+
+    it('should parse events with CR line endings, also when the stream ends with a CR', done => {
+      mockFetch(['data:{"event":"token","data":"Hel"}\r\r', 'data:{"event":"token","data":"lo"}\r\r']);
+
+      apiService
+        .stream('prediction', {})
+        .pipe(toArray())
+        .subscribe(events => {
+          expect(events).toEqual([
+            { event: 'token', data: 'Hel' },
+            { event: 'token', data: 'lo' },
+          ]);
+          done();
+        });
+    });
+
+    it('should not emit an incomplete event at the end of the stream', done => {
+      mockFetch(['data:{"event":"token","data":"Hel"}\n\n', 'data:{"event":"token","data":"lo"}\n']);
+
+      apiService
+        .stream('prediction', {})
+        .pipe(toArray())
+        .subscribe(events => {
+          expect(events).toEqual([{ event: 'token', data: 'Hel' }]);
+          done();
+        });
+    });
+
     it('should error when the response is not ok', done => {
       mockFetch([], 500);
 

@@ -57,6 +57,9 @@ export class CopilotEmbeddedInputComponent {
   /** Small JPEG version of the attached image, shown in the chat bubble and persisted. */
   private pendingThumbnail: string;
 
+  /** Counts image selections and removals, so that reads of an older selection are ignored when they finish. */
+  private uploadSelection = 0;
+
   private destroyRef = inject(DestroyRef);
 
   constructor(private cdRef: ChangeDetectorRef) {
@@ -96,6 +99,7 @@ export class CopilotEmbeddedInputComponent {
     if (!file) {
       return;
     }
+    const selection = ++this.uploadSelection;
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       this.uploadError = 'copilot.embedded.input.image_invalid_type';
       return;
@@ -106,14 +110,18 @@ export class CopilotEmbeddedInputComponent {
     }
     this.uploadError = undefined;
     CopilotEmbeddedUploadHelper.readImageUpload(file).then(({ upload, thumbnail }) => {
+      if (selection !== this.uploadSelection) {
+        return;
+      }
       this.pendingUpload = upload;
       this.pendingThumbnail = thumbnail;
       this.cdRef.markForCheck();
     });
   }
 
-  /** Discards the attached image before it is sent. */
+  /** Discards the attached image before it is sent, including an image that is still being read. */
   removeUpload() {
+    this.uploadSelection++;
     this.pendingUpload = undefined;
     this.pendingThumbnail = undefined;
     this.uploadError = undefined;

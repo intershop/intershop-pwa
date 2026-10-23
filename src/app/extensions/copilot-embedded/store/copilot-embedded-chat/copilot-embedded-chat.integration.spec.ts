@@ -56,10 +56,14 @@ describe('Copilot Embedded Chat Integration', () => {
     expect(storedChat()).toEqual(chat);
   });
 
-  it('should clear the persisted chat on logout', () => {
+  it('should clear the persisted chats of all base hrefs on logout', () => {
     store$.dispatch(copilotEmbeddedChatActions.setCopilotEmbeddedChat({ chat }));
+    // chat persisted by the same site under another base href, e.g. another language
+    localStorage.setItem('/en-copilotEmbedded-_chat', JSON.stringify({ sync: Date.now(), data: chat }));
+
     store$.dispatch(resetUserData());
 
-    expect(storedChat().messages).toBeEmpty();
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+    expect(localStorage.getItem('/en-copilotEmbedded-_chat')).toBeNull();
   });
 });

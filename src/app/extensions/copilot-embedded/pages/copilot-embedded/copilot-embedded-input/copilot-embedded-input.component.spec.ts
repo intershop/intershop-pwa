@@ -4,6 +4,8 @@ import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
 
+import { CopilotEmbeddedUploadHelper } from '../../../models/copilot-embedded-upload/copilot-embedded-upload.helper';
+
 import { CopilotEmbeddedInputComponent } from './copilot-embedded-input.component';
 
 describe('Copilot Embedded Input Component', () => {
@@ -209,6 +211,68 @@ describe('Copilot Embedded Input Component', () => {
       fixture.detectChanges();
 
       expect(element.querySelector('.invalid-feedback')).toBeTruthy();
+    });
+
+    describe('pending image reads', () => {
+      type ImageRead = Awaited<ReturnType<typeof CopilotEmbeddedUploadHelper.readImageUpload>>;
+
+      // resolvers of the started reads, in selection order
+      let finishRead: ((read: ImageRead) => void)[];
+
+      function imageRead(name: string): ImageRead {
+        return { upload: { ...upload, name }, thumbnail: `thumbnail-${name}` };
+      }
+
+      async function finish(index: number, name: string) {
+        finishRead[index](imageRead(name));
+        // let the component's `then` callback run
+        await Promise.resolve();
+      }
+
+      beforeEach(() => {
+        finishRead = [];
+        jest
+          .spyOn(CopilotEmbeddedUploadHelper, 'readImageUpload')
+          .mockImplementation(() => new Promise(resolve => finishRead.push(resolve)));
+      });
+
+      it('should keep the latest selected image when an older read finishes later', async () => {
+        component.onFileSelected(fileEvent(fileOfSize('a.png', 'image/png', 1024)));
+        component.onFileSelected(fileEvent(fileOfSize('b.png', 'image/png', 1024)));
+
+        await finish(1, 'b.png');
+        await finish(0, 'a.png');
+
+        expect(component.pendingUpload.name).toBe('b.png');
+      });
+
+      it('should not attach an image whose read finishes after the message was sent', async () => {
+        component.onFileSelected(fileEvent(fileOfSize('a.png', 'image/png', 1024)));
+        component.submit('a question');
+
+        await finish(0, 'a.png');
+
+        expect(component.pendingUpload).toBeUndefined();
+      });
+
+      it('should not attach an image whose read finishes after it was removed', async () => {
+        component.onFileSelected(fileEvent(fileOfSize('a.png', 'image/png', 1024)));
+        component.removeUpload();
+
+        await finish(0, 'a.png');
+
+        expect(component.pendingUpload).toBeUndefined();
+      });
+
+      it('should not attach an older image after a refused selection', async () => {
+        component.onFileSelected(fileEvent(fileOfSize('a.png', 'image/png', 1024)));
+        component.onFileSelected(fileEvent(new File(['x'], 'archive.zip', { type: 'application/zip' })));
+
+        await finish(0, 'a.png');
+
+        expect(component.pendingUpload).toBeUndefined();
+        expect(component.uploadError).toBe('copilot.embedded.input.image_invalid_type');
+      });
     });
   });
 });
