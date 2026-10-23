@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, provideRouter } from '@angular/router';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { anything, capture, spy, verify } from 'ts-mockito';
@@ -13,9 +14,14 @@ describe('Copilot Embedded Input Component', () => {
 
   const upload = { data: 'data:image/png;base64,AAAA', type: 'file' as const, name: 'photo.png', mime: 'image/png' };
 
+  function typeQuestion(value: string) {
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule, TranslatePipe],
+      imports: [ReactiveFormsModule, RouterModule, TranslatePipe],
       declarations: [CopilotEmbeddedInputComponent],
       providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
@@ -44,11 +50,11 @@ describe('Copilot Embedded Input Component', () => {
   });
 
   describe('submit', () => {
-    it('should submit and clear the question on Enter keydown', () => {
+    it('should submit and clear the question on form submit', () => {
       const emitter = spy(component.send);
 
-      input.value = 'Test question';
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      typeQuestion('Test question');
+      element.querySelector('form').dispatchEvent(new Event('submit'));
 
       verify(emitter.emit(anything())).once();
       expect(capture(emitter.emit).last()).toEqual([{ question: 'Test question' }]);
@@ -58,7 +64,7 @@ describe('Copilot Embedded Input Component', () => {
     it('should submit and clear the question on send button click', () => {
       const emitter = spy(component.send);
 
-      input.value = 'Test question';
+      typeQuestion('Test question');
       element.querySelector<HTMLButtonElement>('[aria-label="copilot.embedded.input.send"]').click();
 
       verify(emitter.emit(anything())).once();
@@ -66,13 +72,13 @@ describe('Copilot Embedded Input Component', () => {
       expect(input.value).toBeEmpty();
     });
 
-    it('should not submit or clear the question on Enter while loading', () => {
+    it('should not submit or clear the question while loading', () => {
       const emitter = spy(component.send);
       fixture.componentRef.setInput('loading', true);
       fixture.detectChanges();
 
-      input.value = 'please wait';
-      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      typeQuestion('please wait');
+      element.querySelector('form').dispatchEvent(new Event('submit'));
 
       verify(emitter.emit(anything())).never();
       expect(input.value).toBe('please wait');
@@ -80,7 +86,7 @@ describe('Copilot Embedded Input Component', () => {
 
     it('should send a given answer and keep the typed question', () => {
       const emitter = spy(component.send);
-      input.value = 'my own text';
+      typeQuestion('my own text');
 
       component.submit('Hybrid');
 
@@ -202,7 +208,7 @@ describe('Copilot Embedded Input Component', () => {
       fileInput.dispatchEvent(new Event('change'));
       fixture.detectChanges();
 
-      expect(element.querySelector('.copilot-embedded-upload-error')).toBeTruthy();
+      expect(element.querySelector('.invalid-feedback')).toBeTruthy();
     });
   });
 });

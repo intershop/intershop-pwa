@@ -49,11 +49,11 @@ describe('Copilot Embedded Messages Component', () => {
   it('should render the streamed answer instead of the typing indicator', () => {
     fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
-    expect(element.querySelector('.copilot-embedded-typing')).toBeTruthy();
+    expect(element.textContent).toContain('copilot.embedded.typing');
 
     fixture.componentRef.setInput('pendingAnswer', 'A partial answer');
     fixture.detectChanges();
-    expect(element.querySelector('.copilot-embedded-typing')).toBeFalsy();
+    expect(element.textContent).not.toContain('copilot.embedded.typing');
     expect(element.textContent).toContain('A partial answer');
   });
 

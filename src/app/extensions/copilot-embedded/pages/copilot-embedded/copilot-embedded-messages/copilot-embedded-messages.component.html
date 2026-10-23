@@ -21,12 +21,9 @@
     </div>
   }
 
-  @if (pendingAnswer) {
-    <div class="copilot-embedded-message copilot-embedded-message-bot">{{ pendingAnswer }}</div>
-  }
-  @if (loading && !pendingAnswer) {
-    <div class="copilot-embedded-message copilot-embedded-message-bot copilot-embedded-typing">
-      {{ 'copilot.embedded.typing' | translate }}
+  @if (pendingAnswer || loading) {
+    <div class="copilot-embedded-message copilot-embedded-message-bot">
+      {{ pendingAnswer || ('copilot.embedded.typing' | translate) }}
     </div>
   }
 </div>

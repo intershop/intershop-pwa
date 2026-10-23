@@ -6,9 +6,11 @@ applyTo: '**/*.component.ts'
 
 - Always use `OnPush` change detection
 - Use `ish-` prefix for selectors
+- Mark inputs that the component cannot work without as `@Input({ required: true })`; inputs with a sensible default stay optional
 - Use facades instead of direct service calls where possible
 - Never inject the store directly - use facades instead
 - Implement proper subscription cleanup with `takeUntilDestroyed` pattern
+- Run browser-only DOM work (focus, scrolling, measuring, `window`/`document` listeners) in `afterNextRender` in the constructor; it runs only in the browser after the view is rendered, so no `SSR` check is needed
 - Use built-in control flow syntax in templates (`@if`, `@for`, etc.)
 - Keep templates simple - delegate business logic to facades
 - Prefer `async` pipe over manual subscriptions

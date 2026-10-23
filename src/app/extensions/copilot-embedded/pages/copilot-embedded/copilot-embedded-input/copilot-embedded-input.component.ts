@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -9,9 +8,11 @@ import {
   Input,
   Output,
   ViewChild,
+  afterNextRender,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, fromEvent, merge } from 'rxjs';
 
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
@@ -25,6 +26,9 @@ const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp
 
 const MAX_IMAGE_SIZE_MB = 5;
 
+/**
+ * Displays the chat input field where the user types a question, optionally attaches an image and sends both.
+ */
 @Component({
   selector: 'ish-copilot-embedded-input',
   standalone: false,
@@ -32,35 +36,35 @@ const MAX_IMAGE_SIZE_MB = 5;
   styleUrls: ['./copilot-embedded-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CopilotEmbeddedInputComponent implements AfterViewInit {
-  @Input() deviceType: DeviceType;
+export class CopilotEmbeddedInputComponent {
+  @Input({ required: true }) deviceType: DeviceType;
   @Input() loading = false;
 
   @Output() readonly send = new EventEmitter<CopilotEmbeddedUserInput>();
 
   @ViewChild('questionInput') private questionInput: ElementRef<HTMLInputElement>;
 
+  readonly form = new FormGroup({ question: new FormControl('') });
+  readonly acceptedImageTypes = ALLOWED_IMAGE_TYPES.join(',');
+  readonly maxImageSizeMb = MAX_IMAGE_SIZE_MB;
+
   /** Image the user attached to the next message (vision input), if any. */
   pendingUpload: CopilotEmbeddedUpload;
-
-  /** Small JPEG version of the attached image, shown in the chat bubble and persisted. */
-  private pendingThumbnail: string;
 
   /** Translation key of the reason the last selected file was refused, if any. */
   uploadError: string;
 
-  readonly acceptedImageTypes = ALLOWED_IMAGE_TYPES.join(',');
-  readonly maxImageSizeMb = MAX_IMAGE_SIZE_MB;
+  /** Small JPEG version of the attached image, shown in the chat bubble and persisted. */
+  private pendingThumbnail: string;
 
   private destroyRef = inject(DestroyRef);
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(private cdRef: ChangeDetectorRef) {
+    afterNextRender(() => this.keepFocusedInputVisible());
+  }
 
   /** Keeps the focused mobile input visible after the keyboard animation settles. */
-  ngAfterViewInit() {
-    if (SSR) {
-      return;
-    }
+  private keepFocusedInputVisible() {
     const input = this.questionInput.nativeElement;
     merge(fromEvent(input, 'focus'), fromEvent(window.visualViewport ?? window, 'resize'))
       .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
@@ -73,14 +77,13 @@ export class CopilotEmbeddedInputComponent implements AfterViewInit {
 
   /** Sends the given answer or, without one, the typed question; an attached image is always included. */
   submit(answer?: string) {
-    const field = this.questionInput.nativeElement;
-    const question = (answer ?? field.value).trim();
+    const question = (answer ?? this.form.value.question ?? '').trim();
     if ((question || this.pendingUpload) && !this.loading) {
       const uploads = this.pendingUpload ? [this.pendingUpload] : undefined;
       const thumbnail = uploads ? this.pendingThumbnail : undefined;
       this.send.emit({ question, ...(uploads ? { uploads } : {}), ...(thumbnail ? { thumbnail } : {}) });
       if (answer === undefined) {
-        field.value = '';
+        this.form.reset();
       }
       this.removeUpload();
     }

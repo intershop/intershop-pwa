@@ -3,12 +3,6 @@
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins';
 
-.copilot-embedded-upload-error {
-  margin-bottom: divide($space-default, 4);
-  font-size: $font-size-sm;
-  color: $danger;
-}
-
 .copilot-embedded-upload-preview {
   display: flex;
   align-items: center;
