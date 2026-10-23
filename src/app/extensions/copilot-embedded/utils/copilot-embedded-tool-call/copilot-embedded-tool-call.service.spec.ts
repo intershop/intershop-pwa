@@ -51,8 +51,8 @@ describe('Copilot Embedded Tool Call Service', () => {
   });
 
   it('should ignore unknown, empty and icmSearch tool calls without navigating', () => {
-    expect(() => toolCallService.handleToolCalls(undefined)).not.toThrow();
-    toolCallService.handleToolCalls([
+    expect(() => toolCallService.triggerToolCallActions(undefined)).not.toThrow();
+    toolCallService.triggerToolCallActions([
       { tool: 'unknown', toolInput: {} },
       { tool: 'icmSearch', toolInput: { query: 'laptops' }, toolOutput: '{}' },
     ]);
@@ -61,7 +61,9 @@ describe('Copilot Embedded Tool Call Service', () => {
 
   describe('PWA_basket', () => {
     it('should add products to the basket on operation "add"', () => {
-      toolCallService.handleToolCalls([{ tool: 'PWA_basket', toolInput: { operation: 'add', items: '123:2;456:1' } }]);
+      toolCallService.triggerToolCallActions([
+        { tool: 'PWA_basket', toolInput: { operation: 'add', items: '123:2;456:1' } },
+      ]);
 
       verify(shoppingFacade.addProductsToBasket(anything())).once();
       const [items] = capture(shoppingFacade.addProductsToBasket).last();
@@ -72,7 +74,7 @@ describe('Copilot Embedded Tool Call Service', () => {
     });
 
     it('should navigate to the basket on operation "view"', () => {
-      toolCallService.handleToolCalls([{ tool: 'PWA_basket', toolInput: { operation: 'view' } }]);
+      toolCallService.triggerToolCallActions([{ tool: 'PWA_basket', toolInput: { operation: 'view' } }]);
 
       verify(router.navigateByUrl('/basket')).once();
     });
@@ -80,7 +82,7 @@ describe('Copilot Embedded Tool Call Service', () => {
 
   describe('PWA_compare_products', () => {
     it('should compare the given SKUs and navigate to the compare page', () => {
-      toolCallService.handleToolCalls([{ tool: 'PWA_compare_products', toolInput: { SKUs: '123;456' } }]);
+      toolCallService.triggerToolCallActions([{ tool: 'PWA_compare_products', toolInput: { SKUs: '123;456' } }]);
 
       verify(compareFacade.compareProducts(anything())).once();
       const [skus] = capture(compareFacade.compareProducts).last();
@@ -91,7 +93,7 @@ describe('Copilot Embedded Tool Call Service', () => {
     it('should ignore the tool call if the compare feature is disabled', () => {
       when(featureToggleService.enabled('compare')).thenReturn(false);
 
-      toolCallService.handleToolCalls([{ tool: 'PWA_compare_products', toolInput: { SKUs: '123;456' } }]);
+      toolCallService.triggerToolCallActions([{ tool: 'PWA_compare_products', toolInput: { SKUs: '123;456' } }]);
 
       verify(compareFacade.compareProducts(anything())).never();
       verify(router.navigateByUrl(anything())).never();
@@ -100,13 +102,15 @@ describe('Copilot Embedded Tool Call Service', () => {
 
   describe('PWA_navigate_to_page', () => {
     it('should navigate to the product page', () => {
-      toolCallService.handleToolCalls([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'product', sku: '123' } }]);
+      toolCallService.triggerToolCallActions([
+        { tool: 'PWA_navigate_to_page', toolInput: { page: 'product', sku: '123' } },
+      ]);
 
       verify(router.navigateByUrl('/product/123')).once();
     });
 
     it('should navigate to the logout route on page "logout"', () => {
-      toolCallService.handleToolCalls([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'logout' } }]);
+      toolCallService.triggerToolCallActions([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'logout' } }]);
 
       verify(router.navigateByUrl('/logout')).once();
     });
@@ -114,7 +118,7 @@ describe('Copilot Embedded Tool Call Service', () => {
     it('should not navigate to order templates if the feature is disabled', () => {
       when(featureToggleService.enabled('orderTemplates')).thenReturn(false);
 
-      toolCallService.handleToolCalls([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'orderTemplates' } }]);
+      toolCallService.triggerToolCallActions([{ tool: 'PWA_navigate_to_page', toolInput: { page: 'orderTemplates' } }]);
 
       verify(router.navigateByUrl(anything())).never();
     });
@@ -122,7 +126,7 @@ describe('Copilot Embedded Tool Call Service', () => {
 
   describe('PWA_order_template_actions', () => {
     it('should create an order template on operation "create"', () => {
-      toolCallService.handleToolCalls([
+      toolCallService.triggerToolCallActions([
         { tool: 'PWA_order_template_actions', toolInput: { operation: 'create', title: 'My List' } },
       ]);
 
@@ -134,7 +138,7 @@ describe('Copilot Embedded Tool Call Service', () => {
     it('should ignore the tool call if the order templates feature is disabled', () => {
       when(featureToggleService.enabled('orderTemplates')).thenReturn(false);
 
-      toolCallService.handleToolCalls([
+      toolCallService.triggerToolCallActions([
         { tool: 'PWA_order_template_actions', toolInput: { operation: 'create', title: 'My List' } },
       ]);
 

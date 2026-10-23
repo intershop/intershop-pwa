@@ -18,12 +18,8 @@ import {
 import { CopilotEmbeddedService } from '../../services/copilot-embedded/copilot-embedded.service';
 
 /**
- * Sends chat messages to the Copilot Embedded chatflow and enriches every request with the current
- * PWA context.
- *
- * The `restEndpoint`, `currentLocale` and - for logged-in users - the ICM `user_token` are provided
- * as chatflow variables on every request (mirroring the Copilot integration) so the chatflow can
- * call back into ICM as the current user.
+ * Sends chat messages to the Copilot Embedded chatflow and enriches every request with the current PWA context
+ * (chatflow variables, basket, order templates and shown products), see the Copilot Embedded guide.
  */
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedChatService {
@@ -39,6 +35,8 @@ export class CopilotEmbeddedChatService {
 
   /**
    * Whether to stream the responses: honors the `streaming` configuration, otherwise probes the chatflow.
+   *
+   * @returns           Emits once whether the answers are streamed.
    */
   isStreamingAvailable$(): Observable<boolean> {
     return this.copilotEmbeddedFacade.configuration$.pipe(
@@ -54,6 +52,10 @@ export class CopilotEmbeddedChatService {
 
   /**
    * Sends a message to the Copilot Embedded and returns the complete answer.
+   *
+   * @param question    The user's question; may be empty if an image is attached via `options.uploads`.
+   * @param options     Session, chat instance, attachments, shown products and additional chatflow variables of the request.
+   * @returns           Emits the complete answer once; errors if the request fails.
    */
   sendMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedAnswer> {
     return this.chatRequest$(question, options).pipe(
@@ -63,6 +65,10 @@ export class CopilotEmbeddedChatService {
 
   /**
    * Sends a message to the Copilot Embedded and emits the answer received so far as it is generated.
+   *
+   * @param question    The user's question; may be empty if an image is attached via `options.uploads`.
+   * @param options     Session, chat instance, attachments, shown products and additional chatflow variables of the request.
+   * @returns           Emits the answer received so far on every change and completes with the stream; errors if the request fails.
    */
   streamMessage(question: string, options?: CopilotEmbeddedRequestOptions): Observable<CopilotEmbeddedAnswer> {
     return this.chatRequest$(question, options).pipe(

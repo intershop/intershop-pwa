@@ -70,8 +70,8 @@ The PWA sends the following variables with every request (`overrideConfig.vars`)
 
 - `restEndpoint` - ICM REST endpoint including the current channel context.
 - `currentLocale` - current PWA locale, e.g., `en_US`.
-- `user_token` - ICM access token of the logged-in user, so the chatflow can call ICM on behalf of the user.
-  It is only sent if a user is logged in.
+- `user_token` - ICM access token of the current user, so the chatflow can call ICM on behalf of the user.
+  It is sent whenever the PWA has an ICM access token, e.g., for logged-in users and for anonymous users with a basket.
 
 > [!IMPORTANT]
 > The ICM tools of the chatflow use their own ICM configuration, which is independent of the PWA.
@@ -94,7 +94,7 @@ Image uploads require a chatflow with image uploads enabled on a vision-capable 
 The chat history is stored in the browser's localStorage for 1 day by default, configurable via `dataRetention.copilotEmbedded` with the same values as for the other features (lifetime in minutes, `'session'` or `'forever'`).
 The **Start a new conversation** button and the logout delete the stored chat history.
 
-## `handleToolCall` Actions
+## Tool Call Actions
 
 The Copilot Embedded handles the same PWA tool calls as the Intershop Copilot for Buyers, see [`handleToolCall` Actions](./copilot.md#handletoolcall-actions).
 The handlers are implemented in the [_copilot-embedded-tool-call.service.ts_](../../src/app/extensions/copilot-embedded/utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service.ts).

@@ -30,7 +30,7 @@ describe('Copilot Embedded Context Facade', () => {
     sendMessage: jest.Mock;
     streamMessage: jest.Mock;
   };
-  let toolCallService: { handleToolCalls: jest.Mock };
+  let toolCallService: { triggerToolCallActions: jest.Mock };
   let chat$: BehaviorSubject<CopilotEmbeddedChat>;
   let copilotEmbeddedFacade: { configuration$: unknown; chat$: unknown; setChat: jest.Mock; resetChat: jest.Mock };
 
@@ -54,7 +54,7 @@ describe('Copilot Embedded Context Facade', () => {
       sendMessage: jest.fn(() => of(answer({ text: 'A recommendation', chatId: 'chat-1' }))),
       streamMessage: jest.fn(() => of(answer({ text: 'A streamed answer' }))),
     };
-    toolCallService = { handleToolCalls: jest.fn() };
+    toolCallService = { triggerToolCallActions: jest.fn() };
     chat$ = new BehaviorSubject(emptyChat);
     copilotEmbeddedFacade = {
       configuration$: of({ chatflowid: 'flow-1' }),
@@ -119,7 +119,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     context.send({ question: 'find laptops' });
 
-    expect(toolCallService.handleToolCalls).toHaveBeenCalledWith(usedTools);
+    expect(toolCallService.triggerToolCallActions).toHaveBeenCalledWith(usedTools);
     expect(context.get('products').map(product => product.sku)).toEqual(['product-1']);
     expect(context.get('messages').at(-1).products).toEqual([{ sku: 'product-1' }]);
     expect(context.get('toolErrors')).toEqual([{ tool: 'PWA_basket', error: 'failed' }]);
@@ -228,7 +228,7 @@ describe('Copilot Embedded Context Facade', () => {
 
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(toolCallService.handleToolCalls).not.toHaveBeenCalled();
+    expect(toolCallService.triggerToolCallActions).not.toHaveBeenCalled();
   });
 
   it('should ignore streamed events that arrive after the session is reset', () => {
@@ -244,7 +244,7 @@ describe('Copilot Embedded Context Facade', () => {
     expect(context.get('messages')).toBeEmpty();
     expect(context.get('pendingAnswer')).toBeEmpty();
     expect(context.get('loading')).toBeFalse();
-    expect(toolCallService.handleToolCalls).not.toHaveBeenCalled();
+    expect(toolCallService.triggerToolCallActions).not.toHaveBeenCalled();
   });
 
   it('should restore the saved conversation and clear it when the session is reset', () => {

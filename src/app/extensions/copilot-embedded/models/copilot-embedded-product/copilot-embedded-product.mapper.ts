@@ -1,4 +1,7 @@
-import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
+import {
+  CopilotEmbeddedToolCall,
+  CopilotEmbeddedToolName,
+} from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 import { CopilotEmbeddedProductData } from './copilot-embedded-product.interface';
 import { CopilotEmbeddedProduct } from './copilot-embedded-product.model';
@@ -10,7 +13,7 @@ interface CopilotEmbeddedProductSearchOutput {
   output?: { products?: CopilotEmbeddedProductData[] }[];
 }
 
-const SEARCH_TOOL = 'icmSearch';
+const SEARCH_TOOL: CopilotEmbeddedToolName = 'icmSearch';
 
 export class CopilotEmbeddedProductMapper {
   /**
