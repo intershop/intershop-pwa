@@ -1,9 +1,12 @@
-import { CopilotEmbeddedToolCall } from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
+import {
+  CopilotEmbeddedToolCall,
+  CopilotEmbeddedToolName,
+} from '../copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 import { CopilotEmbeddedChoiceData } from './copilot-embedded-choice.interface';
 import { CopilotEmbeddedChoice } from './copilot-embedded-choice.model';
 
-const CHOICE_TOOL = 'PWA_ask_choice';
+const CHOICE_TOOL: CopilotEmbeddedToolName = 'PWA_ask_choice';
 
 /** Accepts either a real array or a pipe-separated string (the resilient Flowise schema shape). */
 function parseOptions(raw: unknown): string[] {

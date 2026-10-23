@@ -9,7 +9,15 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
 
 import { CompareFacade } from '../../../compare/facades/compare.facade';
 import { OrderTemplatesFacade } from '../../../order-templates/facades/order-templates.facade';
-import { CopilotEmbeddedToolCall } from '../../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
+import {
+  CopilotEmbeddedBasketToolInput,
+  CopilotEmbeddedCompareToolInput,
+  CopilotEmbeddedNavigateToolInput,
+  CopilotEmbeddedNavigationPage,
+  CopilotEmbeddedOrderTemplateToolInput,
+  CopilotEmbeddedToolCall,
+  CopilotEmbeddedToolName,
+} from '../../models/copilot-embedded-tool-call/copilot-embedded-tool-call.model';
 
 /**
  * Reacts to the action tool calls a Flowise chatflow reports (`usedTools`) and triggers the
@@ -33,31 +41,32 @@ export class CopilotEmbeddedToolCallService {
   private featureToggleService = inject(FeatureToggleService);
 
   /**
-   * Handles all action tool calls of a chatflow response.
+   * Triggers the PWA actions of the tool calls of a chatflow response; tool calls without an action are ignored.
    *
    * @param toolCalls The `usedTools` of the response.
    */
-  handleToolCalls(toolCalls: CopilotEmbeddedToolCall[]): void {
-    (toolCalls ?? []).forEach(toolCall => this.handleToolCall(toolCall));
+  triggerToolCallActions(toolCalls: CopilotEmbeddedToolCall[]): void {
+    (toolCalls ?? []).forEach(toolCall => this.triggerToolCallAction(toolCall));
   }
 
-  private handleToolCall(toolCall: CopilotEmbeddedToolCall): void {
-    switch (toolCall?.tool) {
+  private triggerToolCallAction(toolCall: CopilotEmbeddedToolCall): void {
+    // narrowed to the known tools so that misspelled cases do not compile; other tools end in `default`
+    switch (toolCall?.tool as CopilotEmbeddedToolName) {
       case 'PWA_basket':
-        this.handleBasket(toolCall.toolInput);
+        this.triggerBasketAction(toolCall.toolInput as CopilotEmbeddedBasketToolInput);
         break;
       case 'PWA_compare_products':
         if (this.featureToggleService.enabled('compare')) {
-          this.compareFacade.compareProducts((toolCall.toolInput?.SKUs as string)?.split(';'));
+          this.compareFacade.compareProducts((toolCall.toolInput as CopilotEmbeddedCompareToolInput)?.SKUs?.split(';'));
           this.navigate('/compare');
         }
         break;
       case 'PWA_navigate_to_page':
-        this.handleNavigateToPage(toolCall.toolInput);
+        this.triggerNavigation(toolCall.toolInput as CopilotEmbeddedNavigateToolInput);
         break;
       case 'PWA_order_template_actions':
         if (this.featureToggleService.enabled('orderTemplates')) {
-          this.handleOrderTemplate(toolCall.toolInput);
+          this.triggerOrderTemplateAction(toolCall.toolInput as CopilotEmbeddedOrderTemplateToolInput);
         }
         break;
       default:
@@ -76,9 +85,9 @@ export class CopilotEmbeddedToolCallService {
   /**
    * Triggers the corresponding basket action based on the `PWA_basket` tool call.
    */
-  private handleBasket(toolInput: Record<string, unknown>) {
-    const { operation, items } = (toolInput ?? {}) as Record<string, string>;
-    const skusAndQty = (items?.split(';') ?? []).map(item => {
+  private triggerBasketAction(toolInput: CopilotEmbeddedBasketToolInput) {
+    const operation = toolInput?.operation;
+    const skusAndQty = (toolInput?.items?.split(';') ?? []).map(item => {
       const [sku, param] = item.split(':');
       const isAllQty = param?.toLowerCase() === 'all';
       return { sku, qty: isAllQty ? 1 : Number(param) || 1, isAllQty };
@@ -123,10 +132,10 @@ export class CopilotEmbeddedToolCallService {
   /**
    * Triggers the corresponding navigation route based on the `PWA_navigate_to_page` tool call.
    */
-  private handleNavigateToPage(toolInput: Record<string, unknown>) {
-    const { page, sku, categoryId, orderId, orderTemplateId } = (toolInput ?? {}) as Record<string, string>;
+  private triggerNavigation(toolInput: CopilotEmbeddedNavigateToolInput) {
+    const { page, sku, categoryId, orderId, orderTemplateId } = toolInput ?? {};
 
-    const navigationMap: Record<string, () => void> = {
+    const navigationMap: Record<CopilotEmbeddedNavigationPage, () => void> = {
       home: () => this.navigate('/'),
       basket: () => this.navigate('/basket'),
       product: () => this.navigate(`/product/${sku}`),
@@ -141,7 +150,7 @@ export class CopilotEmbeddedToolCallService {
       login: () => this.navigate('/login'),
       logout: () => this.navigate('/logout'),
     };
-    const requiredFeature: Record<string, FeatureToggleType> = {
+    const requiredFeature: Partial<Record<CopilotEmbeddedNavigationPage, FeatureToggleType>> = {
       orderTemplates: 'orderTemplates',
       orderTemplate: 'orderTemplates',
     };
@@ -156,8 +165,8 @@ export class CopilotEmbeddedToolCallService {
   /**
    * Triggers the corresponding order template action based on the `PWA_order_template_actions` tool call.
    */
-  private handleOrderTemplate(toolInput: Record<string, unknown>) {
-    const { operation, sku, orderTemplateId, title, quantity } = (toolInput ?? {}) as Record<string, string>;
+  private triggerOrderTemplateAction(toolInput: CopilotEmbeddedOrderTemplateToolInput) {
+    const { operation, sku, orderTemplateId, title, quantity } = toolInput ?? {};
 
     switch (operation) {
       case 'create':

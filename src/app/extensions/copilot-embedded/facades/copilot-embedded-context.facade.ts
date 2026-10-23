@@ -232,7 +232,7 @@ export class CopilotEmbeddedContextFacade extends RxState<CopilotEmbeddedContext
 
   private addAnswer(answer: CopilotEmbeddedAnswer) {
     // execute the action tool calls (basket, compare, navigation, order templates)
-    this.toolCallService.handleToolCalls(answer.usedTools);
+    this.toolCallService.triggerToolCallActions(answer.usedTools);
     const message: CopilotEmbeddedChatMessage = {
       message: answer.text,
       type: 'apiMessage',
