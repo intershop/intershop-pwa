@@ -77,6 +77,7 @@ Each extension module can have multiple sub folders:
 - `shared`: components shared among pages for this extension
 - `models`: models specific for this extension
 - `services`: services specific for this extension
+- `utils`: utility services and functions specific for this extension
 - `store`: ngrx handling (State, Effects, Reducer, Actions, Selectors)
 - `facades`: providing access to the state management
 
@@ -88,6 +89,20 @@ Optionally additional sub folders for module-scoped artifacts are allowed:
 - validators
 - configurations
 - pipes
+
+### Integrating Extensions
+
+All code of an extension lives in its folder, including small UI parts such as a header link and their styles.
+Code outside the extension (`shell`, `pages`, `shared`) only uses what the extension provides in `exports`:
+
+1. Create the component in the extension's `shared` folder and declare it in the extension module `src/app/extensions/<name>/<name>.module.ts`.
+2. Generate the lazy component with `ng g lazy-component extensions/<name>/shared/<component>/<component>.component.ts`.
+   The schematic adds `@GenerateLazyComponent()` to the component and registers `ish-lazy-<component>` in the exports module.
+3. Import the exports module in the module that declares the using component, e.g., `shell.module` for the header, and use `ish-lazy-<component>` in its template.
+
+Lazy components only render when the extension's feature toggle is enabled, so the using template needs no `*ishFeature` check for them.
+Generated lazy components are git-ignored and recreated on `npm install`.
+For an example, see the `QuickorderLinkComponent` and its usage as `ish-lazy-quickorder-link` in the header.
 
 ## Modules
 
