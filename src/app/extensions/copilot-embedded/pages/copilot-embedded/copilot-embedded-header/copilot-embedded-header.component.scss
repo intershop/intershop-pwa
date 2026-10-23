@@ -1,0 +1,32 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.copilot-embedded-header {
+  display: flex;
+  align-items: center;
+  padding: ($space-default * 0.75) 0;
+
+  ish-copilot-embedded-icon {
+    margin-right: ($space-default * 0.5);
+  }
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  .copilot-embedded-header-subtitle {
+    padding-top: divide($space-default, 8);
+    font-size: $font-size-sm;
+    line-height: 16px;
+    color: $text-color-secondary;
+  }
+
+  .copilot-embedded-header-reset {
+    margin-left: auto;
+
+    .bi::before {
+      vertical-align: 0;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@import 'variables';
+
+.copilot-embedded-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ($space-default * 0.75);
+  padding-top: $space-default;
+
+  &:focus {
+    outline: none;
+  }
+
+  // chips reuse the secondary/primary button appearance; only the chip shape differs
+  .copilot-embedded-choice-chip {
+    width: auto;
+    padding: ($space-default * 0.5) ($space-default * 0.75);
+    margin: 0;
+    font-family: $font-family-regular;
+    font-size: $font-size-base;
+    line-height: 20px;
+    text-transform: none;
+    border-radius: ($space-default * 0.75);
+  }
+
+  .copilot-embedded-choice-confirm {
+    flex-basis: 100%;
+    text-align: right;
+
+    &:disabled {
+      color: $text-color-tertiary;
+    }
+  }
+}

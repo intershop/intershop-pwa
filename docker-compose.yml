@@ -44,6 +44,9 @@ services:
       #     domain: some-domain.auth0.com
       #     clientID: ASDF12345
       #
+      COPILOT_EMBEDDED: |
+        chatflowid: '4b4e5a3b-7746-4deb-a114-eb62183a6172'
+        apiHost: 'https://ish-flowise-enterprise.cloud.intershop.com'
       # allow backend requests to use HTTP/2 with Fetch API (experimental)
       # ALLOW_H2: 'true'
 
@@ -84,12 +87,15 @@ services:
           - baseHref: /en
             channel: inSPIRED-inTRONICS_Business-Site
             lang: en_US
+            addFeatures: copilotEmbedded
           - baseHref: /de
             channel: inSPIRED-inTRONICS_Business-Site
             lang: de_DE
+            addFeatures: copilotEmbedded
           - baseHref: /fr
             channel: inSPIRED-inTRONICS_Business-Site
             lang: fr_FR
+            addFeatures: copilotEmbedded
           - baseHref: /b2c
             channel: inSPIRED-inTRONICS-Site
             theme: b2c

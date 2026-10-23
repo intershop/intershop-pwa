@@ -165,6 +165,13 @@ The default behavior is unchanged (enabled in development, disabled in productio
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
 To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
 
+**Copilot Embedded integration**
+
+The new `copilotEmbedded` feature toggle adds an AI product advisor page at `/copilot` that is backed by a Flowise chatflow.
+The Product Advisor is an experimental feature, and its functionality and configuration can change in future releases.
+The feature is disabled by default.
+To use it, enable the feature toggle and provide the `copilotEmbedded` configuration, see [Guide - Copilot Embedded](./copilot-embedded.md).
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

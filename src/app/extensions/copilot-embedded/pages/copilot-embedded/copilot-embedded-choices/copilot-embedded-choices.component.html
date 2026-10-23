@@ -1,0 +1,37 @@
+<div
+  #choicesGroup
+  class="copilot-embedded-choices"
+  role="group"
+  tabindex="-1"
+  [attr.aria-label]="'copilot.embedded.choices.label' | translate"
+>
+  @if (choices.multiSelect) {
+    @for (option of choices.options; track option) {
+      <button
+        class="copilot-embedded-choice-chip btn"
+        type="button"
+        [attr.aria-pressed]="selectedOptions.has(option)"
+        [class.btn-primary]="selectedOptions.has(option)"
+        [class.btn-secondary]="!selectedOptions.has(option)"
+        (click)="toggleOption(option)"
+      >
+        {{ option }}
+      </button>
+    }
+    <button
+      class="copilot-embedded-choice-confirm btn btn-link btn-tool"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.choices.confirm' | translate"
+      [disabled]="!selectedOptions.size"
+      (click)="submitSelectedOptions()"
+    >
+      <i class="bi bi-arrow-right"></i>
+    </button>
+  } @else {
+    @for (option of choices.options; track option) {
+      <button class="copilot-embedded-choice-chip btn btn-secondary" type="button" (click)="answer.emit(option)">
+        {{ option }}
+      </button>
+    }
+  }
+</div>

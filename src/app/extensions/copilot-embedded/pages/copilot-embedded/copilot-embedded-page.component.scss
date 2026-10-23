@@ -1,0 +1,10 @@
+@import 'variables';
+
+.copilot-embedded {
+  // Max height of the scrollable chat messages and recommendations list: the viewport minus the page header
+  // and the chat chrome (header, input, paddings) so the chat input stays visible on small screens.
+  // Defined here as custom property because it is inherited by the separate chat and results components.
+  --copilot-embedded-scroll-max-height: max(200px, calc(100vh - 420px));
+
+  margin-top: $space-default;
+}

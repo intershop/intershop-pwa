@@ -1,0 +1,22 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.copilot-embedded-results {
+  padding: 0 divide($space-default, 3) $space-default;
+
+  // subtitle
+  h2 + p {
+    color: $text-color-tertiary;
+  }
+
+  .copilot-embedded-results-list {
+    // contain the absolutely-positioned loading overlays of the products so they don't escape the scroll area
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: ($space-default * 2);
+    max-height: var(--copilot-embedded-scroll-max-height);
+    overflow-y: auto;
+  }
+}

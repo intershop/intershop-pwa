@@ -1,0 +1,283 @@
+import { TestBed } from '@angular/core/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
+
+import { CopilotEmbeddedAnswer } from '../models/copilot-embedded-answer/copilot-embedded-answer.model';
+import { CopilotEmbeddedChat } from '../models/copilot-embedded-chat/copilot-embedded-chat.model';
+import { CopilotEmbeddedChatService } from '../utils/copilot-embedded-chat/copilot-embedded-chat.service';
+import { CopilotEmbeddedToolCallService } from '../utils/copilot-embedded-tool-call/copilot-embedded-tool-call.service';
+
+import { CopilotEmbeddedContextFacade } from './copilot-embedded-context.facade';
+import { CopilotEmbeddedFacade } from './copilot-embedded.facade';
+
+function answer(overrides: Partial<CopilotEmbeddedAnswer> = {}): CopilotEmbeddedAnswer {
+  return { text: '', usedTools: [], products: [], ...overrides };
+}
+
+const emptyChat: CopilotEmbeddedChat = { chatflowid: undefined, sessionId: undefined, chatId: undefined, messages: [] };
+
+const savedChat: CopilotEmbeddedChat = {
+  chatflowid: 'flow-1',
+  sessionId: 'saved-session',
+  chatId: 'saved-chat',
+  messages: [{ message: 'Saved reply', type: 'apiMessage', products: [{ sku: 'saved-product' }] }],
+};
+
+describe('Copilot Embedded Context Facade', () => {
+  let context: CopilotEmbeddedContextFacade;
+  let chatService: {
+    isStreamingAvailable$: jest.Mock;
+    sendMessage: jest.Mock;
+    streamMessage: jest.Mock;
+  };
+  let toolCallService: { triggerToolCallActions: jest.Mock };
+  let chat$: BehaviorSubject<CopilotEmbeddedChat>;
+  let copilotEmbeddedFacade: { configuration$: unknown; chat$: unknown; setChat: jest.Mock; resetChat: jest.Mock };
+
+  function createContext(chat: CopilotEmbeddedChat = emptyChat) {
+    chat$.next(chat);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: CopilotEmbeddedChatService, useValue: chatService },
+        { provide: CopilotEmbeddedFacade, useValue: copilotEmbeddedFacade },
+        { provide: CopilotEmbeddedToolCallService, useValue: toolCallService },
+        { provide: TranslateService, useValue: { instant: (key: string) => key } },
+        CopilotEmbeddedContextFacade,
+      ],
+    });
+    context = TestBed.inject(CopilotEmbeddedContextFacade);
+  }
+
+  beforeEach(() => {
+    chatService = {
+      isStreamingAvailable$: jest.fn(() => of(false)),
+      sendMessage: jest.fn(() => of(answer({ text: 'A recommendation', chatId: 'chat-1' }))),
+      streamMessage: jest.fn(() => of(answer({ text: 'A streamed answer' }))),
+    };
+    toolCallService = { triggerToolCallActions: jest.fn() };
+    chat$ = new BehaviorSubject(emptyChat);
+    copilotEmbeddedFacade = {
+      configuration$: of({ chatflowid: 'flow-1' }),
+      chat$,
+      setChat: jest.fn(chat => chat$.next(chat)),
+      resetChat: jest.fn(() => chat$.next(emptyChat)),
+    };
+  });
+
+  it('should be created', () => {
+    createContext();
+
+    expect(context).toBeTruthy();
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('sessionId')).toHaveLength(36);
+  });
+
+  it('should use the non-streaming request when streaming is not available', () => {
+    createContext();
+
+    context.send({ question: '  find laptops  ' });
+
+    expect(chatService.streamMessage).not.toHaveBeenCalled();
+    expect(chatService.sendMessage).toHaveBeenCalledWith('find laptops', {
+      sessionId: context.get('sessionId'),
+      chatId: undefined,
+      uploads: undefined,
+      shownProducts: [],
+    });
+    expect(context.get('messages').map(message => message.message)).toEqual(['find laptops', 'A recommendation']);
+    expect(context.get('chatId')).toBe('chat-1');
+    expect(context.get('loading')).toBeFalse();
+  });
+
+  it('should ignore empty messages', () => {
+    createContext();
+
+    context.send({ question: '   ' });
+
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
+    expect(context.get('messages')).toBeEmpty();
+  });
+
+  it('should forward the products shown in the results panel with the request', () => {
+    createContext();
+    context.set({ products: [{ sku: '201807204', title: 'Microsoft Surface Laptop', price: 1999 }] });
+
+    context.send({ question: 'add the recommended one' });
+
+    expect(chatService.sendMessage).toHaveBeenCalledWith(
+      'add the recommended one',
+      expect.objectContaining({ shownProducts: [{ sku: '201807204', title: 'Microsoft Surface Laptop' }] })
+    );
+  });
+
+  it('should execute tool calls and show the recommended products of an answer', () => {
+    const usedTools = [{ tool: 'PWA_basket', toolInput: {}, error: 'failed' }];
+    chatService.sendMessage.mockReturnValue(
+      of(answer({ text: 'Here you go', usedTools, products: [{ sku: 'product-1' }] }))
+    );
+    createContext();
+
+    context.send({ question: 'find laptops' });
+
+    expect(toolCallService.triggerToolCallActions).toHaveBeenCalledWith(usedTools);
+    expect(context.get('products').map(product => product.sku)).toEqual(['product-1']);
+    expect(context.get('messages').at(-1).products).toEqual([{ sku: 'product-1' }]);
+    expect(context.get('toolErrors')).toEqual([{ tool: 'PWA_basket', error: 'failed' }]);
+  });
+
+  it('should show the streamed answer and persist the resulting conversation', () => {
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    chatService.streamMessage.mockReturnValue(
+      of(
+        answer({ text: 'A ' }),
+        answer({ text: 'A ', chatId: 'stream-chat-1' }),
+        answer({ text: 'A streamed answer', chatId: 'stream-chat-1' })
+      )
+    );
+    createContext();
+
+    context.send({ question: 'recommend something' });
+
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
+    expect(context.get('messages').map(message => message.message)).toEqual([
+      'recommend something',
+      'A streamed answer',
+    ]);
+    expect(context.get('pendingAnswer')).toBeEmpty();
+    expect(context.get('loading')).toBeFalse();
+    expect(copilotEmbeddedFacade.setChat).toHaveBeenLastCalledWith({
+      chatflowid: 'flow-1',
+      sessionId: context.get('sessionId'),
+      chatId: 'stream-chat-1',
+      messages: context.get('messages'),
+    });
+  });
+
+  it('should fetch a complete answer when the stream ends without tokens', () => {
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    chatService.streamMessage.mockReturnValue(of(answer({ chatId: 'stream-chat-2' })));
+    chatService.sendMessage.mockReturnValue(of(answer({ text: 'Fallback answer', chatId: 'final-chat-2' })));
+    createContext();
+
+    context.send({ question: 'show me options' });
+
+    expect(chatService.sendMessage).toHaveBeenCalledWith('show me options', {
+      sessionId: context.get('sessionId'),
+      chatId: 'stream-chat-2',
+      uploads: undefined,
+      shownProducts: [],
+    });
+    expect(context.get('messages').at(-1)).toMatchObject({ message: 'Fallback answer', type: 'apiMessage' });
+    expect(context.get('loading')).toBeFalse();
+  });
+
+  it('should expose a generic error and stop loading when a request fails', () => {
+    chatService.sendMessage.mockReturnValue(throwError(() => new Error('offline')));
+    createContext();
+
+    context.send({ question: 'help' });
+
+    expect(context.get('error')).toBe('copilot.embedded.error.generic');
+    expect(context.get('loading')).toBeFalse();
+    expect(context.get('messages')).toHaveLength(1);
+  });
+
+  it('should drop the partial answer when a stream fails', () => {
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    const stream$ = new Subject<CopilotEmbeddedAnswer>();
+    chatService.streamMessage.mockReturnValue(stream$);
+    createContext();
+
+    context.send({ question: 'help' });
+    stream$.next(answer({ text: 'A partial' }));
+    stream$.error(new Error('offline'));
+
+    expect(context.get('error')).toBe('copilot.embedded.error.generic');
+    expect(context.get('pendingAnswer')).toBeEmpty();
+    // neither persisted as reply nor retried without streaming
+    expect(context.get('messages')).toHaveLength(1);
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
+  });
+
+  it('should check the streaming availability only once', () => {
+    createContext();
+
+    context.send({ question: 'find laptops' });
+    context.send({ question: 'find tablets' });
+
+    expect(chatService.isStreamingAvailable$).toHaveBeenCalledTimes(1);
+    expect(chatService.sendMessage).toHaveBeenCalledTimes(2);
+  });
+
+  it('should accept new messages after a failed request', () => {
+    chatService.sendMessage.mockReturnValueOnce(throwError(() => new Error('offline')));
+    createContext();
+
+    context.send({ question: 'help' });
+    context.send({ question: 'help again' });
+
+    expect(context.get('error')).toBeUndefined();
+    expect(context.get('messages').at(-1)).toMatchObject({ message: 'A recommendation', type: 'apiMessage' });
+  });
+
+  it('should ignore a non-streaming response that arrives after the session is reset', () => {
+    const response$ = new Subject<CopilotEmbeddedAnswer>();
+    chatService.sendMessage.mockReturnValue(response$);
+    createContext();
+
+    context.send({ question: 'find products' });
+    context.reset();
+    response$.next(answer({ text: 'Late answer', chatId: 'old-chat' }));
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('loading')).toBeFalse();
+    expect(toolCallService.triggerToolCallActions).not.toHaveBeenCalled();
+  });
+
+  it('should ignore streamed events that arrive after the session is reset', () => {
+    chatService.isStreamingAvailable$.mockReturnValue(of(true));
+    const stream$ = new Subject<CopilotEmbeddedAnswer>();
+    chatService.streamMessage.mockReturnValue(stream$);
+    createContext();
+
+    context.send({ question: 'find products' });
+    context.reset();
+    stream$.next(answer({ text: 'Late answer' }));
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('pendingAnswer')).toBeEmpty();
+    expect(context.get('loading')).toBeFalse();
+    expect(toolCallService.triggerToolCallActions).not.toHaveBeenCalled();
+  });
+
+  it('should restore the saved conversation and clear it when the session is reset', () => {
+    createContext(savedChat);
+
+    expect(context.get('messages')).toEqual(savedChat.messages);
+    expect(context.get('sessionId')).toBe('saved-session');
+    expect(context.get('chatId')).toBe('saved-chat');
+    expect(context.get('products')).toEqual([{ sku: 'saved-product' }]);
+
+    context.reset();
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('sessionId')).not.toBe('saved-session');
+    expect(copilotEmbeddedFacade.resetChat).toHaveBeenCalled();
+  });
+
+  it('should not restore a saved conversation of another chatflow', () => {
+    createContext({ ...savedChat, chatflowid: 'other-flow' });
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('sessionId')).not.toBe('saved-session');
+  });
+
+  it('should drop the open conversation when the persisted chat is cleared on logout', () => {
+    createContext(savedChat);
+
+    chat$.next(emptyChat);
+
+    expect(context.get('messages')).toBeEmpty();
+    expect(context.get('sessionId')).not.toBe('saved-session');
+  });
+});
