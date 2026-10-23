@@ -9,6 +9,16 @@ import { CopilotEmbeddedFacade } from '../../facades/copilot-embedded.facade';
 import { CopilotEmbeddedStreamEvent } from '../../models/copilot-embedded-answer/copilot-embedded-answer.interface';
 
 /**
+ * Converts the SSE line endings CRLF and CR to LF. A trailing CR is kept, as it may be the first half of a CRLF
+ * that is split across two chunks; it is converted together with the next chunk.
+ */
+function normalizeLineEndings(text: string): string {
+  const pendingCr = text.endsWith('\r');
+  const normalized = (pendingCr ? text.slice(0, -1) : text).replace(/\r\n?/g, '\n');
+  return pendingCr ? `${normalized}\r` : normalized;
+}
+
+/**
  * Parses a single raw SSE event block into a {@link CopilotEmbeddedStreamEvent}.
  *
  * Flowise wraps the payload as JSON in the `data:` field, e.g. `data:{"event":"token","data":"Hi"}`.
@@ -150,26 +160,32 @@ export class CopilotEmbeddedApiService {
       const decoder = new TextDecoder();
       let buffer = '';
 
+      // SSE events are separated by a blank line.
+      const emitCompleteEvents = () => {
+        let boundary = buffer.indexOf('\n\n');
+        while (boundary !== -1) {
+          const rawEvent = buffer.slice(0, boundary);
+          buffer = buffer.slice(boundary + 2);
+          const event = parseSseEvent(rawEvent);
+          if (event) {
+            subscriber.next(event);
+          }
+          boundary = buffer.indexOf('\n\n');
+        }
+      };
+
       const pump = (): Promise<void> =>
         reader.read().then(({ done, value }) => {
           if (done) {
+            // a CR kept back for a possible CRLF is a line ending once the stream has ended
+            buffer = buffer.replace(/\r$/, '\n');
+            emitCompleteEvents();
             subscriber.complete();
             return;
           }
 
-          buffer += decoder.decode(value, { stream: true });
-
-          // SSE events are separated by a blank line.
-          let boundary = buffer.indexOf('\n\n');
-          while (boundary !== -1) {
-            const rawEvent = buffer.slice(0, boundary);
-            buffer = buffer.slice(boundary + 2);
-            const event = parseSseEvent(rawEvent);
-            if (event) {
-              subscriber.next(event);
-            }
-            boundary = buffer.indexOf('\n\n');
-          }
+          buffer = normalizeLineEndings(buffer + decoder.decode(value, { stream: true }));
+          emitCompleteEvents();
 
           return pump();
         });

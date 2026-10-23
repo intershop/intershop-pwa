@@ -8,6 +8,7 @@ import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
+import { CopilotEmbeddedChatEffects } from './copilot-embedded-chat/copilot-embedded-chat.effects';
 import { copilotEmbeddedChatReducer } from './copilot-embedded-chat/copilot-embedded-chat.reducer';
 import { CopilotEmbeddedConfigEffects } from './copilot-embedded-config/copilot-embedded-config.effects';
 import { copilotEmbeddedConfigReducer } from './copilot-embedded-config/copilot-embedded-config.reducer';
@@ -18,7 +19,7 @@ const copilotEmbeddedReducers: ActionReducerMap<CopilotEmbeddedState> = {
   _chat: copilotEmbeddedChatReducer,
 };
 
-const copilotEmbeddedEffects = [CopilotEmbeddedConfigEffects];
+const copilotEmbeddedEffects = [CopilotEmbeddedChatEffects, CopilotEmbeddedConfigEffects];
 
 @Injectable()
 export class DefaultCopilotEmbeddedStoreConfig implements StoreConfig<CopilotEmbeddedState> {

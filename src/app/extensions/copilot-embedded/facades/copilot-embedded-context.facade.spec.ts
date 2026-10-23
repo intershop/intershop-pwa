@@ -194,6 +194,9 @@ describe('Copilot Embedded Context Facade', () => {
 
     expect(context.get('error')).toBe('copilot.embedded.error.generic');
     expect(context.get('pendingAnswer')).toBeEmpty();
+    // neither persisted as reply nor retried without streaming
+    expect(context.get('messages')).toHaveLength(1);
+    expect(chatService.sendMessage).not.toHaveBeenCalled();
   });
 
   it('should check the streaming availability only once', () => {

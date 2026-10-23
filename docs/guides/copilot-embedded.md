@@ -92,7 +92,8 @@ The chatflow prompt can use these markers, e.g., to add products to the basket o
 Image uploads require a chatflow with image uploads enabled on a vision-capable chat model.
 
 The chat history is stored in the browser's localStorage for 1 day by default, configurable via `dataRetention.copilotEmbedded` with the same values as for the other features (lifetime in minutes, `'session'` or `'forever'`).
-The **Start a new conversation** button and the logout delete the stored chat history.
+It is stored separately for each `baseHref` of a [multi-site configuration](./multi-site-configurations.md), so switching to a language or channel with a different `baseHref` starts a new conversation, and switching back restores the previous one.
+The **Start a new conversation** button deletes the stored chat history of the current `baseHref`, the logout deletes it for all `baseHref`s.
 
 ## Tool Call Actions
 
