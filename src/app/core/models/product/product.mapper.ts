@@ -132,6 +132,7 @@ export class ProductMapper {
       sku,
       images: this.imageMapper.fromImageUrl(retrieveStubAttributeValue(data, 'image')),
       manufacturer: retrieveStubAttributeValue(data, 'manufacturer'),
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       available: this.calculateAvailable(
         retrieveStubAttributeValue(data, 'availability'),
         retrieveStubAttributeValue(data, 'inStock')
@@ -162,11 +163,13 @@ export class ProductMapper {
       name: data.productName,
       shortDescription: data.shortDescription,
       longDescription: data.longDescription,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       available: this.calculateAvailable(data.availability, data.inStock),
       minOrderQuantity: data.minOrderQuantity,
       maxOrderQuantity: data.maxOrderQuantity,
       stepQuantity: data.stepOrderQuantity,
       packingUnit: data.packingUnit,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       availableStock: data.availableStock,
       attributes: data.attributeGroups?.PRODUCT_DETAIL_ATTRIBUTES?.attributes || data.attributes || [],
       attributeGroups: data.attributeGroups,

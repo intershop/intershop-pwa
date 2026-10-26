@@ -46,7 +46,7 @@ describe('Product Detail Actions Component', () => {
     translate.setFallbackLang('en');
     translate.use('en');
 
-    const product = { sku: 'sku', available: true } as Product;
+    const product = { sku: 'sku' } as Product;
     when(context.select('product')).thenReturn(of(createProductView(product)));
     when(context.select('displayProperties', anyString())).thenReturn(of(true));
   });
