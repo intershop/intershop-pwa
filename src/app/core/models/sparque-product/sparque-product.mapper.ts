@@ -41,6 +41,7 @@ export class SparqueProductMapper {
       name: data.name,
       shortDescription: data.shortDescription,
       manufacturer: data.defaultBrandName,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       available: true,
       type: 'Product',
       images: this.sparqueImageMapper.fromImages(data.images),
