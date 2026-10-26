@@ -39,7 +39,7 @@ With Intershop PWA 13.0.0, the project is updated to Angular 20.
 Companion libraries are updated to their Angular 20 compatible versions as well, for example NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
 
 Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
-The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.server.json` and `tsconfig.spec.json` keep `"node"`).
+The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.spec.json` keeps `"node"`).
 
 Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
 
@@ -164,6 +164,11 @@ The default behavior is unchanged (enabled in development, disabled in productio
 
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
 To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
+
+**SSR server compiled as ES modules**
+
+The SSR server code is now compiled as ES modules instead of CommonJS, since the CommonJS output fails to bundle with newer webpack versions (`Cannot get final name for export '__esModule' of ./server.ts`).
+Remove the `module` and `moduleResolution` overrides from your [`tsconfig.server.json`](../../tsconfig.server.json) and check custom server code for CommonJS-only constructs such as `exports` or `module.exports`.
 
 ## From 12.0.0 to 12.1.0
 
