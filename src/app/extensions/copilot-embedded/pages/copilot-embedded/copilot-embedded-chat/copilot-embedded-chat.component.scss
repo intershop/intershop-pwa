@@ -8,8 +8,12 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: ($space-default * 2);
+  padding: $space-default;
   background-color: $gray-200;
+
+  @include media-breakpoint-up(md) {
+    padding: ($space-default * 2);
+  }
 
   .copilot-embedded-welcome {
     display: flex;

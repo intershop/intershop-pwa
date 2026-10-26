@@ -1,4 +1,7 @@
 @import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
 
 .copilot-embedded {
   // Max height of the scrollable chat messages and recommendations list: the viewport minus the page header
@@ -7,4 +10,9 @@
   --copilot-embedded-scroll-max-height: max(200px, calc(100vh - 420px));
 
   margin-top: $space-default;
+
+  @include media-breakpoint-down(md) {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
