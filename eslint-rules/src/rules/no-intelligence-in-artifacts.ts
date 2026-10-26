@@ -20,7 +20,6 @@ const messages = {
  * It will be matched to check for the unwanted code artifacts and provide a specific error message.
  */
 const noIntelligenceInArtifactsRule: TSESLint.RuleModule<keyof typeof messages, [Record<string, RuleSetting>]> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

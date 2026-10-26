@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import projectStructureRule from '../src/rules/project-structure';
 
 import testRule from './rule-tester';
@@ -118,7 +116,6 @@ testRule(projectStructureRule, {
           data: {
             message: 'path/baz/test.component.ts this file path does not match any defined patterns.',
           },
-          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
     },
@@ -137,7 +134,6 @@ testRule(projectStructureRule, {
           data: {
             message: 'no pattern match for TestFooComponent in file path/src/test/test.component.bar.ts',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -162,7 +158,6 @@ testRule(projectStructureRule, {
         `,
       errors: [
         {
-          type: AST_NODE_TYPES.Identifier,
           messageId: 'projectStructureError',
           data: {
             message: `'TestB2BComponent' is not in the correct file (expected '/src\\/test\\/test-b-2-b.component.ts$/')`,

@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import banImportsFilePatternRule from '../src/rules/ban-imports-file-pattern';
 
 import testRule from './rule-tester';
@@ -47,7 +45,6 @@ testRule(banImportsFilePatternRule, {
           data: {
             message: 'Test Message',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },
@@ -73,7 +70,6 @@ testRule(banImportsFilePatternRule, {
           data: {
             message: 'Test Message',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },
@@ -99,7 +95,6 @@ testRule(banImportsFilePatternRule, {
           data: {
             message: 'Test Star Import.',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },

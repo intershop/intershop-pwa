@@ -15,7 +15,6 @@ const standardTokens = {
 const HAS_INJECT_DECORATOR = ':has(Decorator[expression.callee.name="Inject"])';
 
 const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     docs: {
       description:

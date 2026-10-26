@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import useJestExtendedMatchersInTestsRule from '../src/rules/use-jest-extended-matchers-in-tests';
 
 import testRule from './rule-tester';
@@ -57,7 +55,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeNull',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeNull()`,
@@ -72,7 +69,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeFalse',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeFalse()`,
@@ -87,7 +83,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeTrue',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeTrue()`,
@@ -102,7 +97,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeUndefined',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeUndefined()`,
@@ -117,7 +111,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeEmpty',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeEmpty()`,
@@ -132,7 +125,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeEmpty',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeEmpty()`,
@@ -147,7 +139,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeEmpty',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeEmpty()`,
@@ -162,7 +153,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toHaveLength',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(arr).toHaveLength(2)`,
@@ -177,7 +167,6 @@ testRule(useJestExtendedMatchersInTestsRule, {
           data: {
             alternative: 'toBeNaN',
           },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `expect(variable).toBeNaN()`,

@@ -13,7 +13,6 @@ const messages = {
  * Validates and fixes missing private accessibility for the destroy$ property in components, directives and pipes.
  */
 const privateDestroyFieldRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     fixable: 'code',

@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import privateDestroyRefFieldRule from '../src/rules/private-destroyRef-field';
 
 import testRule from './rule-tester';
@@ -30,7 +28,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'injectDestroyRefError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
     },
@@ -46,7 +43,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'injectDestroyRefError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
     },
@@ -62,7 +58,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyRefError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -84,7 +79,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyRefError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -106,7 +100,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyRefError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -128,7 +121,6 @@ testRule(privateDestroyRefFieldRule, {
       errors: [
         {
           messageId: 'bothError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
