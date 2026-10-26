@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 const { globSync } = require('glob');
 const fs = require('fs');
@@ -38,15 +37,6 @@ globSync('./src/ssr/server-scripts/*.js', { dotRelative: true }).forEach(file =>
       },
       optimization: {
         minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            terserOptions: {
-              // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-              mangle: true,
-            },
-          }),
-        ],
       },
       output: {
         path: path.join(process.cwd(), 'dist'),
