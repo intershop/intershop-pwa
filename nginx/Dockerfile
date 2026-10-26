@@ -26,7 +26,7 @@ RUN wget -q https://nginx.org/download/nginx-1.31.1.tar.gz \
   && tar -zxf nginx-1.31.1.tar.gz \
   && git clone https://github.com/google/ngx_brotli \
   && cd ngx_brotli \
-  && git checkout a71f9312c2deb28875acc7bacfdd5695a111aa53 \
+  && git checkout 53e0fb55f250f48fe80c0ddbf6c0f7103cdbaae1 \
   && git submodule update --init --recursive \
   && cd .. \
   && cd nginx-1.31.1 \
