@@ -7,8 +7,8 @@
     "intershop"
   ],
   "engines": {
-    "node": "24.19.0",
-    "npm": "11.17.0"
+    "node": "24.22.1",
+    "npm": "11.19.1"
   },
   "private": true,
   "scripts": {
