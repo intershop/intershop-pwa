@@ -11,7 +11,7 @@ kb_sync_latest_only
 
 **Node.js 24 update**
 
-The Intershop PWA now uses Node.js 24.19.0 LTS with the corresponding npm version 11.17.0.
+The Intershop PWA now uses Node.js 24.22.1 LTS with the corresponding npm version 11.19.1.
 
 Please be aware that npm 11 no longer runs dependencies' lifecycle scripts (preinstall/install/postinstall) by default, as a supply‑chain security measure.
 Packages that need to run such scripts must be explicitly allow‑listed (`allowScripts` in the `package.json`).
