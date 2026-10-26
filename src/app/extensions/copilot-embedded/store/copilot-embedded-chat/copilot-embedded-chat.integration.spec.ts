@@ -1,7 +1,7 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { EMPTY } from 'rxjs';
-import { anything, instance, mock, when } from 'ts-mockito';
+import { anything, mock, when } from 'ts-mockito';
 
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
@@ -40,7 +40,6 @@ describe('Copilot Embedded Chat Integration', () => {
       providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: DATA_RETENTION_POLICY, useValue: { copilotEmbedded: 60 } },
-        { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         provideStoreSnapshots(),
       ],
     });

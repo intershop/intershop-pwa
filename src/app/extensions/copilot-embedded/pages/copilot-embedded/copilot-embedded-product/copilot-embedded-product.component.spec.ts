@@ -6,7 +6,6 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
 import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
 import { ProductChooseVariationComponent } from 'ish-shared/components/product/product-choose-variation/product-choose-variation.component';
 import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
@@ -34,7 +33,6 @@ describe('Copilot Embedded Product Component', () => {
       imports: [MockComponent(ProductImageComponent)],
       declarations: [
         CopilotEmbeddedProductComponent,
-        MockComponent(LoadingComponent),
         MockComponent(ProductAddToBasketComponent),
         MockComponent(ProductChooseVariationComponent),
         MockComponent(ProductIdComponent),

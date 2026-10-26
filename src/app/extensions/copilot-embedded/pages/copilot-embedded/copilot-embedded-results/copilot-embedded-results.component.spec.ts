@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockDirective } from 'ng-mocks';
 import { BehaviorSubject } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -9,7 +9,6 @@ import { ProductContextDirective } from 'ish-core/directives/product-context.dir
 
 import { CopilotEmbeddedContextFacade } from '../../../facades/copilot-embedded-context.facade';
 import { CopilotEmbeddedProduct } from '../../../models/copilot-embedded-product/copilot-embedded-product.model';
-import { CopilotEmbeddedProductComponent } from '../copilot-embedded-product/copilot-embedded-product.component';
 
 import { CopilotEmbeddedResultsComponent } from './copilot-embedded-results.component';
 
@@ -25,11 +24,7 @@ describe('Copilot Embedded Results Component', () => {
     when(context.select('products')).thenReturn(products$);
 
     await TestBed.configureTestingModule({
-      declarations: [
-        CopilotEmbeddedResultsComponent,
-        MockComponent(CopilotEmbeddedProductComponent),
-        MockDirective(ProductContextDirective),
-      ],
+      declarations: [CopilotEmbeddedResultsComponent, MockDirective(ProductContextDirective)],
       imports: [TranslatePipe],
       providers: [
         { provide: CopilotEmbeddedContextFacade, useFactory: () => instance(context) },
