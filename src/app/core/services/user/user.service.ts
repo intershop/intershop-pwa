@@ -8,13 +8,13 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
-import { CustomerData, CustomerType } from 'ish-core/models/customer/customer.interface';
+import { CustomerType, type CustomerData } from 'ish-core/models/customer/customer.interface';
 import { CustomerMapper } from 'ish-core/models/customer/customer.mapper';
 import {
-  Customer,
   CustomerLoginType,
   CustomerRegistrationType,
   CustomerUserType,
+  type Customer,
 } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';

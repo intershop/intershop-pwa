@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroupDirective } from '@angular/forms';
-import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, type NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, race, take } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
