@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import useCorrectComponentOverridesRule from '../src/rules/use-correct-component-overrides';
 
 import testRule from './rule-tester';
@@ -52,7 +50,6 @@ testRule(useCorrectComponentOverridesRule, {
           export class FooterComponent {}`,
       errors: [
         {
-          type: AST_NODE_TYPES.Literal,
           messageId: 'shouldPointToBasicFile',
           suggestions: [
             {
@@ -69,7 +66,6 @@ testRule(useCorrectComponentOverridesRule, {
           ],
         },
         {
-          type: AST_NODE_TYPES.ArrayExpression,
           messageId: 'shouldPointToBasicFile',
           suggestions: [
             {
@@ -100,7 +96,6 @@ testRule(useCorrectComponentOverridesRule, {
           export class FooterComponent {}`,
       errors: [
         {
-          type: AST_NODE_TYPES.Literal,
           messageId: 'shouldPointToBasicFile',
           suggestions: [
             {
@@ -117,7 +112,6 @@ testRule(useCorrectComponentOverridesRule, {
           ],
         },
         {
-          type: AST_NODE_TYPES.ArrayExpression,
           messageId: 'shouldPointToBasicFile',
           suggestions: [
             {

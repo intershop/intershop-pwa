@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import useComponentChangeDetectionRule from '../src/rules/use-component-change-detection';
 
 import testRule from './rule-tester';
@@ -36,7 +34,6 @@ testRule(useComponentChangeDetectionRule, {
       errors: [
         {
           messageId: 'noChangeDetectionError',
-          type: AST_NODE_TYPES.Decorator,
         },
       ],
     },

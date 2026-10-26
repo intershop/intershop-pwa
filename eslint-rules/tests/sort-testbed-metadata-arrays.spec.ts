@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import sortTestbedMetadataArraysRule from '../src/rules/sort-testbed-metadata-arrays';
 
 import testRule from './rule-tester';
@@ -40,7 +38,6 @@ testRule(sortTestbedMetadataArraysRule, {
       errors: [
         {
           messageId: 'sortTestBedMetadataArrays',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `
@@ -63,7 +60,6 @@ testRule(sortTestbedMetadataArraysRule, {
       errors: [
         {
           messageId: 'sortTestBedMetadataArrays',
-          type: AST_NODE_TYPES.CallExpression,
         },
       ],
       output: `

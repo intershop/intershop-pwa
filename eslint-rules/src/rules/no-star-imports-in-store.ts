@@ -14,7 +14,6 @@ const messages = {
  * `import { firstAction, secondAction } from './example.actions'`
  */
 const noStarImportsInStoreRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

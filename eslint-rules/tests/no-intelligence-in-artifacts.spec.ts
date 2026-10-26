@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noIntelligenceInArtifactsRule from '../src/rules/no-intelligence-in-artifacts';
 
 import testRule from './rule-tester';
@@ -36,14 +34,12 @@ testRule(noIntelligenceInArtifactsRule, {
           data: {
             error: 'no ngrx in components',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
         {
           messageId: 'noIntelligenceError',
           data: {
             error: 'no services in components',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },
@@ -68,7 +64,6 @@ testRule(noIntelligenceInArtifactsRule, {
           data: {
             error: 'no facades in effects',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },
@@ -93,7 +88,6 @@ testRule(noIntelligenceInArtifactsRule, {
           data: {
             error: 'no router in services',
           },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },

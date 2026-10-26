@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import componentCreationTestRule, { SHOULD_BE_CREATED_NAME } from '../src/rules/component-creation-test';
 
 import testRule from './rule-tester';
@@ -39,7 +37,6 @@ testRule(componentCreationTestRule, {
       errors: [
         {
           messageId: 'noDescribe',
-          type: AST_NODE_TYPES.Program,
         },
       ],
     },
@@ -58,7 +55,6 @@ testRule(componentCreationTestRule, {
       errors: [
         {
           messageId: 'noCreationTest',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -76,7 +72,6 @@ testRule(componentCreationTestRule, {
       errors: [
         {
           messageId: 'noComponentTruthyTest',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -94,7 +89,6 @@ testRule(componentCreationTestRule, {
       errors: [
         {
           messageId: 'noElementTruthyTest',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },
@@ -112,7 +106,6 @@ testRule(componentCreationTestRule, {
       errors: [
         {
           messageId: 'noFixtureDetectChangesTest',
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
     },

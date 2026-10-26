@@ -16,7 +16,6 @@ const messages = {
  *    - relative imports from the same folder, starting with `./`
  */
 const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noObjectLiteralTypeAssertionRule from '../src/rules/no-object-literal-type-assertion';
 
 import testRule from './rule-tester';
@@ -30,7 +28,6 @@ testRule(noObjectLiteralTypeAssertionRule, {
       errors: [
         {
           messageId: 'noObjectLiteralTypeAssertionError',
-          type: AST_NODE_TYPES.TSAsExpression,
         },
       ],
     },

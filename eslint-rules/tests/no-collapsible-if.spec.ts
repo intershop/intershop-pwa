@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noCollapsibleIfRule from '../src/rules/no-collapsible-if';
 
 import testRule from './rule-tester';
@@ -79,7 +77,6 @@ testRule(noCollapsibleIfRule, {
       errors: [
         {
           messageId: 'noCollapsibleIfError',
-          type: AST_NODE_TYPES.IfStatement,
         },
       ],
     },

@@ -10,7 +10,6 @@ const messages = {
  * Validates and fixes the environment.*.ts files to contain only property signatures in camelCase format.
  */
 const useCamelCaseEnvironmentPropertiesRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

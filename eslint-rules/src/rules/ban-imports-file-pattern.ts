@@ -24,7 +24,6 @@ const messages = {
  * message            error message, which should be displayed, when the validation failed
  */
 const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [RuleSetting[]]> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',
