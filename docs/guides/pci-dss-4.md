@@ -232,7 +232,7 @@ nginx:
   environment:
     ADDITIONAL_HEADERS: |
       headers:
-        - Content-Security-Policy: "default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://policy-int.cloud.intershop.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self'; font-src 'self' https://fonts.gstatic.com;"
+        - Content-Security-Policy: "default-src 'self'; script-src 'self' https://www.googletagmanager.com 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://policy-int.cloud.intershop.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self'; font-src 'self' https://fonts.gstatic.com;"
 ```
 
 For Helm deployments, use `cache.additionalHeaders` with the same header content.

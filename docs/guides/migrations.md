@@ -9,6 +9,13 @@ kb_sync_latest_only
 
 ## From 12.1.0 to 13.0.0
 
+**Inline scripts blocked by the default security headers**
+
+The default Content Security Policy in [_additional-headers.yaml_](../../nginx/additional-headers.yaml) no longer allows `'unsafe-inline'` for `script-src`, so inline scripts, inline event handlers, and `javascript:` URLs are blocked in the browser.
+Only the inline script in _index.html_ and the `onload` handler of the critical CSS inlining are allowed by their hashes; update the hash in _additional-headers.yaml_ whenever you change the inline script in _index.html_.
+Replace inline event handlers and `javascript:` URLs in custom templates, translations, and CMS content, for example with the `ishPrintPage` directive or the `callback` attribute of `ishServerHtml` (`reloadPage`, `navigateBack`), and replace Google Tag Manager "Custom HTML" tags with tag templates.
+For more information, see [Inline Scripts in the PWA](./security-headers.md#inline-scripts-in-the-pwa).
+
 **Node.js 24 update**
 
 The Intershop PWA now uses Node.js 24.22.1 LTS with the corresponding npm version 11.19.1.
