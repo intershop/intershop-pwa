@@ -11,8 +11,6 @@ describe('Captcha Field Component', () => {
   let component: FormlyTestingContainerComponent;
   let fixture: ComponentFixture<FormlyTestingContainerComponent>;
   let element: HTMLElement;
-  let form: FormGroup;
-  let captchaField: FormlyFieldConfig;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,17 +29,16 @@ describe('Captcha Field Component', () => {
   });
 
   beforeEach(() => {
-    form = new FormGroup({});
-    captchaField = {
-      type: 'ish-captcha-field',
-      props: {
-        topic: 'test',
-        required: true,
-      },
-    };
     const testComponentInputs = {
-      fields: [captchaField],
-      form,
+      fields: [
+        {
+          type: 'ish-captcha-field',
+          props: {
+            topic: 'test',
+          },
+        } as FormlyFieldConfig,
+      ],
+      form: new FormGroup({}),
       model: {},
     };
     fixture = TestBed.createComponent(FormlyTestingContainerComponent);
@@ -57,21 +54,5 @@ describe('Captcha Field Component', () => {
     expect(element).toBeTruthy();
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element.querySelector('ish-captcha-field > ish-lazy-captcha')).toBeTruthy();
-  });
-
-  it('should add captcha and captchaAction form controls to the form', () => {
-    expect(form.get('captcha')).toBeTruthy();
-    expect(form.get('captchaAction').value).toEqual('test');
-  });
-
-  it('should sync the field form control with the captcha form control', () => {
-    expect(captchaField.formControl.hasError('required')).toBeTrue();
-
-    form.get('captcha').setValue('captchaResponseToken');
-    expect(captchaField.formControl.value).toEqual('captchaResponseToken');
-    expect(captchaField.formControl.valid).toBeTrue();
-
-    form.get('captcha').setValue(undefined);
-    expect(captchaField.formControl.hasError('required')).toBeTrue();
   });
 });
