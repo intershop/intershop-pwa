@@ -61,6 +61,7 @@
 
   // .btn.btn-secondary outranks the global margin rule for multiple buttons
   > .btn.btn-secondary {
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;

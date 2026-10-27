@@ -4,7 +4,7 @@
 .copilot-embedded-header {
   display: flex;
   align-items: center;
-  padding: ($space-default * 0.75) 0;
+  padding: 0 0 ($space-default * 0.75);
 
   ish-copilot-embedded-icon {
     margin-right: ($space-default * 0.5);

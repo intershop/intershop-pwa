@@ -12,7 +12,7 @@
   background-color: $gray-200;
 
   @include media-breakpoint-up(md) {
-    padding: ($space-default * 2);
+    padding: ($space-default * 1.5);
   }
 
   .copilot-embedded-welcome {
