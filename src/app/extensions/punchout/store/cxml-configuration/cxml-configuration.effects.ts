@@ -4,7 +4,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { concatMap, map, mergeMap } from 'rxjs/operators';
 
-import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
+import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../../services/punchout/punchout.service';
@@ -48,21 +48,6 @@ export class CxmlConfigurationEffects {
           ]),
           mapErrorToAction(cxmlConfigurationApiActions.updateCXMLConfigurationFail)
         )
-      )
-    )
-  );
-
-  displayCxmlConfigurationErrorMessage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        cxmlConfigurationApiActions.updateCXMLConfigurationFail,
-        cxmlConfigurationApiActions.loadCXMLConfigurationFail
-      ),
-      mapToPayloadProperty('error'),
-      map(error =>
-        displayErrorMessage({
-          message: error.message,
-        })
       )
     )
   );
