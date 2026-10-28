@@ -5,7 +5,6 @@ import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
@@ -23,7 +22,7 @@ describe('Cxml Configuration Form Component', () => {
     punchoutFacade = mock(PunchoutFacade);
     await TestBed.configureTestingModule({
       imports: [FormlyTestingModule, RouterModule, TranslatePipe],
-      declarations: [CxmlConfigurationFormComponent, MockComponent(ErrorMessageComponent), MockComponent(FormlyForm)],
+      declarations: [CxmlConfigurationFormComponent, MockComponent(FormlyForm)],
       providers: [
         { provide: PunchoutFacade, useFactory: () => instance(punchoutFacade) },
         provideRouter([]),

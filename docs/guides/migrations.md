@@ -240,6 +240,7 @@ For Helm deployments, use the PWA Helm Chart 1.0.0 or later and configure the in
 To prevent cross-site scripting, the `ErrorMessageComponent` (`ish-error-message`) renders ICM error messages as sanitized HTML and HTML-escapes the values of their `parameters`, e.g., a SKU entered by the user.
 The `ICMErrorMapperInterceptor` no longer wraps the messages of the ADR error format in `<div>` elements; `error.message` contains the unformatted messages, which may contain HTML.
 To display the messages of an `HttpError` in custom code, render the result of `HttpErrorHelper.formatMessage()` as sanitized HTML instead of `error.message`.
+Errors of the cXML punchout configuration are displayed on the configuration page instead of in the configuration form and by the `CxmlConfigurationEffects`.
 
 ## From 12.0.0 to 12.1.0
 
