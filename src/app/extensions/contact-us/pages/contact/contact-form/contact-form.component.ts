@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
-import { map, shareReplay, startWith, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
@@ -46,11 +46,11 @@ export class ContactFormComponent implements OnInit {
       }))
     );
 
-    this.fields$ = this.accountFacade.isLoggedIn$.pipe(
-      withLatestFrom(
-        this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
-        this.appFacade.serverSetting$<boolean>('captcha.contactUs')
-      ),
+    this.fields$ = combineLatest([
+      this.accountFacade.isLoggedIn$,
+      this.appFacade.serverSetting$<boolean>('services.ReCaptchaV2ServiceDefinition.runnable'),
+      this.appFacade.serverSetting$<boolean>('captcha.contactUs'),
+    ]).pipe(
       map(([isLoggedIn, isCaptchaV2, isCaptchaTopicEnabled]) => [
         {
           key: 'name',

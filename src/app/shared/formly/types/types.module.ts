@@ -169,6 +169,7 @@ const fieldComponents = [
           name: 'ish-captcha-field',
           component: CaptchaFieldComponent,
           defaultOptions: {
+            key: 'captcha',
             validation: {
               messages: {
                 required: 'recaptcha.v2.incorrect.error',

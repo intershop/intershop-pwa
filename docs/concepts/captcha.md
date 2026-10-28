@@ -72,6 +72,8 @@ export class ExamplePageComponent implements OnInit {
 
 The `ish-captcha-field` type is registered in the _src.app.shared.formly.types.**types.module.ts**_.
 Additionally, the module binds the corresponding field component to this type.
+The type uses `captcha` as default key, so the field's form control holds the CAPTCHA response token and the field validation (e.g., `required`) is applied to it.
+Do not set a different key for this field type, since the CAPTCHA components expect the `captcha` form control.
 The topic to be set corresponds to the CAPTCHA channel preferences available in ICM.
 If these preferences are disabled in ICM, CAPTCHA validation for this topic is also disabled in the PWA.
 

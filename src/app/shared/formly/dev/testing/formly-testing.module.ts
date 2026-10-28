@@ -232,7 +232,7 @@ class NumberFieldComponent extends FieldType {}
           name: 'ish-textarea-field',
           component: TextareaFieldComponent,
         },
-        { name: 'ish-captcha-field', component: CaptchaFieldComponent },
+        { name: 'ish-captcha-field', component: CaptchaFieldComponent, defaultOptions: { key: 'captcha' } },
         { name: 'ish-date-picker-field', component: DatePickerFieldComponent },
         { name: 'ish-date-range-picker-field', component: DateRangePickerFieldComponent },
         { name: 'repeat', component: RepeatFieldComponent },

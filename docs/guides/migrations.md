@@ -170,6 +170,12 @@ To enable Store Devtools in production, update the conditional registration in _
 The SSR server code is now compiled as ES modules instead of CommonJS, since the CommonJS output fails to bundle with newer webpack versions (`Cannot get final name for export '__esModule' of ./server.ts`).
 Remove the `module` and `moduleResolution` overrides from your [`tsconfig.server.json`](../../tsconfig.server.json) and check custom server code for CommonJS-only constructs such as `exports` or `module.exports`.
 
+**CAPTCHA field type uses `captcha` key**
+
+The `ish-captcha-field` Formly type now defines `captcha` as default key, so its field validation is applied directly to the `captcha` form control and the [`CaptchaFieldComponent`](../../src/app/shared/formly/types/captcha-field/captcha-field.component.ts) no longer adds this control itself.
+If you register the `ish-captcha-field` type in a custom module, add `key: 'captcha'` to its `defaultOptions` as done in [`types.module.ts`](../../src/app/shared/formly/types/types.module.ts).
+As a consequence, the CAPTCHA token is now also written to the `captcha` property of the Formly model.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
