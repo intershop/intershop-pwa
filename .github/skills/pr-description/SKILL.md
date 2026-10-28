@@ -29,4 +29,4 @@ Remove the template's HTML comments.
 
 ## 3. Hand over
 
-Suggest a PR title following the Conventional Commits prefixes in [`commit-style.instructions.md`](../../instructions/commit-style.instructions.md). Then return the description as one fenced `markdown` block, ready to paste; use a four-backtick outer fence when the description contains code blocks.
+Suggest a PR title following the Conventional Commits prefixes and the subject line length rules in [`commit-style.instructions.md`](../../instructions/commit-style.instructions.md). Then return the description as one fenced `markdown` block, ready to paste; use a four-backtick outer fence when the description contains code blocks.
