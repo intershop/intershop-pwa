@@ -12,7 +12,24 @@ import { ErrorMessageComponent } from './error-message.component';
 
 const maliciousSku = '<h1>VULN003</h1><img src=x onerror=alert(document.domain)>';
 
-const escapedSku = '&lt;h1&gt;VULN003&lt;/h1&gt;&lt;img src=x onerror=alert(document.domain)&gt;';
+// error as mapped by the ICMErrorMapperInterceptor for adding an unknown SKU to the basket
+const basketError = makeHttpError({
+  status: 422,
+  message: `The product could not be added to your cart. The product with SKU '${maliciousSku}' could not be found.`,
+  errors: [
+    {
+      code: 'basket.add_line_item_not_successful.error',
+      message: 'The product could not be added to your cart.',
+      causes: [
+        {
+          code: 'basket.line_item.product_not_found.error',
+          message: `The product with SKU '${maliciousSku}' could not be found.`,
+          parameters: { sku: maliciousSku },
+        },
+      ],
+    },
+  ],
+});
 
 describe('Error Message Component', () => {
   let component: ErrorMessageComponent;
@@ -65,17 +82,28 @@ describe('Error Message Component', () => {
       verify(messageFacade.error(anything())).never();
     });
 
-    it('should render escaped parameter values of the message as text', () => {
-      // message as mapped by the ICMErrorMapperInterceptor for adding an unknown SKU to the basket
-      component.error = makeHttpError({
-        message: `The product could not be added to your cart. The product with SKU '${escapedSku}' could not be found.`,
-      });
+    it('should render the error code as translation key if no message is available', () => {
+      component.error = makeHttpError({ code: 'error.key' });
+
+      component.ngOnChanges();
+      fixture.detectChanges();
+      expect(element.querySelector('[role="alert"]').textContent).toContain('error.key');
+    });
+
+    it('should render the message and its causes as separate lines and parameter values as text', () => {
+      component.error = basketError;
 
       component.ngOnChanges();
       fixture.detectChanges();
       expect(element.querySelector('h1')).toBeFalsy();
       expect(element.querySelector('img')).toBeFalsy();
-      expect(element.querySelector('[role="alert"]').textContent).toContain(maliciousSku);
+      expect(Array.from(element.querySelectorAll('[role="alert"] div')).map(div => div.textContent))
+        .toMatchInlineSnapshot(`
+        [
+          "The product could not be added to your cart.",
+          "The product with SKU '<h1>VULN003</h1><img src=x onerror=alert(document.domain)>' could not be found.",
+        ]
+      `);
     });
 
     it('should render trusted HTML of the ICM messages', () => {
@@ -112,27 +140,59 @@ describe('Error Message Component', () => {
       expect(element.querySelector('[role="alert"]')).toBeFalsy();
     });
 
-    it('should trigger an error toast for each error with escaped parameter values', () => {
+    it('should trigger error toast with the message and its causes as lines and escaped parameter values', () => {
+      component.error = basketError;
+
+      component.ngOnChanges();
+      verify(messageFacade.error(anything())).once();
+      expect(capture(messageFacade.error).last()).toMatchInlineSnapshot(`
+        [
+          {
+            "message": "<div>The product could not be added to your cart.</div><div>The product with SKU '&lt;h1&gt;VULN003&lt;/h1&gt;&lt;img src=x onerror=alert(document.domain)&gt;' could not be found.</div>",
+          },
+        ]
+      `);
+    });
+
+    it('should trigger an error toast for each error', () => {
       component.error = makeHttpError({
         errors: [
-          {
-            code: 'basket.line_item.product_not_found.error',
-            message: `The product with SKU '${maliciousSku}' could not be found.`,
-            parameters: { sku: maliciousSku },
-          },
+          { code: 'error1', message: 'First error' },
           { code: 'error2', message: 'Second error' },
         ],
       });
 
       component.ngOnChanges();
       verify(messageFacade.error(anything())).twice();
-      expect(capture(messageFacade.error).first()).toMatchInlineSnapshot(`
+    });
+
+    it('should trigger error toast with the cause messages for an error without message', () => {
+      component.error = makeHttpError({
+        errors: [
+          {
+            code: 'intershop.cxml.punchout.configuration.error',
+            message: undefined,
+            causes: [{ message: 'The locale is invalid.' }, { message: 'The value is invalid.' }],
+          },
+        ],
+      });
+
+      component.ngOnChanges();
+      verify(messageFacade.error(anything())).once();
+      expect(capture(messageFacade.error).last()).toMatchInlineSnapshot(`
         [
           {
-            "message": "The product with SKU '&lt;h1&gt;VULN003&lt;/h1&gt;&lt;img src=x onerror=alert(document.domain)&gt;' could not be found.",
+            "message": "<div>The locale is invalid.</div><div>The value is invalid.</div>",
           },
         ]
       `);
+    });
+
+    it('should not trigger an empty error toast for an error without message, causes and code', () => {
+      component.error = makeHttpError({ errors: [{ code: undefined, message: undefined }] });
+
+      component.ngOnChanges();
+      verify(messageFacade.error(anything())).never();
     });
 
     it('should trigger error toast with the error code as translation key if no message is available', () => {

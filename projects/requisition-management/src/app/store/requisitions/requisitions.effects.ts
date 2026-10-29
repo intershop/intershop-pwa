@@ -138,11 +138,7 @@ export class RequisitionsEffects {
           catchError(error =>
             of(
               updateRequisitionStatusFail({ error }),
-              displayErrorMessage({
-                message:
-                  HttpErrorHelper.escapeParameters(error.errors?.[0]?.message, error.errors?.[0]?.parameters) ??
-                  error.message,
-              })
+              displayErrorMessage({ message: HttpErrorHelper.formatMessage(error) })
             )
           )
         )

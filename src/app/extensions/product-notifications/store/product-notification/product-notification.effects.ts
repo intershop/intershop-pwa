@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatMap, map, mergeMap, switchMap } from 'rxjs';
 
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { displayErrorMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
@@ -100,7 +101,7 @@ export class ProductNotificationEffects {
       mapToPayloadProperty('error'),
       map(error =>
         displayErrorMessage({
-          message: error.message,
+          message: HttpErrorHelper.formatMessage(error),
         })
       )
     )
