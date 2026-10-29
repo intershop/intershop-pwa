@@ -2,6 +2,8 @@
   itemprop="image"
   [alt]="category.name"
   [attr.fetchpriority]="loading === 'eager' ? 'high' : null"
+  [attr.height]="categoryImage?.imageActualHeight || 270"
   [attr.loading]="loading"
+  [attr.width]="categoryImage?.imageActualWidth || 270"
   [src]="categoryImageUrl"
 />

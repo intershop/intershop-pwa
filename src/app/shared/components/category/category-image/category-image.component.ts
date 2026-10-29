@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { Category } from 'ish-core/models/category/category.model';
-import { ImageLoading } from 'ish-core/models/image/image.model';
+import { Image, ImageLoading } from 'ish-core/models/image/image.model';
 
 /**
  * The Category Image Component renders an HTML tag img of an image of a Category.
@@ -13,13 +13,12 @@ import { ImageLoading } from 'ish-core/models/image/image.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryImageComponent implements OnChanges {
-  /**
-   * The category for which the image should be displayed
-   */
+  /** The category for which the image should be displayed */
   @Input({ required: true }) category: Category;
   @Input() loading: ImageLoading = 'lazy';
 
   categoryImageUrl = '/assets/img/not-available.svg';
+  categoryImage: Image;
 
   ngOnChanges() {
     this.setCategoryImageUrl();
@@ -30,8 +29,8 @@ export class CategoryImageComponent implements OnChanges {
    * The URL to a non-empty effectiveUrl has a prefix URL of property icmBaseURL.
    */
   private setCategoryImageUrl() {
-    if (this.category.images?.[0]?.effectiveUrl?.length > 0) {
-      this.categoryImageUrl = `${this.category.images[0].effectiveUrl}`;
-    }
+    const image = this.category.images?.[0];
+    this.categoryImage = image?.effectiveUrl?.length > 0 ? image : undefined;
+    this.categoryImageUrl = this.categoryImage ? `${this.categoryImage.effectiveUrl}` : '/assets/img/not-available.svg';
   }
 }
