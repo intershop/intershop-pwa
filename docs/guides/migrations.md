@@ -235,6 +235,11 @@ The `/INTERSHOP` proxy of the SSR server (used in the Hybrid Approach and with `
 Deployments that set `SSR_HYBRID_BACKEND` must rename it to `ICM_BASE_URL_SSR`.
 For Helm deployments, use the PWA Helm Chart 1.0.0 or later and configure the internal ICM Web Adapter service URL via `config.icmBaseUrlSsr` instead of `hybrid.icmInternalURL`.
 
+**ICM error messages**
+
+To prevent cross-site scripting, the `ErrorMessageComponent` (`ish-error-message`) renders ICM error messages as sanitized HTML, and the values of their `parameters`, e.g., a SKU entered by the user, are HTML-escaped.
+For this purpose, the `ICMErrorMapperInterceptor` escapes these values in `error.message`, so custom code that displays `error.message` should render it as sanitized HTML as well.
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**

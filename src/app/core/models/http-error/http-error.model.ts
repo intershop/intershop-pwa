@@ -1,12 +1,14 @@
 interface ErrorCause {
   message: string;
   parameters?: Record<string, string>;
+  code?: string;
 }
 
 export interface ErrorFeedback {
   causes?: ErrorCause[];
   code: string;
   message: string;
+  parameters?: Record<string, string>;
 }
 
 export interface HttpError {

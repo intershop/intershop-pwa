@@ -5,6 +5,7 @@ import { Action } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, concatMap, map, mergeMap, switchMap } from 'rxjs/operators';
 
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { displayErrorMessage, displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/messages';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
@@ -137,7 +138,11 @@ export class RequisitionsEffects {
           catchError(error =>
             of(
               updateRequisitionStatusFail({ error }),
-              displayErrorMessage({ message: error.errors?.[0]?.message ?? error.message })
+              displayErrorMessage({
+                message:
+                  HttpErrorHelper.escapeParameters(error.errors?.[0]?.message, error.errors?.[0]?.parameters) ??
+                  error.message,
+              })
             )
           )
         )
