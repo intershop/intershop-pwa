@@ -143,6 +143,44 @@ describe('Icm Error Mapper Interceptor', () => {
     );
   });
 
+  it('should escape the parameter values in the message of the ICM errors format', done => {
+    const sku = '<h1>VULN003</h1><img src=x onerror=alert(document.domain)>';
+
+    http.get('some').subscribe({
+      next: fail,
+      error: (error: HttpError) => {
+        expect(error.message).toMatchInlineSnapshot(
+          `"The product could not be added to your cart. The product with SKU '&lt;h1&gt;VULN003&lt;/h1&gt;&lt;img src=x onerror=alert(document.domain)&gt;' could not be found."`
+        );
+        expect(error.errors[0].causes[0].message).toContain(sku);
+        done();
+      },
+    });
+
+    httpController.expectOne('some').flush(
+      {
+        data: [],
+        errors: [
+          {
+            causes: [
+              {
+                code: 'basket.line_item.product_not_found.error',
+                message: `The product with SKU '${sku}' could not be found.`,
+                parameters: { sku },
+                paths: ['$.product'],
+              },
+            ],
+            code: 'basket.add_line_item_not_successful.error',
+            message: 'The product could not be added to your cart.',
+            paths: ['$'],
+            status: '422',
+          },
+        ],
+      },
+      { status: 422, statusText: 'Unprocessable Entity' }
+    );
+  });
+
   it('should convert ICM errors format with cause (new ADR) to simplified format concatenating all causes', done => {
     http.get('some').subscribe({
       next: fail,

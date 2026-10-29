@@ -4,6 +4,7 @@ import { pick } from 'lodash-es';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 /* eslint-disable @typescript-eslint/no-restricted-types */
@@ -71,9 +72,11 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         const errors: {
           code: string;
           message: string;
+          parameters?: Record<string, string>;
           causes?: {
             code: string;
             message: string;
+            parameters?: Record<string, string>;
             paths: string[];
           }[];
         }[] = httpError.error.errors;
@@ -83,7 +86,13 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
             return {
               ...responseError,
               errors: httpError.error?.errors,
-              message: [error.message].concat(...error.causes.map(c => c.message)).join(' '),
+              message: [HttpErrorHelper.escapeParameters(error.message, error.parameters)]
+                .concat(
+                  ...error.causes.map(c =>
+                    HttpErrorHelper.escapeParameters(c.message, { ...error.parameters, ...c.parameters })
+                  )
+                )
+                .join(' '),
             };
           }
         }
@@ -97,19 +106,30 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
         const errors: {
           code: string;
           message?: string;
+          parameters?: Record<string, string>;
           causes?: {
             code: string;
             message: string;
+            parameters?: Record<string, string>;
           }[];
         }[] = httpError.error?.messages;
         if (errors.length > 0) {
           const error = errors[0];
+          const message = HttpErrorHelper.escapeParameters(error.message, error.parameters);
           return {
             ...responseError,
             errors: httpError.error.messages,
             // if there are causes, concatenate the main message with the causes messages, otherwise use the main message
-            message: (error.message ? '<div>'.concat(error.message).concat('</div>') : '').concat(
-              error.causes?.length ? error.causes.map(c => '<div>'.concat(c.message).concat('</div>')).join('') : ''
+            message: (message ? '<div>'.concat(message).concat('</div>') : '').concat(
+              error.causes?.length
+                ? error.causes
+                    .map(c =>
+                      '<div>'
+                        .concat(HttpErrorHelper.escapeParameters(c.message, { ...error.parameters, ...c.parameters }))
+                        .concat('</div>')
+                    )
+                    .join('')
+                : ''
             ),
           };
         }

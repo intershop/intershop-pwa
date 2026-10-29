@@ -275,7 +275,7 @@ export default defineConfig([
           },
           {
             importNamePattern:
-              '^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize)$).*',
+              '^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize|escape|escapeRegExp)$).*',
             name: 'lodash.*',
             filePattern: '^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$',
             message: 'importing this operator from lodash is forbidden',
