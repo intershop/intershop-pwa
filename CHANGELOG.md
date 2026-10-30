@@ -7,6 +7,108 @@ kb_everyone
 
 # Changelog
 
+## [13.0.0](https://github.com/intershop/intershop-pwa/releases/tag/13.0.0) (2026-10-30)
+
+> [!NOTE]
+> Intershop PWA 13.0.0 was developed and tested with Intershop Commerce Management (ICM) version ICM 14.4.0.
+> It will work with all versions from ICM 14.4.0 and later.
+> Other ICM versions may also work with some limitations, which are listed in the "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections.
+>
+> _PWA 13.0.0 with the feature toggle `legacyEncoding` enabled should work as well with ICM 11 and ICM 7.10.x (versions newer than 7.10.38.0 should work). The "CHANGES THAT REQUIRE MORE RECENT ICM VERSIONS" sections list functionalities that are only available with ICM releases of the noted version or newer._
+>
+> The PWA was developed and tested using Node.js version 24.22.1 LTS (including npm 11.19.1), which is the recommended version.
+>
+> Intershop recommends using the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) version 1.0.0 for PWA 13.0.0 deployments.
+
+> [!IMPORTANT]
+> For production deployments, set `config.allowedHosts` to the public hostname(s) under which the PWA is served (e.g., `shop.example.com,*.example.com`).
+> When unset, only `localhost` is accepted.
+> Restricting the allowed hosts ensures that only requests with a trusted `Host` header are rendered server-side.
+> Failing to configure the correct `config.allowedHosts` will result in the following error message:
+>
+> `URL with hostname "abc.xyz.com" is not allowed.`
+>
+> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+>
+> ```yaml
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
+> ```
+
+### Features
+
+- add Copilot Embedded to the PWA, an integrated AI product advisor (#2192) ([46ef3da](https://github.com/intershop/intershop-pwa/commit/46ef3da))
+- add migration schematic replacing deprecated `ChangeDetectionStrategy.Default` with `ChangeDetectionStrategy.Eager` (#2201) ([cd1d85e](https://github.com/intershop/intershop-pwa/commit/cd1d85e))
+- add invoice/shipping email to address forms ([6f40a63](https://github.com/intershop/intershop-pwa/commit/6f40a63))
+- ship CSP and security headers by default (#2178) ([6b9e023](https://github.com/intershop/intershop-pwa/commit/6b9e023))
+- **Agent readiness:** introduce `llms.txt` support (#2167) ([e7cd44c](https://github.com/intershop/intershop-pwa/commit/e7cd44c))
+- **Agent readiness:** introduce Markdown mirrors (#2162) ([b19e13a](https://github.com/intershop/intershop-pwa/commit/b19e13a))
+- **Bootstrap:** refactor `PagingComponent` to use `NgbPagination` (#2138) ([60c1c61](https://github.com/intershop/intershop-pwa/commit/60c1c61))
+- **Hybrid Approach:** unify/remove usage of `SSR_HYBRID_BACKEND` and use `ICM_BASE_URL_SSR` instead (#2197) ([7f1e1a9](https://github.com/intershop/intershop-pwa/commit/7f1e1a9))
+- **seo:** render all product detail tabs content in SSR response for SEO (#2166) ([d2ec29d](https://github.com/intershop/intershop-pwa/commit/d2ec29d))
+- **REMOVED:** remove Service Worker integration (#2142) ([289098d](https://github.com/intershop/intershop-pwa/commit/289098d))
+
+### Bug Fixes
+
+- display cXML punchout configuration errors on the page (#2211) ([9a53c34](https://github.com/intershop/intershop-pwa/commit/9a53c34))
+- sanitize ICM error messages and escape their parameters (#2211) ([9975966](https://github.com/intershop/intershop-pwa/commit/9975966))
+- wrong captcha v2 validation behavior in contact form (#2220) ([1d59c78](https://github.com/intershop/intershop-pwa/commit/1d59c78))
+- keep cleanup-testbed running when a single spec file fails ([ba99158](https://github.com/intershop/intershop-pwa/commit/ba99158))
+- refresh paypal express checkout after browser back (#2205) ([857a7ea](https://github.com/intershop/intershop-pwa/commit/857a7ea))
+- prevent error in basket custom fields when the basket is reset ([7bf135b](https://github.com/intershop/intershop-pwa/commit/7bf135b))
+- use function expressions for Formly fields blocked by default CSP (#2198) ([f2be1d3](https://github.com/intershop/intershop-pwa/commit/f2be1d3))
+- prevent blanks in filter ids (#2194) ([f96c481](https://github.com/intershop/intershop-pwa/commit/f96c481))
+- cancel order on back button during payment redirect (#2175) ([84b52d2](https://github.com/intershop/intershop-pwa/commit/84b52d2))
+- use forwarded protocol for multi-channel baseHref redirects to preserve https behind ingress (#2186) ([668fb57](https://github.com/intershop/intershop-pwa/commit/668fb57))
+- move custom npm properties out of `package.json` `config` section (#2179) ([4e7f1ed](https://github.com/intershop/intershop-pwa/commit/4e7f1ed))
+- hard coded channel name in recommendation email subject (#2170) ([8071b10](https://github.com/intershop/intershop-pwa/commit/8071b10))
+- **nginx:** avoid caching multi-site redirects in browser (#2183) ([2c156af](https://github.com/intershop/intershop-pwa/commit/2c156af))
+- **SSR:** correct PM2 restart metrics and fail fast in the Prometheus reporter ([6063a44](https://github.com/intershop/intershop-pwa/commit/6063a44))
+- **SSR:** harden Docker health check and Kubernetes PM2 probes ([8bd1585](https://github.com/intershop/intershop-pwa/commit/8bd1585))
+- **SSR:** route only to active themes and await cache purges in the multi-theme distributor ([fdc6dcb](https://github.com/intershop/intershop-pwa/commit/fdc6dcb))
+- **SSR:** return 406 instead of 404 for Accept header mismatch in SSR (#2188) ([b9eb7e0](https://github.com/intershop/intershop-pwa/commit/b9eb7e0))
+
+### Performance Improvements
+
+- render cookie banner during SSR to improve mobile LCP (#2152) ([27682d3](https://github.com/intershop/intershop-pwa/commit/27682d3))
+- run Auth0 id-token polling outside Angular zone (#2190) ([7e688a8](https://github.com/intershop/intershop-pwa/commit/7e688a8))
+- prevent `ishServerHtml` replacement during SSR hydration (#2164) ([a6e9140](https://github.com/intershop/intershop-pwa/commit/a6e9140))
+
+### Documentation
+
+- adapt documentation and Helm chart examples to PWA Helm Chart 1.0.0 changes (#2197) ([ab4c51a](https://github.com/intershop/intershop-pwa/commit/ab4c51a))
+- link to Intershop Academy migration to PWA 12.0.0 video (#2172) ([edbe889](https://github.com/intershop/intershop-pwa/commit/edbe889))
+
+### Dependencies
+
+- update Angular 21 dependencies (#2201) ([15da4b3](https://github.com/intershop/intershop-pwa/commit/15da4b3))
+- update `ngx_brotli` to use brotli v1.2.1 for compression (#2223) ([2d6efa7](https://github.com/intershop/intershop-pwa/commit/2d6efa7))
+- update Node.js to version 24.22.1 (including npm 11.19.1) (#2223) ([ec69c49](https://github.com/intershop/intershop-pwa/commit/ec69c49))
+- ngx-formly 9 update (#2215) ([c33befc](https://github.com/intershop/intershop-pwa/commit/c33befc))
+- replace deprecated typeface-roboto packages with @fontsource ([720c11b](https://github.com/intershop/intershop-pwa/commit/720c11b))
+- update Formly to version 8 (#2198) ([d73ceb1](https://github.com/intershop/intershop-pwa/commit/d73ceb1))
+- update Node.js to version 24.19.0 (including npm 11.17.0) (#2151) ([23dee72](https://github.com/intershop/intershop-pwa/commit/23dee72))
+- update Angular 20 dependencies (#2145) ([6919779](https://github.com/intershop/intershop-pwa/commit/6919779))
+- update to TypeScript 5.8 (#2145) ([a4b8249](https://github.com/intershop/intershop-pwa/commit/a4b8249))
+
+### Code Refactoring
+
+- configure Store Devtools via `PRODUCTION_MODE` instead of production file replacement (#2182) ([56ee4b3](https://github.com/intershop/intershop-pwa/commit/56ee4b3))
+- use Angular SSR `REQUEST` token instead of custom token (#2191) ([1789312](https://github.com/intershop/intershop-pwa/commit/1789312))
+- remove unused wishlist quantity handling (#1141) ([877f072](https://github.com/intershop/intershop-pwa/commit/877f072))
+
+### BREAKING CHANGES
+
+- Angular 20 upgrade including necessary migrations (see [Migrations / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- Angular 21 upgrade including necessary migrations (see [Migrations / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- Node.js 24 update including npm 11 (see [Migrations / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- Roboto fonts switched to Fontsource (see [Migrations / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- Store Devtools are now configured through `PRODUCTION_MODE` in `store-devtools.module.ts` instead of a production file replacement, and `store-devtools.module.production.ts` has been removed (see [Migration Notes / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- The custom SSR `REQUEST` token has been replaced by Angular's `REQUEST` token providing a Web `Request` instead of an Express request (see [Migration Notes / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- The wishlist quantity handling functionality is removed, as it was only partially implemented in the data layer but not on the actual front-end (see [Migration Notes / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- TypeScript 5.8 update including necessary migrations (see [Migrations / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+- **REMOVED:** The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use (see [Migration Notes / From 12.1.0 to 13.0.0](https://github.com/intershop/intershop-pwa/blob/develop/docs/guides/migrations.md#from-1210-to-1300) for more details).
+
 ## [12.1.0](https://github.com/intershop/intershop-pwa/releases/tag/12.1.0) (2026-08-20)
 
 > [!NOTE]
