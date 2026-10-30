@@ -21,9 +21,8 @@ import { AddressFormGBConfiguration } from './configurations/gb/address-form-gb.
 import { AddressFormUSConfiguration } from './configurations/us/address-form-us.configuration';
 
 @NgModule({
-  declarations: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
   imports: [CommonModule, DirectivesModule, FormlyModule, FormsSharedModule, ReactiveFormsModule, TranslatePipe],
-  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
+  declarations: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
   providers: [
     AddressFormConfigurationProvider,
     { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormDEConfiguration, multi: true },
@@ -32,5 +31,6 @@ import { AddressFormUSConfiguration } from './configurations/us/address-form-us.
     { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormFRConfiguration, multi: true },
     { provide: ADDRESS_FORM_CONFIGURATION, useClass: AddressFormGBConfiguration, multi: true },
   ],
+  exports: [FormlyAddressExtensionFormComponent, FormlyAddressFormComponent, FormlyCustomerAddressFormComponent],
 })
 export class FormlyAddressFormsModule {}

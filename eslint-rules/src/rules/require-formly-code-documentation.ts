@@ -7,7 +7,6 @@ const messages = {
 };
 
 const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

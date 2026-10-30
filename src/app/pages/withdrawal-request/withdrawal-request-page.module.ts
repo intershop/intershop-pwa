@@ -14,7 +14,7 @@ const withdrawalPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [WithdrawalRequestFormComponent, WithdrawalRequestPageComponent],
   imports: [RouterModule.forChild(withdrawalPageRoutes), SharedModule],
+  declarations: [WithdrawalRequestFormComponent, WithdrawalRequestPageComponent],
 })
 export class WithdrawalRequestPageModule {}

@@ -1,0 +1,29 @@
+<div #chatWindow class="copilot-embedded-messages" (scroll)="onChatScroll()">
+  @for (message of messages; track $index) {
+    <div
+      class="copilot-embedded-message"
+      [class.copilot-embedded-message-bot]="message.type === 'apiMessage'"
+      [class.copilot-embedded-message-user]="message.type === 'userMessage'"
+    >
+      @if (message.imageUrl) {
+        <img
+          class="copilot-embedded-message-image"
+          [alt]="'copilot.embedded.input.image_message' | translate"
+          [class.copilot-embedded-message-image-only]="!message.message"
+          [src]="message.imageUrl"
+        />
+      }
+      {{ message.message }}
+
+      @if ($last && message.type === 'apiMessage' && message.choices?.options?.length && !loading) {
+        <ish-copilot-embedded-choices [choices]="message.choices" (answer)="answer.emit($event)" />
+      }
+    </div>
+  }
+
+  @if (pendingAnswer || loading) {
+    <div class="copilot-embedded-message copilot-embedded-message-bot">
+      {{ pendingAnswer || ('copilot.embedded.typing' | translate) }}
+    </div>
+  }
+</div>

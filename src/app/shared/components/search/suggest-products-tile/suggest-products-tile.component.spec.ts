@@ -49,8 +49,8 @@ describe('Suggest Products Tile Component', () => {
 
     const keywordElements = element.querySelectorAll('a');
     expect(keywordElements).toHaveLength(2);
-    expect(keywordElements[0].attributes.getNamedItem('ng-reflect-router-link').value).toEqual(productURL);
-    expect(keywordElements[1].attributes.getNamedItem('ng-reflect-router-link').value).toEqual(productURL);
+    expect(keywordElements[0].getAttribute('href')).toEqual(productURL);
+    expect(keywordElements[1].getAttribute('href')).toEqual(productURL);
     expect(keywordElements[1].textContent).toMatchInlineSnapshot(`"Product 12 345 (very long so it will b..."`);
     expect(findAllCustomElements(element)).toMatchInlineSnapshot(`
       [

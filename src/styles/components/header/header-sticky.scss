@@ -123,6 +123,23 @@
       .mini-cart {
         top: -2px !important;
       }
+
+      @media (width < $header-compact-breakpoint) {
+        .header-utility ish-mini-basket {
+          margin-right: $space-default;
+        }
+
+        .sticky-header-icon {
+          .bi:not(.searchbox-icon) {
+            padding-right: 6px;
+            padding-left: 0;
+          }
+
+          .rounded-pill {
+            left: 16px;
+          }
+        }
+      }
     }
   }
 

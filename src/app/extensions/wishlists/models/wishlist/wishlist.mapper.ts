@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
-import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { Link } from 'ish-core/models/link/link.model';
 
 import { WishlistData } from './wishlist.interface';
@@ -41,14 +40,6 @@ export class WishlistMapper {
           sku: AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'sku'),
           id: AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'id'),
           creationDate: Number(AttributeHelper.getAttributeValueByAttributeName(item.attributes, 'creationDate')),
-          desiredQuantity: {
-            value: AttributeHelper.getAttributeValueByAttributeName<Attribute<number>>(
-              item.attributes,
-              'desiredQuantity'
-            ).value,
-            // TBD: is the unit necessary?
-            // unit: item.desiredQuantity.unit,
-          },
         }));
       } else {
         items = [];

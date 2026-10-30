@@ -4,8 +4,6 @@ import { MockComponent, MockDirective, MockInstance } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { BrowserLazyViewDirective } from 'ish-core/directives/browser-lazy-view.directive';
-import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { DeferredItemComponent } from 'ish-shared/components/common/deferred-item/deferred-item.component';
@@ -28,8 +26,6 @@ describe('Products List Component', () => {
       declarations: [
         MockComponent(DeferredItemComponent),
         MockComponent(ProductItemComponent),
-        MockDirective(BrowserLazyViewDirective),
-        MockDirective(LazyLoadingContentDirective),
         MockDirective(ProductContextDirective),
         ProductsListComponent,
       ],
@@ -48,6 +44,7 @@ describe('Products List Component', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
     expect(element).toBeTruthy();
+    component.productSKUs = [];
     expect(() => component.ngOnChanges()).not.toThrow();
     expect(() => fixture.detectChanges()).not.toThrow();
   });
@@ -83,21 +80,9 @@ describe('Products List Component', () => {
     expect(element.querySelectorAll('ish-product-item')).toHaveLength(3);
     expect(element.querySelectorAll('ish-product-item')).toMatchInlineSnapshot(`
       NodeList [
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="1"
-      ></ish-product-item>,
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="2"
-      ></ish-product-item>,
-        <ish-product-item
-        ishproductcontext=""
-        ng-reflect-display-type="row"
-        ng-reflect-sku="3"
-      ></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
       ]
     `);
   });
@@ -111,8 +96,8 @@ describe('Products List Component', () => {
     expect(element.querySelectorAll('ish-product-item')).toHaveLength(2);
     expect(element.querySelectorAll('ish-product-item')).toMatchInlineSnapshot(`
       NodeList [
-        <ish-product-item ishproductcontext="" ng-reflect-sku="2"></ish-product-item>,
-        <ish-product-item ishproductcontext="" ng-reflect-sku="3"></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
+        <ish-product-item ishproductcontext=""></ish-product-item>,
       ]
     `);
   });

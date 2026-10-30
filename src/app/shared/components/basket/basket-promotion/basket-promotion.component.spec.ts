@@ -67,10 +67,10 @@ describe('Basket Promotion Component', () => {
     fixture.detectChanges();
 
     expect(element).toMatchInlineSnapshot(`
-        <div class="promotion-title" ng-reflect-ish-server-html="MyPromotionTitle"></div>
-        <div class="promotion-details-and-remove-links">
-          <ish-promotion-details></ish-promotion-details><ish-promotion-remove></ish-promotion-remove>
-        </div>
+      <div class="promotion-title"></div>
+      <div class="promotion-details-and-remove-links">
+        <ish-promotion-details></ish-promotion-details><ish-promotion-remove></ish-promotion-remove>
+      </div>
     `);
   });
 

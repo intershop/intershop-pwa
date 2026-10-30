@@ -26,7 +26,7 @@ RUN wget -q https://nginx.org/download/nginx-1.31.1.tar.gz \
   && tar -zxf nginx-1.31.1.tar.gz \
   && git clone https://github.com/google/ngx_brotli \
   && cd ngx_brotli \
-  && git checkout a71f9312c2deb28875acc7bacfdd5695a111aa53 \
+  && git checkout 53e0fb55f250f48fe80c0ddbf6c0f7103cdbaae1 \
   && git submodule update --init --recursive \
   && cd .. \
   && cd nginx-1.31.1 \
@@ -67,6 +67,7 @@ COPY docker-entrypoint.d/*.sh /docker-entrypoint.d/
 RUN chmod 700 /docker-entrypoint.d/*.sh
 COPY *.yaml /
 COPY 50x.html /usr/share/nginx/html/
+COPY llms /etc/nginx/conf.d/llms/
 
 COPY cache_clearer.sh /
 RUN chmod 700 /cache_clearer.sh

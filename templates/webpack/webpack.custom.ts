@@ -150,33 +150,42 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
     (pl: AngularPlugin) => pl.options?.directTemplateLoading !== undefined
   ) as AngularPlugin;
 
-  // set production mode, service-worker, ngrx runtime checks
-  const serviceWorker = !!angularJsonConfig.serviceWorker;
+  // set production mode, ngrx runtime checks
   const ngrxRuntimeChecks = process.env.TESTING === 'true' || !production;
   config.plugins.push(
     new DefinePlugin({
       PWA_VERSION: JSON.stringify(
-        `${require('../../package.json').version} built ${new Date()} - configuration:${
+        `${require('../../package.json').version} built ${new Date().toISOString().slice(0, 16).replace('T', ' ')} - configuration:${
           targetOptions.configuration
-        } service-worker:${serviceWorker}`
+        }`
       ),
       PRODUCTION_MODE: production,
-      SERVICE_WORKER: serviceWorker,
       NGRX_RUNTIME_CHECKS: ngrxRuntimeChecks,
       THEME: JSON.stringify(theme),
       SSR: targetOptions.target === 'server',
     })
   );
 
-  // suppress webpack warning for optional elastic-apm-node (Elastic APM - Application Performance Monitoring) dependency in @elastic/ecs-pino-format
   if (targetOptions.target === 'server') {
     config.resolve = config.resolve || {};
     config.resolve.alias = config.resolve.alias || {};
+
+    // suppress webpack warning for optional elastic-apm-node (Elastic APM - Application Performance Monitoring) dependency in @elastic/ecs-pino-format
     (config.resolve.alias as Record<string, false | string>)['elastic-apm-node'] = false;
+
+    // zone.js >= 0.16: `import 'zone.js/node'` resolves to the ESM build (fesm2015/zone-node.js), which loads
+    // Node built-ins via an esbuild `__require` shim that webpack cannot analyze statically. At runtime those
+    // calls throw, and zone.js swallows the errors in try/catch, so the EventEmitter, fs and crypto patches are
+    // silently skipped (async work escapes the Angular zone during SSR). Force the UMD bundle, which uses plain
+    // `require('events')` etc. Re-check whether this is still needed when updating zone.js.
+    (config.resolve.alias as Record<string, false | string>)['zone.js/node$'] = join(
+      path.dirname(require.resolve('zone.js/package.json')),
+      'bundles',
+      'zone-node.umd.js'
+    );
   }
 
   logger.log('setting production:', production);
-  logger.log('setting serviceWorker:', serviceWorker);
   logger.log('setting ngrxRuntimeChecks:', ngrxRuntimeChecks);
 
   if (production) {
@@ -289,6 +298,8 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
             /\bcarousel\b/,
             /\bslide\b/,
             /\bnav-tabs\b/,
+            /\btab-content\b/,
+            /\btab-pane\b/,
             /\bnav-link\b/,
             /\bpopover\b/,
             /\btable\b/,

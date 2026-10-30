@@ -47,21 +47,12 @@ describe('Product Master Variations Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <a id="variation-list-top" title="top"></a
-      ><ish-skip-content-link
-        linktext="common.skip_content.link.text.filter"
-        ng-reflect-link-text="common.skip_content.link.text."
+      ><ish-skip-content-link linktext="common.skip_content.link.text.filter"
         ><ish-filter-navigation
           fragmentonrouting="variation-list-top"
           orientation="horizontal"
-          ng-reflect-fragment-on-routing="variation-list-top"
-          ng-reflect-orientation="horizontal"
         ></ish-filter-navigation></ish-skip-content-link
-      ><ish-product-listing
-        fragmentonrouting="variation-list-top"
-        mode="paging"
-        ng-reflect-fragment-on-routing="variation-list-top"
-        ng-reflect-mode="paging"
-      ></ish-product-listing>
+      ><ish-product-listing fragmentonrouting="variation-list-top" mode="paging"></ish-product-listing>
     `);
   });
 

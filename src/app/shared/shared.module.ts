@@ -8,6 +8,7 @@ import {
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbPaginationModule,
   NgbPopoverModule,
   NgbRatingModule,
 } from '@ng-bootstrap/ng-bootstrap';
@@ -188,6 +189,7 @@ const importExportModules = [
   NgbCollapseModule,
   NgbDropdownModule,
   NgbModalModule,
+  NgbPaginationModule,
   NgbPopoverModule,
   NgbRatingModule,
   NgSelectModule,
@@ -245,8 +247,6 @@ const declaredComponents = [
   LineItemListElementComponent,
   LineItemWarrantyComponent,
   LoginModalComponent,
-  ProductChooseVariationComponent,
-  ProductItemVariationsComponent,
   ProductListComponent,
   ProductListPagingComponent,
   ProductListToolbarComponent,
@@ -314,9 +314,11 @@ const exportedComponents = [
   ProductAttachmentsComponent,
   ProductAttributesComponent,
   ProductBundleDisplayComponent,
+  ProductChooseVariationComponent,
   ProductIdComponent,
   ProductInventoryComponent,
   ProductItemComponent,
+  ProductItemVariationsComponent,
   ProductLabelComponent,
   ProductListingComponent,
   ProductNameComponent,
@@ -340,8 +342,8 @@ const exportedComponents = [
 ];
 
 @NgModule({
-  declarations: [...declaredComponents, ...exportedComponents],
   imports: [...importExportModules, ...standaloneComponents],
+  declarations: [...declaredComponents, ...exportedComponents],
   exports: [...exportedComponents, ...importExportModules, ...standaloneComponents],
 })
 export class SharedModule {

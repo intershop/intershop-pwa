@@ -16,7 +16,7 @@
       }
     },
     {
-      "files": ["*.json", ".*.json", "*.code-snippets", "*.webmanifest"],
+      "files": ["*.json", ".*.json", "*.code-snippets", "*.webmanifest", ".czrc"],
       "options": {
         "parser": "json",
         "printWidth": 80

@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable, Injector } from '@angular/core';
+import { Inject, Injectable, Injector, NgZone } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -40,6 +40,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
     private store: Store,
     private router: Router,
     private apiTokenService: ApiTokenService,
+    private ngZone: NgZone,
     parent: Injector,
     @Inject(APP_BASE_HREF) private baseHref: string
   ) {
@@ -93,14 +94,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
       .restore$(['user', 'order'])
       .pipe(
         switchMap(() => from(this.oauthService.loadDiscoveryDocumentAndTryLogin())),
-        switchMap(() =>
-          timer(0, 200).pipe(
-            map(() => this.oauthService.getIdToken()),
-            take(100),
-            whenTruthy(),
-            take(1)
-          )
-        ),
+        switchMap(() => this.waitForIdToken$()),
         whenTruthy(),
         switchMap(idToken => {
           const inviteUserId = sessionStorage.getItem('invite-userid');
@@ -121,6 +115,28 @@ export class Auth0IdentityProvider implements IdentityProvider {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
       });
+  }
+
+  // poll for the id token outside the Angular zone so the recurring timer does not keep ApplicationRef.isStable false
+  private waitForIdToken$(): Observable<string> {
+    return new Observable<string>(subscriber => {
+      const subscription = this.ngZone.runOutsideAngular(() =>
+        timer(0, 200)
+          .pipe(
+            map(() => this.oauthService.getIdToken()),
+            take(100),
+            whenTruthy(),
+            take(1)
+          )
+          .subscribe({
+            next: token => this.ngZone.run(() => subscriber.next(token)),
+            error: err => this.ngZone.run(() => subscriber.error(err)),
+            complete: () => this.ngZone.run(() => subscriber.complete()),
+          })
+      );
+      // eslint-disable-next-line ban/ban
+      return () => subscription.unsubscribe();
+    });
   }
 
   private normalSignInRegistration(idToken: string) {

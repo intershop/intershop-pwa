@@ -188,7 +188,10 @@ describe('Payment Paypal Service', () => {
     it('should call PATCH endpoint when basket has existing token', done => {
       store.overrideSelector(getCurrentBasket, {
         id: 'test-basket',
-        payment: { redirectUrl: 'https://paypal.com/checkout?token=EXISTING_TOKEN' },
+        payment: {
+          paymentInstrument: { id: 'test-instrument-id' },
+          redirectUrl: 'https://paypal.com/checkout?token=EXISTING_TOKEN',
+        },
       } as Basket);
       store.refreshState();
 
@@ -204,7 +207,45 @@ describe('Payment Paypal Service', () => {
 
       paymentPaypalService.getPaypalToken('test-instrument-id').subscribe(result => {
         verify(apiServiceMock.patch('payments/open-tender', anything(), anything())).once();
+        const [, body] = capture(apiServiceMock.patch).last();
+        expect(body).toMatchInlineSnapshot(`
+          {
+            "redirect": {
+              "cancelUrl": "http://localhost/checkout/payment;lang=en_US?redirect=cancel",
+              "failureUrl": "http://localhost/checkout/payment;lang=en_US?redirect=failure",
+              "successUrl": "http://localhost/checkout/review;lang=en_US",
+            },
+          }
+        `);
         expect(result).toBe('REFRESHED_TOKEN_456');
+        done();
+      });
+    });
+
+    it('should call PUT endpoint when an existing token belongs to a different payment instrument', done => {
+      store.overrideSelector(getCurrentBasket, {
+        id: 'test-basket',
+        payment: {
+          paymentInstrument: { id: 'other-payment-instrument-id' },
+          redirectUrl: 'https://paypal.com/checkout?token=EXISTING_TOKEN',
+        },
+      } as Basket);
+      store.refreshState();
+
+      when(apiServiceMock.put(anyString(), anything(), anything())).thenReturn(
+        of({
+          data: {
+            redirect: {
+              redirectUrl: 'https://paypal.com/checkout?token=NEW_TOKEN_456',
+            },
+          },
+        })
+      );
+
+      paymentPaypalService.getPaypalToken('test-instrument-id').subscribe(result => {
+        verify(apiServiceMock.put('payments/open-tender', anything(), anything())).once();
+        verify(apiServiceMock.patch(anything(), anything(), anything())).never();
+        expect(result).toBe('NEW_TOKEN_456');
         done();
       });
     });

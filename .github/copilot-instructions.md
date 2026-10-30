@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-Angular 19-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
+Angular 21-based Progressive Web App for enterprise commerce. Built for performance, maintainability, SSR, and extensibility.
 
 ## Technology Stack
 
-- Angular 19.2, TypeScript 5.5, NgRx, Node.js 22
+- Angular 21, TypeScript 5.9, NgRx, Node.js 24
 - Express.js (SSR), Bootstrap 5, Jest + Cypress
 - REST APIs only, RxJS for reactive flows
 
@@ -16,13 +16,14 @@ Angular 19-based Progressive Web App for enterprise commerce. Built for performa
 - Business logic in services/facades
 - NgRx for state, EntityAdapter for normalization
 - SSR via Angular SSR + Express
-- Lazy loaded modules for performance
+- Extension code (components, templates, styles) stays in `src/app/extensions/<name>/`; `shell`, `pages` and `shared` integrate it only via lazy components, see [Integrating Extensions](../docs/concepts/project-structure.md#integrating-extensions)
 
 ## Naming & Structure
 
 - **Naming Patterns:** See [naming patterns instructions](./instructions/naming-patterns.instructions.md)
 - **Components:** `src/app/pages/`, `src/app/shared/components/`
 - **Services:** `src/app/core/services/`
+- **Utility services:** `src/app/core/utils/`
 - **State:** `src/app/core/store/`
 - **Models:** `src/app/core/models/`
 - **Guards:** `src/app/core/guards/`
@@ -39,6 +40,7 @@ Angular 19-based Progressive Web App for enterprise commerce. Built for performa
 - **Error Handling:** See [error handling instructions](./instructions/error-handling.instructions.md)
 - **Performance:** See [performance patterns instructions](./instructions/performance-patterns.instructions.md)
 - **Styling:** See [styles instructions](./instructions/styles.instructions.md)
+- **Forms:** Formly with the PWA's own `ish-*` types, see [Formly guide](../docs/guides/formly.md).
 - **CI/CD Workflows:** See [workflows instructions](./instructions/workflows.instructions.md)
 
 ## Anti-Patterns to Avoid
@@ -66,3 +68,5 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 For comprehensive documentation including developer guides, architectural concepts, and operational setup, see:
 
 - [Documentation Overview](../docs/README.md) - Complete index of all available documentation
+- Changes that require action in customer projects (breaking changes, removed/renamed APIs, new required configuration, changed default behavior) need a migration note in `docs/guides/migrations.md`, see [migration notes instructions](./instructions/migration-notes.instructions.md).
+- `3rd-party-licenses.txt` is only regenerated completely with `npm run 3rd-party-licenses` when preparing a release. Do not edit or regenerate it during normal development or dependency updates, and do not flag it as outdated in code reviews (e.g., when versions differ from `package.json`/`package-lock.json`).

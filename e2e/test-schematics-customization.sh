@@ -29,9 +29,6 @@ test -f src/app/core/routing/product/product.route.brand.ts
 npx ng g override --theme brand --ts src/app/core/services/cms/cms.service.ts | cat
 test -f src/app/core/services/cms/cms.service.brand.ts
 
-node schematics/customization/service-worker false
-grep '"serviceWorker": false' angular.json
-
 export NODE_OPTIONS=--max-old-space-size=8192
 
 npm exec npm-run-all format "lint -- --fix" compile build

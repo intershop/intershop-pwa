@@ -35,9 +35,12 @@
         class="btn-tool"
         data-testing-id="edit-user"
         routerLink="profile"
+        [attr.aria-label]="
+          'account.profile.update.link' | translate: { '0': 'account.user.details.profile.heading' | translate }
+        "
         [title]="'account.profile.update.link' | translate: { '0': 'account.user.details.profile.heading' | translate }"
       >
-        <i class="bi bi-pencil-fill"></i>
+        <i aria-hidden="true" class="bi bi-pencil-fill"></i>
       </a>
     </div>
   </div>
@@ -69,12 +72,16 @@
           class="btn-tool"
           data-testing-id="edit-roles"
           routerLink="roles"
+          [attr.aria-label]="
+            'account.profile.update.link'
+              | translate: { '0': 'account.user.details.profile.role_permissions.heading' | translate }
+          "
           [title]="
             'account.profile.update.link'
               | translate: { '0': 'account.user.details.profile.role_permissions.heading' | translate }
           "
         >
-          <i class="bi bi-pencil-fill"></i>
+          <i aria-hidden="true" class="bi bi-pencil-fill"></i>
         </a>
       </div>
     </div>

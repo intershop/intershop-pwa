@@ -2,11 +2,19 @@
   position: fixed;
   bottom: 0;
   z-index: 1000;
+
+  // hidden by default; revealed pre-hydration via the root class set in index.html when no consent cookie exists
+  display: none;
   width: 100%;
   padding: $space-default $space-default $space-default * 0.5;
   color: $text-color-inverse;
   background-color: $color-primary !important;
   opacity: 0.9;
+  transition: transform 1s ease-out;
+
+  &.bottom-out {
+    transform: translateY(100%);
+  }
 
   .cookies-banner-text {
     margin-bottom: divide($space-default, 3);
@@ -30,6 +38,10 @@
       width: 100%;
     }
   }
+}
+
+.show-cookie-banner .cookies-banner {
+  display: block;
 }
 
 .cookies-modal {

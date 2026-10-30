@@ -54,6 +54,7 @@ describe('Basket Invoice Address Widget Component', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BasketInvoiceAddressWidgetComponent);
     component = fixture.componentInstance;
+    component.eligibleAddresses$ = of([]);
     element = fixture.nativeElement;
   });
 

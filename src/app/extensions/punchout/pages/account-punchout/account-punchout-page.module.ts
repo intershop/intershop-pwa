@@ -10,7 +10,7 @@ import { AccountPunchoutPageComponent } from './account-punchout-page.component'
 const accountPunchoutPageRoutes: Routes = [{ path: '', component: AccountPunchoutPageComponent }];
 
 @NgModule({
-  declarations: [AccountPunchoutHeaderComponent, AccountPunchoutPageComponent],
   imports: [NgbNavModule, PunchoutModule, RouterModule.forChild(accountPunchoutPageRoutes)],
+  declarations: [AccountPunchoutHeaderComponent, AccountPunchoutPageComponent],
 })
 export class AccountPunchoutPageModule {}

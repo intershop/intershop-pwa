@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockDirective } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { FormSubmitDirective } from 'ish-core/directives/form-submit.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -31,7 +30,7 @@ describe('Product Notification Edit Dialog Component', () => {
   beforeEach(async () => {
     context = mock(ProductContextFacade);
     productNotificationsFacade = mock(ProductNotificationsFacade);
-    accountFacade = mock(accountFacade);
+    accountFacade = mock(AccountFacade);
     appFacade = mock(AppFacade);
 
     await TestBed.configureTestingModule({
@@ -40,7 +39,6 @@ describe('Product Notification Edit Dialog Component', () => {
         MockComponent(ModalDialogComponent),
         MockComponent(ProductImageComponent),
         MockComponent(ProductNotificationEditFormComponent),
-        MockDirective(FormSubmitDirective),
         ProductNotificationEditDialogComponent,
       ],
       providers: [
@@ -56,6 +54,7 @@ describe('Product Notification Edit Dialog Component', () => {
     when(context.select('product')).thenReturn(of({ name: 'Test Product' } as ProductView));
     when(context.select('inventory', 'inStock')).thenReturn(of(true));
     when(accountFacade.userEmail$).thenReturn(of('test@test.com'));
+    when(productNotificationsFacade.productNotificationBySku$(anything(), anything())).thenReturn(of(undefined));
   });
 
   beforeEach(() => {

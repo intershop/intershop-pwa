@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noInitializeObservablesDirectlyRule from '../src/rules/no-initialize-observables-directly';
 
 import testRule from './rule-tester';
@@ -43,7 +41,6 @@ testRule(noInitializeObservablesDirectlyRule, {
       errors: [
         {
           messageId: 'wrongInitializeError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
     },
@@ -62,7 +59,6 @@ testRule(noInitializeObservablesDirectlyRule, {
       errors: [
         {
           messageId: 'wrongInitializeError',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },

@@ -22,7 +22,6 @@ const messages = {
 };
 
 const noVarBeforeReturnRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     fixable: 'code',

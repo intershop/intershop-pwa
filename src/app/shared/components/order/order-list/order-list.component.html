@@ -1,6 +1,6 @@
 <div class="loading-container">
   @if (orders?.length > 0) {
-    <table cdk-table class="table table-lg mobile-optimized" [dataSource]="orders">
+    <table cdk-table class="table table-lg mobile-optimized mb-1 mb-sm-4" [dataSource]="orders">
       <!-- Order creation date -->
       <ng-container cdkColumnDef="creationDate">
         <th *cdkHeaderCellDef cdk-header-cell data-testing-id="th-order-creation-date" scope="col">
@@ -37,7 +37,7 @@
           cdk-cell
           [attr.data-label]="'account.orderlist.table.order_number.title' | translate"
         >
-          <a [routerLink]="'/account/orders/' + order.id">{{ order.documentNo }}</a>
+          <a [routerLink]="['/account/orders', order.id]">{{ order.documentNo }}</a>
         </td>
       </ng-container>
       <!-- Buyer -->
@@ -73,7 +73,7 @@
           {{ 'account.orderlist.table.destination' | translate }}
         </th>
         <td *cdkCellDef="let order" cdk-cell [attr.data-label]="'account.orderlist.table.destination' | translate">
-          <ish-address [address]="order.commonShipToAddress" />
+          <ish-address [address]="order.commonShipToAddress" [displayEmail]="false" />
         </td>
       </ng-container>
       <!-- Order total  -->

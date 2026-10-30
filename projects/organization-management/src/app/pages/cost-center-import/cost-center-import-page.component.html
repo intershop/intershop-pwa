@@ -109,7 +109,7 @@
             cdk-cell
             [attr.data-label]="'account.costcenter.list.header.status' | translate"
           >
-            <span [ngClass]="imported.status === 'success' ? 'text-success' : 'text-error'">
+            <span [class]="imported.status === 'success' ? 'text-success' : 'text-error'">
               {{
                 imported.status === 'success'
                   ? ('account.costcenter.import.status.success' | translate)

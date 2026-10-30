@@ -23,10 +23,10 @@ kb_sync_latest_only
 ## Quick Start
 
 Before working with this project, download and install [Node.js](https://nodejs.org) with the included npm package manager.
-Currently Node.js 22.22.0 LTS with the corresponding npm 10.9.4 is used for development.
+Currently Node.js 24.22.1 LTS with the corresponding npm 11.19.1 is used for development.
 
 The project uses [Angular CLI](https://angular.dev/tools/cli) which has to be installed globally.
-Run `npm install -g @angular/cli@19` once to globally install Angular CLI on your development machine.
+Run `npm install -g @angular/cli@21` once to globally install Angular CLI on your development machine.
 Make sure to install the Angular CLI version that fits to our current project dependency Angular version.
 
 ### Step 1 - Clone the Project
@@ -75,11 +75,11 @@ When starting your own project based on the Intershop PWA that includes customiz
 For production and production-like deployments we provide an [Intershop PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) for Kubernetes deployments.
 
 > [!NOTE]
-> For a Helm chart deployment, the configuration property `upstream.icmBaseURL` is a required parameter that should point to your own ICM server.
+> For a Helm chart deployment, the configuration property `config.icmBaseUrl` is a required parameter that must point to your own ICM server.
 >
 > ```yaml
-> upstream:
->   icmBaseURL: https://develop.icm.intershop.de
+> config:
+>   icmBaseUrl: https://develop.icm.intershop.de
 > ```
 
 For a simple production-like development or testing deployment of the current project state, the project includes a `docker-compose.yml` that can be deployed with `docker compose up --build` in the project root.

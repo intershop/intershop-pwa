@@ -10,7 +10,7 @@ import { UserImportPageComponent } from './user-import-page.component';
 const userImportPageRoutes: Routes = [{ path: '', component: UserImportPageComponent }];
 
 @NgModule({
-  declarations: [UserImportPageComponent],
   imports: [RouterModule.forChild(userImportPageRoutes), OrganizationManagementModule, SharedModule],
+  declarations: [UserImportPageComponent],
 })
 export class UserImportPageModule {}

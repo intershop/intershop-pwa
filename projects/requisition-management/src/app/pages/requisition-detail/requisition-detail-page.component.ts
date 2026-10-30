@@ -10,8 +10,8 @@ import { Requisition } from '../../models/requisition/requisition.model';
   selector: 'ish-requisition-detail-page',
   standalone: false,
   templateUrl: './requisition-detail-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [RequisitionContextFacade],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequisitionDetailPageComponent implements OnInit {
   requisition$: Observable<Requisition>;

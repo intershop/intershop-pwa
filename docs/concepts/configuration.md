@@ -119,7 +119,7 @@ This provides the most flexible way of configuring the application at runtime.
 
 ### Build Settings
 
-One example for a build-time configuration is the property `serviceWorker`, which is managed in the _angular.json_ configurations and used to activate the [service worker](./progressive-web-app.md#service-worker).
+Build-time configuration properties are managed in the _angular.json_ configurations.
 
 In general, properties available at build time can only be supplied by Angular CLI environments (see above).
 
@@ -201,6 +201,7 @@ Of course, the ICM server must supply appropriate REST resources to leverage fun
 | wishlists                    | Wishlist product list feature                                                                                                                   |
 | **Third-party Integrations** |                                                                                                                                                 |
 | copilot                      | Intershop Copilot integration for embedded chatbot (requires an additional `copilot` configuration)                                             |
+| copilotEmbedded              | Copilot Embedded integration with a PWA-owned chat page (requires a `copilotEmbedded` configuration, chat retention via `dataRetention`)        |
 | maps                         | Google Maps integration for locating stores (used with the `storeLocator` feature, additional configuration via `gmaKey`)                       |
 | tracking                     | Google Tag Manager tracking (additional configuration via `gtmToken`)                                                                           |
 | **ICM compatibility**        |                                                                                                                                                 |

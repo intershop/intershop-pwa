@@ -7,7 +7,6 @@ const messages = {
 };
 
 const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     type: 'suggestion',
     fixable: 'code',

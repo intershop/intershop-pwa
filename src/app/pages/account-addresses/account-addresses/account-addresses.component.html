@@ -152,9 +152,10 @@
                     title="{{ 'account.addresses.edit_address.button.label' | translate }}"
                     type="button"
                     [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
+                    [attr.aria-label]="'account.addresses.edit_address.button.label' | translate"
                     (click)="showUpdateAddressForm(address)"
                   >
-                    <i class="bi bi-pencil-fill"></i>
+                    <i aria-hidden="true" class="bi bi-pencil-fill"></i>
                   </button>
                 }
                 @if (deletable) {
@@ -163,9 +164,10 @@
                     data-testing-id="delete-address-icon"
                     title="{{ 'account.addresses.delete_address.text' | translate }}"
                     type="button"
+                    [attr.aria-label]="'account.addresses.delete_address.text' | translate"
                     (click)="modalDialog.show(address)"
                   >
-                    <i class="bi bi-trash-fill"></i>
+                    <i aria-hidden="true" class="bi bi-trash-fill"></i>
                   </button>
                 }
                 <ish-modal-dialog
@@ -186,7 +188,7 @@
         </div>
       }
       <!-- edit address form -->
-      @if (!isUpdateAddressFormCollapsed(address)) {
+      @else {
         <div class="section" data-testing-id="update-address-form" id="CollapseBasicEdit">
           <div class="row">
             <div class="col-md-10 col-xl-8">

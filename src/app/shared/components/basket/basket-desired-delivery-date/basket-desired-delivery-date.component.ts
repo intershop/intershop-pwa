@@ -1,15 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { isEqual, parseISO } from 'date-fns';
+import { Subject, map, startWith, switchMap, timer } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
@@ -30,12 +23,17 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
 
   model: { desiredDeliveryDate: Date };
 
-  showSuccessMessage = false;
+  private successMessageTrigger$ = new Subject<void>();
+  showSuccessMessage$ = this.successMessageTrigger$.pipe(
+    switchMap(() =>
+      timer(5000).pipe(
+        map(() => false),
+        startWith(true)
+      )
+    )
+  );
 
-  constructor(
-    private checkoutFacade: CheckoutFacade,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private checkoutFacade: CheckoutFacade) {}
 
   ngOnInit() {
     this.fields = [
@@ -87,14 +85,14 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     ];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<BasketDesiredDeliveryDateComponent>) {
     const previous = this.getDesiredDeliveryDate(changes.basket?.previousValue);
     const current = this.getDesiredDeliveryDate(changes.basket?.currentValue);
 
     // we only care about the ddd, so only do anything if it has changed
     if (current && !isEqual(previous, current)) {
-      if (!changes.basket.isFirstChange()) {
-        this.displaySuccessMessage();
+      if (!changes.basket.firstChange) {
+        this.successMessageTrigger$.next();
       }
       this.model = {
         ...this.model,
@@ -115,13 +113,6 @@ export class BasketDesiredDeliveryDateComponent implements OnInit, OnChanges {
     }
   }
 
-  private displaySuccessMessage() {
-    this.showSuccessMessage = true;
-    setTimeout(() => {
-      this.showSuccessMessage = false;
-      this.cd.markForCheck();
-    }, 5000);
-  }
   get disabled() {
     return (
       this.form.invalid || (!this.getDesiredDeliveryDate(this.basket) && !this.form.get('desiredDeliveryDate').value)

@@ -39,7 +39,6 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
   standalone: false,
   templateUrl: './payment-paypal.component.html',
   styleUrls: ['./payment-paypal.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     PaypalAdaptersBuilder,
     PaypalApplePayAdapter,
@@ -48,6 +47,7 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
     PaypalGooglePayAdapter,
     PaypalMessagesAdapter,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentPaypalComponent implements OnInit, AfterViewInit {
   /** Type of PayPal adapter to render. Defaults to Messages. */

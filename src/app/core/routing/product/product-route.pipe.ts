@@ -6,8 +6,8 @@ import { generateProductUrl } from 'ish-core/routing/product/product.route';
 
 @Pipe({
   name: 'ishProductRoute',
-  pure: true,
   standalone: false,
+  pure: true,
 })
 export class ProductRoutePipe implements PipeTransform {
   transform(product: ProductView, category?: CategoryView): string {

@@ -6,8 +6,8 @@ import { PunchoutTransferBasketComponent } from './shared/punchout-transfer-bask
 import { PunchoutUserFormComponent } from './shared/punchout-user-form/punchout-user-form.component';
 
 @NgModule({
-  declarations: [PunchoutTransferBasketComponent, PunchoutUserFormComponent],
   imports: [SharedModule],
+  declarations: [PunchoutTransferBasketComponent, PunchoutUserFormComponent],
   exports: [PunchoutTransferBasketComponent, PunchoutUserFormComponent, SharedModule],
 })
 export class PunchoutModule {}

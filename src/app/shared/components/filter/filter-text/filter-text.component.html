@@ -1,13 +1,13 @@
 <ul class="filter-list" [id]="filterElement.id">
   @for (facet of getFacets(); track facet.name) {
-    <li class="filter-item filter-layer{{ facet.level }}" [ngClass]="{ 'filter-selected': facet.selected }">
+    <li class="filter-item filter-layer{{ facet.level }}" [class.filter-selected]="facet.selected">
       <!-- selected -->
       @if (facet.selected) {
         <button
           aria-current="true"
           class="btn btn-link btn-link-action link-decoration-hover"
           type="button"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          [attr.data-testing-id]="`filter-link-${(facet.name | ishSanitize)}`"
           (click)="filter(facet)"
         >
           <span class="filter-item-name"> {{ facet.displayName }} </span>
@@ -21,10 +21,10 @@
         <button
           class="filter-item-name btn btn-link btn-link-action link-decoration-hover"
           type="button"
-          [attr.data-testing-id]="'filter-link-' + (facet.name | ishSanitize)"
+          [attr.data-testing-id]="`filter-link-${(facet.name | ishSanitize)}`"
           (click)="filter(facet)"
         >
-          {{ facet.displayName }}{{ facet.level === maxLevel ? ' (' + facet.count + ')' : '' }}
+          {{ facet.displayName }}{{ facet.level === maxLevel ? ` (${facet.count})` : '' }}
         </button>
       }
     </li>

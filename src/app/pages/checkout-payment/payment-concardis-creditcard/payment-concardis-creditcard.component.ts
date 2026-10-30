@@ -27,7 +27,7 @@ declare let PayEngine: any;
   selector: 'ish-payment-concardis-creditcard',
   standalone: false,
   templateUrl: './payment-concardis-creditcard.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PaymentConcardisCreditcardComponent extends PaymentConcardisComponent implements OnInit {
   constructor(

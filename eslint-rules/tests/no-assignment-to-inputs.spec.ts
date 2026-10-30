@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noAssignmentToInputsRule from '../src/rules/no-assignment-to-inputs';
 
 import testRule from './rule-tester';
@@ -34,7 +32,6 @@ testRule(noAssignmentToInputsRule, {
       errors: [
         {
           messageId: 'inputAssignmentError',
-          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },

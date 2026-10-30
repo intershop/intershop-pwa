@@ -10,7 +10,7 @@ kb_sync_latest_only
 - [Zones](#zones)
 - [Zone Stability](#zone-stability)
 - [Using Zone Stability](#using-zone-stability)
-  - [Service Workers and SSR](#service-workers-and-ssr)
+  - [SSR](#ssr)
   - [Pitfall: The Zone Must Become Stable](#pitfall-the-zone-must-become-stable)
 
 Change detection is one of the core concepts of Angular.
@@ -35,6 +35,10 @@ Angular takes advantage of these APIs to get notified when any asynchronous task
 This includes things like XHR calls, `setTimeout()`, and basically all user events like `click`, `submit`, `mousedown`, etc.
 
 When async events happen in the application, the zone informs Angular, which then triggers change detection.
+
+> [!NOTE]
+> As of Angular 21, applications bootstrap without Zone.js (zoneless) by default.
+> The Intershop PWA explicitly enables zone-based change detection with `provideZoneChangeDetection()` in the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), so the concepts described in this guide still apply.
 
 ## Zone Stability
 
@@ -71,19 +75,18 @@ export class MyComponent {
 Getting to know whether a zone is stable or not is crucial when programmatically accessing the application from the "outside".
 Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in the near future.
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
-Also, Angular waits for stability in service workers and in server-side rendering.
+Also, Angular waits for stability in server-side rendering (SSR).
 
-### Service Workers and SSR
+### SSR
 
-Both `@angular/service-worker` and `@angular/platform-server` use zone stability information internally.
-The service worker will not be attached to the page before the zone will have become stable.
-The same applies for server-side rendering: The page will be rendered as soon as the zone is stable.
+`@angular/platform-server` uses zone stability information internally.
+The page will be rendered as soon as the zone is stable.
 This is necessary because data from HTTP requests must be resolved to render meaningful content.
 
 ### Pitfall: The Zone Must Become Stable
 
-For all of those aspects – Design View, service workers, and SSR – it is essential to get a stable zone at some point.
-If not, those aspects will not work properly, e.g.,
+For both these aspects – Design View and SSR – it is essential to get a stable zone at some point.
+If not, these aspects will not work properly, e.g.,
 SSR will never return the rendered HTML and the Design View will never render the component tree view.
 
 > [!NOTE]

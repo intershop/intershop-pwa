@@ -186,7 +186,7 @@ server {
     }
 
     # respect cache entries of static assets
-    location ~* ^/(?!ngsw\.json)(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
+    location ~* ^/(metrics|assets|.*\.(js|css|json|txt|webmanifest|woff|woff2))(.*)$ {
         allow all;
         auth_basic off;
 
@@ -201,6 +201,19 @@ server {
         proxy_buffer_size 128k;
         proxy_buffers 4 256k;
         proxy_busy_buffers_size 256k;
+    }
+
+    # llms.txt (LLM-friendly site index) - served per channel, falls back to the default file
+    {{- $llmsChannel := "default" }}
+    {{- if (has $mapping "channel") }}{{ $llmsChannel = $mapping.channel }}{{ else if gt (len $mapping) 0 }}{{ $llmsChannel = (index $mapping 0).channel }}{{ end }}
+    location = /llms.txt {
+        allow all;
+        auth_basic off;
+
+        default_type text/plain;
+        charset utf-8;
+        root /etc/nginx/conf.d/llms;
+        try_files /{{ $llmsChannel }}_llms.txt /default_llms.txt =404;
     }
   {{ if (has $mapping "channel") }}
     location / {
@@ -226,8 +239,8 @@ server {
         allow all;
         auth_basic off;
         {{ $first := index $mapping 0 -}}
-        rewrite ^/$ "$scheme://$http_host{{ $first.baseHref }}/home" permanent;
-        rewrite ^(.*)$ "$scheme://$http_host{{ $first.baseHref }}$request_uri?" permanent;
+        rewrite ^/$ "$thescheme://$http_host{{ $first.baseHref }}/home" redirect;
+        rewrite ^(.*)$ "$thescheme://$http_host{{ $first.baseHref }}$request_uri?" redirect;
     }
     location ^~ /sitemap_ {
         {{- tmpl.Exec "LOCATION_TEMPLATE_FOR_SITEMAP" $first }}

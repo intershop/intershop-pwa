@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ReplaySubject } from 'rxjs';
 
 import { SuggestBrandsComponent } from './suggest-brands.component';
@@ -12,7 +12,6 @@ describe('Suggest Brands Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
   });

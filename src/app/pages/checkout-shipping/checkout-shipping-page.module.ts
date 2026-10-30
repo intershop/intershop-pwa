@@ -9,12 +9,6 @@ import { ShippingInfoComponent } from './formly/shipping-info/shipping-info.comp
 import { ShippingRadioWrapperComponent } from './formly/shipping-radio-wrapper/shipping-radio-wrapper.component';
 
 @NgModule({
-  declarations: [
-    CheckoutShippingComponent,
-    CheckoutShippingPageComponent,
-    ShippingInfoComponent,
-    ShippingRadioWrapperComponent,
-  ],
   imports: [
     FormlyModule.forChild({
       wrappers: [
@@ -25,6 +19,12 @@ import { ShippingRadioWrapperComponent } from './formly/shipping-radio-wrapper/s
       ],
     }),
     SharedModule,
+  ],
+  declarations: [
+    CheckoutShippingComponent,
+    CheckoutShippingPageComponent,
+    ShippingInfoComponent,
+    ShippingRadioWrapperComponent,
   ],
 })
 export class CheckoutShippingPageModule {

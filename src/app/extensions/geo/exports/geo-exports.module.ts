@@ -6,7 +6,6 @@ import { LazyProductGeoComponent } from './lazy-product-geo/lazy-product-geo.com
 
 @NgModule({
   declarations: [LazyProductGeoComponent],
-  exports: [LazyProductGeoComponent],
   providers: [
     {
       provide: LAZY_FEATURE_MODULE,
@@ -17,5 +16,6 @@ import { LazyProductGeoComponent } from './lazy-product-geo/lazy-product-geo.com
       multi: true,
     },
   ],
+  exports: [LazyProductGeoComponent],
 })
 export class GeoExportsModule {}

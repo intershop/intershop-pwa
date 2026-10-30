@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noTestbedWithThenRule from '../src/rules/no-testbed-with-then';
 
 import testRule from './rule-tester';
@@ -31,7 +29,6 @@ testRule(noTestbedWithThenRule, {
         `,
       errors: [
         {
-          type: AST_NODE_TYPES.Identifier,
           messageId: 'testbedWithThenError',
         },
       ],

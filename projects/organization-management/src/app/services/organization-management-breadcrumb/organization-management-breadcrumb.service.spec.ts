@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Route, Router, provideRouter } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
@@ -20,7 +20,7 @@ import { OrganizationManagementBreadcrumbService } from './organization-manageme
 function adaptRoutes(rts: Route[], cmp: Type<unknown>): Route[] {
   return rts.map(r => ({
     ...r,
-    loadChildren: undefined,
+    loadChildren: undefined as Route['loadChildren'],
     component: (r.component || r.loadChildren) && cmp,
     children: r.children && adaptRoutes(r.children, cmp),
   }));
@@ -39,7 +39,6 @@ describe('Organization Management Breadcrumb Service', () => {
         CoreStoreModule.forTesting(['router', 'configuration']),
         FeatureToggleModule.forTesting('costCenters'),
         OrganizationManagementStoreModule.forTesting('users', 'costCenters'),
-        TranslatePipe,
       ],
       providers: [
         provideRouter([...adaptRoutes(routes, DummyComponent), { path: '**', component: DummyComponent }]),

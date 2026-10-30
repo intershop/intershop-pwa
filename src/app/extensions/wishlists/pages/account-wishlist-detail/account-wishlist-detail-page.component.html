@@ -11,9 +11,10 @@
       data-testing-id="wishlist-sharing"
       title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
       type="button"
+      [attr.aria-label]="'account.wishlist.header.send_wishlist.label' | translate"
       (click)="shareWishlistDialog.show()"
     >
-      <i class="bi bi-share-fill"></i>
+      <i aria-hidden="true" class="bi bi-share-fill"></i>
     </button>
     @if (wishlist.shared) {
       <button
@@ -21,19 +22,21 @@
         data-testing-id="wishlist-stop-sharing"
         title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
         type="button"
+        [attr.aria-label]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
         (click)="unshareWishlist(wishlist.id)"
       >
-        <i class="bi bi-pause-fill"></i>
+        <i aria-hidden="true" class="bi bi-pause-fill"></i>
       </button>
     }
     <button
       class="btn-tool btn-link ms-3"
       data-testing-id="wishlist-details-edit"
       type="button"
+      [attr.aria-label]="'account.wishlist.header.edit_wishlist.label' | translate"
       [title]="'account.wishlist.header.edit_wishlist.label' | translate"
       (click)="editWishlistDialog.show()"
     >
-      <i class="bi bi-pencil-fill"></i>
+      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
     </button>
   </div>
   <h1>

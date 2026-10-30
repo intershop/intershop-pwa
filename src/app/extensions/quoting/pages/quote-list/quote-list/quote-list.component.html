@@ -62,10 +62,11 @@
         <button
           class="btn-tool btn-link"
           type="button"
+          [attr.aria-label]="'quote.list.delete.button.delete.label' | translate"
           [title]="'quote.list.delete.button.delete.label' | translate"
           (click)="modalDialog.show(quote)"
         >
-          <i class="bi bi-trash-fill"></i>
+          <i aria-hidden="true" class="bi bi-trash-fill"></i>
         </button>
       </td>
     </ng-container>

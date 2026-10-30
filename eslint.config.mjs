@@ -94,7 +94,7 @@ export default defineConfig([
         'error',
         {
           type: 'element',
-          prefix: 'ish',
+          prefix: ['ish'],
           style: 'kebab-case',
         },
       ],
@@ -102,7 +102,7 @@ export default defineConfig([
         'error',
         {
           type: 'attribute',
-          prefix: 'ish',
+          prefix: ['ish'],
           style: 'camelCase',
         },
       ],
@@ -117,6 +117,7 @@ export default defineConfig([
       '@angular-eslint/prefer-output-readonly': 'warn',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
+      '@angular-eslint/prefer-inject': 'off',
 
       // NgRx best practices
       ...ngrx.configs.store.rules,
@@ -274,7 +275,7 @@ export default defineConfig([
           },
           {
             importNamePattern:
-              '^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize)$).*',
+              '^(?!(range|uniq|memoize|once|groupBy|countBy|isEqual|intersection|pick|differenceBy|unionBy|merge|mergeWith|snakeCase|capitalize|escape|escapeRegExp)$).*',
             name: 'lodash.*',
             filePattern: '^.*/src/app/(?!.*\\.spec\\.ts$).*\\.ts$',
             message: 'importing this operator from lodash is forbidden',
@@ -934,6 +935,23 @@ export default defineConfig([
           message:
             'Static this usage can be confusing for newcomers. It can also become imprecise when used with extended classes when a static this of a parent class no longer specifically refers to the parent class.',
         },
+        {
+          selector: 'Property[key.name="templateOptions"]',
+          message: 'Deprecated Formly API, use `props` instead.',
+        },
+        {
+          selector: 'Property[key.name="expressionProperties"]',
+          message: 'Deprecated Formly API, use `expressions` instead.',
+        },
+        {
+          selector: 'Property[key.name="hideExpression"]',
+          message: 'Deprecated Formly API, use `expressions: { hide: ... }` instead.',
+        },
+        {
+          selector:
+            'MethodDefinition[key.name="ngOnChanges"] TSTypeReference[typeName.name="SimpleChanges"]:not([typeArguments])',
+          message: 'Use typed `SimpleChanges<T>` with the component or directive class as `T`.',
+        },
       ],
       'no-sequences': 'error',
       'no-shadow': 'off',
@@ -1143,8 +1161,11 @@ export default defineConfig([
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
-      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-at-else': 'warn',
+      '@angular-eslint/template/prefer-built-in-pipes': 'warn',
       '@angular-eslint/template/prefer-control-flow': 'warn',
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-template-literal': 'warn',
     },
   },
   {

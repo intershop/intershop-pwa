@@ -2,15 +2,7 @@ const { execSync, spawnSync } = require('child_process');
 const fs = require('fs');
 
 const pinned = {
-  bootstrap: '4', // pinned
-  '@ng-bootstrap/ng-bootstrap': '11', // 12 requires Bootstrap 5
-  '@types/node': '22', // LTS
-  swiper: 8, // 9 requires integration rework
-  jest: '29',
-  '@types/jest': '29',
-  prettier: '2', // 3 requires jest 30
-  'stylelint-prettier': '3',
-  'eslint-plugin-prettier': '4',
+  '@types/node': '24', // LTS
 };
 
 // <HELPERS>

@@ -5,6 +5,8 @@ import { MockPipe } from 'ng-mocks';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
 
+import { UserBudget } from '../../../models/user-budget/user-budget.model';
+
 import { UserDetailBudgetComponent } from './user-detail-budget.component';
 
 describe('User Detail Budget Component', () => {
@@ -54,32 +56,30 @@ describe('User Detail Budget Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should display budget when rendering', () => {
+  it('should display the configured order spend limit and budget when rendering', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id=user-budget]')).toMatchInlineSnapshot(`
-      <div data-testing-id="user-budget" class="col-md-12">
-        <dl class="row dl-horizontal dl-separator">
-          <dt class="col-md-4">account.user.new.order_spend_limit.label</dt>
-          <dd data-testing-id="order-spend-limit-field" class="col-md-8">USD 100</dd>
-          <dt class="col-md-4">account.budget.label</dt>
-          <dd data-testing-id="budget-field" class="col-md-8">USD 5000</dd>
-        </dl>
-      </div>
-    `);
+    expect(element.querySelector('[data-testing-id=order-spend-limit-field]')?.textContent).toContain('USD 100');
+    expect(element.querySelector('[data-testing-id=budget-field]')?.textContent).toContain('USD 5000');
+  });
+
+  it('should display unlimited when no order spend limit and budget are set', () => {
+    component.budget = { budgetPeriod: 'monthly' } as UserBudget;
+    fixture.detectChanges();
+
+    expect(element.querySelector('[data-testing-id=order-spend-limit-field]')).toBeFalsy();
+    expect(element.querySelector('[data-testing-id=budget-field]')).toBeFalsy();
+    expect(element.querySelectorAll('dd')).toHaveLength(2);
+    element.querySelectorAll('dd').forEach(dd => expect(dd.textContent).toContain('account.budget.unlimited'));
   });
 
   it('should display edit budget link when rendering', () => {
     fixture.detectChanges();
 
-    expect(element.querySelector('[data-testing-id=edit-budget]')).toMatchInlineSnapshot(`
-      <a
-        data-testing-id="edit-budget"
-        routerlink="budget"
-        class="btn-tool"
-        title="account.profile.update.link"
-        ><i class="bi bi-pencil-fill"></i
-      ></a>
-    `);
+    const link = element.querySelector<HTMLAnchorElement>('[data-testing-id=edit-budget]');
+    expect(link).toBeTruthy();
+    expect(link?.getAttribute('routerlink')).toEqual('budget');
+    expect(link?.title).toEqual('account.profile.update.link');
+    expect(link?.getAttribute('aria-label')).toEqual('account.profile.update.link');
   });
 });

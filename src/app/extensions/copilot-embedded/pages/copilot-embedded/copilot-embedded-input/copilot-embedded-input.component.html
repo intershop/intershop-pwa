@@ -1,0 +1,68 @@
+@if (uploadError) {
+  <p class="invalid-feedback d-block mb-1">
+    {{ uploadError | translate: { '0': maxImageSizeMb } }}
+  </p>
+}
+
+@if (pendingUpload) {
+  <div class="copilot-embedded-upload-preview">
+    <img [alt]="pendingUpload.name" [src]="pendingUpload.data" />
+    <span class="copilot-embedded-upload-name">{{ pendingUpload.name }}</span>
+    <button
+      class="btn btn-link copilot-embedded-upload-remove"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.input.remove_image' | translate"
+      (click)="removeUpload()"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+}
+
+<form class="copilot-embedded-input input-group" [formGroup]="form" (ngSubmit)="submit()">
+  <div class="copilot-embedded-input-field">
+    <label class="visually-hidden" for="copilot-embedded-question">
+      {{ 'copilot.embedded.input.placeholder' | translate }}
+    </label>
+    <input
+      #questionInput
+      class="form-control"
+      formControlName="question"
+      id="copilot-embedded-question"
+      type="text"
+      [placeholder]="'copilot.embedded.input.placeholder' | translate"
+    />
+    <input
+      #imageInput
+      class="copilot-embedded-image-input"
+      hidden
+      type="file"
+      [accept]="acceptedImageTypes"
+      (change)="onFileSelected($event)"
+    />
+    <button
+      class="btn btn-link"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.input.camera' | translate"
+      [title]="'copilot.embedded.input.camera' | translate"
+      (click)="imageInput.click()"
+    >
+      <i class="bi bi-card-image"></i>
+    </button>
+  </div>
+  <button
+    class="btn btn-secondary"
+    type="submit"
+    [attr.aria-label]="'copilot.embedded.input.send' | translate"
+    [disabled]="loading"
+    [title]="'copilot.embedded.input.send' | translate"
+  >
+    <i class="bi bi-send-fill"></i>
+  </button>
+</form>
+<small class="copilot-embedded-disclaimer">
+  {{ 'copilot.footer.text' | translate }}
+  <a rel="noopener" target="_blank" [routerLink]="['/page', 'page.privacyPolicy.pagelet2-Page']">
+    {{ 'copilot.footer.company' | translate }}
+  </a>
+</small>

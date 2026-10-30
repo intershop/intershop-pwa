@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { SuggestKeywordsComponent } from './suggest-keywords.component';
 
@@ -10,7 +10,6 @@ describe('Suggest Keywords Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [provideTranslateService()],
     }).compileComponents();
   });

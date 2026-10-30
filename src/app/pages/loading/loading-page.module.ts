@@ -24,7 +24,7 @@ const loadingPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LoadingPageComponent],
   imports: [RouterModule.forChild(loadingPageRoutes), SharedModule],
+  declarations: [LoadingPageComponent],
 })
 export class LoadingPageModule {}

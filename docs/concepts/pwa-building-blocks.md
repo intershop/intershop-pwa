@@ -27,7 +27,7 @@ Using another backend is also possible as long as it provides a [compatible REST
 
 ## PWA - Server-Side Rendering (SSR)
 
-In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v19.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
+In order to facilitate server-side rendering (SSR), the default deployment uses dockerized [_express.js_](https://expressjs.com/) servers running [Angular SSR](https://v21.angular.dev/guide/ssr), orchestrated by [PM2](https://pm2.keymetrics.io).
 On a new request, Angular SSR pre-renders the page and instantly provides the browser with meaningful content.
 For an architectural overview of how SSR works in the Intershop PWA, see [Deployment Scenarios](deployment-angular.md).
 Pre-rendering pages enables a number of features:
@@ -99,20 +99,16 @@ Read on for a step-by-step walkthrough of the initial connection request.
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 ## Deployment Without Nginx
 
 Deployment without using nginx is theoretically possible, even though many useful features of an nginx deployment are obviously not available.
-
-> [!WARNING]
-> Enabling [service workers](progressive-web-app.md#service-worker) is not possible without using nginx. The Intershop PWA will not function as intended if you do.
 
 ## Hiding the ICM Backend
 

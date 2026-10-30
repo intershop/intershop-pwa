@@ -108,9 +108,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
             ...responseError,
             errors: httpError.error.messages,
             // if there are causes, concatenate the main message with the causes messages, otherwise use the main message
-            message: (error.message ? '<div>'.concat(error.message).concat('</div>') : '').concat(
-              error.causes?.length ? error.causes.map(c => '<div>'.concat(c.message).concat('</div>')).join('') : ''
-            ),
+            message: [error.message, ...(error.causes?.map(c => c.message) ?? [])].filter(Boolean).join(' '),
           };
         }
         return {
@@ -122,6 +120,7 @@ export class ICMErrorMapperInterceptor implements HttpInterceptor {
       // handle all other error responses with error object
       return {
         ...responseError,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated -- TODO: drop statusText fallback (always 'OK' under HTTP/2)
         code: httpError.error?.code || httpError.statusText,
         message: httpError.error?.message || httpError.message,
       };

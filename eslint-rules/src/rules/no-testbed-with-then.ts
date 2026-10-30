@@ -11,7 +11,6 @@ const messages = {
  * Use another beforeEach block instead.
  */
 const noTestbedWithThenRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

@@ -22,7 +22,6 @@ kb_sync_latest_only
 - [Concept - Configuration](./concepts/configuration.md)
   - [Guide - Propagating Environment Variables](./guides/propagating-environment-variables.md)
 - [Concept - Localization](./concepts/localization.md)
-- [Concept - SEO](./concepts/search-engine-optimization.md)
 - [Guide - Forms](./guides/forms.md)
 - [Guide - Formly](./guides/formly.md)
 - [Guide - Field Library](./guides/field-library.md)
@@ -52,6 +51,7 @@ kb_sync_latest_only
 - [Guide - Accessibility in UX: Patterns and Rationale](./guides/accessibility-ux-pattern.md)
 - [Concept - Captcha](./concepts/captcha.md)
 - [Guide - Security Standard PCI DSS 4.0](./guides/pci-dss-4.md)
+- [Guide - Security Headers and Content Security Policy (CSP)](./guides/security-headers.md)
 
 ### Customization
 
@@ -59,7 +59,7 @@ kb_sync_latest_only
 - [Guide - Customizations](./guides/customizations.md)
 - [Guide - Themes](./guides/themes.md)
 - [Guide - Migration Notes](./guides/migrations.md)
-- [Guide - Migration How To](./guides/migrations-how-to.md)
+- [Guide - Performing a Migration](./guides/migrations-how-to.md)
 - [Guide - Cookie Consent](./guides/cookie-consent.md)
 - [Concept - URL Rewriting](./concepts/url-rewriting.md)
 - [Guide - Mocking REST API Calls](./guides/mocking-rest-calls.md)
@@ -91,6 +91,7 @@ kb_sync_latest_only
 
 - [Guide - SPARQUE.AI](./guides/sparque-ai.md)
 - [Guide - Intershop Copilot for Buyers](./guides/copilot.md)
+- [Guide - Copilot Embedded](./guides/copilot-embedded.md)
 - [Guide - PayPal](./guides/paypal.md)
 - [Guide - Tracking with Google Tag Manager](./guides/google-tag-manager.md)
 - [Guide - Monitoring with Prometheus](./guides/prometheus-monitoring.md)
@@ -98,3 +99,12 @@ kb_sync_latest_only
 - [Guide - Address Check with Address Doctor](./guides/address-doctor.md)
 - [Guide - E-Mail Marketing/Newsletter Subscription](./guides/newsletter-subscription.md)
 - [Guide - Well-Known Resources](./guides/well-known-resources.md)
+
+## Search Engine Optimization
+
+- [Concept - SEO](./concepts/search-engine-optimization.md)
+
+## Agent Readiness
+
+- [Guide - Markdown Mirrors](./guides/markdown-mirrors.md)
+- [Guide - llms.txt](./guides/llms-txt.md)

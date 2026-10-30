@@ -17,6 +17,7 @@ buttonstyle
 callparametersstring
 categoryref
 chatflow
+chatflows
 chatflowid
 clazz
 clickability
@@ -39,6 +40,7 @@ crosssells
 customfield
 cxml
 cybersource
+czrc
 dateness
 datepicker
 decamelize
@@ -61,6 +63,7 @@ fieldgroup
 flexkey
 flowise
 flushdb
+fontsource
 foo
 foobar
 foobars
@@ -90,6 +93,7 @@ installable
 interpolatable
 intershop
 intershophub
+intershoppwa
 intronics
 ismediaobject
 isrest
@@ -103,6 +107,7 @@ keyvalue
 klausen
 lessthan
 lhci
+llms
 logformat
 loglevel
 luarocks
@@ -112,6 +117,7 @@ merchantid
 mergeable
 minibasket
 minlength
+mixmark
 mkcert
 mockito
 mousedown
@@ -119,6 +125,7 @@ mouseout
 ngcc
 ngmodule
 ngrx
+ngsw
 nodir
 nofollow
 noindex
@@ -190,6 +197,7 @@ ruleset
 rulesets
 rxjs
 safelisting
+sameorigin
 scroller
 searchquerydefinition
 searchstring
@@ -199,6 +207,7 @@ serializability
 setcontext
 setuprequest
 silktide
+sitecontainers
 sitekey
 skus
 smarttools

@@ -1,3 +1,9 @@
-<a rel="nofollow" routerLink="/compare" [title]="'product.compare.link' | translate" (click)="addToCompare()">
-  <i class="bi bi-arrow-left-right"></i>
+<a
+  rel="nofollow"
+  routerLink="/compare"
+  [attr.aria-label]="'product.compare.link' | translate"
+  [title]="'product.compare.link' | translate"
+  (click)="addToCompare()"
+>
+  <i aria-hidden="true" class="bi bi-arrow-left-right"></i>
 </a>

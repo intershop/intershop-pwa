@@ -1,17 +1,18 @@
 @if (product$ | async; as product) {
+  @let channelName = channelName$ | async;
   <div class="row product-details-top-line justify-content-end">
     <div class="col-lg-12">
       <ul class="share-tools">
         <ng-container *ishFeature="'wishlists'">
           @if (configuration$('addToWishlist') | async) {
-            <li [attr.data-testing-id]="'wishlist-' + product.sku">
+            <li [attr.data-testing-id]="`wishlist-${product.sku}`">
               <ish-lazy-product-add-to-wishlist [displayType]="'icon'" />
             </li>
           }
         </ng-container>
         <ng-container *ishFeature="'compare'">
           @if (configuration$('addToCompare') | async) {
-            <li [attr.data-testing-id]="'compare-' + product.sku">
+            <li [attr.data-testing-id]="`compare-${product.sku}`">
               <ish-lazy-product-send-to-compare />
             </li>
           }
@@ -21,19 +22,25 @@
             class="link-print"
             href="javascript:window.print();"
             rel="nofollow"
+            [attr.aria-label]="'product.print_page.link' | translate"
             [title]="'product.print_page.link' | translate"
           >
-            <i class="bi bi-printer-fill"></i>
+            <i aria-hidden="true" class="bi bi-printer-fill"></i>
           </a>
         </li>
         <li>
           <a
             href="mailto:
-          ?subject={{ 'email.recommended_product.heading' | translate: { '0': channelName } }}
-          &body={{ 'email.recommended_product.text' | translate: { '0': product.name + '%0A', '1': document.URL } }}"
+          ?subject={{
+              channelName
+                ? ('email.recommended_product.heading' | translate: { '0': channelName })
+                : ('email.recommended_product.heading.no_channel' | translate)
+            }}
+          &body={{ 'email.recommended_product.text' | translate: { '0': `${product.name}%0A`, '1': document.URL } }}"
+            [attr.aria-label]="'product.email_a_friend.link' | translate"
             [title]="'product.email_a_friend.link' | translate"
           >
-            <i class="bi bi-share-fill"></i>
+            <i aria-hidden="true" class="bi bi-share-fill"></i>
           </a>
         </li>
       </ul>

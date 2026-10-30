@@ -1,10 +1,10 @@
 <button
   class="panel-heading btn btn-link btn-content-toggle"
   type="button"
-  [attr.aria-controls]="'panel-' + accordionId"
+  [attr.aria-controls]="`panel-${accordionId}`"
   [attr.aria-expanded]="!isCollapsed"
   [attr.data-testing-id]="dataTestingId"
-  [id]="'toggle-' + accordionId"
+  [id]="`toggle-${accordionId}`"
   (click)="toggleCollapse()"
 >
   {{ heading }}
@@ -14,10 +14,10 @@
 <div
   class="panel-collapse collapse"
   role="region"
-  [attr.aria-labelledby]="'toggle-' + accordionId"
+  [attr.aria-labelledby]="`toggle-${accordionId}`"
   [ngbCollapse]="isCollapsed"
 >
-  <div class="panel-body" [id]="'panel-' + accordionId">
+  <div class="panel-body" [id]="`panel-${accordionId}`">
     <ng-content />
   </div>
 </div>

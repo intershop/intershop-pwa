@@ -48,6 +48,9 @@ describe('Cost Center Buyers Page Component', () => {
     }).compileComponents();
 
     when(appFacade.currentCurrency$).thenReturn(of('USD'));
+    when(organizationManagementFacade.costCentersLoading$).thenReturn(of(false));
+    when(organizationManagementFacade.costCentersError$).thenReturn(of(undefined));
+    when(organizationManagementFacade.usersError$).thenReturn(of(undefined));
     when(organizationManagementFacade.costCenterUnassignedBuyers$()).thenReturn(
       of([{ login: 'bboldner@test.intershop.de' }, { login: 'jlink@test.intershop.de' }])
     );

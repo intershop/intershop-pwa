@@ -177,4 +177,27 @@ describe('Order Service', () => {
       });
     });
   });
+
+  describe('pending payment redirect marker', () => {
+    afterEach(() => {
+      sessionStorage.clear();
+    });
+
+    it('should store the pending order id when marking a payment redirect', () => {
+      orderService.markPendingPaymentRedirect('order-1');
+
+      expect(orderService.getPendingPaymentRedirectOrderId()).toEqual('order-1');
+    });
+
+    it('should return no order id when no payment redirect is pending', () => {
+      expect(orderService.getPendingPaymentRedirectOrderId()).toBeFalsy();
+    });
+
+    it('should clear the pending order id', () => {
+      orderService.markPendingPaymentRedirect('order-1');
+      orderService.clearPendingPaymentRedirect();
+
+      expect(orderService.getPendingPaymentRedirectOrderId()).toBeFalsy();
+    });
+  });
 });

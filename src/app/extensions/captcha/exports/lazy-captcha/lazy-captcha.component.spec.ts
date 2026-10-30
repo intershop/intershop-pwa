@@ -8,7 +8,6 @@ import { of } from 'rxjs';
 import { anyString, instance, mock, when } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
-import { AppFacade } from 'ish-core/facades/app.facade';
 
 import { CaptchaFacade } from '../../facades/captcha.facade';
 import { CaptchaV2Component, CaptchaV2ComponentModule } from '../../shared/captcha-v2/captcha-v2.component';
@@ -21,20 +20,15 @@ describe('Lazy Captcha Component', () => {
   let component: LazyCaptchaComponent;
   let element: HTMLElement;
   let captchaFacade: CaptchaFacade;
-  let appFacade: AppFacade;
 
   beforeEach(async () => {
     captchaFacade = mock(CaptchaFacade);
-    appFacade = mock(AppFacade);
     when(captchaFacade.captchaVersion$).thenReturn(of(3 as const));
     when(captchaFacade.captchaSiteKey$).thenReturn(of('captchaSiteKeyASDF'));
     when(captchaFacade.captchaActive$(anyString())).thenReturn(of(true));
 
     await TestBed.configureTestingModule({
-      providers: [
-        { provide: AppFacade, useFactory: () => instance(appFacade) },
-        { provide: CaptchaFacade, useFactory: () => instance(captchaFacade) },
-      ],
+      providers: [{ provide: CaptchaFacade, useFactory: () => instance(captchaFacade) }],
     })
       .overrideModule(CaptchaV2ComponentModule, { set: { declarations: [CaptchaV2Component] } })
       .overrideModule(CaptchaV3ComponentModule, {
@@ -83,13 +77,7 @@ describe('Lazy Captcha Component', () => {
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v2
         ><div>
-          <div ng-reflect-ng-class="d-none" class="d-none">
-            <re-captcha
-              class="captcha"
-              ng-reflect-site-key="captchaSiteKeyASDF"
-              id="ngrecaptcha-0"
-            ></re-captcha>
-          </div></div
+          <div class="d-none"><re-captcha class="captcha" id="ngrecaptcha-0"></re-captcha></div></div
       ></ish-captcha-v2>
     `);
     const v2Cmp: CaptchaV2Component = fixture.debugElement.query(By.css('ish-captcha-v2'))?.componentInstance;
@@ -108,11 +96,7 @@ describe('Lazy Captcha Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ish-captcha-v3
-        ><p
-          data-testing-id="recaptcha-v3-info"
-          class="validation-message"
-          ng-reflect-ish-server-html="recaptcha.v3.info_text"
-        ></p
+        ><p data-testing-id="recaptcha-v3-info" class="validation-message"></p
       ></ish-captcha-v3>
     `);
     const v3Cmp: CaptchaV3Component = fixture.debugElement.query(By.css('ish-captcha-v3'))?.componentInstance;

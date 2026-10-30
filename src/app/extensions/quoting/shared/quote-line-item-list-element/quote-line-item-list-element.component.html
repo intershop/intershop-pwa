@@ -30,11 +30,12 @@
             class="btn-tool btn-link"
             title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
             type="button"
+            [attr.aria-label]="'shopping_cart.remove.item.button.label' | translate"
             [attr.data-id]="lineItem.id"
             [attr.data-testing-id]="'remove-line-item'"
             (click)="onDeleteItem()"
           >
-            <i class="bi bi-trash-fill"></i>
+            <i aria-hidden="true" class="bi bi-trash-fill"></i>
           </button>
         </div>
       }
@@ -45,10 +46,10 @@
       <div class="form-group">
         <ish-product-quantity-label
           translationKey="shopping_cart.pli.qty.label"
-          [for]="'quote-quantity_' + lineItem.id"
+          [for]="`quote-quantity_${lineItem.id}`"
         />
         @if (editable) {
-          <ish-product-quantity [elementId]="'quote-quantity_' + lineItem.id" />
+          <ish-product-quantity [elementId]="`quote-quantity_${lineItem.id}`" />
         } @else {
           {{ lineItem.quantity.value | number }}
         }
@@ -58,7 +59,7 @@
 
   <!-- desktop quantity -->
   <div class="quantity col-xl-2 list-item d-none d-xl-flex">
-    <div class="form-group w-100" [ngClass]="{ 'text-end': editable }">
+    <div class="form-group w-100" [class.text-end]="editable">
       @if (editable) {
         <ish-product-quantity />
       } @else {

@@ -6,12 +6,14 @@ import { UrlSerializer } from '@angular/router';
 import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
+import { ZoneChangeDetectionModule } from 'ish-core/zone-change-detection.module';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { CompareRoutingModule } from './extensions/compare/pages/compare-routing.module';
 import { ContactUsRoutingModule } from './extensions/contact-us/pages/contact-us-routing.module';
+import { CopilotEmbeddedRoutingModule } from './extensions/copilot-embedded/pages/copilot-embedded-routing.module';
 import { CopilotExportsModule } from './extensions/copilot/exports/copilot-exports.module';
 import { PunchoutRoutingModule } from './extensions/punchout/pages/punchout-routing.module';
 import { QuickorderRoutingModule } from './extensions/quickorder/pages/quickorder-routing.module';
@@ -24,11 +26,14 @@ import { AppRoutingModule } from './pages/app-routing.module';
 import { ShellModule } from './shell/shell.module';
 
 @NgModule({
-  declarations: [AppComponent],
   // Order matters: AppLastRoutingModule must be last because it contains the wildcard route.
   /* eslint-disable perfectionist/sort-arrays */
   imports: [
+    ZoneChangeDetectionModule,
     AppRoutingModule,
+    // BrowserAnimationsModule is still required by ngx-toastr's default animated toast component
+    // TODO: Keep until ngx-toastr no longer depends on @angular/animations, then this and the dependency can be removed.
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     BrowserAnimationsModule,
     BrowserModule,
     CompareRoutingModule,
@@ -36,6 +41,7 @@ import { ShellModule } from './shell/shell.module';
     CopilotExportsModule,
     CoreModule,
     PunchoutRoutingModule,
+    CopilotEmbeddedRoutingModule,
     QuickorderRoutingModule,
     QuotingRoutingModule,
     RecentlyRoutingModule,
@@ -44,13 +50,13 @@ import { ShellModule } from './shell/shell.module';
     WishlistSharingRoutingModule,
     AppLastRoutingModule,
   ],
+  declarations: [AppComponent],
   /* eslint-enable perfectionist/sort-arrays */
   providers: [
     { provide: UrlSerializer, useClass: PWAUrlSerializer },
     { provide: APP_ID, useValue: 'intershop-pwa' },
     provideClientHydration(withNoHttpTransferCache()),
   ],
-
   bootstrap: [AppComponent],
 })
 export class AppModule {

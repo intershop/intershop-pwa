@@ -17,8 +17,8 @@ import { Withdrawal } from 'ish-core/models/withdrawal/withdrawal.model';
   selector: 'ish-withdrawal-request-page',
   standalone: false,
   templateUrl: './withdrawal-request-page.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [WithdrawalFacade],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithdrawalRequestPageComponent {
   withdrawal = this.withdrawalFacade.withdrawal;

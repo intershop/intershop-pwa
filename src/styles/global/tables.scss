@@ -113,7 +113,7 @@
 }
 
 .list-body {
-  margin-bottom: $space-default * 2;
+  margin-bottom: divide($space-default * 3, 2);
 
   .list-item-row {
     margin-bottom: ($space-default);

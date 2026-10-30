@@ -11,7 +11,7 @@
                 class="account-nav-header"
                 tabindex="0"
                 [attr.aria-expanded]="!item.isCollapsed"
-                [attr.data-testing-id]="item.id + '-nav-link'"
+                [attr.data-testing-id]="`${item.id}-nav-link`"
                 (click)="toggleCollapse(item)"
                 (keydown.enter)="toggleCollapse(item)"
               >
@@ -38,7 +38,7 @@
                           >
                             <a
                               class="link-decoration-hover"
-                              [attr.data-testing-id]="subItem.id + '-nav-link'"
+                              [attr.data-testing-id]="`${subItem.id}-nav-link`"
                               [routerLink]="subItem.routerLink"
                               >{{ subItem.localizationKey | translate }}</a
                             >
@@ -57,7 +57,7 @@
                 <!-- prettier-ignore-->
                 <a
                   class="link-decoration-hover"
-                  [attr.data-testing-id]="item.id + '-nav-link'"
+                  [attr.data-testing-id]="`${item.id}-nav-link`"
                   [routerLink]="item.routerLink"
                 >
                   @if (item.icon) {<i class="bi" [class]="item.icon"></i>}{{ item.localizationKey | translate }}

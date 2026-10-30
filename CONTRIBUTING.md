@@ -36,7 +36,7 @@ For questions, contact pwa@intershop.de.
 ## Contribution Process
 
 1. Fork the repository
-2. Use the `develop` branch for your edits
+2. Create a branch based on `develop` for your edits
 3. Work on changes
 4. Document your changes
 5. Check whether the changes comply with the rules (design etc.)

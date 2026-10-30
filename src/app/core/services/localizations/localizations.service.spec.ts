@@ -1,4 +1,3 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -20,7 +19,6 @@ describe('Localizations Service', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ErrorHandler, useFactory: () => instance(errorHandler) },
-        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         provideMockStore({ selectors: [{ selector: getRestEndpoint, value: 'https://example.com/rest' }] }),
       ],

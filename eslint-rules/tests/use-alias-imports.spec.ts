@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import useAliasImportsRule from '../src/rules/use-alias-imports';
 
 import testRule from './rule-tester';
@@ -45,7 +43,6 @@ testRule(useAliasImportsRule, {
         {
           messageId: 'noAlias',
           data: { alias: 'ish-shared/' },
-          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       output: `

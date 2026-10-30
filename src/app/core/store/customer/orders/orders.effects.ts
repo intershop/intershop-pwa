@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { routerNavigatedAction } from '@ngrx/router-store';
+import { routerNavigatedAction, routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { isEqual } from 'lodash-es';
-import { EMPTY, from, merge, race } from 'rxjs';
+import { EMPTY, from, fromEvent, merge, race } from 'rxjs';
 import { catchError, concatMap, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';
 
 import { Order } from 'ish-core/models/order/order.model';
@@ -18,6 +18,7 @@ import {
   emitPaypalOrderId,
   getCurrentBasketId,
   loadBasket,
+  loadBasketSuccess,
 } from 'ish-core/store/customer/basket';
 import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
@@ -83,6 +84,7 @@ export class OrdersEffects {
             order.orderCreation.stopAction.type === 'Redirect' &&
             order.orderCreation.stopAction.redirectUrl
           ) {
+            this.orderService.markPendingPaymentRedirect(order.id);
             location.assign(order.orderCreation.stopAction.redirectUrl);
             return EMPTY;
           } else if (
@@ -200,6 +202,51 @@ export class OrdersEffects {
   );
 
   /**
+   * Cancels a pending order when the customer aborts the payment provider redirect via the browser back button.
+   */
+  cancelOrderAfterRedirectAbortion$ =
+    !SSR &&
+    createEffect(
+      () => {
+        const restoredFromHistory$ = fromEvent<PopStateEvent>(window, 'popstate');
+
+        const restoredFromCache$ = fromEvent<PageTransitionEvent>(window, 'pageshow').pipe(
+          filter(event => event.persisted)
+        );
+
+        const restoredAfterHistoryReload$ = this.isHistoryReload()
+          ? this.actions$.pipe(ofType(routerNavigationAction), take(1))
+          : EMPTY;
+
+        return merge(restoredFromHistory$, restoredFromCache$, restoredAfterHistoryReload$).pipe(
+          concatLatestFrom(() => this.store.pipe(select(selectQueryParams))),
+          // the redirect/orderId parameters mean the provider redirected back on its own, which the regular flow handles
+          filter(([, queryParams]) => !queryParams.redirect && !queryParams.orderId),
+          map(() => this.orderService.getPendingPaymentRedirectOrderId()),
+          whenTruthy(),
+          // prevents a retry loop if the navigation below is rejected by the checkout guard
+          distinctUntilChanged(),
+          concatMap(orderId =>
+            from(this.router.navigate(['/checkout/payment'], { queryParams: { redirect: 'cancel', orderId } }))
+          )
+        );
+      },
+      { dispatch: false }
+    );
+
+  /**
+   * Clears the pending payment redirect marker once a basket is available again.
+   */
+  cleanupRedirectMarker$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadBasketSuccess),
+        map(() => this.orderService.clearPendingPaymentRedirect())
+      ),
+    { dispatch: false }
+  );
+
+  /**
    * Returning from redirect after checkout (before customer is logged in).
    * Waits until the customer is logged in and triggers the handleOrderAfterRedirect action afterwards.
    */
@@ -231,6 +278,7 @@ export class OrdersEffects {
         this.orderService.updateOrderPayment(params.orderId, params).pipe(
           map(orderId => {
             if (params.redirect === 'success') {
+              this.orderService.clearPendingPaymentRedirect();
               return selectOrder({ orderId });
             } else {
               // cancelled payment
@@ -339,6 +387,15 @@ export class OrdersEffects {
   private getPaypalOrderId(order: Order): string {
     return (
       order.orderCreation?.redirect?.parameters?.find((p: { name: string }) => p.name === 'PayPalOrderID')?.value || ''
+    );
+  }
+
+  private isHistoryReload(): boolean {
+    return (
+      typeof performance.getEntriesByType === 'function' &&
+      performance
+        .getEntriesByType('navigation')
+        .some(entry => (entry as PerformanceNavigationTiming).type === 'back_forward')
     );
   }
 }

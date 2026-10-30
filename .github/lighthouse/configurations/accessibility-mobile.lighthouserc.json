@@ -18,7 +18,7 @@
       "settings": {
         "formFactor": "mobile",
         "throttlingMethod": "provided",
-        "chromeFlags": "--no-sandbox --disable-setuid-sandbox --disable-dev-shm-usage --disable-gpu --headless=new --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --disable-features=TranslateUI --disable-ipc-flooding-protection",
+        "chromeFlags": "--headless=new --no-sandbox",
         "skipAudits": ["uses-http2"],
         "onlyCategories": ["accessibility"]
       }

@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import noFormlyExplicitPseudoTypeRule from '../src/rules/no-formly-explicit-pseudo-type';
 
 import testRule from './rule-tester';
@@ -45,7 +43,6 @@ testRule(noFormlyExplicitPseudoTypeRule, {
         `,
       errors: [
         {
-          type: AST_NODE_TYPES.ObjectExpression,
           messageId: 'explicitPseudoTypeError',
         },
       ],

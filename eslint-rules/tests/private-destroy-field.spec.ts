@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import privateDestroyFieldRule from '../src/rules/private-destroy-field';
 
 import testRule from './rule-tester';
@@ -30,7 +28,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'voidSubjectError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
     },
@@ -46,7 +43,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'voidSubjectError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -68,7 +64,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -90,7 +85,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -112,7 +106,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'privateDestroyError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -134,7 +127,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'bothError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
       output: `
@@ -156,7 +148,6 @@ testRule(privateDestroyFieldRule, {
       errors: [
         {
           messageId: 'bothError',
-          type: AST_NODE_TYPES.PropertyDefinition,
         },
       ],
     },

@@ -37,30 +37,33 @@
                     @if (selectedType === 'cxml' && ('punchout.cxmlUserConfigurationEnabled' | ishServerSetting)) {
                       <a
                         class="btn-tool"
+                        [attr.aria-label]="'account.punchout.configure.link' | translate: { '0': user.login }"
                         [queryParams]="{ format: selectedType }"
                         [routerLink]="['cxmlConfiguration', user.id]"
                         [title]="'account.punchout.configure.link' | translate: { '0': user.login }"
                       >
-                        <i class="bi bi-gear-fill"></i>
+                        <i aria-hidden="true" class="bi bi-gear-fill"></i>
                       </a>
                     }
                     <a
                       class="btn-tool"
                       data-testing-id="edit-user"
+                      [attr.aria-label]="'account.profile.update.link' | translate: { '0': user.login }"
                       [queryParams]="{ format: selectedType }"
                       [routerLink]="[user.login]"
                       [title]="'account.profile.update.link' | translate: { '0': user.login }"
                     >
-                      <i class="bi bi-pencil-fill"></i>
+                      <i aria-hidden="true" class="bi bi-pencil-fill"></i>
                     </a>
                     <button
                       class="btn-tool btn-link"
                       data-testing-id="delete-user"
                       type="button"
+                      [attr.aria-label]="'account.user.delete_user_dialog.header' | translate: { '0': user.login }"
                       [title]="'account.user.delete_user_dialog.header' | translate: { '0': user.login }"
                       (click)="modalDialog.show(user)"
                     >
-                      <i class="bi bi-trash-fill"></i>
+                      <i aria-hidden="true" class="bi bi-trash-fill"></i>
                     </button>
                     <ish-modal-dialog
                       #modalDialog

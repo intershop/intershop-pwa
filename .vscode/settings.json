@@ -55,6 +55,12 @@
   "github.copilot.enable": {
     "*": true
   },
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    { "file": ".github/instructions/commit-style.instructions.md" }
+  ],
+  "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+    { "file": ".github/instructions/commit-style.instructions.md" }
+  ],
   "cSpell.enabledFileTypes": {
     "typescript": false,
     "javascript": false

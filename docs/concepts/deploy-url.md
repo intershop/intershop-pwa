@@ -75,7 +75,7 @@ With this new feature, some complex deployment scenarios can be solved with the 
 ### CDN Support
 
 If you want to deploy all static resources of the Intershop PWA to a [Content Delivery Network](https://en.wikipedia.org/wiki/Content_delivery_network), you can use the above build steps to set the deploy URL via script in the build output.
-Delivering resources via a CDN significantly reduces the load on the PWA if certain pages can also be stored pre-rendered or if the experimental [Service Worker][concept-pwa-service-worker] support is used.
+Delivering resources via a CDN significantly reduces the load on the PWA if certain pages can also be stored pre-rendered.
 
 ### Embed PWA with Proxy on Website
 
@@ -118,4 +118,3 @@ Such a configuration supports scenarios where the Intershop PWA is responsible f
 
 [guide-ssr-container]: ../guides/ssr-startup.md
 [concept-hybrid-approach]: ./hybrid-approach.md
-[concept-pwa-service-worker]: ./progressive-web-app.md#service-worker

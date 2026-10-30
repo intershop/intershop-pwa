@@ -6,7 +6,7 @@ services:
     build:
       context: ../../.
     environment:
-      ICM_BASE_URL: 'https://develop.icm.intershop.de'
+      ICM_BASE_URL: 'https://demo.icm.intershop.de'
 
   nginx:
     image: intershophub/intershop-pwa-nginx
@@ -17,7 +17,7 @@ services:
       - '4200:443'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
-      ICM_BASE_URL: 'https://develop.icm.intershop.de'
+      ICM_BASE_URL: 'https://demo.icm.intershop.de'
       NGINX_ENTRYPOINT_QUIET_LOGS: 1
       CACHE: 1
       CACHE_DURATION_NGINX_OK: 60m

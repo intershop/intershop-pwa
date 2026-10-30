@@ -53,22 +53,8 @@ describe('Product Bundle Display Component', () => {
 
     expect(element).toMatchInlineSnapshot(`
       <ul>
-        <li>
-          3 x
-          <ish-product-name
-            ishproductcontext=""
-            ng-reflect-link="false"
-            ng-reflect-sku="ABC"
-          ></ish-product-name>
-        </li>
-        <li>
-          2 x
-          <ish-product-name
-            ishproductcontext=""
-            ng-reflect-link="false"
-            ng-reflect-sku="DEF"
-          ></ish-product-name>
-        </li>
+        <li>3 x <ish-product-name ishproductcontext=""></ish-product-name></li>
+        <li>2 x <ish-product-name ishproductcontext=""></ish-product-name></li>
       </ul>
     `);
   });

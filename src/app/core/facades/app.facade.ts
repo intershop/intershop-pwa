@@ -48,6 +48,7 @@ export class AppFacade {
   availableLocales$ = this.store.pipe(select(getAvailableLocales));
   currentCurrency$ = this.store.pipe(select(getCurrentCurrency));
   serverConfigurationLoaded$ = this.store.pipe(select(isServerConfigurationLoaded));
+  channelName$ = this.store.pipe(select(getServerConfigParameter<string>('channel.displayName')));
 
   generalError$ = this.store.pipe(select(getGeneralError));
   generalErrorType$ = this.store.pipe(select(getGeneralErrorType));

@@ -59,13 +59,13 @@ describe('Content Design View Wrapper Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
   });
 
-  it('should not be rendered if no input parameter is given', () => {
+  it('should not render the design view wrapper if no input parameter is given', () => {
     fixture.detectChanges();
 
-    expect(element).toMatchInlineSnapshot(`N/A`);
+    expect(element.querySelector('.design-view-wrapper')).toBeNull();
   });
 
-  it('should be rendered if a pageletId is given', () => {
+  it('should render a pagelet edit action if a pageletId is given', () => {
     component.pageletId = 'xyz';
     // afterNextRender doesn't fire in Jest - manually trigger initialization
     component.isDesignViewMode = true;
@@ -73,26 +73,15 @@ describe('Content Design View Wrapper Component', () => {
     fixture.detectChanges();
 
     expect(component.type).toEqual('pagelet');
-    expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper pagelet pagelet-selected"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ish-scroll="true"
-        ng-reflect-ng-class="pagelet,pagelet-selected,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
-        <div class="design-view-wrapper-actions">
-          <button type="button" class="btn" title="designview.edit.link.title Pagelet Name xyz">
-            <i class="bi bi-pencil-fill"></i>
-          </button>
-        </div>
-      </div>
-    `);
+    expect(element.querySelector('.design-view-wrapper')?.classList).toContain('pagelet');
+
+    const button = element.querySelector<HTMLButtonElement>('.design-view-wrapper-actions button');
+    expect(button?.title).toEqual('designview.edit.link.title Pagelet Name xyz');
+    expect(button?.getAttribute('aria-label')).toEqual('designview.edit.link.title Pagelet Name xyz');
+    expect(button?.querySelector('i')?.classList).toContain('bi-pencil-fill');
   });
 
-  it('should be rendered if a slotId is given', () => {
+  it('should render a slot add action if a slotId is given', () => {
     component.slotId = 'xyz_slot_id';
     component.pagelet = createContentPageletView({
       id: 'xyz_pagelet_id',
@@ -110,26 +99,15 @@ describe('Content Design View Wrapper Component', () => {
     fixture.detectChanges();
 
     expect(component.type).toEqual('slot');
-    expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper slot"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ng-class="slot,,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
-        <div class="design-view-wrapper-actions">
-          <div class="name">Slot Name xyz</div>
-          <button type="button" class="btn" title="designview.add.link.title">
-            <i class="bi bi-plus"></i>
-          </button>
-        </div>
-      </div>
-    `);
+    expect(element.querySelector('.design-view-wrapper')?.classList).toContain('slot');
+    expect(element.querySelector('.name')?.textContent).toContain('Slot Name xyz');
+
+    const button = element.querySelector<HTMLButtonElement>('.design-view-wrapper-actions button');
+    expect(button?.title).toEqual('designview.add.link.title');
+    expect(button?.querySelector('i')?.classList).toContain('bi-plus');
   });
 
-  it('should be rendered if an include is given', () => {
+  it('should render an include add action if an include is given', () => {
     component.include = {
       id: 'xyz_include_id',
       displayName: 'Include Name xyz',
@@ -140,22 +118,11 @@ describe('Content Design View Wrapper Component', () => {
     fixture.detectChanges();
 
     expect(component.type).toEqual('include');
-    expect(element).toMatchInlineSnapshot(`
-      <div
-        scrollcontainer="root"
-        class="design-view-wrapper include"
-        ng-reflect-scroll-container="root"
-        ng-reflect-ng-class="include,,"
-        ng-reflect-scroll-duration="500"
-        ng-reflect-scroll-spacing="50"
-      >
-        <div class="design-view-wrapper-actions">
-          <div class="name">Include Name xyz</div>
-          <button type="button" class="btn" title="designview.add.link.title">
-            <i class="bi bi-plus"></i>
-          </button>
-        </div>
-      </div>
-    `);
+    expect(element.querySelector('.design-view-wrapper')?.classList).toContain('include');
+    expect(element.querySelector('.name')?.textContent).toContain('Include Name xyz');
+
+    const button = element.querySelector<HTMLButtonElement>('.design-view-wrapper-actions button');
+    expect(button?.title).toEqual('designview.add.link.title');
+    expect(button?.querySelector('i')?.classList).toContain('bi-plus');
   });
 });

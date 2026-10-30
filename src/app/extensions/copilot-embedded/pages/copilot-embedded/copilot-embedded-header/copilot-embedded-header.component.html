@@ -1,0 +1,18 @@
+<div class="copilot-embedded-header">
+  <ish-copilot-embedded-icon />
+  <div class="pt-2">
+    <h1 class="h3">{{ 'copilot.embedded.title' | translate }}</h1>
+    <p class="copilot-embedded-header-subtitle">{{ 'copilot.embedded.subtitle' | translate }}</p>
+  </div>
+  @if (canReset) {
+    <button
+      class="copilot-embedded-header-reset btn btn-link btn-tool"
+      type="button"
+      [attr.aria-label]="'copilot.embedded.reset' | translate"
+      [title]="'copilot.embedded.reset' | translate"
+      (click)="resetChat.emit()"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  }
+</div>

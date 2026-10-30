@@ -6,8 +6,8 @@ import { StoreAddressComponent } from './shared/store-address/store-address.comp
 import { StoresMapComponent } from './shared/stores-map/stores-map.component';
 
 @NgModule({
-  declarations: [StoreAddressComponent, StoresMapComponent],
   imports: [SharedModule],
+  declarations: [StoreAddressComponent, StoresMapComponent],
   exports: [SharedModule, StoreAddressComponent, StoresMapComponent],
 })
 export class StoreLocatorModule {}

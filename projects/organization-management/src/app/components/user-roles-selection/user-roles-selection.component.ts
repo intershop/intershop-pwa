@@ -17,7 +17,6 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   selector: 'ish-user-roles-selection',
   standalone: false,
   templateUrl: './user-roles-selection.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -25,6 +24,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
       useExisting: forwardRef(() => UserRolesSelectionComponent),
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRolesSelectionComponent implements ControlValueAccessor, OnInit {
   @Input() staticRoles: string[];

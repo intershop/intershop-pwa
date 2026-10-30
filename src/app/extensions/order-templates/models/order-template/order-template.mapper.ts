@@ -32,8 +32,6 @@ export class OrderTemplateMapper {
               item.attributes,
               'desiredQuantity'
             ).value,
-            // TBD: is the unit necessary?
-            // unit: item.desiredQuantity.unit,
           },
         }));
       } else {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { ReplaySubject, Subject, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
@@ -29,7 +29,6 @@ describe('Search Box Component', () => {
     searchTerm$.next(undefined);
 
     await TestBed.configureTestingModule({
-      imports: [TranslatePipe],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }, provideTranslateService()],
     }).compileComponents();
   });
@@ -115,6 +114,25 @@ describe('Search Box Component', () => {
       fixture.detectChanges();
       const button = element.querySelector('.btn-search');
       expect(button.textContent).toContain('buttonTextInput');
+    });
+
+    it('should not override the visible button text with an aria-label when buttonText is set', () => {
+      component.configuration = { buttonText: 'buttonTextInput' };
+
+      fixture.detectChanges();
+      const button = element.querySelector('.btn-search');
+      expect(button.getAttribute('aria-label')).toBeNull();
+      expect(button.getAttribute('title')).toBeNull();
+    });
+
+    it('should label the icon-only search button with an aria-label when no buttonText is set', () => {
+      component.configuration = { autoSuggest: true };
+
+      fixture.detectChanges();
+      const button = element.querySelector('.btn-search');
+      expect(button.querySelector('i')).toBeTruthy();
+      expect(button.getAttribute('aria-label')).toEqual('search.searchbox.button.title');
+      expect(button.getAttribute('title')).toEqual('search.searchbox.button.title');
     });
 
     it('should show placeholder text when placeholder is set', () => {

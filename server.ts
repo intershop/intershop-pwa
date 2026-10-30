@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports, max-lines */
-import { CommonEngine } from '@angular/ssr/node';
+import { REQUEST } from '@angular/core';
+import { CommonEngine, createWebRequestFromNodeRequest } from '@angular/ssr/node';
 import { randomUUID } from 'crypto';
 import express from 'express';
 import proxy from 'express-http-proxy';
@@ -14,7 +15,7 @@ import 'zone.js/node';
 import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
 import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
-import { REQUEST, REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
+import { REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
 import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
 import {
@@ -26,6 +27,7 @@ import {
   environment,
 } from './src/main.server';
 import { getDeployURLFromEnv, setDeployUrlInFile } from './src/ssr/deploy-url';
+import { registerMarkdownMirror, toMarkdownMirrorUrl } from './src/ssr/markdown-mirror';
 
 const logger = getLogger('Server');
 
@@ -42,6 +44,21 @@ function getBaseLogData(req: express.Request) {
       domain: req.get('host'),
     },
   };
+}
+
+// extract last baseHref from matrix params only (;baseHref=...), ignore query string
+function extractBaseHref(url: string): string {
+  const pathPart = url.split('?')[0];
+  const baseHrefRegex = /;baseHref=([^;]*)/g;
+  let baseHref = '/';
+  for (let match: RegExpExecArray; (match = baseHrefRegex.exec(pathPart));) {
+    baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
+  }
+  // only allow simple path segments to prevent base href hijacking
+  if (!/^\/([a-zA-Z0-9][a-zA-Z0-9\-._/]*)?$/.test(baseHref)) {
+    baseHref = '/';
+  }
+  return baseHref;
 }
 
 process.on('SIGUSR2', () => {
@@ -134,7 +151,7 @@ const BROWSER_FOLDER = process.env.BROWSER_FOLDER || join(process.cwd(), 'dist',
 export function app() {
   const ICM_BASE_URL = process.env.ICM_BASE_URL || environment.icmBaseURL;
 
-  const SSR_HYBRID_BACKEND = process.env.SSR_HYBRID_BACKEND || ICM_BASE_URL;
+  const ICM_BASE_URL_SSR = process.env.ICM_BASE_URL_SSR || ICM_BASE_URL;
 
   if (!ICM_BASE_URL) {
     logger.fatal('ICM_BASE_URL not set');
@@ -366,7 +383,7 @@ export function app() {
     server.use(/.*/, hybridRedirect);
   }
 
-  const icmProxy = proxy(SSR_HYBRID_BACKEND, {
+  const icmProxy = proxy(ICM_BASE_URL_SSR, {
     // preserve original path
     proxyReqPathResolver: req => req.originalUrl,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -400,6 +417,16 @@ export function app() {
       return 'public, max-age=300';
     }
   }
+
+  // Markdown mirror route: render the underlying PWA page and return its main content as Markdown.
+  // Registered before the static file handlers so that URLs ending in `.md` are not treated as static assets.
+  registerMarkdownMirror(server, {
+    commonEngine,
+    browserFolder: BROWSER_FOLDER,
+    getRequestId,
+    getBaseLogData,
+    extractBaseHref,
+  });
 
   const SOURCE_MAPS_ACTIVE = /on|1|true|yes/.test(process.env.SOURCE_MAPS?.toLowerCase());
   if (SOURCE_MAPS_ACTIVE) {
@@ -440,17 +467,6 @@ export function app() {
   server.purge(/\/PURGE_CACHE_ICM_CALLS$/, (_req, res) => {
     icmCallsCache.clear();
     res.sendStatus(200);
-  });
-
-  server.get(/\/ngsw\.json/, (_, res) => {
-    fs.readFile(join(BROWSER_FOLDER, 'ngsw.json'), { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        res.sendStatus(404);
-      } else {
-        res.set('Content-Type', 'application/json; charset=UTF-8');
-        res.send(data);
-      }
-    });
   });
 
   // route handler for all files that need the DEPLOY_URL replacement
@@ -497,28 +513,19 @@ export function app() {
     if (req.headers.accept) {
       const accept = req.headers.accept.toLowerCase();
       if (!accept.includes('html') && ['css', 'image', 'json', 'javascript'].some(inc => accept.includes(inc))) {
+        // 406 (not 404) so NGINX does not cache it and poison the shared HTML page cache entry
         logger.warn(
           {
             ...getBaseLogData(req),
-            http: { request: { mime_type: accept }, response: { status_code: 404 } },
+            http: { request: { mime_type: accept }, response: { status_code: 406 } },
           },
-          'RES 404 - Accept header mismatch'
+          'RES 406 - Accept header mismatch'
         );
-        return res.sendStatus(404);
+        return res.sendStatus(406);
       }
     }
 
-    // extract last baseHref from matrix params only (;baseHref=...), ignore query string
-    const pathPart = req.originalUrl.split('?')[0];
-    const baseHrefRegex = /;baseHref=([^;]*)/g;
-    let baseHref = '/';
-    for (let match: RegExpExecArray; (match = baseHrefRegex.exec(pathPart));) {
-      baseHref = match[1].replace(/%25/g, '%').replace(/%2F/g, '/');
-    }
-    // only allow simple path segments to prevent base href hijacking
-    if (!/^\/([a-zA-Z0-9][a-zA-Z0-9\-._/]*)?$/.test(baseHref)) {
-      baseHref = '/';
-    }
+    const baseHref = extractBaseHref(req.originalUrl);
 
     commonEngine
       .render({
@@ -528,7 +535,7 @@ export function app() {
         inlineCriticalCss: false,
         providers: [
           { provide: APP_BASE_HREF, useValue: baseHref },
-          { provide: REQUEST, useValue: req },
+          { provide: REQUEST, useValue: createWebRequestFromNodeRequest(req, ['x-forwarded-proto']) },
           { provide: RESPONSE, useValue: res },
           { provide: REQUEST_ID, useValue: getRequestId(req) },
         ],
@@ -548,6 +555,8 @@ export function app() {
 
           newHtml = setDeployUrlInFile(DEPLOY_URL, req.originalUrl, newHtml);
 
+          // advertise the Markdown mirror of this page (RFC 8288); append to keep any preload links
+          res.append('Link', `<${toMarkdownMirrorUrl(req.originalUrl)}>; rel="alternate"; type="text/markdown"`);
           res.status(res.statusCode).send(newHtml);
         } else {
           const errorMsg = `SSR rendering failed: No HTML generated for ${req.originalUrl}`;
@@ -578,7 +587,8 @@ export function app() {
           },
           'SSR rendering error'
         );
-        res.status(500).send(err.message);
+        // send a generic message; details are logged, never exposed to the client (OWASP A05:2021)
+        res.status(500).send('Internal Server Error');
       });
   };
 

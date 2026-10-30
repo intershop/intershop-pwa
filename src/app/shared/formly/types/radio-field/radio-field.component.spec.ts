@@ -66,7 +66,6 @@ describe('Radio Field Component', () => {
           type="radio"
           class="form-check-input ng-untouched ng-pristine ng-valid"
           id="formly_1_radio_rkey_0"
-          ng-reflect-value="value1"
           data-testing-id="radio-radio-label"
           name="formly_0_formly-group__rkey"
       /></ish-radio-field>

@@ -23,8 +23,8 @@ interface ComponentState {
   selector: 'ish-line-item-information-edit',
   standalone: false,
   templateUrl: './line-item-information-edit.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ProductContextFacade],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LineItemInformationEditComponent extends RxState<ComponentState> implements OnInit {
   @Input({ required: true }) set lineItem(lineItem: ComponentState['lineItem']) {

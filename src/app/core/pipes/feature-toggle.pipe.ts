@@ -17,8 +17,8 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  */
 @Pipe({
   name: 'ishFeature',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class FeatureTogglePipe implements PipeTransform {
   private enabled: boolean;

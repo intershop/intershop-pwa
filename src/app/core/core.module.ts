@@ -1,7 +1,6 @@
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, SkipSelf } from '@angular/core';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { AppearanceModule } from './appearance.module';
@@ -25,11 +24,9 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     FeatureToggleModule,
     IdentityProviderModule,
     InternationalizationModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: SERVICE_WORKER }),
     StateManagementModule,
     TranslatePipe,
   ],
-  exports: [TranslatePipe],
   providers: [
     // include the ICMCompatibilityInterceptor to add support for REST API changes (e.g. messageToMerchant)
     // { provide: HTTP_INTERCEPTORS, useClass: ICMCompatibilityInterceptor, multi: true },
@@ -51,6 +48,7 @@ import { DefaultErrorHandler } from './utils/default-error-handler';
     },
     provideHttpClient(withInterceptorsFromDi()),
   ],
+  exports: [TranslatePipe],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

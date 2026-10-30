@@ -16,7 +16,7 @@ const accountOrderTemplateDetailPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AccountOrderTemplateDetailLineItemComponent, AccountOrderTemplateDetailPageComponent],
   imports: [OrderTemplatesModule, RouterModule.forChild(accountOrderTemplateDetailPageRoutes), SharedModule],
+  declarations: [AccountOrderTemplateDetailLineItemComponent, AccountOrderTemplateDetailPageComponent],
 })
 export class AccountOrderTemplateDetailPageModule {}

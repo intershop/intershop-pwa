@@ -9,7 +9,6 @@ const messages = {
 /** Disallows the reassignment of properties marked with angular's `@Input` decorator.
  */
 const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
-  defaultOptions: undefined,
   meta: {
     messages,
     type: 'problem',

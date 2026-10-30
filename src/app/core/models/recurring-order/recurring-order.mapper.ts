@@ -5,6 +5,7 @@ import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
 import { PaymentMapper } from 'ish-core/models/payment/payment.mapper';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 import { RecurringOrderData, RecurringOrderListData } from './recurring-order.interface';
 import { RecurringOrder } from './recurring-order.model';
@@ -49,7 +50,7 @@ export class RecurringOrderMapper {
           currency: data.totalGross.currency,
         },
         // required properties for 'totals'
-        itemTotal: undefined,
+        itemTotal: undefined as PriceItem,
         isEstimated: false,
       },
     }));

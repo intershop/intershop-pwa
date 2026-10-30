@@ -6,18 +6,19 @@
     name="addProduct"
     type="button"
     [attr.aria-hidden]="ariaHidden"
-    [ngClass]="cssClass"
+    [attr.aria-label]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
+    [class]="cssClass"
     [tabindex]="ariaHidden ? -1 : 0"
     [title]="displayType === 'icon' ? ('product.add_to_wishlist.link' | translate) : ''"
     (click)="openModal(modal)"
   >
     @switch (displayType) {
       @case ('animated') {
-        <i class="bi bi-heart-fill"></i>
+        <i aria-hidden="true" class="bi bi-heart-fill"></i>
         <span class="share-label">{{ 'product.add_to_wishlist.link' | translate }}</span>
       }
       @case ('icon') {
-        <i class="bi bi-heart-fill"></i>
+        <i aria-hidden="true" class="bi bi-heart-fill"></i>
       }
       @default {
         {{ 'product.add_to_wishlist.link' | translate }}

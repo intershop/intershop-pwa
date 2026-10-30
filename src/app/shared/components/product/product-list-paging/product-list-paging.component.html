@@ -17,8 +17,8 @@
       <li>
         <a
           queryParamsHandling="merge"
+          [class.active]="p.value === currentPage"
           [fragment]="fragmentOnRouting"
-          [ngClass]="{ active: p.value === currentPage }"
           [queryParams]="{ page: p.value }"
           [routerLink]="[]"
           >{{ p.display }}</a

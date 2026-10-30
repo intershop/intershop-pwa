@@ -39,6 +39,7 @@ describe('Formly Customer Address Form Component', () => {
 
     component.addressForm = formGroupDirective;
     when(accountFacade.isBusinessCustomer$).thenReturn(of(false));
+    when(accountFacade.isLoggedIn$).thenReturn(of(false));
     when(formGroupDirective.resetForm()).thenReturn();
   });
 
@@ -98,7 +99,7 @@ describe('Formly Customer Address Form Component', () => {
         countryCode: new FormControl('foo', Validators.required),
       }),
     });
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<FormlyCustomerAddressFormComponent> = {
       resetForm: new SimpleChange(false, true, false),
     };
     component.ngOnChanges(changes);
@@ -112,7 +113,7 @@ describe('Formly Customer Address Form Component', () => {
         countryCode: new FormControl('foo', Validators.required),
       }),
     });
-    const changes: SimpleChanges = {
+    const changes: SimpleChanges<FormlyCustomerAddressFormComponent> = {
       resetForm: new SimpleChange(false, false, false),
     };
     component.ngOnChanges(changes);

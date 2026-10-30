@@ -46,6 +46,11 @@ const registrationFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
+  imports: [
+    FormlyModule.forChild(registrationFormlyConfig),
+    RouterModule.forChild(registrationPageRoutes),
+    SharedModule,
+  ],
   declarations: [
     RegistrationAddressFieldComponent,
     RegistrationApprovalComponent,
@@ -53,11 +58,6 @@ const registrationFormlyConfig: ConfigOption = {
     RegistrationNewsletterFieldComponent,
     RegistrationPageComponent,
     RegistrationTacFieldComponent,
-  ],
-  imports: [
-    FormlyModule.forChild(registrationFormlyConfig),
-    RouterModule.forChild(registrationPageRoutes),
-    SharedModule,
   ],
   providers: [RegistrationFormConfigurationService],
 })

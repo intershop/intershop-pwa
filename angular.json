@@ -68,21 +68,13 @@
                 },
                 {
                   "type": "initial",
-                  "maximumWarning": "1.6mb",
+                  "maximumWarning": "1.8mb",
                   "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "5kb",
                   "maximumError": "10kb"
-                }
-              ],
-              "serviceWorker": false,
-              "ngswConfigPath": "ngsw-config.json",
-              "fileReplacements": [
-                {
-                  "replace": "src/app/core/store/store-devtools.module.ts",
-                  "with": "src/app/core/store/store-devtools.module.production.ts"
                 }
               ]
             },
@@ -112,7 +104,8 @@
               "buildTarget": "intershop-pwa:build:production"
             },
             "development": {
-              "buildTarget": "intershop-pwa:build:development"
+              "buildTarget": "intershop-pwa:build:development",
+              "hmr": true
             },
             "b2b": {
               "buildTarget": "intershop-pwa:build:b2b"
@@ -226,7 +219,8 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "organization-management:build"
+            "buildTarget": "organization-management:build",
+            "hmr": true
           }
         }
       }
@@ -273,7 +267,8 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "buildTarget": "requisition-management:build"
+            "buildTarget": "requisition-management:build",
+            "hmr": true
           }
         }
       }
@@ -281,5 +276,31 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
   }
 }

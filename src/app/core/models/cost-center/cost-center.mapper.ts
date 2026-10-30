@@ -1,4 +1,5 @@
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
+import { PriceItem } from 'ish-core/models/price-item/price-item.model';
 
 import { CostCenterData, CostCenterListData } from './cost-center.interface';
 import { CostCenter, CostCenters } from './cost-center.model';
@@ -53,7 +54,7 @@ export class CostCenterMapper {
               net: order.orderTotalNet.value,
               currency: order.orderTotalGross.currency,
             },
-            itemTotal: undefined,
+            itemTotal: undefined as PriceItem,
             isEstimated: false,
           },
         })),

@@ -46,8 +46,10 @@
 @import 'global/share-tools';
 @import 'global/notifications';
 @import 'global/line-item';
+@import 'global/pagination';
 @import 'global/print';
 @import 'global/promotions';
+@import 'global/rating';
 @import 'components/header/header';
 @import 'components/header/language-switch';
 @import 'components/header/search-container';
@@ -60,7 +62,6 @@
 @import 'components/common/video';
 @import 'components/carousel/carousel';
 @import 'components/cookies';
-@import 'components/rating';
 @import 'pages/homepage/homepage';
 @import 'pages/errorpage/errorpage';
 @import 'pages/category/product-list';

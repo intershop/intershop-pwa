@@ -129,9 +129,12 @@
           class="btn-tool btn-link"
           title="{{ 'account.recurring_orders.link.title.remove' | translate: { '0': recurringOrder.documentNo } }}"
           type="button"
+          [attr.aria-label]="
+            'account.recurring_orders.link.title.remove' | translate: { '0': recurringOrder.documentNo }
+          "
           (click)="openDeleteConfirmationDialog(recurringOrder, deleteDialog)"
         >
-          <i class="bi bi-trash-fill"></i>
+          <i aria-hidden="true" class="bi bi-trash-fill"></i>
         </button>
       </td>
     </ng-container>

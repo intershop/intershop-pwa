@@ -107,7 +107,7 @@ app.get('/metrics', (_, res) => {
             pm2SSRMemoryLimit.set(maxMem);
           }
           const pm2Restarts = list.reduce(
-            (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + p.pm2_env.restart_time || 0 }),
+            (acc, p) => ({ ...acc, [p.name]: (acc[p.name] || 0) + (p.pm2_env.restart_time || 0) }),
             {}
           );
           Object.entries(pm2Restarts).forEach(([name, value]) => {
@@ -121,12 +121,18 @@ app.get('/metrics', (_, res) => {
 });
 
 app.listen(9113, () => {
-  process.send('ready');
+  process.send?.('ready');
   console.log('Prometheus reporter listening');
 });
 
 // Listen to messages from theme applications
 pm2.launchBus((err, pm2_bus) => {
+  if (err) {
+    console.error('pm2 bus error:', err);
+    // let PM2 restart the reporter instead of serving without worker metrics
+    process.exit(1);
+  }
+
   pm2_bus.on('process:msg', msg => {
     if (msg?.data?.topic === 'returnMetrics' && msg.process.name && msg.process.pm_id) {
       const worker = `${msg.process.name} ${msg.process.pm_id}`;

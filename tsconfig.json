@@ -1,4 +1,4 @@
-/* To learn more about this file see: https://v19.angular.dev/reference/configs/angular-compiler-options. */
+/* To learn more about this file see: https://v20.angular.dev/reference/configs/angular-compiler-options. */
 {
   "compilerOptions": {
     /* Project */
@@ -24,7 +24,7 @@
 
     /* Modules */
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "importHelpers": true,

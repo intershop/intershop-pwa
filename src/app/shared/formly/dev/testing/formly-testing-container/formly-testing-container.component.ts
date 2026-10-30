@@ -7,7 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   selector: 'ish-formly-testing-container',
   standalone: false,
   templateUrl: './formly-testing-container.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class FormlyTestingContainerComponent {
   set testComponentInputs(inputs: { fields: FormlyFieldConfig[]; form: FormGroup; model: any; options?: any }) {

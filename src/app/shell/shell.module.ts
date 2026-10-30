@@ -14,6 +14,7 @@ import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
 
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
+import { CopilotEmbeddedExportsModule } from '../extensions/copilot-embedded/exports/copilot-embedded-exports.module';
 import { QuickorderExportsModule } from '../extensions/quickorder/exports/quickorder-exports.module';
 import { SeoExportsModule } from '../extensions/seo/exports/seo-exports.module';
 import { TrackingExportsModule } from '../extensions/tracking/exports/tracking-exports.module';
@@ -39,6 +40,26 @@ import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-conten
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
 @NgModule({
+  imports: [
+    AuthorizationToggleModule,
+    CommonModule,
+    CompareExportsModule,
+    CopilotEmbeddedExportsModule,
+    DirectivesModule,
+    FeatureToggleModule,
+    NgbCollapseModule,
+    NgbDropdownModule,
+    NgbPopoverModule,
+    PipesModule,
+    QuickorderExportsModule,
+    RoleToggleModule,
+    RouterModule,
+    SearchBoxComponent,
+    SeoExportsModule,
+    TrackingExportsModule,
+    TranslatePipe,
+    WishlistsExportsModule,
+  ],
   declarations: [
     ...exportedComponents,
     BackToTopComponent,
@@ -55,25 +76,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     MiniBasketComponent,
     SubCategoryNavigationComponent,
     UserInformationMobileComponent,
-  ],
-  imports: [
-    AuthorizationToggleModule,
-    CommonModule,
-    CompareExportsModule,
-    DirectivesModule,
-    FeatureToggleModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
-    NgbPopoverModule,
-    PipesModule,
-    QuickorderExportsModule,
-    RoleToggleModule,
-    RouterModule,
-    SearchBoxComponent,
-    SeoExportsModule,
-    TrackingExportsModule,
-    TranslatePipe,
-    WishlistsExportsModule,
   ],
   exports: [...exportedComponents],
 })

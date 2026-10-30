@@ -8,7 +8,7 @@ import { QuickorderPageComponent } from './quickorder-page.component';
 const quickorderPageRoutes: Routes = [{ path: '', component: QuickorderPageComponent }];
 
 @NgModule({
-  declarations: [QuickorderPageComponent],
   imports: [QuickorderModule, RouterModule.forChild(quickorderPageRoutes)],
+  declarations: [QuickorderPageComponent],
 })
 export class QuickorderPageModule {}

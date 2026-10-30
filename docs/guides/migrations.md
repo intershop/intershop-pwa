@@ -7,12 +7,256 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 12.1.0 to 13.0.0
+
+**PWA Helm Chart 1.0.0**
+
+For Kubernetes deployments, use the [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa) 1.0.0 or later.
+With this major release, the chart has been renamed from `pwa-main` to `pwa` and its values have been restructured, e.g., `environment` moved to `app.env`, `cache.*` moved to `proxy.*`, and `upstream.icmBaseURL` moved to `config.icmBaseUrl`.
+All Helm configuration examples in the PWA documentation refer to the PWA Helm Chart 1.0.0 values structure.
+To migrate existing deployment configurations, follow the [Migration to 1.0.0](https://github.com/intershop/helm-charts/blob/main/charts/pwa/docs/migrate-to-1.0.0.md) guide, which also provides a migration script for Flux `HelmRelease` and values files.
+
+**Node.js 24 update**
+
+The Intershop PWA now uses Node.js 24.22.1 LTS with the corresponding npm version 11.19.1.
+
+npm 11 no longer runs lifecycle scripts of dependencies (preinstall/install/postinstall) by default as a supply-chain security measure.
+Packages that need to run such scripts must be explicitly allow-listed (`allowScripts` in the _package.json_).
+`npm install` warns about missing allow-listing for custom dependencies.
+
+**Custom `config` properties moved out of _package.json_**
+
+npm 11 warns about custom keys in the _package.json_ `config` section (`npm warn Unknown env config ...`) because the legacy `npm_config_*` environment injection is deprecated and will be removed in the next major npm version.
+Therefore, the two custom `config` properties have been relocated:
+
+- `config.commitizen.path` moved to a new [_.czrc_](../../.czrc) file.
+- `config.active-themes` moved to the top-level `activeThemes` property in the [_package.json_](../../package.json). The build-time override environment variable changed from `npm_config_active_themes` to `ACTIVE_THEMES` (used by `npm run build:multi`).
+
+Custom code or Docker build arguments that referenced `config.active-themes` (for example, via `npm pkg set config.active-themes=...`) must be updated to use `activeThemes`.
+
+**TypeScript 5.8/5.9 update**
+
+TypeScript has been updated to version 5.8 (required by Angular 20) and to 5.9 together with the Angular 20 upgrade.
+The stricter type inference of TypeScript 5.8 reports object literal properties and function expressions initialized with `undefined` or `[]` as implicitly `any`.
+Check your custom code for new `TS7018`/`TS7011` compiler errors and add the appropriate type annotations.
+
+**Angular 20 upgrade**
+
+With Intershop PWA 13.0.0, the project is updated to Angular 20.
+Companion libraries are updated to their Angular 20-compatible versions as well, for example, NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
+
+Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
+The base [_tsconfig.json_](../../tsconfig.json) setting has been updated to `"bundler"` (_tsconfig.spec.json_ keeps `"node"`).
+
+Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
+
+- `platformBrowserDynamic()` from `@angular/platform-browser-dynamic` is deprecated; use `platformBrowser()` from `@angular/platform-browser` for bootstrapping instead.
+- The `ng-reflect-*` attributes are no longer emitted; update snapshot tests relying on them.
+
+For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
+
+**Deprecated `@angular/animations` usage removed**
+
+The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [_cookies.scss_](../../src/styles/components/cookies.scss).
+`BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`.
+Once this dependency is dropped, you can remove the import and the dependency.
+
+**Formly 8 update**
+
+`@ngx-formly/core` has been updated to version 8, which requires Angular 19 or newer and ships as fesm2022 only.
+For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md).
+
+**Formly 9 update**
+
+`@ngx-formly/core` has been updated to version 9, which requires Angular 20 or newer.
+For more information, see the [Formly changelog](https://github.com/ngx-formly/ngx-formly/blob/main/CHANGELOG.md) and the [Formly 9 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v9.0.0/UPGRADE-9.0.md).
+
+**Replace custom pagination markup with `NgbPagination`**
+
+The `PagingComponent` (`ish-paging`) now renders ng-bootstrap's `NgbPagination` instead of its custom pagination markup.
+Its inputs changed: the previous `lastPage` (number of pages) was replaced by the required inputs `itemCount` (total number of items) and `pageSize` (items per page).
+
+**Removed quantity handling from wishlists**
+
+The wishlists quantity handling functionality has been removed because it was only partially implemented in the data layer, but not in the front end.
+The `desiredQuantity` and `purchasedQuantity` properties have been removed from the `WishlistItem` model, and the optional `quantity` parameter has been removed from the `addProductToWishlist` action.
+If custom code relies on these properties or passes a quantity when adding a product to a wishlist, do not apply the changes of the corresponding commit.
+
+**Removal of the Service Worker integration**
+
+The experimental Angular Service Worker integration has been removed because it was disabled by default and not recommended for production use.
+The `@angular/service-worker` dependency, the _ngsw-config.json_ file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
+The Web App Manifest (installability) is unaffected and remains available.
+
+**Hot Module Replacement (HMR) in development**
+
+HMR has been enabled for the `serve` targets in _angular.json_ via `"hmr": true`.
+Running `ng serve` now applies style changes (global and component SCSS) in place without a full page reload, preserving the current application state.
+Template and TypeScript changes still trigger a full live-reload as before.
+The setting only affects the dev server (`ng serve`) and has no impact on production builds or SSR.
+
+**Template string concatenation replaced by template literals**
+
+Angular 20 supports JavaScript template literals in template expressions.
+The `@angular-eslint/template/prefer-template-literal` rule has been enabled.
+Existing string concatenations in templates have been auto-fixed, as shown in the following example:
+
+```html
+<!-- before -->
+<span [id]="'item-' + item.id">{{ item.name }}</span>
+<!-- after -->
+<span [id]="`item-${item.id}`">{{ item.name }}</span>
+```
+
+Run `npm run lint -- --fix` to auto-fix any remaining concatenations.
+
+**Additional Angular 20 template lint rules**
+
+The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/prefer-built-in-pipes` rules have been enabled.
+The first rule converts negated sibling `@if` blocks into `@else`; the second rule favors built-in pipes (e.g., `lowercase`) over method calls such as `toLowerCase()` in templates.
+Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
+
+**llms.txt integration**
+
+The Intershop PWA now serves an [_llms.txt_](https://llmstxt.org/) file, a site index for large language models (LLMs), as static content via the NGINX container (see [Guide - llms.txt](./llms-txt.md)).
+The content files are located in _nginx/llms/_ and are named per channel following the pattern `<channel>_llms.txt`.
+The neutral _default_llms.txt_ file serves as the fallback file.
+Every project based on the Intershop PWA, whether newly set up or migrated, must rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
+
+**Default security headers in the NGINX image**
+
+The NGINX image now sends a lenient set of default security headers, including a Content Security Policy (CSP), defined in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
+Clickjacking protection is deliberately disabled so that the PWA can still be embedded in the ICM Design Preview and the IAP Design View.
+Projects that already set `ADDITIONAL_HEADERS` are unaffected, as that variable replaces the default headers.
+The default CSP does not allow `'unsafe-eval'`, so custom code or third-party scripts that evaluate strings at runtime (for example, Formly string expressions) are blocked in the browser, even though the server-side rendered page looks correct.
+Check your storefront in the browser console for CSP violations and adjust the headers via `ADDITIONAL_HEADERS` if necessary.
+For more information, see the [Security Headers and Content Security Policy (CSP)](./security-headers.md) guide.
+
+**E-mail validator no longer rejects empty values**
+
+`SpecialValidators.email` (used by `ish-email-field`) now treats an empty value as valid.
+This allows optional e-mail fields.
+Required validation is still enforced by the separate `required` validator where configured.
+
+**Invoice e-mail field added to the business customer address form**
+
+The address form now includes an optional invoice e-mail field for business customers.
+If left empty, the customer's login e-mail address is used.
+
+**`displayEmail` default changed for the address component**
+
+The default value of the `displayEmail` input of `AddressComponent` (`ish-address`) has changed from `false` to `true`.
+The e-mail address is now displayed by default.
+Explicitly set `[displayEmail]="false"` to continue hiding the e-mail address.
+
+**Roboto fonts switched to Fontsource**
+
+The deprecated `typeface-roboto` and `typeface-roboto-condensed` packages have been replaced by [`@fontsource/roboto`](https://fontsource.org/fonts/roboto) and [`@fontsource/roboto-condensed`](https://fontsource.org/fonts/roboto-condensed).
+The `@font-face` rules in _roboto.scss_ now only reference `woff2` files, and the webpack-specific `~` font URLs have been replaced with relative paths to the files in _node_modules_ (preparation for esbuild compatibility).
+Custom stylesheets referencing files from the old packages must be updated to the new paths, for example, _@fontsource/roboto/files/roboto-latin-400-normal.woff2_.
+
+**Translation imports prepared for esbuild**
+
+Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)` (preparation for esbuild compatibility).
+
+**Angular SSR `REQUEST` token**
+
+The custom `REQUEST` token from `ish-core/utils/ssr/ssr.tokens` has been replaced by Angular's [`REQUEST`](https://angular.dev/api/core/REQUEST) token from `@angular/core`, which provides a standard Web `Request` instead of an Express request.
+Custom code that injects the token must update the import and replace Express-specific access, for example, `request.get('host')` with `new URL(request.url).host` and `request.get('header-name')` with `request.headers.get('header-name')`.
+Custom server bootstraps must provide the request via `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` as done in [_server.ts_](../../server.ts).
+The `RESPONSE` and `REQUEST_ID` tokens remain unchanged.
+
+**Store Devtools production configuration**
+
+Store Devtools are now configured through `PRODUCTION_MODE` in [_store-devtools.module.ts_](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in _angular.json_, and the obsolete _store-devtools.module.production.ts_ file has been removed.
+The default behavior is unchanged (enabled in development, disabled in production).
+
+If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
+To enable Store Devtools in production, update the conditional registration in _store-devtools.module.ts_ instead of removing the file replacement.
+
+**SSR server compiled as ES modules**
+
+The SSR server code is now compiled as ES modules instead of CommonJS, because the CommonJS output fails to bundle with newer webpack versions (`Cannot get final name for export '__esModule' of ./server.ts`).
+Remove the `module` and `moduleResolution` overrides from your [_tsconfig.server.json_](../../tsconfig.server.json) and check custom server code for CommonJS-only constructs such as `exports` or `module.exports`.
+
+**CAPTCHA field type uses `captcha` key**
+
+The `ish-captcha-field` Formly type now defines `captcha` as the default key, so its field validation is applied directly to the `captcha` form control and the [`CaptchaFieldComponent`](../../src/app/shared/formly/types/captcha-field/captcha-field.component.ts) no longer adds this control itself.
+If you register the `ish-captcha-field` type in a custom module, add `key: 'captcha'` to its `defaultOptions` as done in [_types.module.ts_](../../src/app/shared/formly/types/types.module.ts).
+As a consequence, the CAPTCHA token is now also written to the `captcha` property of the Formly model.
+
+**Angular 21 upgrade**
+
+Following the Angular 20 upgrade described above, Intershop PWA 13.0.0 is updated to Angular 21 and its compatible companion libraries, for example, NgRx 21 and `zone.js` 0.16.
+Because Angular 21 no longer enables zone-based change detection by default, the PWA enables it with the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), which must remain the first import of the `AppModule`.
+The [_tsconfig.spec.json_](../../tsconfig.spec.json) now also uses the `bundler` module resolution of the base [_tsconfig.json_](../../tsconfig.json).
+For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=20.0-21.0&l=3).
+
+The server-side rendering build required two adaptations that projects with a customized webpack or Babel configuration must keep:
+
+- [_webpack.custom.ts_](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
+- [_babel.config.js_](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
+
+**`ChangeDetectionStrategy.Default` replaced by `ChangeDetectionStrategy.Eager`**
+
+Angular 21 deprecates `ChangeDetectionStrategy.Default` in favor of the equivalent `ChangeDetectionStrategy.Eager`but does not provide a migration for this change.
+All PWA usages have been replaced.
+To apply this change to custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:change-detection-strategy-eager
+```
+
+**Typed `SimpleChanges` in `ngOnChanges`**
+
+A new `no-restricted-syntax` lint rule enforces Angular 21's typed `SimpleChanges<T>` in `ngOnChanges`.
+Change untyped signatures in custom code to typed signatures, for example, `ngOnChanges(changes: SimpleChanges<MyComponent>)`.
+
+**Inputs of dynamically created components set via `setInput()`**
+
+The `ContentPageletComponent` and the generated lazy components now pass inputs to dynamically created components with [`ComponentRef.setInput()`](https://angular.dev/api/core/ComponentRef#setInput) instead of assigning properties and calling `ngOnChanges` manually.
+Angular now calls `ngOnChanges` of these components during change detection and only for inputs that actually changed.
+Custom CMS components must therefore declare `pagelet` as `@Input()`, and the optional `ngOnChanges` signature has been removed from the `CMSComponent` interface.
+Lazy components are regenerated automatically on `npm install`.
+
+**Basket success messages provided as observable**
+
+The `showSuccessMessage` property of the `BasketDesiredDeliveryDateComponent`, `BasketMerchantMessageComponent`, and `BasketOrderReferenceComponent` has been replaced by the `showSuccessMessage$` observable.
+Customized templates of these components must use `showSuccessMessage$ | async` instead.
+
+**`ngClass` and `ngStyle` replaced by `[class]` and `[style]` bindings**
+
+All PWA templates now use native [class and style bindings](https://angular.dev/guide/templates/binding) instead of the `NgClass` and `NgStyle` directives, as recommended by Angular.
+Projects are encouraged to migrate their customized templates as well, because the PWA will enforce native bindings with lint rules after the Angular 22 upgrade.
+
+**Unification of `SSR_HYBRID_BACKEND` into `ICM_BASE_URL_SSR`**
+
+The `SSR_HYBRID_BACKEND` environment variable has been removed and unified with `ICM_BASE_URL_SSR`.
+Both variables pointed to the same target: the internal ICM Web Adapter service URL used for server-side backend requests in joint Kubernetes deployments.
+The `/INTERSHOP` proxy of the SSR server (used in the Hybrid Approach and with `PROXY_ICM`) now uses `ICM_BASE_URL_SSR` instead of `SSR_HYBRID_BACKEND`, falling back to `ICM_BASE_URL` when it is not set.
+Deployments that set `SSR_HYBRID_BACKEND` must rename it to `ICM_BASE_URL_SSR`.
+For Helm deployments, use the PWA Helm Chart 1.0.0 or later and configure the internal ICM Web Adapter service URL via `config.icmBaseUrlSsr` instead of `hybrid.icmInternalURL`.
+
+**ICM error messages**
+
+To prevent cross-site scripting, the `ErrorMessageComponent` (`ish-error-message`) renders ICM error messages as sanitized HTML and HTML-escapes the values of their `parameters`, e.g., a SKU entered by the user.
+The `ICMErrorMapperInterceptor` no longer wraps the messages of the ADR error format in `<div>` elements; `error.message` contains the unformatted messages, which may contain HTML.
+To display the messages of an `HttpError` in custom code, render the result of `HttpErrorHelper.formatMessage()` as sanitized HTML instead of `error.message`.
+Errors of the cXML punchout configuration are displayed on the configuration page instead of in the configuration form and by the `CxmlConfigurationEffects`.
+
+**Copilot Embedded integration**
+
+The new `copilotEmbedded` feature toggle adds an AI product advisor page at `/copilot` that is backed by a Flowise chatflow.
+Copilot Embedded is an experimental feature, and its functionality and configuration can change in future releases.
+The feature is disabled by default.
+To use it, enable the feature toggle and provide the `copilotEmbedded` configuration, see [Guide - Copilot Embedded](./copilot-embedded.md).
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
 
-We introduced the Generative Engine Optimization (GEO) integration as a new extension which can be enabled with the feature toggle `geo`.
-The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if according generated data is available at the product.
+We introduced the Generative Engine Optimization (GEO) integration as a new extension that can be enabled with the feature toggle `geo`.
+The current implementation adds an _FAQ_ and a _How To_ tab to the product detail page if corresponding generated data is available for the product.
 It also adds [JSON-LD](https://json-ld.org/) information to the HTML header of the product detail page.
 
 ## From 11.2.0 to 12.0.0
@@ -26,7 +270,7 @@ In Angular 19, components, directives, and pipes are standalone by default.
 Since the PWA still relies on NgModule-based declarations, the `standalone: false` attribute had to be added to all components, directives, and pipes that are not standalone yet.
 
 To apply this configuration to custom code, run the PWA migration schematics.
-They wrap Angular's `explicit-standalone-flag` migration and additionally cover theme override files, which the Angular migration skips (see [Migration How To](./migrations-how-to.md#run-the-provided-migration-schematics) for the recommended `ng update` command).
+They wrap Angular's `explicit-standalone-flag` migration and additionally cover theme override files which the Angular migration skips (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics) for the recommended `ng update` command).
 To run these migrations on their own:
 
 ```bash
@@ -39,7 +283,8 @@ ng g ./schematics/dist/migrations/migrations.json:standalone-override-flag
 
 Angular's migration determines whether a declaration is standalone based on its NgModule membership (via static analysis).
 As a result, it adds `standalone: false` only to declarations that are part of an NgModule and leaves genuinely standalone components untouched — even those that do not declare `standalone: true` explicitly.
-Make sure the project builds without compilation errors and that all files are covered by a `tsconfig` before running the migration, otherwise affected files are skipped.
+Make sure that the project builds without compilation errors and that all files are covered by a `tsconfig` before running the migration.
+Otherwise, affected files are skipped.
 
 For more details about the Angular 19 update, see the [Angular Update Guide](https://angular.dev/update-guide?v=18.0-19.0&l=3).
 
@@ -47,18 +292,17 @@ For more details about the Angular 19 update, see the [Angular Update Guide](htt
 
 > [!IMPORTANT]
 > The Angular SSR `CommonEngine` now validates the `Host` header of incoming requests against a list of allowed hosts.
-> By default (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
+> By default, (when `ALLOWED_HOSTS` is not set), only `localhost` is accepted.
 > For production deployments, the `ALLOWED_HOSTS` environment variable must be set to include the production hostnames (see [SSR Startup](./ssr-startup.md)).
 > Failing to configure the correct `ALLOWED_HOSTS` will result in the following error message:
 >
 > `URL with hostname "abc.xyz.com" is not allowed.`
 >
-> Example for the configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+> Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 >
 > ```yaml
-> environment:
->   - name: ALLOWED_HOSTS
->     value: 'shop.example.com,*.example.com'
+> config:
+>   allowedHosts: 'shop.example.com,*.example.com'
 > ```
 
 **ESLint Perfectionist plugin**
@@ -75,8 +319,8 @@ In addition, the `TranslateService.currentLang` property has been replaced by th
 For all breaking changes, see the [ngx-translate Migration Guide v16 → v17](https://ngx-translate.org/v17/getting-started/migration-guide/).
 
 With version 18, `TranslateModule` has been removed.
-The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`, and the `forChild()` imports are no longer needed.
-The same applies to test setups, where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
+The translation service is now provided via the standalone provider function `provideTranslateService()` instead of `TranslateModule.forRoot()`; the `forChild()` imports are no longer needed.
+The same applies to test setups where `provideTranslateService()` and an `imports: [TranslatePipe]` entry replace the previous `TranslateModule.forRoot()` import.
 `TranslatePipe` and `TranslateDirective` are now standalone and have to be added directly to the `imports` of the consuming modules (or standalone components) where the `translate` pipe or directive is used.
 The element-text-as-key form of the `translate` directive (for example, `<span translate>my.key</span>`) is deprecated in version 18 and removed in version 19; use the `translate` pipe (`{{ 'my.key' | translate }}`) or the bound directive (`[translate]="'my.key'"`) instead.
 The `getCurrentLang()` method can now return `undefined`, so any custom code relying on it must handle that case.
@@ -89,7 +333,7 @@ ng g ./schematics/dist/migrations/migrations.json:ngx-translate18
 ```
 
 > [!NOTE]
-> The migration schematics was added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
+> The migration schematics were added with Intershop PWA 12.1.0, so integrating the changes of that release is required to run them.
 
 **Swiper 12 upgrade**
 
@@ -116,7 +360,7 @@ The component now only provides a "Remove all filters" action.
 **Design View and preview context changes**
 
 The Design View and preview features have been reworked so that they can be used simultaneously.
-Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value, which prevented real preview context data from being used at the same time.
+Previously, the Design View was initialized by a special `PreviewContextID=DESIGNVIEW` query parameter value which prevented real preview context data from being used at the same time.
 Now, the Design View is activated via its own `DesignView` query parameter, and the `PreviewContextID` query parameter is used exclusively for preview context data.
 
 **Modal fullscreen and scrollable styling**
@@ -141,7 +385,7 @@ The order template and wishlist selection modals have been reworked for a more c
 **Wishlist and order template performance optimization**
 
 With Intershop Commerce Management version 14.2.0, the list resource request for wishlists and order templates has been extended.
-As a result, the wishlist overview can now be displayed using a single list request.
+As a result, the wishlist overview can now be displayed by using a single list request.
 
 In addition, the `WishlistWidgetComponent` now displays the products of the preferred wishlist.
 If no preferred wishlist exists, the products of all wishlists are displayed instead.
@@ -155,12 +399,15 @@ If you display order templates in custom components, use `OrderTemplatesFacade.o
 **Replace `ProductRatingStarComponent` with `NgbRating`**
 
 The `ProductRatingStarComponent` has been removed and the ng-bootstrap's `NgbRating` component is used instead.
-If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the according commit or migrate to `NgbRating` as well.
+If you customized or extended the `ProductRatingStarComponent` component in your project, either skip the corresponding commit or migrate to `NgbRating` as well.
 
 **Removal of customer budget type update after registration**
 
 The `UserService` no longer sends a subsequent `PUT` request to set the customer budget type after creating a new business user, because the customer `POST` request of the Customer REST API now directly persists the `budgetPriceType` (requires ICM 14.2.0).
 This also fixes the customer approval flow that has been broken since Customer REST API 1.6.1, as a newly registered user lacks the permission required for that `PUT` request (see [PR #2132](https://github.com/intershop/intershop-pwa/pull/2132)).
+
+> [!TIP]
+> The [Intershop Academy](https://public.academy.intershop.com/plus/catalog) (free registration required) offers a video tutorial on [how to migrate from version 11.0.0 to version 12.0.0](https://public.academy.intershop.com/plus/catalog/courses/493).
 
 ## From 11.1.0 to 11.2.0
 
@@ -1283,8 +1530,9 @@ To allow for an as easy as possible migration of existing PWA projects, we split
 We advise you to first cherry pick all the `eslint` commits provided by the PWA release before applying the lint rules to the project customizations to fix the issues that reside in the project code.
 If the found issues are too many to address them in an ordered manner, it is probably best to temporarily disable some of the failing rules in `.eslintrc.json` (see [Configuring ESLint](./eslint.md#configuring-eslint) and to only fix one after another.
 
-It is also probably a good idea to do the PWA 2.0 migration not in one go as described in [Migration How To](./migrations-how-to.md) but to first do the commits before the linter switch and bring your project to a clean state (`npm run check`).
-After this, all the linter switch commits should be applied and the project should be brought back to a clean state.
+It is recommended to do the PWA 2.0 migration in stages rather than in one go as described in [Performing a Migration](./migrations-how-to.md).
+First, do the commits before the linter switch and bring your project to a clean state (`npm run check`).
+After this, apply all the linter switch commits and bring the project back to a clean state.
 Once this is done, subsequent commits should be migrated.
 If your project contains own custom TSLint rules, you will have to re-implement them as ESLint rules to be able to apply them to your code base (see [Custom ESLint rules](./eslint.md#custom-eslint-rules)).
 

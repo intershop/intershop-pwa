@@ -10,7 +10,7 @@ describe('Cookie Consent', () => {
 
     it('should see cookie banner', () => {
       at(HomePage, () => {
-        cy.get('.cookies-banner').should('contain', 'cookies');
+        cy.get('.cookies-banner').should('be.visible').and('contain', 'cookies');
       });
     });
 
@@ -22,7 +22,7 @@ describe('Cookie Consent', () => {
         cy.getCookies().then(cookies => {
           expect(cookies[cookies.length - 1]).to.have.property('name', 'cookieConsent');
           cy.wait(500);
-          cy.get('.cookies-banner').should('not.exist');
+          cy.get('.cookies-banner').should('not.be.visible');
         });
       });
     });

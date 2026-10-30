@@ -25,10 +25,11 @@
                     <button
                       class="btn-tool btn-link"
                       type="button"
+                      [attr.aria-label]="'product.compare.remove.link' | translate: { productName: product.name }"
                       [title]="'product.compare.remove.link' | translate: { productName: product.name }"
                       (click)="removeFromCompare(product.sku)"
                     >
-                      <i class="bi bi-trash-fill"></i>
+                      <i aria-hidden="true" class="bi bi-trash-fill"></i>
                     </button>
                   </div>
                   <div>

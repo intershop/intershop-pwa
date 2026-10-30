@@ -1,5 +1,5 @@
 # synchronize-marker:docker-cache-share:begin
-FROM node:22.22.0-alpine AS buildstep
+FROM node:24.22.1-alpine AS buildstep
 # increase the `--max-old-space-size` if "FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory" occur during build
 ENV NODE_OPTIONS=--max-old-space-size=8192
 ENV CI=true
@@ -8,20 +8,18 @@ COPY package.json package-lock.json /workspace/
 RUN npm ci --prefer-offline --no-audit --ignore-scripts
 RUN find node_modules -path '*/esbuild/install.js' | xargs -rt -n 1 node
 # synchronize-marker:docker-cache-share:end
-COPY tsconfig.app.json tsconfig.json ngsw-config.json angular.json eslint.config.mjs /workspace/
+COPY tsconfig.app.json tsconfig.json angular.json eslint.config.mjs /workspace/
 COPY eslint-rules /workspace/eslint-rules
 COPY schematics /workspace/schematics
 COPY projects /workspace/projects
 COPY src /workspace/src
 COPY scripts /workspace/scripts/
 RUN npm run postinstall
-ARG serviceWorker
-RUN node schematics/customization/service-worker ${serviceWorker} || true
 COPY templates/webpack/* /workspace/templates/webpack/
 ARG testing=false
 ENV TESTING=${testing}
 ARG activeThemes=
-RUN if [ ! -z "${activeThemes}" ]; then npm pkg set config.active-themes="${activeThemes}"; fi
+RUN if [ ! -z "${activeThemes}" ]; then npm pkg set activeThemes="${activeThemes}"; fi
 RUN npm run build:multi client -- --deploy-url=DEPLOY_URL_PLACEHOLDER
 COPY tsconfig.server.json server.ts /workspace/
 COPY babel.config.js /workspace/
@@ -29,7 +27,7 @@ RUN npm run build:multi server
 RUN node scripts/compile-docker-scripts
 COPY dist/* /workspace/dist/
 
-FROM node:22.22.0-alpine
+FROM node:24.22.1-alpine
 RUN apk add --no-cache tini
 COPY --from=buildstep /workspace/dist /dist
 RUN cd dist && npm install

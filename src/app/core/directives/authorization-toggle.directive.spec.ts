@@ -14,7 +14,7 @@ import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module'
     <div *ishIsAuthorizedTo="['DO_THAT', 'DO_NOTHING']">content5</div>
   `,
   // Default change detection for dynamic permission test
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class TestComponent {
   dynamicPermission: string;

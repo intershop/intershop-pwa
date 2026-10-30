@@ -3,7 +3,7 @@
     @for (group of variationOptions; track group.id) {
       <div class="product-variation">
         <div class="form-group">
-          <label class="col-form-label" [for]="uuid + group.id" [id]="uuid + group.id + 'label'">{{
+          <label class="col-form-label" [for]="uuid + group.id" [id]="`${uuid + group.id}label`">{{
             group.label
           }}</label>
           <!-- multiple switch case expressions - https://stackoverflow.com/a/45950368 -->

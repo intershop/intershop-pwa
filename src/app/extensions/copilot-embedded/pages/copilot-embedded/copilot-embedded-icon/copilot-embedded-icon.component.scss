@@ -1,0 +1,20 @@
+@import 'variables';
+
+.copilot-embedded-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  color: $color-inverse;
+  background-color: $CORPORATE-PRIMARY;
+  border-radius: 10px;
+
+  &.copilot-embedded-icon-large {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+    border-radius: 16px;
+  }
+}

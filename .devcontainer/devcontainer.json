@@ -5,7 +5,7 @@
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
-      "VARIANT": "22"
+      "VARIANT": "24"
     }
   },
   // node_modules as volume

@@ -136,7 +136,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             },
           },
           expressions: {
-            'props.disabled': 'model.ending !== "date"',
+            'props.disabled': field => field.model.ending !== 'date',
             'props.minDays': field => this.calculateMinimumEndDate(field.model.startDate),
           },
         },
@@ -175,7 +175,7 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
             },
           },
           expressions: {
-            'props.disabled': 'model.ending !== "repetitions"',
+            'props.disabled': field => field.model.ending !== 'repetitions',
           },
         },
       ],
@@ -227,8 +227,8 @@ export class BasketOrderRecurrenceEditComponent implements OnChanges, OnInit {
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!isEqual(changes.recurrence.currentValue, changes.recurrence.previousValue)) {
+  ngOnChanges(changes: SimpleChanges<BasketOrderRecurrenceEditComponent>): void {
+    if (!isEqual(changes.recurrence?.currentValue, changes.recurrence?.previousValue)) {
       this.model = this.getModel(this.recurrence);
     }
   }

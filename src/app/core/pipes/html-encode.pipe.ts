@@ -7,8 +7,8 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 @Pipe({
   name: 'ishHtmlEncode',
-  pure: true,
   standalone: false,
+  pure: true,
 })
 export class HtmlEncodePipe implements PipeTransform {
   transform(value: string): string {

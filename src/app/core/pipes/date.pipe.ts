@@ -32,8 +32,8 @@ export function formatISHDate(
  */
 @Pipe({
   name: 'ishDate',
-  pure: true,
   standalone: false,
+  pure: true,
 })
 export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

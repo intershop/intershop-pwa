@@ -51,9 +51,9 @@ execSync('npx prettier --write angular.json');
 // replace in package.json
 const packageJson = parse(fs.readFileSync('./package.json', { encoding: 'UTF-8' }));
 if (setDefault) {
-  packageJson.config['active-themes'] = theme;
+  packageJson.activeThemes = theme;
 } else {
-  packageJson.config['active-themes'] = `${packageJson.config['active-themes']},${theme}`;
+  packageJson.activeThemes = `${packageJson.activeThemes},${theme}`;
 }
 fs.writeFileSync('./package.json', stringify(packageJson, null, 2));
 execSync('npx prettier --write package.json');
@@ -73,7 +73,7 @@ if (!eslintConfig.includes("prefixes: ['ish', 'custom']")) {
 
 // Add theme to project-structure reusePatterns.theme: b2b|b2c -> b2b|b2c|newTheme
 if (!eslintConfig.includes(`b2b|b2c|${theme}`)) {
-  eslintConfig = eslintConfig.replace(/\(\?:b2b\|b2c\)/g, `(?:b2b|b2c|${theme})`);
+  eslintConfig = eslintConfig.replace('b2b|b2c', `b2b|b2c|${theme}`);
 }
 
 fs.writeFileSync('./eslint.config.mjs', eslintConfig);

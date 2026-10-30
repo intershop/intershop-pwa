@@ -15,7 +15,7 @@ const quoteListPageRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [QuoteListComponent, QuoteListPageComponent],
   imports: [QuotingModule, RouterModule.forChild(quoteListPageRoutes)],
+  declarations: [QuoteListComponent, QuoteListPageComponent],
 })
 export class QuoteListPageModule {}

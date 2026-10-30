@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { NgZone } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -99,6 +100,29 @@ describe('Auth0 Identity Provider', () => {
           
       `);
       verify(apiTokenService.removeApiToken()).never();
+    }));
+
+    it('should poll for the id token outside the Angular zone and continue registration inside the zone', fakeAsync(() => {
+      let tokenReadOutsideAngularZone = false;
+      let registrationInAngularZone = false;
+      when(oAuthService.getIdToken()).thenCall(() => {
+        tokenReadOutsideAngularZone = !NgZone.isInAngularZone();
+        return idToken;
+      });
+      when(apiService.post(anything(), anything())).thenCall(() => {
+        registrationInAngularZone = NgZone.isInAngularZone();
+        return of(userData);
+      });
+
+      auth0IdentityProvider.init(auth0Config);
+      tick(500);
+
+      expect(tokenReadOutsideAngularZone).toBeTrue();
+      expect(registrationInAngularZone).toBeTrue();
+      expect(capture(apiService.post).first()[1]).toEqual({
+        id_token: idToken,
+        options: ['CREATE_USER'],
+      });
     }));
 
     it('should navigate to registration page after successful customer creation and user loading', fakeAsync(() => {

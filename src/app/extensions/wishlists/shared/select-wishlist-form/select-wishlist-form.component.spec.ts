@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
+import { FormGroup } from '@angular/forms';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -16,10 +17,10 @@ describe('Select Wishlist Form Component', () => {
   let wishlistFacade: WishlistsFacade;
 
   beforeEach(async () => {
-    wishlistFacade = mock(wishlistFacade);
+    wishlistFacade = mock(WishlistsFacade);
     await TestBed.configureTestingModule({
       declarations: [SelectWishlistFormComponent],
-      imports: [FormlyTestingModule, TranslatePipe],
+      imports: [FormlyTestingModule],
       providers: [{ provide: WishlistsFacade, useFactory: () => instance(wishlistFacade) }, provideTranslateService()],
     }).compileComponents();
   });
@@ -30,6 +31,7 @@ describe('Select Wishlist Form Component', () => {
     );
     fixture = TestBed.createComponent(SelectWishlistFormComponent);
     component = fixture.componentInstance;
+    component.formGroup = new FormGroup({});
     element = fixture.nativeElement;
   });
 

@@ -5,8 +5,8 @@
       class="ms-2"
       data-testing-id="custom-information"
       [attr.aria-hidden]="props.customInformation.ariaHidden"
-      [id]="id + '-information'"
-      [ngClass]="props.customInformation.class"
+      [class]="props.customInformation.class"
+      [id]="`${id}-information`"
     >
       {{ information | translate: args }}
     </span>

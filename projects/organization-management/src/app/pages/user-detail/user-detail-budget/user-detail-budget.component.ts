@@ -9,7 +9,7 @@ import { UserBudget } from '../../../models/user-budget/user-budget.model';
   selector: 'ish-user-detail-budget',
   standalone: false,
   templateUrl: './user-detail-budget.component.html',
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UserDetailBudgetComponent {
   @Input({ required: true }) budget: UserBudget;

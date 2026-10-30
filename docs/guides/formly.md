@@ -66,20 +66,25 @@ const fields: FormlyFieldConfig[] = [
 ];
 ```
 
+Define `expressions` as functions, for example, `'props.disabled': field => field.model.ending !== 'date'`.
+String expressions such as `'props.disabled': 'model.ending !== "date"'` are evaluated at runtime and blocked by a Content Security Policy without `'unsafe-eval'` (see [Security Headers](./security-headers.md#rationale-for-the-permissive-defaults)).
+
 ## Customizing Form Logic
 
 There are many ways to change the behavior of a form and its fields.
-Custom field types, wrappers, extensions and extras are registered in [formly.module.ts](../../src/app/shared/formly/formly.module.ts) using the `forChild()` function.
-For more information about what can be done in the `forChild()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L49) type definition.
+The PWA registers its field types, wrappers, and extensions using the `forChild()` function in [types.module.ts](../../src/app/shared/formly/types/types.module.ts), [wrappers.module.ts](../../src/app/shared/formly/wrappers/wrappers.module.ts), and [extensions.module.ts](../../src/app/shared/formly/extensions/extensions.module.ts).
+These modules and the extras are combined in [formly.module.ts](../../src/app/shared/formly/formly.module.ts).
+Since this module is also called `FormlyModule`, the modules in `src/app/shared/formly` import Formly's `FormlyModule` as `FormlyBaseModule`.
+For more information about what can be done in the `forChild()` function, refer to the official documentation and [`ConfigOption`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts) type definition.
 Note that we use the `forChild` method here instead of the normal `forRoot` approach.
-This is because the only difference between the two approaches is that `forRoot` additionally provides the `FormlyConfig` service which is provided in root anyways.
+The only difference is that `forRoot` additionally provides the `FormlyConfig` service, which is already provided at the root level.
 Using `forChild` allows us to solve some injection issues in lazy loaded modules.
 
 If you need to completely override the Formly configuration in a module lower in the injection tree, feel free to use the `forRoot` method and thus provide a fresh instance of the `FormlyConfig` service.
 
 ### Custom Field Types
 
-To define a custom field type, create a component that extends `FieldType`.
+To define a custom field type, create a component that extends `FieldType<FieldTypeConfig>`.
 Hook up the form element with the `formControl` and `formlyAttributes` inputs.
 An example field type could look like this:
 
@@ -87,12 +92,11 @@ An example field type could look like this:
 // example-input-field.component.ts
 @Component({
   selector: 'example-input-field',
+  standalone: false,
   templateUrl: './example-input-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleInputFieldComponent extends FieldType {
-  formControl: FormControl;
-}
+export class ExampleInputFieldComponent extends FieldType<FieldTypeConfig> {}
 ```
 
 ```html
@@ -100,7 +104,7 @@ export class ExampleInputFieldComponent extends FieldType {
 <input [formControl]="formControl" [formlyAttributes]="field" [type]="props.type" />
 ```
 
-Register the custom type in the `formly.module.ts` `forChild()` function:
+Declare the component in a module and register the custom type in its `forChild()` function, for example, in `types.module.ts`:
 
 ```typescript
 FormlyModule.forChild({
@@ -118,13 +122,14 @@ A simple example wrapper that adds a label to the field could look like this:
 ```typescript
 @Component({
   selector: 'example-label-wrapper',
+  standalone: false,
   template: `
     <label [attr.for]="id">
       {{ props.label | translate }}
     </label>
     <ng-template #fieldComponent />
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExampleLabelWrapperComponent extends FieldWrapper {}
 ```
@@ -149,7 +154,7 @@ FormlyModule.forChild({
 ### Custom Extensions
 
 Formly extensions is an experimental feature to implement cross-cutting logic in your forms.
-A Formly extension is an object of type [`FormlyExtension`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts#L7) that contains one or multiple functions that will automatically be called during the construction of the Formly form, once for each field.
+A Formly extension is an object of type [`FormlyExtension`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/config.ts) that contains one or multiple functions that will automatically be called during the construction of the Formly form, once for each field.
 This way, you can implement certain behaviors that are shared by all fields without repeating yourself.
 A simple extension that ensures a `label` attribute is always set could look like this:
 
@@ -202,12 +207,12 @@ Refer to the [type definition](https://github.com/ngx-formly/ngx-formly/blob/fe2
 
 ### Formly Config Service
 
-You can inject the `FormlyConfigService` to change different Formly configurations on the fly as well as get information about the current configuration.
+You can inject the `FormlyConfig` service to change different Formly configurations on the fly as well as get information about the current configuration.
 
 ## Testing Formly
 
 Since Formly types and wrappers do not function independently, they have to be tested in conjunction with the Formly library.
-To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingComponents` module with multiple components to be imported in tests.
+To facilitate this, the `formly/dev/testing` folder contains a `FormlyTestingComponentsModule` with multiple components to be imported in tests.
 
 - `FormlyTestingContainerComponent` contains a `<formly-form>` component and a setter method that enables easy configuration of the test configuration.
 - `FormlyTestingExampleComponent` is a type that contains an empty input field and can be used as an example field type.
@@ -231,9 +236,9 @@ You can find a simple example of a wrapper test in [maxlength-description-wrappe
 
 There are multiple ways to adapt Formly for projects or development on the main repository.
 
-If you implement widely used functionality that can be used in multiple components and different pages, add your field types, wrappers, or extensions to `src/app/shared/formly` and register them in the `formly.module.ts`.
+If you implement widely used functionality that can be used in multiple components and different pages, add your field types, wrappers, or extensions to `src/app/shared/formly` and register them in the corresponding `types.module.ts`, `wrappers.module.ts`, or `extensions.module.ts`.
 
-If you need specific fields or behavior that are not used everywhere, avoid polluting `formly.module.ts`.
+If you need specific fields or behavior that are not used everywhere, avoid polluting these shared modules.
 Instead, register your logic in the relevant module using `FormlyModule.forChild()`.
 This will first configure Formly according to the standard module and then add your local configuration.
 This approach makes it is easy to wrap locally used components in field types and program specific behaviors that are not required anywhere else.
@@ -246,8 +251,8 @@ Refer to the tables below for an overview of these parts.
 
 ### Field Types
 
-- Template option `inputClass`: These CSS class(es) will be added to all input/select/textarea/text tags.
-- Template option `ariaLabel`: Adds an aria-label to all input/select/textarea tags.
+- Prop `inputClass`: These CSS class(es) will be added to all input/select/textarea/text tags.
+- Prop `ariaLabel`: Adds an aria-label to all input/select/textarea tags.
 
 | Name                          | Description                                                                                                                                | Relevant props                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -261,9 +266,9 @@ Refer to the tables below for an overview of these parts.
 | ish-password-novalidate-field | Password input field without a password validator                                                                                          | ----                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ish-phone-field               | Phone number input field that automatically adds a phone number validator and error messages                                               | ----                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ish-fieldset-field            | Wraps fields in a `<fieldset>` tag for styling and accessibility                                                                           | <ul><li>`fieldsetClass`: Class that will be added to the fieldset tag.</li><li>`childClass`: Class that will be added to the child div.</li><li>`legend`: Legend element that will be added to the fieldset, use the value as the legend text (should always be provided for accessibility reasons).</li><li>`legendClass`: Class that will be added to the legend tag (default value: 'visually-hidden').</li></ul>                                                                                             |
-| ish-captcha-field             | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form                                               | `topic`: Topic that will be passed to the Captcha component.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ish-captcha-field             | Includes the `<ish-lazy-captcha>` component and adds the relevant `formControls` to the form (default key: `captcha`)                      | `topic`: Topic that will be passed to the Captcha component.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ish-radio-field               | Basic radio input                                                                                                                          | ----                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ish-radio-group-field         | Radio button group inline for price type selection                                                                                         | `opts`: Array of label/value pairs                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ish-radio-group-field         | Radio button group inline for price type selection                                                                                         | `options`: Array of label/value pairs                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ish-plain-text-field          | Only display the form value                                                                                                                | ----                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ish-html-text-field           | Only display the form value as html                                                                                                        | ----                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ish-date-picker-field         | Basic datepicker                                                                                                                           | <ul><li>`minDays`: Computes the minDate by adding the minimum allowed days to today.</li><li>`maxDays`: Computes the maxDate by adding the maximum allowed days to today.</li><li>`isSatExcluded`: Specifies if Saturdays can be disabled.</li><li>`isSunExcluded`: Specifies if Sundays can be disabled.</li></ul>                                                                                                                                                                                              |
@@ -287,7 +292,7 @@ Refer to the tables below for an overview of these parts.
 
 | Name                     | Functionality                                                                                                | Relevant props                                                                                                                                                                                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| hide-if-empty            | Hides fields of type `ish-select-field` or `ish-search-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                                                                                                                                                                                                           |
+| hide-if-empty-options    | Hides fields of type `ish-select-field` or `ish-search-select-field` that have an empty `options` attribute. | `options`: Used to determine emptiness.                                                                                                                                                                                                                           |
 | translate-select-options | Automatically translates option labels and adds a placeholder option.                                        | <ul><li>`options`: Options whose labels will be translated.</li><li>`placeholder`: Used to determine whether to set placeholder and its text.</li><li>`optionsTranslateDisabled`: Disables options label translation (placeholder is still translated).</li></ul> |
 | translate-placeholder    | Automatically translates the placeholder value                                                               | `placeholder`: Value to be translated.                                                                                                                                                                                                                            |
-| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`                                           | `postWrappers`: `<string \| { wrapper: string, index: number}>[]` of extensions to append to the default wrappers, optional index to specify at which position the wrapper should be inserted.                                                                    |
+| post-wrappers            | Appends wrappers to the default ones defined in the `FormlyModule`                                           | `postWrappers`: `<string \| { wrapper: string, index: number}>[]` of wrappers to append to the default wrappers, optional index to specify at which position the wrapper should be inserted.                                                                      |

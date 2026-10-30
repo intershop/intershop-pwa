@@ -9,7 +9,7 @@ import { AccountAddressesComponent } from './account-addresses/account-addresses
 const routes: Routes = [{ path: '', component: AccountAddressesPageComponent }];
 
 @NgModule({
-  declarations: [AccountAddressesComponent, AccountAddressesPageComponent],
   imports: [RouterModule.forChild(routes), SharedModule],
+  declarations: [AccountAddressesComponent, AccountAddressesPageComponent],
 })
 export class AccountAddressesPageModule {}

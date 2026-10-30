@@ -6,8 +6,8 @@ import { generateContentPageUrl } from './content-page.route';
 
 @Pipe({
   name: 'ishContentPageRoute',
-  pure: true,
   standalone: false,
+  pure: true,
 })
 export class ContentPageRoutePipe implements PipeTransform {
   transform(page: ContentPageTreeView): string {

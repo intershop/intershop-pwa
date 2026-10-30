@@ -49,17 +49,18 @@ pwa:
         clientID: ASDF12345
 ```
 
-Example for the Auth0 identity provider configuration via [PWA Helm Chart](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example for the Auth0 identity provider configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
-environment:
-  - name: IDENTITY_PROVIDER
-    value: 'Auth0'
-  - name: IDENTITY_PROVIDERS
-    value: |
-      {
-        "Auth0": {"type": "auth0", "domain": "some-domain.auth0.com", "clientID": "ASDF12345"}
-      }
+app:
+  env:
+    - name: IDENTITY_PROVIDER
+      value: 'Auth0'
+    - name: IDENTITY_PROVIDERS
+      value: |
+        {
+          "Auth0": {"type": "auth0", "domain": "some-domain.auth0.com", "clientID": "ASDF12345"}
+        }
 ```
 
 ## SSO with Auth0 for PWA

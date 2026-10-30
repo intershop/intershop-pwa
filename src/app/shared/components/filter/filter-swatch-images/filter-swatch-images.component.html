@@ -1,18 +1,18 @@
 <ul class="filter-list clearfix" [id]="filterElement.id">
   @for (facet of filterElement.facets; track facet.name) {
-    <li class="filter-item filter-color" [ngClass]="{ 'filter-selected': facet.selected }">
+    <li class="filter-item filter-color" [class.filter-selected]="facet.selected">
       <button
         class="filter-swatch btn btn-link btn-link-action"
         type="button"
         [attr.aria-current]="facet.selected ? 'true' : undefined"
-        [attr.data-testing-id]="'filter-link-' + (facet.displayName | ishSanitize)"
-        [title]="facet.displayName + ' (' + facet.count + ')'"
+        [attr.data-testing-id]="`filter-link-${(facet.displayName | ishSanitize)}`"
+        [title]="`${facet.displayName} (${facet.count})`"
         (click)="filter(facet)"
       >
         <span
           [style.background-color]="getBackgroundColor(facet)"
           [style.background-image]="getBackgroundImage(facet)"
-          [style.border]="facet.displayName.toLowerCase() === 'white' ? '1px solid #ddd' : null"
+          [style.border]="(facet.displayName | lowercase) === 'white' ? '1px solid #ddd' : null"
         ></span>
       </button>
     </li>

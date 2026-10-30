@@ -13,8 +13,7 @@ const print = val => {
   source = source
     .replace(/\n/g, '')
     .replace(/<!--.*?-->/g, '')
-    .replace(/ng-reflect-klass="[^"]*"/g, '')
-    .replace(/ng-reflect-[a-z-]*="\[object Object]"/g, '')
+    .replace(/ ?ng-reflect-[a-z-]*="[^"]*"/g, '')
     .replace(/_nghost.*=""/g, '');
   const result = prettier.format(source, { parser: 'html', printWidth: 100 }).replace(/^\s*$/g, '').trim();
   return result || 'N/A';

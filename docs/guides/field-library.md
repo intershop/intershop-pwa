@@ -135,7 +135,7 @@ type ConfigurationGroup = { id: string; shortcutFor: string[] };
 
 Use the `id` property to define the id through which developers will access the configuration group. <br/>
 The `shortcutFor` property defines which configurations the group will be mapped to.
-You can introduce dynamic behavior by using [factory providers](https://v19.angular.dev/guide/di/dependency-injection-providers) to generate `ConfigurationGroup` objects.
+You can introduce dynamic behavior by using [factory providers](https://v21.angular.dev/guide/di/defining-dependency-providers) to generate `ConfigurationGroup` objects.
 
 ## Automatic Field Replacement Using the '#' Pseudo-Type
 
@@ -240,6 +240,7 @@ They are automatically updated using sync-formly-docs.mts -->
 | `firstName`      | ish-text-input-field | First name, special characters forbidden and required by default                            |
 | `lastName`       | ish-text-input-field | Last name, special characters forbidden and required by default                             |
 | `phoneHome`      | ish-phone-field      | Phone, not required by default                                                              |
+| `email`          | ish-email-field      | Invoice/shipping e-mail address with description and placeholder, not required by default   |
 | `companyName1`   | ish-text-input-field | Company Name 1, required by default                                                         |
 | `companyName2`   | ish-text-input-field | Company name 2, not required by default                                                     |
 | `taxationID`     | ish-text-input-field | Taxation ID, not required by default                                                        |

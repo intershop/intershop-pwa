@@ -13,10 +13,12 @@ import { OrganizationManagementModule } from './app/organization-management.modu
 import { LoginComponent } from './login.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     CoreModule,
+    // NoopAnimationsModule is still required by ngx-toastr's default animated toast component
+    // TODO: Keep until ngx-toastr no longer depends on @angular/animations, then this and the dependency can be removed.
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     NoopAnimationsModule,
     OrganizationManagementModule,
     RouterModule.forRoot([
@@ -44,8 +46,9 @@ import { LoginComponent } from './login.component';
     ]),
     SharedModule,
   ],
-  exports: [SharedModule],
+  declarations: [AppComponent, LoginComponent],
   providers: [],
+  exports: [SharedModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

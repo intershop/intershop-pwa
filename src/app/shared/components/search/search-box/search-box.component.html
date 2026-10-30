@@ -1,4 +1,4 @@
-<div #searchBox class="search clearfix" [ngClass]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
+<div #searchBox class="search clearfix" [class]="{ focus: searchBoxFocus, 'scaled-up': searchBoxScaledUp }">
   @let inputSearchTerm = inputSearchTerms$ | async;
   <input
     #searchInput
@@ -17,12 +17,7 @@
   @if (configuration?.autoSuggest && suggestions$ | async; as results) {
     @if ((searchBoxResults$ | async) && (hasMinimumCharCount$ | async)) {
       <div aria-labelledby="header-search-input" class="search-suggest-container" id="search-suggest-layer">
-        <div
-          class="col-12 d-flex flex-column"
-          [ngClass]="{
-            'col-md-5': results.products?.length,
-          }"
-        >
+        <div class="col-12 d-flex flex-column" [class.col-md-5]="results.products?.length">
           @if (results.keywords?.length) {
             <ish-suggest-keywords
               [inputTerms$]="inputSearchTerms$"
@@ -51,7 +46,7 @@
         @if (results.products?.length) {
           <div
             class="col-12"
-            [ngClass]="{
+            [class]="{
               'col-md-7': results.keywords.length || results.brands.length || results.categories.length,
               'products-only': !results.keywords.length && !results.brands.length && !results.categories.length,
             }"
@@ -125,26 +120,30 @@
         class="btn btn-reset"
         name="reset"
         type="reset"
+        [attr.aria-label]="'search.searchbox.button.reset.title' | translate"
         [title]="'search.searchbox.button.reset.title' | translate"
         (click)="handleResetButton($event); setFocusOnSearchInput()"
         (focus)="handleFocus(true)"
       >
-        <i class="bi bi-x searchbox-icon"></i>
+        <i aria-hidden="true" class="bi bi-x searchbox-icon"></i>
       </button>
     }
 
     <!-- Search button -->
+    <!-- omit the fixed label when custom button text is visible to satisfy label-in-name -->
+    @let searchButtonLabel = configuration?.buttonText ? null : ('search.searchbox.button.title' | translate);
     <button
       class="btn btn-secondary btn-search"
       name="search"
       type="submit"
-      [title]="'search.searchbox.button.title' | translate"
+      [attr.aria-label]="searchButtonLabel"
+      [attr.title]="searchButtonLabel"
       (click)="submitSearch(searchInput.value)"
       (focus)="handleFocus(true)"
     >
       <!-- search button with icon -->
       @if (!configuration?.buttonText) {
-        <i class="searchbox-icon" [class]="'bi bi-' + usedIcon"></i>
+        <i aria-hidden="true" class="searchbox-icon" [class]="`bi bi-${usedIcon}`"></i>
       } @else {
         {{ configuration?.buttonText }}
       }
@@ -154,4 +153,4 @@
   </div>
 </div>
 
-<div class="search-suggest-backdrop" [ngClass]="{ show: searchBoxFocus }"></div>
+<div class="search-suggest-backdrop" [class.show]="searchBoxFocus"></div>

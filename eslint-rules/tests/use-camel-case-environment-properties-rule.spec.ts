@@ -1,5 +1,3 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-
 import useCamelCaseEnvironmentPropertiesRule from '../src/rules/use-camel-case-environment-properties';
 
 import testRule from './rule-tester';
@@ -42,17 +40,14 @@ testRule(useCamelCaseEnvironmentPropertiesRule, {
         {
           messageId: 'camelCaseError',
           data: { property: 'SomeIdentifier' },
-          type: AST_NODE_TYPES.Identifier,
         },
         {
           messageId: 'camelCaseError',
           data: { property: 'other_indetifier' },
-          type: AST_NODE_TYPES.Identifier,
         },
         {
           messageId: 'camelCaseError',
           data: { property: 'Some_longer_identifier_With_multiple_errors' },
-          type: AST_NODE_TYPES.Identifier,
         },
       ],
       output: `

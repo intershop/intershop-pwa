@@ -25,11 +25,14 @@
   </div>
 
   @if (showPagingBar) {
-    <div class="row">
-      <div class="d-flex w-100 grey-panel align-items-center flex-wrap justify-content-between px-3 py-2 mb-3">
-        <span class="text-nowrap">{{ 'shopping_cart.paging.items.label' | translate: { '0': lineItems.length } }}</span>
-        <ish-paging [currentPage]="currentPage" [lastPage]="lastPage" (goToPage)="goToPage($event)" />
-      </div>
+    <div class="d-flex align-items-center flex-wrap justify-content-between mb-4">
+      <span class="text-nowrap">{{ 'shopping_cart.paging.items.label' | translate: { '0': lineItems.length } }}</span>
+      <ish-paging
+        [currentPage]="currentPage"
+        [itemCount]="lineItems.length"
+        [pageSize]="pageSize"
+        (goToPage)="goToPage($event)"
+      />
     </div>
   }
   @if (total?.value && lineItems.length > 0) {

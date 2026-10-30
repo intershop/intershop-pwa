@@ -8,8 +8,11 @@
     "types": ["jest", "jest-extended", "node"],
 
     /* Modules */
-    "module": "CommonJs",
-    "allowJs": true
+    "allowJs": true,
+
+    /* Interop Constraints */
+    // transpile only, type checking is done by "npm run compile"
+    "isolatedModules": true
   },
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

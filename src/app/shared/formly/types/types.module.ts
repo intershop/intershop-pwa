@@ -55,7 +55,6 @@ const fieldComponents = [
 ];
 
 @NgModule({
-  declarations: [...fieldComponents],
   imports: [
     CaptchaExportsModule,
     CommonModule,
@@ -170,6 +169,7 @@ const fieldComponents = [
           name: 'ish-captcha-field',
           component: CaptchaFieldComponent,
           defaultOptions: {
+            key: 'captcha',
             validation: {
               messages: {
                 required: 'recaptcha.v2.incorrect.error',
@@ -223,12 +223,13 @@ const fieldComponents = [
       ],
     }),
   ],
-  exports: [...fieldComponents],
+  declarations: [...fieldComponents],
   providers: [
     provideNgxMask(),
     { provide: NgbDateParserFormatter, useClass: LocalizedParserFormatter, deps: [TranslateService] },
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDatepickerI18n, useClass: IshDatepickerI18n },
   ],
+  exports: [...fieldComponents],
 })
 export class TypesModule {}

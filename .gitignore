@@ -40,6 +40,9 @@ Thumbs.db
 # batch file for personal development purposes
 /dev.bat
 
+# local agent notes (research skill)
+/.scratch/
+
 # Lighthouse
 .lighthouseci/
 /.github/lighthouse/certs/

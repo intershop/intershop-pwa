@@ -1,10 +1,7 @@
 /* eslint-disable unicorn/no-null */
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
-
-import { HttpError } from 'ish-core/models/http-error/http-error.model';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';
 import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-configuration.model';
@@ -15,25 +12,18 @@ import { CxmlConfiguration } from '../../../models/cxml-configuration/cxml-confi
   templateUrl: './cxml-configuration-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
+export class CxmlConfigurationFormComponent implements OnInit {
   @Input({ required: true }) cxmlConfiguration: CxmlConfiguration[];
 
   form: FormGroup = new FormGroup({});
   model: Record<string, string>;
   fields: FormlyFieldConfig[];
 
-  cxmlConfigurationError$: Observable<HttpError>;
-
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {
-    this.cxmlConfigurationError$ = this.punchoutFacade.cxmlConfigurationError$;
     this.fields = this.getFields();
     this.model = this.getModel();
-  }
-
-  ngOnDestroy(): void {
-    this.resetConfiguration();
   }
 
   private getFields() {
@@ -86,9 +76,5 @@ export class CxmlConfigurationFormComponent implements OnDestroy, OnInit {
 
   private updateConfiguration(cxmlConfig: CxmlConfiguration[]) {
     this.punchoutFacade.updateCxmlConfiguration(cxmlConfig);
-  }
-
-  private resetConfiguration() {
-    this.punchoutFacade.resetCxmlConfiguration();
   }
 }

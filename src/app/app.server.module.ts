@@ -1,6 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpErrorResponse, provideHttpClient, withFetch } from '@angular/common/http';
 import { ErrorHandler, NgModule, Optional, TransferState } from '@angular/core';
-import { provideServerRendering } from '@angular/platform-server';
+import { provideServerRendering } from '@angular/ssr';
 import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';

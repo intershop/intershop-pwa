@@ -1,3 +1,4 @@
+<ish-error-message [error]="error$ | async" />
 @if (selectedUser$ | async; as user) {
   <h1>{{ 'account.punchout.configuration.heading' | translate }} - {{ user.login }}</h1>
   <p>{{ 'account.punchout.cxml.configuration.helptext' | translate }}</p>

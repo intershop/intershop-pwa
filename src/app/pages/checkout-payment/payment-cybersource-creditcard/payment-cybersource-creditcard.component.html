@@ -7,7 +7,7 @@
 
 <div [formGroup]="cyberSourceCreditCardForm">
   <!-- Containers in which we will load microform -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage?.number.message }">
+  <div class="row form-group" [class.has-error]="errorMessage?.number.message">
     <label class="col-form-label col-md-4" for="number-container"
       >{{ 'checkout.credit_card.number.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >
@@ -74,7 +74,7 @@
   </div>
 
   <!-- security code CVC -->
-  <div class="row form-group" [ngClass]="{ 'has-error': errorMessage.securityCode?.message }">
+  <div class="row form-group" [class.has-error]="errorMessage.securityCode?.message">
     <label class="col-form-label col-md-4" for="securityCode-container"
       >{{ 'checkout.credit_card.cvc.label' | translate }}<span aria-hidden="true" class="required">*</span></label
     >

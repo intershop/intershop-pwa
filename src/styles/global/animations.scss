@@ -86,3 +86,11 @@ button .spin-icon {
   margin-right: 5px;
   animation: spinner-border 0.75s linear infinite;
 }
+
+// Disable ng-bootstrap collapse transitions during Cypress runs.
+.cypress-tests {
+  .collapse,
+  .collapsing {
+    transition: none;
+  }
+}

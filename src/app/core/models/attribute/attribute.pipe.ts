@@ -10,8 +10,8 @@ import { Attribute } from './attribute.model';
 
 @Pipe({
   name: 'ishAttribute',
-  pure: false,
   standalone: false,
+  pure: false,
 })
 export class AttributeToStringPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}

@@ -7,8 +7,8 @@ import { ProductCompareStatusComponent } from './shared/product-compare-status/p
 import { ProductSendToCompareComponent } from './shared/product-send-to-compare/product-send-to-compare.component';
 
 @NgModule({
-  declarations: [ProductAddToCompareComponent, ProductCompareStatusComponent, ProductSendToCompareComponent],
   imports: [SharedModule],
+  declarations: [ProductAddToCompareComponent, ProductCompareStatusComponent, ProductSendToCompareComponent],
   exports: [SharedModule],
 })
 export class CompareModule {}

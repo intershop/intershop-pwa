@@ -21,19 +21,21 @@
                   class="btn-tool btn-link"
                   data-testing-id="move-wishlist"
                   type="button"
+                  [attr.aria-label]="'wishlist.table.options.move_to_another_wishlist' | translate"
                   [title]="'wishlist.table.options.move_to_another_wishlist' | translate"
                   (click)="emitMoveClicked()"
                 >
-                  <i class="bi bi-arrows-move"></i>
+                  <i aria-hidden="true" class="bi bi-arrows-move"></i>
                 </button>
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="delete-wishlist"
                   type="button"
+                  [attr.aria-label]="'wishlist.table.options.remove' | translate"
                   [title]="'wishlist.table.options.remove' | translate"
                   (click)="removeProductFromWishlist(wishlistItemData.sku)"
                 >
-                  <i class="bi bi-trash-fill"></i>
+                  <i aria-hidden="true" class="bi bi-trash-fill"></i>
                 </button>
               </div>
             }

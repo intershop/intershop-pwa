@@ -29,28 +29,30 @@
             }
           </div>
           <div class="col-5 col-sm-4 list-item order-2">
-            <dl [attr.data-testing-id]="'user-roles-' + user.login">
+            <dl [attr.data-testing-id]="`user-roles-${user.login}`">
               <ish-user-roles-badges [roleIDs]="user.roleIDs" />
             </dl>
           </div>
           <div class="col-12 col-sm-5 list-item order-4 order-sm-3">
             @if ('services.OrderApprovalServiceDefinition.runnable' | ishServerSetting) {
-              <ish-user-budget [attr.data-testing-id]="'user-budget-' + user.login" [budget]="user.userBudget" />
+              <ish-user-budget [attr.data-testing-id]="`user-budget-${user.login}`" [budget]="user.userBudget" />
             }
           </div>
           <div class="col-1 list-item text-end order-sm-4 order-3">
             @if (user.login !== (currentUser$ | async)?.login) {
               <div class="float-end">
+                @let dialogDeleteLabel =
+                  'account.user.delete_user_dialog.header' | translate: { '0': `${user.firstName} ${user.lastName}` };
+
                 <button
                   class="btn-tool btn-link"
                   data-testing-id="remove-user"
-                  title="{{
-                    'account.user.delete_user_dialog.header' | translate: { '0': user.firstName + ' ' + user.lastName }
-                  }}"
+                  title="{{ dialogDeleteLabel }}"
                   type="button"
+                  [attr.aria-label]="dialogDeleteLabel"
                   (click)="modalDialog.show(user)"
                 >
-                  <i class="bi bi-trash-fill"></i>
+                  <i aria-hidden="true" class="bi bi-trash-fill"></i>
                 </button>
 
                 <ish-modal-dialog
@@ -58,7 +60,7 @@
                   [options]="{
                     titleText:
                       'account.user.delete_user_dialog.header'
-                      | translate: { '0': user.firstName + ' ' + user.lastName },
+                      | translate: { '0': `${user.firstName} ${user.lastName}` },
                     confirmText: 'account.user.delete_user_dialog.delete_button.text' | translate,
                     rejectText: 'account.user.delete_user_dialog.cancel_button.text' | translate,
                   }"

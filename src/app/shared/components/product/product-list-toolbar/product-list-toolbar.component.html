@@ -1,5 +1,5 @@
 <div class="filters-row row align-items-center">
-  <div class="item-count" [ngClass]="{ 'col-md-7': sortOptions?.length, 'col-md-10': !sortOptions?.length }">
+  <div class="item-count" [class]="sortOptions?.length ? 'col-md-7' : 'col-md-10'">
     <div class="row align-items-center">
       <div class="col-sm-3 col-4">
         @if (itemCount >= 0) {
@@ -42,28 +42,30 @@
         data-testing-id="grid-view-link"
         queryParamsHandling="merge"
         role="button"
+        [attr.aria-label]="'product.items.view.grid_view.aria_label' | translate"
+        [class.grid-active]="gridView"
         [fragment]="fragmentOnRouting"
-        [ngClass]="{ 'grid-active': gridView }"
         [queryParams]="{ view: 'grid' }"
         [replaceUrl]="true"
         [routerLink]="[]"
         [title]="'product.items.view.grid_view.aria_label' | translate"
       >
-        <i class="bi bi-grid-3x3-gap-fill"></i>
+        <i aria-hidden="true" class="bi bi-grid-3x3-gap-fill"></i>
       </a>
       <a
         class="list-view-link"
         data-testing-id="list-view-link"
         queryParamsHandling="merge"
         role="button"
+        [attr.aria-label]="'product.items.view.list_view.aria_label' | translate"
+        [class.list-active]="listView"
         [fragment]="fragmentOnRouting"
-        [ngClass]="{ 'list-active': listView }"
         [queryParams]="{ view: 'list' }"
         [replaceUrl]="true"
         [routerLink]="[]"
         [title]="'product.items.view.list_view.aria_label' | translate"
       >
-        <i class="bi bi-list-ul"></i>
+        <i aria-hidden="true" class="bi bi-list-ul"></i>
       </a>
     </div>
   </div>

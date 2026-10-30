@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
-
-import { CategoryTileComponent } from '../category-tile/category-tile.component';
 
 import { CategoryListComponent } from './category-list.component';
 
@@ -11,9 +8,7 @@ describe('Category List Component', () => {
   let element: HTMLElement;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CategoryListComponent, MockComponent(CategoryTileComponent)],
-    }).compileComponents();
+    await TestBed.configureTestingModule({}).compileComponents();
   });
 
   beforeEach(() => {
@@ -29,18 +24,8 @@ describe('Category List Component', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(element).toMatchInlineSnapshot(`
       <ul class="category-list row">
-        <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile
-            ng-reflect-category-unique-id="uid1"
-            ng-reflect-loading="eager"
-          ></ish-category-tile>
-        </li>
-        <li class="category-list-item col-6 col-lg-4">
-          <ish-category-tile
-            ng-reflect-category-unique-id="uid2"
-            ng-reflect-loading="eager"
-          ></ish-category-tile>
-        </li>
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
+        <li class="category-list-item col-6 col-lg-4"><ish-category-tile></ish-category-tile></li>
       </ul>
     `);
   });

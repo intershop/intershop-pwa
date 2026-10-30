@@ -22,7 +22,8 @@ export class FilterNavigationMapper {
     return {
       filter: data?.elements
         ? data.elements.map(filterData => ({
-            id: filterData.id,
+            // replace whitespace with underscores since the id is used as an HTML id attribute
+            id: filterData.id?.replace(/\s/g, '_'),
             name: filterData.name,
             displayType: filterData.displayType,
             limitCount: filterData.limitCount || -1,
