@@ -40,7 +40,7 @@ export const fromIntersectionObserver = (
     return {
       unsubscribe() {
         intersectionObserver.disconnect();
-        // eslint-disable-next-line ban/ban, rxjs/no-subject-unsubscribe
+        // eslint-disable-next-line ban/ban, rxjs-x/no-subject-unsubscribe
         subject$.unsubscribe();
       },
     };
