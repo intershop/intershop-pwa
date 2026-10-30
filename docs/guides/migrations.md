@@ -13,6 +13,7 @@ kb_sync_latest_only
 
 ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0) for breaking changes affecting custom rules and configurations.
 The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
+The unmaintained `@smarttools/eslint-plugin-rxjs` is replaced by [`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x), so rename `rxjs/` rules to `rxjs-x/` in customized configurations and `eslint-disable` comments.
 
 ## From 12.1.0 to 13.0.0
 

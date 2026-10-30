@@ -1,7 +1,6 @@
 import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
-import rxjs from '@smarttools/eslint-plugin-rxjs';
 import angular from 'angular-eslint';
 import ban from 'eslint-plugin-ban';
 import jest from 'eslint-plugin-jest';
@@ -9,6 +8,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
+import rxjsX from 'eslint-plugin-rxjs-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -58,7 +58,7 @@ export default defineConfig([
     files: ['**/*.ts'],
     plugins: {
       '@ngrx': ngrx,
-      rxjs,
+      'rxjs-x': rxjsX,
       'rxjs-angular': rxjsAngular,
       ban,
       jest,
@@ -744,11 +744,12 @@ export default defineConfig([
           checkDecorators: ['Component', 'Pipe', 'Directive'],
         },
       ],
-      'rxjs/finnish': [
+      'rxjs-x/finnish': [
         'error',
         {
           functions: false,
           methods: false,
+          objects: false,
           parameters: false,
           properties: false,
           variables: true,
@@ -759,18 +760,18 @@ export default defineConfig([
           },
         },
       ],
-      'rxjs/no-create': 'error',
-      'rxjs/no-ignored-replay-buffer': 'error',
-      'rxjs/no-ignored-subscribe': 'error',
-      'rxjs/no-internal': 'error',
-      'rxjs/no-nested-subscribe': 'warn',
-      'rxjs/no-subclass': 'error',
-      'rxjs/no-subject-unsubscribe': 'error',
-      'rxjs/no-subject-value': 'error',
-      'rxjs/no-unsafe-catch': 'error',
-      'rxjs/no-unsafe-subject-next': 'error',
-      'rxjs/no-unsafe-switchmap': 'error',
-      'rxjs/no-unsafe-takeuntil': [
+      'rxjs-x/no-create': 'error',
+      'rxjs-x/no-ignored-replay-buffer': 'error',
+      'rxjs-x/no-ignored-subscribe': 'error',
+      'rxjs-x/no-internal': 'error',
+      'rxjs-x/no-nested-subscribe': 'warn',
+      'rxjs-x/no-subclass': 'error',
+      'rxjs-x/no-subject-unsubscribe': 'error',
+      'rxjs-x/no-subject-value': 'error',
+      'rxjs-x/no-unsafe-catch': 'error',
+      'rxjs-x/no-unsafe-subject-next': 'error',
+      'rxjs-x/no-unsafe-switchmap': 'error',
+      'rxjs-x/no-unsafe-takeuntil': [
         'error',
         {
           alias: ['takeUntilDestroyed'],
