@@ -1,0 +1,16 @@
+<div class="copilot-embedded-results">
+  <div class="section">
+    <h2>{{ 'copilot.embedded.results.title' | translate }}</h2>
+    <p>{{ 'copilot.embedded.results.subtitle' | translate }}</p>
+  </div>
+  @let products = products$ | async;
+  @if (products?.length) {
+    <div class="copilot-embedded-results-list">
+      @for (product of products; track product.sku) {
+        <ish-copilot-embedded-product ishProductContext [sku]="product.sku" />
+      }
+    </div>
+  } @else {
+    <p>{{ 'copilot.embedded.results.intro' | translate }}</p>
+  }
+</div>

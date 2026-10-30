@@ -82,6 +82,8 @@ $border-width-default: 1px;
 $top-header-height: 40px;
 $header-height-mobile: 55px;
 $search-container-height: 38px;
+// below this width the mobile header icons move closer together to fit next to the logo; depends on the logo width and the number of header icons
+$header-compact-breakpoint: 410px;
 
 // Mobile toggler width
 $toggler-width: 64px;

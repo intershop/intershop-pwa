@@ -43,7 +43,10 @@ exports[`Header Default Component should render normal header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
+      <ish-lazy-copilot-embedded-link
+        data-testing-id="copilot-embedded-link"
+      ></ish-lazy-copilot-embedded-link>
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -83,6 +86,10 @@ exports[`Header Default Component should render normal header adequately for mob
     <div class="search-container header-search-container show">
       <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
+    <ish-lazy-copilot-embedded-link
+      data-testing-id="copilot-embedded-link-mobile"
+      view="small"
+    ></ish-lazy-copilot-embedded-link>
     <div class="language-switch-container">
       <ish-language-switch data-testing-id="language-switch-desktop"></ish-language-switch>
     </div>
@@ -110,7 +117,6 @@ exports[`Header Default Component should render normal header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>
@@ -170,7 +176,10 @@ exports[`Header Default Component should render normal header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
+      <ish-lazy-copilot-embedded-link
+        data-testing-id="copilot-embedded-link"
+      ></ish-lazy-copilot-embedded-link>
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -226,7 +235,7 @@ exports[`Header Default Component should render sticky header adequately for des
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>
@@ -260,6 +269,10 @@ exports[`Header Default Component should render sticky header adequately for mob
     <div class="search-container header-search-container">
       <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
     </div>
+    <ish-lazy-copilot-embedded-link
+      data-testing-id="copilot-embedded-link-mobile"
+      view="small"
+    ></ish-lazy-copilot-embedded-link>
     <div class="language-switch-container"></div>
     <ish-login-status view="small"></ish-login-status
     ><ish-mini-basket
@@ -285,7 +298,6 @@ exports[`Header Default Component should render sticky header adequately for mob
         ></a>
       </div>
     </div>
-    <div class="col-md-4"></div>
   </div>
   <button type="button" class="navbar-toggler">
     <span class="visually-hidden">common.button.navbarCollapsed.text</span>
@@ -337,7 +349,7 @@ exports[`Header Default Component should render sticky header adequately for tab
         ></a>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 search-col">
       <div class="search-container header-search-container">
         <ish-search-box data-testing-id="search-box-desktop"></ish-search-box>
       </div>

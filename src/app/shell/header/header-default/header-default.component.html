@@ -14,7 +14,7 @@
 <div class="header container" [class]="deviceType">
   @if (!isSticky) {
     <ul class="user-links">
-      @if (!isSticky && deviceType !== 'mobile') {
+      @if (deviceType !== 'mobile') {
         <li>
           <ish-login-status data-testing-id="user-status-desktop" />
         </li>
@@ -65,7 +65,9 @@
       }
     }
 
-    <!-- Sticky Header Mobile Search -->
+    @if (deviceType === 'mobile') {
+      <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link-mobile" view="small" />
+    }
 
     <div class="language-switch-container">
       @if (!isSticky) {
@@ -107,13 +109,16 @@
         }
       </div>
     </div>
-    <div class="col-md-4">
-      @if (deviceType !== 'mobile') {
+    @if (deviceType !== 'mobile') {
+      <div class="col-md-4 search-col">
+        @if (!isSticky) {
+          <ish-lazy-copilot-embedded-link data-testing-id="copilot-embedded-link" />
+        }
         <div class="search-container header-search-container">
           <ng-container *ngTemplateOutlet="searchBoxTemplate" />
         </div>
-      }
-    </div>
+      </div>
+    }
   </div>
 
   <button class="navbar-toggler" type="button" (click)="toggle('navbar')">

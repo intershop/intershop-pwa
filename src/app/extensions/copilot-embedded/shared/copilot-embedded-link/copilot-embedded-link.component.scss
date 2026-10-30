@@ -1,0 +1,27 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+
+.copilot-embedded-header-link {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  padding-top: $space-default * 0.75;
+  padding-right: $space-default;
+  white-space: nowrap;
+  transform: translateY(-50%);
+
+  a {
+    font-family: $font-family-bold;
+    text-transform: uppercase;
+  }
+
+  .bi {
+    padding-right: divide($space-default, 3);
+    color: $CORPORATE-PRIMARY;
+  }
+}
+
+// the mobile link shares the spacing and size of the other header icons (`sticky-header-icon`), only its color differs
+.copilot-embedded-mobile .sticky-header-icon .bi {
+  color: $CORPORATE-PRIMARY;
+}

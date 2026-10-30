@@ -17,6 +17,7 @@ buttonstyle
 callparametersstring
 categoryref
 chatflow
+chatflows
 chatflowid
 clazz
 clickability

@@ -1,0 +1,31 @@
+@import 'variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+
+.copilot-embedded-product {
+  display: flex;
+
+  // the results column is too narrow for an image next to the details on medium screens
+  @include media-breakpoint-only(md) {
+    flex-direction: column;
+  }
+
+  .copilot-embedded-product-image {
+    flex-shrink: 0;
+    width: 125px;
+    padding-right: $space-default;
+  }
+
+  .copilot-embedded-product-details {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  ish-product-item-variations,
+  ish-product-add-to-basket,
+  ish-product-choose-variation {
+    display: block;
+    margin-top: ($space-default * 0.5);
+  }
+}

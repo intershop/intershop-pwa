@@ -242,6 +242,13 @@ The `ICMErrorMapperInterceptor` no longer wraps the messages of the ADR error fo
 To display the messages of an `HttpError` in custom code, render the result of `HttpErrorHelper.formatMessage()` as sanitized HTML instead of `error.message`.
 Errors of the cXML punchout configuration are displayed on the configuration page instead of in the configuration form and by the `CxmlConfigurationEffects`.
 
+**Copilot Embedded integration**
+
+The new `copilotEmbedded` feature toggle adds an AI product advisor page at `/copilot` that is backed by a Flowise chatflow.
+Copilot Embedded is an experimental feature, and its functionality and configuration can change in future releases.
+The feature is disabled by default.
+To use it, enable the feature toggle and provide the `copilotEmbedded` configuration, see [Guide - Copilot Embedded](./copilot-embedded.md).
+
 ## From 12.0.0 to 12.1.0
 
 **Generative Engine Optimization (GEO)**
