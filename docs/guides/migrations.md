@@ -20,19 +20,19 @@ To migrate existing deployment configurations, follow the [Migration to 1.0.0](h
 
 The Intershop PWA now uses Node.js 24.22.1 LTS with the corresponding npm version 11.19.1.
 
-Please be aware that npm 11 no longer runs dependencies' lifecycle scripts (preinstall/install/postinstall) by default, as a supply‑chain security measure.
-Packages that need to run such scripts must be explicitly allow‑listed (`allowScripts` in the `package.json`).
-`npm install` will warn about missing allow-listing for custom dependencies.
+npm 11 no longer runs lifecycle scripts of dependencies (preinstall/install/postinstall) by default as a supply-chain security measure.
+Packages that need to run such scripts must be explicitly allow-listed (`allowScripts` in the _package.json_).
+`npm install` warns about missing allow-listing for custom dependencies.
 
-**Custom `config` properties moved out of `package.json`**
+**Custom `config` properties moved out of _package.json_**
 
-npm 11 warns about custom keys in the `package.json` `config` section (`npm warn Unknown env config ...`) because the legacy `npm_config_*` environment injection is deprecated and will be removed in the next major npm version.
-Therefore the two custom `config` properties have been relocated:
+npm 11 warns about custom keys in the _package.json_ `config` section (`npm warn Unknown env config ...`) because the legacy `npm_config_*` environment injection is deprecated and will be removed in the next major npm version.
+Therefore, the two custom `config` properties have been relocated:
 
-- `config.commitizen.path` moved to a new [`.czrc`](../../.czrc) file.
-- `config.active-themes` moved to the top-level `activeThemes` property in the [`package.json`](../../package.json). The build-time override environment variable changed from `npm_config_active_themes` to `ACTIVE_THEMES` (used by `npm run build:multi`).
+- `config.commitizen.path` moved to a new [_.czrc_](../../.czrc) file.
+- `config.active-themes` moved to the top-level `activeThemes` property in the [_package.json_](../../package.json). The build-time override environment variable changed from `npm_config_active_themes` to `ACTIVE_THEMES` (used by `npm run build:multi`).
 
-Custom code or Docker build arguments that referenced `config.active-themes` (for example via `npm pkg set config.active-themes=...`) must be updated to use `activeThemes`.
+Custom code or Docker build arguments that referenced `config.active-themes` (for example, via `npm pkg set config.active-themes=...`) must be updated to use `activeThemes`.
 
 **TypeScript 5.8/5.9 update**
 
@@ -43,22 +43,23 @@ Check your custom code for new `TS7018`/`TS7011` compiler errors and add the app
 **Angular 20 upgrade**
 
 With Intershop PWA 13.0.0, the project is updated to Angular 20.
-Companion libraries are updated to their Angular 20 compatible versions as well, for example NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
+Companion libraries are updated to their Angular 20-compatible versions as well, for example, NgRx 20, `@angular-eslint` 20, and `@ng-bootstrap/ng-bootstrap` 19.
 
 Angular 20 requires the TypeScript `moduleResolution` option to be set to `bundler`.
-The base [`tsconfig.json`](../../tsconfig.json) setting has been updated to `"bundler"` (`tsconfig.spec.json` keeps `"node"`).
+The base [_tsconfig.json_](../../tsconfig.json) setting has been updated to `"bundler"` (_tsconfig.spec.json_ keeps `"node"`).
 
 Angular 20 introduces several breaking changes that may require adaptations in custom code, for example:
 
 - `platformBrowserDynamic()` from `@angular/platform-browser-dynamic` is deprecated; use `platformBrowser()` from `@angular/platform-browser` for bootstrapping instead.
-- The `ng-reflect-*` attributes are no longer emitted; snapshot tests relying on them need to be updated.
+- The `ng-reflect-*` attributes are no longer emitted; update snapshot tests relying on them.
 
 For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=19.0-20.0&l=3).
 
 **Deprecated `@angular/animations` usage removed**
 
-The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [`cookies.scss`](../../src/styles/components/cookies.scss).
-`BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`; once this dependency is dropped, the import and the dependency can be removed.
+The `@angular/animations`-based `bottomOut` trigger of the cookie banner has been replaced by a plain CSS `transition` defined in [_cookies.scss_](../../src/styles/components/cookies.scss).
+`BrowserAnimationsModule` is still imported, but only because `ngx-toastr` depends on `@angular/animations`.
+Once this dependency is dropped, you can remove the import and the dependency.
 
 **Formly 8 update**
 
@@ -77,24 +78,24 @@ Its inputs changed: the previous `lastPage` (number of pages) was replaced by th
 
 **Removed quantity handling from wishlists**
 
-The wishlists quantity handling functionality is removed, as it was currently only partially implemented in the data layer, but not on the actual front-end.
-The `desiredQuantity` and `purchasedQuantity` properties were removed from the `WishlistItem` model and the optional `quantity` parameter was removed from the `addProductToWishlist` action.
-Custom code that relied on these properties or passed a quantity when adding a product to a wishlist should not integrate the changes of the according commit.
+The wishlists quantity handling functionality has been removed because it was only partially implemented in the data layer, but not in the front end.
+The `desiredQuantity` and `purchasedQuantity` properties have been removed from the `WishlistItem` model, and the optional `quantity` parameter has been removed from the `addProductToWishlist` action.
+If custom code relies on these properties or passes a quantity when adding a product to a wishlist, do not apply the changes of the corresponding commit.
 
 **Removal of the Service Worker integration**
 
-The experimental Angular Service Worker integration has been removed, as it was disabled by default and not recommended for production use.
-The `@angular/service-worker` dependency, the `ngsw-config.json` file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
+The experimental Angular Service Worker integration has been removed because it was disabled by default and not recommended for production use.
+The `@angular/service-worker` dependency, the _ngsw-config.json_ file, the `serviceWorker`/`ngswConfigPath` options in _angular.json_, the `node schematics/customization/service-worker` customization, and the related `serviceWorker` Docker build argument no longer exist.
 The Web App Manifest (installability) is unaffected and remains available.
 
 **Hot Module Replacement (HMR) in development**
 
-HMR has been enabled for the `serve` targets in `angular.json` via `"hmr": true`.
+HMR has been enabled for the `serve` targets in _angular.json_ via `"hmr": true`.
 Running `ng serve` now applies style changes (global and component SCSS) in place without a full page reload, preserving the current application state.
 Template and TypeScript changes still trigger a full live-reload as before.
 The setting only affects the dev server (`ng serve`) and has no impact on production builds or SSR.
 
-**Template String Concatenation Replaced by Template Literals**
+**Template string concatenation replaced by template literals**
 
 Angular 20 supports JavaScript template literals in template expressions.
 The `@angular-eslint/template/prefer-template-literal` rule has been enabled.
@@ -109,17 +110,18 @@ Existing string concatenations in templates have been auto-fixed, as shown in th
 
 Run `npm run lint -- --fix` to auto-fix any remaining concatenations.
 
-**Additional Angular 20 Template Lint Rules**
+**Additional Angular 20 template lint rules**
 
 The `@angular-eslint/template/prefer-at-else` and `@angular-eslint/template/prefer-built-in-pipes` rules have been enabled.
-The first converts negated sibling `@if` blocks into `@else`; the second favors built-in pipes (e.g., `lowercase`) over method calls like `toLowerCase()` in templates.
+The first rule converts negated sibling `@if` blocks into `@else`; the second rule favors built-in pipes (e.g., `lowercase`) over method calls such as `toLowerCase()` in templates.
 Run `npm run lint -- --fix` to fix auto-correctable issues, and adjust any remaining warnings in custom templates.
 
 **llms.txt integration**
 
-The Intershop PWA now serves an [_llms.txt_](https://llmstxt.org/) file, an LLM-friendly site index, as static content via the NGINX container (see [Guide - llms.txt](./llms-txt.md)).
-The content files are located in _nginx/llms/_ and are named per channel following the pattern `<channel>_llms.txt`, with a neutral _default_llms.txt_ used as fallback file.
-Every project based on the Intershop PWA, whether newly set up or migrated, needs to rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
+The Intershop PWA now serves an [_llms.txt_](https://llmstxt.org/) file, a site index for large language models (LLMs), as static content via the NGINX container (see [Guide - llms.txt](./llms-txt.md)).
+The content files are located in _nginx/llms/_ and are named per channel following the pattern `<channel>_llms.txt`.
+The neutral _default_llms.txt_ file serves as the fallback file.
+Every project based on the Intershop PWA, whether newly set up or migrated, must rename these files to match its storefront channels and replace the demo content with links relevant to its shop.
 
 **Default security headers in the NGINX image**
 
@@ -150,23 +152,23 @@ Explicitly set `[displayEmail]="false"` to continue hiding the e-mail address.
 **Roboto fonts switched to Fontsource**
 
 The deprecated `typeface-roboto` and `typeface-roboto-condensed` packages have been replaced by [`@fontsource/roboto`](https://fontsource.org/fonts/roboto) and [`@fontsource/roboto-condensed`](https://fontsource.org/fonts/roboto-condensed).
-The `@font-face` rules in `roboto.scss` now only reference `woff2` files and the webpack-specific `~` font URLs have been replaced with relative paths to the files in `node_modules` (esbuild compatibility preparation).
-Custom stylesheets referencing files from the old packages must be updated to the new paths, for example `@fontsource/roboto/files/roboto-latin-400-normal.woff2`.
+The `@font-face` rules in _roboto.scss_ now only reference `woff2` files, and the webpack-specific `~` font URLs have been replaced with relative paths to the files in _node_modules_ (preparation for esbuild compatibility).
+Custom stylesheets referencing files from the old packages must be updated to the new paths, for example, _@fontsource/roboto/files/roboto-latin-400-normal.woff2_.
 
 **Translation imports prepared for esbuild**
 
-Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)` (esbuild compatibility preparation).
+Custom translation JSON imports should return the default export: `import('./translations.json').then(module => module.default)` (preparation for esbuild compatibility).
 
 **Angular SSR `REQUEST` token**
 
 The custom `REQUEST` token from `ish-core/utils/ssr/ssr.tokens` has been replaced by Angular's [`REQUEST`](https://angular.dev/api/core/REQUEST) token from `@angular/core`, which provides a standard Web `Request` instead of an Express request.
-Custom code injecting the token must update the import and replace Express-specific access, for example `request.get('host')` with `new URL(request.url).host` and `request.get('header-name')` with `request.headers.get('header-name')`.
-Custom server bootstraps must provide the request via `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` as done in [`server.ts`](../../server.ts).
+Custom code that injects the token must update the import and replace Express-specific access, for example, `request.get('host')` with `new URL(request.url).host` and `request.get('header-name')` with `request.headers.get('header-name')`.
+Custom server bootstraps must provide the request via `createWebRequestFromNodeRequest(req, ['x-forwarded-proto'])` as done in [_server.ts_](../../server.ts).
 The `RESPONSE` and `REQUEST_ID` tokens remain unchanged.
 
 **Store Devtools production configuration**
 
-Store Devtools are now configured through `PRODUCTION_MODE` in [`store-devtools.module.ts`](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in _angular.json_, and the obsolete _store-devtools.module.production.ts_ file has been removed.
+Store Devtools are now configured through `PRODUCTION_MODE` in [_store-devtools.module.ts_](../../src/app/core/store/store-devtools.module.ts) instead of a production file replacement in _angular.json_, and the obsolete _store-devtools.module.production.ts_ file has been removed.
 The default behavior is unchanged (enabled in development, disabled in production).
 
 If you use custom Angular build configurations, remove any file replacements referencing the deleted file.
@@ -174,26 +176,26 @@ To enable Store Devtools in production, update the conditional registration in _
 
 **SSR server compiled as ES modules**
 
-The SSR server code is now compiled as ES modules instead of CommonJS, since the CommonJS output fails to bundle with newer webpack versions (`Cannot get final name for export '__esModule' of ./server.ts`).
-Remove the `module` and `moduleResolution` overrides from your [`tsconfig.server.json`](../../tsconfig.server.json) and check custom server code for CommonJS-only constructs such as `exports` or `module.exports`.
+The SSR server code is now compiled as ES modules instead of CommonJS, because the CommonJS output fails to bundle with newer webpack versions (`Cannot get final name for export '__esModule' of ./server.ts`).
+Remove the `module` and `moduleResolution` overrides from your [_tsconfig.server.json_](../../tsconfig.server.json) and check custom server code for CommonJS-only constructs such as `exports` or `module.exports`.
 
 **CAPTCHA field type uses `captcha` key**
 
-The `ish-captcha-field` Formly type now defines `captcha` as default key, so its field validation is applied directly to the `captcha` form control and the [`CaptchaFieldComponent`](../../src/app/shared/formly/types/captcha-field/captcha-field.component.ts) no longer adds this control itself.
-If you register the `ish-captcha-field` type in a custom module, add `key: 'captcha'` to its `defaultOptions` as done in [`types.module.ts`](../../src/app/shared/formly/types/types.module.ts).
+The `ish-captcha-field` Formly type now defines `captcha` as the default key, so its field validation is applied directly to the `captcha` form control and the [`CaptchaFieldComponent`](../../src/app/shared/formly/types/captcha-field/captcha-field.component.ts) no longer adds this control itself.
+If you register the `ish-captcha-field` type in a custom module, add `key: 'captcha'` to its `defaultOptions` as done in [_types.module.ts_](../../src/app/shared/formly/types/types.module.ts).
 As a consequence, the CAPTCHA token is now also written to the `captcha` property of the Formly model.
 
 **Angular 21 upgrade**
 
 Following the Angular 20 upgrade described above, Intershop PWA 13.0.0 is updated to Angular 21 and its compatible companion libraries, for example, NgRx 21 and `zone.js` 0.16.
 Because Angular 21 no longer enables zone-based change detection by default, the PWA enables it with the [`ZoneChangeDetectionModule`](../../src/app/core/zone-change-detection.module.ts), which must remain the first import of the `AppModule`.
-The [`tsconfig.spec.json`](../../tsconfig.spec.json) now also uses the `bundler` module resolution of the base [`tsconfig.json`](../../tsconfig.json).
+The [_tsconfig.spec.json_](../../tsconfig.spec.json) now also uses the `bundler` module resolution of the base [_tsconfig.json_](../../tsconfig.json).
 For the complete list of breaking changes, see the [Angular Update Guide](https://angular.dev/update-guide?v=20.0-21.0&l=3).
 
-The server-side rendering build required two adaptations that projects with a customized webpack or Babel configuration need to keep:
+The server-side rendering build required two adaptations that projects with a customized webpack or Babel configuration must keep:
 
-- [`webpack.custom.ts`](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
-- [`babel.config.js`](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
+- [_webpack.custom.ts_](../../templates/webpack/webpack.custom.ts) maps `zone.js/node` to its UMD bundle, because webpack cannot resolve the Node.js built-ins loaded by the `zone.js` 0.16 ESM bundle, which silently leads to incomplete server-side renderings.
+- [_babel.config.js_](../../babel.config.js) contains the `@babel/plugin-transform-class-static-block` plugin, so that the server build can handle the static class blocks of Undici.
 
 **`ChangeDetectionStrategy.Default` replaced by `ChangeDetectionStrategy.Eager`**
 

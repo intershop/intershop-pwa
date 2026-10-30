@@ -75,7 +75,7 @@ export class MyComponent {
 Getting to know whether a zone is stable or not is crucial when programmatically accessing the application from the "outside".
 Having a stable zone means that Angular has finished rendering and that we do not expect any async tasks to finish in the near future.
 The Intershop PWA effectively uses this concept for communication with the CMS Design View.
-Also, Angular waits for stability in server-side rendering.
+Also, Angular waits for stability in server-side rendering (SSR).
 
 ### SSR
 
@@ -85,8 +85,8 @@ This is necessary because data from HTTP requests must be resolved to render mea
 
 ### Pitfall: The Zone Must Become Stable
 
-For both of those aspects – Design View and SSR – it is essential to get a stable zone at some point.
-If not, those aspects will not work properly, e.g.,
+For both these aspects – Design View and SSR – it is essential to get a stable zone at some point.
+If not, these aspects will not work properly, e.g.,
 SSR will never return the rendered HTML and the Design View will never render the component tree view.
 
 > [!NOTE]
