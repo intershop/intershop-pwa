@@ -31,7 +31,7 @@ export class LineItemListElementComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges<LineItemListElementComponent>): void {
     if (changes.pli) {
       if (this.updateSubscription) {
-        // eslint-disable-next-line ban/ban
+        // eslint-disable-next-line no-restricted-properties
         this.updateSubscription.unsubscribe();
       }
 
