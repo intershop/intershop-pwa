@@ -9,7 +9,7 @@ kb_sync_latest_only
 
 The Intershop PWA provides an integration with the Copilot Embedded, an AI agent that recommends products through a chat.
 
-Unlike the [Intershop Copilot for Buyers](./copilot.md) - which embeds a pre-built chat UI - the PWA owns the whole Copilot Embedded UI and all REST interaction with the underlying [Flowise](https://flowiseai.com/) chatflow.
+Unlike the [Intershop Copilot for Buyers](./copilot.md), which embeds a pre-built chat UI, the PWA owns the whole Copilot Embedded UI and all REST interaction with the underlying [Flowise](https://flowiseai.com/) chatflow.
 
 > [!NOTE]
 > The Product Advisor is an experimental feature. Its functionality and configuration can change in future releases.
@@ -46,10 +46,10 @@ pwa:
       apiHost: "https://<FLOWISE-API-HOST>"
 ```
 
-- `chatflowid` - project specific Flowise chatflow ID.
-- `apiHost` - URL to the project specific Flowise API host.
+- `chatflowid` - the project-specific Flowise chatflow ID.
+- `apiHost` - the URL to the project-specific Flowise API host.
 
-Optionally, the following values can be added to the configuration:
+Optionally, you can add the following values to the configuration:
 
 - `streaming` - forces the response mode.
   `true` always streams the answer, `false` always waits for the complete answer.
@@ -87,13 +87,13 @@ Additionally, the PWA appends the current context to each question, because Flow
 ```
 
 The chatflow prompt can use these markers, e.g., to add products to the basket or to an existing order template without calling ICM first.
-`[SHOWN_PRODUCTS]` lists the products of the results panel in display order, so the chatflow can resolve references like "add the first one".
+`[SHOWN_PRODUCTS]` lists the products of the results panel in display order, so the chatflow can resolve references such as "add the first one".
 
 Image uploads require a chatflow with image uploads enabled on a vision-capable chat model.
 
-The chat history is stored in the browser's localStorage for 1 day by default, configurable via `dataRetention.copilotEmbedded` with the same values as for the other features (lifetime in minutes, `'session'` or `'forever'`).
+The chat history is stored in the browser's localStorage for one day by default, configurable via `dataRetention.copilotEmbedded` with the same values as for the other features (lifetime in minutes, `'session'`, or `'forever'`).
 It is stored separately for each `baseHref` of a [multi-site configuration](./multi-site-configurations.md), so switching to a language or channel with a different `baseHref` starts a new conversation, and switching back restores the previous one.
-The **Start a new conversation** button deletes the stored chat history of the current `baseHref`, the logout deletes it for all `baseHref`s.
+The _Start a new conversation_ button deletes the stored chat history of the current `baseHref`, while the logout deletes it for all `baseHref`s.
 
 ## Tool Call Actions
 
