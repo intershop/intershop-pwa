@@ -9,8 +9,9 @@ kb_sync_latest_only
 
 ## From 13.0.0 to 14.0.0
 
-**ESLint configuration without `FlatCompat`**
+**ESLint 10 update**
 
+ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0) for breaking changes affecting custom rules and configurations.
 The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
 
 ## From 12.1.0 to 13.0.0
