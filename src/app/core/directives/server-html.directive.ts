@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -26,6 +26,16 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
 
   private initialized = false;
   private renderer = inject(Renderer2);
+  private document = inject(DOCUMENT);
+
+  /**
+   * Callbacks available for every server HTML, e.g. <a callback="reloadPage">, as CSP-compliant replacement for 'javascript:' links.
+   * Callbacks passed via the 'callbacks' input take precedence.
+   */
+  private readonly defaultCallbacks: Record<string, (event?: MouseEvent) => void> = {
+    reloadPage: () => this.document.defaultView?.location.reload(),
+    navigateBack: () => this.document.defaultView?.history.back(),
+  };
 
   constructor(
     private router: Router,
@@ -102,10 +112,17 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
       if (el.tagName === 'A') {
         const href = el.getAttribute('href');
         const cb = el.getAttribute('callback');
+        const callback = cb && (this.callbacks?.[cb] ?? this.defaultCallbacks[cb]);
 
         // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
-        if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
-          this.callbacks[cb](event);
+        if (typeof callback === 'function') {
+          callback(event);
+
+          // callback-only links, e.g. <a href="#" callback="reloadPage">, must not navigate
+          if (href === '#') {
+            event.preventDefault();
+            return false;
+          }
         }
 
         if (
