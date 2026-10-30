@@ -7,6 +7,15 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**ESLint 10 update**
+
+ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0) for breaking changes affecting custom rules and configurations.
+The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
+The unmaintained `@smarttools/eslint-plugin-rxjs` is replaced by [`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x), so rename `rxjs/` rules to `rxjs-x/` in customized configurations and `eslint-disable` comments.
+The unmaintained `eslint-plugin-ban` is replaced by the ESLint core rules `no-restricted-properties`, `no-restricted-globals`, and `prefer-object-spread` (the outdated `atob`/`btoa` ban has been dropped), so replace `ban/ban` in `eslint-disable` comments accordingly.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

@@ -1,13 +1,13 @@
 import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
-import rxjs from '@smarttools/eslint-plugin-rxjs';
-import ban from 'eslint-plugin-ban';
+import angular from 'angular-eslint';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
+import rxjsX from 'eslint-plugin-rxjs-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -20,11 +20,6 @@ import ishCustomRules from './eslint-rules/dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default defineConfig([
   cspellESLintPluginRecommended,
@@ -52,24 +47,18 @@ export default defineConfig([
       },
     },
   })),
-  // Angular and Prettier configs via FlatCompat
-  ...compat
-    .extends(
-      'plugin:@angular-eslint/recommended',
-      'plugin:@angular-eslint/template/process-inline-templates',
-      'plugin:prettier/recommended'
-    )
-    .map(config => ({
-      ...config,
-      files: ['**/*.ts'],
-    })),
+  // Angular and Prettier configs
+  {
+    files: ['**/*.ts'],
+    extends: [angular.configs.tsRecommended, prettierRecommended],
+    processor: angular.processInlineTemplates,
+  },
   {
     files: ['**/*.ts'],
     plugins: {
       '@ngrx': ngrx,
-      rxjs,
+      'rxjs-x': rxjsX,
       'rxjs-angular': rxjsAngular,
-      ban,
       jest,
       jsdoc,
       perfectionist,
@@ -753,11 +742,12 @@ export default defineConfig([
           checkDecorators: ['Component', 'Pipe', 'Directive'],
         },
       ],
-      'rxjs/finnish': [
+      'rxjs-x/finnish': [
         'error',
         {
           functions: false,
           methods: false,
+          objects: false,
           parameters: false,
           properties: false,
           variables: true,
@@ -768,18 +758,18 @@ export default defineConfig([
           },
         },
       ],
-      'rxjs/no-create': 'error',
-      'rxjs/no-ignored-replay-buffer': 'error',
-      'rxjs/no-ignored-subscribe': 'error',
-      'rxjs/no-internal': 'error',
-      'rxjs/no-nested-subscribe': 'warn',
-      'rxjs/no-subclass': 'error',
-      'rxjs/no-subject-unsubscribe': 'error',
-      'rxjs/no-subject-value': 'error',
-      'rxjs/no-unsafe-catch': 'error',
-      'rxjs/no-unsafe-subject-next': 'error',
-      'rxjs/no-unsafe-switchmap': 'error',
-      'rxjs/no-unsafe-takeuntil': [
+      'rxjs-x/no-create': 'error',
+      'rxjs-x/no-ignored-replay-buffer': 'error',
+      'rxjs-x/no-ignored-subscribe': 'error',
+      'rxjs-x/no-internal': 'error',
+      'rxjs-x/no-nested-subscribe': 'warn',
+      'rxjs-x/no-subclass': 'error',
+      'rxjs-x/no-subject-unsubscribe': 'error',
+      'rxjs-x/no-subject-value': 'error',
+      'rxjs-x/no-unsafe-catch': 'error',
+      'rxjs-x/no-unsafe-subject-next': 'error',
+      'rxjs-x/no-unsafe-switchmap': 'error',
+      'rxjs-x/no-unsafe-takeuntil': [
         'error',
         {
           alias: ['takeUntilDestroyed'],
@@ -789,37 +779,6 @@ export default defineConfig([
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
       'arrow-parens': ['warn', 'as-needed'],
-      'ban/ban': [
-        'error',
-        {
-          name: ['*', 'ngOnInit'],
-          message: 'Use fixture.detectChanges instead!',
-        },
-        {
-          name: ['*', 'unsubscribe'],
-          message: 'Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87',
-        },
-        {
-          name: ['Object', 'assign'],
-          message: 'Use spread operator instead!',
-        },
-        {
-          name: ['*', 'toBeDefined'],
-          message: 'Most of the time this is the wrong assertion in tests!',
-        },
-        {
-          name: 'spyOn',
-          message: 'Use ts-mockito instead!',
-        },
-        {
-          name: 'atob',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-        {
-          name: 'btoa',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-      ],
       complexity: [
         'warn',
         {
@@ -852,6 +811,13 @@ export default defineConfig([
       'no-multiple-empty-lines': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'spyOn',
+          message: 'Use jest.spyOn or ts-mockito instead of the Jasmine global spyOn!',
+        },
+      ],
       'no-restricted-imports': [
         'warn',
         {
@@ -928,6 +894,21 @@ export default defineConfig([
           ],
         },
       ],
+      'no-restricted-properties': [
+        'error',
+        {
+          property: 'ngOnInit',
+          message: 'Use fixture.detectChanges instead!',
+        },
+        {
+          property: 'unsubscribe',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of unsubscribing manually!',
+        },
+        {
+          property: 'toBeDefined',
+          message: 'Most of the time this is the wrong assertion in tests!',
+        },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -972,6 +953,7 @@ export default defineConfig([
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
       'prefer-const': 'warn',
+      'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
       'unicorn/no-null': [
@@ -1033,7 +1015,8 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-unused-expressions': 'off',
-      'ban/ban': 'off',
+      'no-restricted-globals': 'off',
+      'no-restricted-properties': 'off',
       'ish-custom-rules/ban-imports-file-pattern': 'off',
       'ish-custom-rules/project-structure': [
         'warn',
@@ -1075,7 +1058,7 @@ export default defineConfig([
   //
   {
     files: ['**/*.js'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     languageOptions: {
       globals: {
@@ -1094,7 +1077,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mjs'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1119,7 +1102,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mts'],
-    extends: [...tseslint.configs.recommended, compat.extends('plugin:prettier/recommended')].flat(),
+    extends: [...tseslint.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1150,10 +1133,7 @@ export default defineConfig([
   {
     files: ['**/*.html'],
 
-    extends: compat.extends(
-      'plugin:@angular-eslint/template/recommended',
-      'plugin:@angular-eslint/template/accessibility'
-    ),
+    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
 
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
@@ -1171,7 +1151,7 @@ export default defineConfig([
   {
     files: ['**/*.html'],
     ignores: ['**/*inline-template-*.component.html'],
-    extends: compat.extends('plugin:prettier/recommended'),
+    extends: [prettierRecommended],
 
     rules: {
       'prettier/prettier': [
