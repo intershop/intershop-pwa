@@ -134,7 +134,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
             complete: () => this.ngZone.run(() => subscriber.complete()),
           })
       );
-      // eslint-disable-next-line ban/ban
+      // eslint-disable-next-line no-restricted-properties
       return () => subscription.unsubscribe();
     });
   }

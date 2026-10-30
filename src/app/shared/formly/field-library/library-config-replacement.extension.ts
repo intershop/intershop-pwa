@@ -24,7 +24,6 @@ class LibraryConfigReplacementExtension implements FormlyExtension {
       if (this.configIds.has(configId)) {
         const override = omit(field, 'type');
         const config = this.fieldLibrary.getConfiguration(configId, override);
-        // eslint-disable-next-line ban/ban
         Object.assign(field, config);
         field.props = config.props;
       }
