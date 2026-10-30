@@ -1,12 +1,13 @@
 import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
 import rxjs from '@smarttools/eslint-plugin-rxjs';
+import angular from 'angular-eslint';
 import ban from 'eslint-plugin-ban';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
@@ -20,11 +21,6 @@ import ishCustomRules from './eslint-rules/dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default defineConfig([
   cspellESLintPluginRecommended,
@@ -52,17 +48,12 @@ export default defineConfig([
       },
     },
   })),
-  // Angular and Prettier configs via FlatCompat
-  ...compat
-    .extends(
-      'plugin:@angular-eslint/recommended',
-      'plugin:@angular-eslint/template/process-inline-templates',
-      'plugin:prettier/recommended'
-    )
-    .map(config => ({
-      ...config,
-      files: ['**/*.ts'],
-    })),
+  // Angular and Prettier configs
+  {
+    files: ['**/*.ts'],
+    extends: [angular.configs.tsRecommended, prettierRecommended],
+    processor: angular.processInlineTemplates,
+  },
   {
     files: ['**/*.ts'],
     plugins: {
@@ -1075,7 +1066,7 @@ export default defineConfig([
   //
   {
     files: ['**/*.js'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     languageOptions: {
       globals: {
@@ -1094,7 +1085,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mjs'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1119,7 +1110,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mts'],
-    extends: [...tseslint.configs.recommended, compat.extends('plugin:prettier/recommended')].flat(),
+    extends: [...tseslint.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1150,10 +1141,7 @@ export default defineConfig([
   {
     files: ['**/*.html'],
 
-    extends: compat.extends(
-      'plugin:@angular-eslint/template/recommended',
-      'plugin:@angular-eslint/template/accessibility'
-    ),
+    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
 
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
@@ -1171,7 +1159,7 @@ export default defineConfig([
   {
     files: ['**/*.html'],
     ignores: ['**/*inline-template-*.component.html'],
-    extends: compat.extends('plugin:prettier/recommended'),
+    extends: [prettierRecommended],
 
     rules: {
       'prettier/prettier': [

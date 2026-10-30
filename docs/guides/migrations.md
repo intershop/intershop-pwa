@@ -7,6 +7,12 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**ESLint configuration without `FlatCompat`**
+
+The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
