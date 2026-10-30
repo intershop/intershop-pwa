@@ -32,7 +32,7 @@ export class FeatureTogglePipe implements PipeTransform {
 
   transform(feature: 'always' | 'never' | FeatureToggleType): boolean {
     if (this.subscription) {
-      // eslint-disable-next-line ban/ban
+      // eslint-disable-next-line no-restricted-properties
       this.subscription.unsubscribe();
     }
 

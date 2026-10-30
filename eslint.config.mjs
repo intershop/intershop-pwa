@@ -2,7 +2,6 @@ import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
 import angular from 'angular-eslint';
-import ban from 'eslint-plugin-ban';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
@@ -60,7 +59,6 @@ export default defineConfig([
       '@ngrx': ngrx,
       'rxjs-x': rxjsX,
       'rxjs-angular': rxjsAngular,
-      ban,
       jest,
       jsdoc,
       perfectionist,
@@ -781,37 +779,6 @@ export default defineConfig([
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
       'arrow-parens': ['warn', 'as-needed'],
-      'ban/ban': [
-        'error',
-        {
-          name: ['*', 'ngOnInit'],
-          message: 'Use fixture.detectChanges instead!',
-        },
-        {
-          name: ['*', 'unsubscribe'],
-          message: 'Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87',
-        },
-        {
-          name: ['Object', 'assign'],
-          message: 'Use spread operator instead!',
-        },
-        {
-          name: ['*', 'toBeDefined'],
-          message: 'Most of the time this is the wrong assertion in tests!',
-        },
-        {
-          name: 'spyOn',
-          message: 'Use ts-mockito instead!',
-        },
-        {
-          name: 'atob',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-        {
-          name: 'btoa',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-      ],
       complexity: [
         'warn',
         {
@@ -844,6 +811,13 @@ export default defineConfig([
       'no-multiple-empty-lines': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'spyOn',
+          message: 'Use jest.spyOn or ts-mockito instead of the Jasmine global spyOn!',
+        },
+      ],
       'no-restricted-imports': [
         'warn',
         {
@@ -920,6 +894,21 @@ export default defineConfig([
           ],
         },
       ],
+      'no-restricted-properties': [
+        'error',
+        {
+          property: 'ngOnInit',
+          message: 'Use fixture.detectChanges instead!',
+        },
+        {
+          property: 'unsubscribe',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of unsubscribing manually!',
+        },
+        {
+          property: 'toBeDefined',
+          message: 'Most of the time this is the wrong assertion in tests!',
+        },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -964,6 +953,7 @@ export default defineConfig([
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
       'prefer-const': 'warn',
+      'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
       'unicorn/no-null': [
@@ -1025,7 +1015,8 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-unused-expressions': 'off',
-      'ban/ban': 'off',
+      'no-restricted-globals': 'off',
+      'no-restricted-properties': 'off',
       'ish-custom-rules/ban-imports-file-pattern': 'off',
       'ish-custom-rules/project-structure': [
         'warn',

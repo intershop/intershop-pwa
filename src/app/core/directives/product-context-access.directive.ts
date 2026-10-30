@@ -26,7 +26,6 @@ export class ProductContextAccessDirective {
         if (!this.view && this.check(ctx)) {
           this.view = viewContainer.createEmbeddedView(template, { ...ctx, context });
         } else if (this.view && this.check(ctx)) {
-          // eslint-disable-next-line ban/ban
           Object.assign(this.view.context, ctx);
         }
 
