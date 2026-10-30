@@ -7,6 +7,13 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**Category and product list images sized by their dimensions**
+
+To avoid layout shifts, category and product list images now reserve their space from the `width` and `height` attributes provided by the ICM image data (`imageActualWidth`, `imageActualHeight`).
+The hard-coded `width: 270px` and `aspect-ratio: 1/1` for category tile images in `category-page.scss` and the `width: auto` for product tile images in `product-list.scss` have been removed.
+
 ## From 12.1.0 to 13.0.0
 
 **Node.js 24 update**

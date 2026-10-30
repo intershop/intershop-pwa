@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'sass:list';
 @use 'sass:map';
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -103,6 +104,11 @@ $swatch-image-padding-to-border: 2px;
 // Tables
 $table-cell-padding: 0.75rem;
 $table-bg: transparent;
+
+// Homepage top teaser
+// fallback aspect ratios that reserve the space of the top homepage teaser images while they are loading
+$homepage-teaser-aspect-ratio: list.slash(1800, 737);
+$homepage-teaser-aspect-ratio-xs: list.slash(767, 737);
 
 // Toasts
 $toastViewBox: '0 0 512 512';
