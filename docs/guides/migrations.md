@@ -245,7 +245,7 @@ Errors of the cXML punchout configuration are displayed on the configuration pag
 **Copilot Embedded integration**
 
 The new `copilotEmbedded` feature toggle adds an AI product advisor page at `/copilot` that is backed by a Flowise chatflow.
-The Product Advisor is an experimental feature, and its functionality and configuration can change in future releases.
+Copilot Embedded is an experimental feature, and its functionality and configuration can change in future releases.
 The feature is disabled by default.
 To use it, enable the feature toggle and provide the `copilotEmbedded` configuration, see [Guide - Copilot Embedded](./copilot-embedded.md).
 
