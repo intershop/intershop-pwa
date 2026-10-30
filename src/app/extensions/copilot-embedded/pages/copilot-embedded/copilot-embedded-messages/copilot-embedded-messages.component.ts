@@ -38,7 +38,7 @@ export class CopilotEmbeddedMessagesComponent implements OnChanges {
   private injector = inject(Injector);
   private stickToBottom = true;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges<CopilotEmbeddedMessagesComponent>) {
     // the user's own message always brings the transcript back to the bottom
     if (changes.messages && this.messages?.at(-1)?.type === 'userMessage') {
       this.stickToBottom = true;
