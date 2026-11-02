@@ -1153,6 +1153,7 @@ export default defineConfig([
       '@angular-eslint/template/prefer-at-else': 'warn',
       '@angular-eslint/template/prefer-at-empty': 'warn',
       '@angular-eslint/template/prefer-built-in-pipes': 'warn',
+      '@angular-eslint/template/prefer-contextual-for-variables': 'warn',
       '@angular-eslint/template/prefer-control-flow': 'warn',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
       '@angular-eslint/template/prefer-template-literal': 'warn',

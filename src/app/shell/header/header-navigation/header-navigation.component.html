@@ -1,11 +1,11 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <ul class="navbar-nav main-navigation-list">
-  @for (category of categories$ | async; track category.uniqueId; let isFirst = $first) {
+  @for (category of categories$ | async; track category.uniqueId) {
     <li
       #subMenu
       class="dropdown"
-      [class]="{ open: isOpened(category.uniqueId), first: isFirst }"
+      [class]="{ open: isOpened(category.uniqueId), first: $first }"
       (click)="subMenuHide(subMenu)"
       (mouseenter)="subMenuShow(subMenu)"
       (mouseleave)="subMenuHide(subMenu)"
