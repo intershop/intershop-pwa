@@ -13,7 +13,7 @@ describe('Suggestions Service Provider', () => {
   let suggestServiceMock: SuggestService;
   let sparqueSuggestionsServiceMock: SparqueSuggestionsService;
 
-  const configureTestBed = (sparqueConfig: unknown = undefined) => {
+  const configureTestBed = (sparqueConfig?: unknown) => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [
