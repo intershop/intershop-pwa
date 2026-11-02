@@ -2,13 +2,13 @@
   <div class="row">
     <div class="col-lg-3 d-none d-lg-block">
       <div class="product-img-thumbs">
-        @for (imageView of getImageViewIDs$('S') | async; track imageView; let i = $index) {
+        @for (imageView of getImageViewIDs$('S') | async; track imageView) {
           <div
             class="product-thumb-set"
             tabindex="0"
-            [class.active]="isActiveSlide(i)"
-            (click)="setActiveSlide(i)"
-            (keydown.enter)="setActiveSlide(i)"
+            [class.active]="isActiveSlide($index)"
+            (click)="setActiveSlide($index)"
+            (keydown.enter)="setActiveSlide($index)"
           >
             <ish-product-image imageType="S" [imageView]="imageView" />
           </div>
@@ -21,18 +21,18 @@
           <div #swiper class="swiper">
             <div class="swiper-button-prev"></div>
             <div class="swiper-wrapper">
-              @for (imageView of largeImages; track imageView; let i = $index) {
+              @for (imageView of largeImages; track imageView) {
                 <div class="swiper-slide">
                   <div
-                    [tabindex]="isActiveSlide(i) ? 0 : -1"
-                    (click)="openZoomModal(i)"
-                    (keydown.enter)="openZoomModal(i)"
+                    [tabindex]="isActiveSlide($index) ? 0 : -1"
+                    (click)="openZoomModal($index)"
+                    (keydown.enter)="openZoomModal($index)"
                   >
                     <ish-product-image
                       imageType="L"
                       [class.product-image-zoom]="zoomImageIds$ | async"
                       [imageView]="imageView"
-                      [loading]="i === 0 ? 'eager' : 'lazy'"
+                      [loading]="$first ? 'eager' : 'lazy'"
                     />
                   </div>
                 </div>
@@ -55,8 +55,8 @@
     }"
   >
     <div class="text-center">
-      @for (imageView of zoomImages; track imageView; let i = $index) {
-        <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId(i)" [imageView]="imageView" />
+      @for (imageView of zoomImages; track imageView) {
+        <ish-product-image imageType="ZOOM" [id]="getZoomImageAnchorId($index)" [imageView]="imageView" />
       }
     </div>
   </ish-modal-dialog>

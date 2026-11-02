@@ -66,14 +66,14 @@
                 [routerLink]="['/account/requisitions/buyer', recurringOrder.id, { status: 'APPROVED' }]"
                 >{{ recurringOrder.documentNo }}</a
               ><br />
-              (@for (approval of recurringOrder.approvalStatuses; track approval.approver.email; let last = $last) {{{
+              (@for (approval of recurringOrder.approvalStatuses; track approval.approver.email) {{{
                   'account.recurring_order.details.approved.text'
                     | translate
                       : {
                           name: `${approval.approver.firstName} ${approval.approver.lastName}`,
                           date: approval.approvalDate | ishDate: 'shortDate',
                         }
-                }}@if (!last) {, }
+                }}@if (!$last) {, }
               })
             </dd>
           </dl>

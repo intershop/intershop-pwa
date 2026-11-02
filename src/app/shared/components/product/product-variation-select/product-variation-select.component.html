@@ -14,7 +14,7 @@
             @case (group.attributeType === 'defaultAndColorCode' || group.attributeType === 'defaultAndSwatchImage') {
               <ish-product-variation-select-enhanced
                 [group]="group"
-                [multipleOptions]="variationOptions.length > 1"
+                [multipleOptions]="$count > 1"
                 [uuid]="uuid"
                 (changeOption)="optionChange($event)"
               />
@@ -22,7 +22,7 @@
             @default {
               <ish-product-variation-select-default
                 [group]="group"
-                [multipleOptions]="variationOptions.length > 1"
+                [multipleOptions]="$count > 1"
                 [uuid]="uuid"
                 (changeOption)="optionChange($event)"
               />
