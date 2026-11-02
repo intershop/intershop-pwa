@@ -123,11 +123,9 @@ export class SelectWishlistModalComponent implements OnInit {
         if (this.addMoveProduct === 'add') {
           this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
           this.submitForm();
-        } else {
+        } else if (data.preferredWishlist.id !== data.selectedWishlist.id) {
           // set default form value to preferred wishlist unless the current wishlist is the preferred one
-          if (data.preferredWishlist.id !== data.selectedWishlist.id) {
-            this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
-          }
+          this.formGroup.patchValue({ wishlist: data.preferredWishlist.id });
         }
       });
   }
