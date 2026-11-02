@@ -445,7 +445,6 @@ export default defineConfig([
       ],
       'ish-custom-rules/no-object-literal-type-assertion': 'warn',
       'ish-custom-rules/no-optional-inputs': 'warn',
-      'ish-custom-rules/no-return-undefined': 'error',
       'ish-custom-rules/no-star-imports-in-store': 'error',
       'ish-custom-rules/no-testbed-with-then': 'error',
       'ish-custom-rules/no-var-before-return': 'warn',
@@ -960,6 +959,13 @@ export default defineConfig([
         'warn',
         {
           checkStrictEquality: true,
+        },
+      ],
+      'unicorn/no-useless-undefined': [
+        'error',
+        {
+          checkArguments: false,
+          checkArrowFunctionBody: false,
         },
       ],
       'unicorn/prefer-switch': [
