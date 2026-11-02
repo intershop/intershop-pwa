@@ -46,7 +46,7 @@
               </dt>
               <dd class="col-6">
                 <!-- prettier-ignore -->
-                @for (approver of uniqueApprovers; track approver.email; let i = $index) {@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
+                @for (approver of uniqueApprovers; track approver.email) {@if (!$first) {, }{{ approver.firstName }} {{ approver.lastName }}}
               </dd>
             } @else {
               <dt class="col-6">
@@ -54,7 +54,7 @@
               </dt>
               <dd class="col-6">
                 <!-- prettier-ignore -->
-                @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email; let i = $index){@if (i > 0) {, }{{ approver.firstName }} {{ approver.lastName }}}
+                @for (approver of requisition.approval?.customerApproval?.approvers; track approver.email){@if (!$first) {, }{{ approver.firstName }} {{ approver.lastName }}}
                 @if (requisition.approval?.customerApproval?.statusCode === 'APPROVED') {
                   <i class="bi bi-check-lg text-success ps-3"></i>
                 }
