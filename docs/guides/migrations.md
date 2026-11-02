@@ -16,6 +16,7 @@ The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, 
 The unmaintained `@smarttools/eslint-plugin-rxjs` is replaced by [`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x), so rename `rxjs/` rules to `rxjs-x/` in customized configurations and `eslint-disable` comments.
 The unmaintained `eslint-plugin-ban` is replaced by the ESLint core rules `no-restricted-properties`, `no-restricted-globals`, and `prefer-object-spread` (the outdated `atob`/`btoa` ban has been dropped), so replace `ban/ban` in `eslint-disable` comments accordingly.
 The custom rules `ish-custom-rules/no-return-undefined` and `ish-custom-rules/no-collapsible-if` are replaced by `unicorn/no-useless-undefined` (which also reports `= undefined` initializers and default values) and `unicorn/no-lonely-if`, and the ESLint core rule `no-lonely-if` (`else { if … }`) has been enabled, so check custom code with `npm run lint -- --fix`.
+The template rules `@angular-eslint/template/prefer-at-empty` and `@angular-eslint/template/no-empty-control-flow` have been enabled.
 
 ## From 12.1.0 to 13.0.0
 
