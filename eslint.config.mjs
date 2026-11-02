@@ -423,7 +423,6 @@ export default defineConfig([
       'ish-custom-rules/meaningful-describe-in-tests': 'warn',
       'ish-custom-rules/newline-before-root-members': 'warn',
       'ish-custom-rules/no-assignment-to-inputs': 'error',
-      'ish-custom-rules/no-collapsible-if': 'warn',
       'ish-custom-rules/no-formly-explicit-pseudo-type': 'error',
       'ish-custom-rules/no-initialize-observables-directly': 'warn',
       'ish-custom-rules/no-intelligence-in-artifacts': [
@@ -807,6 +806,7 @@ export default defineConfig([
       'no-empty': 'warn',
       'no-extra-boolean-cast': 'error',
       'no-irregular-whitespace': 'error',
+      'no-lonely-if': 'warn',
       'no-multiple-empty-lines': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
@@ -955,6 +955,8 @@ export default defineConfig([
       'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
+      // not the same as core eslint rule 'no-lonely-if'
+      'unicorn/no-lonely-if': 'warn',
       'unicorn/no-null': [
         'warn',
         {
