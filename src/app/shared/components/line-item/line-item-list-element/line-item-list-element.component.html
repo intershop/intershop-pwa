@@ -31,7 +31,9 @@
 
       <!-- switch by lineItemViewType -->
       @switch (lineItemViewType) {
-        @case ('simple') {}
+        @case ('simple') {
+          <!-- no inventory, editing, shipment and surcharge information -->
+        }
         @case ('availability') {
           <ish-product-inventory />
         }
