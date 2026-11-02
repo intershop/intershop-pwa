@@ -17,8 +17,6 @@ export class FooterComponent implements OnInit {
   constructor(private transferState: TransferState) {}
 
   ngOnInit() {
-    if (!SSR) {
-      this.appVersion = this.transferState.get(DISPLAY_VERSION, '');
-    }
+    this.appVersion = this.transferState.get(DISPLAY_VERSION, '');
   }
 }
