@@ -186,8 +186,8 @@ export class CheckoutFacade {
     this.store.dispatch(updateBasketRecurrence({ recurrence }));
   }
 
-  updateBasketExternalOrderReference(externalOrderReference: string) {
-    this.store.dispatch(updateBasket({ update: { externalOrderReference } }));
+  updateBasketCustomerOrderID(customerOrderID: string) {
+    this.store.dispatch(updateBasket({ update: { customerOrderID } }));
   }
 
   setBasketCustomAttribute(attribute: Attribute): void {

@@ -112,6 +112,20 @@ describe('Basket Service', () => {
     });
   });
 
+  it('should update the customer order ID using the new API field', done => {
+    const payload = { customerOrderID: 'NEW12345' };
+    when(apiService.patch(anything(), anything(), anything())).thenReturn(
+      of({ ...basketMockData, data: { ...basketMockData.data, ...payload } })
+    );
+
+    basketService.updateBasket(payload).subscribe(basket => {
+      const [, body] = capture(apiService.patch).last();
+      expect(body).toEqual(payload);
+      expect(basket.customerOrderID).toBe(payload.customerOrderID);
+      done();
+    });
+  });
+
   it("should validate the basket when 'validateBasket' is called", done => {
     when(apiService.post(anything(), anything(), anything())).thenReturn(of(undefined));
 

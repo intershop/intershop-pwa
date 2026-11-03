@@ -36,7 +36,7 @@ export interface AbstractBasket<T> {
     firstName: string;
     lastName: string;
   };
-  externalOrderReference?: string;
+  customerOrderID?: string;
   messageToMerchant?: string;
   recurrence?: Recurrence;
   customFields?: CustomFields;
