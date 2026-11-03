@@ -13,6 +13,7 @@
     <link href="/llms.txt" rel="describedby" />
     <meta content="#006b99" name="theme-color" />
     <!-- Reveal the SSR-rendered cookies banner at FCP when no consent cookie exists yet; see the cookies-banner component. -->
+    <!-- The CSP in nginx/additional-headers.yaml allows this script by its hash; update the hash whenever the script changes. -->
     <script>
       if (!/(?:^|; )cookieConsent=/.test(document.cookie)) {
         document.documentElement.classList.add('show-cookie-banner');
