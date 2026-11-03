@@ -99,6 +99,7 @@ export default defineConfig([
       '@angular-eslint/consistent-component-styles': ['warn', 'array'],
       '@angular-eslint/no-empty-lifecycle-method': 'warn',
       '@angular-eslint/no-host-metadata-property': 'off',
+      '@angular-eslint/no-implicit-take-until-destroyed': 'error',
       '@angular-eslint/pipe-prefix': [
         'error',
         {
