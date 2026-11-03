@@ -210,7 +210,7 @@ export class UsersService {
    */
   setUserBudget(login: string, budget: UserBudget): Observable<UserBudget> {
     if (!budget) {
-      // eslint-disable-next-line ish-custom-rules/no-object-literal-type-assertion
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return of({} as UserBudget);
     }
     return this.currentCustomer$.pipe(

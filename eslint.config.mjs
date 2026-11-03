@@ -125,7 +125,13 @@ export default defineConfig([
       '@ngrx/select-style': ['warn', 'operator'],
 
       // TypeScript best practices
-      '@typescript-eslint/consistent-type-assertions': 'off',
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
       '@typescript-eslint/dot-notation': 'warn',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
@@ -444,7 +450,6 @@ export default defineConfig([
           },
         },
       ],
-      'ish-custom-rules/no-object-literal-type-assertion': 'warn',
       'ish-custom-rules/no-optional-inputs': 'warn',
       'ish-custom-rules/no-star-imports-in-store': 'error',
       'ish-custom-rules/no-testbed-with-then': 'error',
@@ -1000,6 +1005,19 @@ export default defineConfig([
       '@cspell/spellchecker': 'off',
       'max-classes-per-file': 'off',
       'max-lines': 'off',
+    },
+  },
+  // allow type assertions on object literals in test code
+  {
+    files: ['**/*spec.ts', '**/dev/**/*.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
     },
   },
   // e2e test overrides
