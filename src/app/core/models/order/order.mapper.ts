@@ -93,7 +93,7 @@ export class OrderMapper {
         taxationId: data.taxIdentificationNumber,
         user: data.buyer,
         messageToMerchant: data.messageToMerchant,
-        externalOrderReference: data.externalOrderReference,
+        customerOrderID: data.customerOrderID ?? data.externalOrderReference,
         withdrawal: included?.withdrawal ? included.withdrawal[data.id] : undefined,
         customFields: CustomFieldMapper.fromData(data.customFields),
       };

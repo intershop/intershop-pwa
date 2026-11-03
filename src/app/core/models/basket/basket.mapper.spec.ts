@@ -82,7 +82,7 @@ describe('Basket Mapper', () => {
       ],
     },
     messageToMerchant: 'test message',
-    externalOrderReference: 'EXT12345',
+    customerOrderID: 'EXT12345',
     customFields: [
       { name: 'customField1', value: 'value1', type: 'String' },
       { name: 'customField2', value: 'value2', type: 'String' },
@@ -187,9 +187,24 @@ describe('Basket Mapper', () => {
       );
 
       expect(basket.messageToMerchant).toBe(basketData.data.messageToMerchant);
-      expect(basket.externalOrderReference).toBe(basketData.data.externalOrderReference);
+      expect(basket.customerOrderID).toBe(basketData.data.customerOrderID);
 
       expect(basket.totals.isEstimated).toBeTrue();
+    });
+
+    it.each([
+      { customerOrderID: 'NEW12345', externalOrderReference: undefined, expected: 'NEW12345' },
+      { customerOrderID: undefined, externalOrderReference: 'EXT12345', expected: 'EXT12345' },
+      { customerOrderID: 'NEW12345', externalOrderReference: 'EXT12345', expected: 'NEW12345' },
+      { customerOrderID: '', externalOrderReference: 'EXT12345', expected: '' },
+      { customerOrderID: undefined, externalOrderReference: undefined, expected: undefined },
+    ])('should map customer order ID from $customerOrderID and $externalOrderReference', ({ expected, ...data }) => {
+      basketData.data = { ...basketData.data, ...data };
+
+      basket = BasketMapper.fromData(basketData);
+
+      expect(basket.customerOrderID).toBe(expected);
+      expect(basket).not.toHaveProperty('externalOrderReference');
     });
 
     it('should return invoice address if included', () => {

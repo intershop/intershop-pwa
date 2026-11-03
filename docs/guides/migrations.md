@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**Customer order ID replaces external order reference**
+
+The basket and order models now expose `customerOrderID` instead of `externalOrderReference`, and basket updates send `customerOrderID`.
+The mappers still accept `externalOrderReference` from older API responses when `customerOrderID` is absent; the deprecated API field is scheduled for removal with PWA 15.0.0.
+To rename the property and `CheckoutFacade.updateBasketExternalOrderReference()` to `updateBasketCustomerOrderID()` in custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:customer-order-id
+```
+
+API interfaces, mappers, and string-based references such as `Pick<Basket, 'externalOrderReference'>` are not migrated and need a manual review.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

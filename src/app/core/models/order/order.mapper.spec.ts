@@ -65,7 +65,7 @@ describe('Order Mapper', () => {
       ],
     },
     messageToMerchant: 'test message',
-    externalOrderReference: 'EXT12345',
+    customerOrderID: 'EXT12345',
     attributes: [
       { name: 'BusinessObjectAttributes#OrderApproval_ApprovalDate', value: '2020-10-12T13:40:00+02:00', type: 'Date' },
       { name: 'BusinessObjectAttributes#OrderApproval_ApproverFirstName', value: 'Patricia', type: 'String' },
@@ -169,7 +169,20 @@ describe('Order Mapper', () => {
       expect(order.requisitionNo).toBe(orderBaseData.requisitionDocumentNo);
 
       expect(order.messageToMerchant).toBe(orderBaseData.messageToMerchant);
-      expect(order.externalOrderReference).toBe(orderBaseData.externalOrderReference);
+      expect(order.customerOrderID).toBe(orderBaseData.customerOrderID);
+    });
+
+    it.each([
+      { customerOrderID: 'NEW12345', externalOrderReference: undefined, expected: 'NEW12345' },
+      { customerOrderID: undefined, externalOrderReference: 'EXT12345', expected: 'EXT12345' },
+      { customerOrderID: 'NEW12345', externalOrderReference: 'EXT12345', expected: 'NEW12345' },
+      { customerOrderID: '', externalOrderReference: 'EXT12345', expected: '' },
+      { customerOrderID: undefined, externalOrderReference: undefined, expected: undefined },
+    ])('should map customer order ID from $customerOrderID and $externalOrderReference', ({ expected, ...data }) => {
+      const order = OrderMapper.fromData({ ...orderData, data: { ...orderBaseData, ...data } });
+
+      expect(order.customerOrderID).toBe(expected);
+      expect(order).not.toHaveProperty('externalOrderReference');
     });
   });
 

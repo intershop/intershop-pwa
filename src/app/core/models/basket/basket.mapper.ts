@@ -73,7 +73,7 @@ export class BasketMapper {
       attributes: data.attributes,
       taxationId: data.attributes?.find(attr => attr.name === 'taxationID')?.value as string,
       user: data.buyer,
-      externalOrderReference: data.externalOrderReference,
+      customerOrderID: data.customerOrderID ?? data.externalOrderReference,
       messageToMerchant: data.messageToMerchant,
       recurrence: data.recurrence,
       customFields: CustomFieldMapper.fromData(data.customFields),

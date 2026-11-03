@@ -21,6 +21,11 @@
       "version": "13.0.0",
       "description": "Replaces the deprecated `ChangeDetectionStrategy.Default` with `ChangeDetectionStrategy.Eager` in custom code (Angular 21).",
       "factory": "./change-detection-strategy-eager/factory#migrateChangeDetectionStrategyEager"
+    },
+    "customer-order-id": {
+      "version": "14.0.0",
+      "description": "Renames the basket/order property `externalOrderReference` to `customerOrderID` and `CheckoutFacade.updateBasketExternalOrderReference()` to `updateBasketCustomerOrderID()` in custom code.",
+      "factory": "./customer-order-id/factory#migrateCustomerOrderId"
     }
   }
 }

@@ -14,6 +14,7 @@ import {
   getBasketLastTimeProductAdded,
   getBasketLoading,
   getCurrentBasket,
+  updateBasket,
 } from 'ish-core/store/customer/basket';
 import { getUserCostCenters } from 'ish-core/store/customer/user';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -61,6 +62,16 @@ describe('Checkout Facade', () => {
 
     store$ = TestBed.inject(MockStore);
     facade = TestBed.inject(CheckoutFacade);
+  });
+
+  describe('updateBasketCustomerOrderID()', () => {
+    it('should dispatch the customer order ID update', () => {
+      const dispatch = jest.spyOn(store$, 'dispatch');
+
+      facade.updateBasketCustomerOrderID('NEW12345');
+
+      expect(dispatch).toHaveBeenCalledWith(updateBasket({ update: { customerOrderID: 'NEW12345' } }));
+    });
   });
 
   describe('getValidShippingMethod$()', () => {

@@ -32,8 +32,8 @@ export type BasketUpdateType =
   | { commonShippingMethod: string }
   | { commonShipToAddress: string }
   | { costCenter: string }
+  | { customerOrderID: string }
   | { customFields: CustomFieldData[] }
-  | { externalOrderReference: string }
   | { invoiceToAddress: string }
   | { messageToMerchant: string }
   | { recurrence: Recurrence };

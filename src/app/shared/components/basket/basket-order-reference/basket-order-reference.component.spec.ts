@@ -48,7 +48,7 @@ describe('Basket Order Reference Component', () => {
 
   it('should read the order reference id from the basket', () => {
     fixture.componentRef.setInput('basket', {
-      externalOrderReference: '4711',
+      customerOrderID: '4711',
     } as Basket);
 
     fixture.detectChanges();
@@ -64,7 +64,7 @@ describe('Basket Order Reference Component', () => {
     });
     component.submitForm();
 
-    verify(checkoutFacade.updateBasketExternalOrderReference(anything())).once();
+    verify(checkoutFacade.updateBasketCustomerOrderID('xxx')).once();
   });
 
   it('should not emit form when an invalid form is submitted', () => {
@@ -75,6 +75,6 @@ describe('Basket Order Reference Component', () => {
     });
     component.submitForm();
 
-    verify(checkoutFacade.updateBasketExternalOrderReference(anything())).never();
+    verify(checkoutFacade.updateBasketCustomerOrderID(anything())).never();
   });
 });
