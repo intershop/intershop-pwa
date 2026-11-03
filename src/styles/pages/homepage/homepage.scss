@@ -1,5 +1,9 @@
 // HOMEPAGE
 
+// themes that do not define the homepage teaser aspect ratios in their `variables.scss` reserve no space
+$homepage-teaser-aspect-ratio: null !default;
+$homepage-teaser-aspect-ratio-xs: null !default;
+
 .homepage {
   header {
     margin-bottom: 0;
@@ -26,6 +30,20 @@
 
     img {
       width: 100%;
+    }
+
+    // reserve the space of the top homepage teaser images while they load (theme variables match the demo content)
+    // with `auto`, the natural ratio of the loaded image wins, so other teaser images are not distorted
+    ish-content-include > ish-content-design-view-wrapper > ish-content-pagelet:first-child img.enhanced-image {
+      @if $homepage-teaser-aspect-ratio {
+        aspect-ratio: auto $homepage-teaser-aspect-ratio;
+      }
+
+      @if $homepage-teaser-aspect-ratio-xs {
+        @media (max-width: $screen-xs-max) {
+          aspect-ratio: auto $homepage-teaser-aspect-ratio-xs;
+        }
+      }
     }
 
     .brands-carousel {

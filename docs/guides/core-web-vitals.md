@@ -24,6 +24,13 @@ In this spot, the component is not supposed to be loaded lazily which would wors
 To avoid that, Enhanced Image Teaser images are loaded by default with `loading="eager"` instead of the default `loading="lazy"` used for most other images in the PWA.
 If `loading="lazy"` is explicitly intended for certain Enhanced Image Teaser images, the class `loading-lazy` needs to be added to the Enhanced Image Teaser instances `CSS Class` configuration parameter in the ICM back office.
 
+The CMS does not provide image dimensions, so the space of an Enhanced Image Teaser image is unknown until the image is loaded, which can cause layout shifts (Cumulative Layout Shift (CLS) metric).
+To avoid this for the top teaser of the home page, [`homepage.scss`](../../src/styles/pages/homepage/homepage.scss) reserves its space with fallback aspect ratios that are defined by the theme variables `$homepage-teaser-aspect-ratio` and `$homepage-teaser-aspect-ratio-xs` (screens below 768px) in the theme's `variables.scss`.
+The default values match the images of the demo content.
+The fallback is only used while the image is loading, so images with a different aspect ratio are not distorted.
+Adjust these variables to the teaser images of your home page.
+If a theme does not define these variables, no space is reserved, as before.
+
 ## Further References
 
 - [Core Web Vitals](https://web.dev/explore/learn-core-web-vitals)
