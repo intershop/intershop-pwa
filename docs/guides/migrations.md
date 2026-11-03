@@ -26,6 +26,12 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 Some of these rules check more cases, and `no-lonely-if` and the template rules `prefer-at-empty`, `no-empty-control-flow`, and `prefer-contextual-for-variables` have been enabled, so run `npm run lint -- --fix`.
 Replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
 
+**`takeUntil(destroy$)` no longer allowed**
+
+The transitional period for the `takeUntil(destroy$)` mechanism, see [From 4.2 to 5.0](#from-42-to-50), has ended.
+ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been disabled.
+Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed) operator instead, e.g., with the migration script described there.
+
 ## From 13.0.0 to 13.1.0
 
 **Formly 10 update**
