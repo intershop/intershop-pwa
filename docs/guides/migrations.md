@@ -7,6 +7,15 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 13.1.0
+
+**Formly 10 update**
+
+`@ngx-formly/core` has been updated to version 10, which requires Angular 21 or newer.
+Valid forms now emit an initial `statusChanges` notification, so check custom subscribers that assume otherwise.
+`formly-form` now emits each build asynchronously via its new `fieldChange` output, so component tests that expect a `modelChange` right after the initial rendering may have to `await fixture.whenStable()` first.
+For further breaking changes, e.g., for string expressions and JSON schema forms, see the [Formly 10 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v10.0.0/UPGRADE-10.0.md).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

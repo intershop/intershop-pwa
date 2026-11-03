@@ -82,7 +82,7 @@
     "@ngrx/router-store": "^21.1.1",
     "@ngrx/store": "^21.1.1",
     "@ngrx/store-devtools": "^21.1.1",
-    "@ngx-formly/core": "^9.0.0",
+    "@ngx-formly/core": "^10.0.1",
     "@ngx-translate/core": "^18.1.0",
     "@popperjs/core": "^2.11.8",
     "@rx-angular/state": "^21.1.2",
