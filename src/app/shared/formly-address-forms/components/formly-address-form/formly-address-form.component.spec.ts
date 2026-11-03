@@ -166,8 +166,10 @@ describe('Formly Address Form Component', () => {
     expect(element.querySelector('[data-testing-id="firstName"]')).toBeTruthy();
   });
 
-  it('should switch to exampleCountry form on country change', () => {
+  it('should switch to exampleCountry form on country change', async () => {
     fixture.detectChanges();
+    // wait for the asynchronous formly build notification, otherwise the zone does not become stable to emit the model change
+    await fixture.whenStable();
 
     component.addressForm.get('countryCode').setValue('exampleCountry');
     component.addressForm.get('countryCode').markAsDirty();
