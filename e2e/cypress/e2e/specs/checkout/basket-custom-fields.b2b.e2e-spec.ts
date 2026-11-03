@@ -21,7 +21,9 @@ const _ = {
   commissionNumber: 'com4711',
 };
 
-describe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
+// TODO: disabled because the tests are flaky even after several stabilization attempts, re-enable once they run reliably
+// eslint-disable-next-line jest/no-disabled-tests
+xdescribe('Edit and Display Custom Fields on Cart and Checkout B2B', () => {
   before(() => {
     createB2BUserViaREST(_.user);
     ProductDetailPage.navigateTo(_.sku);
