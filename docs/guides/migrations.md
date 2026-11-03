@@ -7,6 +7,14 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**Customer order ID replaces external order reference**
+
+The basket and order models now expose `customerOrderID` instead of `externalOrderReference`, and basket updates send `customerOrderID`.
+Update custom code to use the new property and `CheckoutFacade.updateBasketCustomerOrderID()` instead of `updateBasketExternalOrderReference()`.
+The mappers still accept `externalOrderReference` from older API responses when `customerOrderID` is absent; the deprecated API field is scheduled for removal with PWA 13.0.0.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

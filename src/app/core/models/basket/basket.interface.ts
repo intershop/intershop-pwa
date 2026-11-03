@@ -30,6 +30,8 @@ export interface BasketBaseData {
     valueBasedDiscounts?: string[];
   };
   buckets?: string[];
+  customerOrderID?: string;
+  // TODO: Remove deprecated externalOrderReference with PWA 13.0.0.
   externalOrderReference?: string;
   lineItems?: string[];
   messageToMerchant?: string;

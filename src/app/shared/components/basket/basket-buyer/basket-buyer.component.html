@@ -10,7 +10,7 @@
       {{ userName }}<br />
       {{ object.email || object.invoiceToAddress?.email }}
     </p>
-    @if (object.externalOrderReference) {
+    @if (object.customerOrderID) {
       <div data-testing-id="orderReferenceID">
         @if (editRouterLink) {
           <a
@@ -25,7 +25,7 @@
           </a>
         }
         <strong>{{ 'checkout.widget.buyer.orderReferenceId' | translate }}</strong>
-        <p>{{ object.externalOrderReference }}</p>
+        <p>{{ object.customerOrderID }}</p>
       </div>
     }
   </div>
