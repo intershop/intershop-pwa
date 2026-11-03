@@ -453,7 +453,6 @@ export default defineConfig([
       'ish-custom-rules/no-testbed-with-then': 'error',
       'ish-custom-rules/no-var-before-return': 'warn',
       'ish-custom-rules/ordered-imports': 'warn',
-      'ish-custom-rules/private-destroy-field': 'warn',
       'ish-custom-rules/private-destroyRef-field': 'error',
       'ish-custom-rules/project-structure': [
         'warn',
@@ -936,6 +935,15 @@ export default defineConfig([
           selector:
             'MethodDefinition[key.name="ngOnChanges"] TSTypeReference[typeName.name="SimpleChanges"]:not([typeArguments])',
           message: 'Use typed `SimpleChanges<T>` with the component or directive class as `T`.',
+        },
+        {
+          selector:
+            'CallExpression[callee.name="takeUntil"]:matches([arguments.0.name=/^destroy\\$?$/], [arguments.0.property.name=/^destroy\\$?$/])',
+          message: 'Use takeUntilDestroyed() instead of takeUntil(destroy$)!',
+        },
+        {
+          selector: 'PropertyDefinition[key.name=/^destroy\\$?$/][value.callee.name="Subject"]',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of a destroy$ subject!',
         },
       ],
       'no-sequences': 'error',
