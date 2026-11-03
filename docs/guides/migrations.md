@@ -23,8 +23,16 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 | `ish-custom-rules/no-collapsible-if`                | `unicorn/no-lonely-if`                                                                        |
 | `ish-custom-rules/no-object-literal-type-assertion` | `@typescript-eslint/consistent-type-assertions`                                               |
 
-Some of these rules check more cases, and `no-lonely-if` and the template rules `prefer-at-empty`, `no-empty-control-flow`, and `prefer-contextual-for-variables` have been enabled, so run `npm run lint -- --fix`.
-Replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
+Some of these rules check more cases.
+Additionally, the following rules have been enabled:
+
+- `no-lonely-if`
+- `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`, manually.
+- `@angular-eslint/template/prefer-at-empty`
+- `@angular-eslint/template/no-empty-control-flow`
+- `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
+
+Run `npm run lint -- --fix` to fix most of the findings automatically.
 
 **`takeUntil(destroy$)` no longer allowed**
 
