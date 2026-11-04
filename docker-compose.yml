@@ -37,6 +37,9 @@ services:
       IDENTITY_PROVIDERS: |
         Punchout:
           type: PUNCHOUT
+          # allowedHookUrls:
+          #   - https://sap.example.com
+          #   - https://*.procurement.example.com
         CoBrowse:
           type: cobrowse
       #   Auth0:

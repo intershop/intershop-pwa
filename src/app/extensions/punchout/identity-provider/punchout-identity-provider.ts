@@ -11,14 +11,24 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
 import { TokenService } from 'ish-core/services/token/token.service';
+import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../services/punchout/punchout.service';
 
+interface PunchoutIdentityProviderConfig {
+  type: string;
+  /**
+   * Origins an OCI punchout HOOK_URL has to match, e.g. 'https://sap.example.com' or 'https://*.example.com' for any subdomain.
+   * If not configured, any HOOK_URL is accepted.
+   */
+  allowedHookUrls?: string | string[];
+}
+
 @Injectable({ providedIn: 'root' })
-export class PunchoutIdentityProvider implements IdentityProvider {
+export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdentityProviderConfig> {
   constructor(
     protected router: Router,
     protected store: Store,
@@ -29,6 +39,43 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private checkoutFacade: CheckoutFacade,
     private tokenService: TokenService
   ) {}
+
+  /**
+   * Checks the HOOK_URL against the configured allow-list of origins (array or comma-separated string).
+   * A leading '*.' in the host of an allowed origin matches any subdomain, but not the domain itself.
+   */
+  private static isAllowedHookUrl(hookUrl: string, allowedHookUrls: string | string[]): boolean {
+    const allowedList = (typeof allowedHookUrls === 'string' ? allowedHookUrls.split(',') : (allowedHookUrls ?? []))
+      .map(allowed => allowed?.trim())
+      .filter(allowed => !!allowed);
+    if (!allowedList.length) {
+      // only skip the check if no allow-list is configured, an empty allow-list rejects every HOOK_URL
+      return allowedHookUrls === undefined;
+    }
+
+    // require an explicit 'scheme://' authority, as the browser resolves e.g. 'https:host' relative to the current page when used as form action
+    const url = /^[a-z][\d+.a-z-]*:\/\//i.test(hookUrl) ? PunchoutIdentityProvider.parseUrl(hookUrl) : undefined;
+    if (!url) {
+      return false;
+    }
+
+    return allowedList.some(allowed => {
+      const isWildcard = allowed.includes('://*.');
+      const allowedUrl = PunchoutIdentityProvider.parseUrl(isWildcard ? allowed.replace('://*.', '://') : allowed);
+      if (allowedUrl?.protocol !== url.protocol || allowedUrl.port !== url.port) {
+        return false;
+      }
+      return isWildcard ? url.hostname.endsWith(`.${allowedUrl.hostname}`) : url.hostname === allowedUrl.hostname;
+    });
+  }
+
+  private static parseUrl(value: string): URL {
+    try {
+      return new URL(value);
+    } catch {
+      return;
+    }
+  }
 
   getCapabilities() {
     return {
@@ -66,6 +113,28 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       return false;
     }
 
+    // the configuration is read from the store, because init() is called delayed and might not have run yet
+    return this.store.pipe(
+      select(getIdentityProvider),
+      take(1),
+      switchMap(config => {
+        // reject an OCI HOOK_URL that does not match the configured allow-list before logging in (prevents open redirects)
+        if (
+          route.queryParamMap.has('HOOK_URL') &&
+          !PunchoutIdentityProvider.isAllowedHookUrl(
+            route.queryParamMap.get('HOOK_URL'),
+            (config as PunchoutIdentityProviderConfig)?.allowedHookUrls
+          )
+        ) {
+          this.appFacade.setBusinessError('punchout.error.invalid.hook_url');
+          return of(this.router.parseUrl('/error'));
+        }
+        return this.loginPunchoutUser(route);
+      })
+    );
+  }
+
+  private loginPunchoutUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     if (route.queryParamMap.has('access-token')) {
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {
