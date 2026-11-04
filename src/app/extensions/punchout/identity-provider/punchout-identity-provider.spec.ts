@@ -10,6 +10,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
+import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -122,6 +123,7 @@ describe('Punchout Identity Provider', () => {
     beforeEach(() => {
       routerSpy = jest.spyOn(router, 'parseUrl');
       punchoutIdentityProvider.init();
+      store$.overrideSelector(getIdentityProvider, { type: 'PUNCHOUT' });
       when(accountFacade.userError$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
       when(accountFacade.isLoggedIn$).thenReturn(of(true));
     });
@@ -155,7 +157,7 @@ describe('Punchout Identity Provider', () => {
       const password = 'password';
 
       beforeEach(() => {
-        queryParams = { HOOK_URL: 'url', USERNAME: username, PASSWORD: password };
+        queryParams = { HOOK_URL: 'https://hook.example.com', USERNAME: username, PASSWORD: password };
       });
 
       it('should trigger loginUser method on login', done => {
@@ -166,6 +168,136 @@ describe('Punchout Identity Provider', () => {
           done();
         });
       });
+    });
+
+    describe('HOOK_URL validation', () => {
+      const credentials = { USERNAME: 'username', PASSWORD: 'password' };
+
+      function configureHookUrlSchemes(hookUrlSchemes: string | string[]) {
+        store$.overrideSelector(getIdentityProvider, { type: 'PUNCHOUT', hookUrlSchemes });
+        store$.refreshState();
+      }
+
+      function triggerOciLogin(hookUrl: string) {
+        return punchoutIdentityProvider.triggerLogin(getSnapshot({ ...credentials, HOOK_URL: hookUrl })) as Observable<
+          boolean | UrlTree
+        >;
+      }
+
+      function expectAccepted(hookUrl: string) {
+        verify(accountFacade.loginUser(anything())).once();
+        verify(appFacade.setBusinessError(anything())).never();
+        expect(sessionStorage.getItem('punchout_HookURL')).toEqual(hookUrl);
+      }
+
+      function expectRejected() {
+        verify(appFacade.setBusinessError('punchout.error.invalid.hook_url')).once();
+        verify(accountFacade.loginUser(anything())).never();
+        expect(sessionStorage.getItem('punchout_HookURL')).toBeNull();
+        expect(routerSpy).toHaveBeenCalledWith('/error');
+      }
+
+      describe('without configured schemes', () => {
+        it.each([
+          'https://sap.example.com/sap/bc/srm?client=100',
+          'http://sap.example.com',
+          'HTTPS://sap.example.com',
+          'https:sap.example.com/return',
+          'sapevent:POST',
+          'SAPEVENT:ADDI',
+        ])(
+          'should accept HOOK_URL %s and login the user',
+          fakeAsync((hookUrl: string) => {
+            triggerOciLogin(hookUrl).subscribe(noop);
+            tick(0);
+            expectAccepted(hookUrl);
+          })
+        );
+
+        it.each([
+          'javascript:alert(1)',
+          'JavaScript:alert(1)',
+          'data:text/html,<script>alert(1)</script>',
+          'vbscript:msgbox(1)',
+          ' javascript:alert(1)',
+          '\tjavascript:alert(1)',
+          'java\tscript:alert(1)',
+          '\thttps://sap.example.com',
+          'ftp://sap.example.com',
+          '//sap.example.com',
+          '/hook',
+          'hook',
+          '',
+        ])(
+          'should reject HOOK_URL %j, not login the user and route to error page',
+          fakeAsync((hookUrl: string) => {
+            triggerOciLogin(hookUrl).subscribe(noop);
+            tick(0);
+            expectRejected();
+          })
+        );
+      });
+
+      describe('with configured schemes', () => {
+        it.each(['http://sap.example.com', 'sapevent:POST'])(
+          'should reject the default scheme of %s if only other schemes are configured',
+          fakeAsync((hookUrl: string) => {
+            configureHookUrlSchemes([' HTTPS ', '']);
+            triggerOciLogin(hookUrl).subscribe(noop);
+            tick(0);
+            expectRejected();
+          })
+        );
+
+        it('should accept schemes configured as comma-separated string', fakeAsync(() => {
+          configureHookUrlSchemes('https, sap-gui');
+          triggerOciLogin('sap-gui://sap.example.com').subscribe(noop);
+          tick(0);
+          expectAccepted('sap-gui://sap.example.com');
+        }));
+
+        it('should never accept script schemes, even if configured', fakeAsync(() => {
+          configureHookUrlSchemes(['https', 'javascript']);
+          triggerOciLogin('javascript:alert(1)').subscribe(noop);
+          tick(0);
+          expectRejected();
+        }));
+
+        // an empty YAML key 'hookUrlSchemes:' is parsed as null
+        // eslint-disable-next-line unicorn/no-null
+        it.each<string | string[]>([[], '', '  ', ' , ', null, ['javascript']])(
+          'should use the default schemes if the configured schemes %j are empty',
+          fakeAsync((hookUrlSchemes: string | string[]) => {
+            configureHookUrlSchemes(hookUrlSchemes);
+            triggerOciLogin('https://sap.example.com').subscribe(noop);
+            tick(0);
+            expectAccepted('https://sap.example.com');
+          })
+        );
+
+        it('should still reject schemes outside the default if the configured schemes are empty', fakeAsync(() => {
+          configureHookUrlSchemes([]);
+          triggerOciLogin('ftp://sap.example.com').subscribe(noop);
+          tick(0);
+          expectRejected();
+        }));
+      });
+
+      it('should not check cXML punchout logins without HOOK_URL', fakeAsync(() => {
+        when(punchoutService.getCxmlPunchoutSession(anything())).thenReturn(
+          of({ returnURL: 'home', basketId: 'basket-id' } as PunchoutSession)
+        );
+
+        const login$ = punchoutIdentityProvider.triggerLogin(
+          getSnapshot({ sid: 'sid', 'access-token': 'accessToken' })
+        ) as Observable<boolean | UrlTree>;
+        login$.subscribe(noop);
+        tick(500);
+
+        verify(accountFacade.loginUserWithToken('accessToken')).once();
+        verify(appFacade.setBusinessError(anything())).never();
+        expect(routerSpy).toHaveBeenCalledWith('/home');
+      }));
     });
     describe('race', () => {
       describe('isLoggedIn$ emits first', () => {
@@ -202,7 +334,7 @@ describe('Punchout Identity Provider', () => {
 
         describe('with oci punchout user', () => {
           beforeEach(() => {
-            queryParams = { HOOK_URL: 'url', USERNAME: 'username', PASSWORD: 'password' };
+            queryParams = { HOOK_URL: 'https://hook.example.com', USERNAME: 'username', PASSWORD: 'password' };
           });
 
           it('should set session storage and create basket on login', done => {
@@ -210,7 +342,7 @@ describe('Punchout Identity Provider', () => {
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              expect(sessionStorage.getItem('punchout_HookURL')).toEqual('url');
+              expect(sessionStorage.getItem('punchout_HookURL')).toEqual('https://hook.example.com');
               verify(checkoutFacade.createBasket()).once();
               expect(routerSpy).toHaveBeenCalledWith('/home');
               done();

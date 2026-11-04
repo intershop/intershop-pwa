@@ -198,6 +198,7 @@ rulesets
 rxjs
 safelisting
 sameorigin
+sapevent
 scroller
 searchquerydefinition
 searchstring
@@ -238,6 +239,7 @@ unflatten
 unionpay
 upsert
 userid
+vbscript
 viewconf
 viewcontext
 viewcontextid

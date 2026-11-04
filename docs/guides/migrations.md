@@ -28,6 +28,12 @@ The Design View now only exchanges messages with an Intershop Administration Por
 If your project uses the Design View with an IAP on a different origin, adapt `designViewOrigins` in your environment configuration, otherwise the Design View is disabled.
 For more information, see [CMS Integration - Design View](../concepts/cms-integration.md#design-view).
 
+**OCI punchout `HOOK_URL` validation**
+
+The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed scheme and shows the error page instead.
+By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
+To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

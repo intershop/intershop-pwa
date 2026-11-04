@@ -1400,6 +1400,7 @@
   "promotion.detailslink.label": "Promotion details",
   "promotion.detailslink.text": "Details",
   "promotion.removelink.text": "Remove",
+  "punchout.error.invalid.hook_url": "Error connecting to the Punchout catalog. The HOOK_URL is not allowed.",
   "punchout.error.missing.parameters": "Error connecting to the Punchout catalog. Required start parameters are missing.",
   "punchout.login_already_exists.error": "A Punchout user with that user name already exists. Please check the information for accuracy or enter a different name.",
   "quickorder.page.add.cart": "Add to cart",
