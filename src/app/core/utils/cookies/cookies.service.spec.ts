@@ -53,7 +53,7 @@ describe('Cookies Service', () => {
 
   // The cookies service cannot test the secure flag of the cookie, because jsdom does not support it.
   // eslint-disable-next-line jest/no-disabled-tests
-  xit('should not set "secure" if protocoll is "http:"', () => {
+  it.skip('should not set "secure" if protocoll is "http:"', () => {
     cookiesService.put('foo', 'bar');
     expect(document.cookie).toMatchInlineSnapshot(`"foo=bar;path=/de;SameSite=Strict"`);
   });

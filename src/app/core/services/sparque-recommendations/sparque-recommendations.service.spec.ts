@@ -145,7 +145,7 @@ describe('Sparque Recommendations Service', () => {
       when(sparqueApiServiceMock.get('recommendations', apiVersion, anything())).thenReturn(throwError(() => apiError));
 
       service.getRecommendations(recommendationsContext).subscribe({
-        next: () => fail('should have thrown an error'),
+        next: () => done.fail('should have thrown an error'),
         error: error => {
           expect(error).toBe(apiError);
           done();

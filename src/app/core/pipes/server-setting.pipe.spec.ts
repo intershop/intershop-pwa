@@ -68,7 +68,7 @@ describe('Server Setting Pipe', () => {
     expect(element).toMatchInlineSnapshot(`[always]`);
   });
 
-  it('should render TEST when setting is set', fakeAsync(() => {
+  it('should render TEST when setting is set later', fakeAsync(() => {
     when(appFacade.serverSetting$('service.ABC.runnable')).thenReturn(concat(of(false), of(true).pipe(delay(1000))));
     fixture.detectChanges();
 

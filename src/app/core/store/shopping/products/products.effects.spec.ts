@@ -204,7 +204,7 @@ describe('Products Effects', () => {
           actions.push(action);
         },
         error: fail,
-        complete: () => fail('COMPLETED'),
+        complete: () => done.fail('COMPLETED'),
       });
 
       setTimeout(() => {
@@ -220,7 +220,7 @@ describe('Products Effects', () => {
       }, 2500);
 
       setTimeout(() => {
-        expect(actions.every(a => a.type === loadProductFail.type));
+        expect(actions.every(a => a.type === loadProductFail.type)).toBeTrue();
         done();
       }, 3000);
     });
@@ -240,7 +240,9 @@ describe('Products Effects', () => {
           actions.push(action);
         },
         error: fail,
-        complete: () => fail('COMPLETED'),
+        complete: () => {
+          throw new Error('COMPLETED');
+        },
       });
 
       tick(500);
@@ -252,7 +254,7 @@ describe('Products Effects', () => {
       tick(1000);
       expect(actions).toHaveLength(3);
 
-      expect(actions.every(a => a.type === loadProductFail.type));
+      expect(actions.every(a => a.type === loadProductFail.type)).toBeTrue();
     }));
   });
 

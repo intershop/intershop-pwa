@@ -3,7 +3,7 @@ import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { normalizePath } from '../helpers';
 
 const messages = {
-  noDoneError: `asynchronous operations in tests should call done callback, see https://facebook.github.io/jest/docs/en/asynchronous.html`,
+  noDoneError: `asynchronous operations in tests should call done callback, see https://jestjs.io/docs/asynchronous#callbacks`,
 };
 
 /**

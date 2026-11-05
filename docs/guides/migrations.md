@@ -40,6 +40,10 @@ The transitional period for the `takeUntil(destroy$)` mechanism, see [From 4.2 t
 ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been disabled.
 Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed) operator instead, e.g., with the migration script described there.
 
+**Jest recommended ESLint rules**
+
+Unit tests are now linted with the [recommended rules of `eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest#rules), and Cypress tests with some of them.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

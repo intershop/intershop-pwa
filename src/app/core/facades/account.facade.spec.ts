@@ -42,7 +42,7 @@ describe('Account Facade', () => {
         }, 2000);
       });
 
-      it('should do nothing when no user is present', fakeAsync(() => {
+      it('should do nothing when no user is present - fakeAsync', fakeAsync(() => {
         facade.addresses$().subscribe({ next: noop, error: fail, complete: fail });
 
         tick(2000);

@@ -16,193 +16,195 @@ import {
 } from './category.route';
 
 describe('Category Route', () => {
-  const specials = {
-    categoryPath: ['Specials'],
-    uniqueId: 'Specials',
-    name: 'Spezielles - 1/2 Preis - (Aktion) & mehr',
-  } as Category;
-  const topSeller = {
-    categoryPath: ['Specials', 'Specials.TopSeller'],
-    uniqueId: 'Specials.TopSeller',
-    name: 'Angebote',
-  } as Category;
-  const limitedOffer = {
-    categoryPath: ['Specials', 'Specials.TopSeller', 'Specials.TopSeller.LimitedOffer'],
-    uniqueId: 'Specials.TopSeller.LimitedOffer',
-    name: 'Black Friday',
-  } as Category;
+  describe('route matching and URL generation', () => {
+    const specials = {
+      categoryPath: ['Specials'],
+      uniqueId: 'Specials',
+      name: 'Spezielles - 1/2 Preis - (Aktion) & mehr',
+    } as Category;
+    const topSeller = {
+      categoryPath: ['Specials', 'Specials.TopSeller'],
+      uniqueId: 'Specials.TopSeller',
+      name: 'Angebote',
+    } as Category;
+    const limitedOffer = {
+      categoryPath: ['Specials', 'Specials.TopSeller', 'Specials.TopSeller.LimitedOffer'],
+      uniqueId: 'Specials.TopSeller.LimitedOffer',
+      name: 'Black Friday',
+    } as Category;
 
-  expect.addSnapshotSerializer({
-    test: val => val?.consumed && val.posParams,
-    print: (val: UrlMatchResult, serialize) =>
-      serialize(
-        Object.keys(val.posParams)
-          .map(key => ({ [key]: val.posParams[key].path }))
-          .reduce((acc, v) => ({ ...acc, ...v }), {})
-      ),
-  });
-
-  let wrap: (url: string) => UrlSegment[];
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    const router = TestBed.inject(Router);
-    wrap = url => {
-      const primary = router.parseUrl(url).root.children.primary;
-      return primary ? primary.segments : [];
-    };
-  });
-
-  describe('without anything', () => {
-    it('should be created', () => {
-      expect(generateCategoryUrl(undefined)).toMatchInlineSnapshot(`"/"`);
+    expect.addSnapshotSerializer({
+      test: val => val?.consumed && val.posParams,
+      print: (val: UrlMatchResult, serialize) =>
+        serialize(
+          Object.keys(val.posParams)
+            .map(key => ({ [key]: val.posParams[key].path }))
+            .reduce((acc, v) => ({ ...acc, ...v }), {})
+        ),
     });
 
-    it('should not be a match for matcher', () => {
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(undefined)))).toMatchInlineSnapshot(`undefined`);
-    });
-  });
+    let wrap: (url: string) => UrlSegment[];
 
-  describe('with top level category without name', () => {
-    const category = createCategoryView(categoryTree([{ ...specials, name: undefined }]), specials.uniqueId);
-
-    it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/ctgSpecials"`);
-    });
-
-    it('should be a match for matcher', () => {
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        {
-          "categoryUniqueId": "Specials",
-        }
-      `);
-    });
-  });
-
-  describe('with top level category', () => {
-    const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
-
-    it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/spezielles-1/2-preis-aktion-mehr-ctgSpecials"`);
+    beforeEach(() => {
+      TestBed.configureTestingModule({});
+      const router = TestBed.inject(Router);
+      wrap = url => {
+        const primary = router.parseUrl(url).root.children.primary;
+        return primary ? primary.segments : [];
+      };
     });
 
-    it('should be a match for matcher', () => {
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        {
-          "categoryUniqueId": "Specials",
-        }
-      `);
-    });
-  });
+    describe('without anything', () => {
+      it('should be created', () => {
+        expect(generateCategoryUrl(undefined)).toMatchInlineSnapshot(`"/"`);
+      });
 
-  describe('with deep category', () => {
-    const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-
-    it('should be created', () => {
-      expect(generateCategoryUrl(category)).toMatchInlineSnapshot(
-        `"/spezielles-1/2-preis-aktion-mehr/angebote/black-friday-ctgSpecials.TopSeller.LimitedOffer"`
-      );
-    });
-
-    it('should be a match for matcher', () => {
-      expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
-        {
-          "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
-        }
-      `);
-    });
-  });
-
-  describe('compatibility', () => {
-    it('should detect category route without product after it', () => {
-      expect(matchCategoryRoute(wrap('/category/123'))).toHaveProperty('consumed');
-    });
-
-    it('should not detect category route with product after it', () => {
-      expect(matchCategoryRoute(wrap('/category/123/product/123'))).toBeUndefined();
-    });
-  });
-
-  describe('category ref route', () => {
-    it('should be created', () => {
-      expect(matchCategoryRoute(wrap('/categoryref/123@catalog'))).toHaveProperty('consumed');
-    });
-
-    it('should not detect category route with product after it', () => {
-      expect(matchCategoryRoute(wrap('/categoryref/123@catalog/product/123'))).toBeUndefined();
-    });
-  });
-
-  describe('additional URL params', () => {
-    it('should ignore additional URL params when supplied', () => {
-      const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      expect(matchCategoryRoute(wrap(`${generateCategoryUrl(category)};lang=de_DE`))).toMatchInlineSnapshot(`
-        {
-          "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
-        }
-      `);
-    });
-  });
-
-  describe('generateLocalizedCategorySlug', () => {
-    it('should generate slug for top level category', () => {
-      const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
-      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"spezielles-1/2-preis-aktion-mehr"`);
-    });
-
-    it('should generate slug for deep category', () => {
-      const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
-      expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"black-friday"`);
-    });
-
-    it('should return empty string when category is unavailable', () => {
-      expect(generateLocalizedCategorySlug(undefined)).toMatchInlineSnapshot(`""`);
-    });
-  });
-});
-
-describe('Category Route', () => {
-  let router: Router;
-  let store: Store;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CoreStoreModule.forTesting(['router'])],
-      providers: [provideRouter([{ path: '**', children: [] }])],
-    });
-
-    router = TestBed.inject(Router);
-    store = TestBed.inject(Store);
-  });
-
-  describe('ofCategoryRoute', () => {
-    it('should detect category route when categoryUniqueId is a param', done => {
-      router.navigateByUrl('/category;categoryUniqueId=ABC');
-
-      store.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
-        expect(data.state.params).toMatchInlineSnapshot(`
-            {
-              "categoryUniqueId": "ABC",
-            }
-          `);
-        done();
+      it('should not be a match for matcher', () => {
+        expect(matchCategoryRoute(wrap(generateCategoryUrl(undefined)))).toMatchInlineSnapshot(`undefined`);
       });
     });
 
-    it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
-      router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
+    describe('with top level category without name', () => {
+      const category = createCategoryView(categoryTree([{ ...specials, name: undefined }]), specials.uniqueId);
 
-      store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+      it('should be created', () => {
+        expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/ctgSpecials"`);
+      });
 
-      tick(2000);
-    }));
+      it('should be a match for matcher', () => {
+        expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
+          {
+            "categoryUniqueId": "Specials",
+          }
+        `);
+      });
+    });
 
-    it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
-      router.navigateByUrl('/other');
+    describe('with top level category', () => {
+      const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
 
-      store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+      it('should be created', () => {
+        expect(generateCategoryUrl(category)).toMatchInlineSnapshot(`"/spezielles-1/2-preis-aktion-mehr-ctgSpecials"`);
+      });
 
-      tick(2000);
-    }));
+      it('should be a match for matcher', () => {
+        expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
+          {
+            "categoryUniqueId": "Specials",
+          }
+        `);
+      });
+    });
+
+    describe('with deep category', () => {
+      const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
+
+      it('should be created', () => {
+        expect(generateCategoryUrl(category)).toMatchInlineSnapshot(
+          `"/spezielles-1/2-preis-aktion-mehr/angebote/black-friday-ctgSpecials.TopSeller.LimitedOffer"`
+        );
+      });
+
+      it('should be a match for matcher', () => {
+        expect(matchCategoryRoute(wrap(generateCategoryUrl(category)))).toMatchInlineSnapshot(`
+          {
+            "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
+          }
+        `);
+      });
+    });
+
+    describe('compatibility', () => {
+      it('should detect category route without product after it', () => {
+        expect(matchCategoryRoute(wrap('/category/123'))).toHaveProperty('consumed');
+      });
+
+      it('should not detect category route with product after it', () => {
+        expect(matchCategoryRoute(wrap('/category/123/product/123'))).toBeUndefined();
+      });
+    });
+
+    describe('category ref route', () => {
+      it('should be created', () => {
+        expect(matchCategoryRoute(wrap('/categoryref/123@catalog'))).toHaveProperty('consumed');
+      });
+
+      it('should not detect category route with product after it', () => {
+        expect(matchCategoryRoute(wrap('/categoryref/123@catalog/product/123'))).toBeUndefined();
+      });
+    });
+
+    describe('additional URL params', () => {
+      it('should ignore additional URL params when supplied', () => {
+        const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
+        expect(matchCategoryRoute(wrap(`${generateCategoryUrl(category)};lang=de_DE`))).toMatchInlineSnapshot(`
+          {
+            "categoryUniqueId": "Specials.TopSeller.LimitedOffer",
+          }
+        `);
+      });
+    });
+
+    describe('generateLocalizedCategorySlug', () => {
+      it('should generate slug for top level category', () => {
+        const category = createCategoryView(categoryTree([specials]), specials.uniqueId);
+        expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"spezielles-1/2-preis-aktion-mehr"`);
+      });
+
+      it('should generate slug for deep category', () => {
+        const category = createCategoryView(categoryTree([specials, topSeller, limitedOffer]), limitedOffer.uniqueId);
+        expect(generateLocalizedCategorySlug(category)).toMatchInlineSnapshot(`"black-friday"`);
+      });
+
+      it('should return empty string when category is unavailable', () => {
+        expect(generateLocalizedCategorySlug(undefined)).toMatchInlineSnapshot(`""`);
+      });
+    });
+  });
+
+  describe('route operators', () => {
+    let router: Router;
+    let store: Store;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [CoreStoreModule.forTesting(['router'])],
+        providers: [provideRouter([{ path: '**', children: [] }])],
+      });
+
+      router = TestBed.inject(Router);
+      store = TestBed.inject(Store);
+    });
+
+    describe('ofCategoryRoute', () => {
+      it('should detect category route when categoryUniqueId is a param', done => {
+        router.navigateByUrl('/category;categoryUniqueId=ABC');
+
+        store.pipe(ofCategoryUrl(), select(selectRouter)).subscribe(data => {
+          expect(data.state.params).toMatchInlineSnapshot(`
+              {
+                "categoryUniqueId": "ABC",
+              }
+            `);
+          done();
+        });
+      });
+
+      it('should not detect category route when sku and categoryUniqueId are params', fakeAsync(() => {
+        router.navigateByUrl('/category;sku=123;categoryUniqueId=ABC');
+
+        store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+
+        tick(2000);
+      }));
+
+      it('should not detect category route when categoryUniqueId is missing', fakeAsync(() => {
+        router.navigateByUrl('/other');
+
+        store.pipe(ofCategoryUrl()).subscribe({ next: fail, error: fail });
+
+        tick(2000);
+      }));
+    });
   });
 });
