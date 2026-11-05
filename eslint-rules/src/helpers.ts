@@ -1,14 +1,6 @@
 import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 /**
- * Checks whether the given class declaration is of type 'Component'
- *
- * @param node the class declaration, which need to be checked
- * @returns the result of the check
- */
-export const isComponent = (node: TSESTree.ClassDeclaration): boolean => isType(node, ['Component']);
-
-/**
  * check the given class declaration to be from given types
  *
  * @param node the class declaration, which need to be checked
