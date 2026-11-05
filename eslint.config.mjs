@@ -431,7 +431,6 @@ export default defineConfig([
       'ish-custom-rules/newline-before-root-members': 'warn',
       'ish-custom-rules/no-assignment-to-inputs': 'error',
       'ish-custom-rules/no-formly-explicit-pseudo-type': 'error',
-      'ish-custom-rules/no-initialize-observables-directly': 'warn',
       'ish-custom-rules/no-intelligence-in-artifacts': [
         'warn',
         {
