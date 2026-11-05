@@ -42,7 +42,7 @@ describe('Product Category Context', () => {
       at(FamilyPage, page => page.filterNavigation.filter(_.filter.name).filterClick(_.filter.entryName));
     });
 
-    it(`should see other results in search result page`, () => {
+    it('should see filtered results on family page', () => {
       at(FamilyPage, page => page.productList.numberOfItems.should('equal', _.filter.results));
     });
 
@@ -50,7 +50,7 @@ describe('Product Category Context', () => {
       at(FamilyPage, page => page.filterNavigation.filter(_.filter.name).filterClick(_.filter.entryName));
     });
 
-    it(`should see other results in search result page`, () => {
+    it('should see all results again on family page after deselecting filter', () => {
       at(FamilyPage, page => page.productList.numberOfItems.should('equal', _.product.defaultCategory.results));
     });
   });

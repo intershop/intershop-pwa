@@ -474,42 +474,29 @@ describe('Paypal Buttons Adapter', () => {
       expect(buttonConfig.style).toBeObject();
     });
 
-    it('should throw error when container element does not exist', async () => {
+    it('should throw error when container element does not exist', () => {
       document.body.innerHTML = '';
 
-      try {
-        await paypalButtons.renderButtons(mockConfig);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe("Container element 'paypal-button-container' does not exist in DOM");
-      }
+      expect(() => paypalButtons.renderButtons(mockConfig)).toThrow(
+        "Container element 'paypal-button-container' does not exist in DOM"
+      );
     });
 
-    it('should throw error when PayPal Buttons is not available', async () => {
+    it('should throw error when PayPal Buttons is not available', () => {
       delete (window as any).PPCP_ISH_PAYPAL.Buttons;
 
-      try {
-        await paypalButtons.renderButtons(mockConfig);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
-        );
-      }
+      expect(() => paypalButtons.renderButtons(mockConfig)).toThrow(
+        "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
+      );
     });
 
-    it('should throw error when PayPal namespace does not exist', async () => {
+    it('should throw error when PayPal namespace does not exist', () => {
       // Delete the PayPal namespace to simulate it not being loaded
       delete (window as any).PPCP_ISH_PAYPAL;
 
-      try {
-        await paypalButtons.renderButtons(mockConfig);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe(
-          "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
-        );
-      }
+      expect(() => paypalButtons.renderButtons(mockConfig)).toThrow(
+        "PayPal Buttons not available in loaded paypal sdk script with namespace 'PPCP_ISH_PAYPAL'"
+      );
     });
 
     it('should call createOrder callback', async () => {
@@ -624,12 +611,7 @@ describe('Paypal Buttons Adapter', () => {
         render: jest.fn().mockRejectedValue(new Error('Render failed')),
       });
 
-      try {
-        await paypalButtons.renderButtons(mockConfig);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error.message).toBe('Render failed');
-      }
+      await expect(paypalButtons.renderButtons(mockConfig)).rejects.toThrow('Render failed');
     });
 
     it('should handle multiple render calls with different containers', async () => {

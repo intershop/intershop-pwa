@@ -65,7 +65,7 @@ describe('Page Tree Selectors', () => {
     });
 
     describe('with page route', () => {
-      it('should select content page tree of given uniqueId with children', fakeAsync(() => {
+      it('should select content page tree of given uniqueId with children when on page 1', fakeAsync(() => {
         router.navigateByUrl(`page/1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
@@ -118,7 +118,7 @@ describe('Page Tree Selectors', () => {
         `);
       }));
 
-      it('should select content page tree of given uniqueId with children', fakeAsync(() => {
+      it('should select content page tree of given uniqueId with children when on page 1.1', fakeAsync(() => {
         router.navigateByUrl(`page/1.1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`
@@ -246,7 +246,7 @@ describe('Page Tree Selectors', () => {
         `);
       }));
 
-      it('should select content page tree of given uniqueId with children', fakeAsync(() => {
+      it('should select content page tree of given uniqueId with children when on page 1.1.1', fakeAsync(() => {
         router.navigateByUrl(`page/1.1.1`);
         tick(500);
         expect(getContentPageTree(tree1.contentPageId)(store$.state)).toMatchInlineSnapshot(`

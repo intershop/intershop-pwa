@@ -67,7 +67,7 @@ describe('Suggest Products Tile Component', () => {
     expect(keywordElements[1].textContent).toMatchInlineSnapshot(`"Product 12 345 (very long so it will b..."`);
   });
 
-  it('should display product name for desktop truncated', () => {
+  it('should display product name for desktop not truncated when it has exactly 41 characters', () => {
     when(context.select('product', 'name')).thenReturn(of(productName41));
     component.deviceType = 'desktop';
     fixture.detectChanges();

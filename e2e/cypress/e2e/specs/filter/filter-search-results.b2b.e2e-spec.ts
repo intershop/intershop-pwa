@@ -51,7 +51,7 @@ describe('Searching B2B User', () => {
     at(SearchResultPage, page => page.filterNavigation.filter(_.filter.name).filterClick(_.filter.entryName));
   });
 
-  it(`should see other results in search result page`, () => {
+  it('should see filtered results on search result page', () => {
     at(SearchResultPage, page => page.productList.numberOfItems.should('equal', _.filter.results));
   });
 
@@ -59,7 +59,7 @@ describe('Searching B2B User', () => {
     at(SearchResultPage, page => page.filterNavigation.filter(_.filter.name).filterClick(_.filter.entryName));
   });
 
-  it(`should see other results in search result page`, () => {
+  it('should see all results again on search result page after deselecting filter', () => {
     at(SearchResultPage, page => page.productList.numberOfItems.should('equal', _.results));
   });
 });

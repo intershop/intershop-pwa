@@ -276,7 +276,7 @@ describe('Basket Payment Effects', () => {
 
     // skipped: jsdom 21+ makes window.location non-configurable, preventing location.assign mocking
     // eslint-disable-next-line jest/no-disabled-tests
-    xit('should start redirect in case of successful sending the redirect urls', fakeAsync(() => {
+    it.skip('should start redirect in case of successful sending the redirect urls', fakeAsync(() => {
       const action = startRedirectBeforeCheckout();
       actions$ = of(action);
 
@@ -984,7 +984,7 @@ describe('Basket Payment Effects', () => {
 
     // skipped: jsdom 21+ makes window.location non-configurable, preventing location.assign mocking
     // eslint-disable-next-line jest/no-disabled-tests
-    xit('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
+    it.skip('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
       const action = continueWithFastCheckout({
         targetRoute: undefined,
         basketValidation,
