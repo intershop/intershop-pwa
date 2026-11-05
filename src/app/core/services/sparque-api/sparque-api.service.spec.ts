@@ -385,7 +385,7 @@ describe('Sparque Api Service', () => {
         next: fail,
         error: () => {
           // Error should be handled, but we expect EMPTY to be returned by the error handler
-          fail('Should return EMPTY, not error');
+          done.fail('Should return EMPTY, not error');
         },
         complete: () => {
           // Verify that server error action was dispatched
@@ -406,7 +406,7 @@ describe('Sparque Api Service', () => {
       sparqueApiService.get('route', 'v2').subscribe({
         next: fail,
         error: () => {
-          fail('Should return EMPTY, not error');
+          done.fail('Should return EMPTY, not error');
         },
         complete: () => {
           // Verify that communication timeout error action was dispatched

@@ -335,7 +335,7 @@ describe('Users Effects', () => {
         expect(effects.successMessageAfterUpdate$).toBeObservable(expected$);
       });
 
-      it('should display success message after role update', () => {
+      it('should display success message after budget update', () => {
         const action = setUserBudgetSuccess({ login: '1', budget: undefined });
 
         actions$ = hot('        -a-a-a-|', { a: action });

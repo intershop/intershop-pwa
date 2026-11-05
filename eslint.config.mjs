@@ -1016,6 +1016,16 @@ export default defineConfig([
       'max-lines': 'off',
     },
   },
+  // Jest unit test rules
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      ...jest.configs['flat/recommended'].rules,
+      'jest/expect-expect': 'off',
+      // conflicts with ish-custom-rules/use-async-synchronization-in-tests
+      'jest/no-done-callback': 'off',
+    },
+  },
   // allow type assertions on object literals in test code
   {
     files: ['**/*spec.ts', '**/dev/**/*.ts'],
@@ -1067,6 +1077,10 @@ export default defineConfig([
           ],
         },
       ],
+      'jest/no-export': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/no-test-prefixes': 'error',
+      'jest/valid-describe-callback': 'error',
       'jest/valid-title': 'off',
     },
   },

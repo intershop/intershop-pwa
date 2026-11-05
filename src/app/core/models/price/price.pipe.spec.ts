@@ -13,178 +13,180 @@ import { Price } from './price.model';
 import { PricePipe } from './price.pipe';
 
 describe('Price Pipe', () => {
-  let fixture: ComponentFixture<DummyComponent>;
-  let component: DummyComponent;
-  let element: HTMLElement;
-  let translateService: TranslateService;
+  describe('with default price display type', () => {
+    let fixture: ComponentFixture<DummyComponent>;
+    let component: DummyComponent;
+    let element: HTMLElement;
+    let translateService: TranslateService;
 
-  @Component({ standalone: false, template: '~{{ price | ishPrice }}~' })
-  class DummyComponent {
-    price: Price | PriceItem;
-  }
+    @Component({ standalone: false, template: '~{{ price | ishPrice }}~' })
+    class DummyComponent {
+      price: Price | PriceItem;
+    }
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DummyComponent, PricePipe],
-      providers: [
-        { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
-        provideTranslateService(),
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    registerLocaleData(localeDe);
-    translateService = TestBed.inject(TranslateService);
-    translateService.setFallbackLang('en');
-
-    fixture = TestBed.createComponent(DummyComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should display N/A for default', () => {
-    translateService.use('en');
-    fixture.detectChanges();
-    expect(element).toMatchInlineSnapshot(`~product.price.na.text~`);
-  });
-
-  describe('Price', () => {
-    const euroPrice: Price = {
-      type: 'Money',
-      value: 12391.98,
-      currency: 'EUR',
-    };
-
-    const dollarPrice: Price = {
-      type: 'Money',
-      value: 24680.35,
-      currency: 'USD',
-    };
-
-    it('should display dollar price for english', () => {
-      component.price = dollarPrice;
-      translateService.use('en');
-
-      fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(`~$24,680.35~`);
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [DummyComponent, PricePipe],
+        providers: [
+          { provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) },
+          provideTranslateService(),
+        ],
+      }).compileComponents();
     });
-
-    it('should display dollar price for german', () => {
-      component.price = dollarPrice;
-      translateService.use('de');
-
-      fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(`~24.680,35&nbsp;$~`);
-    });
-
-    it('should display euro price for english', () => {
-      component.price = euroPrice;
-      translateService.use('en');
-
-      fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(`~€12,391.98~`);
-    });
-    it('should display euro price for german', () => {
-      component.price = euroPrice;
-      translateService.use('de');
-
-      fixture.detectChanges();
-      expect(element).toMatchInlineSnapshot(`~12.391,98&nbsp;€~`);
-    });
-  });
-});
-
-describe('Price Pipe', () => {
-  let fixture: ComponentFixture<DummyComponent>;
-  let component: DummyComponent;
-  let element: HTMLElement;
-  let translateService: TranslateService;
-  let accountFacade: AccountFacade;
-
-  @Component({
-    standalone: false,
-    template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
-  })
-  class DummyComponent {
-    price: Price | PriceItem;
-  }
-
-  beforeEach(async () => {
-    accountFacade = mock(AccountFacade);
-    when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
-
-    await TestBed.configureTestingModule({
-      declarations: [DummyComponent, PricePipe],
-      providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    registerLocaleData(localeDe);
-    translateService = TestBed.inject(TranslateService);
-    translateService.setFallbackLang('en');
-
-    fixture = TestBed.createComponent(DummyComponent);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  describe('PriceItem', () => {
-    const priceItem: PriceItem = {
-      type: 'PriceItem',
-      gross: 12391.98,
-      net: 987.6,
-      currency: 'USD',
-    };
 
     beforeEach(() => {
-      component.price = priceItem;
-      translateService.use('en');
+      registerLocaleData(localeDe);
+      translateService = TestBed.inject(TranslateService);
+      translateService.setFallbackLang('en');
+
+      fixture = TestBed.createComponent(DummyComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
     });
 
-    it('should display price depending on state', fakeAsync(() => {
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
+
+    it('should display N/A for default', () => {
+      translateService.use('en');
       fixture.detectChanges();
-      tick(500);
+      expect(element).toMatchInlineSnapshot(`~product.price.na.text~`);
+    });
 
-      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
+    describe('Price', () => {
+      const euroPrice: Price = {
+        type: 'Money',
+        value: 12391.98,
+        currency: 'EUR',
+      };
 
-      when(accountFacade.userPriceDisplayType$).thenReturn(of('net'));
-      fixture.detectChanges();
-      tick(500);
+      const dollarPrice: Price = {
+        type: 'Money',
+        value: 24680.35,
+        currency: 'USD',
+      };
 
-      expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
+      it('should display dollar price for english', () => {
+        component.price = dollarPrice;
+        translateService.use('en');
 
+        fixture.detectChanges();
+        expect(element).toMatchInlineSnapshot(`~$24,680.35~`);
+      });
+
+      it('should display dollar price for german', () => {
+        component.price = dollarPrice;
+        translateService.use('de');
+
+        fixture.detectChanges();
+        expect(element).toMatchInlineSnapshot(`~24.680,35&nbsp;$~`);
+      });
+
+      it('should display euro price for english', () => {
+        component.price = euroPrice;
+        translateService.use('en');
+
+        fixture.detectChanges();
+        expect(element).toMatchInlineSnapshot(`~€12,391.98~`);
+      });
+      it('should display euro price for german', () => {
+        component.price = euroPrice;
+        translateService.use('de');
+
+        fixture.detectChanges();
+        expect(element).toMatchInlineSnapshot(`~12.391,98&nbsp;€~`);
+      });
+    });
+  });
+
+  describe('with gross price display type', () => {
+    let fixture: ComponentFixture<DummyComponent>;
+    let component: DummyComponent;
+    let element: HTMLElement;
+    let translateService: TranslateService;
+    let accountFacade: AccountFacade;
+
+    @Component({
+      standalone: false,
+      template: ` flex: {{ price | ishPrice }} pinned: {{ price | ishPrice: 'net' }} `,
+    })
+    class DummyComponent {
+      price: Price | PriceItem;
+    }
+
+    beforeEach(async () => {
+      accountFacade = mock(AccountFacade);
       when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
-      fixture.detectChanges();
-      tick(500);
 
-      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
-    }));
+      await TestBed.configureTestingModule({
+        declarations: [DummyComponent, PricePipe],
+        providers: [{ provide: AccountFacade, useFactory: () => instance(accountFacade) }, provideTranslateService()],
+      }).compileComponents();
+    });
 
-    it('should display price depending on input', fakeAsync(() => {
-      fixture.detectChanges();
-      tick(500);
+    beforeEach(() => {
+      registerLocaleData(localeDe);
+      translateService = TestBed.inject(TranslateService);
+      translateService.setFallbackLang('en');
 
-      expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
+      fixture = TestBed.createComponent(DummyComponent);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+    });
 
-      component.price = { ...priceItem, gross: 123 };
-      fixture.detectChanges();
-      tick(500);
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
 
-      expect(element).toMatchInlineSnapshot(`flex: $123.00 pinned: $987.60`);
-    }));
+    describe('PriceItem', () => {
+      const priceItem: PriceItem = {
+        type: 'PriceItem',
+        gross: 12391.98,
+        net: 987.6,
+        currency: 'USD',
+      };
+
+      beforeEach(() => {
+        component.price = priceItem;
+        translateService.use('en');
+      });
+
+      it('should display price depending on state', fakeAsync(() => {
+        fixture.detectChanges();
+        tick(500);
+
+        expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
+
+        when(accountFacade.userPriceDisplayType$).thenReturn(of('net'));
+        fixture.detectChanges();
+        tick(500);
+
+        expect(element).toMatchInlineSnapshot(`flex: $987.60 pinned: $987.60`);
+
+        when(accountFacade.userPriceDisplayType$).thenReturn(of('gross'));
+        fixture.detectChanges();
+        tick(500);
+
+        expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
+      }));
+
+      it('should display price depending on input', fakeAsync(() => {
+        fixture.detectChanges();
+        tick(500);
+
+        expect(element).toMatchInlineSnapshot(`flex: $12,391.98 pinned: $987.60`);
+
+        component.price = { ...priceItem, gross: 123 };
+        fixture.detectChanges();
+        tick(500);
+
+        expect(element).toMatchInlineSnapshot(`flex: $123.00 pinned: $987.60`);
+      }));
+    });
   });
 });

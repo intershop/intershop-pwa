@@ -18,327 +18,53 @@ import {
 } from './icm-error-mapper.interceptor';
 
 describe('Icm Error Mapper Interceptor', () => {
-  let httpController: HttpTestingController;
-  let http: HttpClient;
+  describe('without special error handlers', () => {
+    let httpController: HttpTestingController;
+    let http: HttpClient;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
-    });
-
-    httpController = TestBed.inject(HttpTestingController);
-    http = TestBed.inject(HttpClient);
-  });
-
-  afterEach(() => {
-    httpController.verify();
-  });
-
-  it('should convert text responses to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "message": "Unauthorized",
-            "name": "HttpErrorResponse",
-            "status": 401,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
-  });
-
-  it('should convert empty responses to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "code": "Bad Request",
-            "message": "Http failure response for some: 400 Bad Request",
-            "name": "HttpErrorResponse",
-            "status": 400,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush(
-      // eslint-disable-next-line unicorn/no-null
-      null,
-      { status: 400, statusText: 'Bad Request' }
-    );
-  });
-
-  it('should convert ICM errors format with cause to simplified format concatenating all causes', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "errors": [
-              {
-                "causes": [
-                  {
-                    "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
-                    "message": "The promotion code could not be found.",
-                    "paths": [
-                      "$.code",
-                    ],
-                  },
-                  {
-                    "code": "some.other.error",
-                    "message": "Some other error.",
-                    "paths": [
-                      "$.code",
-                    ],
-                  },
-                ],
-                "code": "basket.promotion_code.add_not_successful.error",
-                "message": "The promotion code could not be added.",
-                "status": "422",
-              },
-            ],
-            "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
-            "name": "HttpErrorResponse",
-            "status": 422,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush(
-      {
-        errors: [
-          {
-            causes: [
-              {
-                code: 'basket.promotion_code.add_code_promotion_code_not_found.error',
-                message: 'The promotion code could not be found.',
-                paths: ['$.code'],
-              },
-              {
-                code: 'some.other.error',
-                message: 'Some other error.',
-                paths: ['$.code'],
-              },
-            ],
-            code: 'basket.promotion_code.add_not_successful.error',
-            message: 'The promotion code could not be added.',
-            status: '422',
-          },
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
-      },
-      { status: 422, statusText: 'Unprocessable Entity' }
-    );
-  });
-
-  it('should convert ICM errors format with cause (new ADR) to simplified format concatenating all causes', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "errors": [
-              {
-                "causes": [
-                  {
-                    "code": "intershop.cxml.punchout.unitmapping.value.invalid",
-                    "message": "The value must be a tab-separated list of 'value1;value2' pairs.",
-                  },
-                  {
-                    "code": "intershop.cxml.punchout.punchout.locale.value.invalid",
-                    "message": "The value must be two lowercase letters for language and two uppercase letters for region.",
-                  },
-                ],
-                "code": "intershop.cxml.punchout.configuration.error",
-                "level": "ERROR",
-                "status": "400",
-              },
-            ],
-            "message": "The value must be a tab-separated list of 'value1;value2' pairs. The value must be two lowercase letters for language and two uppercase letters for region.",
-            "name": "HttpErrorResponse",
-            "status": 422,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush(
-      {
-        messages: [
-          {
-            causes: [
-              {
-                code: 'intershop.cxml.punchout.unitmapping.value.invalid',
-                message: "The value must be a tab-separated list of 'value1;value2' pairs.",
-              },
-              {
-                code: 'intershop.cxml.punchout.punchout.locale.value.invalid',
-                message: 'The value must be two lowercase letters for language and two uppercase letters for region.',
-              },
-            ],
-            code: 'intershop.cxml.punchout.configuration.error',
-            level: 'ERROR',
-            status: '400',
-          },
-        ],
-      },
-      { status: 422, statusText: 'Unprocessable Entity' }
-    );
-  });
-
-  it('should convert ICM messages format with single message (new ADR, no causes) to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "errors": [
-              {
-                "code": "intershop.withdrawal.order.not_found.error",
-                "level": "ERROR",
-                "message": "The order could not be found.",
-                "status": "404",
-              },
-            ],
-            "message": "The order could not be found.",
-            "name": "HttpErrorResponse",
-            "status": 404,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush(
-      {
-        messages: [
-          {
-            code: 'intershop.withdrawal.order.not_found.error',
-            message: 'The order could not be found.',
-            level: 'ERROR',
-            status: '404',
-          },
-        ],
-      },
-      { status: 404, statusText: 'Not Found' }
-    );
-  });
-
-  it('should convert ICM errors format to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "errors": [
-              {
-                "code": "basket.add_line_item_not_successful.error",
-                "message": "The product could not be added to your cart.",
-                "paths": [
-                  "$[0]",
-                ],
-                "status": "422",
-              },
-            ],
-            "name": "HttpErrorResponse",
-            "status": 422,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush(
-      {
-        errors: [
-          {
-            code: 'basket.add_line_item_not_successful.error',
-            message: 'The product could not be added to your cart.',
-            paths: ['$[0]'],
-            status: '422',
-          },
-        ],
-      },
-      { status: 422, statusText: 'Unprocessable Entity' }
-    );
-  });
-
-  it('should convert error-key header responses to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "code": "customer.credentials.login.not_unique.error",
-            "name": "HttpErrorResponse",
-            "status": 409,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush('Conflict (Login name is not unique (it already exists))', {
-      status: 409,
-      statusText: 'Conflict',
-      headers: { 'error-key': 'customer.credentials.login.not_unique.error' },
-    });
-  });
-
-  it('should convert error-missing-attributes header responses to debug format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
-            "name": "HttpErrorResponse",
-            "status": 400,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController
-      .expectOne('some')
-      .flush('Bad Request (The following attributes are missing: email,preferredLanguage)', {
-        status: 400,
-        statusText: 'Bad Request',
-        headers: {
-          'error-key': 'customer.missing_fields.error',
-          'error-missing-attributes': 'email,preferredLanguage',
-          'error-type': 'error-missing-attributes',
-        },
       });
-  });
 
-  it('should convert error-invalid-attributes header responses to debug format', done => {
-    http
-      .post('some', {
-        email: 'asdf@.',
-        preferredLanguage: 'ASDF',
-        some: { other: 'field' },
-      })
-      .subscribe({
+      httpController = TestBed.inject(HttpTestingController);
+      http = TestBed.inject(HttpClient);
+    });
+
+    afterEach(() => {
+      httpController.verify();
+    });
+
+    it('should convert text responses to simplified format', done => {
+      http.get('some').subscribe({
         next: fail,
         error: error => {
           expect(error).toMatchInlineSnapshot(`
             {
-              "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){"email":"asdf@.","preferredLanguage":"ASDF"}",
+              "message": "Unauthorized",
+              "name": "HttpErrorResponse",
+              "status": 401,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
+    });
+
+    it('should convert empty responses to simplified format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "code": "Bad Request",
+              "message": "Http failure response for some: 400 Bad Request",
               "name": "HttpErrorResponse",
               "status": 400,
             }
@@ -347,100 +73,376 @@ describe('Icm Error Mapper Interceptor', () => {
         },
       });
 
-    httpController
-      .expectOne('some')
-      .flush('Bad Request (The following attributes are invalid: email,preferredLanguage)', {
-        status: 400,
-        statusText: 'Bad Request',
-        headers: {
-          'error-key': 'customer.invalid_fields.error',
-          'error-invalid-attributes': 'email,preferredLanguage',
-          'error-type': 'error-invalid-attributes',
+      httpController.expectOne('some').flush(
+        // eslint-disable-next-line unicorn/no-null
+        null,
+        { status: 400, statusText: 'Bad Request' }
+      );
+    });
+
+    it('should convert ICM errors format with cause to simplified format concatenating all causes', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "errors": [
+                {
+                  "causes": [
+                    {
+                      "code": "basket.promotion_code.add_code_promotion_code_not_found.error",
+                      "message": "The promotion code could not be found.",
+                      "paths": [
+                        "$.code",
+                      ],
+                    },
+                    {
+                      "code": "some.other.error",
+                      "message": "Some other error.",
+                      "paths": [
+                        "$.code",
+                      ],
+                    },
+                  ],
+                  "code": "basket.promotion_code.add_not_successful.error",
+                  "message": "The promotion code could not be added.",
+                  "status": "422",
+                },
+              ],
+              "message": "The promotion code could not be added. The promotion code could not be found. Some other error.",
+              "name": "HttpErrorResponse",
+              "status": 422,
+            }
+          `);
+          done();
         },
       });
-  });
 
-  it('should convert other error responses to simplified format', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "code": "Bad Request",
-            "message": "Http failure response for some: 400 Bad Request",
-            "name": "HttpErrorResponse",
-            "status": 400,
-          }
-        `);
-        done();
-      },
+      httpController.expectOne('some').flush(
+        {
+          errors: [
+            {
+              causes: [
+                {
+                  code: 'basket.promotion_code.add_code_promotion_code_not_found.error',
+                  message: 'The promotion code could not be found.',
+                  paths: ['$.code'],
+                },
+                {
+                  code: 'some.other.error',
+                  message: 'Some other error.',
+                  paths: ['$.code'],
+                },
+              ],
+              code: 'basket.promotion_code.add_not_successful.error',
+              message: 'The promotion code could not be added.',
+              status: '422',
+            },
+          ],
+        },
+        { status: 422, statusText: 'Unprocessable Entity' }
+      );
     });
 
-    httpController.expectOne('some').flush(
-      {
-        error: 'some other format',
-        key: 'value',
-      },
-      {
+    it('should convert ICM errors format with cause (new ADR) to simplified format concatenating all causes', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "errors": [
+                {
+                  "causes": [
+                    {
+                      "code": "intershop.cxml.punchout.unitmapping.value.invalid",
+                      "message": "The value must be a tab-separated list of 'value1;value2' pairs.",
+                    },
+                    {
+                      "code": "intershop.cxml.punchout.punchout.locale.value.invalid",
+                      "message": "The value must be two lowercase letters for language and two uppercase letters for region.",
+                    },
+                  ],
+                  "code": "intershop.cxml.punchout.configuration.error",
+                  "level": "ERROR",
+                  "status": "400",
+                },
+              ],
+              "message": "The value must be a tab-separated list of 'value1;value2' pairs. The value must be two lowercase letters for language and two uppercase letters for region.",
+              "name": "HttpErrorResponse",
+              "status": 422,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush(
+        {
+          messages: [
+            {
+              causes: [
+                {
+                  code: 'intershop.cxml.punchout.unitmapping.value.invalid',
+                  message: "The value must be a tab-separated list of 'value1;value2' pairs.",
+                },
+                {
+                  code: 'intershop.cxml.punchout.punchout.locale.value.invalid',
+                  message: 'The value must be two lowercase letters for language and two uppercase letters for region.',
+                },
+              ],
+              code: 'intershop.cxml.punchout.configuration.error',
+              level: 'ERROR',
+              status: '400',
+            },
+          ],
+        },
+        { status: 422, statusText: 'Unprocessable Entity' }
+      );
+    });
+
+    it('should convert ICM messages format with single message (new ADR, no causes) to simplified format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "errors": [
+                {
+                  "code": "intershop.withdrawal.order.not_found.error",
+                  "level": "ERROR",
+                  "message": "The order could not be found.",
+                  "status": "404",
+                },
+              ],
+              "message": "The order could not be found.",
+              "name": "HttpErrorResponse",
+              "status": 404,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush(
+        {
+          messages: [
+            {
+              code: 'intershop.withdrawal.order.not_found.error',
+              message: 'The order could not be found.',
+              level: 'ERROR',
+              status: '404',
+            },
+          ],
+        },
+        { status: 404, statusText: 'Not Found' }
+      );
+    });
+
+    it('should convert ICM errors format to simplified format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "errors": [
+                {
+                  "code": "basket.add_line_item_not_successful.error",
+                  "message": "The product could not be added to your cart.",
+                  "paths": [
+                    "$[0]",
+                  ],
+                  "status": "422",
+                },
+              ],
+              "name": "HttpErrorResponse",
+              "status": 422,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush(
+        {
+          errors: [
+            {
+              code: 'basket.add_line_item_not_successful.error',
+              message: 'The product could not be added to your cart.',
+              paths: ['$[0]'],
+              status: '422',
+            },
+          ],
+        },
+        { status: 422, statusText: 'Unprocessable Entity' }
+      );
+    });
+
+    it('should convert error-key header responses to simplified format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "code": "customer.credentials.login.not_unique.error",
+              "name": "HttpErrorResponse",
+              "status": 409,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush('Conflict (Login name is not unique (it already exists))', {
+        status: 409,
+        statusText: 'Conflict',
+        headers: { 'error-key': 'customer.credentials.login.not_unique.error' },
+      });
+    });
+
+    it('should convert error-missing-attributes header responses to debug format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "message": "Bad Request (The following attributes are missing: email,preferredLanguage)",
+              "name": "HttpErrorResponse",
+              "status": 400,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController
+        .expectOne('some')
+        .flush('Bad Request (The following attributes are missing: email,preferredLanguage)', {
+          status: 400,
+          statusText: 'Bad Request',
+          headers: {
+            'error-key': 'customer.missing_fields.error',
+            'error-missing-attributes': 'email,preferredLanguage',
+            'error-type': 'error-missing-attributes',
+          },
+        });
+    });
+
+    it('should convert error-invalid-attributes header responses to debug format', done => {
+      http
+        .post('some', {
+          email: 'asdf@.',
+          preferredLanguage: 'ASDF',
+          some: { other: 'field' },
+        })
+        .subscribe({
+          next: fail,
+          error: error => {
+            expect(error).toMatchInlineSnapshot(`
+              {
+                "message": "Bad Request (The following attributes are invalid: email,preferredLanguage){"email":"asdf@.","preferredLanguage":"ASDF"}",
+                "name": "HttpErrorResponse",
+                "status": 400,
+              }
+            `);
+            done();
+          },
+        });
+
+      httpController
+        .expectOne('some')
+        .flush('Bad Request (The following attributes are invalid: email,preferredLanguage)', {
+          status: 400,
+          statusText: 'Bad Request',
+          headers: {
+            'error-key': 'customer.invalid_fields.error',
+            'error-invalid-attributes': 'email,preferredLanguage',
+            'error-type': 'error-invalid-attributes',
+          },
+        });
+    });
+
+    it('should convert other error responses to simplified format', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "code": "Bad Request",
+              "message": "Http failure response for some: 400 Bad Request",
+              "name": "HttpErrorResponse",
+              "status": 400,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush(
+        {
+          error: 'some other format',
+          key: 'value',
+        },
+        {
+          status: 400,
+          statusText: 'Bad Request',
+        }
+      );
+    });
+  });
+
+  describe('with special error handler', () => {
+    let httpController: HttpTestingController;
+    let http: HttpClient;
+
+    class GrabAllErrorHandler implements SpecialHttpErrorHandler {
+      test(): boolean {
+        return true;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-restricted-types
+      map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
+        return {
+          message: `${request.method}:${error.error}`,
+        };
+      }
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
+          { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: GrabAllErrorHandler, multi: true },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
+        ],
+      });
+
+      httpController = TestBed.inject(HttpTestingController);
+      http = TestBed.inject(HttpClient);
+    });
+
+    afterEach(() => {
+      httpController.verify();
+    });
+
+    it('should include provided error handlers for mapping', done => {
+      http.get('some').subscribe({
+        next: fail,
+        error: error => {
+          expect(error).toMatchInlineSnapshot(`
+            {
+              "message": "GET:Test",
+              "name": "HttpErrorResponse",
+              "status": 400,
+            }
+          `);
+          done();
+        },
+      });
+
+      httpController.expectOne('some').flush('Test', {
         status: 400,
         statusText: 'Bad Request',
-      }
-    );
-  });
-});
-
-describe('Icm Error Mapper Interceptor', () => {
-  let httpController: HttpTestingController;
-  let http: HttpClient;
-
-  class GrabAllErrorHandler implements SpecialHttpErrorHandler {
-    test(): boolean {
-      return true;
-    }
-    // eslint-disable-next-line @typescript-eslint/no-restricted-types
-    map(error: HttpErrorResponse, request: HttpRequest<unknown>): Partial<HttpError> {
-      return {
-        message: `${request.method}:${error.error}`,
-      };
-    }
-  }
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ICMErrorMapperInterceptor, multi: true },
-        { provide: SPECIAL_HTTP_ERROR_HANDLER, useClass: GrabAllErrorHandler, multi: true },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
-    });
-
-    httpController = TestBed.inject(HttpTestingController);
-    http = TestBed.inject(HttpClient);
-  });
-
-  afterEach(() => {
-    httpController.verify();
-  });
-
-  it('should include provided error handlers for mapping', done => {
-    http.get('some').subscribe({
-      next: fail,
-      error: error => {
-        expect(error).toMatchInlineSnapshot(`
-          {
-            "message": "GET:Test",
-            "name": "HttpErrorResponse",
-            "status": 400,
-          }
-        `);
-        done();
-      },
-    });
-
-    httpController.expectOne('some').flush('Test', {
-      status: 400,
-      statusText: 'Bad Request',
+      });
     });
   });
 });

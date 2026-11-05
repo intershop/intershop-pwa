@@ -150,32 +150,32 @@ describe('Price Helper', () => {
       expect(() => PriceHelper.getPrice('USD', undefined)).toThrow('getPrice cannot handle undefined value');
     });
   });
-});
 
-describe('Price Helper', () => {
-  let prices: Price[];
+  describe('with a list of prices', () => {
+    let prices: Price[];
 
-  beforeEach(() => {
-    expect.addSnapshotSerializer({
-      test: (x: Price) => x?.type === 'Money',
-      print: (x: Price) => `${x.currency} ${x.value?.toFixed(2)}`,
+    beforeEach(() => {
+      expect.addSnapshotSerializer({
+        test: (x: Price) => x?.type === 'Money',
+        print: (x: Price) => `${x.currency} ${x.value?.toFixed(2)}`,
+      });
+
+      prices = [
+        { type: 'Money', currency: 'USD', value: 1 },
+        { type: 'Money', currency: 'USD', value: 2 },
+        { type: 'Money', currency: 'USD', value: 3 },
+        { type: 'Money', currency: 'USD', value: 4 },
+      ];
     });
 
-    prices = [
-      { type: 'Money', currency: 'USD', value: 1 },
-      { type: 'Money', currency: 'USD', value: 2 },
-      { type: 'Money', currency: 'USD', value: 3 },
-      { type: 'Money', currency: 'USD', value: 4 },
-    ];
-  });
+    it('should always calculate min with just pairwise method', () => {
+      expect(prices.reduce(PriceHelper.min)).toEqual(prices[0]);
 
-  it('should always calculate min with just pairwise method', () => {
-    expect(prices.reduce(PriceHelper.min)).toEqual(prices[0]);
+      expect(prices.reduce(PriceHelper.min)).toMatchInlineSnapshot(`USD 1.00`);
+    });
 
-    expect(prices.reduce(PriceHelper.min)).toMatchInlineSnapshot(`USD 1.00`);
-  });
-
-  it('should always calculate sum with just pairwise method', () => {
-    expect(prices.reduce(PriceHelper.sum)).toMatchInlineSnapshot(`USD 10.00`);
+    it('should always calculate sum with just pairwise method', () => {
+      expect(prices.reduce(PriceHelper.sum)).toMatchInlineSnapshot(`USD 10.00`);
+    });
   });
 });
