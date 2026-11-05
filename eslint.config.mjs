@@ -451,7 +451,6 @@ export default defineConfig([
       ],
       'ish-custom-rules/no-optional-inputs': 'warn',
       'ish-custom-rules/no-star-imports-in-store': 'error',
-      'ish-custom-rules/no-testbed-with-then': 'error',
       'ish-custom-rules/no-var-before-return': 'warn',
       'ish-custom-rules/ordered-imports': 'warn',
       'ish-custom-rules/private-destroyRef-field': 'error',
@@ -945,6 +944,12 @@ export default defineConfig([
         {
           selector: 'PropertyDefinition[key.name=/^destroy\\$?$/][value.callee.name="Subject"]',
           message: 'Use takeUntilDestroyed() or DestroyRef instead of a destroy$ subject!',
+        },
+        {
+          selector:
+            'MemberExpression[property.name="then"]:has(MemberExpression[object.name="TestBed"][property.name="configureTestingModule"])',
+          message:
+            'Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.',
         },
       ],
       'no-sequences': 'error',

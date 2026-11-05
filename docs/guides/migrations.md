@@ -22,6 +22,7 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 | `ish-custom-rules/no-return-undefined`              | `unicorn/no-useless-undefined`                                                                |
 | `ish-custom-rules/no-collapsible-if`                | `unicorn/no-lonely-if`                                                                        |
 | `ish-custom-rules/no-object-literal-type-assertion` | `@typescript-eslint/consistent-type-assertions`                                               |
+| `ish-custom-rules/no-testbed-with-then`             | `no-restricted-syntax`                                                                        |
 
 Some of these rules check more cases.
 Additionally, the following rules have been enabled:
