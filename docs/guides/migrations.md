@@ -25,6 +25,7 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 | `ish-custom-rules/no-testbed-with-then`             | `no-restricted-syntax`                                                                        |
 
 Some of these rules check more cases.
+The `ish-custom-rules/no-initialize-observables-directly` rule has been removed without replacement.
 Additionally, the following rules have been enabled:
 
 - `no-lonely-if`
@@ -38,7 +39,7 @@ Run `npm run lint -- --fix` to fix most of the findings automatically.
 **`takeUntil(destroy$)` no longer allowed**
 
 The transitional period for the `takeUntil(destroy$)` mechanism, see [From 4.2 to 5.0](#from-42-to-50), has ended.
-ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been disabled.
+ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been removed.
 Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed) operator instead, e.g., with the migration script described there.
 
 **Jest recommended ESLint rules**
