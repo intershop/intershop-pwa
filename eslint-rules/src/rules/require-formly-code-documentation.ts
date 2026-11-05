@@ -6,6 +6,13 @@ const messages = {
   missingDocumentationError: `Missing documentation for {{ artifactName }}. \n Please provide documentation for all Formly types, wrappers and extensions.`,
 };
 
+/**
+ * Requires a documentation comment for all Formly artifacts in files whose path contains `formly`:
+ * classes extending `FieldType` or `FieldWrapper`, classes implementing `FormlyExtension`,
+ * and exported constants typed as `FormlyExtension`.
+ *
+ * The comment has to precede the class or its first decorator.
+ */
 const requireFormlyCodeDocumentationRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     messages,

@@ -14,6 +14,13 @@ const standardTokens = {
 
 const HAS_INJECT_DECORATOR = ':has(Decorator[expression.callee.name="Inject"])';
 
+/**
+ * Enforces type-safe injection of values via `@Inject(TOKEN)`:
+ *
+ * - Custom tokens have to use the inferred type `InjectSingle<typeof TOKEN>` or `InjectMultiple<typeof TOKEN>`.
+ * - Standard Angular tokens have to use their fixed type, e.g. `string` for `APP_BASE_HREF` and `LOCALE_ID`,
+ *   `Document` for `DOCUMENT`.
+ */
 const useTypeSafeInjectionTokenRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     docs: {

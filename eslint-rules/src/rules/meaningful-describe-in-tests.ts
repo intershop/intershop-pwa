@@ -6,6 +6,11 @@ const messages = {
   meaningfulDescribeInTests: 'The top level describes of the test should be constructed out of the file name.',
 };
 
+/**
+ * Enforces that top-level `describe` blocks in spec files are named after the file,
+ * e.g. `'Product Context Facade'` in `product-context.facade.spec.ts`.
+ * This reveals tests that were copied from other files.
+ */
 const meaningfulDescribeInTestsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     docs: {
