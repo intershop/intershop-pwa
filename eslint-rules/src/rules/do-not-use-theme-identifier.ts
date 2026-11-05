@@ -8,6 +8,12 @@ const messages = {
   doNotUseThemeIdentifier: 'Do not use THEME variable here. Instead use correctly named overrides.',
 };
 
+/**
+ * Disallows the `THEME` variable in Angular artifacts, because it bypasses the component override mechanism.
+ * Use correctly named override files instead.
+ *
+ * The file pattern can be configured, default: `.*\.(component|directive|pipe)\.ts`
+ */
 const doNotUseThemeIdentifierRule: TSESLint.RuleModule<keyof typeof messages, [string]> = {
   meta: {
     docs: {

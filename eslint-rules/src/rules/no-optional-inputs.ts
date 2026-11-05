@@ -5,6 +5,11 @@ const messages = {
   doNotUseOptionalOperatorOnInputs: 'Angular @Input() properties are optional by default.',
 };
 
+/**
+ * Disallows the optional operator `?` on `@Input()` properties, because Angular inputs are optional by default.
+ *
+ * `@Input() product?: Product` becomes `@Input() product: Product`
+ */
 const noOptionalInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     messages,
