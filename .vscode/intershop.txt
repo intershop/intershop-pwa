@@ -206,6 +206,7 @@ sepa
 serializability
 setcontext
 setuprequest
+sharereplay
 silktide
 sitecontainers
 sitekey
@@ -228,7 +229,9 @@ systempage
 tabindex
 tacton
 takeuntil
+takewhile
 titlecase
+topromise
 toastr
 topseller
 tsquery

@@ -31,6 +31,7 @@ Additionally, the following rules have been enabled.
 There is an auto-fix available (run `npm run lint -- --fix`) for the following rules:
 
 - `no-lonely-if`
+- `rxjs-x/prefer-observer`
 - `@angular-eslint/consistent-component-styles` with `'array'`: the PWA tooling only supports `styleUrls`.
 - `@angular-eslint/template/prefer-at-empty`
 - `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the auto-fix crashes there.
@@ -48,6 +49,12 @@ The findings of the following rules have to be fixed manually:
 - `@angular-eslint/template/no-nested-tags`
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
 - `@angular-eslint/template/no-any`
+- `rxjs-x/no-ignored-notifier`
+- `rxjs-x/no-index`
+- `rxjs-x/no-redundant-notify`
+- `rxjs-x/no-subscribe-in-pipe`
+- `rxjs-x/no-topromise`
+- `rxjs-x/no-unbound-methods`
 
 **`takeUntil(destroy$)` no longer allowed**
 
