@@ -30,9 +30,14 @@ Additionally, the following rules have been enabled:
 
 - `no-lonely-if`
 - `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`, manually.
+- `@angular-eslint/computed-must-return`
+- `@angular-eslint/no-duplicates-in-metadata-arrays`
+- `@angular-eslint/no-uncalled-signals`
 - `@angular-eslint/template/prefer-at-empty`
 - `@angular-eslint/template/no-empty-control-flow`
 - `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
+- `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
+- `@angular-eslint/template/no-nested-tags`
 
 Run `npm run lint -- --fix` to fix most of the findings automatically.
 
