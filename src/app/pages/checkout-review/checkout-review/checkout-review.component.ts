@@ -29,6 +29,7 @@ import { PaypalAdapterTypes, PaypalConfigService } from 'ish-core/utils/paypal/p
 export class CheckoutReviewComponent implements OnInit, OnChanges {
   @Input({ required: true }) basket: Basket;
   @Input() error: HttpError;
+  /** True while the order is being created; blocks further submits and shows a spinner on the submit button. */
   @Input() submitting: boolean;
   @Output() readonly createOrder = new EventEmitter<void>();
 
