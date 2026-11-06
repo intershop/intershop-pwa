@@ -48,6 +48,7 @@ The findings of the following rules have to be fixed manually:
 - `@angular-eslint/template/no-nested-tags`
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
 - `@angular-eslint/template/no-any`
+- `rxjs-x/no-async-subscribe`: the lazy component schematic no longer generates `async` subscribe callbacks, the lazy components are regenerated automatically on `npm install`.
 - `rxjs-x/no-ignored-notifier`
 - `rxjs-x/no-ignored-takewhile-value`
 - `rxjs-x/no-index`
