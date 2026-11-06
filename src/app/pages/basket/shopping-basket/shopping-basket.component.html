@@ -75,7 +75,7 @@
             <div class="float-md-start">
               <ish-lazy-basket-add-to-quote />
               @if (basket) {
-                <ish-lazy-basket-create-order-template [cssClass]="'btn btn-secondary'" [products]="basket.lineItems" />
+                <ish-lazy-basket-create-order-template cssClass="btn btn-secondary" [products]="basket.lineItems" />
               }
             </div>
             <ish-clear-basket cssClass="float-md-end" />

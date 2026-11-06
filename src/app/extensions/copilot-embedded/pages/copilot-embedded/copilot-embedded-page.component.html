@@ -17,7 +17,7 @@
         (resetChat)="resetSession()"
       />
       <nav #nav="ngbNav" class="nav-tabs" ngbNav (activeIdChange)="activeNavId = $event">
-        <li role="presentation" [ngbNavItem]="'chat'">
+        <li ngbNavItem="chat" role="presentation">
           <a ngbNavLink>{{ 'copilot.embedded.tab.chat' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-copilot-embedded-chat [deviceType]="deviceType" />
