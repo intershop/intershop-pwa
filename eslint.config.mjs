@@ -87,6 +87,7 @@ export default defineConfig([
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/computed-must-return': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -95,7 +96,9 @@ export default defineConfig([
           style: 'camelCase',
         },
       ],
+      '@angular-eslint/no-duplicates-in-metadata-arrays': 'error',
       '@angular-eslint/no-implicit-take-until-destroyed': 'error',
+      '@angular-eslint/no-uncalled-signals': 'error',
       '@angular-eslint/pipe-prefix': [
         'error',
         {
@@ -1187,9 +1190,11 @@ export default defineConfig([
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
       '@angular-eslint/template/button-has-type': 'warn',
+      '@angular-eslint/template/conditional-complexity': ['warn', { maxComplexity: 3 }],
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
       '@angular-eslint/template/no-empty-control-flow': 'warn',
+      '@angular-eslint/template/no-nested-tags': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-at-else': 'warn',
       '@angular-eslint/template/prefer-at-empty': 'warn',
