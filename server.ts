@@ -208,7 +208,7 @@ export function app() {
         'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
       ];
 
-      req.on('error', (e: { code: string }) => {
+      req.on('error', (e: NodeJS.ErrnoException) => {
         if (certErrorCodes.includes(e.code)) {
           logger.warn(
             {
