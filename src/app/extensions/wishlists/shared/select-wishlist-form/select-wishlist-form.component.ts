@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, tap } from 'rxjs/operators';
 
 import { SelectOption } from 'ish-core/models/select-option/select-option.model';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
@@ -32,8 +31,6 @@ export class SelectWishlistFormComponent implements OnInit {
     private translate: TranslateService,
     private wishlistFacade: WishlistsFacade
   ) {}
-
-  private destroyRef = inject(DestroyRef);
 
   ngOnInit() {
     this.wishlistOptions$ = this.wishlistFacade.wishlistSelectOptions$(this.addMoveProduct === 'move');
@@ -95,18 +92,15 @@ export class SelectWishlistFormComponent implements OnInit {
               className: 'w-75 position-relative validation-offset-0',
               wrappers: ['validation'],
               hooks: {
-                onInit: (field: FormlyFieldConfig) => {
-                  field.form
-                    .get('wishlist')
-                    ?.valueChanges.pipe(
-                      filter(value => value === 'new'),
-                      debounceTime(0),
-                      takeUntilDestroyed(this.destroyRef)
-                    )
-                    .subscribe(() => {
+                // Formly subscribes to the returned observable and unsubscribes when the field is destroyed
+                onInit: (field: FormlyFieldConfig) =>
+                  field.form.get('wishlist')?.valueChanges.pipe(
+                    filter(value => value === 'new'),
+                    debounceTime(0),
+                    tap(() => {
                       field.focus = true;
-                    });
-                },
+                    })
+                  ),
               },
               props: {
                 required: true,
