@@ -3,14 +3,14 @@
     <h1>
       {{ 'account.wishlists.heading' | translate }}
       <ng-template #WishlistDescription>
-        <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+        <span [innerHTML]="'account.wishlists.heading.tooltip.content' | translate"></span>
       </ng-template>
       <button
         class="btn btn-link details-tooltip header-note mt-1"
         placement="bottom"
-        popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
         type="button"
         [ngbPopover]="WishlistDescription"
+        [popoverTitle]="'account.wishlists.heading.tooltip.headline' | translate"
       >
         {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
       </button>

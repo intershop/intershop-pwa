@@ -1195,6 +1195,7 @@ export default defineConfig([
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
       '@angular-eslint/template/no-empty-control-flow': 'warn',
+      '@angular-eslint/template/no-interpolation-in-attributes': ['warn', { allowSubstringInterpolation: true }],
       '@angular-eslint/template/no-nested-tags': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-at-else': 'warn',

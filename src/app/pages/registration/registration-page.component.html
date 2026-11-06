@@ -19,13 +19,13 @@
             <input
               class="btn btn-primary"
               type="submit"
-              value="{{ 'account.create.button.label' | translate }}"
               [attr.aria-describedby]="form.invalid && registrationForm.submitted ? 'submit-button-help' : null"
+              [value]="'account.create.button.label' | translate"
             />
             <input
               class="btn btn-secondary"
               type="button"
-              value="{{ 'account.cancel.link' | translate }}"
+              [value]="'account.cancel.link' | translate"
               (click)="cancelForm()"
             />
           </div>

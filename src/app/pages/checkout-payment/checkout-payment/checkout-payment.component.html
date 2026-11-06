@@ -228,9 +228,9 @@
         </form>
       } @else {
         <ish-info-message
-          message="{{
+          [message]="
             'checkout.payment.no_selection_required.info' | translate: { '0': basket.totals?.total | ishPrice }
-          }}"
+          "
           [toast]="false"
         />
       }
