@@ -50,6 +50,7 @@ The findings of the following rules have to be fixed manually:
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
 - `@angular-eslint/template/no-any`
 - `rxjs-x/no-ignored-notifier`
+- `rxjs-x/no-ignored-takewhile-value`
 - `rxjs-x/no-index`
 - `rxjs-x/no-redundant-notify`
 - `rxjs-x/no-subscribe-in-pipe`
