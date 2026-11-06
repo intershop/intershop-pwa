@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, filter, map, shareReplay, take } from 'rxjs';
@@ -31,8 +30,6 @@ export class OciConfigurationFormComponent implements OnInit {
   fields: FormlyFieldConfig[];
   fields$: Observable<FormlyFieldConfig[]>;
 
-  private destroyRef = inject(DestroyRef);
-
   constructor(private punchoutFacade: PunchoutFacade) {}
 
   ngOnInit() {
@@ -46,8 +43,7 @@ export class OciConfigurationFormComponent implements OnInit {
     this.model$ = this.configItems$.pipe(
       filter(configItems => configItems?.length > 0),
       take(1),
-      map(this.getModel),
-      takeUntilDestroyed(this.destroyRef)
+      map(items => this.getModel(items))
     );
   }
 
