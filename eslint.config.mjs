@@ -738,6 +738,7 @@ export default defineConfig([
       'jsdoc/valid-types': 'warn',
 
       // RxJS best practices
+      ...rxjsX.configs.recommended.rules,
       'rxjs-angular/prefer-takeuntil': [
         'error',
         {
@@ -761,16 +762,14 @@ export default defineConfig([
           },
         },
       ],
-      'rxjs-x/no-create': 'error',
-      'rxjs-x/no-ignored-replay-buffer': 'error',
+      'rxjs-x/no-async-subscribe': 'off',
       'rxjs-x/no-ignored-subscribe': 'error',
-      'rxjs-x/no-internal': 'error',
-      'rxjs-x/no-nested-subscribe': 'warn',
+      'rxjs-x/no-ignored-takewhile-value': 'off',
+      'rxjs-x/no-implicit-any-catch': 'off',
+      'rxjs-x/no-sharereplay': 'off',
       'rxjs-x/no-subclass': 'error',
-      'rxjs-x/no-subject-unsubscribe': 'error',
       'rxjs-x/no-subject-value': 'error',
       'rxjs-x/no-unsafe-catch': 'error',
-      'rxjs-x/no-unsafe-subject-next': 'error',
       'rxjs-x/no-unsafe-switchmap': 'error',
       'rxjs-x/no-unsafe-takeuntil': [
         'error',
@@ -778,6 +777,8 @@ export default defineConfig([
           alias: ['takeUntilDestroyed'],
         },
       ],
+      'rxjs-x/prefer-root-operators': 'off',
+      'rxjs-x/throw-error': 'off',
 
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
