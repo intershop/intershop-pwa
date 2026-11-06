@@ -35,7 +35,8 @@ export class ProductsListComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) productSKUs: string[];
   @Input() listStyle: string;
   @Input() slideItems: number;
-  @Input() listItemStyle: ProductItemDisplayType;
+  // accepts the unchecked string parameter of CMS components
+  @Input({ transform: (value: string) => value as ProductItemDisplayType }) listItemStyle: ProductItemDisplayType;
   @Input() listItemCSSClass: string;
   @Input() listItemConfiguration: Partial<ProductContextDisplayProperties>;
 
