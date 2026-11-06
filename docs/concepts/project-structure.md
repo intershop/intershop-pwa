@@ -107,6 +107,7 @@ Code outside the extension (`shell`, `pages`, `shared`) uses exclusively what th
 Lazy components render only when the extension's feature toggle is enabled.
 Therefore, the template that uses them needs no `*ishFeature` check for them.
 Generated lazy components are git-ignored and recreated on `npm install`.
+To change them, adapt the template in `schematics/src/lazy-component/files/` and regenerate them with `npm run build:schematics` and `npm run synchronize-lazy-components`.
 For example, see the `QuickorderLinkComponent` and its use as `ish-lazy-quickorder-link` in the header.
 
 ## Modules
