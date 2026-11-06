@@ -26,23 +26,27 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 
 Some of these rules check more cases.
 The `ish-custom-rules/no-initialize-observables-directly` rule has been removed without replacement.
-Additionally, the following rules have been enabled:
+
+Additionally, the following rules have been enabled.
+There is an auto-fix available (run `npm run lint -- --fix`) for the following rules:
 
 - `no-lonely-if`
-- `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`, manually.
-- `@angular-eslint/computed-must-return`
-- `@angular-eslint/consistent-component-styles` with `'array'`: use `styleUrls: ['./…']` instead of `styleUrl`, since the PWA tooling only supports `styleUrls`.
-- `@angular-eslint/no-duplicates-in-metadata-arrays`
-- `@angular-eslint/no-uncalled-signals`
+- `@angular-eslint/consistent-component-styles` with `'array'`: the PWA tooling only supports `styleUrls`.
 - `@angular-eslint/template/prefer-at-empty`
-- `@angular-eslint/template/no-empty-control-flow`
-- `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
-- `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
-- `@angular-eslint/template/no-nested-tags`
+- `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the auto-fix crashes there.
 - `@angular-eslint/template/prefer-static-string-properties`
 - `@angular-eslint/template/no-interpolation-in-attributes` with `allowSubstringInterpolation`
 
-Run `npm run lint -- --fix` to fix most of the findings automatically.
+The findings of the following rules have to be fixed manually:
+
+- `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`.
+- `@angular-eslint/computed-must-return`
+- `@angular-eslint/no-duplicates-in-metadata-arrays`
+- `@angular-eslint/no-uncalled-signals`
+- `@angular-eslint/template/no-empty-control-flow`
+- `@angular-eslint/template/no-nested-tags`
+- `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
+- `@angular-eslint/template/no-any`
 
 **`takeUntil(destroy$)` no longer allowed**
 
