@@ -18,10 +18,10 @@
         <button
           class="btn btn-link header-note details-tooltip"
           placement="bottom"
-          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.placeholder.headline' | translate }}"
           type="button"
           [attr.aria-label]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
           [ngbPopover]="OciConfigurationPlaceholder"
+          [popoverTitle]="'account.punchout.configuration.form.tooltip.placeholder.headline' | translate"
           [title]="'account.punchout.configuration.form.tooltip.placeholder.icon' | translate"
         >
           <i aria-hidden="true" class="bi bi-info-circle-fill"></i>
@@ -32,16 +32,16 @@
         <ng-template #OciConfigurationMapping>
           <div
             class="list-position-outside"
-            innerHTML="{{ 'account.punchout.configuration.form.tooltip.mapping.content' | translate }}"
+            [innerHTML]="'account.punchout.configuration.form.tooltip.mapping.content' | translate"
           ></div>
         </ng-template>
         <button
           class="btn btn-link header-note details-tooltip"
           placement="bottom"
-          popoverTitle="{{ 'account.punchout.configuration.form.tooltip.mapping.headline' | translate }}"
           type="button"
           [attr.aria-label]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
           [ngbPopover]="OciConfigurationMapping"
+          [popoverTitle]="'account.punchout.configuration.form.tooltip.mapping.headline' | translate"
           [title]="'account.punchout.configuration.form.tooltip.mapping.icon' | translate"
         >
           <i aria-hidden="true" class="bi bi-info-circle-fill"></i>

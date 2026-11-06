@@ -39,6 +39,7 @@ Additionally, the following rules have been enabled:
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
 - `@angular-eslint/template/no-nested-tags`
 - `@angular-eslint/template/prefer-static-string-properties`
+- `@angular-eslint/template/no-interpolation-in-attributes` with `allowSubstringInterpolation`
 
 Run `npm run lint -- --fix` to fix most of the findings automatically.
 
