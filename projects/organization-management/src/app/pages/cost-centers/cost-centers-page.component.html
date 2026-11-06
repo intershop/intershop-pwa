@@ -3,7 +3,7 @@
     <h1 class="pe-2">
       {{ 'account.organization.cost_center_management' | translate }}
     </h1>
-    <ish-budget-info [suffix]="'account.organization.budget_price_type.suffix.info'" />
+    <ish-budget-info suffix="account.organization.budget_price_type.suffix.info" />
   </div>
   <div class="ms-auto py-2">
     @if (!!(costCentersError$ | async) === false) {

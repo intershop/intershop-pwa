@@ -39,6 +39,7 @@ Additionally, the following rules have been enabled:
 - `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
 - `@angular-eslint/template/no-nested-tags`
+- `@angular-eslint/template/prefer-static-string-properties`
 
 Run `npm run lint -- --fix` to fix most of the findings automatically.
 
