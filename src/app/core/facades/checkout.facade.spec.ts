@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { BehaviorSubject, take } from 'rxjs';
+import { BehaviorSubject, take, toArray } from 'rxjs';
 
 import { Address } from 'ish-core/models/address/address.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
@@ -237,15 +237,13 @@ describe('Checkout Facade', () => {
       store$.overrideSelector(getBasketEligiblePaymentMethods, [nonPaypalMethod]);
       store$.refreshState();
 
-      const results: (PaymentMethod | undefined)[] = [];
-      facade.getBasketPaypalPaymentMethod().subscribe(result => {
-        results.push(result);
-        if (results.length === 2) {
-          expect(results[0]).toBeUndefined();
-          expect(results[1]).toBeUndefined();
+      facade
+        .getBasketPaypalPaymentMethod()
+        .pipe(take(2), toArray())
+        .subscribe(results => {
+          expect(results).toEqual([undefined, undefined]);
           done();
-        }
-      });
+        });
     });
 
     it('should emit the PayPal payment method when it has PaypalAlternativeWallet capability', done => {
@@ -253,15 +251,13 @@ describe('Checkout Facade', () => {
       store$.overrideSelector(getBasketEligiblePaymentMethods, [paypalMethod]);
       store$.refreshState();
 
-      const results: (PaymentMethod | undefined)[] = [];
-      facade.getBasketPaypalPaymentMethod().subscribe(result => {
-        results.push(result);
-        if (results.length === 2) {
-          expect(results[0]).toBeUndefined();
-          expect(results[1]).toEqual(paypalMethod);
+      facade
+        .getBasketPaypalPaymentMethod()
+        .pipe(take(2), toArray())
+        .subscribe(results => {
+          expect(results).toEqual([undefined, paypalMethod]);
           done();
-        }
-      });
+        });
     });
 
     it('should emit undefined when no eligible payment method matches the basket instrument id', done => {
@@ -271,15 +267,13 @@ describe('Checkout Facade', () => {
       ]);
       store$.refreshState();
 
-      const results: (PaymentMethod | undefined)[] = [];
-      facade.getBasketPaypalPaymentMethod().subscribe(result => {
-        results.push(result);
-        if (results.length === 2) {
-          expect(results[0]).toBeUndefined();
-          expect(results[1]).toBeUndefined();
+      facade
+        .getBasketPaypalPaymentMethod()
+        .pipe(take(2), toArray())
+        .subscribe(results => {
+          expect(results).toEqual([undefined, undefined]);
           done();
-        }
-      });
+        });
     });
   });
 });

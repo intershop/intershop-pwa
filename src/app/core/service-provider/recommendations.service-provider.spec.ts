@@ -11,7 +11,7 @@ describe('Recommendations Service Provider', () => {
   let recommendationsServiceProvider: RecommendationsServiceProvider;
   let sparqueRecommendationsServiceMock: SparqueRecommendationsService;
 
-  const configureTestBed = (sparqueConfig: unknown = undefined) => {
+  const configureTestBed = (sparqueConfig?: unknown) => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [

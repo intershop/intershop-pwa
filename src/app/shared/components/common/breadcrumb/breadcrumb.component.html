@@ -24,11 +24,11 @@
         </li>
       }
     }
-    @for (item of trail; track $index; let last = $last) {
+    @for (item of trail; track $index) {
       <li
         class="breadcrumb-item"
-        [attr.aria-current]="last && !item.link ? 'page' : null"
-        [class.active]="last && !item.link"
+        [attr.aria-current]="$last && !item.link ? 'page' : null"
+        [class.active]="$last && !item.link"
       >
         @if (item.link) {
           <a [queryParams]="item.linkParams" [routerLink]="item.link">{{ item.text || (item.key | translate) }}</a>

@@ -21,6 +21,13 @@ const messages = {
   varError: `Don't return a variable, which is declared right before. Return the variable value instead.`,
 };
 
+/**
+ * Disallows returning a variable that is declared directly before the `return` statement.
+ *
+ * Return the initializer value instead:
+ *
+ * `const result = calculate(); return result;` becomes `return calculate();`
+ */
 const noVarBeforeReturnRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     messages,

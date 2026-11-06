@@ -7,6 +7,53 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.0.0 to 14.0.0
+
+**ESLint 10 update**
+
+ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0).
+The [`eslint.config.mjs`](../../eslint.config.mjs) uses the native flat configs of the `angular-eslint` package instead of `FlatCompat`.
+Unmaintained plugins and some custom rules have been replaced, so rename them in customized configurations and `eslint-disable` comments:
+
+| Old rule                                            | New rule                                                                                      |
+| :-------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `rxjs/*`                                            | `rxjs-x/*` ([`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x)) |
+| `ban/ban`                                           | `no-restricted-properties`, `no-restricted-globals`, `prefer-object-spread`                   |
+| `ish-custom-rules/no-return-undefined`              | `unicorn/no-useless-undefined`                                                                |
+| `ish-custom-rules/no-collapsible-if`                | `unicorn/no-lonely-if`                                                                        |
+| `ish-custom-rules/no-object-literal-type-assertion` | `@typescript-eslint/consistent-type-assertions`                                               |
+| `ish-custom-rules/no-testbed-with-then`             | `no-restricted-syntax`                                                                        |
+
+Some of these rules check more cases.
+The `ish-custom-rules/no-initialize-observables-directly` rule has been removed without replacement.
+Additionally, the following rules have been enabled:
+
+- `no-lonely-if`
+- `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`, manually.
+- `@angular-eslint/computed-must-return`
+- `@angular-eslint/consistent-component-styles` with `'array'`: use `styleUrls: ['./…']` instead of `styleUrl`, since the PWA tooling only supports `styleUrls`.
+- `@angular-eslint/no-duplicates-in-metadata-arrays`
+- `@angular-eslint/no-uncalled-signals`
+- `@angular-eslint/template/prefer-at-empty`
+- `@angular-eslint/template/no-empty-control-flow`
+- `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the autofix crashes there.
+- `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
+- `@angular-eslint/template/no-nested-tags`
+- `@angular-eslint/template/prefer-static-string-properties`
+- `@angular-eslint/template/no-interpolation-in-attributes` with `allowSubstringInterpolation`
+
+Run `npm run lint -- --fix` to fix most of the findings automatically.
+
+**`takeUntil(destroy$)` no longer allowed**
+
+The transitional period for the `takeUntil(destroy$)` mechanism, see [From 4.2 to 5.0](#from-42-to-50), has ended.
+ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been removed.
+Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed) operator instead, e.g., with the migration script described there.
+
+**Jest recommended ESLint rules**
+
+Unit tests are now linted with the [recommended rules of `eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest#rules), and Cypress tests with some of them.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

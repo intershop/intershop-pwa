@@ -38,7 +38,7 @@ export class RecurringOrdersService {
       )
       .pipe(
         map(([customer, user]) => {
-          let apiEndpoint: string = undefined;
+          let apiEndpoint: string;
           if (customer.isBusinessCustomer) {
             if (context === 'ADMIN') {
               apiEndpoint = `customers/${this.apiService.encodeResourceId(customer.customerNo)}/recurringorders`;
