@@ -31,6 +31,7 @@ Additionally, the following rules have been enabled:
 - `no-lonely-if`
 - `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`, manually.
 - `@angular-eslint/computed-must-return`
+- `@angular-eslint/consistent-component-styles` with `'array'`: use `styleUrls: ['./…']` instead of `styleUrl`, since the PWA tooling only supports `styleUrls`.
 - `@angular-eslint/no-duplicates-in-metadata-arrays`
 - `@angular-eslint/no-uncalled-signals`
 - `@angular-eslint/template/prefer-at-empty`

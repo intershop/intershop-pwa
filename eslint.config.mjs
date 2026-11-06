@@ -88,6 +88,7 @@ export default defineConfig([
         },
       ],
       '@angular-eslint/computed-must-return': 'error',
+      '@angular-eslint/consistent-component-styles': ['warn', 'array'],
       '@angular-eslint/directive-selector': [
         'error',
         {

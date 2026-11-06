@@ -12,7 +12,7 @@ import { Order } from 'ish-core/models/order/order.model';
   selector: 'ish-account-order',
   standalone: false,
   templateUrl: './account-order.component.html',
-  styleUrl: './account-order.component.scss',
+  styleUrls: ['./account-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountOrderComponent {
