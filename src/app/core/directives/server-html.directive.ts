@@ -1,4 +1,4 @@
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -26,6 +26,16 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
 
   private initialized = false;
   private renderer = inject(Renderer2);
+  private document = inject(DOCUMENT);
+
+  /**
+   * Callbacks available for every server HTML, e.g. <a callback="reloadPage">, as CSP-compliant replacement for 'javascript:' links.
+   * Callbacks passed via the 'callbacks' input take precedence.
+   */
+  private readonly defaultCallbacks: Record<string, (event?: MouseEvent) => void> = {
+    reloadPage: () => this.document.defaultView?.location.reload(),
+    navigateBack: () => this.document.defaultView?.history.back(),
+  };
 
   constructor(
     private router: Router,
@@ -74,6 +84,17 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     Array.from(this.elementRef.nativeElement.querySelectorAll('[src]')).forEach((element: HTMLElement) => {
       this.renderer.setAttribute(element, 'src', this.transformMediaObjectSrc(element.getAttribute('src')));
     });
+    // callback links without href are not focusable by default
+    Array.from(this.elementRef.nativeElement.querySelectorAll('a[callback]:not([href])')).forEach(
+      (element: HTMLElement) => {
+        if (!element.hasAttribute('role')) {
+          this.renderer.setAttribute(element, 'role', 'button');
+        }
+        if (!element.hasAttribute('tabindex')) {
+          this.renderer.setAttribute(element, 'tabindex', '0');
+        }
+      }
+    );
   }
 
   private transformMediaObjectSrc(src: string) {
@@ -93,6 +114,16 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     this.elementRef.nativeElement.removeAttribute('ng-reflect-ish-server-html');
   }
 
+  // links without href do not turn Enter into a click on their own
+  @HostListener('keydown.enter', ['$event'])
+  onEnter(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'A' && target.hasAttribute('callback') && !target.hasAttribute('href')) {
+      event.preventDefault();
+      target.click();
+    }
+  }
+
   // eslint-disable-next-line complexity
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
@@ -102,10 +133,11 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
       if (el.tagName === 'A') {
         const href = el.getAttribute('href');
         const cb = el.getAttribute('callback');
+        const callback = cb && (this.callbacks?.[cb] ?? this.defaultCallbacks[cb]);
 
         // handle links with callback functions, e.g. <a callback="availableCallbackFunction">
-        if (cb && this.callbacks && typeof this.callbacks[cb] === 'function') {
-          this.callbacks[cb](event);
+        if (typeof callback === 'function') {
+          callback(event);
         }
 
         if (

@@ -234,4 +234,77 @@ describe('Server Html Directive', () => {
       expect(location.path()).toMatchInlineSnapshot(`"/page/page.helpdesk"`);
     }));
   });
+
+  describe('with callbacks', () => {
+    let element: HTMLElement;
+    let customCallback: jest.Mock;
+
+    const clickLink = (selector: string) => {
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+      element.querySelector(selector).dispatchEvent(event);
+      return event;
+    };
+
+    beforeEach(() => {
+      customCallback = jest.fn();
+
+      @Component({
+        standalone: false,
+        template: ` <div [callbacks]="callbacks" [ishServerHtml]="html"></div> `,
+        changeDetection: ChangeDetectionStrategy.OnPush,
+      })
+      class TestComponent {
+        html = `<a id="back" callback="navigateBack">Back</a>
+          <a id="reload" callback="reloadPage">Reload</a>
+          <a id="custom" callback="custom">Custom</a>`;
+        callbacks = { custom: customCallback, reloadPage: customCallback };
+      }
+
+      TestBed.configureTestingModule({
+        declarations: [ServerHtmlDirective, TestComponent],
+        providers: [
+          { provide: APP_BASE_HREF, useValue: '/' },
+          { provide: AppFacade, useFactory: () => instance(mock(AppFacade)) },
+        ],
+      }).compileComponents();
+
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      element = fixture.nativeElement;
+    });
+
+    it('should call the default navigateBack callback', () => {
+      const back = jest.spyOn(window.history, 'back').mockImplementation(() => undefined);
+
+      clickLink('#back');
+
+      expect(back).toHaveBeenCalledTimes(1);
+      back.mockRestore();
+    });
+
+    it('should prefer callbacks passed via input over default callbacks', () => {
+      clickLink('#reload');
+
+      expect(customCallback).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call custom callbacks of links without href', () => {
+      clickLink('#custom');
+
+      expect(customCallback).toHaveBeenCalledTimes(1);
+    });
+
+    it('should make callback links without href focusable buttons', () => {
+      const link = element.querySelector('#custom');
+
+      expect(link.getAttribute('role')).toEqual('button');
+      expect(link.getAttribute('tabindex')).toEqual('0');
+    });
+
+    it('should call callbacks of links without href when Enter is pressed', () => {
+      element.querySelector('#custom').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+      expect(customCallback).toHaveBeenCalledTimes(1);
+    });
+  });
 });
