@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, createNgModule, OnInit, ViewChild, ViewContainerRef,
+  ChangeDetectionStrategy, Component, createNgModule, OnInit, Type, ViewChild, ViewContainerRef,
   Injector,
   ComponentRef,
   <% if (inputs.length) { %>Input, OnChanges, <% } %>
@@ -9,6 +9,8 @@ import {
 <% if(guardDisplay) { %>
   import { FeatureToggleService } from 'ish-core/feature-toggle.module';
   import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+  import { from, of } from 'rxjs';
+  import { switchMap } from 'rxjs/operators';
 <% } %>
 
 import type { <%= classify(originalName) %>Component as OriginalComponent } from '<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component';
@@ -45,25 +47,35 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputs.leng
   ) {}
 
   <% if(!guardDisplay) { %>async<% } %> ngOnInit() {
-    <% if(guardDisplay) { %> this.featureToggleService.enabled$('<%= camelize(guardDisplay) %>').pipe(takeUntilDestroyed(this.destroyRef)).subscribe(async enabled => {
-      if (enabled) {
-    <% } %>
-
-      await this.renderComponent();
-
-    <% if(guardDisplay){ %>
-        } else {
-          this.anchor.clear();
-        }
-      })
+    <% if(guardDisplay) { %>
+      this.featureToggleService
+        .enabled$('<%= camelize(guardDisplay) %>')
+        .pipe(
+          switchMap(enabled => (enabled ? from(this.loadComponent()) : of(undefined))),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe(loaded => {
+          if (loaded) {
+            this.renderComponent(loaded.module, loaded.originalComponent);
+          } else {
+            this.anchor.clear();
+          }
+        });
+    <% } else { %>
+      const { module, originalComponent } = await this.loadComponent();
+      this.renderComponent(module, originalComponent);
     <% } %>
   }
 
-  private async renderComponent() {
+  private async loadComponent() {
     const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 
+    return { module, originalComponent };
+  }
+
+  private renderComponent(module: Type<unknown>, originalComponent: Type<OriginalComponent>) {
     const ngModuleRef = createNgModule(module, this.injector);
 
     this.component = this.anchor.createComponent(originalComponent, { ngModuleRef });
