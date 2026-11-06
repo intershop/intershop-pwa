@@ -97,8 +97,6 @@ export default defineConfig([
       ],
       // override lint rule, override schematic and dead files detection only support styleUrls arrays
       '@angular-eslint/consistent-component-styles': ['warn', 'array'],
-      '@angular-eslint/no-empty-lifecycle-method': 'warn',
-      '@angular-eslint/no-host-metadata-property': 'off',
       '@angular-eslint/no-implicit-take-until-destroyed': 'error',
       '@angular-eslint/pipe-prefix': [
         'error',
@@ -114,12 +112,10 @@ export default defineConfig([
       // NgRx best practices
       ...ngrx.configs.store.rules,
       ...ngrx.configs.effects.rules,
-      ...ngrx.configs['component-store'].rules,
       ...ngrx.configs.operators.rules,
       '@ngrx/avoid-combining-selectors': 'off',
       '@ngrx/avoid-mapping-selectors': 'off',
       '@ngrx/avoid-cyclic-effects': 'warn',
-      '@ngrx/no-multiple-actions-in-effects': 'off',
       '@ngrx/no-store-subscription': 'off',
       '@ngrx/prefer-effect-callback-in-block-statement': 'off',
       '@ngrx/prefix-selectors-with-select': 'off',
