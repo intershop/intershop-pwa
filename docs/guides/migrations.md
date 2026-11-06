@@ -42,6 +42,7 @@ The findings of the following rules have to be fixed manually:
 - `@angular-eslint/computed-must-return`
 - `@angular-eslint/no-duplicates-in-metadata-arrays`
 - `@angular-eslint/no-uncalled-signals`
+- `@angular-eslint/prefer-host-metadata-property`: replace `@HostBinding()` and `@HostListener()` with the [`host` property](https://angular.dev/guide/components/host-elements).
 - `@angular-eslint/template/no-empty-control-flow`
 - `@angular-eslint/template/no-nested-tags`
 - `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`

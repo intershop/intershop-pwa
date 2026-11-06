@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Output } from '@angular/core';
 
 /**
  * This directive can be set on a html tag to check focus outside of the tag.
@@ -6,6 +6,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
 @Directive({
   selector: '[ishFocusOutside]',
   standalone: false,
+  host: { '(document:focusin)': 'onFocusIn($event.target)' },
 })
 export class FocusOutsideDirective {
   constructor(private elementRef: ElementRef) {}
@@ -18,7 +19,6 @@ export class FocusOutsideDirective {
   /**
    * Method to check if focus is outside of the targetElement. Emits true when focus moves outside.
    */
-  @HostListener('document:focusin', ['$event.target'])
   onFocusIn(targetElement: EventTarget): void {
     if (!this.elementRef.nativeElement.contains(targetElement)) {
       this.isFocusedOutside.emit(true);
