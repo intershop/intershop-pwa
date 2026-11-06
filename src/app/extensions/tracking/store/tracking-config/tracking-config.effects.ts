@@ -4,7 +4,7 @@ import { Actions, createEffect } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { Angulartics2GoogleTagManager } from 'angulartics2';
-import { filter, map, take, takeWhile } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
@@ -44,8 +44,8 @@ export class TrackingConfigEffects {
 
   setGTMToken$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => SSR && this.featureToggleService.enabled('tracking')),
       take(1),
+      filter(() => SSR && this.featureToggleService.enabled('tracking')),
       concatLatestFrom(() => this.stateProperties.getStateOrEnvOrDefault<string>('GTM_TOKEN', 'gtmToken')),
       map(([, gtmToken]) => gtmToken),
       whenTruthy(),

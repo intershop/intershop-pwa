@@ -38,5 +38,8 @@ ssrTest 16 "${PWA_BASE_URL}/prd6997041" "<title>Asus Eee PC 1008P .Karim Rashid.
 ssrTest 17 "${PWA_BASE_URL}/home;device=tablet" "class=.header container tablet"
 ssrTest 18 "${PWA_BASE_URL}/home;device=desktop" "class=.header container desktop"
 ssrTest 19 "${PWA_BASE_URL}/home;device=mobile" "class=.header container mobile"
+ssrTest 20 "${PWA_BASE_URL}/home" "<html lang=.en-US."
+ssrTest 21 "${PWA_BASE_URL}/home" "<meta property=.og:locale. content=.en_US."
+ssrTest 22 "${PWA_BASE_URL}/home" "<meta property=.og:locale:alternate. content=.de_DE."
 
 exit 0
