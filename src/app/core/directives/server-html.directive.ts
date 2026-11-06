@@ -4,7 +4,6 @@ import {
   AfterViewInit,
   Directive,
   ElementRef,
-  HostListener,
   Inject,
   Input,
   OnChanges,
@@ -20,6 +19,7 @@ import { LinkParser } from 'ish-core/utils/link-parser';
 @Directive({
   selector: '[ishServerHtml]',
   standalone: false,
+  host: { '(click)': 'onClick($event)' },
 })
 export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnChanges {
   @Input() callbacks: Record<string, (event?: MouseEvent) => void>;
@@ -94,7 +94,6 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
   }
 
   // eslint-disable-next-line complexity
-  @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
     // go along path of click but not further up than self
     for (let el = event.target as HTMLElement; el && el !== this.elementRef.nativeElement; el = el.parentElement) {

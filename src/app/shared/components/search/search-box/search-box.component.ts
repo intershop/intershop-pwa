@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  HostListener,
   Inject,
   Input,
   OnDestroy,
@@ -53,6 +52,13 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
   ],
   templateUrl: './search-box.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(transitionend)': 'onTransitionEnd($event)',
+    '(window:scroll)': 'onWindowScroll()',
+    '(document:keydown.escape)': 'onEscape($event)',
+    '(document:click)': 'onClick($event.target)',
+    '(document:focusin)': 'onFocusIn($event.target)',
+  },
 })
 export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
@@ -139,7 +145,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // add event listener for transition end to check if search box has scaled up
   // to show the suggest layer only if the input has scaled up
-  @HostListener('transitionend', ['$event'])
   onTransitionEnd(event: TransitionEvent) {
     if (event.propertyName === 'width' && event.target === this.searchBox.nativeElement) {
       const newWidth = this.searchInput.nativeElement.offsetWidth;
@@ -153,7 +158,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // if searchbox has focus - scale down and remove focus when scrolling the document
-  @HostListener('window:scroll', [])
   onWindowScroll() {
     if (this.searchBoxFocus) {
       this.blur();
@@ -161,7 +165,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // reset input when ESC key is pressed and element is focused within the search box
-  @HostListener('document:keydown.escape', ['$event'])
   onEscape(event: Event) {
     if (this.searchBox.nativeElement.contains(event.target)) {
       event.preventDefault(); // Optional: Prevent default behavior
@@ -170,13 +173,11 @@ export class SearchBoxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // remove focus when clicking outside the search box
-  @HostListener('document:click', ['$event.target'])
   onClick(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }
 
   // remove focus when focused outside the search box
-  @HostListener('document:focusin', ['$event.target'])
   onFocusIn(targetElement: EventTarget): void {
     this.blurIfOutside(targetElement);
   }

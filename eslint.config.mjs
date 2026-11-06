@@ -107,6 +107,7 @@ export default defineConfig([
           prefixes: ['ish'],
         },
       ],
+      '@angular-eslint/prefer-host-metadata-property': 'warn',
       '@angular-eslint/prefer-output-readonly': 'warn',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
