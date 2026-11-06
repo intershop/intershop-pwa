@@ -4,6 +4,7 @@
       <div class="col-6">
         <input
           #d="ngbDatepicker"
+          autoClose="outside"
           class="form-control"
           data-testing-id="date-range-picker"
           name="dp"
@@ -11,7 +12,6 @@
           ngbDatepicker
           outsideDays="collapsed"
           tabindex="-1"
-          [autoClose]="'outside'"
           [class]="props.inputClass"
           [dayTemplate]="t"
           [displayMonths]="2"
