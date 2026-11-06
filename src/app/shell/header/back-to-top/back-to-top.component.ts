@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ish-back-to-top',
   standalone: false,
   templateUrl: './back-to-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '(window:scroll)': 'onWindowScroll()' },
 })
 export class BackToTopComponent {
   /**
@@ -40,7 +41,7 @@ export class BackToTopComponent {
     this.previousOffset = window.scrollY;
   }
 
-  @HostListener('window:scroll') onWindowScroll() {
+  onWindowScroll() {
     const diff = this.previousOffset - window.scrollY;
 
     const scrollsDown = diff < 0;

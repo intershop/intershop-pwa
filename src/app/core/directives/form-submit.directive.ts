@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef } from '@angular/core';
 
 /**
  * This directive can be used to add functionality on form submit events.
@@ -8,11 +8,11 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 @Directive({
   selector: '[ishFormSubmit]',
   standalone: false,
+  host: { '(submit)': 'onFormSubmit()' },
 })
 export class FormSubmitDirective {
   constructor(private elementRef: ElementRef<HTMLElement>) {}
 
-  @HostListener('submit')
   onFormSubmit() {
     const firstElement = Array.from(this.elementRef.nativeElement.querySelectorAll<HTMLElement>('.ng-invalid')).find(
       el => !el.tagName.includes('-') || el.tagName.toLowerCase() === 'ng-select'
