@@ -28,11 +28,11 @@
           <ish-lazy-product-add-to-wishlist cssClass="btn-link btn-tool ms-0" displayType="icon" />
           <button
             class="btn-tool btn-link"
-            title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
             type="button"
             [attr.aria-label]="'shopping_cart.remove.item.button.label' | translate"
             [attr.data-id]="lineItem.id"
             [attr.data-testing-id]="'remove-line-item'"
+            [title]="'shopping_cart.remove.item.button.label' | translate"
             (click)="onDeleteItem()"
           >
             <i aria-hidden="true" class="bi bi-trash-fill"></i>

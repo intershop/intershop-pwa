@@ -86,9 +86,9 @@
               <button
                 class="btn-tool btn-link"
                 data-testing-id="deactivate-cost-center"
-                title="{{ 'account.costcenter.deactivate.button.title' | translate }}"
                 type="button"
                 [attr.aria-label]="'account.costcenter.deactivate.button.title' | translate"
+                [title]="'account.costcenter.deactivate.button.title' | translate"
                 (click)="openConfirmationDialog(costCenter, deactivateDialog)"
               >
                 <i aria-hidden="true" class="bi bi-ban"></i>
@@ -97,9 +97,9 @@
               <button
                 class="btn-tool btn-link"
                 data-testing-id="activate-cost-center"
-                title="{{ 'account.costcenter.activate.button.title' | translate }}"
                 type="button"
                 [attr.aria-label]="'account.costcenter.activate.button.title' | translate"
+                [title]="'account.costcenter.activate.button.title' | translate"
                 (click)="activate(costCenter)"
               >
                 <i aria-hidden="true" class="bi bi-check-circle"></i>
@@ -112,11 +112,6 @@
             <button
               class="btn-tool btn-link"
               data-testing-id="delete-cost-center"
-              title="{{
-                isDeletable(costCenter)
-                  ? ('account.costcenter.delete.link' | translate)
-                  : ('account.costcenter.delete.disabled.icon' | translate)
-              }}"
               type="button"
               [attr.aria-label]="
                 isDeletable(costCenter)
@@ -124,6 +119,11 @@
                   : ('account.costcenter.delete.disabled.icon' | translate)
               "
               [class.inactive]="!isDeletable(costCenter)"
+              [title]="
+                isDeletable(costCenter)
+                  ? ('account.costcenter.delete.link' | translate)
+                  : ('account.costcenter.delete.disabled.icon' | translate)
+              "
               (click)="openConfirmationDialog(costCenter, deleteDialog)"
             >
               <i aria-hidden="true" class="bi bi-trash-fill"></i>

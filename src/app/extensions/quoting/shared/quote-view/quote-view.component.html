@@ -17,10 +17,10 @@
         <p>{{ 'quote.edit.submitted.we_will_email.text' | translate: { '0': userEmail$ | async } }}</p>
       } @else {
         <ish-info-message
-          message="{{
+          [message]="
             'quote.edit.submitted.your_quote_request_has_been_submitted.text'
               | translate: { '0': asQuoteRequest(quote).submittedDate || quote.creationDate | ishDate: 'shortDate' }
-          }}"
+          "
           [toast]="false"
         />
       }
