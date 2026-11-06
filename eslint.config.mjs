@@ -764,7 +764,6 @@ export default defineConfig([
       ],
       'rxjs-x/no-async-subscribe': 'off',
       'rxjs-x/no-ignored-subscribe': 'error',
-      'rxjs-x/no-ignored-takewhile-value': 'off',
       'rxjs-x/no-implicit-any-catch': 'off',
       'rxjs-x/no-sharereplay': 'off',
       'rxjs-x/no-subclass': 'error',

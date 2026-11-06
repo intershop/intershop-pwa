@@ -1,7 +1,7 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { map, take, takeWhile } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { FeatureToggleService } from 'ish-core/feature-toggle.module';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -19,8 +19,8 @@ export class StoreLocatorConfigEffects {
 
   setGMAKey$ = createEffect(() =>
     this.actions$.pipe(
-      takeWhile(() => (SSR || isDevMode()) && this.featureToggleService.enabled('storeLocator')),
       take(1),
+      filter(() => (SSR || isDevMode()) && this.featureToggleService.enabled('storeLocator')),
       concatLatestFrom(() => this.stateProperties.getStateOrEnvOrDefault<string>('GMA_KEY', 'gmaKey')),
       map(([, gmaKey]) => gmaKey),
       whenTruthy(),

@@ -4,7 +4,7 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigationAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { EMPTY, identity } from 'rxjs';
-import { concatMap, filter, first, map, switchMap, take, takeWhile } from 'rxjs/operators';
+import { concatMap, filter, first, map, switchMap, take } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { ServerConfig } from 'ish-core/models/server-config/server-config.model';
@@ -76,7 +76,7 @@ export class ServerConfigEffects {
         this.actions$.pipe(
           ofType(loadServerConfigSuccess),
           take(1),
-          takeWhile(() => this.featureToggleService.enabled('saveLanguageSelection')),
+          filter(() => this.featureToggleService.enabled('saveLanguageSelection')),
           concatLatestFrom(() => [
             this.store.pipe(select(getAvailableLocales)),
             this.store.pipe(select(getCurrentLocale)),
@@ -144,7 +144,7 @@ export class ServerConfigEffects {
   loadExtraServerConfig$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadServerConfig),
-      takeWhile(() => this.featureToggleService.enabled('extraConfiguration')),
+      filter(() => this.featureToggleService.enabled('extraConfiguration')),
       switchMap(() => this.store.pipe(select(isExtraConfigurationLoaded))),
       whenFalsy(),
       delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
