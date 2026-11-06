@@ -41,4 +41,13 @@ describe('Print Page Directive', () => {
 
     expect(print).toHaveBeenCalledTimes(1);
   });
+
+  it('should open the print dialog without scrolling when Space is pressed', () => {
+    const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+
+    (fixture.nativeElement as HTMLElement).querySelector('a').dispatchEvent(event);
+
+    expect(print).toHaveBeenCalledTimes(1);
+    expect(event.defaultPrevented).toBeTrue();
+  });
 });

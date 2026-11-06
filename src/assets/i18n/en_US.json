@@ -1492,7 +1492,7 @@
   "quote.state.responded": "Responded",
   "quote.state.submitted": "Submitted",
   "quote.state.unknown": "Unknown",
-  "quoterequest.not_editable.error": "You have already submitted the quote request. Please <a callback=\"reloadPage\">reload</a> this page to view the changes.",
+  "quoterequest.not_editable.error": "You have already submitted the quote request. Please reload this page to view the changes.",
   "recaptcha.v2.incorrect.error": "Please verify that you are a real person.",
   "recaptcha.v3.info_text": "This site is protected by reCAPTCHA and the Google <a href=\"{{0}}\" target=\"_blank\">privacy policy</a> and <a href=\"{{1}}\" target=\"_blank\">terms of service</a> apply.",
   "recentlyViewed.component.heading": "Recently viewed",

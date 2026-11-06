@@ -114,9 +114,10 @@ export class ServerHtmlDirective implements AfterContentInit, AfterViewInit, OnC
     this.elementRef.nativeElement.removeAttribute('ng-reflect-ish-server-html');
   }
 
-  // links without href do not turn Enter into a click on their own
+  // links without href do not provide native keyboard activation
   @HostListener('keydown.enter', ['$event'])
-  onEnter(event: Event) {
+  @HostListener('keydown.space', ['$event'])
+  onKeydown(event: Event) {
     const target = event.target as HTMLElement;
     if (target.tagName === 'A' && target.hasAttribute('callback') && !target.hasAttribute('href')) {
       event.preventDefault();

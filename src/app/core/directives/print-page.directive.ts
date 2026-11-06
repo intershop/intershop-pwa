@@ -17,6 +17,7 @@ export class PrintPageDirective {
 
   @HostListener('click', ['$event'])
   @HostListener('keydown.enter', ['$event'])
+  @HostListener('keydown.space', ['$event'])
   onClick(event: Event) {
     event.preventDefault();
     this.document.defaultView?.print();

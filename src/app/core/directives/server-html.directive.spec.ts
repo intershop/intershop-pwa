@@ -306,5 +306,14 @@ describe('Server Html Directive', () => {
 
       expect(customCallback).toHaveBeenCalledTimes(1);
     });
+
+    it('should call callbacks of links without href without scrolling when Space is pressed', () => {
+      const event = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+
+      element.querySelector('#custom').dispatchEvent(event);
+
+      expect(customCallback).toHaveBeenCalledTimes(1);
+      expect(event.defaultPrevented).toBeTrue();
+    });
   });
 });
