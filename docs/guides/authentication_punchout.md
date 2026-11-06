@@ -8,6 +8,7 @@ kb_sync_latest_only
 # Authentication with the Punchout Identity Provider
 
 - [Configuration](#configuration)
+  - [Allowed Hook URLs](#allowed-hook-urls)
 - [Login](#login)
 - [Registration](#registration)
 - [Token Lifetime](#token-lifetime)
@@ -106,6 +107,45 @@ proxy:
         channel: default
         theme: b2c
 ```
+
+### Allowed Hook URLs
+
+For the OCI punchout, the PWA submits the basket to the `HOOK_URL` given as query parameter at login.
+To prevent that the PWA sends users and basket data to arbitrary sites (open redirect), restrict the `HOOK_URL` with the `allowedHookUrls` property of the punchout identity provider configuration.
+Each entry is an origin (scheme, host, and port) the `HOOK_URL` has to match exactly.
+A leading `*.` in the host matches any subdomain, but not the domain itself: `https://*.customer.com` matches `https://sap.customer.com`, but not `https://customer.com`.
+If the `HOOK_URL` does not match, the user is not logged in, the `HOOK_URL` is not stored, and the error page shows a new localized message.
+Without `allowedHookUrls`, any `HOOK_URL` is accepted.
+A configured but empty `allowedHookUrls` rejects every `HOOK_URL`.
+
+```yaml
+pwa:
+  environment:
+    IDENTITY_PROVIDERS: |
+      Punchout:
+        type: PUNCHOUT
+        allowedHookUrls:
+          - https://sap.customer-a.com
+          - https://*.procurement.customer-b.com
+```
+
+Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+
+```yaml
+app:
+  env:
+    - name: IDENTITY_PROVIDERS
+      value: |
+        {
+          "Punchout": {
+            "type": "PUNCHOUT",
+            "allowedHookUrls": ["https://sap.customer-a.com", "https://*.procurement.customer-b.com"]
+          }
+        }
+```
+
+> [!NOTE]
+> The [Content Security Policy](./security-headers.md) directive `form-action` additionally restricts the targets of the punchout basket transfer in the browser.
 
 ## Login
 

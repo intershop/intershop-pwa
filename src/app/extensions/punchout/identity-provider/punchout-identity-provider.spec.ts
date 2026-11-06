@@ -10,6 +10,7 @@ import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
+import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
@@ -122,6 +123,7 @@ describe('Punchout Identity Provider', () => {
     beforeEach(() => {
       routerSpy = jest.spyOn(router, 'parseUrl');
       punchoutIdentityProvider.init();
+      store$.overrideSelector(getIdentityProvider, { type: 'PUNCHOUT' });
       when(accountFacade.userError$).thenReturn(timer(Infinity).pipe(switchMap(() => EMPTY)));
       when(accountFacade.isLoggedIn$).thenReturn(of(true));
     });
@@ -166,6 +168,117 @@ describe('Punchout Identity Provider', () => {
           done();
         });
       });
+    });
+
+    describe('with allowed hook URLs configured', () => {
+      const credentials = { USERNAME: 'username', PASSWORD: 'password' };
+
+      function configureAllowedHookUrls(allowedHookUrls: string | string[]) {
+        store$.overrideSelector(getIdentityProvider, { type: 'PUNCHOUT', allowedHookUrls });
+        store$.refreshState();
+      }
+
+      beforeEach(() => {
+        configureAllowedHookUrls(['https://sap.example.com', 'https://*.procurement.example.org:8443']);
+      });
+
+      it.each([
+        'https://sap.example.com',
+        'https://SAP.example.com/sap/bc/srm?client=100',
+        'https://srm.procurement.example.org:8443/hook',
+        'https://a.b.procurement.example.org:8443',
+      ])('should accept HOOK_URL %s and login the user', (hookUrl, done: jest.DoneCallback) => {
+        const login$ = punchoutIdentityProvider.triggerLogin(
+          getSnapshot({ ...credentials, HOOK_URL: hookUrl })
+        ) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(accountFacade.loginUser(anything())).once();
+          verify(appFacade.setBusinessError(anything())).never();
+          expect(sessionStorage.getItem('punchout_HookURL')).toEqual(hookUrl);
+          done();
+        });
+      });
+
+      it.each([
+        'https://evil.example.com',
+        'http://sap.example.com',
+        'https://sap.example.com:8443',
+        'https://sap.example.com.evil.com',
+        'https://procurement.example.org:8443',
+        'https://evilprocurement.example.org:8443',
+        'https://srm.procurement.example.org',
+        'javascript:alert(1)',
+        'https:sap.example.com/return',
+        'https:/sap.example.com/return',
+        'https:\\\\sap.example.com/return',
+        ' https://sap.example.com',
+        '//sap.example.com',
+        'not-a-url',
+      ])(
+        'should reject HOOK_URL %s, not login the user and route to error page',
+        (hookUrl, done: jest.DoneCallback) => {
+          const login$ = punchoutIdentityProvider.triggerLogin(
+            getSnapshot({ ...credentials, HOOK_URL: hookUrl })
+          ) as Observable<boolean | UrlTree>;
+
+          login$.subscribe(() => {
+            verify(appFacade.setBusinessError('punchout.error.invalid.hook_url')).once();
+            verify(accountFacade.loginUser(anything())).never();
+            expect(sessionStorage.getItem('punchout_HookURL')).toBeNull();
+            expect(routerSpy).toHaveBeenCalledWith('/error');
+            done();
+          });
+        }
+      );
+
+      it('should accept allowed hook URLs configured as comma-separated string', done => {
+        configureAllowedHookUrls('https://other.example.com, https://sap.example.com');
+
+        const login$ = punchoutIdentityProvider.triggerLogin(
+          getSnapshot({ ...credentials, HOOK_URL: 'https://sap.example.com' })
+        ) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(accountFacade.loginUser(anything())).once();
+          done();
+        });
+      });
+
+      // an empty YAML key 'allowedHookUrls:' is parsed as null
+      // eslint-disable-next-line unicorn/no-null
+      it.each<string | string[]>([[], '', '  ', ' , ', null])(
+        'should reject every HOOK_URL if the configured allow-list %j is empty',
+        fakeAsync((allowedHookUrls: string | string[]) => {
+          configureAllowedHookUrls(allowedHookUrls);
+
+          const login$ = punchoutIdentityProvider.triggerLogin(
+            getSnapshot({ ...credentials, HOOK_URL: 'https://sap.example.com' })
+          ) as Observable<boolean | UrlTree>;
+          login$.subscribe(noop);
+          tick(0);
+
+          verify(appFacade.setBusinessError('punchout.error.invalid.hook_url')).once();
+          verify(accountFacade.loginUser(anything())).never();
+          expect(routerSpy).toHaveBeenCalledWith('/error');
+        })
+      );
+
+      it('should not check cXML punchout logins without HOOK_URL', fakeAsync(() => {
+        when(punchoutService.getCxmlPunchoutSession(anything())).thenReturn(
+          of({ returnURL: 'home', basketId: 'basket-id' } as PunchoutSession)
+        );
+
+        const login$ = punchoutIdentityProvider.triggerLogin(
+          getSnapshot({ sid: 'sid', 'access-token': 'accessToken' })
+        ) as Observable<boolean | UrlTree>;
+        login$.subscribe(noop);
+        tick(500);
+
+        verify(accountFacade.loginUserWithToken('accessToken')).once();
+        verify(appFacade.setBusinessError(anything())).never();
+        expect(routerSpy).toHaveBeenCalledWith('/home');
+      }));
     });
     describe('race', () => {
       describe('isLoggedIn$ emits first', () => {
