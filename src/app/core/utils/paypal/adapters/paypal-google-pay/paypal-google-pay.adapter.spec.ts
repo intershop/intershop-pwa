@@ -220,7 +220,7 @@ describe('Paypal Google Pay Adapter', () => {
     it('should reject when Google Pay is not ready to pay', async () => {
       mockGooglePaymentClient.isReadyToPay.mockResolvedValue({ result: false });
 
-      await expect(adapter.renderGooglePayButton(mockConfig)).rejects.toBe(
+      await expect(adapter.renderGooglePayButton(mockConfig)).rejects.toThrow(
         'Google Pay is not available for the current user or device'
       );
     });
