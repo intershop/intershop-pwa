@@ -199,8 +199,6 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-shadow': 'warn',
-      // switch off rule that requires strictNullChecks
-      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-unused-expressions': [
         'warn',
