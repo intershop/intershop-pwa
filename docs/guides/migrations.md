@@ -59,6 +59,7 @@ The findings of the following rules have to be fixed manually:
 - `@typescript-eslint/default-param-last`: move fallbacks for `undefined` values of leading parameters into the function body, e.g., `customerId ?? '-'`.
 - `@typescript-eslint/no-duplicate-type-constituents`
 - `@typescript-eslint/no-redundant-type-constituents`: e.g., `'a' | 'b' | string` is just `string`.
+- `@typescript-eslint/prefer-promise-reject-errors`: reject promises with `Error` objects, passing on caught errors is allowed.
 
 **`takeUntil(destroy$)` no longer allowed**
 

@@ -93,7 +93,7 @@ export class PaypalGooglePayAdapter {
         const isGooglePayApplicable = await this.isGooglePayApplicable(paypalObject, true);
 
         if (!isGooglePayApplicable) {
-          return Promise.reject('Google Pay is not available for the current user or device');
+          return Promise.reject(new Error('Google Pay is not available for the current user or device'));
         }
 
         this.renderButton(container);

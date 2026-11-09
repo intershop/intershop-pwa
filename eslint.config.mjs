@@ -215,6 +215,10 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/prefer-optional-chain': 'warn',
+      '@typescript-eslint/prefer-promise-reject-errors': [
+        'warn',
+        { allowThrowingAny: true, allowThrowingUnknown: true },
+      ],
 
       'perfectionist/sort-arrays': [
         'warn',
