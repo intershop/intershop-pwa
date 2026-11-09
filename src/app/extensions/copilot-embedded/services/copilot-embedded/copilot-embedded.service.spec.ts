@@ -175,5 +175,18 @@ describe('Copilot Embedded Service', () => {
         },
       });
     });
+
+    it('should show structured data of a chatflow error event in the error message', done => {
+      when(apiService.stream(anything(), anything())).thenReturn(
+        of({ event: 'error', data: { message: 'model not available' } }, { event: 'end', data: undefined })
+      );
+
+      copilotEmbeddedService.streamMessage(chatRequest()).subscribe({
+        error: error => {
+          expect(error.message).toBe('Copilot Embedded chatflow error: {"message":"model not available"}');
+          done();
+        },
+      });
+    });
   });
 });
