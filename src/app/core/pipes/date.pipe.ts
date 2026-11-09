@@ -2,12 +2,9 @@ import { formatDate } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-export function formatISHDate(
-  value: Date | number | string,
-  format = 'mediumDate',
-  lang: string,
-  timezone?: string
-): string {
+const DEFAULT_DATE_FORMAT = 'mediumDate';
+
+export function formatISHDate(value: Date | number | string, format: string, lang: string, timezone?: string): string {
   if (!value || !lang) {
     return 'undefined';
   }
@@ -20,7 +17,7 @@ export function formatISHDate(
     date = value;
   }
   // if no time zone is given take the user's current time zone
-  return formatDate(date, format, lang, timezone);
+  return formatDate(date, format ?? DEFAULT_DATE_FORMAT, lang, timezone);
 }
 
 /**
@@ -38,7 +35,7 @@ export function formatISHDate(
 export class DatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  transform(value: Date | number | string, format = 'mediumDate', timezone?: string): string {
+  transform(value: Date | number | string, format = DEFAULT_DATE_FORMAT, timezone?: string): string {
     return formatISHDate(value, format, this.translateService.getCurrentLang(), timezone);
   }
 }

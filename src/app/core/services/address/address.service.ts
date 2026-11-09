@@ -44,7 +44,7 @@ export class AddressService {
    * @param address     The address which should be created
    * @returns           The new customer's address.
    */
-  createCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
+  createCustomerAddress(customerId: string, address: Address): Observable<Address> {
     const customerAddress = {
       ...address,
       mainDivision: address.mainDivisionCode,
@@ -54,7 +54,7 @@ export class AddressService {
       first(),
       concatMap(restResource =>
         this.apiService
-          .post(`${restResource}/${this.apiService.encodeResourceId(customerId)}/addresses`, customerAddress)
+          .post(`${restResource}/${this.apiService.encodeResourceId(customerId ?? '-')}/addresses`, customerAddress)
           .pipe(this.apiService.resolveLink<Address>(), map(AddressMapper.fromData))
       )
     );
@@ -66,7 +66,7 @@ export class AddressService {
    * @param customerId  The customer id.
    * @param address     The address
    */
-  updateCustomerAddress(customerId: string = '-', address: Address): Observable<Address> {
+  updateCustomerAddress(customerId: string, address: Address): Observable<Address> {
     const customerAddress = {
       ...address,
       mainDivision: address.mainDivisionCode,
@@ -78,7 +78,7 @@ export class AddressService {
         this.apiService
           .put(
             `${restResource}/${this.apiService.encodeResourceId(
-              customerId
+              customerId ?? '-'
             )}/addresses/${this.apiService.encodeResourceId(address.id)}`,
             customerAddress
           )
@@ -94,14 +94,14 @@ export class AddressService {
    * @param address     The address id
    * @returns           The id of the deleted address.
    */
-  deleteCustomerAddress(customerId: string = '-', addressId: string): Observable<string> {
+  deleteCustomerAddress(customerId: string, addressId: string): Observable<string> {
     return this.appFacade.customerRestResource$.pipe(
       first(),
       concatMap(restResource =>
         this.apiService
           .delete(
             `${restResource}/${this.apiService.encodeResourceId(
-              customerId
+              customerId ?? '-'
             )}/addresses/${this.apiService.encodeResourceId(addressId)}`
           )
           .pipe(map(() => addressId))
