@@ -57,6 +57,8 @@ The findings of the following rules have to be fixed manually:
 - `rxjs-x/no-topromise`
 - `rxjs-x/no-unbound-methods`
 - `@typescript-eslint/default-param-last`: move fallbacks for `undefined` values of leading parameters into the function body, e.g., `customerId ?? '-'`.
+- `@typescript-eslint/no-duplicate-type-constituents`
+- `@typescript-eslint/no-redundant-type-constituents`: e.g., `'a' | 'b' | string` is just `string`.
 
 **`takeUntil(destroy$)` no longer allowed**
 

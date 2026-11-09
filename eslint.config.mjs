@@ -177,6 +177,7 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-deprecated': 'warn',
+      '@typescript-eslint/no-duplicate-type-constituents': 'warn',
       '@typescript-eslint/no-empty-interface': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-inferrable-types': [
@@ -185,6 +186,7 @@ export default defineConfig([
           ignoreParameters: true,
         },
       ],
+      '@typescript-eslint/no-redundant-type-constituents': 'warn',
       '@typescript-eslint/no-restricted-types': [
         'error',
         {
