@@ -80,7 +80,7 @@ for (const file of files) {
     if (fs.existsSync(template)) {
       const templateContent = fs.readFileSync(template, 'utf-8');
       const minifiedTemplate = removeAllComments(templateContent);
-      file.getClasses().forEach(componentClass => checkComponent(componentClass, minifiedTemplate));
+      file.getClasses().forEach(c => checkComponent(c, `${minifiedTemplate}\n${getHostMetadataExpressions(c)}`));
     }
   }
 
@@ -174,6 +174,14 @@ function removeAllComments(content: string) {
 
 function usedOnComponentTemplate(template: string, name: string) {
   return new RegExp(`\\b${name.replace(/\$$/, '')}\\b`).test(template);
+}
+
+// expressions of the 'host' metadata reference class members just like the template does
+function getHostMetadataExpressions(componentClass: ClassDeclaration) {
+  const host = componentClass.getDecorator('Component')?.getArguments()[0]?.asKind(SyntaxKind.ObjectLiteralExpression);
+  return (host?.getProperty('host')?.getDescendantsOfKind(SyntaxKind.PropertyAssignment) ?? [])
+    .map(p => p.getInitializer()?.getText())
+    .join('\n');
 }
 
 function isNodeIgnored(node: Node) {
