@@ -40,7 +40,7 @@ export default defineConfig([
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
-      tseslint.configs.stylistic,
+      tseslint.configs.stylisticTypeChecked,
       angular.configs.tsRecommended,
       prettierRecommended,
     ],
@@ -124,7 +124,6 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/default-param-last': 'warn',
-      '@typescript-eslint/dot-notation': 'warn',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
@@ -214,11 +213,14 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/prefer-optional-chain': 'warn',
+      // requires strictNullChecks
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@typescript-eslint/prefer-promise-reject-errors': [
         'warn',
         { allowThrowingAny: true, allowThrowingUnknown: true },
       ],
+      // String#match is as good as RegExp#exec for non-global regexes and more readable
+      '@typescript-eslint/prefer-regexp-exec': 'off',
 
       'perfectionist/sort-arrays': [
         'warn',
