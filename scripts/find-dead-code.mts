@@ -75,7 +75,7 @@ for (const file of files) {
     file.getClasses().forEach(checkDestroyInAngularArtifacts);
   }
 
-  if (/\.component\.ts/.test(file.getFilePath())) {
+  if (file.getFilePath().includes('.component.ts')) {
     const template = file.getFilePath().replace(/\.component\.ts$/, '.component.html');
     if (fs.existsSync(template)) {
       const templateContent = fs.readFileSync(template, 'utf-8');
