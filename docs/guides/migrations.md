@@ -67,6 +67,10 @@ Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-u
 
 Unit tests are now linted with the [recommended rules of `eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest#rules), and Cypress tests with some of them.
 
+**ESLint `js.configs.recommended` for TypeScript files**
+
+TypeScript files are now also linted with the `js.configs.recommended` config of [`@eslint/js`](https://eslint.org/docs/latest/rules/), in addition to the already used `typescript-eslint` recommended configs.
+
 ## From 13.0.0 to 13.1.0
 
 **Formly 10 update**

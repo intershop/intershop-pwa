@@ -430,8 +430,18 @@ describe('Cost Centers Effects', () => {
             costCenter: {"id":"1","costCenterId":"100400","name":"Headquarter","budg...
           [Message] Success Toast:
             message: "account.organization.cost_center_management.buyer.update.co...
-            messageParams: {"0":"undefined undefined"}
+            messageParams: {"0":"pmiller@test.intershop.de"}
         `);
+        done();
+      });
+    });
+
+    it('should display the name of the buyer in the success message if available', done => {
+      const namedBuyer = { ...buyer, firstName: 'Patricia', lastName: 'Miller' };
+      actions$ = of(updateCostCenterBuyer({ costCenterId, buyer: namedBuyer }));
+
+      effects.updateCostCenterBuyer$.pipe(toArray()).subscribe(([, message]) => {
+        expect(message).toHaveProperty('payload.messageParams', { 0: 'Patricia Miller' });
         done();
       });
     });

@@ -56,7 +56,7 @@ export async function determineStoreLocation(
 
   let parent: string;
 
-  let path = options.path;
+  let path: string;
   if (project.root) {
     parent = projectName;
     path = `${project.sourceRoot}/app/store/`;
