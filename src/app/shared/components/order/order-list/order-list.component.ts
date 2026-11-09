@@ -3,15 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Order } from 'ish-core/models/order/order.model';
 
 export type OrderColumnsType =
-  | 'buyer'
-  | 'creationDate'
-  | 'destination'
-  | 'lineItems'
-  | 'lineItems'
-  | 'orderNo'
-  | 'orderNoWithLink'
-  | 'orderTotal'
-  | 'status';
+  'buyer' | 'creationDate' | 'destination' | 'lineItems' | 'orderNo' | 'orderNoWithLink' | 'orderTotal' | 'status';
 
 /**
  * The Order List Component displays the orders provided as input parameter.
