@@ -16,13 +16,9 @@ export class AddressDoctorService {
   private store = inject(Store);
 
   postAddress(address: Address): Observable<Address[]> {
-    let addressLine = '';
-
-    if (address.addressLine2) {
-      addressLine = `${address.addressLine1};${address.addressLine2};${address.postalCode};${address.city}`;
-    } else {
-      addressLine = `${address.addressLine1};${address.postalCode};${address.city}`;
-    }
+    const addressLine = address.addressLine2
+      ? `${address.addressLine1};${address.addressLine2};${address.postalCode};${address.city}`
+      : `${address.addressLine1};${address.postalCode};${address.city}`;
 
     return this.mapToBody(address, addressLine).pipe(
       whenTruthy(),

@@ -34,8 +34,8 @@ export default defineConfig([
     'schematics/dist/**/*',
     'schematics/src/utils/lint-fix-mock.js',
   ]),
-  // TypeScript recommended + stylistic configs from typescript-eslint
-  ...[...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({
+  // ESLint recommended and TypeScript recommended + stylistic configs from typescript-eslint
+  ...[js.configs.recommended, ...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({
     ...config,
     files: ['**/*.ts'],
     languageOptions: {
