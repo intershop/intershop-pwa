@@ -154,6 +154,9 @@ export interface Environment {
 
   // paypal client configuration
   paypalClientConfig?: PaypalClientConfig;
+
+  // origins of the Intershop Administration Portal allowed to embed the PWA in the Design View
+  designViewOrigins: string[];
 }
 
 export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
@@ -225,4 +228,13 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
   priceUpdate: 'always',
 
   paypalClientConfig: { googlePayEnvironment: 'TEST' },
+
+  designViewOrigins: [
+    'https://iap-app-int.platform.intershop.de',
+    'https://iap-app-uat.platform.intershop.de',
+    'https://iap.cloud.intershop.com',
+    // local IAP development, the port varies
+    'http://localhost:*',
+    'https://localhost:*',
+  ],
 };

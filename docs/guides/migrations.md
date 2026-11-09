@@ -22,6 +22,12 @@ The ESLint rule `@angular-eslint/consistent-component-styles` has been activated
 PWA tooling like the override lint rule `ish-custom-rules/use-correct-component-overrides`, the override schematic, and the dead files detection only supports the array notation.
 Run `npm run lint` to fix existing occurrences automatically.
 
+**Design View restricted to known IAP origins**
+
+The Design View now only exchanges messages with an Intershop Administration Portal (IAP) whose origin is listed in `designViewOrigins` in the [_environment.model.ts_](../../src/environments/environment.model.ts) file.
+If your project uses the Design View with an IAP on a different origin, adapt `designViewOrigins` in your environment configuration, otherwise the Design View is disabled.
+For more information, see [CMS Integration - Design View](../concepts/cms-integration.md#design-view).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
