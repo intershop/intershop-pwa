@@ -123,6 +123,7 @@ export default defineConfig([
           objectLiteralTypeAssertions: 'never',
         },
       ],
+      '@typescript-eslint/default-param-last': 'warn',
       '@typescript-eslint/dot-notation': 'warn',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
