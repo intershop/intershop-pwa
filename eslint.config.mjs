@@ -34,27 +34,17 @@ export default defineConfig([
     'schematics/dist/**/*',
     'schematics/src/utils/lint-fix-mock.js',
   ]),
-  // ESLint recommended and TypeScript recommended + stylistic configs from typescript-eslint
-  ...[js.configs.recommended, ...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({
-    ...config,
-    files: ['**/*.ts'],
-    languageOptions: {
-      ...config.languageOptions,
-      parserOptions: {
-        ...config.languageOptions?.parserOptions,
-        projectService: true,
-        tsconfigRootDir: __dirname,
-      },
-    },
-  })),
-  // Angular and Prettier configs
+  // ESLint, TypeScript, Angular, Prettier and project specific configs
   {
     files: ['**/*.ts'],
-    extends: [angular.configs.tsRecommended, prettierRecommended],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      tseslint.configs.stylistic,
+      angular.configs.tsRecommended,
+      prettierRecommended,
+    ],
     processor: angular.processInlineTemplates,
-  },
-  {
-    files: ['**/*.ts'],
     plugins: {
       '@ngrx': ngrx,
       'rxjs-x': rxjsX,
