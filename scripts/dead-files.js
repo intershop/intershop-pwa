@@ -3,13 +3,13 @@ const { globSync } = require('glob');
 const fs = require('fs');
 
 const activeFiles = _.flatten(
-  globSync('dist/**/active-files.json').map(activeFilesPath => {
+  globSync('dist/**/active-files.json', { posix: true }).map(activeFilesPath => {
     console.log('loading', activeFilesPath);
     return JSON.parse(fs.readFileSync(activeFilesPath, { encoding: 'utf-8' }));
   })
 ).filter((v, i, a) => a.indexOf(v) === i);
 
-const filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html,scss}');
+const filesToBeSearched = globSync('{src,projects}/**/!(*.spec).{ts,html,scss}', { posix: true });
 
 filesToBeSearched
   .filter(file => !activeFiles.includes(file))
