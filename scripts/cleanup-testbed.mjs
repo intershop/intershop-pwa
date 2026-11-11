@@ -4,7 +4,7 @@ import { globSync } from 'glob';
 import { minimatch } from 'minimatch';
 import runAll from 'npm-run-all2';
 import { cpus } from 'os';
-import { basename, dirname, join, normalize, sep } from 'path';
+import { basename, dirname, join, normalize, posix, sep } from 'path';
 import rimraf from 'rimraf';
 import { Node, Project } from 'ts-morph';
 
@@ -102,7 +102,7 @@ if (args.length === 0) {
     files = findTests(spawnSync('git', ['--no-pager', 'diff', args[0], '--name-only']).stdout.toString().split('\n'));
   } else if (statRes?.isDirectory()) {
     console.log('using', args[0], 'as folder');
-    files = globSync(join(args[0], jestPattern));
+    files = globSync(posix.join(args[0].replace(/\\/g, '/'), jestPattern));
   } else if (statRes?.isFile()) {
     files = findTests(args);
   } else {

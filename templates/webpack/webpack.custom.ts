@@ -495,7 +495,7 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       const traverseStyleFile = (file: string): string[] => {
         const fileWithExt = file.endsWith('.scss') ? file : `${file}.scss`;
         const scssPath = ['', 'src/styles/', `src/styles/themes/${theme}/`]
-          .map(p => normalize(p + fileWithExt))
+          .map(p => normalize(p + fileWithExt).replace(/\\/g, '/'))
           .find(fs.existsSync);
         if (!scssPath) {
           return [];
