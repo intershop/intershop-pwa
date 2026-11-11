@@ -16,6 +16,12 @@ Valid forms now emit an initial `statusChanges` notification, so check custom su
 `formly-form` now emits each build asynchronously via its new `fieldChange` output, so component tests that expect a `modelChange` right after the initial rendering may have to `await fixture.whenStable()` first.
 For further breaking changes, e.g., for string expressions and JSON schema forms, see the [Formly 10 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v10.0.0/UPGRADE-10.0.md).
 
+**Component styles as `styleUrls` array**
+
+The ESLint rule `@angular-eslint/consistent-component-styles` has been activated in `array` mode, so components have to reference their styles with `styleUrls: ['./x.component.scss']` instead of `styleUrl`.
+PWA tooling like the override lint rule `ish-custom-rules/use-correct-component-overrides`, the override schematic, and the dead files detection only supports the array notation.
+Run `npm run lint` to fix existing occurrences automatically.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

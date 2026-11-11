@@ -106,6 +106,8 @@ export default defineConfig([
           style: 'camelCase',
         },
       ],
+      // override lint rule, override schematic and dead files detection only support styleUrls arrays
+      '@angular-eslint/consistent-component-styles': ['warn', 'array'],
       '@angular-eslint/no-empty-lifecycle-method': 'warn',
       '@angular-eslint/no-host-metadata-property': 'off',
       '@angular-eslint/pipe-prefix': [
