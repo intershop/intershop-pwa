@@ -1,14 +1,17 @@
 import { Inject, Injectable } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { isEqual } from 'lodash-es';
+import { Observable, defer } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   filter,
   map,
+  shareReplay,
+  startWith,
   switchMap,
   take,
   takeUntil,
@@ -47,6 +50,10 @@ import { getProductListingViewType } from './product-listing.selectors';
 
 @Injectable()
 export class ProductListingEffects {
+  // Scope duplicate suppression of search listings to a route visit, so a repeated search runs again (e.g. for the PDP redirect).
+  // Other listings keep reusing their loaded products when the user returns to them.
+  private routePathGeneration$: Observable<number>;
+
   constructor(
     @Inject(PRODUCT_LISTING_ITEMS_PER_PAGE) private itemsPerPage: InjectSingle<typeof PRODUCT_LISTING_ITEMS_PER_PAGE>,
     @Inject(DEFAULT_PRODUCT_LISTING_VIEW_TYPE)
@@ -55,7 +62,21 @@ export class ProductListingEffects {
     private productsServiceProvider: ProductsServiceProvider,
     private store: Store,
     private router: Router
-  ) {}
+  ) {
+    // seeded with the current URL, as the first subscription happens after the initial listing route has been navigated
+    this.routePathGeneration$ = defer(() =>
+      this.router.events.pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        map(event => event.urlAfterRedirects),
+        startWith(this.router.url)
+      )
+    ).pipe(
+      map(url => url.split('?')[0]),
+      distinctUntilChanged(),
+      map((_, generation) => generation),
+      shareReplay({ bufferSize: 1, refCount: false })
+    );
+  }
 
   initializePageSize$ = createEffect(() =>
     this.actions$.pipe(
@@ -156,10 +177,15 @@ export class ProductListingEffects {
           )
         );
       }),
+      concatLatestFrom(() => this.routePathGeneration$),
+      map(([params, routePathGeneration]) => ({
+        params,
+        routePathGeneration: params.id.type === 'search' ? routePathGeneration : undefined,
+      })),
       distinctUntilChanged(isEqual),
       // prevent an unnecessary loadMoreProductsForParamsAction in case a new search is triggered and a query parameter like a filter had been previously been set
       debounceTime(1),
-      map(({ id, filters, sorting, page }) => loadMoreProductsForParams({ id, filters, sorting, page }))
+      map(({ params: { id, filters, sorting, page } }) => loadMoreProductsForParams({ id, filters, sorting, page }))
     )
   );
 
@@ -167,7 +193,13 @@ export class ProductListingEffects {
     this.actions$.pipe(
       ofType(loadMoreProductsForParams),
       mapToPayload(),
+      concatLatestFrom(() => this.routePathGeneration$),
+      map(([params, routePathGeneration]) => ({
+        params,
+        routePathGeneration: params.id.type === 'search' ? routePathGeneration : undefined,
+      })),
       distinctUntilChanged(isEqual),
+      map(({ params }) => params),
       map(({ id, sorting, page, filters }) => {
         if (filters) {
           const searchParameter = filters;
@@ -185,8 +217,7 @@ export class ProductListingEffects {
           }
         }
       }),
-      whenTruthy(),
-      distinctUntilChanged(isEqual)
+      whenTruthy()
     )
   );
 

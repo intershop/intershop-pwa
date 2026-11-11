@@ -68,7 +68,9 @@ describe('Search Effects', () => {
         { provide: SuggestionsServiceProvider, useFactory: () => instance(suggestionsServiceProviderMock) },
         provideRouter([
           { path: 'error', children: [] },
+          { path: 'home', children: [] },
           { path: 'search/:searchTerm', children: [] },
+          { path: ':slug', children: [] },
         ]),
         provideStoreSnapshots(),
       ],
@@ -182,6 +184,30 @@ describe('Search Effects', () => {
   });
 
   describe('searchProducts$', () => {
+    it('should redirect to a single product on every search', fakeAsync(() => {
+      when(productsServiceMock.searchProducts(anything())).thenReturn(
+        of({
+          products: [{ sku: '123', name: 'Product' }],
+          sortableAttributes: [],
+          total: 1,
+          filter: [],
+        })
+      );
+
+      router.navigateByUrl('/search/123');
+      tick(500);
+
+      expect(router.url).toBe('/product-prd123');
+
+      router.navigateByUrl('/home');
+      tick(500);
+      router.navigateByUrl('/search/123');
+      tick(500);
+
+      expect(router.url).toBe('/product-prd123');
+      verify(productsServiceMock.searchProducts(anything())).twice();
+    }));
+
     it('should perform an additional search for given search term and trigger actions', fakeAsync(() => {
       const searchTerm = '123';
       router.navigate(['search', searchTerm]);
