@@ -208,6 +208,23 @@ describe('Search Effects', () => {
       verify(productsServiceMock.searchProducts(anything())).twice();
     }));
 
+    it('should replace the search URL in the browser history when redirecting to a single product', fakeAsync(() => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      when(productsServiceMock.searchProducts(anything())).thenReturn(
+        of({
+          products: [{ sku: '123', name: 'Product' }],
+          sortableAttributes: [],
+          total: 1,
+          filter: [],
+        })
+      );
+
+      router.navigateByUrl('/search/123');
+      tick(500);
+
+      expect(navigateSpy).toHaveBeenCalledWith(['/product-prd123'], { replaceUrl: true });
+    }));
+
     it('should perform an additional search for given search term and trigger actions', fakeAsync(() => {
       const searchTerm = '123';
       router.navigate(['search', searchTerm]);
