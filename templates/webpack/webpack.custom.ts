@@ -183,6 +183,12 @@ export default (config: Configuration, angularJsonConfig: CustomWebpackBrowserSc
       'bundles',
       'zone-node.umd.js'
     );
+    // webpack uses the UMD's AMD branch, which resolves the Node built-ins statically,
+    // the warning only refers to the unused `require(m)` fallback
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /zone\.js[\\/]bundles[\\/]zone-node\.umd\.js$/, message: /Critical dependency/ },
+    ];
   }
 
   logger.log('setting production:', production);
