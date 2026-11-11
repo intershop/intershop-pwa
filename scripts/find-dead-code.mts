@@ -2,8 +2,6 @@ import * as fs from 'fs';
 import { parse } from 'path';
 import { ClassDeclaration, Node, Project, ReferenceFindableNode, SyntaxKind, ts } from 'ts-morph';
 
-/* eslint-disable no-console */
-
 // RegEx for file exceptions
 const fileExceptionsRegex = /\/src\/environments\/|.*\.production\.ts|\/server\.ts$/;
 
@@ -262,7 +260,6 @@ function checkComponent(componentClass: ClassDeclaration, template: string) {
     );
   }
 
-  // eslint-disable-next-line complexity
   componentClass.getMembers().forEach(member => {
     if (isNodeIgnored(member)) {
       return;
@@ -423,7 +420,6 @@ function isUnreferenced(node: Node & ReferenceFindableNode) {
   return onlyLocal;
 }
 
-// eslint-disable-next-line complexity
 function checkNode(node: Node) {
   if (
     Node.hasName(node) &&
