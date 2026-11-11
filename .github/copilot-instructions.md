@@ -54,7 +54,7 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 - **Angular prefixes:** Components use `ish-`, directives use `ish`
 - **Format command:** `npm run format`
 - **Lint command:** `npm run lint` (auto-fixes issues)
-- **Dead code detection:** `npx ts-node scripts/find-dead-code.ts`
+- **Dead code detection:** `npx ts-node scripts/find-dead-code.mts`
 
 ## Build & Test
 
