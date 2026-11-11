@@ -36,7 +36,11 @@ describe('Product Listing Effects', () => {
         { provide: DEFAULT_PRODUCT_LISTING_VIEW_TYPE, useValue: 'list' },
         { provide: PRODUCT_LISTING_ITEMS_PER_PAGE, useValue: 7 },
         { provide: ProductsServiceProvider, useFactory: () => instance(productsServiceProviderMock) },
-        provideRouter([{ path: 'some', children: [] }]),
+        provideRouter([
+          { path: 'some', children: [] },
+          { path: 'home', children: [] },
+          { path: 'search/:searchTerm', children: [] },
+        ]),
         provideStoreSnapshots(),
       ],
     });
@@ -118,6 +122,56 @@ describe('Product Listing Effects', () => {
         [Filter Internal] Load Filter For Category:
           uniqueId: "cat"
       `);
+    }));
+
+    it('should reload the same search after navigating away and back', fakeAsync(() => {
+      const search = () => store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
+
+      router.navigateByUrl('/search/term');
+      tick(500);
+      search();
+      tick(5);
+
+      router.navigateByUrl('/home');
+      tick(500);
+      router.navigateByUrl('/search/term');
+      tick(500);
+      search();
+      tick(5);
+
+      expect(store$.actionsArray(/Load More Products For Params/)).toHaveLength(2);
+    }));
+
+    it('should not reload the same search on view-only navigations', fakeAsync(() => {
+      router.navigateByUrl('/search/term');
+      tick(500);
+      store$.dispatch(loadMoreProducts({ id: { type: 'search', value: 'term' } }));
+      tick(5);
+
+      router.navigateByUrl('/search/term?view=list');
+      tick(500);
+      router.navigateByUrl('/search/term?view=grid');
+      tick(500);
+
+      expect(store$.actionsArray(/Search Products/)).toHaveLength(1);
+    }));
+
+    it('should not reload the same category after navigating away and back', fakeAsync(() => {
+      const loadCategory = () => store$.dispatch(loadMoreProducts({ id: { type: 'category', value: 'cat' } }));
+
+      router.navigateByUrl('/some');
+      tick(500);
+      loadCategory();
+      tick(5);
+
+      router.navigateByUrl('/home');
+      tick(500);
+      router.navigateByUrl('/some');
+      tick(500);
+      loadCategory();
+      tick(5);
+
+      expect(store$.actionsArray(/Load More Products For Params/)).toHaveLength(1);
     }));
   });
 
