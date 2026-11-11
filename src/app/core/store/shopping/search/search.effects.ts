@@ -90,8 +90,9 @@ export class SearchEffects {
           .pipe(
             concatMap(({ total, products, sortableAttributes, filter }) => {
               // route to product detail page if only one product was found
+              // replace the search URL in the history, so browser back does not return to the search page and trigger the redirect again
               if (total === 1) {
-                this.router.navigate([generateProductUrl(products[0])]);
+                this.router.navigate([generateProductUrl(products[0])], { replaceUrl: true });
               }
               // provide the data for the search result page
               const actions: Action[] = [
