@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Shipped Default Headers](#shipped-default-headers)
   - [Rationale for the Permissive Defaults](#rationale-for-the-permissive-defaults)
   - [The First Step Against XSS: Adjust `script-src`](#the-first-step-against-xss-adjust-script-src)
+  - [Avoid Inline Event Handlers and `javascript:` URLs](#avoid-inline-event-handlers-and-javascript-urls)
 - [Header Configuration](#header-configuration)
   - [Source Resolution and Precedence](#source-resolution-and-precedence)
   - [Whole-Source Replacement, Not Merge](#whole-source-replacement-not-merge)
@@ -87,6 +88,18 @@ Allow specific third-party scripts by adding their explicit origins (see [Common
 > [!NOTE]
 > `'unsafe-inline'` in `style-src` is far less dangerous than in `script-src` and is often kept, because the PWA and Bootstrap rely on inline styles.
 > Prioritize removing it from `script-src` first.
+
+### Avoid Inline Event Handlers and `javascript:` URLs
+
+Without `'unsafe-inline'` in `script-src`, the browser blocks inline event handlers (`onclick`, etc.) and `javascript:` URLs.
+The PWA does not use them, so custom code should follow the same rules to keep working with a stricter policy:
+
+- Use Angular event bindings, e.g., `(click)`, instead of inline event handlers or `javascript:` URLs.
+  For printing, use the `ishPrintPage` directive.
+- In HTML rendered with `ishServerHtml` (e.g., translations or CMS content), use `callback` attributes instead of `javascript:` URLs, e.g., `<a callback="reloadPage">`.
+  The callbacks `reloadPage` and `navigateBack` are always available; further callbacks can be passed via the `callbacks` input.
+- Load third-party scripts from their origin instead of inlining them.
+  Google Tag Manager "Custom HTML" tags are inline scripts and are blocked; use tag templates instead.
 
 ## Header Configuration
 
