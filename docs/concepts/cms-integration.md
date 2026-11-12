@@ -231,6 +231,11 @@ These changes are reflected in real time in the PWA.
 Client-side messages are sent between the PWA and IAP to synchronize interactions.
 The Design View is activated within an IAP context by adding the `DesignView` query parameter to the PWA URL.
 
+The PWA only communicates with an IAP whose origin is listed in `designViewOrigins` in the [_environment.model.ts_](../../src/environments/environment.model.ts) file.
+By default, these are the origins of the Intershop-hosted IAP instances and `localhost` with any port for local IAP development.
+An entry ending with `:*`, e.g., `http://localhost:*`, allows any port of that host.
+If the PWA runs in an IAP on another origin, the Design View is disabled.
+
 ## Preview Context
 
 The Intershop PWA supports the ICM Preview Context feature, which allows you to preview future content changes and content for specific customer segments in the PWA.

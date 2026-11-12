@@ -1,11 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { instance, mock } from 'ts-mockito';
 
-import { getCurrentLocale } from 'ish-core/store/core/configuration';
+import { DESIGN_VIEW_ORIGINS } from 'ish-core/configurations/injection-keys';
+import { designViewActions, getDesignViewSelectedPageletId } from 'ish-core/store/content/design-view';
+import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 
 import { DesignViewService } from './design-view.service';
+
+const IAP_ORIGIN = 'https://iap.example.com';
 
 describe('Design View Service', () => {
   let designViewService: DesignViewService;
@@ -13,16 +17,184 @@ describe('Design View Service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        { provide: DESIGN_VIEW_ORIGINS, useValue: [IAP_ORIGIN] },
         { provide: MultiSiteService, useFactory: () => instance(mock(MultiSiteService)) },
         provideMockStore({
-          selectors: [{ selector: getCurrentLocale, value: 'en_US' }],
+          selectors: [
+            { selector: getCurrentLocale, value: 'en_US' },
+            { selector: getAvailableLocales, value: ['en_US'] },
+            { selector: getDesignViewSelectedPageletId, value: undefined },
+          ],
         }),
       ],
     });
-    designViewService = TestBed.inject(DesignViewService);
   });
 
-  it('should be created', () => {
-    expect(designViewService).toBeTruthy();
+  afterEach(() => {
+    sessionStorage.clear();
+  });
+
+  describe('outside of an iframe', () => {
+    beforeEach(() => {
+      designViewService = TestBed.inject(DesignViewService);
+    });
+
+    it('should be created', () => {
+      expect(designViewService).toBeTruthy();
+    });
+
+    it('should not send messages to the host when the Design View was not initialized', () => {
+      const postMessage = jest.spyOn(window.parent, 'postMessage');
+
+      designViewService.messageToHost({ type: 'dv-clientReady' });
+
+      expect(postMessage).not.toHaveBeenCalled();
+      postMessage.mockRestore();
+    });
+  });
+
+  describe('inside an iframe', () => {
+    let host: { postMessage: jest.Mock };
+    let parentSpy: jest.SpyInstance;
+    let store: MockStore;
+
+    function initWithHostOrigin(origin: string) {
+      Object.defineProperty(window.location, 'ancestorOrigins', {
+        value: origin ? [origin] : [],
+        configurable: true,
+      });
+      designViewService = TestBed.inject(DesignViewService);
+      store = TestBed.inject(MockStore);
+      jest.spyOn(store, 'dispatch');
+    }
+
+    function receiveMessage(origin: string, source: unknown) {
+      const event = new MessageEvent('message', {
+        origin,
+        data: { type: 'dv-clientHighlightPagelet', payload: { componentId: 'pagelet' } },
+      });
+      // jsdom only accepts real windows as source in the event init
+      Object.defineProperty(event, 'source', { value: source });
+      window.dispatchEvent(event);
+    }
+
+    beforeEach(() => {
+      host = { postMessage: jest.fn() };
+      parentSpy = jest.spyOn(window, 'parent', 'get').mockReturnValue(host as unknown as Window);
+    });
+
+    afterEach(() => {
+      parentSpy.mockRestore();
+      Reflect.deleteProperty(window.location, 'ancestorOrigins');
+      Reflect.deleteProperty(document, 'referrer');
+    });
+
+    describe('of an allowed host', () => {
+      beforeEach(() => {
+        initWithHostOrigin(IAP_ORIGIN);
+      });
+
+      it('should send messages only to the host origin', () => {
+        expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
+        expect(host.postMessage.mock.calls.every(([, targetOrigin]) => targetOrigin === IAP_ORIGIN)).toBeTrue();
+      });
+
+      it('should handle messages from the host', () => {
+        receiveMessage(IAP_ORIGIN, host);
+
+        expect(store.dispatch).toHaveBeenCalledWith(designViewActions.selectPagelet({ pageletId: 'pagelet' }));
+      });
+
+      it('should ignore messages from other origins', () => {
+        receiveMessage('https://attacker.example.com', host);
+
+        expect(store.dispatch).not.toHaveBeenCalled();
+      });
+
+      it('should ignore messages from other windows with the host origin', () => {
+        receiveMessage(IAP_ORIGIN, window);
+
+        expect(store.dispatch).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('with different referrers', () => {
+      it.each(['', window.location.href, 'https://payment.example.com/'])(
+        'should use the ancestor origin regardless of referrer %s',
+        referrer => {
+          Object.defineProperty(document, 'referrer', { value: referrer, configurable: true });
+          initWithHostOrigin(IAP_ORIGIN);
+
+          expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
+        }
+      );
+    });
+
+    describe('without an allowed ancestor origin', () => {
+      it.each([undefined, 'null', 'https://attacker.example.com'])(
+        'should not fall back to referrer or storage for ancestor origin %s',
+        origin => {
+          Object.defineProperty(document, 'referrer', { value: `${IAP_ORIGIN}/design-view`, configurable: true });
+          sessionStorage.setItem('DesignViewHostOrigin', IAP_ORIGIN);
+          initWithHostOrigin(origin);
+
+          expect(host.postMessage).not.toHaveBeenCalled();
+        }
+      );
+    });
+
+    describe('of an allowed host on the same origin', () => {
+      it('should use the ancestor origin', () => {
+        TestBed.overrideProvider(DESIGN_VIEW_ORIGINS, { useValue: [window.location.origin] });
+        initWithHostOrigin(window.location.origin);
+
+        expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, window.location.origin);
+      });
+    });
+
+    describe('of a host allowed with any port', () => {
+      beforeEach(() => {
+        TestBed.overrideProvider(DESIGN_VIEW_ORIGINS, { useValue: ['https://localhost:*'] });
+      });
+
+      it.each(['https://localhost:10000', 'https://localhost'])('should accept %s', origin => {
+        initWithHostOrigin(origin);
+
+        expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, origin);
+      });
+
+      it.each(['http://localhost:10000', 'https://localhost.attacker.example.com'])('should reject %s', origin => {
+        initWithHostOrigin(origin);
+
+        expect(host.postMessage).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('of an unlisted host', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation(() => undefined);
+        sessionStorage.setItem('DesignViewMode', 'true');
+        initWithHostOrigin('https://attacker.example.com');
+      });
+
+      it('should not send messages to the host', () => {
+        designViewService.messageToHost({ type: 'dv-clientReady' });
+
+        expect(host.postMessage).not.toHaveBeenCalled();
+      });
+
+      it('should disable the Design View mode', () => {
+        expect(console.error).toHaveBeenCalledWith(
+          'Design View is disabled because the embedding host origin "https://attacker.example.com" is not allowed by designViewOrigins.'
+        );
+        expect(designViewService.isDesignViewMode()).toBeFalse();
+      });
+
+      it('should ignore messages from the host', () => {
+        receiveMessage('https://attacker.example.com', host);
+
+        expect(store.dispatch).not.toHaveBeenCalled();
+      });
+    });
   });
 });

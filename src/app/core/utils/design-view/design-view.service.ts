@@ -1,12 +1,14 @@
 import { LocationStrategy } from '@angular/common';
-import { ApplicationRef, Injectable } from '@angular/core';
+import { ApplicationRef, Inject, Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { filter, first, fromEvent, map, switchMap, tap, withLatestFrom } from 'rxjs';
 
+import { DESIGN_VIEW_ORIGINS } from 'ish-core/configurations/injection-keys';
 import { designViewActions, getDesignViewSelectedPageletId } from 'ish-core/store/content/design-view';
 import { getAvailableLocales, getCurrentLocale } from 'ish-core/store/core/configuration';
 import { DomService } from 'ish-core/utils/dom/dom.service';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { MultiSiteService } from 'ish-core/utils/multi-site/multi-site.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
@@ -35,6 +37,7 @@ type ToDVMessageType =
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {
   private designViewMode: boolean;
+  private hostOrigin: string;
 
   constructor(
     private router: Router,
@@ -42,7 +45,8 @@ export class DesignViewService {
     private domService: DomService,
     private store: Store,
     private locationStrategy: LocationStrategy,
-    private multiSiteService: MultiSiteService
+    private multiSiteService: MultiSiteService,
+    @Inject(DESIGN_VIEW_ORIGINS) private allowedOrigins: InjectSingle<typeof DESIGN_VIEW_ORIGINS>
   ) {
     if (!SSR && new URLSearchParams(window.location.search).has('DesignView')) {
       this.setDesignViewMode(true);
@@ -66,13 +70,14 @@ export class DesignViewService {
   }
 
   /**
-   * Send a message to the host window.
-   * Send the message to any host since the PWA is not supposed to know a fixed IAP URL (we are not sending secrets).
+   * Send a message to the verified host window.
    *
    * @param message The message to send to the host (including type and payload)
    */
   messageToHost(message: DesignViewMessage) {
-    window.parent.postMessage(message, '*');
+    if (this.hostOrigin) {
+      window.parent.postMessage(message, this.hostOrigin);
+    }
   }
 
   /**
@@ -84,6 +89,17 @@ export class DesignViewService {
       return;
     }
 
+    const hostOrigin = window.location.ancestorOrigins[0];
+    this.hostOrigin = this.isAllowedOrigin(hostOrigin) ? hostOrigin : undefined;
+    if (!this.hostOrigin) {
+      if (this.isDesignViewMode()) {
+        console.error(
+          `Design View is disabled because the embedding host origin "${hostOrigin}" is not allowed by designViewOrigins.`
+        );
+      }
+      this.setDesignViewMode(false);
+      return;
+    }
     this.listenToHostMessages();
     this.listenToApplication();
     this.setupGlobalClickOutside();
@@ -103,14 +119,35 @@ export class DesignViewService {
   }
 
   /**
-   * Subscribe to messages from the host window.
-   * Incoming messages are filtered using `allowedHostMessageTypes`
+   * Checks the origin against `designViewOrigins`, where an entry ending with `:*` allows any port of that host.
+   */
+  private isAllowedOrigin(origin: string): boolean {
+    return (
+      !!origin &&
+      this.allowedOrigins.some(allowed => {
+        if (!allowed.endsWith(':*')) {
+          return allowed === origin;
+        }
+        const host = allowed.slice(0, -2);
+        return origin === host || (origin.startsWith(`${host}:`) && /^\d+$/.test(origin.slice(host.length + 1)));
+      })
+    );
+  }
+
+  /**
+   * Subscribe to messages from the verified host window.
    * Should only be called *once* during initialization.
    */
   private listenToHostMessages() {
     fromEvent<MessageEvent>(window, 'message')
       .pipe(
-        filter(e => Object.hasOwn(e.data, 'type') && e.data.type.startsWith('dv-client')),
+        filter(
+          e =>
+            e.origin === this.hostOrigin &&
+            e.source === window.parent &&
+            Object.hasOwn(e.data, 'type') &&
+            e.data.type.startsWith('dv-client')
+        ),
         map(message => message.data)
       )
       .subscribe(message => this.handleHostMessage(message));

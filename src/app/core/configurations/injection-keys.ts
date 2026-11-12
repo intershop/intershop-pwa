@@ -53,6 +53,11 @@ export const PRICE_UPDATE = createEnvironmentInjectionToken('priceUpdate');
 export const THEME_COLOR = createEnvironmentInjectionToken('themeColor');
 
 /**
+ * origins of the Intershop Administration Portal allowed to embed the PWA in the Design View
+ */
+export const DESIGN_VIEW_ORIGINS = createEnvironmentInjectionToken('designViewOrigins');
+
+/**
  * global definition of the Bootstrap grid system breakpoint widths
  */
 export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBreakpointWidth');
