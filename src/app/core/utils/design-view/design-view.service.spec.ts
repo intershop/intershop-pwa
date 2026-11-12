@@ -58,8 +58,11 @@ describe('Design View Service', () => {
     let parentSpy: jest.SpyInstance;
     let store: MockStore;
 
-    function initWithReferrer(referrer: string) {
-      Object.defineProperty(document, 'referrer', { value: referrer, configurable: true });
+    function initWithHostOrigin(origin: string) {
+      Object.defineProperty(window.location, 'ancestorOrigins', {
+        value: origin ? [origin] : [],
+        configurable: true,
+      });
       designViewService = TestBed.inject(DesignViewService);
       store = TestBed.inject(MockStore);
       jest.spyOn(store, 'dispatch');
@@ -82,21 +85,18 @@ describe('Design View Service', () => {
 
     afterEach(() => {
       parentSpy.mockRestore();
+      Reflect.deleteProperty(window.location, 'ancestorOrigins');
       Reflect.deleteProperty(document, 'referrer');
     });
 
     describe('of an allowed host', () => {
       beforeEach(() => {
-        initWithReferrer(`${IAP_ORIGIN}/design-view`);
+        initWithHostOrigin(IAP_ORIGIN);
       });
 
       it('should send messages only to the host origin', () => {
         expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
         expect(host.postMessage.mock.calls.every(([, targetOrigin]) => targetOrigin === IAP_ORIGIN)).toBeTrue();
-      });
-
-      it('should remember the host origin for reloads within the iframe', () => {
-        expect(sessionStorage.getItem('DesignViewHostOrigin')).toEqual(IAP_ORIGIN);
       });
 
       it('should handle messages from the host', () => {
@@ -118,34 +118,35 @@ describe('Design View Service', () => {
       });
     });
 
-    describe('after a reload within the iframe', () => {
-      it('should use the remembered host origin', () => {
-        sessionStorage.setItem('DesignViewHostOrigin', IAP_ORIGIN);
-        initWithReferrer(window.location.href);
+    describe('with different referrers', () => {
+      it.each(['', window.location.href, 'https://payment.example.com/'])(
+        'should use the ancestor origin regardless of referrer %s',
+        referrer => {
+          Object.defineProperty(document, 'referrer', { value: referrer, configurable: true });
+          initWithHostOrigin(IAP_ORIGIN);
 
-        expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
-      });
-
-      it('should not initialize without a remembered host origin', () => {
-        initWithReferrer(window.location.href);
-
-        expect(host.postMessage).not.toHaveBeenCalled();
-      });
+          expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
+        }
+      );
     });
 
-    describe('after returning from an external page within the iframe', () => {
-      it('should use the remembered host origin', () => {
-        sessionStorage.setItem('DesignViewHostOrigin', IAP_ORIGIN);
-        initWithReferrer('https://payment.example.com/');
+    describe('without an allowed ancestor origin', () => {
+      it.each([undefined, 'null', 'https://attacker.example.com'])(
+        'should not fall back to referrer or storage for ancestor origin %s',
+        origin => {
+          Object.defineProperty(document, 'referrer', { value: `${IAP_ORIGIN}/design-view`, configurable: true });
+          sessionStorage.setItem('DesignViewHostOrigin', IAP_ORIGIN);
+          initWithHostOrigin(origin);
 
-        expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, IAP_ORIGIN);
-      });
+          expect(host.postMessage).not.toHaveBeenCalled();
+        }
+      );
     });
 
     describe('of an allowed host on the same origin', () => {
-      it('should use the referrer origin', () => {
+      it('should use the ancestor origin', () => {
         TestBed.overrideProvider(DESIGN_VIEW_ORIGINS, { useValue: [window.location.origin] });
-        initWithReferrer(window.location.href);
+        initWithHostOrigin(window.location.origin);
 
         expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, window.location.origin);
       });
@@ -157,13 +158,13 @@ describe('Design View Service', () => {
       });
 
       it.each(['https://localhost:10000', 'https://localhost'])('should accept %s', origin => {
-        initWithReferrer(`${origin}/design-view`);
+        initWithHostOrigin(origin);
 
         expect(host.postMessage).toHaveBeenCalledWith({ type: 'dv-clientReady' }, origin);
       });
 
       it.each(['http://localhost:10000', 'https://localhost.attacker.example.com'])('should reject %s', origin => {
-        initWithReferrer(`${origin}/design-view`);
+        initWithHostOrigin(origin);
 
         expect(host.postMessage).not.toHaveBeenCalled();
       });
@@ -171,9 +172,9 @@ describe('Design View Service', () => {
 
     describe('of an unlisted host', () => {
       beforeEach(() => {
-        jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+        jest.spyOn(console, 'error').mockImplementation(() => undefined);
         sessionStorage.setItem('DesignViewMode', 'true');
-        initWithReferrer('https://attacker.example.com/');
+        initWithHostOrigin('https://attacker.example.com');
       });
 
       it('should not send messages to the host', () => {
@@ -183,8 +184,8 @@ describe('Design View Service', () => {
       });
 
       it('should disable the Design View mode', () => {
-        expect(console.warn).toHaveBeenCalledWith(
-          'Design View is disabled because the embedding host origin is not in designViewOrigins.'
+        expect(console.error).toHaveBeenCalledWith(
+          'Design View is disabled because the embedding host origin "https://attacker.example.com" is not allowed by designViewOrigins.'
         );
         expect(designViewService.isDesignViewMode()).toBeFalse();
       });

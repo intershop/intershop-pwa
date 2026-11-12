@@ -34,16 +34,6 @@ type ToDVMessageType =
   | 'dv-clientReady'
   | 'dv-clientStable';
 
-const HOST_ORIGIN_STORAGE_KEY = 'DesignViewHostOrigin';
-
-function toOrigin(url: string): string {
-  try {
-    return new URL(url).origin;
-  } catch {
-    return;
-  }
-}
-
 @Injectable({ providedIn: 'root' })
 export class DesignViewService {
   private designViewMode: boolean;
@@ -99,16 +89,17 @@ export class DesignViewService {
       return;
     }
 
-    this.hostOrigin = this.resolveHostOrigin();
+    const hostOrigin = window.location.ancestorOrigins[0];
+    this.hostOrigin = this.isAllowedOrigin(hostOrigin) ? hostOrigin : undefined;
     if (!this.hostOrigin) {
       if (this.isDesignViewMode()) {
-        console.warn('Design View is disabled because the embedding host origin is not in designViewOrigins.');
+        console.error(
+          `Design View is disabled because the embedding host origin "${hostOrigin}" is not allowed by designViewOrigins.`
+        );
       }
       this.setDesignViewMode(false);
       return;
     }
-    sessionStorage.setItem(HOST_ORIGIN_STORAGE_KEY, this.hostOrigin);
-
     this.listenToHostMessages();
     this.listenToApplication();
     this.setupGlobalClickOutside();
@@ -125,24 +116,6 @@ export class DesignViewService {
    */
   private shouldInit() {
     return typeof window !== 'undefined' && window.parent && window.parent !== window;
-  }
-
-  /**
-   * Determines the origin of the embedding host window and returns it only if it is allowed.
-   * Browsers without `location.ancestorOrigins` fall back to an allowed cross-origin referrer,
-   * the origin verified before (e.g., before a reload), or a same-origin referrer.
-   */
-  private resolveHostOrigin(): string {
-    const referrerOrigin = toOrigin(document.referrer);
-    const hostOrigin =
-      window.location.ancestorOrigins?.[0] ??
-      (referrerOrigin !== window.location.origin && this.isAllowedOrigin(referrerOrigin)
-        ? referrerOrigin
-        : undefined) ??
-      sessionStorage.getItem(HOST_ORIGIN_STORAGE_KEY) ??
-      referrerOrigin;
-
-    return this.isAllowedOrigin(hostOrigin) ? hostOrigin : undefined;
   }
 
   /**
