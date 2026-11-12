@@ -11,14 +11,31 @@ import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
 import { TokenService } from 'ish-core/services/token/token.service';
+import { getIdentityProvider } from 'ish-core/store/core/configuration';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { PunchoutService } from '../services/punchout/punchout.service';
 
+interface PunchoutIdentityProviderConfig {
+  type: string;
+  /**
+   * Schemes an OCI punchout HOOK_URL may use (array or comma-separated string), default: 'http', 'https', and 'sapevent'.
+   * Script schemes ('javascript', 'data', 'vbscript') are never allowed.
+   */
+  hookUrlSchemes?: string | string[];
+}
+
+const DEFAULT_HOOK_URL_SCHEMES = ['http', 'https', 'sapevent'];
+
+const FORBIDDEN_HOOK_URL_SCHEMES = ['javascript', 'data', 'vbscript'];
+
+// the scheme has to start at the first character, browsers ignore leading whitespace and control characters
+const HOOK_URL_SCHEME_PATTERN = /^([a-z][\d+.a-z-]*):/i;
+
 @Injectable({ providedIn: 'root' })
-export class PunchoutIdentityProvider implements IdentityProvider {
+export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdentityProviderConfig> {
   constructor(
     protected router: Router,
     protected store: Store,
@@ -29,6 +46,20 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     private checkoutFacade: CheckoutFacade,
     private tokenService: TokenService
   ) {}
+
+  /**
+   * Checks that the HOOK_URL starts with an allowed scheme, the same way as the ICM validates the OCI return URL.
+   * If no usable schemes are configured, the default schemes are allowed.
+   */
+  private static isValidHookUrl(hookUrl: string, hookUrlSchemes: string | string[]): boolean {
+    const configuredSchemes = (typeof hookUrlSchemes === 'string' ? hookUrlSchemes.split(',') : (hookUrlSchemes ?? []))
+      .map(scheme => scheme?.trim().toLowerCase())
+      .filter(scheme => !!scheme && !FORBIDDEN_HOOK_URL_SCHEMES.includes(scheme));
+    const allowedSchemes = configuredSchemes.length ? configuredSchemes : DEFAULT_HOOK_URL_SCHEMES;
+
+    const scheme = HOOK_URL_SCHEME_PATTERN.exec(hookUrl)?.[1]?.toLowerCase();
+    return !!scheme && allowedSchemes.includes(scheme);
+  }
 
   getCapabilities() {
     return {
@@ -66,6 +97,28 @@ export class PunchoutIdentityProvider implements IdentityProvider {
       return false;
     }
 
+    // the configuration is read from the store, because init() is called delayed and might not have run yet
+    return this.store.pipe(
+      select(getIdentityProvider),
+      take(1),
+      switchMap(config => {
+        // reject an OCI HOOK_URL with a script or other not allowed scheme before logging in
+        if (
+          route.queryParamMap.has('HOOK_URL') &&
+          !PunchoutIdentityProvider.isValidHookUrl(
+            route.queryParamMap.get('HOOK_URL'),
+            (config as PunchoutIdentityProviderConfig)?.hookUrlSchemes
+          )
+        ) {
+          this.appFacade.setBusinessError('punchout.error.invalid.hook_url');
+          return of(this.router.parseUrl('/error'));
+        }
+        return this.loginPunchoutUser(route);
+      })
+    );
+  }
+
+  private loginPunchoutUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     if (route.queryParamMap.has('access-token')) {
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {

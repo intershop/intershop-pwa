@@ -8,6 +8,7 @@ kb_sync_latest_only
 # Authentication with the Punchout Identity Provider
 
 - [Configuration](#configuration)
+  - [Hook URL Validation](#hook-url-validation)
 - [Login](#login)
 - [Registration](#registration)
 - [Token Lifetime](#token-lifetime)
@@ -106,6 +107,48 @@ proxy:
         channel: default
         theme: b2c
 ```
+
+### Hook URL Validation
+
+For the OCI punchout, the PWA submits the basket to the `HOOK_URL` given as query parameter at login.
+To prevent script injection via this form target, the PWA checks the scheme of the `HOOK_URL` before logging in, the same way as the ICM checks the OCI return URL.
+The `HOOK_URL` has to start with an allowed scheme; leading whitespace or control characters are not allowed.
+By default, `http`, `https`, and `sapevent` (used by SAP systems for catalogs embedded in the SAP GUI) are allowed.
+To change the allowed schemes, configure the `hookUrlSchemes` property of the punchout identity provider, e.g., to allow only `https`, so that the basket data is never transferred unencrypted.
+If `hookUrlSchemes` is empty, the default is used.
+The script schemes `javascript`, `data`, and `vbscript` are never allowed, even if they are configured.
+If the `HOOK_URL` is not valid, the user is not logged in, the `HOOK_URL` is not stored, and the error page is displayed.
+
+```yaml
+pwa:
+  environment:
+    IDENTITY_PROVIDERS: |
+      Punchout:
+        type: PUNCHOUT
+        hookUrlSchemes:
+          - https
+```
+
+Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+
+```yaml
+app:
+  env:
+    - name: IDENTITY_PROVIDERS
+      value: |
+        {
+          "Punchout": {
+            "type": "PUNCHOUT",
+            "hookUrlSchemes": ["https"]
+          }
+        }
+```
+
+> [!NOTE]
+> The host of the `HOOK_URL` is not restricted.
+> The [Content Security Policy](./security-headers.md) directive `form-action` restricts the targets of the punchout basket transfer in the browser.
+> The default `form-action 'self' https:` blocks `HOOK_URL`s with the schemes `http` and `sapevent`.
+> To support them for the OCI punchout, add the schemes to the directive, e.g., `form-action 'self' https: http: sapevent:`.
 
 ## Login
 
