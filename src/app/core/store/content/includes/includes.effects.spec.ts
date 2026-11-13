@@ -7,6 +7,7 @@ import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadContentInclude, loadContentIncludeFail } from './includes.actions';
@@ -36,7 +37,7 @@ describe('Includes Effects', () => {
         of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
-      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(personalizationStatusDetermined(), loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -52,7 +53,7 @@ describe('Includes Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
-      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(personalizationStatusDetermined(), loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -67,10 +68,23 @@ describe('Includes Effects', () => {
     it('should not die when encountering an error', () => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
-      actions$ = hot('a-a-a-a', { a: loadContentInclude({ includeId: 'dummy' }) });
+      actions$ = hot('b-a-a-a', {
+        a: loadContentInclude({ includeId: 'dummy' }),
+        b: personalizationStatusDetermined(),
+      });
 
       expect(effects.loadContentInclude$).toBeObservable(
-        cold('a-a-a-a', { a: loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }) })
+        cold('--a-a-a', { a: loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }) })
+      );
+    });
+
+    it('should load includes requested before the personalization status is determined afterwards', () => {
+      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+
+      actions$ = hot('a--b', { a: loadContentInclude({ includeId: 'dummy' }), b: personalizationStatusDetermined() });
+
+      expect(effects.loadContentInclude$).toBeObservable(
+        cold('---a', { a: loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }) })
       );
     });
   });

@@ -33,6 +33,7 @@ describe('Punchout Identity Provider', () => {
   const appFacade = mock(AppFacade);
   const accountFacade = mock(AccountFacade);
   const checkoutFacade = mock(CheckoutFacade);
+  const tokenService = mock(TokenService);
 
   let punchoutIdentityProvider: PunchoutIdentityProvider;
   let store$: MockStore;
@@ -46,7 +47,7 @@ describe('Punchout Identity Provider', () => {
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
         { provide: PunchoutService, useFactory: () => instance(punchoutService) },
-        { provide: TokenService, useFactory: () => instance(mock(TokenService)) },
+        { provide: TokenService, useFactory: () => instance(tokenService) },
         provideMockStore(),
       ],
     }).compileComponents();
@@ -66,14 +67,15 @@ describe('Punchout Identity Provider', () => {
     resetCalls(appFacade);
     resetCalls(accountFacade);
     resetCalls(checkoutFacade);
+    resetCalls(tokenService);
 
     sessionStorage.clear();
   });
 
   describe('init', () => {
-    it('should restore apiToken on startup', () => {
+    it('should not restore apiToken on startup', () => {
       punchoutIdentityProvider.init();
-      verify(apiTokenService.restore$(anything())).once();
+      verify(apiTokenService.restore$(anything())).never();
       verify(apiTokenService.removeApiToken()).never();
     });
 
@@ -92,13 +94,10 @@ describe('Punchout Identity Provider', () => {
       punchoutIdentityProvider.init();
     });
 
-    it('should remove api token and basket-id on logout', done => {
-      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
-
+    it('should logout the user on logout', done => {
       const logoutTrigger$ = punchoutIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        expect(sessionStorage.getItem('basket-id')).toBeNull();
         verify(accountFacade.logoutUser()).once();
         done();
       });
@@ -132,6 +131,7 @@ describe('Punchout Identity Provider', () => {
       const result$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams));
 
       verify(appFacade.setBusinessError('punchout.error.missing.parameters')).once();
+      verify(apiTokenService.discardApiToken()).never();
       expect(result$).toBeFalsy();
     });
 
@@ -150,6 +150,16 @@ describe('Punchout Identity Provider', () => {
           done();
         });
       });
+
+      it('should discard the session of a previous login before login', done => {
+        const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(apiTokenService.discardApiToken()).calledBefore(accountFacade.loginUserWithToken(accessToken));
+          verify(tokenService.logOut()).calledBefore(accountFacade.loginUserWithToken(accessToken));
+          done();
+        });
+      });
     });
 
     describe('with username and password', () => {
@@ -165,6 +175,16 @@ describe('Punchout Identity Provider', () => {
 
         login$.subscribe(() => {
           verify(accountFacade.loginUser(anything())).once();
+          done();
+        });
+      });
+
+      it('should discard the session of a previous login before login', done => {
+        const login$ = punchoutIdentityProvider.triggerLogin(getSnapshot(queryParams)) as Observable<boolean | UrlTree>;
+
+        login$.subscribe(() => {
+          verify(apiTokenService.discardApiToken()).calledBefore(accountFacade.loginUser(anything()));
+          verify(tokenService.logOut()).calledBefore(accountFacade.loginUser(anything()));
           done();
         });
       });
@@ -193,6 +213,7 @@ describe('Punchout Identity Provider', () => {
       function expectRejected() {
         verify(appFacade.setBusinessError('punchout.error.invalid.hook_url')).once();
         verify(accountFacade.loginUser(anything())).never();
+        verify(apiTokenService.discardApiToken()).never();
         expect(sessionStorage.getItem('punchout_HookURL')).toBeNull();
         expect(routerSpy).toHaveBeenCalledWith('/error');
       }

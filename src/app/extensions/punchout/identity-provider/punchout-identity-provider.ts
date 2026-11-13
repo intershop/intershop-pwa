@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, noop, of, race, throwError } from 'rxjs';
+import { Observable, of, race, throwError } from 'rxjs';
 import { catchError, concatMap, delay, filter, first, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -76,9 +76,6 @@ export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdenti
       }
     });
 
-    // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
-    this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
-
     this.checkoutFacade.basket$.pipe(whenTruthy(), first()).subscribe(basketView => {
       sessionStorage.setItem('basket-id', basketView.id);
     });
@@ -119,6 +116,10 @@ export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdenti
   }
 
   private loginPunchoutUser(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+    // the punchout user is logged in with the given login parameters only, the session of a previous login must not be used
+    this.apiTokenService.discardApiToken();
+    this.tokenService.logOut();
+
     if (route.queryParamMap.has('access-token')) {
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {
@@ -173,7 +174,6 @@ export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdenti
   }
 
   triggerLogout(): TriggerReturnType {
-    sessionStorage.removeItem('basket-id');
     this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls

@@ -1,20 +1,23 @@
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, noop, of, race, throwError } from 'rxjs';
+import { Observable, of, race, throwError } from 'rxjs';
 import { catchError, concatMap, delay, filter, first, map, switchMap, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { IdentityProvider, TriggerReturnType } from 'ish-core/identity-provider/identity-provider.interface';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CoBrowseIdentityProvider implements IdentityProvider {
+  private tokenService = inject(TokenService);
+
   constructor(
     protected router: Router,
     protected store: Store,
@@ -39,9 +42,6 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
       }
     });
 
-    // OAuth Service should be configured before apiToken information are restored and the refresh token mechanism is setup
-    this.apiTokenService.restore$(['user', 'order']).subscribe(noop);
-
     this.checkoutFacade.basket$.pipe(whenTruthy(), first()).subscribe(basketView => {
       sessionStorage.setItem('basket-id', basketView.id);
     });
@@ -53,6 +53,10 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
       this.appFacade.setBusinessError('cobrowse.error.missing.parameter');
       return false;
     }
+
+    // the user is logged in with the given access token only, the session of a previous login must not be used
+    this.apiTokenService.discardApiToken();
+    this.tokenService.logOut();
 
     this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
 
@@ -93,7 +97,6 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    sessionStorage.removeItem('basket-id');
     this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls

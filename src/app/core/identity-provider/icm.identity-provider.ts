@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, noop } from 'rxjs';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -33,14 +33,18 @@ export class ICMIdentityProvider implements IdentityProvider {
   init() {
     this.apiTokenService.restore$().subscribe(noop);
 
-    this.apiTokenService.getCookieVanishes$().subscribe(type => {
-      this.accountFacade.logoutUser({ revokeApiToken: false });
-      if (type === 'user') {
-        this.router.navigate(['/login'], {
-          queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
-        });
-      }
-    });
+    this.apiTokenService
+      .getCookieVanishes$()
+      .pipe(withLatestFrom(this.accountFacade.isLoggedIn$))
+      .subscribe(([, isLoggedIn]) => {
+        this.accountFacade.logoutUser({ revokeApiToken: false });
+        // only a lost login session requires a new login, an anonymous user continues with a new anonymous session
+        if (isLoggedIn) {
+          this.router.navigate(['/login'], {
+            queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+          });
+        }
+      });
   }
 
   triggerLogin(): TriggerReturnType {

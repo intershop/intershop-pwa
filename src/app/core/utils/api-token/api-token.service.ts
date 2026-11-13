@@ -62,6 +62,14 @@ export interface ApiTokenCookie {
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
 
+// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
+const AUTH_TOKEN_ERRORS = [
+  'AuthenticationToken',
+  'Unable to decode token',
+  'Error when decrypting token',
+  'Verification of token failed',
+];
+
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
   /**
@@ -144,7 +152,10 @@ export class ApiTokenService {
   }
 
   /**
-   * removes the current apiToken cookie
+   * removes the current apiToken from memory, so it is no longer sent with requests
+   *
+   * The apiToken cookie is not removed, because it is shared with other tabs.
+   * It is removed on logout, by invalidateApiToken() or by discardApiToken().
    */
   removeApiToken() {
     this.apiToken$.next(undefined);
@@ -219,6 +230,38 @@ export class ApiTokenService {
     );
   }
 
+  /**
+   * removes the current apiToken and the apiToken cookie of a previous session without logging out the user on server side,
+   * e.g. before a user is logged in with the login information provided by the identity provider (punchout, co-browse)
+   */
+  discardApiToken() {
+    // the apiToken is removed before the cookie, so that the cookie removal is not handled as an unexpected cookie vanish
+    this.removeApiToken();
+    this.cookiesService.remove('apiToken', { path: '/' });
+  }
+
+  /**
+   * removes the current apiToken that is no longer valid (e.g. rejected by the ICM or the token refresh failed)
+   * and informs cookieVanishes$ listeners that the cookie is not working as expected
+   */
+  invalidateApiToken() {
+    this.apiToken$.pipe(first()).subscribe(apiToken => {
+      const cookie = this.parseCookie();
+
+      this.removeApiToken();
+
+      if (cookie) {
+        // the cookie may already contain a new valid apiToken of another tab
+        if (apiToken && cookie.apiToken === apiToken) {
+          this.cookiesService.remove('apiToken', { path: '/' });
+          // the invalid apiToken must not be restored
+          this.initialCookie$.next(undefined);
+        }
+        this.cookieVanishes$.next(cookie.type);
+      }
+    });
+  }
+
   getCookieVanishes$(): Observable<ApiTokenCookieType> {
     return this.cookieVanishes$.asObservable();
   }
@@ -261,6 +304,9 @@ export class ApiTokenService {
                   // timer introduced for testability
                   return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
                 }
+                if (this.isRejectedCookieTokenRefresh(request, err)) {
+                  this.invalidateApiToken();
+                }
                 return throwError(() => err);
               })
             )
@@ -270,25 +316,24 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
-   */
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
-
-    this.removeApiToken();
-
-    if (cookie) {
-      this.cookieVanishes$.next(cookie?.type);
-    }
-  }
-
   private isAuthTokenError(err: unknown) {
     return (
       err instanceof HttpErrorResponse &&
       typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token')) // possible auth token error codes
+      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
     );
+  }
+
+  /**
+   * checks whether the ICM rejected the token refresh with the apiToken of the cookie (e.g. on restore),
+   * network or server errors do not indicate an invalid apiToken
+   */
+  private isRejectedCookieTokenRefresh(req: HttpRequest<unknown>, err: unknown) {
+    if (!(err instanceof HttpErrorResponse) || ![400, 401].includes(err.status) || !(req.body instanceof HttpParams)) {
+      return false;
+    }
+    const refreshToken = req.body.get('grant_type') === 'refresh_token' && req.body.get('refresh_token');
+    return !!refreshToken && refreshToken === this.parseCookie()?.apiToken;
   }
 
   /**

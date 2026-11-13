@@ -34,6 +34,34 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Punchout and co-browse login without previous session**
+
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters.
+Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
+With these identity providers configured as the global identity provider (only intended for development), a reload no longer keeps the user logged in.
+For the recommended configuration by route, see [Override Identity Providers by Path](./nginx-startup.md#override-identity-providers-by-path).
+
+**Logout after failed token refresh**
+
+If the token refresh fails, the `ApiTokenService` now handles the token like a token rejected by the ICM: it removes the `apiToken` cookie and informs the `getCookieVanishes$()` listeners, so the identity provider logs out the user.
+Previously, only the token was removed and the user stayed logged in in the PWA state without a valid token.
+
+**Invalid `apiToken` cookie**
+
+The `ApiTokenService` now also recognizes the ICM 11 error messages `Error when decrypting token` and `Verification of token failed` as an invalid token, removes the `apiToken` cookie, and repeats the request without the token instead of showing the error page.
+It also removes the `apiToken` cookie when the ICM rejects the token refresh with the token of the cookie (HTTP 400 or 401), e.g., when the session of the cookie is restored after a reload.
+When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page; anonymous users continue without login.
+
+**CMS includes wait for the personalization status**
+
+The `IncludesEffects` now load CMS includes only after `personalizationStatusDetermined`, as already done for content pages, so includes are no longer requested with the token of a user without the PGID.
+Tests that dispatch `loadContentInclude` need to dispatch `personalizationStatusDetermined` as well.
+
+**Session basket removed on every logout**
+
+The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed by the `BasketEffects` on every logout (`resetUserData`), also when another identity provider is active after a reload.
+Identity providers no longer need to remove it themselves.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
