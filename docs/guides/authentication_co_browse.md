@@ -121,6 +121,10 @@ For this purpose, the query param `access-token` needs to be added to the given 
 When the login is successful the call center agent user is logged in on behalf of a customer.
 The catalogs and products, prices, promotions, content etc. are displayed to the agent in the same way as to the user.
 
+The user is logged in with the `access-token` query param only.
+Before the login, the session of a previous login (the `apiToken` cookie and the tokens of the OAuth library in the local storage) is removed and is not restored, even on a reload of the `/cobrowse` route.
+After the login, the PWA uses the `apiToken` cookie of the new session, so a reload on any other route restores this session with the default identity provider.
+
 ## Token Lifetime
 
 Each authentication token has a predefined lifetime.
