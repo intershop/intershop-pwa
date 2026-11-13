@@ -123,11 +123,7 @@ The catalogs and products, prices, promotions, content etc. are displayed to the
 
 ## Token Lifetime
 
-Each authentication token has a predefined lifetime.
-That means, the token has to be refreshed to prevent it from expiring.
-Once 75% of the token's lifetime have passed ( this time can be configured in the oAuth library), an info event is emitted.
-This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the oAuth configuration service and the authentication token will be renewed.
-Hence, the token will not expire as long as the user keeps the PWA open in the browser.
+The authentication token is refreshed automatically before it expires, see [Concept - Authentication: Token Lifetime](../concepts/authentication.md#token-lifetime).
 
 ## Logout
 

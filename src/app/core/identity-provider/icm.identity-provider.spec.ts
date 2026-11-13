@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Observable, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -18,8 +18,12 @@ describe('Icm Identity Provider', () => {
   let icmIdentityProvider: ICMIdentityProvider;
   let store$: MockStore;
   let router: Router;
+  let cookieVanishes$: Subject<'order' | 'user'>;
+  let isLoggedIn$: BehaviorSubject<boolean>;
 
   beforeEach(() => {
+    cookieVanishes$ = new Subject();
+    isLoggedIn$ = new BehaviorSubject(false);
     TestBed.configureTestingModule({
       providers: [
         { provide: AccountFacade, useFactory: () => instance(accountFacade) },
@@ -36,7 +40,8 @@ describe('Icm Identity Provider', () => {
 
   beforeEach(() => {
     when(apiTokenService.restore$()).thenReturn(of(true));
-    when(apiTokenService.getCookieVanishes$()).thenReturn(new Subject());
+    when(apiTokenService.getCookieVanishes$()).thenReturn(cookieVanishes$);
+    when(accountFacade.isLoggedIn$).thenReturn(isLoggedIn$);
 
     resetCalls(apiTokenService);
     resetCalls(accountFacade);
@@ -49,6 +54,33 @@ describe('Icm Identity Provider', () => {
       icmIdentityProvider.init();
       verify(apiTokenService.restore$()).once();
       verify(apiTokenService.removeApiToken()).never();
+    });
+  });
+
+  describe('cookie vanishes', () => {
+    let routerSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      routerSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      icmIdentityProvider.init();
+    });
+
+    it('should log out the user and route to the login page when a logged in user loses the session', () => {
+      isLoggedIn$.next(true);
+      cookieVanishes$.next('user');
+
+      verify(accountFacade.logoutUser(anything())).once();
+      expect(routerSpy).toHaveBeenCalledWith(['/login'], {
+        queryParams: { returnUrl: router.url, messageKey: 'session_timeout' },
+      });
+    });
+
+    it('should not route to the login page when an anonymous user loses the session', () => {
+      isLoggedIn$.next(false);
+      cookieVanishes$.next('user');
+
+      verify(accountFacade.logoutUser(anything())).once();
+      expect(routerSpy).not.toHaveBeenCalled();
     });
   });
 
