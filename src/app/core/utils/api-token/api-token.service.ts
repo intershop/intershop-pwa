@@ -62,6 +62,14 @@ export interface ApiTokenCookie {
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
 
+// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
+const AUTH_TOKEN_ERRORS = [
+  'AuthenticationToken',
+  'Unable to decode token',
+  'Error when decrypting token',
+  'Verification of token failed',
+];
+
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
   /**
@@ -246,6 +254,8 @@ export class ApiTokenService {
         // the cookie may already contain a new valid apiToken of another tab
         if (apiToken && cookie.apiToken === apiToken) {
           this.cookiesService.remove('apiToken', { path: '/' });
+          // the invalid apiToken must not be restored
+          this.initialCookie$.next(undefined);
         }
         this.cookieVanishes$.next(cookie.type);
       }
@@ -307,7 +317,7 @@ export class ApiTokenService {
     return (
       err instanceof HttpErrorResponse &&
       typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token')) // possible auth token error codes
+      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
     );
   }
 

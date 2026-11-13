@@ -1,11 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { combineLatest, skip } from 'rxjs';
+import { combineLatest, of, skip, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CustomerLoginType } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import {
@@ -257,6 +259,51 @@ describe('Api Token Service', () => {
 
       apiTokenService.invalidateApiToken();
     });
+
+    it('should not restore the invalid apiToken', done => {
+      apiTokenService.invalidateApiToken();
+
+      apiTokenService.restore$().subscribe(restored => {
+        expect(restored).toBeTrue();
+        done();
+      });
+    });
+  });
+
+  describe('intercept', () => {
+    beforeEach(() => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+    });
+
+    it.each([
+      'Unauthorized ([warn] Verification of token failed.)',
+      'Unauthorized ([none] Error when decrypting token)',
+    ])(
+      'should remove the invalid apiToken and retry the request without it on error %j',
+      fakeAsync((error: string) => {
+        const requests: HttpRequest<unknown>[] = [];
+        const next: HttpHandler = {
+          handle: request => {
+            requests.push(request);
+            return requests.length === 1
+              ? throwError(() => new HttpErrorResponse({ status: 401, error }))
+              : of(new HttpResponse({ status: 200 }));
+          },
+        };
+
+        let response: HttpEvent<unknown>;
+        apiTokenService.intercept(new HttpRequest('GET', 'https://icm/configurations'), next).subscribe(event => {
+          response = event;
+        });
+        tick(500);
+
+        expect(requests[0].headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(initialApiTokenCookie.apiToken);
+        expect(requests[1].headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+        expect(response).toBeInstanceOf(HttpResponse);
+        verify(cookieServiceMock.remove('apiToken', anything())).once();
+      })
+    );
   });
 
   describe('discardApiToken', () => {

@@ -16,6 +16,7 @@ import {
   sample,
   startWith,
   switchMap,
+  takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -303,13 +304,20 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no user apiToken cookie.
+   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no (longer a) user apiToken cookie.
    * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from an to 'undefined').
    */
   determinePersonalizationStatus$ = createEffect(() => {
     const pgid$ = this.store.pipe(select(getPGID));
 
-    const determined$ = pgid$.pipe(
+    // a removed user apiToken cookie (e.g. rejected by the ICM) leaves the PGID unchanged, so the status needs to be re-evaluated
+    const pgidOnCookieVanishes$ = this.apiTokenService.getCookieVanishes$().pipe(
+      withLatestFrom(pgid$),
+      map(([, pgid]) => pgid),
+      takeUntil(this.actions$.pipe(ofType(personalizationStatusDetermined)))
+    );
+
+    const determined$ = merge(pgid$, pgidOnCookieVanishes$).pipe(
       map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
       whenTruthy(),
       delay(100),

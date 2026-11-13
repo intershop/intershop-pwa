@@ -46,6 +46,11 @@ For the recommended configuration by route, see [Override Identity Providers by 
 If the token refresh fails, the `ApiTokenService` now handles the token like a token rejected by the ICM: it removes the `apiToken` cookie and informs the `getCookieVanishes$()` listeners, so the identity provider logs out the user.
 Previously, only the token was removed and the user stayed logged in in the PWA state without a valid token.
 
+**Invalid `apiToken` cookie**
+
+The `ApiTokenService` now also recognizes the ICM 11 error messages `Error when decrypting token` and `Verification of token failed` as an invalid token, removes the `apiToken` cookie, and repeats the request without the token instead of showing the error page.
+When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page; anonymous users continue without login.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
