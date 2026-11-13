@@ -174,7 +174,6 @@ export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdenti
   }
 
   triggerLogout(): TriggerReturnType {
-    sessionStorage.removeItem('basket-id');
     this.accountFacade.logoutUser(); // user will be logged out and related refresh token is revoked on server
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls

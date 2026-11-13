@@ -94,13 +94,10 @@ describe('Punchout Identity Provider', () => {
       punchoutIdentityProvider.init();
     });
 
-    it('should remove api token and basket-id on logout', done => {
-      expect(sessionStorage.getItem('basket-id')).toEqual(BasketMockData.getBasket().id);
-
+    it('should logout the user on logout', done => {
       const logoutTrigger$ = punchoutIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
       logoutTrigger$.subscribe(() => {
-        expect(sessionStorage.getItem('basket-id')).toBeNull();
         verify(accountFacade.logoutUser()).once();
         done();
       });

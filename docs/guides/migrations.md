@@ -57,6 +57,11 @@ When the `apiToken` cookie vanishes, the ICM identity provider now routes only u
 The `IncludesEffects` now load CMS includes only after `personalizationStatusDetermined`, as already done for content pages, so includes are no longer requested with the token of a user without the PGID.
 Tests that dispatch `loadContentInclude` need to dispatch `personalizationStatusDetermined` as well.
 
+**Session basket removed on every logout**
+
+The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed by the `BasketEffects` on every logout (`resetUserData`), also when another identity provider is active after a reload.
+Identity providers no longer need to remove it themselves.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

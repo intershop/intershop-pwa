@@ -15,7 +15,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadServerConfigSuccess } from 'ish-core/store/core/server-config';
 import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.module';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
-import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { personalizationStatusDetermined, resetUserData } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -140,6 +140,18 @@ describe('Basket Effects', () => {
         const expected$ = cold('-c-c-c', { c: completion });
 
         expect(effects.loadBasket$).toBeObservable(expected$);
+      });
+    });
+  });
+
+  describe('removeSessionBasketOnLogout$', () => {
+    it('should remove the basket-id from the session storage on logout', done => {
+      sessionStorage.setItem('basket-id', 'BID');
+      actions$ = of(resetUserData());
+
+      effects.removeSessionBasketOnLogout$.subscribe(() => {
+        expect(sessionStorage.getItem('basket-id')).toBeNull();
+        done();
       });
     });
   });
