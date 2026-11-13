@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { cold, hot } from 'jasmine-marbles';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, Subject, noop, of, throwError } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
 import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-point/content-pagelet-entry-point.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { loadContentInclude, loadContentIncludeFail } from './includes.actions';
@@ -36,7 +36,7 @@ describe('Includes Effects', () => {
         of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
 
-      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(personalizationStatusDetermined(), loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -52,7 +52,7 @@ describe('Includes Effects', () => {
     it('should send fail action when loading action via service is unsuccessful', done => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
 
-      actions$ = of(loadContentInclude({ includeId: 'dummy' }));
+      actions$ = of(personalizationStatusDetermined(), loadContentInclude({ includeId: 'dummy' }));
 
       effects.loadContentInclude$.subscribe(action => {
         verify(cmsServiceMock.getContentInclude('dummy')).once();
@@ -64,14 +64,60 @@ describe('Includes Effects', () => {
       });
     });
 
-    it('should not die when encountering an error', () => {
+    it('should not die when encountering an error', fakeAsync(() => {
       when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      const dispatched$ = new Subject<Action>();
+      actions$ = dispatched$;
 
-      actions$ = hot('a-a-a-a', { a: loadContentInclude({ includeId: 'dummy' }) });
+      const results: Action[] = [];
+      effects.loadContentInclude$.subscribe(action => results.push(action));
 
-      expect(effects.loadContentInclude$).toBeObservable(
-        cold('a-a-a-a', { a: loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }) })
+      dispatched$.next(personalizationStatusDetermined());
+      for (let i = 0; i < 3; i++) {
+        dispatched$.next(loadContentInclude({ includeId: 'dummy' }));
+        tick(0);
+      }
+
+      expect(results).toEqual([
+        loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }),
+        loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }),
+        loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) }),
+      ]);
+    }));
+
+    it('should load includes requested before the personalization status is determined afterwards', fakeAsync(() => {
+      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(throwError(() => makeHttpError({ message: 'ERROR' })));
+      const dispatched$ = new Subject<Action>();
+      actions$ = dispatched$;
+
+      const results: Action[] = [];
+      effects.loadContentInclude$.subscribe(action => results.push(action));
+
+      dispatched$.next(loadContentInclude({ includeId: 'dummy' }));
+      tick(0);
+      expect(results).toBeEmpty();
+
+      dispatched$.next(personalizationStatusDetermined());
+      tick(0);
+      expect(results).toEqual([loadContentIncludeFail({ error: makeHttpError({ message: 'ERROR' }) })]);
+    }));
+
+    it('should load an include only once for the requests released after the personalization status is determined', fakeAsync(() => {
+      when(cmsServiceMock.getContentInclude('dummy')).thenReturn(
+        of({ include: { id: 'dummy' } as ContentPageletEntryPoint, pagelets: [] })
       );
-    });
+      const dispatched$ = new Subject<Action>();
+      actions$ = dispatched$;
+
+      effects.loadContentInclude$.subscribe(noop);
+
+      // e.g. requested before and after the PGID of the restored user is set
+      dispatched$.next(loadContentInclude({ includeId: 'dummy' }));
+      dispatched$.next(loadContentInclude({ includeId: 'dummy' }));
+      dispatched$.next(personalizationStatusDetermined());
+      tick(0);
+
+      verify(cmsServiceMock.getContentInclude('dummy')).once();
+    }));
   });
 });

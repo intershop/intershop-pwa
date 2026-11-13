@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Store, select } from '@ngrx/store';
 import { identity, of } from 'rxjs';
 import { anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
@@ -7,6 +7,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ContentStoreModule } from './content-store.module';
@@ -42,14 +43,16 @@ describe('Content Store', () => {
     expect(store).toBeTruthy();
   });
 
-  it('should be properly memoized for content include selector', done => {
+  it('should be properly memoized for content include selector', fakeAsync(() => {
     const callback = { m: identity };
     const callbackSpy = spy(callback);
 
     store.pipe(select(getContentInclude('id')), whenTruthy()).subscribe(i => callback.m(i));
 
+    store.dispatch(personalizationStatusDetermined());
     store.dispatch(loadContentInclude({ includeId: 'id' }));
     store.dispatch(loadContentInclude({ includeId: 'id' }));
+    tick(0);
 
     expect(capture(callbackSpy.m).last()).toMatchInlineSnapshot(`
       [
@@ -108,7 +111,5 @@ describe('Content Store', () => {
     `);
 
     verify(callbackSpy.m(anything())).twice();
-
-    done();
-  });
+  }));
 });
