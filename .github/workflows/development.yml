@@ -148,6 +148,10 @@ jobs:
       - name: Install root dependencies
         run: npm ci
 
+      - name: Install e2e dependencies
+        working-directory: e2e
+        run: npm ci
+
       - name: Test Schematics
         run: |
           bash e2e/test-schematics-${{ matrix.test }}.sh
