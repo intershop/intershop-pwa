@@ -76,6 +76,11 @@ The `ApiTokenService` now removes an `apiToken` cookie with a token the ICM reje
 A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
 When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
 
+**Punchout and co-browse login without previous session**
+
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters, so a reload restores the session only on routes that use another identity provider.
+Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
