@@ -46,6 +46,11 @@ When the `apiToken` cookie vanishes, the ICM identity provider now routes only u
 The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters.
 Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
 
+**Session basket removed on every logout**
+
+The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed on every logout, also when another identity provider is active after a reload.
+Custom identity providers no longer need to remove it themselves.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
