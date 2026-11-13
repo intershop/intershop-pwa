@@ -8,6 +8,7 @@ import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { selectQueryParam } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
@@ -25,6 +26,7 @@ describe('Co Browse Identity Provider', () => {
   const appFacade = mock(AppFacade);
   const accountFacade = mock(AccountFacade);
   const checkoutFacade = mock(CheckoutFacade);
+  const tokenService = mock(TokenService);
 
   let identityProvider: CoBrowseIdentityProvider;
   let store$: MockStore;
@@ -37,6 +39,7 @@ describe('Co Browse Identity Provider', () => {
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
         { provide: CheckoutFacade, useFactory: () => instance(checkoutFacade) },
+        { provide: TokenService, useFactory: () => instance(tokenService) },
         provideMockStore(),
       ],
     }).compileComponents();
@@ -55,14 +58,15 @@ describe('Co Browse Identity Provider', () => {
     resetCalls(appFacade);
     resetCalls(accountFacade);
     resetCalls(checkoutFacade);
+    resetCalls(tokenService);
 
     sessionStorage.clear();
   });
 
   describe('init', () => {
-    it('should restore apiToken on startup', () => {
+    it('should not restore apiToken on startup', () => {
       identityProvider.init();
-      verify(apiTokenService.restore$(anything())).once();
+      verify(apiTokenService.restore$(anything())).never();
       verify(apiTokenService.removeApiToken()).never();
     });
 
@@ -118,6 +122,7 @@ describe('Co Browse Identity Provider', () => {
       const result$ = identityProvider.triggerLogin(getSnapshot(queryParams));
 
       verify(appFacade.setBusinessError('cobrowse.error.missing.parameter')).once();
+      verify(apiTokenService.discardApiToken()).never();
       expect(result$).toBeFalsy();
     });
 
@@ -126,6 +131,13 @@ describe('Co Browse Identity Provider', () => {
 
       beforeEach(() => {
         queryParams = { 'access-token': accessToken };
+      });
+
+      it('should discard the session of a previous login before login', () => {
+        identityProvider.triggerLogin(getSnapshot(queryParams));
+
+        verify(apiTokenService.discardApiToken()).calledBefore(accountFacade.loginUserWithToken(accessToken));
+        verify(tokenService.logOut()).calledBefore(accountFacade.loginUserWithToken(accessToken));
       });
 
       it('should trigger loginUserWithToken method on login', done => {
