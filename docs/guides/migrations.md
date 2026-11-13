@@ -96,6 +96,10 @@ Before the personalization status is determined, the PWA now asks the identity p
 Identity providers without this method keep the previous behavior based on the user `apiToken` cookie.
 Implement `hasUserSession()` in custom identity providers that do not restore the user session from the `apiToken` cookie, as done by the Auth0, punchout, and co-browse identity providers.
 
+**CMS includes wait for the personalization status**
+
+CMS includes are now loaded only after the personalization status is determined, as already done for content pages, so they are no longer requested without the PGID of a logged-in user.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
