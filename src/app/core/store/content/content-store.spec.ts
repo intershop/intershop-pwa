@@ -7,6 +7,7 @@ import { ContentPageletEntryPoint } from 'ish-core/models/content-pagelet-entry-
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { CMSService } from 'ish-core/services/cms/cms.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { ContentStoreModule } from './content-store.module';
@@ -48,6 +49,7 @@ describe('Content Store', () => {
 
     store.pipe(select(getContentInclude('id')), whenTruthy()).subscribe(i => callback.m(i));
 
+    store.dispatch(personalizationStatusDetermined());
     store.dispatch(loadContentInclude({ includeId: 'id' }));
     store.dispatch(loadContentInclude({ includeId: 'id' }));
 

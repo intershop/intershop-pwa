@@ -4,7 +4,8 @@ import { identity } from 'rxjs';
 import { groupBy, map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { CMSService } from 'ish-core/services/cms/cms.service';
-import { mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
+import { personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import { delayUntil, mapErrorToAction, mapToPayloadProperty } from 'ish-core/utils/operators';
 
 import { loadContentInclude, loadContentIncludeFail, loadContentIncludeSuccess } from './includes.actions';
 
@@ -18,6 +19,8 @@ export class IncludesEffects {
   loadContentInclude$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadContentInclude),
+      // an include requested with the apiToken of a user cookie needs the PGID of the restored user
+      delayUntil(this.actions$.pipe(ofType(personalizationStatusDetermined))),
       mapToPayloadProperty('includeId'),
       groupBy(identity),
       mergeMap(group$ =>

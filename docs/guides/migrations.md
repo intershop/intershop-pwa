@@ -52,6 +52,11 @@ The `ApiTokenService` now also recognizes the ICM 11 error messages `Error when 
 It also removes the `apiToken` cookie when the ICM rejects the token refresh with the token of the cookie (HTTP 400 or 401), e.g., when the session of the cookie is restored after a reload.
 When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page; anonymous users continue without login.
 
+**CMS includes wait for the personalization status**
+
+The `IncludesEffects` now load CMS includes only after `personalizationStatusDetermined`, as already done for content pages, so includes are no longer requested with the token of a user without the PGID.
+Tests that dispatch `loadContentInclude` need to dispatch `personalizationStatusDetermined` as well.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
