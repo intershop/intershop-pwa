@@ -304,6 +304,9 @@ export class ApiTokenService {
                   // timer introduced for testability
                   return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
                 }
+                if (this.isRejectedCookieTokenRefresh(request, err)) {
+                  this.invalidateApiToken();
+                }
                 return throwError(() => err);
               })
             )
@@ -319,6 +322,18 @@ export class ApiTokenService {
       typeof err.error === 'string' &&
       AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
     );
+  }
+
+  /**
+   * checks whether the ICM rejected the token refresh with the apiToken of the cookie (e.g. on restore),
+   * network or server errors do not indicate an invalid apiToken
+   */
+  private isRejectedCookieTokenRefresh(req: HttpRequest<unknown>, err: unknown) {
+    if (!(err instanceof HttpErrorResponse) || ![400, 401].includes(err.status) || !(req.body instanceof HttpParams)) {
+      return false;
+    }
+    const refreshToken = req.body.get('grant_type') === 'refresh_token' && req.body.get('refresh_token');
+    return !!refreshToken && refreshToken === this.parseCookie()?.apiToken;
   }
 
   /**

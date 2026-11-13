@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { combineLatest, of, skip, throwError } from 'rxjs';
@@ -304,6 +304,46 @@ describe('Api Token Service', () => {
         verify(cookieServiceMock.remove('apiToken', anything())).once();
       })
     );
+
+    describe('on a failed token refresh', () => {
+      const refresh$ = (refreshToken: string, status: number) => {
+        const next: HttpHandler = {
+          handle: () => throwError(() => new HttpErrorResponse({ status, error: 'Unauthorized' })),
+        };
+        const body = new HttpParams().set('grant_type', 'refresh_token').set('refresh_token', refreshToken);
+        return apiTokenService.intercept(new HttpRequest('POST', 'https://icm/token', body), next);
+      };
+
+      it.each([400, 401])(
+        'should remove the apiToken cookie when the ICM rejects its apiToken with %s',
+        (status, done) => {
+          refresh$(initialApiTokenCookie.apiToken, status).subscribe({
+            error: () => {
+              verify(cookieServiceMock.remove('apiToken', anything())).once();
+              done();
+            },
+          });
+        }
+      );
+
+      it('should keep the apiToken cookie on server errors', done => {
+        refresh$(initialApiTokenCookie.apiToken, 503).subscribe({
+          error: () => {
+            verify(cookieServiceMock.remove('apiToken', anything())).never();
+            done();
+          },
+        });
+      });
+
+      it('should keep the apiToken cookie when another token is rejected', done => {
+        refresh$('other@apiToken', 401).subscribe({
+          error: () => {
+            verify(cookieServiceMock.remove('apiToken', anything())).never();
+            done();
+          },
+        });
+      });
+    });
   });
 
   describe('discardApiToken', () => {

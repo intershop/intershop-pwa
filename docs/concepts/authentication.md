@@ -97,7 +97,7 @@ This is described in the appropriate identity provider guides in more detail, se
 ## Vanishing of the apiToken Cookie
 
 The PWA needs to react in case the `apiToken` cookie is not available anymore.
-This could happen if a PWA is opened in many tabs and the user logs out, when users remove the cookie themselves, or when the ICM rejects the token of the cookie as invalid.
+This could happen if a PWA is opened in many tabs and the user logs out, when users remove the cookie themselves, or when the ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
 When the cookie vanishes, the PWA emits a new value for the [`getCookieVanishes$()` stream](../../src/app/core/utils/api-token/api-token.service.ts).
 The identity provider implementation defines how the application should behave in such a case.
 With the ICM identity provider, for example, the user is automatically logged out and, if the user was logged in, routed to the `/login` page.
