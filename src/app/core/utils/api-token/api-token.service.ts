@@ -144,7 +144,10 @@ export class ApiTokenService {
   }
 
   /**
-   * removes the current apiToken cookie
+   * removes the current apiToken from memory, so it is no longer sent with requests
+   *
+   * The apiToken cookie is not removed, because it is shared with other tabs.
+   * It is removed on logout or by invalidateApiToken().
    */
   removeApiToken() {
     this.apiToken$.next(undefined);
@@ -219,6 +222,26 @@ export class ApiTokenService {
     );
   }
 
+  /**
+   * removes the current apiToken that is no longer valid (e.g. rejected by the ICM or the token refresh failed)
+   * and informs cookieVanishes$ listeners that the cookie is not working as expected
+   */
+  invalidateApiToken() {
+    this.apiToken$.pipe(first()).subscribe(apiToken => {
+      const cookie = this.parseCookie();
+
+      this.removeApiToken();
+
+      if (cookie) {
+        // the cookie may already contain a new valid apiToken of another tab
+        if (apiToken && cookie.apiToken === apiToken) {
+          this.cookiesService.remove('apiToken', { path: '/' });
+        }
+        this.cookieVanishes$.next(cookie.type);
+      }
+    });
+  }
+
   getCookieVanishes$(): Observable<ApiTokenCookieType> {
     return this.cookieVanishes$.asObservable();
   }
@@ -268,19 +291,6 @@ export class ApiTokenService {
         )
       )
     );
-  }
-
-  /**
-   * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
-   */
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
-
-    this.removeApiToken();
-
-    if (cookie) {
-      this.cookieVanishes$.next(cookie?.type);
-    }
   }
 
   private isAuthTokenError(err: unknown) {

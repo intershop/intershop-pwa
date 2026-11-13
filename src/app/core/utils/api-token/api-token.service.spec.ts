@@ -228,4 +228,34 @@ describe('Api Token Service', () => {
       });
     });
   });
+
+  describe('invalidateApiToken', () => {
+    beforeEach(() => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+    });
+
+    it('should remove the apiToken and its cookie and inform cookieVanishes$ listeners', done => {
+      apiTokenService.getCookieVanishes$().subscribe(type => {
+        expect(type).toEqual('user');
+        verify(cookieServiceMock.remove('apiToken', anything())).once();
+        done();
+      });
+
+      apiTokenService.invalidateApiToken();
+    });
+
+    it('should keep the cookie if it contains the apiToken of another tab', done => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(
+        JSON.stringify({ ...initialApiTokenCookie, apiToken: 'other@apiToken' })
+      );
+
+      apiTokenService.getCookieVanishes$().subscribe(() => {
+        verify(cookieServiceMock.remove('apiToken', anything())).never();
+        done();
+      });
+
+      apiTokenService.invalidateApiToken();
+    });
+  });
 });

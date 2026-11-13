@@ -1,6 +1,7 @@
-import { TestBed } from '@angular/core/testing';
-import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
-import { firstValueFrom, of } from 'rxjs';
+import { Injector } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { OAuthInfoEvent, OAuthService, TokenResponse } from 'angular-oauth2-oidc';
+import { firstValueFrom, noop, of } from 'rxjs';
 import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -55,5 +56,34 @@ describe('Token Service', () => {
         done();
       });
     });
+  });
+
+  describe('logOut', () => {
+    it('should remove the stored tokens and stop their refresh timers', () => {
+      tokenService.logOut();
+
+      verify(oAuthService.logOut(true)).once();
+      verify(oAuthService.stopAutomaticRefresh()).once();
+    });
+  });
+
+  describe('refresh token mechanism', () => {
+    afterEach(() => {
+      when(oAuthService.refreshToken()).thenResolve();
+      when(oAuthService.events).thenReturn(of(undefined));
+    });
+
+    it('should invalidate the apiToken if the token refresh fails', fakeAsync(() => {
+      const apiTokenService = mock(ApiTokenService);
+      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
+      when(oAuthService.refreshToken()).thenReject(new Error('refresh failed'));
+      jest.spyOn(console, 'warn').mockImplementation(noop);
+
+      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      tick();
+
+      verify(apiTokenService.invalidateApiToken()).once();
+      verify(apiTokenService.removeApiToken()).never();
+    }));
   });
 });

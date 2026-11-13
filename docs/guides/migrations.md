@@ -34,6 +34,11 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Logout after failed token refresh**
+
+If the token refresh fails, the `ApiTokenService` now handles the token like a token rejected by the ICM: it removes the `apiToken` cookie and informs the `getCookieVanishes$()` listeners, so the identity provider logs out the user.
+Previously, only the token was removed and the user stayed logged in in the PWA state without a valid token.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
