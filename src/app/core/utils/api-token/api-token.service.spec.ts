@@ -1,11 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
-import { combineLatest, skip } from 'rxjs';
+import { combineLatest, noop, of, skip, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { CustomerLoginType } from 'ish-core/models/customer/customer.model';
 import { Order } from 'ish-core/models/order/order.model';
+import { ApiService } from 'ish-core/services/api/api.service';
 import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loadBasketSuccess } from 'ish-core/store/customer/basket';
 import {
@@ -224,6 +226,147 @@ describe('Api Token Service', () => {
           expect(restored).toBeTrue();
 
           done();
+        });
+      });
+    });
+  });
+
+  describe('invalidateApiToken', () => {
+    beforeEach(() => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+    });
+
+    it('should remove the apiToken and its cookie and inform cookieVanishes$ listeners', done => {
+      apiTokenService.getCookieVanishes$().subscribe(type => {
+        expect(type).toEqual('user');
+        verify(cookieServiceMock.remove('apiToken', anything())).once();
+        done();
+      });
+
+      apiTokenService.invalidateApiToken();
+    });
+
+    it('should keep the cookie if it contains the apiToken of another tab', done => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(
+        JSON.stringify({ ...initialApiTokenCookie, apiToken: 'other@apiToken' })
+      );
+
+      apiTokenService.getCookieVanishes$().subscribe(() => {
+        verify(cookieServiceMock.remove('apiToken', anything())).never();
+        done();
+      });
+
+      apiTokenService.invalidateApiToken();
+    });
+
+    it('should not restore the invalid apiToken', done => {
+      apiTokenService.invalidateApiToken();
+
+      apiTokenService.restore$().subscribe(restored => {
+        expect(restored).toBeTrue();
+        done();
+      });
+    });
+  });
+
+  describe('intercept', () => {
+    beforeEach(() => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+    });
+
+    it.each([
+      'Unauthorized ([warn] Verification of token failed.)',
+      'Unauthorized ([none] Error when decrypting token)',
+    ])(
+      'should remove the invalid apiToken and retry the request without it on error %j',
+      fakeAsync((error: string) => {
+        const requests: HttpRequest<unknown>[] = [];
+        const next: HttpHandler = {
+          handle: request => {
+            requests.push(request);
+            return requests.length === 1
+              ? throwError(() => new HttpErrorResponse({ status: 401, error }))
+              : of(new HttpResponse({ status: 200 }));
+          },
+        };
+
+        let response: HttpEvent<unknown>;
+        apiTokenService.intercept(new HttpRequest('GET', 'https://icm/configurations'), next).subscribe(event => {
+          response = event;
+        });
+        tick(500);
+
+        expect(requests[0].headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(initialApiTokenCookie.apiToken);
+        expect(requests[1].headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+        expect(response).toBeInstanceOf(HttpResponse);
+        verify(cookieServiceMock.remove('apiToken', anything())).once();
+      })
+    );
+
+    it('should keep a replacing apiToken and retry the request without it when a replaced apiToken is rejected', fakeAsync(() => {
+      const requests: HttpRequest<unknown>[] = [];
+      const next: HttpHandler = {
+        handle: request => {
+          requests.push(request);
+          if (requests.length === 1) {
+            // e.g. a login or a token refresh replaces the apiToken while the request is pending
+            apiTokenService.setApiToken('new@apiToken');
+            return throwError(
+              () => new HttpErrorResponse({ status: 401, error: 'Unauthorized (Verification of token failed.)' })
+            );
+          }
+          return of(new HttpResponse({ status: 200 }));
+        },
+      };
+      let vanished = false;
+      apiTokenService.getCookieVanishes$().subscribe(() => (vanished = true));
+
+      apiTokenService.intercept(new HttpRequest('GET', 'https://icm/configurations'), next).subscribe(noop);
+      tick(500);
+
+      expect(requests[1].headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
+      expect(vanished).toBeFalse();
+      verify(cookieServiceMock.remove('apiToken', anything())).never();
+    }));
+
+    describe('on a failed token refresh', () => {
+      const refresh$ = (refreshToken: string, status: number) => {
+        const next: HttpHandler = {
+          handle: () => throwError(() => new HttpErrorResponse({ status, error: 'Unauthorized' })),
+        };
+        const body = new HttpParams().set('grant_type', 'refresh_token').set('refresh_token', refreshToken);
+        return apiTokenService.intercept(new HttpRequest('POST', 'https://icm/token', body), next);
+      };
+
+      it.each([400, 401])(
+        'should remove the apiToken cookie when the ICM rejects its apiToken with %s',
+        (status, done) => {
+          refresh$(initialApiTokenCookie.apiToken, status).subscribe({
+            error: () => {
+              verify(cookieServiceMock.remove('apiToken', anything())).once();
+              done();
+            },
+          });
+        }
+      );
+
+      it('should keep the apiToken cookie on server errors', done => {
+        refresh$(initialApiTokenCookie.apiToken, 503).subscribe({
+          error: () => {
+            verify(cookieServiceMock.remove('apiToken', anything())).never();
+            done();
+          },
+        });
+      });
+
+      it('should keep the apiToken cookie when another token is rejected', done => {
+        refresh$('other@apiToken', 401).subscribe({
+          error: () => {
+            verify(cookieServiceMock.remove('apiToken', anything())).never();
+            done();
+          },
         });
       });
     });

@@ -5,7 +5,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { cold, hot } from 'jasmine-marbles';
-import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -71,6 +71,7 @@ import { UserEffects } from './user.effects';
 
 describe('User Effects', () => {
   let actions$: Observable<Action>;
+  let cookieVanishes$: Subject<'order' | 'user'>;
   let effects: UserEffects;
   let store: Store;
   let userServiceMock: UserService;
@@ -127,6 +128,8 @@ describe('User Effects', () => {
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    cookieVanishes$ = new Subject();
+    when(apiTokenServiceMock.getCookieVanishes$()).thenReturn(cookieVanishes$);
     when(oAuthServiceMock.events).thenReturn(of());
 
     TestBed.configureTestingModule({
@@ -698,6 +701,38 @@ describe('User Effects', () => {
   });
 
   describe('determinePersonalizationStatus$', () => {
+    beforeEach(() => {
+      actions$ = EMPTY;
+    });
+
+    it('should dispatch personalizationStatusDetermined when the user API token cookie vanishes before the PGID is set', fakeAsync(() => {
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      tick(200);
+      expect(actions).not.toContainEqual(personalizationStatusDetermined());
+
+      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+      cookieVanishes$.next('user');
+
+      tick(200);
+      expect(actions).toContainEqual(personalizationStatusDetermined());
+    }));
+
+    it('should not dispatch personalizationStatusDetermined again when the cookie vanishes after the status was determined', fakeAsync(() => {
+      actions$ = of(personalizationStatusDetermined());
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      tick(200);
+      cookieVanishes$.next('user');
+      tick(200);
+
+      expect(actions.filter(a => a.type === personalizationStatusDetermined.type)).toHaveLength(1);
+    }));
     it('should dispatch personalizationStatusDetermined when no user API token cookie exists', fakeAsync(() => {
       when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
 

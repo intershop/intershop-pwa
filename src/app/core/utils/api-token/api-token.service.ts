@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -62,6 +63,14 @@ export interface ApiTokenCookie {
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
 
+// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
+const AUTH_TOKEN_ERRORS = [
+  'AuthenticationToken',
+  'Unable to decode token',
+  'Error when decrypting token',
+  'Verification of token failed',
+];
+
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
   /**
@@ -121,10 +130,9 @@ export class ApiTokenService {
         });
 
       // remove apiToken cookie on logout
-      // path: '/' is added in order to remove cookie within a multi-site configuration (e.g. configured /en, /fr, /de routes)
       this.logoutUser$()
         .pipe(takeUntilDestroyed(destroyRef))
-        .subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
+        .subscribe(() => this.removeApiTokenCookie());
 
       // unset apiToken when cookie vanishes/ has been removed unexpectedly and notify public event stream
       this.tokenVanish$()
@@ -144,7 +152,10 @@ export class ApiTokenService {
   }
 
   /**
-   * removes the current apiToken cookie
+   * removes the current apiToken from memory, so it is no longer sent with requests
+   *
+   * The apiToken cookie is not removed, because it is shared with other tabs.
+   * It is removed on logout or by invalidateApiToken().
    */
   removeApiToken() {
     this.apiToken$.next(undefined);
@@ -219,6 +230,36 @@ export class ApiTokenService {
     );
   }
 
+  /**
+   * removes the current apiToken that is no longer valid (e.g. rejected by the ICM or the token refresh failed)
+   * and informs cookieVanishes$ listeners that the cookie is not working as expected
+   *
+   * @param rejectedApiToken  the apiToken rejected by the ICM, a rejected apiToken that has already been replaced is ignored
+   */
+  invalidateApiToken(rejectedApiToken?: string) {
+    // eslint-disable-next-line rxjs/no-subject-value
+    const apiToken = this.apiToken$.value;
+
+    // the rejected apiToken has already been replaced, e.g. by a login or a token refresh
+    if (rejectedApiToken && rejectedApiToken !== apiToken) {
+      return;
+    }
+
+    const cookie = this.parseCookie();
+
+    this.removeApiToken();
+
+    if (cookie) {
+      // the cookie may already contain a new valid apiToken of another tab
+      if (apiToken && cookie.apiToken === apiToken) {
+        this.removeApiTokenCookie();
+        // the invalid apiToken must not be restored
+        this.initialCookie$.next(undefined);
+      }
+      this.cookieVanishes$.next(cookie.type);
+    }
+  }
+
   getCookieVanishes$(): Observable<ApiTokenCookieType> {
     return this.cookieVanishes$.asObservable();
   }
@@ -252,14 +293,18 @@ export class ApiTokenService {
               }),
               catchError(err => {
                 if (this.isAuthTokenError(err)) {
-                  this.invalidateApiToken();
+                  this.invalidateApiToken(request.headers.get(ApiService.TOKEN_HEADER_KEY));
 
-                  // retry request without auth token
+                  // retry request without auth token, a replacing apiToken might belong to another user
                   const retryRequest = request.clone({
                     headers: request.headers.delete(ApiService.TOKEN_HEADER_KEY),
                   });
                   // timer introduced for testability
                   return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
+                }
+                const rejectedCookieToken = this.getRejectedCookieTokenOfRefresh(request, err);
+                if (rejectedCookieToken) {
+                  this.invalidateApiToken(rejectedCookieToken);
                 }
                 return throwError(() => err);
               })
@@ -270,25 +315,24 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
-   */
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
-
-    this.removeApiToken();
-
-    if (cookie) {
-      this.cookieVanishes$.next(cookie?.type);
-    }
-  }
-
   private isAuthTokenError(err: unknown) {
     return (
       err instanceof HttpErrorResponse &&
       typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token')) // possible auth token error codes
+      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
     );
+  }
+
+  /**
+   * returns the apiToken of the cookie if the ICM rejected the token refresh with it (e.g. on restore),
+   * network or server errors do not indicate an invalid apiToken
+   */
+  private getRejectedCookieTokenOfRefresh(req: HttpRequest<unknown>, err: unknown): string {
+    if (!(err instanceof HttpErrorResponse) || ![400, 401].includes(err.status) || !(req.body instanceof HttpParams)) {
+      return;
+    }
+    const refreshToken = req.body.get('grant_type') === 'refresh_token' ? req.body.get('refresh_token') : undefined;
+    return refreshToken && refreshToken === this.parseCookie()?.apiToken ? refreshToken : undefined;
   }
 
   /**
@@ -439,6 +483,13 @@ export class ApiTokenService {
           }
         })
       );
+  }
+
+  /**
+   * removes the apiToken cookie, path: '/' is needed to remove it within a multi-site configuration (e.g. configured /en, /fr, /de routes)
+   */
+  private removeApiTokenCookie() {
+    this.cookiesService.remove('apiToken', { path: '/' });
   }
 
   private parseCookie(): ApiTokenCookie {

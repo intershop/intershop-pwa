@@ -34,6 +34,13 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Invalid `apiToken` cookie**
+
+The `ApiTokenService` now also recognizes the ICM 11 error messages `Error when decrypting token` and `Verification of token failed` as an invalid token, removes the `apiToken` cookie, and repeats the request without the token instead of showing the error page.
+It also removes the `apiToken` cookie when the ICM rejects the token refresh with the token of the cookie (HTTP 400 or 401), unless this token has already been replaced, e.g., by a login.
+A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](./authentication_icm.md#token-lifetime).
+When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
