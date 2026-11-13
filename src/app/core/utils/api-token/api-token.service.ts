@@ -147,7 +147,7 @@ export class ApiTokenService {
    * removes the current apiToken from memory, so it is no longer sent with requests
    *
    * The apiToken cookie is not removed, because it is shared with other tabs.
-   * It is removed on logout or by invalidateApiToken().
+   * It is removed on logout, by invalidateApiToken() or by discardApiToken().
    */
   removeApiToken() {
     this.apiToken$.next(undefined);
@@ -220,6 +220,16 @@ export class ApiTokenService {
         return of(true);
       })
     );
+  }
+
+  /**
+   * removes the current apiToken and the apiToken cookie of a previous session without logging out the user on server side,
+   * e.g. before a user is logged in with the login information provided by the identity provider (punchout, co-browse)
+   */
+  discardApiToken() {
+    // the apiToken is removed before the cookie, so that the cookie removal is not handled as an unexpected cookie vanish
+    this.removeApiToken();
+    this.cookiesService.remove('apiToken', { path: '/' });
   }
 
   /**

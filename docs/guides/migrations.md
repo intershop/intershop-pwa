@@ -34,6 +34,13 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Punchout and co-browse login without previous session**
+
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters.
+Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
+With these identity providers configured as the global identity provider (only intended for development), a reload no longer keeps the user logged in.
+For the recommended configuration by route, see [Override Identity Providers by Path](./nginx-startup.md#override-identity-providers-by-path).
+
 **Logout after failed token refresh**
 
 If the token refresh fails, the `ApiTokenService` now handles the token like a token rejected by the ICM: it removes the `apiToken` cookie and informs the `getCookieVanishes$()` listeners, so the identity provider logs out the user.

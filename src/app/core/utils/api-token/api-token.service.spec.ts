@@ -258,4 +258,21 @@ describe('Api Token Service', () => {
       apiTokenService.invalidateApiToken();
     });
   });
+
+  describe('discardApiToken', () => {
+    beforeEach(() => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+    });
+
+    it('should remove the apiToken and the apiToken cookie', done => {
+      apiTokenService.discardApiToken();
+
+      verify(cookieServiceMock.remove('apiToken', anything())).once();
+      apiTokenService.getApiToken$().subscribe(apiToken => {
+        expect(apiToken).toBeUndefined();
+        done();
+      });
+    });
+  });
 });

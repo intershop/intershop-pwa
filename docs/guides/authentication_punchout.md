@@ -159,6 +159,10 @@ In addition, the [cXML punchout tester](https://punchoutcommerce.com/tools/cxml-
 The request [/customers/${CustomersKey}/punchouts/cxml1.2/setuprequest](https://support.intershop.com/kb/index.php/Display/29L952#l1142) to create a new cXML punchout session must be inserted as the URL with the credentials of the cXML punchout user.
 When the session is created successfully, the punchout tester will redirect to the ICM configured PWA deployment `/punchout` route.
 
+The punchout user is logged in with these query parameters only.
+Before the login, the session of a previous login (the `apiToken` cookie and the tokens of the OAuth library in the local storage) is removed and is not restored, even on a reload of the punchout route.
+After the login, the PWA uses the `apiToken` cookie of the new session, so a reload on any other route restores this session with the default identity provider.
+
 ## Registration
 
 There is currently no possibility to register a new punchout user in the PWA.
