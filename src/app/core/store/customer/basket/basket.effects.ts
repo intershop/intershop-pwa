@@ -397,7 +397,7 @@ export class BasketEffects {
           this.actions$.pipe(
             ofType(routerNavigatedAction),
             mapToRouterState(),
-            filter(routerState => /^\/basket/.test(routerState.url)),
+            filter(routerState => routerState.url.startsWith('/basket')),
             map(() => loadBasket())
           )
         )

@@ -77,7 +77,8 @@ export class CopilotEmbeddedService {
     return this.copilotEmbeddedApiService.stream('prediction', this.buildRequestBody(request, true)).pipe(
       map(event => {
         if (event.event === 'error') {
-          throw new Error(`Copilot Embedded chatflow error: ${event.data}`);
+          const message = typeof event.data === 'string' ? event.data : JSON.stringify(event.data);
+          throw new Error(`Copilot Embedded chatflow error: ${message}`);
         }
         return event;
       }),

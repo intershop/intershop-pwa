@@ -230,7 +230,12 @@ export class CostCentersEffects {
             updateCostCenterBuyerSuccess({ costCenter }),
             displaySuccessMessage({
               message: 'account.organization.cost_center_management.buyer.update.confirmation',
-              messageParams: { 0: `${payload.buyer.firstName} ${payload.buyer.lastName}` || `${payload.buyer.login}` },
+              messageParams: {
+                0:
+                  payload.buyer.firstName && payload.buyer.lastName
+                    ? `${payload.buyer.firstName} ${payload.buyer.lastName}`
+                    : payload.buyer.login,
+              },
             }),
           ]),
           mapErrorToAction(updateCostCenterBuyerFail)

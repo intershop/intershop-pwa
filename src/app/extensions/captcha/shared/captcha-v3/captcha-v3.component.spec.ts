@@ -12,54 +12,6 @@ import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
 
 import { CaptchaV3Component } from './captcha-v3.component';
 
-describe('Captcha V3 Component', () => {
-  let component: CaptchaV3Component;
-  let fixture: ComponentFixture<CaptchaV3Component>;
-  let element: HTMLElement;
-  const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
-      imports: [RecaptchaV3Module, TranslatePipe],
-      providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey }, provideTranslateService()],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CaptchaV3Component);
-    component = fixture.componentInstance;
-    element = fixture.nativeElement;
-    component.parentForm = new FormGroup({
-      captcha: new FormControl(''),
-      captchaAction: new FormControl(''),
-    });
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-    expect(element).toBeTruthy();
-    expect(() => fixture.detectChanges()).not.toThrow();
-  });
-
-  it('should render recaptcha info text when created', () => {
-    fixture.detectChanges();
-    expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
-      [
-        "recaptcha-v3-info",
-      ]
-    `);
-  });
-
-  it('should set captchaAction validators on init', () => {
-    fixture.detectChanges();
-    const captchaAction = component.parentForm.get('captchaAction');
-    captchaAction.setValue('');
-    captchaAction.updateValueAndValidity();
-    expect(captchaAction.valid).toBeFalse();
-  });
-});
-
 @Component({
   standalone: false,
   template: `<form [formGroup]="form">
@@ -75,84 +27,134 @@ class WrapperComponent {
 }
 
 describe('Captcha V3 Component', () => {
-  let wrapperFixture: ComponentFixture<WrapperComponent>;
-  let wrapper: WrapperComponent;
-  let recaptchaV3Service: ReCaptchaV3Service;
+  describe('in isolation', () => {
+    let component: CaptchaV3Component;
+    let fixture: ComponentFixture<CaptchaV3Component>;
+    let element: HTMLElement;
+    const captchaSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
-  beforeEach(async () => {
-    recaptchaV3Service = mock(ReCaptchaV3Service);
-    when(recaptchaV3Service.execute('testAction')).thenReturn(of('mock-token-123'));
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective)],
+        imports: [RecaptchaV3Module, TranslatePipe],
+        providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: captchaSiteKey }, provideTranslateService()],
+      }).compileComponents();
+    });
 
-    await TestBed.configureTestingModule({
-      declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective), WrapperComponent],
-      imports: [ReactiveFormsModule, TranslatePipe],
-      providers: [
-        { provide: ReCaptchaV3Service, useFactory: () => instance(recaptchaV3Service) },
-        provideTranslateService(),
-      ],
-    }).compileComponents();
+    beforeEach(() => {
+      fixture = TestBed.createComponent(CaptchaV3Component);
+      component = fixture.componentInstance;
+      element = fixture.nativeElement;
+      component.parentForm = new FormGroup({
+        captcha: new FormControl(''),
+        captchaAction: new FormControl(''),
+      });
+    });
+
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+      expect(element).toBeTruthy();
+      expect(() => fixture.detectChanges()).not.toThrow();
+    });
+
+    it('should render recaptcha info text when created', () => {
+      fixture.detectChanges();
+      expect(findAllDataTestingIDs(fixture)).toMatchInlineSnapshot(`
+        [
+          "recaptcha-v3-info",
+        ]
+      `);
+    });
+
+    it('should set captchaAction validators on init', () => {
+      fixture.detectChanges();
+      const captchaAction = component.parentForm.get('captchaAction');
+      captchaAction.setValue('');
+      captchaAction.updateValueAndValidity();
+      expect(captchaAction.valid).toBeFalse();
+    });
   });
 
-  beforeEach(() => {
-    wrapperFixture = TestBed.createComponent(WrapperComponent);
-    wrapper = wrapperFixture.componentInstance;
-    wrapperFixture.detectChanges();
+  describe('in a form', () => {
+    let wrapperFixture: ComponentFixture<WrapperComponent>;
+    let wrapper: WrapperComponent;
+    let recaptchaV3Service: ReCaptchaV3Service;
+
+    beforeEach(async () => {
+      recaptchaV3Service = mock(ReCaptchaV3Service);
+      when(recaptchaV3Service.execute('testAction')).thenReturn(of('mock-token-123'));
+
+      await TestBed.configureTestingModule({
+        declarations: [CaptchaV3Component, MockDirective(ServerHtmlDirective), WrapperComponent],
+        imports: [ReactiveFormsModule, TranslatePipe],
+        providers: [
+          { provide: ReCaptchaV3Service, useFactory: () => instance(recaptchaV3Service) },
+          provideTranslateService(),
+        ],
+      }).compileComponents();
+    });
+
+    beforeEach(() => {
+      wrapperFixture = TestBed.createComponent(WrapperComponent);
+      wrapper = wrapperFixture.componentInstance;
+      wrapperFixture.detectChanges();
+    });
+
+    it('should block initial submit and fetch a token', fakeAsync(() => {
+      const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+      const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
+      const ngSubmitSpy = jest.fn();
+      formElement.addEventListener('submit', ngSubmitSpy);
+
+      submitButton.click();
+      flush();
+
+      expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
+    }));
+
+    it('should re-trigger submit after token is set', fakeAsync(() => {
+      const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+      const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
+      let submitCount = 0;
+      formElement.addEventListener('submit', () => submitCount++);
+
+      submitButton.click();
+      flush();
+
+      // First submit is blocked, second submit passes through after token is ready
+      expect(submitCount).toBeGreaterThanOrEqual(1);
+      expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
+    }));
+
+    it('should set captcha token value in the parent form', fakeAsync(() => {
+      const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+      const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
+
+      expect(wrapper.form.get('captcha').value).toBeEmpty();
+
+      submitButton.click();
+      flush();
+
+      expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
+    }));
+
+    it('should fetch a fresh token on every submit', fakeAsync(() => {
+      const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
+      const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
+
+      submitButton.click();
+      flush();
+
+      expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
+
+      // Reset captcha and submit again
+      wrapper.form.get('captcha').setValue('');
+      when(recaptchaV3Service.execute('testAction')).thenReturn(of('mock-token-456'));
+
+      submitButton.click();
+      flush();
+
+      expect(wrapper.form.get('captcha').value).toEqual('mock-token-456');
+    }));
   });
-
-  it('should block initial submit and fetch a token', fakeAsync(() => {
-    const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
-    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
-    const ngSubmitSpy = jest.fn();
-    formElement.addEventListener('submit', ngSubmitSpy);
-
-    submitButton.click();
-    flush();
-
-    expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
-  }));
-
-  it('should re-trigger submit after token is set', fakeAsync(() => {
-    const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
-    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
-    let submitCount = 0;
-    formElement.addEventListener('submit', () => submitCount++);
-
-    submitButton.click();
-    flush();
-
-    // First submit is blocked, second submit passes through after token is ready
-    expect(submitCount).toBeGreaterThanOrEqual(1);
-    expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
-  }));
-
-  it('should set captcha token value in the parent form', fakeAsync(() => {
-    const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
-    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
-
-    expect(wrapper.form.get('captcha').value).toBeEmpty();
-
-    submitButton.click();
-    flush();
-
-    expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
-  }));
-
-  it('should fetch a fresh token on every submit', fakeAsync(() => {
-    const formElement: HTMLFormElement = wrapperFixture.nativeElement.querySelector('form');
-    const submitButton: HTMLButtonElement = formElement.querySelector('button[type="submit"]');
-
-    submitButton.click();
-    flush();
-
-    expect(wrapper.form.get('captcha').value).toEqual('mock-token-123');
-
-    // Reset captcha and submit again
-    wrapper.form.get('captcha').setValue('');
-    when(recaptchaV3Service.execute('testAction')).thenReturn(of('mock-token-456'));
-
-    submitButton.click();
-    flush();
-
-    expect(wrapper.form.get('captcha').value).toEqual('mock-token-456');
-  }));
 });

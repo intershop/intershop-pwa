@@ -7,10 +7,11 @@ import { PaypalComponentBasics } from './paypal.model';
 export interface PaypalGooglePayComponent extends PaypalComponentBasics {
   /** Fetches the Google Pay configuration from PayPal */
   config(): Promise<GooglePayConfig>;
-  /** Confirms the order with PayPal after Google Pay authorization */
-  confirmOrder(
-    params: GooglePayConfirmOrderParams
-  ): Promise<{ status: 'APPROVED' | 'COMPLETED' | 'PAYER_ACTION_REQUIRED' | string }>;
+  /**
+   * Confirms the order with PayPal after Google Pay authorization,
+   * the status is e.g. `APPROVED`, `COMPLETED` or `PAYER_ACTION_REQUIRED`
+   */
+  confirmOrder(params: GooglePayConfirmOrderParams): Promise<{ status: string }>;
   /** Initiates 3D Secure payer action if required */
   initiatePayerAction(params: { orderId: string }): Promise<{ liabilityShift?: 'NO' | 'POSSIBLE' | 'UNKNOWN' }>;
 }

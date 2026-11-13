@@ -12,16 +12,16 @@
       <ish-loading [standalone]="true" />
     </div>
   }
-  @for (sku of products; track sku; let i = $index) {
+  @for (sku of products; track sku) {
     <ng-container ishProductContext [categoryId]="categoryId" [configuration]="{ shipment: false }" [sku]="sku">
       @if (isGrid) {
         <div class="col-6 col-lg-4 product-list-item grid-view">
-          <ish-product-item displayType="tile" [loading]="i < 4 ? 'eager' : 'lazy'" />
+          <ish-product-item displayType="tile" [loading]="$index < 4 ? 'eager' : 'lazy'" />
         </div>
       }
       @if (isList) {
         <div class="col-lg-12 product-list-item list-view">
-          <ish-product-item displayType="row" [loading]="i < 2 ? 'eager' : 'lazy'" />
+          <ish-product-item displayType="row" [loading]="$index < 2 ? 'eager' : 'lazy'" />
         </div>
       }
     </ng-container>

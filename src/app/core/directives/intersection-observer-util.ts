@@ -1,4 +1,4 @@
-import { Observable, Subject, debounceTime, filter } from 'rxjs';
+import { Observable, Subject, debounceTime, filter, from, switchMap } from 'rxjs';
 
 export type IntersectionStatus = 'NotVisible' | 'Pending' | 'Visible';
 
@@ -25,22 +25,22 @@ export const fromIntersectionObserver = (
       subscriber.next('Pending');
     });
 
-    subject$.pipe(debounceTime(debounce), filter(Boolean)).subscribe(async ({ entry }) => {
-      const isEntryVisible = await isVisible(entry.target as HTMLElement);
-
-      if (isEntryVisible) {
-        subscriber.next('Visible');
-      } else {
-        subscriber.next('NotVisible');
-      }
-    });
+    subject$
+      .pipe(
+        debounceTime(debounce),
+        filter(Boolean),
+        switchMap(({ entry }) => from(isVisible(entry.target as HTMLElement)))
+      )
+      .subscribe(isEntryVisible => {
+        subscriber.next(isEntryVisible ? 'Visible' : 'NotVisible');
+      });
 
     intersectionObserver.observe(element);
 
     return {
       unsubscribe() {
         intersectionObserver.disconnect();
-        // eslint-disable-next-line ban/ban, rxjs/no-subject-unsubscribe
+        // eslint-disable-next-line no-restricted-properties, rxjs-x/no-subject-unsubscribe
         subject$.unsubscribe();
       },
     };

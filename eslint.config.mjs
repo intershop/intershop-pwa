@@ -1,13 +1,13 @@
 import cspellESLintPluginRecommended from '@cspell/eslint-plugin/recommended';
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import ngrx from '@ngrx/eslint-plugin';
-import rxjs from '@smarttools/eslint-plugin-rxjs';
-import ban from 'eslint-plugin-ban';
+import angular from 'angular-eslint';
 import jest from 'eslint-plugin-jest';
 import jsdoc from 'eslint-plugin-jsdoc';
 import perfectionist from 'eslint-plugin-perfectionist';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import rxjsAngular from 'eslint-plugin-rxjs-angular-x';
+import rxjsX from 'eslint-plugin-rxjs-x';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -20,11 +20,6 @@ import ishCustomRules from './eslint-rules/dist/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default defineConfig([
   cspellESLintPluginRecommended,
@@ -39,37 +34,21 @@ export default defineConfig([
     'schematics/dist/**/*',
     'schematics/src/utils/lint-fix-mock.js',
   ]),
-  // TypeScript recommended + stylistic configs from typescript-eslint
-  ...[...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({
-    ...config,
-    files: ['**/*.ts'],
-    languageOptions: {
-      ...config.languageOptions,
-      parserOptions: {
-        ...config.languageOptions?.parserOptions,
-        projectService: true,
-        tsconfigRootDir: __dirname,
-      },
-    },
-  })),
-  // Angular and Prettier configs via FlatCompat
-  ...compat
-    .extends(
-      'plugin:@angular-eslint/recommended',
-      'plugin:@angular-eslint/template/process-inline-templates',
-      'plugin:prettier/recommended'
-    )
-    .map(config => ({
-      ...config,
-      files: ['**/*.ts'],
-    })),
+  // ESLint, TypeScript, Angular, Prettier and project specific configs
   {
     files: ['**/*.ts'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      tseslint.configs.stylisticTypeChecked,
+      angular.configs.tsRecommended,
+      prettierRecommended,
+    ],
+    processor: angular.processInlineTemplates,
     plugins: {
       '@ngrx': ngrx,
-      rxjs,
+      'rxjs-x': rxjsX,
       'rxjs-angular': rxjsAngular,
-      ban,
       jest,
       jsdoc,
       perfectionist,
@@ -98,6 +77,7 @@ export default defineConfig([
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/computed-must-return': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -108,14 +88,16 @@ export default defineConfig([
       ],
       // override lint rule, override schematic and dead files detection only support styleUrls arrays
       '@angular-eslint/consistent-component-styles': ['warn', 'array'],
-      '@angular-eslint/no-empty-lifecycle-method': 'warn',
-      '@angular-eslint/no-host-metadata-property': 'off',
+      '@angular-eslint/no-duplicates-in-metadata-arrays': 'error',
+      '@angular-eslint/no-implicit-take-until-destroyed': 'error',
+      '@angular-eslint/no-uncalled-signals': 'error',
       '@angular-eslint/pipe-prefix': [
         'error',
         {
           prefixes: ['ish'],
         },
       ],
+      '@angular-eslint/prefer-host-metadata-property': 'warn',
       '@angular-eslint/prefer-output-readonly': 'warn',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
@@ -124,20 +106,24 @@ export default defineConfig([
       // NgRx best practices
       ...ngrx.configs.store.rules,
       ...ngrx.configs.effects.rules,
-      ...ngrx.configs['component-store'].rules,
       ...ngrx.configs.operators.rules,
       '@ngrx/avoid-combining-selectors': 'off',
       '@ngrx/avoid-mapping-selectors': 'off',
       '@ngrx/avoid-cyclic-effects': 'warn',
-      '@ngrx/no-multiple-actions-in-effects': 'off',
       '@ngrx/no-store-subscription': 'off',
       '@ngrx/prefer-effect-callback-in-block-statement': 'off',
       '@ngrx/prefix-selectors-with-select': 'off',
       '@ngrx/select-style': ['warn', 'operator'],
 
       // TypeScript best practices
-      '@typescript-eslint/consistent-type-assertions': 'off',
-      '@typescript-eslint/dot-notation': 'warn',
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+      '@typescript-eslint/default-param-last': 'warn',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
@@ -190,6 +176,7 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-deprecated': 'warn',
+      '@typescript-eslint/no-duplicate-type-constituents': 'warn',
       '@typescript-eslint/no-empty-interface': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-inferrable-types': [
@@ -198,6 +185,7 @@ export default defineConfig([
           ignoreParameters: true,
         },
       ],
+      '@typescript-eslint/no-redundant-type-constituents': 'warn',
       '@typescript-eslint/no-restricted-types': [
         'error',
         {
@@ -212,8 +200,6 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-shadow': 'warn',
-      // switch off rule that requires strictNullChecks
-      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-unused-expressions': [
         'warn',
@@ -227,7 +213,14 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/prefer-optional-chain': 'warn',
+      // requires strictNullChecks
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/prefer-promise-reject-errors': [
+        'warn',
+        { allowThrowingAny: true, allowThrowingUnknown: true },
+      ],
+      // String#match is as good as RegExp#exec for non-global regexes and more readable
+      '@typescript-eslint/prefer-regexp-exec': 'off',
 
       'perfectionist/sort-arrays': [
         'warn',
@@ -436,9 +429,7 @@ export default defineConfig([
       'ish-custom-rules/meaningful-describe-in-tests': 'warn',
       'ish-custom-rules/newline-before-root-members': 'warn',
       'ish-custom-rules/no-assignment-to-inputs': 'error',
-      'ish-custom-rules/no-collapsible-if': 'warn',
       'ish-custom-rules/no-formly-explicit-pseudo-type': 'error',
-      'ish-custom-rules/no-initialize-observables-directly': 'warn',
       'ish-custom-rules/no-intelligence-in-artifacts': [
         'warn',
         {
@@ -456,14 +447,10 @@ export default defineConfig([
           },
         },
       ],
-      'ish-custom-rules/no-object-literal-type-assertion': 'warn',
       'ish-custom-rules/no-optional-inputs': 'warn',
-      'ish-custom-rules/no-return-undefined': 'error',
       'ish-custom-rules/no-star-imports-in-store': 'error',
-      'ish-custom-rules/no-testbed-with-then': 'error',
       'ish-custom-rules/no-var-before-return': 'warn',
       'ish-custom-rules/ordered-imports': 'warn',
-      'ish-custom-rules/private-destroy-field': 'warn',
       'ish-custom-rules/private-destroyRef-field': 'error',
       'ish-custom-rules/project-structure': [
         'warn',
@@ -748,6 +735,7 @@ export default defineConfig([
       'jsdoc/valid-types': 'warn',
 
       // RxJS best practices
+      ...rxjsX.configs.recommended.rules,
       'rxjs-angular/prefer-takeuntil': [
         'error',
         {
@@ -755,11 +743,12 @@ export default defineConfig([
           checkDecorators: ['Component', 'Pipe', 'Directive'],
         },
       ],
-      'rxjs/finnish': [
+      'rxjs-x/finnish': [
         'error',
         {
           functions: false,
           methods: false,
+          objects: false,
           parameters: false,
           properties: false,
           variables: true,
@@ -770,58 +759,25 @@ export default defineConfig([
           },
         },
       ],
-      'rxjs/no-create': 'error',
-      'rxjs/no-ignored-replay-buffer': 'error',
-      'rxjs/no-ignored-subscribe': 'error',
-      'rxjs/no-internal': 'error',
-      'rxjs/no-nested-subscribe': 'warn',
-      'rxjs/no-subclass': 'error',
-      'rxjs/no-subject-unsubscribe': 'error',
-      'rxjs/no-subject-value': 'error',
-      'rxjs/no-unsafe-catch': 'error',
-      'rxjs/no-unsafe-subject-next': 'error',
-      'rxjs/no-unsafe-switchmap': 'error',
-      'rxjs/no-unsafe-takeuntil': [
+      'rxjs-x/no-ignored-subscribe': 'error',
+      'rxjs-x/no-implicit-any-catch': 'off',
+      'rxjs-x/no-sharereplay': 'off',
+      'rxjs-x/no-subclass': 'error',
+      'rxjs-x/no-subject-value': 'error',
+      'rxjs-x/no-unsafe-catch': 'error',
+      'rxjs-x/no-unsafe-switchmap': 'error',
+      'rxjs-x/no-unsafe-takeuntil': [
         'error',
         {
           alias: ['takeUntilDestroyed'],
         },
       ],
+      'rxjs-x/prefer-root-operators': 'off',
+      'rxjs-x/throw-error': 'off',
 
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
       'arrow-parens': ['warn', 'as-needed'],
-      'ban/ban': [
-        'error',
-        {
-          name: ['*', 'ngOnInit'],
-          message: 'Use fixture.detectChanges instead!',
-        },
-        {
-          name: ['*', 'unsubscribe'],
-          message: 'Do it another way: https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87',
-        },
-        {
-          name: ['Object', 'assign'],
-          message: 'Use spread operator instead!',
-        },
-        {
-          name: ['*', 'toBeDefined'],
-          message: 'Most of the time this is the wrong assertion in tests!',
-        },
-        {
-          name: 'spyOn',
-          message: 'Use ts-mockito instead!',
-        },
-        {
-          name: 'atob',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-        {
-          name: 'btoa',
-          message: 'This is not available in SSR mode. Use https://github.com/jacobwgillespie/b64u',
-        },
-      ],
       complexity: [
         'warn',
         {
@@ -851,9 +807,17 @@ export default defineConfig([
       'no-empty': 'warn',
       'no-extra-boolean-cast': 'error',
       'no-irregular-whitespace': 'error',
+      'no-lonely-if': 'warn',
       'no-multiple-empty-lines': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
+      'no-restricted-globals': [
+        'error',
+        {
+          name: 'spyOn',
+          message: 'Use jest.spyOn or ts-mockito instead of the Jasmine global spyOn!',
+        },
+      ],
       'no-restricted-imports': [
         'warn',
         {
@@ -930,6 +894,21 @@ export default defineConfig([
           ],
         },
       ],
+      'no-restricted-properties': [
+        'error',
+        {
+          property: 'ngOnInit',
+          message: 'Use fixture.detectChanges instead!',
+        },
+        {
+          property: 'unsubscribe',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of unsubscribing manually!',
+        },
+        {
+          property: 'toBeDefined',
+          message: 'Most of the time this is the wrong assertion in tests!',
+        },
+      ],
       'no-restricted-syntax': [
         'error',
         {
@@ -954,6 +933,21 @@ export default defineConfig([
             'MethodDefinition[key.name="ngOnChanges"] TSTypeReference[typeName.name="SimpleChanges"]:not([typeArguments])',
           message: 'Use typed `SimpleChanges<T>` with the component or directive class as `T`.',
         },
+        {
+          selector:
+            'CallExpression[callee.name="takeUntil"]:matches([arguments.0.name=/^destroy\\$?$/], [arguments.0.property.name=/^destroy\\$?$/])',
+          message: 'Use takeUntilDestroyed() instead of takeUntil(destroy$)!',
+        },
+        {
+          selector: 'PropertyDefinition[key.name=/^destroy\\$?$/][value.callee.name="Subject"]',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of a destroy$ subject!',
+        },
+        {
+          selector:
+            'MemberExpression[property.name="then"]:has(MemberExpression[object.name="TestBed"][property.name="configureTestingModule"])',
+          message:
+            'Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.',
+        },
       ],
       'no-sequences': 'error',
       'no-shadow': 'off',
@@ -974,12 +968,22 @@ export default defineConfig([
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
       'prefer-const': 'warn',
+      'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
+      // not the same as core eslint rule 'no-lonely-if'
+      'unicorn/no-lonely-if': 'warn',
       'unicorn/no-null': [
         'warn',
         {
           checkStrictEquality: true,
+        },
+      ],
+      'unicorn/no-useless-undefined': [
+        'error',
+        {
+          checkArguments: false,
+          checkArrowFunctionBody: false,
         },
       ],
       'unicorn/prefer-switch': [
@@ -1012,6 +1016,29 @@ export default defineConfig([
       'max-lines': 'off',
     },
   },
+  // Jest unit test rules
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      ...jest.configs['flat/recommended'].rules,
+      'jest/expect-expect': 'off',
+      // conflicts with ish-custom-rules/use-async-synchronization-in-tests
+      'jest/no-done-callback': 'off',
+    },
+  },
+  // allow type assertions on object literals in test code
+  {
+    files: ['**/*spec.ts', '**/dev/**/*.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    },
+  },
   // e2e test overrides
   {
     files: ['e2e/**/*.ts'],
@@ -1035,7 +1062,8 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-unused-expressions': 'off',
-      'ban/ban': 'off',
+      'no-restricted-globals': 'off',
+      'no-restricted-properties': 'off',
       'ish-custom-rules/ban-imports-file-pattern': 'off',
       'ish-custom-rules/project-structure': [
         'warn',
@@ -1049,6 +1077,10 @@ export default defineConfig([
           ],
         },
       ],
+      'jest/no-export': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/no-test-prefixes': 'error',
+      'jest/valid-describe-callback': 'error',
       'jest/valid-title': 'off',
     },
   },
@@ -1077,7 +1109,7 @@ export default defineConfig([
   //
   {
     files: ['**/*.js'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     languageOptions: {
       globals: {
@@ -1096,7 +1128,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mjs'],
-    extends: compat.extends('eslint:recommended', 'plugin:prettier/recommended'),
+    extends: [js.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1121,7 +1153,7 @@ export default defineConfig([
   },
   {
     files: ['**/*.mts'],
-    extends: [...tseslint.configs.recommended, compat.extends('plugin:prettier/recommended')].flat(),
+    extends: [...tseslint.configs.recommended, prettierRecommended],
 
     plugins: {
       'ish-custom-rules': ishCustomRules,
@@ -1152,28 +1184,33 @@ export default defineConfig([
   {
     files: ['**/*.html'],
 
-    extends: compat.extends(
-      'plugin:@angular-eslint/template/recommended',
-      'plugin:@angular-eslint/template/accessibility'
-    ),
+    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
 
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
       '@angular-eslint/template/button-has-type': 'warn',
+      '@angular-eslint/template/conditional-complexity': ['warn', { maxComplexity: 3 }],
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
+      '@angular-eslint/template/no-any': 'warn',
+      '@angular-eslint/template/no-empty-control-flow': 'warn',
+      '@angular-eslint/template/no-interpolation-in-attributes': ['warn', { allowSubstringInterpolation: true }],
+      '@angular-eslint/template/no-nested-tags': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-at-else': 'warn',
+      '@angular-eslint/template/prefer-at-empty': 'warn',
       '@angular-eslint/template/prefer-built-in-pipes': 'warn',
+      '@angular-eslint/template/prefer-contextual-for-variables': 'warn',
       '@angular-eslint/template/prefer-control-flow': 'warn',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-static-string-properties': ['warn', { ignore: ['slot'] }],
       '@angular-eslint/template/prefer-template-literal': 'warn',
     },
   },
   {
     files: ['**/*.html'],
     ignores: ['**/*inline-template-*.component.html'],
-    extends: compat.extends('plugin:prettier/recommended'),
+    extends: [prettierRecommended],
 
     rules: {
       'prettier/prettier': [

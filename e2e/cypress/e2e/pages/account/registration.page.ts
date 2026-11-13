@@ -45,7 +45,7 @@ export class RegistrationPage {
     const input = cy.get(`[data-testing-id="${key}"]`);
     return {
       ...input,
-      should: (t: 'be.invalid' | 'be.valid' | string, arg?) => {
+      should: (t: string, arg?) => {
         switch (t) {
           case 'be.valid':
             return input.should('have.class', 'ng-valid');
@@ -62,7 +62,7 @@ export class RegistrationPage {
     const wrapper = cy.get(`[data-testing-id="${key}-wrapper"]`);
     return {
       ...wrapper,
-      should: (t: 'be.invalid' | 'be.valid' | string, arg?) => {
+      should: (t: string, arg?) => {
         switch (t) {
           case 'be.valid':
             return wrapper.should('not.have.class', 'has-error');

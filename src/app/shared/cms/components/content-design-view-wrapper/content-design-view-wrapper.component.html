@@ -22,9 +22,9 @@
               ('designview.edit.link.title' | translate) + (pagelet.displayName ? ` ${pagelet.displayName}` : '');
             <button
               class="btn"
-              title="{{ editLinkTitle }}"
               type="button"
               [attr.aria-label]="editLinkTitle"
+              [title]="editLinkTitle"
               (click)="triggerAction(pagelet.id, 'pageletEdit')"
             >
               <i aria-hidden="true" class="bi bi-pencil-fill"></i>
@@ -46,9 +46,9 @@
           <div class="name">{{ pagelet.slot(slotId).displayName }}</div>
           <button
             class="btn"
-            title="{{ 'designview.add.link.title' | translate }}"
             type="button"
             [attr.aria-label]="'designview.add.link.title' | translate"
+            [title]="'designview.add.link.title' | translate"
             (click)="triggerAction(slotId, 'slotAdd')"
           >
             <i aria-hidden="true" class="bi bi-plus"></i>
@@ -59,9 +59,9 @@
           <div class="name">{{ include.displayName }}</div>
           <button
             class="btn"
-            title="{{ 'designview.add.link.title' | translate }}"
             type="button"
             [attr.aria-label]="'designview.add.link.title' | translate"
+            [title]="'designview.add.link.title' | translate"
             (click)="triggerAction(include.id, 'includeAdd')"
           >
             <i aria-hidden="true" class="bi bi-plus"></i>

@@ -8,16 +8,13 @@ import { getFeatures } from 'ish-core/store/core/configuration';
 
 export type FeatureToggleType = Environment['features'][number];
 
-export function checkFeature(
-  features: FeatureToggleType[] = [],
-  feature: 'always' | 'never' | FeatureToggleType
-): boolean {
+export function checkFeature(features: FeatureToggleType[], feature: 'always' | 'never' | FeatureToggleType): boolean {
   if (feature === 'always') {
     return true;
   } else if (feature === 'never') {
     return false;
   } else {
-    return features.includes(feature);
+    return (features ?? []).includes(feature);
   }
 }
 
@@ -36,7 +33,7 @@ export class FeatureToggleService {
    * logic that is not included in the initialization process.
    */
   enabled(feature: 'always' | 'never' | FeatureToggleType): boolean {
-    // eslint-disable-next-line rxjs/no-subject-value
+    // eslint-disable-next-line rxjs-x/no-subject-value
     return checkFeature(this.featureToggles$.value, feature);
   }
 

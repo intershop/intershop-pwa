@@ -13,6 +13,15 @@ const messages = {
   pointToBasicFile: 'Replace with basic component file.',
 };
 
+/**
+ * Ensures that component overrides work correctly:
+ *
+ * - Component decorators (also in override files like `*.component.<theme>.ts`) have to point
+ *   `templateUrl` and `styleUrls` to the base component files.
+ * - Specs for overrides (`*.component.<theme>.spec.ts`) have to test the override files,
+ *   because the override mechanism does not work with Jest:
+ *   the template override via `TestBed.overrideComponent` and the TypeScript override via import.
+ */
 const useCorrectComponentOverridesRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     docs: {

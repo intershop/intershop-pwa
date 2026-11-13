@@ -5,7 +5,7 @@ export interface CustomFieldDefinitionScopeType {
   editable?: boolean;
 }
 
-type Scopes = Record<CustomFieldDefinitionScopes | string, CustomFieldDefinitionScopeType[]>;
+type Scopes = Record<string, CustomFieldDefinitionScopeType[]>;
 
 export interface CustomFieldDefinition {
   description: string;

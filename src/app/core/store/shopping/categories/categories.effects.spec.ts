@@ -214,7 +214,7 @@ describe('Categories Effects', () => {
       });
     });
 
-    it('should map to action of type LoadCategorySuccess', () => {
+    it('should map to action of type LoadCategorySuccess for LoadCategoryByRef action', () => {
       const categoryId = '123@domain';
       const action = loadCategoryByRef({ categoryId });
       const response = categoryTree([
@@ -231,7 +231,7 @@ describe('Categories Effects', () => {
       expect(effects.loadCategory$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadCategoryFail', () => {
+    it('should map invalid request to action of type LoadCategoryFail for LoadCategoryByRef action', () => {
       const categoryId = 'invalid';
       const action = loadCategoryByRef({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });
@@ -252,7 +252,7 @@ describe('Categories Effects', () => {
       });
     });
 
-    it('should map to action of type LoadCategorySuccess', () => {
+    it('should map to action of type LoadCategorySuccess for LoadCategory action', () => {
       const categoryId = '123';
       const action = loadCategory({ categoryId });
       const response = categoryTree([
@@ -268,7 +268,7 @@ describe('Categories Effects', () => {
       expect(effects.loadCategory$).toBeObservable(expected$);
     });
 
-    it('should map invalid request to action of type LoadCategoryFail', () => {
+    it('should map invalid request to action of type LoadCategoryFail for LoadCategory action', () => {
       const categoryId = 'invalid';
       const action = loadCategory({ categoryId });
       const completion = loadCategoryFail({ error: makeHttpError({ message: 'invalid category' }) });

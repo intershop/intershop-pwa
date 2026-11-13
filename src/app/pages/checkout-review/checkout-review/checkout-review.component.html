@@ -127,7 +127,7 @@
         <form #tcForm="ngForm" ishFormSubmit [formGroup]="form" (ngSubmit)="submitOrder()">
           <formly-form [fields]="fields$ | async" [form]="form" [model]="model" [options]="options" />
           <div class="d-grid">
-            @if ((form.invalid && tcForm.submitted) || multipleBuckets || submitting) {
+            @if ((form.invalid && tcForm.submitted) || multipleBuckets) {
               <div aria-live="polite" class="visually-hidden" id="checkout-button-help">
                 {{ 'checkout.order_review.submit.validation.message' | translate }}
               </div>
@@ -135,9 +135,9 @@
             @if (paypalPaymentMethod$ | async; as paypalMethod) {
               <div class="position-relative">
                 <ish-payment-paypal
+                  pageType="checkout"
                   [adapterType]="getPaypalAdapterType(paypalMethod)"
                   [attr.inert]="form.invalid ? '' : null"
-                  [pageType]="'checkout'"
                   [selectedPaymentMethod]="paypalMethod"
                 />
                 @if (form.invalid) {
@@ -158,7 +158,7 @@
                 class="btn btn-lg btn-block btn-primary"
                 type="submit"
                 [attr.aria-describedby]="
-                  (form.invalid && tcForm.submitted) || multipleBuckets || submitting ? 'checkout-button-help' : null
+                  (form.invalid && tcForm.submitted) || multipleBuckets ? 'checkout-button-help' : null
                 "
               >
                 @if (submitting) {

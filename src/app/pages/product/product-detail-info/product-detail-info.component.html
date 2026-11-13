@@ -9,7 +9,7 @@
       [(activeId)]="active"
     >
       <!-- Description -->
-      <ng-container [ngbNavItem]="'DESCRIPTION'">
+      <ng-container ngbNavItem="DESCRIPTION">
         <a data-testing-id="product-description-tab" ngbNavLink>{{ 'product.description.heading' | translate }}</a>
         <ng-template ngbNavContent>
           <div [ishServerHtml]="product.longDescription"></div>
@@ -17,7 +17,7 @@
       </ng-container>
       <!-- Details -->
       @if (product.attributes?.length) {
-        <ng-container [ngbNavItem]="'DETAILS'">
+        <ng-container ngbNavItem="DETAILS">
           <a ngbNavLink>{{ 'product.details.heading' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-product-attributes [product]="product" />
@@ -26,7 +26,7 @@
       }
       <!-- Documents -->
       @if (product.attachments?.length) {
-        <ng-container [ngbNavItem]="'ATTACHMENTS'">
+        <ng-container ngbNavItem="ATTACHMENTS">
           <a ngbNavLink>{{ 'product.attachments.heading' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-product-attachments />
@@ -35,7 +35,7 @@
       }
       <!-- Reviews -->
       @if ((isVariationMaster$ | async) === false) {
-        <ng-container *ishFeature="'rating'" [ngbNavItem]="'REVIEWS'">
+        <ng-container *ishFeature="'rating'" ngbNavItem="REVIEWS">
           <a data-testing-id="product-reviews-tab" ngbNavLink
             >{{ 'product.reviews.heading' | translate }} ({{ product.numberOfReviews }})</a
           >
@@ -46,7 +46,7 @@
       }
       <!-- FAQ -->
       @if (hasFaq$ | async) {
-        <ng-container *ishFeature="'geo'" [ngbNavItem]="'FAQ'">
+        <ng-container *ishFeature="'geo'" ngbNavItem="FAQ">
           <a ngbNavLink>{{ 'product.faq.heading' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-lazy-product-geo type="faq" />
@@ -55,7 +55,7 @@
       }
       <!-- How To -->
       @if (hasHowTo$ | async) {
-        <ng-container *ishFeature="'geo'" [ngbNavItem]="'HOW_TO'">
+        <ng-container *ishFeature="'geo'" ngbNavItem="HOW_TO">
           <a ngbNavLink>{{ 'product.how_to.heading' | translate }}</a>
           <ng-template ngbNavContent>
             <ish-lazy-product-geo type="howto" />
