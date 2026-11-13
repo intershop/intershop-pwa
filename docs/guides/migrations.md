@@ -70,6 +70,12 @@ Prettier 3.10 formats templates differently, e.g., it no longer breaks the closi
 Stylelint has been updated to version 18 together with its standard and SCSS configurations, which check values more strictly and can report new findings in project styles.
 Run `npm run format` after the update and fix the remaining Stylelint findings manually, see the [Stylelint 18 migration guide](https://stylelint.io/migration-guide/to-18).
 
+**Invalid `apiToken` cookie**
+
+The `ApiTokenService` now removes an `apiToken` cookie with a token the ICM rejects as invalid and repeats the request without it instead of showing the error page.
+A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
+When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
