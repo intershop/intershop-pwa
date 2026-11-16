@@ -63,6 +63,7 @@ The findings of the following rules have to be fixed manually:
 - `@typescript-eslint/no-redundant-type-constituents`: e.g., `'a' | 'b' | string` is just `string`.
 - `@typescript-eslint/prefer-promise-reject-errors`: reject promises with `Error` objects, passing on caught errors is allowed.
 - `@typescript-eslint/prefer-find`, `@typescript-eslint/prefer-includes` and `@typescript-eslint/prefer-string-starts-ends-with` of the `typescript-eslint` `stylisticTypeChecked` config, which replaces the `stylistic` config: the latter two have an auto-fix.
+- `jsdoc/check-tag-names` with the custom tags `@defaultWrappers`, `@props` and `@usageNotes`: wrap Angular control flow blocks like `@if` in `@example` tags into a Markdown code block.
 
 **`takeUntil(destroy$)` no longer allowed**
 

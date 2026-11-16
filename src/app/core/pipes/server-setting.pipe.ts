@@ -11,9 +11,11 @@ import { AppFacade } from 'ish-core/facades/app.facade';
  * If it is set, the Pipe will return a truthy value.
  *
  * @example
+ * ```html
  * @if ('services.ABC.runnable' | ishServerSetting) {
  *   <example> ...</example>
  * }
+ * ```
  */
 @Pipe({
   name: 'ishServerSetting',

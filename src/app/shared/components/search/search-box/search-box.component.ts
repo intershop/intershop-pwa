@@ -36,8 +36,6 @@ import { SuggestSearchTermsComponent } from 'ish-shared/components/search/sugges
  *
  * @example
  * <app-search-box [configuration]="searchBoxConfig" />
- *
- * @publicApi
  */
 @Component({
   selector: 'ish-search-box',

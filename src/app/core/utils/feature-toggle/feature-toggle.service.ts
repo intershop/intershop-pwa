@@ -27,7 +27,7 @@ export class FeatureToggleService {
   }
 
   /**
-   * Synchronously check if {@param feature} is active.
+   * Synchronously check if `feature` is active.
    *
    * This method should only be used for browser code and only for
    * logic that is not included in the initialization process.
@@ -38,7 +38,7 @@ export class FeatureToggleService {
   }
 
   /**
-   * Asynchronously check if {@param feature} is active.
+   * Asynchronously check if `feature` is active.
    */
   enabled$(feature: 'always' | 'never' | FeatureToggleType): Observable<boolean> {
     return this.featureToggles$.pipe(
