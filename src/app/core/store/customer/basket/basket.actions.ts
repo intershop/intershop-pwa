@@ -6,7 +6,7 @@ import { Attribute } from 'ish-core/models/attribute/attribute.model';
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { ErrorFeedback } from 'ish-core/models/http-error/http-error.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
@@ -131,7 +131,7 @@ export const startFastCheckout = createAction('[Basket] Start FastCheckout Proce
 
 export const continueCheckout = createAction(
   '[Basket] Validate Basket and continue checkout',
-  payload<{ targetStep: CheckoutStepType }>()
+  payload<{ targetStep: CheckoutStep }>()
 );
 
 export const continueCheckoutFail = createAction(

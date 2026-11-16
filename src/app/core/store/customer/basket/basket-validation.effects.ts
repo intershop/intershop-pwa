@@ -12,7 +12,7 @@ import {
   BasketValidationResultType,
   BasketValidationScopeType,
 } from 'ish-core/models/basket-validation/basket-validation.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { BasketService } from 'ish-core/services/basket/basket.service';
 import { getServerConfigParameter } from 'ish-core/store/core/server-config';
 import { createOrder, processPaypalOrderCreation, startPaypalOrderCreation } from 'ish-core/store/customer/orders';
@@ -49,18 +49,18 @@ export class BasketValidationEffects {
 
   // validation step for each checkout step type
   private validationSteps: Record<number | string, { scopes: BasketValidationScopeType[]; route: string }> = {
-    [CheckoutStepType.BeforeCheckout]: {
+    [CheckoutStep.BeforeCheckout]: {
       scopes: ['CostCenter', 'Products', 'Promotion', 'Quote', 'Subscription', 'Value'],
       route: '/basket',
     },
-    [CheckoutStepType.Addresses]: {
+    [CheckoutStep.Addresses]: {
       scopes: ['Addresses', 'InvoiceAddress', 'ShippingAddress'],
       route: '/checkout/address',
     },
-    [CheckoutStepType.Shipping]: { scopes: ['Shipping'], route: '/checkout/shipping' },
-    [CheckoutStepType.Payment]: { scopes: ['Payment'], route: '/checkout/payment' },
-    [CheckoutStepType.Review]: { scopes: ['All', 'CostCenter'], route: '/checkout/review' },
-    [CheckoutStepType.Receipt]: { scopes: ['All'], route: 'auto' }, // targetRoute will be calculated in dependence of the validation result
+    [CheckoutStep.Shipping]: { scopes: ['Shipping'], route: '/checkout/shipping' },
+    [CheckoutStep.Payment]: { scopes: ['Payment'], route: '/checkout/payment' },
+    [CheckoutStep.Review]: { scopes: ['All', 'CostCenter'], route: '/checkout/review' },
+    [CheckoutStep.Receipt]: { scopes: ['All'], route: 'auto' }, // targetRoute will be calculated in dependence of the validation result
   };
 
   /**
@@ -71,7 +71,7 @@ export class BasketValidationEffects {
       ofType(startCheckout),
       concatLatestFrom(() => this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => !acc),
-      map(() => continueCheckout({ targetStep: CheckoutStepType.Addresses }))
+      map(() => continueCheckout({ targetStep: CheckoutStep.Addresses }))
     )
   );
 
@@ -84,7 +84,7 @@ export class BasketValidationEffects {
       concatLatestFrom(() => this.store.pipe(select(getServerConfigParameter<boolean>('basket.acceleration')))),
       filter(([, acc]) => acc),
       concatMap(() =>
-        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.BeforeCheckout].scopes).pipe(
+        this.basketService.validateBasket(this.validationSteps[CheckoutStep.BeforeCheckout].scopes).pipe(
           map(basketValidation => startCheckoutSuccess({ basketValidation })),
           mapErrorToAction(startCheckoutFail)
         )
@@ -104,11 +104,11 @@ export class BasketValidationEffects {
         filter(results => results.valid && !results.adjusted),
         concatMap(() =>
           this.basketService
-            .validateBasket(this.validationSteps[CheckoutStepType.Review].scopes)
+            .validateBasket(this.validationSteps[CheckoutStep.Review].scopes)
             .pipe(
               concatMap(basketValidation =>
                 basketValidation?.results?.valid
-                  ? from(this.router.navigate([this.validationSteps[CheckoutStepType.Review].route]))
+                  ? from(this.router.navigate([this.validationSteps[CheckoutStep.Review].route]))
                   : this.jumpToTargetRoute('auto', basketValidation?.results)
               )
             )
@@ -153,7 +153,7 @@ export class BasketValidationEffects {
           withLatestFrom(this.store.pipe(select(getCurrentBasket))),
           concatMap(([basketValidation, basket]) =>
             basketValidation.results.valid
-              ? targetStep === CheckoutStepType.Receipt && !basketValidation.results.adjusted
+              ? targetStep === CheckoutStep.Receipt && !basketValidation.results.adjusted
                 ? basket.approval?.approvalRequired
                   ? [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), submitBasket()]
                   : [continueCheckoutSuccess({ targetRoute: undefined, basketValidation }), createOrder()]
@@ -174,13 +174,13 @@ export class BasketValidationEffects {
     this.actions$.pipe(
       ofType(startPaypalOrderCreation),
       switchMap(() =>
-        this.basketService.validateBasket(this.validationSteps[CheckoutStepType.Review].scopes).pipe(
+        this.basketService.validateBasket(this.validationSteps[CheckoutStep.Review].scopes).pipe(
           concatMap(basketValidation =>
             basketValidation.results.valid
               ? [processPaypalOrderCreation({})]
               : [
                   continueCheckoutWithIssues({
-                    targetRoute: this.validationSteps[CheckoutStepType.Receipt].route,
+                    targetRoute: this.validationSteps[CheckoutStep.Receipt].route,
                     basketValidation,
                   }),
                   emitPaypalOrderId({ paypalOrderId: undefined, orderStatus: 'ERROR' }),
@@ -256,7 +256,7 @@ export class BasketValidationEffects {
       filter(error => error?.code === 'basket.not_found.error' || error?.errors[0]?.code === 'basket.not_found.error'),
       concatMap(error =>
         from(
-          this.router.navigate([this.validationSteps[CheckoutStepType.BeforeCheckout].route], {
+          this.router.navigate([this.validationSteps[CheckoutStep.BeforeCheckout].route], {
             queryParams: { error: true },
           })
         ).pipe(map(() => loadBasketFail({ error })))

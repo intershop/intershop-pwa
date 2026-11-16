@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
 import { catchError, concatMap, exhaustMap, filter, map, switchMap, take } from 'rxjs/operators';
 
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentPaypalService } from 'ish-core/services/payment-paypal/payment-paypal.service';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -246,7 +246,7 @@ export class BasketPaymentEffects {
             }
             return [
               updatePaymentInstrument({ paymentInstrument: response as PaymentInstrument }),
-              continueCheckout({ targetStep: CheckoutStepType.Review }),
+              continueCheckout({ targetStep: CheckoutStep.Review }),
             ];
           }),
           mapErrorToAction(setBasketPaymentFail)

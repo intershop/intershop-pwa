@@ -18,7 +18,7 @@ import {
 
 import { Address } from 'ish-core/models/address/address.model';
 import { Attribute } from 'ish-core/models/attribute/attribute.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { CustomFieldDefinitionScopes } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { CustomFields } from 'ish-core/models/custom-field/custom-field.model';
 import { LineItemUpdate } from 'ish-core/models/line-item-update/line-item-update.model';
@@ -125,7 +125,7 @@ export class CheckoutFacade {
     this.store.dispatch(submitOrder());
   }
 
-  continue(targetStep: CheckoutStepType) {
+  continue(targetStep: CheckoutStep) {
     this.store.dispatch(continueCheckout({ targetStep }));
   }
 

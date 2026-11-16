@@ -1,7 +1,7 @@
 /**
  * available, ordered checkout steps
  */
-export enum CheckoutStepType {
+export enum CheckoutStep {
   BeforeCheckout,
   Addresses,
   Shipping,

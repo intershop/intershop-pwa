@@ -92,6 +92,10 @@ The `jest/*` rules no longer apply to other TypeScript files.
 
 TypeScript files are now also linted with the `js.configs.recommended` config of [`@eslint/js`](https://eslint.org/docs/latest/rules/), in addition to the already used `typescript-eslint` recommended configs.
 
+**Renamed and moved files**
+
+The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `ish-core/models/checkout/checkout-step.type` to `ish-core/models/checkout-step/checkout-step.type`.
+
 ## From 13.0.0 to 13.1.0
 
 **Formly 10 update**

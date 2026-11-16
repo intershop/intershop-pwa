@@ -6,7 +6,7 @@ import { distinctUntilChanged, filter, first, map, shareReplay, switchMap, tap, 
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -95,7 +95,7 @@ export class CheckoutPaymentPageComponent implements OnInit {
       // do a hard redirect to payment redirect URL
       this.checkoutFacade.startRedirectBeforeCheckout();
     } else {
-      this.checkoutFacade.continue(CheckoutStepType.Review);
+      this.checkoutFacade.continue(CheckoutStep.Review);
     }
   }
 

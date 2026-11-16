@@ -19,7 +19,7 @@ import {
 
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
 import { BasketItemsService } from 'ish-core/services/basket-items/basket-items.service';
 import { BasketService } from 'ish-core/services/basket/basket.service';
@@ -439,7 +439,7 @@ export class BasketEffects {
             ? this.basketItemsService.updateBasketItemsDesiredDeliveryDate(desiredDeliveryDate, basket.lineItems)
             : of([])
         ).pipe(
-          map(() => continueCheckout({ targetStep: CheckoutStepType.Receipt })),
+          map(() => continueCheckout({ targetStep: CheckoutStep.Receipt })),
           mapErrorToAction(setBasketDesiredDeliveryDateFail)
         );
       })
