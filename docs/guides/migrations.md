@@ -28,6 +28,8 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 Some of these rules check more cases.
 `prefer-object-spread` only reports `Object.assign` calls with an object literal as first argument, so remove `eslint-disable` comments for other `Object.assign` calls.
 The `ish-custom-rules/no-initialize-observables-directly` rule has been removed without replacement.
+The `ish-custom-rules/ban-imports-file-pattern` rule now also reports `tap` imported from `rxjs` in effects, not only from `rxjs/operators`.
+It also restricts the Angular `Meta` and `Title` services to the SEO extension, which replaces the obsolete restriction for `@ngx-meta`.
 The `jsdoc/*` rules are based on the `flat/recommended-typescript` config of [`eslint-plugin-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc#configuration) without `jsdoc/require-jsdoc`, `jsdoc/require-param` and `jsdoc/require-returns`, and `jsdoc/require-property-type` has been disabled.
 
 Additionally, the following rules have been enabled.

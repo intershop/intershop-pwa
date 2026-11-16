@@ -282,12 +282,6 @@ export default defineConfig([
             message: "use omit from 'ish-core/utils/functions'",
           },
           {
-            importNamePattern: 'CookiesService',
-            name: 'ngx-utils-cookies-port',
-            filePattern: '^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec)?\\.ts).)*$',
-            message: 'Use CookiesService from ish-core instead.',
-          },
-          {
             name: '^(?!.*(\\.module|environments\\/environment)$)\\.\\..*$',
             filePattern: '^(?!.*-routing\\.module\\.ts$).*\\.module\\.ts$',
             message: 'Modules should only aggregate deeper lying artifacts.',
@@ -331,12 +325,6 @@ export default defineConfig([
             name: 'ngrx',
             filePattern: '^.*\\.spec\\.ts*$',
             message: 'Use the testing helpers "*StoreModule.forTesting" in tests instead.',
-          },
-          {
-            importNamePattern: '^Effect$',
-            name: '@ngrx/effects',
-            filePattern: '^.*(\\.spec|\\.effects)\\.ts*$',
-            message: 'The old way of declaring effects is deprecated, use "createEffect".',
           },
           {
             importNamePattern: '^Action$',
@@ -383,10 +371,10 @@ export default defineConfig([
             message: 'Performance: Use MockPipe or declare it individually in tests instead.',
           },
           {
-            importNamePattern: '.*',
-            name: '@ngx-meta.*',
+            importNamePattern: '^(Meta|Title)$',
+            name: '@angular/platform-browser',
             filePattern: '^(?!.*/extensions/seo/.*$).*$',
-            message: 'Imports from @ngx-meta are only allowed in SEO extension.',
+            message: 'Meta and title handling is only allowed in the SEO extension.',
           },
           {
             importNamePattern: '^createProductView$',
@@ -404,7 +392,7 @@ export default defineConfig([
           },
           {
             importNamePattern: 'tap',
-            name: 'rxjs/operators',
+            name: '^rxjs(/operators)?$',
             filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts*$',
             message:
               'The usage of "tap" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code.',
