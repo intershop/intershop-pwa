@@ -335,7 +335,7 @@ export class UserService {
   /**
    * Get cost center data of a business customer for a given cost center id. The logged in user needs permission APP_B2B_VIEW_COSTCENTER.
    *
-   * @param   The Id of the cost center.
+   * @param id The Id of the cost center.
    * @returns The related cost center.
    */
   getCostCenter(id: string): Observable<CostCenter> {

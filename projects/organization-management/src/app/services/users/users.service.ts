@@ -65,7 +65,7 @@ export class UsersService {
   /**
    * Create a b2b user. The current user is expected to have user management permission.
    *
-   * @param body  The user data (customer, user, credentials, address) to create a new user.
+   * @param user  The user data (customer, user, credentials, address) to create a new user.
    * @returns     The created user.
    */
   addUser(user: B2bUser): Observable<B2bUser> {
@@ -112,7 +112,7 @@ export class UsersService {
   /**
    * Update a b2b user. The current user is expected to have user management permission.
    *
-   * @param body  The user data (customer, user, credentials, address) to update  the user.
+   * @param user  The user data (customer, user, credentials, address) to update  the user.
    * @returns     The updated user.
    */
   updateUser(user: B2bUser): Observable<B2bUser> {

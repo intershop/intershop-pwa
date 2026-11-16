@@ -91,7 +91,7 @@ export class AddressService {
    * Deletes an address for the given customer id. Falls back to '-' as customer id if no customer id is given
    *
    * @param customerId  The customer id.
-   * @param address     The address id
+   * @param addressId   The address id
    * @returns           The id of the deleted address.
    */
   deleteCustomerAddress(customerId: string, addressId: string): Observable<string> {

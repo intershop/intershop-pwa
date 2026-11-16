@@ -23,6 +23,7 @@ export const isType = (node: TSESTree.ClassDeclaration, types: string[]): boolea
  * look for the first node in the currently-traversed node, which matches the searched node type
  *
  * @param context the context for search
+ * @param node the node to start the search from
  * @param type the wanted node type
  * @returns the matching node
  */

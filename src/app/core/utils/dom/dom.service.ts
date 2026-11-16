@@ -32,7 +32,6 @@ export class DomService {
    * Gets a (unique) element by its id
    *
    * @param id  The element id.
-   * @param el  The html element.
    */
   getElementById(id: string): HTMLElement {
     return this.document.getElementById(id);

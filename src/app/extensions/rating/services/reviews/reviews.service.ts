@@ -91,8 +91,8 @@ export class ReviewsService {
   /**
    * Deletes a review of the current user for a given product.
    *
-   * @param sku     The product sku.
-   * @param review  The review id.
+   * @param sku       The product sku.
+   * @param reviewId  The review id.
    */
   deleteProductReview(sku: string, reviewId: string) {
     if (!sku) {

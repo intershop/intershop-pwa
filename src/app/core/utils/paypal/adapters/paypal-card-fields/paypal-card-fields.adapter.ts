@@ -67,7 +67,6 @@ export class PaypalCardFieldsAdapter {
    * Must be called outside Angular zone (via PaypalAdaptersBuilder) to prevent
    * Zone.js from tracking PayPal SDK async tasks.
    *
-   * @param scriptNamespace - The PayPal SDK namespace on the window object
    * @param paymentMethod - PayPal payment method configuration
    * @returns Promise that resolves when all fields are rendered
    */
@@ -188,6 +187,9 @@ export class PaypalCardFieldsAdapter {
   /**
    * Renders a single card field with retry capability.
    * @param config - Field configuration
+   * @param config.key - Key under which the rendered field is stored
+   * @param config.containerId - Id of the container element to render the field into
+   * @param config.factory - Creates the PayPal card field
    * @param attempt - Current attempt number (0-based)
    */
   private async renderSingleField(

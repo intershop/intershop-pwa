@@ -427,7 +427,7 @@ export class BasketService {
   /**
    * Updates a custom attribute on the currently used basket. Default attribute type is 'String'.
    *
-   * @param attribute   The custom attribute
+   * @param attr        The custom attribute
    * @returns           The custom attribute
    */
   updateBasketAttribute(attr: Attribute): Observable<Attribute> {

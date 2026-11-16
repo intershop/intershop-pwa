@@ -75,8 +75,8 @@ export class RequisitionsService {
   /**
    * Get a customer requisition of a certain id. The current user is expected to have the approver permission.
    *
-   * @param  id      Requisition id.
-   * @returns        Requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
+   * @param  requisitionId  Requisition id.
+   * @returns                Requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
    */
   getRequisition(requisitionId: string): Observable<Requisition> {
     if (!requisitionId) {
@@ -102,10 +102,10 @@ export class RequisitionsService {
   /**
    * Updates the requisition status. The current user is expected to have the approver permission.
    *
-   * @param id          Requisition id.
-   * @param statusCode  The requisition approval status
-   * @param comment     The approval comment
-   * @returns           The updated requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
+   * @param requisitionId    Requisition id.
+   * @param statusCode       The requisition approval status
+   * @param approvalComment  The approval comment
+   * @returns                The updated requisition with all attributes. If the requisition is approved and the order is placed, also order data are returned as part of the requisition.
    */
   updateRequisitionStatus(
     requisitionId: string,

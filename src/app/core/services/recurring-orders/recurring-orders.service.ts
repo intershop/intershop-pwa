@@ -98,6 +98,7 @@ export class RecurringOrdersService {
    * Updates a recurring order.
    *
    * @param recurringOrderId  The recurring order id.
+   * @param active            Whether the recurring order should be active.
    * @param context           The value indicates whether the recurring order that should be updated is an order of the customer or the logged-in user.
    * @returns                 The updated recurring order.
    */

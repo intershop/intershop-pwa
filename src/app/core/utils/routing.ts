@@ -6,6 +6,8 @@ import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
  * @param router  The router
  * @param guard   The functional guard
  * @param config  An optional configuration to control whether the guard should be added for 'canActivate' or 'canActivateChild' routes (default is for both)
+ * @param config.canActivate       Whether the guard should be added to 'canActivate'
+ * @param config.canActivateChild  Whether the guard should be added to 'canActivateChild'
  */
 export function addGlobalGuard(
   router: Router,

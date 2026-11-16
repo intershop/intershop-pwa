@@ -724,6 +724,7 @@ export default defineConfig([
 
       // JSDoc best practices
       'jsdoc/check-alignment': 'warn',
+      'jsdoc/check-param-names': 'warn',
       'jsdoc/check-tag-names': ['warn', { definedTags: ['defaultWrappers', 'props', 'usageNotes'], typed: true }],
       'jsdoc/check-types': 'warn',
       'jsdoc/check-values': 'warn',

@@ -126,7 +126,7 @@ export class PaymentPaypalComponent implements OnInit, AfterViewInit {
    * For Messages components, the script is only loaded if Pay Later information should be shown.
    * For Buttons and CardFields, the script is loaded with the selected payment method configuration.
    *
-   * @param showPaypalPayLaterInformation - Whether Pay Later messaging should be displayed
+   * @param paypalConfig - The PayPal server settings ('payment.paypal')
    * @returns Observable that emits the script loading result, or EMPTY if loading should be skipped
    */
   private loadPaypalScript(paypalConfig: PaypalConfig): Observable<ScriptType> {

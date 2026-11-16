@@ -28,7 +28,7 @@ export class FormsService {
   /**
    * Get address select options for addresses in order to render them in an address select box.
    *
-   * @param addresses
+   * @param addresses$ the addresses observable
    * @returns address select options observable
    */
   static getAddressOptions(addresses$: Observable<Address[]>): Observable<SelectOption[]> {
@@ -74,8 +74,8 @@ export class FormsService {
   /**
    * Removes an html element id to the given aria-describedBy property and returns it.
    *
-   * @param ariaDescribedBy The aria-describedBy attribute of an html element.
-   * @param idToAdd an elementId that should be removed from the ariaDescribedBy property.
+   * @param ariaDescribedByIds The aria-describedBy attribute of an html element.
+   * @param idToRemove an elementId that should be removed from the ariaDescribedBy property.
    * @returns the updated aria-describedBy property.
    */
   static removeAriaDescribedById(ariaDescribedByIds: string, idToRemove: string): string {

@@ -327,7 +327,7 @@ export class PunchoutService {
   /**
    * Gets the cXML configuration for a given user.
    *
-   * @param user    The punchout user id.
+   * @param userId  The punchout user id.
    * @returns       An array of punchout cXML configurations.
    */
   getCxmlConfiguration(userId: string): Observable<CxmlConfiguration[]> {
@@ -349,7 +349,7 @@ export class PunchoutService {
    *  Updates a punchout cxml configuration.
    *
    * @param cxmlConfiguration  An array of cxml configuration items to update.
-   * @param user               The selected punchout user id.
+   * @param userId             The selected punchout user id.
    * @returns                  The updated cxml configuration.
    */
   updateCxmlConfiguration(cxmlConfiguration: CxmlConfiguration[], userId: string): Observable<CxmlConfiguration[]> {

@@ -27,7 +27,7 @@ export class PricesService {
   /**
    * Gets the prices for an array of products. Prices might be customer specific or depend on the user location (basket ship to address).
    *
-   * @param           Array of product skus.
+   * @param skus      Array of product skus.
    * @returns         Product Prices.
    */
   getProductPrices(skus: string[]): Observable<ProductPriceDetails[]> {

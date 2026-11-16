@@ -60,7 +60,9 @@ export class ProductsService implements ProductsServiceInterface {
    * Get a sorted list of all products (as SKU list) assigned to a given Category respecting pagination.
    *
    * @param categoryUniqueId  The unique Category ID.
+   * @param amount            The number of products to fetch.
    * @param sortKey           The sortKey to sort the list, default value is ''.
+   * @param offset            The number of products to skip, default value is 0.
    * @returns                 A list of the categories products SKUs [skus], the unique Category ID [categoryUniqueId] and a list of possible sort keys [sortKeys].
    */
   getCategoryProducts(
