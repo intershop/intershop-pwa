@@ -95,6 +95,7 @@ TypeScript files are now also linted with the `js.configs.recommended` config of
 **Renamed and moved files**
 
 The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `ish-core/models/checkout/checkout-step.type` to `ish-core/models/checkout-step/checkout-step.type`.
+The `MetricsDetailLevel` enum has been moved from `ish-core/models/metrics/metrics-detail-level` to `ish-core/configurations/injection-keys`.
 
 ## From 13.0.0 to 13.1.0
 

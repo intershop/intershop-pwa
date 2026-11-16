@@ -11,8 +11,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
-import { METRICS_DETAIL_LEVEL } from 'ish-core/configurations/injection-keys';
-import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
+import { METRICS_DETAIL_LEVEL, MetricsDetailLevel } from 'ish-core/configurations/injection-keys';
 import { getRestEndpoint } from 'ish-core/store/core/configuration';
 import { InjectSingle } from 'ish-core/utils/injection';
 import { whenTruthy } from 'ish-core/utils/operators';
