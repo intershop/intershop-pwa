@@ -708,20 +708,6 @@ export default defineConfig([
       'ish-custom-rules/use-ssr-variable-instead-of-platform-id': 'warn',
       'ish-custom-rules/use-type-safe-injection-token': 'warn',
 
-      // Jest best practices
-      'jest/no-commented-out-tests': 'warn',
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'warn',
-      'jest/valid-title': [
-        'warn',
-        {
-          mustMatch: {
-            it: '^should',
-            test: '[sS]*',
-          },
-        },
-      ],
-
       // JSDoc best practices
       ...jsdoc.configs['flat/recommended-typescript'].rules,
       'jsdoc/check-tag-names': ['warn', { definedTags: ['defaultWrappers', 'props', 'usageNotes'], typed: true }],
@@ -1021,6 +1007,15 @@ export default defineConfig([
       'jest/expect-expect': 'off',
       // conflicts with ish-custom-rules/use-async-synchronization-in-tests
       'jest/no-done-callback': 'off',
+      'jest/valid-title': [
+        'error',
+        {
+          mustMatch: {
+            it: '^should',
+            test: '[sS]*',
+          },
+        },
+      ],
     },
   },
   // allow type assertions on object literals in test code
@@ -1074,11 +1069,13 @@ export default defineConfig([
           ],
         },
       ],
+      'jest/no-commented-out-tests': 'warn',
+      'jest/no-disabled-tests': 'warn',
       'jest/no-export': 'error',
+      'jest/no-focused-tests': 'warn',
       'jest/no-identical-title': 'error',
       'jest/no-test-prefixes': 'error',
       'jest/valid-describe-callback': 'error',
-      'jest/valid-title': 'off',
     },
   },
   // schematics overrides

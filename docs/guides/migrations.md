@@ -82,6 +82,7 @@ Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-u
 **Jest recommended ESLint rules**
 
 Unit tests are now linted with the [recommended rules of `eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest#rules), and Cypress tests with some of them.
+The `jest/*` rules no longer apply to other TypeScript files.
 
 **ESLint `js.configs.recommended` for TypeScript files**
 

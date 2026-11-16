@@ -54,7 +54,6 @@ Object.defineProperty(global, 'SSR', {
 });
 
 describe.onSSREnvironment = (name: string, fn?: jest.EmptyFunction) =>
-  // eslint-disable-next-line jest/valid-title
   describe(name, () => {
     beforeAll(() => {
       ssr = true;
