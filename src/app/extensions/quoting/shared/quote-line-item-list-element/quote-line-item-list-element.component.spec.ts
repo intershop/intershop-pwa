@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -139,5 +139,30 @@ describe('Quote Line Item List Element Component', () => {
         "item123",
       ]
     `);
+  });
+
+  describe('quantity error', () => {
+    it('should report the quantity error of the line item to the quote context', () => {
+      const hasQuantityError$ = of(true);
+      when(productContext.select('hasQuantityError')).thenReturn(hasQuantityError$);
+      fixture.detectChanges();
+
+      const [source$, reportQuantityError] = capture(productContext.hold).first() as unknown as [
+        Observable<boolean>,
+        (hasError: boolean) => void,
+      ];
+      expect(source$).toBe(hasQuantityError$);
+
+      reportQuantityError(true);
+
+      verify(quoteContext.setItemQuantityError('item123', true)).once();
+    });
+
+    it('should reset the quantity error of the line item when destroyed', () => {
+      fixture.detectChanges();
+      fixture.destroy();
+
+      verify(quoteContext.setItemQuantityError('item123', false)).once();
+    });
   });
 });

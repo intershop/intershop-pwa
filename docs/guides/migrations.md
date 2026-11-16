@@ -46,6 +46,13 @@ As ignored parameters they are not part of the cache key, not relevant for the s
 The browser still receives these parameters, so client-side processing is not affected.
 If your project needs one of these parameters during server-side rendering, remove it from the list, see [Ignore Parameters During Caching](./nginx-startup.md#ignore-parameters-during-caching).
 
+**Quote line items respect the minimum order quantity**
+
+Quote request line items validate quantities in the same way as the product detail page.
+If a quantity is below the product's minimum order quantity, the application shows an error and disables the submit button.
+A quantity of 0 does not remove a line item from a quote request.
+To remove a line item, click the Remove button.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

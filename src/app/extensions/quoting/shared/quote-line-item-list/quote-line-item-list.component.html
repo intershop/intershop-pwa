@@ -19,7 +19,6 @@
       @for (pli of lineItems; track pli.productSKU) {
         <ish-quote-line-item-list-element
           ishProductContext
-          [allowZeroQuantity]="true"
           [lineItem]="pli"
           [quantity]="pli.quantity?.value"
           [sku]="pli.productSKU"
