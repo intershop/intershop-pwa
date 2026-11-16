@@ -9,7 +9,7 @@ import { PaypalConfigService } from 'ish-core/utils/paypal/paypal-config/paypal-
 /**
  * Representation of the PayPal SDK Messages object, responsible for rendering PayPal messages.
  * Life cycle of this component ends with destroying of parent component PaymentPaypalComponent.
- **/
+ */
 @Injectable()
 export class PaypalMessagesAdapter {
   constructor(

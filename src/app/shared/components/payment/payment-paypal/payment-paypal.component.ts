@@ -33,7 +33,8 @@ import { ScriptType } from 'ish-core/utils/script-loader/script-loader.service';
  * Component for rendering PayPal payment components (Buttons, Messages, CardFields).
  *
  * This component dynamically loads the PayPal SDK and renders the appropriate PayPal component
- * based on the configured component type and current page context. It supports Buttons, Messages and CardFields.*/
+ * based on the configured component type and current page context. It supports Buttons, Messages and CardFields.
+ */
 @Component({
   selector: 'ish-payment-paypal',
   standalone: false,

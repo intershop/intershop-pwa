@@ -67,8 +67,8 @@ export class PaymentPayoneCreditcardComponent implements OnChanges, OnDestroy, O
   private iframes: any;
 
   /**
-   *  field for generic error message
-   * */
+   * field for generic error message
+   */
   generalErrorMessage: string;
 
   ngOnInit() {

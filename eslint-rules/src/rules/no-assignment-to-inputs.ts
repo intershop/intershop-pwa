@@ -6,7 +6,8 @@ const messages = {
   inputAssignmentError: `Assigning to @Input decorated properties is forbidden.`,
 };
 
-/** Disallows the reassignment of properties marked with angular's `@Input` decorator.
+/**
+ * Disallows the reassignment of properties marked with angular's `@Input` decorator.
  */
 const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
@@ -23,7 +24,7 @@ const noAssignmentToInputsRule: TSESLint.RuleModule<keyof typeof messages> = {
     const inputs: string[] = [];
 
     /**
-     * checks whether a PropertyDefinition is decorated with the @Input() decorator
+     * checks whether a PropertyDefinition is decorated with the `@Input()` decorator
      */
     function checkIsInput(node: TSESTree.PropertyDefinition): boolean {
       const decorators = node.decorators;

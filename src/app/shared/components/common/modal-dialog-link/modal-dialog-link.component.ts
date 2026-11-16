@@ -35,7 +35,7 @@ export class ModalDialogLinkComponent {
   @Input({ required: true }) linkText: string;
 
   /**
-   * Modal dialog options (see also @ModalDialogComponent).
+   * Modal dialog options (see also {@link ModalDialogComponent}).
    */
   @Input() options: ModalOptions;
 

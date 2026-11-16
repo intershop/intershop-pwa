@@ -16,6 +16,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class ContactConfirmationComponent {
   /**
    * 'success' state for the contact request
-   * Controls whether the contact confirmation is displayed or an error. */
+   * Controls whether the contact confirmation is displayed or an error.
+   */
   @Input() success: boolean;
 }

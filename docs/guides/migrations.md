@@ -38,6 +38,9 @@ There is an auto-fix available (run `npm run lint -- --fix`) for the following r
 - `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the auto-fix crashes there.
 - `@angular-eslint/template/prefer-static-string-properties`
 - `@angular-eslint/template/no-interpolation-in-attributes` with `allowSubstringInterpolation`
+- `jsdoc/multiline-blocks`
+- `jsdoc/no-multi-asterisks` with `allowWhitespace` to keep Markdown lists
+- `jsdoc/no-types`
 
 The findings of the following rules have to be fixed manually:
 
@@ -66,6 +69,7 @@ The findings of the following rules have to be fixed manually:
 - `jsdoc/check-tag-names` with the custom tags `@defaultWrappers`, `@props` and `@usageNotes`: wrap Angular control flow blocks like `@if` in `@example` tags into a Markdown code block.
 - `jsdoc/check-param-names`: also document the properties of inline object type parameters, e.g., `@param config.key`.
 - `jsdoc/require-param-description` and `jsdoc/require-returns-description`
+- `jsdoc/escape-inline-tags`: wrap code like `@Input()` in backticks or use `{@link …}`.
 
 **`takeUntil(destroy$)` no longer allowed**
 

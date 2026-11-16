@@ -143,7 +143,8 @@ export interface Environment {
   // values: lifetime in minutes (localStorage), 'session' (sessionStorage), 'forever' (localStorage), not set = no persistence
   dataRetention: DataRetentionPolicy;
 
-  /** Price update mechanism:
+  /**
+   * Price update mechanism:
    * - 'always': fetch fresh price information all the time
    * - 'stable': only fetch prices once per application lifetime
    */
