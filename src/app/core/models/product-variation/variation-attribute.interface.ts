@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/project-structure */
 import { VariationAttributeType } from './variation-attribute.model';
 
 export interface VariationAttributeData {

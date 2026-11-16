@@ -32,6 +32,7 @@ The `ish-custom-rules/ban-imports-file-pattern` rule now also reports `tap` impo
 It also restricts the Angular `Meta` and `Title` services to the SEO extension, which replaces the obsolete restriction for `@ngx-meta`.
 Imports starting with `projects/` are now reported as well, import what a project provides in its `exports` via its path alias instead, e.g., `requisition-management`.
 Its options are validated now, so entries in customized configurations need `filePattern`, `name` and `message`, and must not contain other properties than `importNamePattern` and `starImport`.
+The `ish-custom-rules/project-structure` rule checks file paths again, since a catch-all entry in `pathPatterns` had disabled this, so add patterns for own file locations that are reported.
 The `jsdoc/*` rules are based on the `flat/recommended-typescript` config of [`eslint-plugin-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc#configuration) without `jsdoc/require-jsdoc`, `jsdoc/require-param` and `jsdoc/require-returns`, and `jsdoc/require-property-type` has been disabled.
 
 Additionally, the following rules have been enabled.
