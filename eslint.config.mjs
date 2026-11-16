@@ -740,6 +740,7 @@ export default defineConfig([
       'jsdoc/require-property-type': 'warn',
       'jsdoc/require-property': 'warn',
       'jsdoc/require-returns-description': 'warn',
+      'jsdoc/tag-lines': ['warn', 'any', { startLines: 1 }],
       'jsdoc/valid-types': 'warn',
 
       // RxJS best practices

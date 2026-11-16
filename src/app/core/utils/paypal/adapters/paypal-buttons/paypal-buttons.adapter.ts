@@ -37,6 +37,7 @@ export class PaypalButtonsAdapter {
 
   /**
    * Renders PayPal buttons in the specified container and sets up the necessary callbacks for order creation, approval, cancellation, and error handling.
+   *
    * @param config the PayPal components configuration including the container id and payment method
    * @returns a promise that resolves when the buttons are rendered
    */

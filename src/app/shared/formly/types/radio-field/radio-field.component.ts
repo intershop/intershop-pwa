@@ -13,7 +13,6 @@ import { FieldType, FieldTypeConfig } from '@ngx-formly/core';
  * @usageNotes
  * Link multiple radio buttons together by using the same key for each.
  * Refer to the form-field-checkbox-horizontal wrapper for more info on relevant props.
- *
  */
 @Component({
   selector: 'ish-radio-field',

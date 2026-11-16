@@ -186,6 +186,7 @@ export class PaypalCardFieldsAdapter {
 
   /**
    * Renders a single card field with retry capability.
+   *
    * @param config - Field configuration
    * @param config.key - Key under which the rendered field is stored
    * @param config.containerId - Id of the container element to render the field into

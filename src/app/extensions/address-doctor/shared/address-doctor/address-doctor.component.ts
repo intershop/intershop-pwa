@@ -80,6 +80,7 @@ export class AddressDoctorComponent implements AfterViewInit {
 
   /**
    * Send event result for given address
+   *
    * @param address address callback
    */
   sendAddress(address: Address) {

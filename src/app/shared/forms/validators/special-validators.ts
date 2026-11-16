@@ -9,7 +9,6 @@ import { FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/
  *
  * @usageNotes
  * Refer to the [`FormlyFieldConfig.validators`](https://github.com/ngx-formly/ngx-formly/blob/main/src/core/src/lib/models/fieldconfig.ts#L60) type definition for an explanation of the necessary validator format.
- *
  */
 export function formlyValidation<T extends (control: FormControl) => Record<string, { valid: boolean }>>(
   name: string,

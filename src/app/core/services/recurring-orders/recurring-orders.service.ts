@@ -124,6 +124,7 @@ export class RecurringOrdersService {
 
   /**
    * Deletes a recurring order
+   *
    * @param recurringOrderId  The recurring order id.
    * @param context           The value indicates whether the recurring order that should be deleted is an order of the customer or the logged-in user.
    */

@@ -31,6 +31,7 @@ export class RouterEffects {
 
   /**
    * Sets focus to the main content of the page. Make sure the used mainContentIds ('page-main-content', if you need to focus a specific area of a page, 'main-content' as default) are available in the HTML and the appropriate element has the tabindex set to -1.
+   *
    * @returns true if an h1 element was found and focused, otherwise false
    */
   private setFocusToMainContent(): boolean {

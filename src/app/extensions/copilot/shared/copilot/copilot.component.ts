@@ -265,6 +265,7 @@ export class CopilotComponent {
 
   /**
    * Triggers the corresponding basket action in the PWA based on the PWA_basket tool call from the copilot.
+   *
    * @param toolInput The copilot tool call input.
    */
   private handlePWABasketToolCall(toolInput: Record<string, string>) {
@@ -313,6 +314,7 @@ export class CopilotComponent {
 
   /**
    * Triggers the corresponding navigation route in the PWA based on the PWA_navigate_to_page tool call from the copilot.
+   *
    * @param toolInput The copilot tool call input information.
    */
   private handlePWANavigateToPageToolCall(toolInput: Record<string, string>) {
@@ -340,6 +342,7 @@ export class CopilotComponent {
 
   /**
    * Triggers the corresponding order template action in the PWA based on the PWA_order_template_actions tool call from the copilot.
+   *
    * @param toolInput The copilot tool call input information.
    */
 
@@ -372,6 +375,7 @@ export class CopilotComponent {
 
   /**
    * Processes the copilot's icmSearch tool call and triggers the corresponding search action in the PWA.
+   *
    * @param toolOutput - The copilot tool call output information
    * @param toolOutput.showOnPWA - Indicates if the search results should be displayed in the PWA
    * @param toolOutput.query - The search query executed by the copilot to be displayed in the PWA

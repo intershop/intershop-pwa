@@ -11,7 +11,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * * ``class`` is applied to the tooltip link.
  *
  * All texts are translated.
- *
  */
 @Component({
   selector: 'ish-field-tooltip',

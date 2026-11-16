@@ -41,6 +41,7 @@ There is an auto-fix available (run `npm run lint -- --fix`) for the following r
 - `jsdoc/multiline-blocks`
 - `jsdoc/no-multi-asterisks` with `allowWhitespace` to keep Markdown lists
 - `jsdoc/no-types`
+- `jsdoc/tag-lines` with one blank line between description and tags
 
 The findings of the following rules have to be fixed manually:
 
