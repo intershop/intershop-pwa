@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
+import { Requisition } from 'requisition-management';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Order } from 'ish-core/models/order/order.model';

@@ -297,7 +297,7 @@ export default defineConfig([
             message: 'Imports from (other) extensions are not allowed here.',
           },
           {
-            name: '.*/projects/.*',
+            name: '(^|/)projects/',
             filePattern: '^((?!(module|spec)\\.ts).)*$',
             message: 'Imports from (other) projects are not allowed here.',
           },
