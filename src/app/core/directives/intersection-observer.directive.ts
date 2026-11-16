@@ -1,7 +1,7 @@
 import { DestroyRef, Directive, ElementRef, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { IntersectionStatus, fromIntersectionObserver } from './intersection-observer-util';
+import { IntersectionStatus, fromIntersectionObserver } from './utils/intersection-observer';
 
 /**
  * detect visibility status of components via IntersectionObserver

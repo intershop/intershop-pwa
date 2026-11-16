@@ -12,7 +12,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subject, takeUntil } from 'rxjs';
 
-import { fromIntersectionObserver } from './intersection-observer-util';
+import { fromIntersectionObserver } from './utils/intersection-observer';
 
 function findElement(element: { parentElement: HTMLElement } | HTMLElement): HTMLElement {
   if (element instanceof HTMLElement) {

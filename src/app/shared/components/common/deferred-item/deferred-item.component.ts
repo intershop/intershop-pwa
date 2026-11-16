@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { IntersectionStatus } from 'ish-core/directives/intersection-observer-util';
 import { LazyLoadingContentDirective } from 'ish-core/directives/lazy-loading-content.directive';
+import { IntersectionStatus } from 'ish-core/directives/utils/intersection-observer';
 
 /**
  * The Deferred Item Component

@@ -97,6 +97,7 @@ TypeScript files are now also linted with the `js.configs.recommended` config of
 The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `ish-core/models/checkout/checkout-step.type` to `ish-core/models/checkout-step/checkout-step.type`.
 The `MetricsDetailLevel` enum has been moved from `ish-core/models/metrics/metrics-detail-level` to `ish-core/configurations/injection-keys`.
 The `PaypalClientConfig` interface has been moved from `ish-core/models/paypal-client-config/paypal-client-config` to `ish-core/models/paypal-config/paypal-config.model`.
+The `fromIntersectionObserver` function and the `IntersectionStatus` type have been moved from `ish-core/directives/intersection-observer-util` to `ish-core/directives/utils/intersection-observer`.
 
 ## From 13.0.0 to 13.1.0
 
