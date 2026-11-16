@@ -730,10 +730,12 @@ export default defineConfig([
       'jsdoc/check-values': 'warn',
       'jsdoc/empty-tags': 'warn',
       'jsdoc/implements-on-classes': 'warn',
+      'jsdoc/require-param-description': 'warn',
       'jsdoc/require-property-description': 'warn',
       'jsdoc/require-property-name': 'warn',
       'jsdoc/require-property-type': 'warn',
       'jsdoc/require-property': 'warn',
+      'jsdoc/require-returns-description': 'warn',
       'jsdoc/valid-types': 'warn',
 
       // RxJS best practices

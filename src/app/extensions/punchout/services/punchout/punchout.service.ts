@@ -306,9 +306,9 @@ export class PunchoutService {
    * Creates an cXML punchout compatible form with the given BrowserFormPostURL
    * and a hidden input field that contains the cXML PunchOutOrderMessage.
    *
-   * @param   punchOutOrderMessage
-   * @param   browserFormPostUrl
-   * @returns The cXML punchout form
+   * @param   punchOutOrderMessage The cXML PunchOutOrderMessage
+   * @param   browserFormPostUrl   The URL the form is posted to
+   * @returns                      The cXML punchout form
    */
   private createCxmlPunchoutForm(punchOutOrderMessage: string, browserFormPostUrl: string): HTMLFormElement {
     const cXmlForm = this.domService.createElement<HTMLFormElement>('form');

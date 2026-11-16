@@ -21,10 +21,10 @@ export function createCompleteContentPageTreeView(
 }
 
 /**
- * @param tree
+ * @param tree the complete content page tree
  * @param elementId element of page tree. It will be decided, if element is part of displayed navigation tree.
- * @param rootId
- * @param currentContentPageId
+ * @param rootId id of the root element of the displayed navigation tree
+ * @param currentContentPageId id of the currently displayed content page
  * @returns Get all displayed navigation tree elements of current content page.
  */
 function getContentPageTreeElements(

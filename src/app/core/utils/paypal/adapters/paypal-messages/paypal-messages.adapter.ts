@@ -22,8 +22,8 @@ export class PaypalMessagesAdapter {
 
   /**
    * Renders PayPal Messages in the specified container.
-   * @param config
-   * @returns
+   * @param config the PayPal components configuration including the container id
+   * @returns a promise that resolves when the messages are rendered
    */
   renderMessages(config: PaypalComponentsConfig): Promise<void> {
     const paypalObject = this.paypalConfigService.getPaypalComponent();
