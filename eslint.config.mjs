@@ -323,51 +323,45 @@ export default defineConfig([
           {
             importNamePattern: '^(StoreModule|EffectsModule)$',
             name: 'ngrx',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use the testing helpers "*StoreModule.forTesting" in tests instead.',
-          },
-          {
-            importNamePattern: '^Action$',
-            name: '@ngrx/store',
-            filePattern: '^(?!.*\\.spec\\.ts$).*\\.actions\\.ts*$',
-            message: 'The old way of declaring actions is deprecated, use "createAction".',
           },
           {
             importNamePattern: '^props$',
             name: '@ngrx/store',
-            filePattern: '^.*\\.actions\\.ts*$',
+            filePattern: '^.*\\.actions\\.ts$',
             message:
               'Do not use "props" directly with "createAction", use our helper functions "payload" and "httpError" from "ish-core/utils/action-creators" instead.',
           },
           {
             importNamePattern: '^HttpError$',
             name: '.*http-error.model',
-            filePattern: '^.*\\.actions\\.ts*$',
+            filePattern: '^.*\\.actions\\.ts$',
             message:
               'Do not use "HttpError" explicitly, please use "httpError" from "ish-core/utils/action-creators" instead.',
           },
           {
             importNamePattern: '^FormsSharedModule$',
             name: 'ish-shared/forms/forms.module',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Performance: Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^NO_ERRORS_SCHEMA$',
             name: '@angular/core',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^MockComponents$',
             name: 'ng-mocks',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^PipesModule$',
             name: 'ish-core/pipes.module',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Performance: Use MockPipe or declare it individually in tests instead.',
           },
           {
@@ -386,28 +380,28 @@ export default defineConfig([
           {
             importNamePattern: 'routerNavigatedAction|routerNavigationAction|ROUTER_NAVIGATED|ROUTER_NAVIGATION',
             name: '@ngrx/router-store',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message:
               'We customized the serialization of the router state. Use router actions from "ish-core/utils/dev/routing" in tests.',
           },
           {
             importNamePattern: 'tap',
             name: '^rxjs(/operators)?$',
-            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts*$',
+            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts$',
             message:
               'The usage of "tap" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code.',
           },
           {
             importNamePattern: '^DomService$',
             name: 'ish-core/utils/dom/dom.service',
-            filePattern: '^.*\\.(component|directive)\\.ts*$',
+            filePattern: '^.*\\.(component|directive)\\.ts$',
             message: 'The "DomService" should only be used in injectable classes. Use the Angular "Renderer2" instead.',
           },
           {
             // eslint-disable-next-line @cspell/spellchecker
             importNamePattern: '^(F|f)eatureToggle',
             name: 'ish-core/utils/feature-toggle/feature-toggle.service',
-            filePattern: '^.*\\.ts*$',
+            filePattern: '^.*\\.ts$',
             message: 'Feature toggle related functionality should only be imported from the FeatureToggleModule',
           },
         ],
