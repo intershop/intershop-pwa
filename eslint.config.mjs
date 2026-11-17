@@ -527,6 +527,10 @@ export default defineConfig([
               file: '.*/directives/<kebab>\\.directive(<theme>)?\\.ts$',
             },
             {
+              name: '^([a-z].*)Guard$',
+              file: '.*/(guards/<kebab>|pages/<name>/<kebab>)\\.guard(<theme>)?\\.ts$',
+            },
+            {
               name: '^([A-Z].*)Interceptor$',
               file: '.*/interceptors/<kebab>\\.interceptor(<theme>)?\\.ts$',
             },

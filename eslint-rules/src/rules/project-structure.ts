@@ -28,7 +28,7 @@ const messages = {
  * warnUnmatched: enables printing an error when the file and its containing class name have no match.
  * reusePatterns: named RegExp patterns which can be used (like: <name>) in the following patterns.
  * pathPatterns: RegExp patterns to check the directory/path of the file.
- * patterns: RegExp patterns to check whether the class name matches its file.
+ * patterns: RegExp patterns to check whether the name of a class, an exported function or an exported constant matches its file.
  * ignoredFiles: RegExp patterns files which should be ignored.
  * allowedNumberWords: List of words containing numbers that will be treated as normal for the sake of kebab-case. Usually, numbers are treated as their own words.
  */
@@ -104,6 +104,30 @@ const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSett
       ''
     )})`;
 
+    /**
+     * report when the name of a class, an exported function or an exported constant doesn't match its file pattern
+     */
+    function checkName(node: TSESTree.Identifier, warnUnmatched: boolean): void {
+      const matchPatternError = matchPattern(
+        config.patterns,
+        warnUnmatched,
+        config.reusePatterns,
+        node.name,
+        filePath,
+        kebabRegex,
+        kebabSubstitutionDict
+      );
+      if (matchPatternError !== '') {
+        context.report({
+          node,
+          data: {
+            message: matchPatternError,
+          },
+          messageId: 'projectStructureError',
+        });
+      }
+    }
+
     // don't continue for ignored files
     if (isIgnoredFile(config.ignoredFiles, config.reusePatterns, filePath)) {
       return {};
@@ -122,25 +146,15 @@ const projectStructureRule: TSESLint.RuleModule<keyof typeof messages, [RuleSett
         }
       },
       'ClassDeclaration > Identifier.id'(node: TSESTree.Identifier): void {
-        const matchPatternError = matchPattern(
-          config.patterns,
-          config.warnUnmatched,
-          config.reusePatterns,
-          node.name,
-          filePath,
-          kebabRegex,
-          kebabSubstitutionDict
-        );
-        // return error, when the class name doesn't match to the according file pattern
-        if (matchPatternError !== '') {
-          context.report({
-            node,
-            data: {
-              message: matchPatternError,
-            },
-            messageId: 'projectStructureError',
-          });
-        }
+        checkName(node, config.warnUnmatched);
+      },
+      'ExportNamedDeclaration > FunctionDeclaration > Identifier.id'(node: TSESTree.Identifier): void {
+        checkName(node, false);
+      },
+      'ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > Identifier.id'(
+        node: TSESTree.Identifier
+      ): void {
+        checkName(node, false);
       },
     };
   },
