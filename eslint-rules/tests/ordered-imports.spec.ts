@@ -2,7 +2,7 @@ import orderedImportsRule from '../src/rules/ordered-imports';
 
 import testRule from './rule-tester';
 
-const invalidTests: { code: string; output: string; name: string }[] = [
+const invalidTests: { code: string; output: string; name: string; line?: number }[] = [
   {
     name: 'should sort regular imports',
     code: `
@@ -75,6 +75,20 @@ const invalidTests: { code: string; output: string; name: string }[] = [
     code: `import { xyz as a, b } from '@test'`,
     output: `import { b, xyz as a } from '@test'`,
   },
+  {
+    name: 'should keep comments before the imports',
+    code: `
+      // header comment
+      import { b } from '@test/b';
+      import { a } from '@test/a';
+      `,
+    output: `
+      // header comment
+      import { a } from '@test/a';
+      import { b } from '@test/b';
+      `,
+    line: 2,
+  },
 ];
 
 testRule(orderedImportsRule, {
@@ -114,7 +128,7 @@ testRule(orderedImportsRule, {
   ],
   /**
    * simplify tests:
-   * - errors will always be on the same line starting at 1
+   * - errors will always be on the same line starting at 1, unless the test defines another line
    * - code is formatted so we can write it more easily
    */
   invalid: invalidTests.map(testConf => ({
@@ -124,7 +138,7 @@ testRule(orderedImportsRule, {
     output: formatter(testConf.output),
     errors: [
       {
-        line: 1,
+        line: testConf.line ?? 1,
         messageId: 'unorderedImports',
       },
     ],

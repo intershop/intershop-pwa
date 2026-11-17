@@ -51,7 +51,7 @@ const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
       ImportDeclaration(node) {
         importDeclarations.push(node);
       },
-      'Program:exit'(node: TSESTree.Program) {
+      'Program:exit'() {
         if (!importDeclarations.length) {
           return;
         }
@@ -88,12 +88,11 @@ const orderedImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
           context.report({
             loc: importSourceLocation,
             messageId: 'unorderedImports',
-            fix: fixer => [
-              // remove everything up to the last import
-              fixer.removeRange([node.range[0], importDeclarations[importDeclarations.length - 1].range[1]]),
-              // insert new imports at start of file
-              fixer.insertTextBefore(node, newImports),
-            ],
+            fix: fixer =>
+              fixer.replaceTextRange(
+                [importDeclarations[0].range[0], importDeclarations[importDeclarations.length - 1].range[1]],
+                newImports
+              ),
           });
         }
       },
