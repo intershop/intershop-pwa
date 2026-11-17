@@ -515,24 +515,8 @@ export default defineConfig([
               file: '.*/core/routing/<kebab>/<kebab>-route\\.pipe(<theme>)?\\.ts$',
             },
             {
-              name: '^generate([A-Z].*)Url$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
-              name: '^match([A-Z].*)Route$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
-              name: '^of([A-Z].*)Route$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
               name: '^([A-Z].*)PageComponent$',
               file: '.*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(Test|Dummy)Component$',
-              file: '.*.ts$',
             },
             {
               name: '^([A-Z].*)Component$',
@@ -541,14 +525,6 @@ export default defineConfig([
             {
               name: '^([A-Z].*)Directive$',
               file: '.*/directives/<kebab>\\.directive(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*)PageGuard$',
-              file: '.*/pages/<kebab>/<kebab>-page\\.guard(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*)Guard$',
-              file: '.*/guards/<kebab>\\.guard(<theme>)?\\.ts$',
             },
             {
               name: '^([A-Z].*)Interceptor$',
@@ -599,20 +575,12 @@ export default defineConfig([
               file: '.*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$',
             },
             {
-              name: '^(.*)Routes$',
-              file: '.*/<kebab>\\.module(<theme>)?\\.ts$',
-            },
-            {
               name: '^([A-Z].*)Helper$',
               file: '.*/models/<kebab>/<kebab>\\.helper(<theme>)?\\.ts$',
             },
             {
               name: '^([A-Z].*)Mapper$',
               file: '.*/models/<kebab>/<kebab>\\.mapper(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*)BaseData$',
-              file: '.*/models/<kebab>/<kebab>\\.interface\\.ts$',
             },
             {
               name: '^([A-Z].*)Data$',
@@ -625,38 +593,6 @@ export default defineConfig([
             {
               name: '^([A-Z].*)Effects$',
               file: '.*/store/(<name>/)?<name>/<kebab>\\.effects(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([a-z].*)Effects$',
-              file: '.*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^get(.*?)(Internal)?State$',
-              file: '.*/store/(<name>/)?(<kebab>/<kebab>\\.selectors|<kebab>-store)(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*?)(Internal)?State$',
-              file: '.*/store/(<name>/)?(<kebab>/<kebab>\\.reducer|(<kebab>/)?<kebab>-store)(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(initialState)$',
-              file: '.*/store/.*\\.reducer(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([a-z].*)Reducer$',
-              file: '.*/store/(<name>/)?<kebab>/<kebab>\\.reducer(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(metaReducers|[a-z]+MetaReducers)$',
-              file: '.*\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([a-z].*)Reducers$',
-              file: '.*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(environment)$',
-              file: 'src/environments/environment(\\.[a-z]+)?\\.ts$',
             },
             {
               name: '^([A-Z].*)Configuration$',
