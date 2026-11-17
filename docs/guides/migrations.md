@@ -99,6 +99,11 @@ The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `i
 The `MetricsDetailLevel` enum has been moved from `ish-core/models/metrics/metrics-detail-level` to `ish-core/configurations/injection-keys`.
 The `PaypalClientConfig` interface has been moved from `ish-core/models/paypal-client-config/paypal-client-config` to `ish-core/models/paypal-config/paypal-config.model`.
 The `fromIntersectionObserver` function and the `IntersectionStatus` type have been moved from `ish-core/directives/intersection-observer-util` to `ish-core/directives/utils/intersection-observer`.
+To update the imports in custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:align-with-project-structure
+```
 
 ## From 13.0.0 to 13.1.0
 

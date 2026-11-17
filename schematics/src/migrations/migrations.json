@@ -21,6 +21,11 @@
       "version": "13.0.0",
       "description": "Replaces the deprecated `ChangeDetectionStrategy.Default` with `ChangeDetectionStrategy.Eager` in custom code (Angular 21).",
       "factory": "./change-detection-strategy-eager/factory#migrateChangeDetectionStrategyEager"
+    },
+    "align-with-project-structure": {
+      "version": "14.0.0",
+      "description": "Updates imports of files that Intershop PWA 14.0.0 renamed or moved to match the project-structure ESLint rule, and renames the exports renamed along with them.",
+      "factory": "./align-with-project-structure/factory#migrateAlignWithProjectStructure"
     }
   }
 }
