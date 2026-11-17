@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { OAuthInfoEvent, OAuthService, TokenResponse } from 'angular-oauth2-oidc';
+import { OAuthInfoEvent, OAuthService, OAuthSuccessEvent, TokenResponse } from 'angular-oauth2-oidc';
 import { firstValueFrom, noop, of } from 'rxjs';
-import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -71,6 +71,20 @@ describe('Token Service', () => {
     afterEach(() => {
       when(oAuthService.refreshToken()).thenResolve();
       when(oAuthService.events).thenReturn(of(undefined));
+    });
+
+    it('should set the apiToken with its refresh token and the cookie expiry of the refresh token', () => {
+      const apiTokenService = mock(ApiTokenService);
+      when(oAuthService.events).thenReturn(of(new OAuthSuccessEvent('token_received')));
+      when(oAuthService.getRefreshToken()).thenReturn('refresh-token');
+      when(oAuthService.getCustomTokenResponseProperty('refresh_expires_in')).thenReturn(3600);
+      jest.spyOn(Date, 'now').mockReturnValue(1000);
+
+      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+
+      verify(apiTokenService.setApiToken('access-token', anything(), 'refresh-token')).once();
+      const [, options] = capture(apiTokenService.setApiToken).last();
+      expect(options.expires).toEqual(new Date(3601000));
     });
 
     it('should invalidate the apiToken if the token refresh fails', fakeAsync(() => {

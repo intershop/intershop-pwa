@@ -58,6 +58,7 @@ export class TokenService {
           tokenEndpoint: url,
           requireHttps: url.startsWith('https'),
           timeoutFactor: 0.5,
+          customTokenParameters: ['refresh_expires_in'],
         }))
       )
       .subscribe(conf => {
@@ -132,11 +133,15 @@ export class TokenService {
   private setApiTokenCookie$() {
     return this.oAuthService.events.pipe(
       filter(event => event instanceof OAuthSuccessEvent && event.type === 'token_received'),
-      map(() =>
-        this.apiTokenService.setApiToken(this.oAuthService.getAccessToken(), {
-          expires: new Date(this.oAuthService.getAccessTokenExpiration()),
-        })
-      )
+      map(() => {
+        // the apiToken cookie lives as long as its refresh token can restore the session
+        const refreshExpiresIn = Number(this.oAuthService.getCustomTokenResponseProperty('refresh_expires_in'));
+        this.apiTokenService.setApiToken(
+          this.oAuthService.getAccessToken(),
+          { expires: refreshExpiresIn ? new Date(Date.now() + refreshExpiresIn * 1000) : undefined },
+          this.oAuthService.getRefreshToken()
+        );
+      })
     );
   }
 }

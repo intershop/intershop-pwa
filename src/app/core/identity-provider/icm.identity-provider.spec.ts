@@ -110,6 +110,23 @@ describe('Icm Identity Provider', () => {
         done();
       });
     });
+
+    it('should discard the session of the apiToken cookie instead of revoking it when /logout is opened directly', done => {
+      // the guard of a directly opened /logout route is triggered before the delayed init()
+      const icmIdentityProviderBeforeInit = new ICMIdentityProvider(
+        router,
+        store$,
+        instance(apiTokenService),
+        instance(accountFacade),
+        instance(mock(TokenService))
+      );
+
+      (icmIdentityProviderBeforeInit.triggerLogout() as Observable<UrlTree>).subscribe(() => {
+        verify(apiTokenService.discardApiToken()).once();
+        verify(accountFacade.logoutUser()).never();
+        done();
+      });
+    });
   });
 
   describe('triggerLogin', () => {

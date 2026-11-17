@@ -62,6 +62,14 @@ Tests that dispatch `loadContentInclude` need to dispatch `personalizationStatus
 The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed by the `BasketEffects` on every logout (`resetUserData`), also when another identity provider is active after a reload.
 Identity providers no longer need to remove it themselves.
 
+**Refresh token in the `apiToken` cookie**
+
+Since the ICM will no longer accept an access token for the token refresh, the `apiToken` field of the `apiToken` cookie now contains the refresh token instead of the access token, and the cookie expires with it.
+After a reload, the session is restored with this refresh token, and requests are sent without the `authentication-token` header until new tokens are fetched.
+Existing cookies with an access token are removed once the ICM rejects them, so users may have to log in again after the update.
+Custom code that calls `setApiToken()` of the `ApiTokenService` needs to provide the refresh token as third parameter, otherwise no `apiToken` cookie is saved.
+For more information, see [Authentication Concept - PWA Initialization](../concepts/authentication.md#pwa-initialization).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

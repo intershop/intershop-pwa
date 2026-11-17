@@ -14,6 +14,8 @@ import { IdentityProvider, TriggerReturnType } from './identity-provider.interfa
 
 @Injectable({ providedIn: 'root' })
 export class ICMIdentityProvider implements IdentityProvider {
+  private initialized = false;
+
   constructor(
     private router: Router,
     private store: Store,
@@ -31,6 +33,7 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   init() {
+    this.initialized = true;
     this.apiTokenService.restore$().subscribe(noop);
 
     this.apiTokenService
@@ -52,8 +55,14 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    // revoke current token
-    this.accountFacade.logoutUser();
+    if (this.initialized) {
+      // revoke current token
+      this.accountFacade.logoutUser();
+    } else {
+      // on a directly opened /logout route the guard is triggered before the delayed init(),
+      // the session of the apiToken cookie is not restored, so it is discarded without revoking its tokens
+      this.apiTokenService.discardApiToken();
+    }
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls
       filter(loggedIn => !loggedIn),

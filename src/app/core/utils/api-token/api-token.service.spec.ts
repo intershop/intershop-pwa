@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { combineLatest, of, skip, throwError } from 'rxjs';
+import { ofType } from '@ngrx/effects';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { combineLatest, of, throwError } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
@@ -16,7 +17,7 @@ import {
   CustomerStoreModule,
 } from 'ish-core/store/customer/customer-store.module';
 import { loadOrderSuccess, selectOrder } from 'ish-core/store/customer/orders';
-import { loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
+import { loadUserByAPIToken, loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
 import { ApiTokenCookie, ApiTokenService } from './api-token.service';
@@ -27,8 +28,10 @@ describe('Api Token Service', () => {
 
   let store: Store;
 
+  const accessToken = '123@accessToken';
+
   const initialApiTokenCookie: ApiTokenCookie = {
-    apiToken: '123@apiToken',
+    apiToken: '123@refreshToken',
     type: 'user',
   };
 
@@ -57,10 +60,37 @@ describe('Api Token Service', () => {
     expect(apiTokenService).toBeTruthy();
   });
 
+  describe('initialization', () => {
+    it('should not authenticate requests with the apiToken of the cookie', done => {
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
+      injectServices();
+
+      verify(cookieServiceMock.remove('apiToken', anything())).never();
+      apiTokenService.getApiToken$().subscribe(apiToken => {
+        expect(apiToken).toBeUndefined();
+        done();
+      });
+    });
+
+    it('should remove an apiToken cookie with invalid content and not restore it', done => {
+      when(cookieServiceMock.get('apiToken')).thenReturn('SOMETHING_INVALID');
+      injectServices();
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      verify(cookieServiceMock.remove('apiToken', anything())).once();
+      apiTokenService.restore$().subscribe(restored => {
+        expect(restored).toBeTrue();
+        expect(dispatchSpy).not.toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
   describe('getInternalApiTokenCookieValue$', () => {
     beforeEach(() => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123' } as ApiTokenCookie));
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123@refresh' } as ApiTokenCookie));
       injectServices();
+      apiTokenService.setApiToken('123', undefined, '123@refresh');
     });
 
     it('should create user apiToken cookie when only user information changes in store', () => {
@@ -69,7 +99,12 @@ describe('Api Token Service', () => {
       verify(
         cookieServiceMock.put(
           'apiToken',
-          JSON.stringify({ apiToken: '123', type: 'user', isAnonymous: false, creator: 'pwa' } as ApiTokenCookie),
+          JSON.stringify({
+            apiToken: '123@refresh',
+            type: 'user',
+            isAnonymous: false,
+            creator: 'pwa',
+          } as ApiTokenCookie),
           anything()
         )
       ).once();
@@ -81,7 +116,12 @@ describe('Api Token Service', () => {
       verify(
         cookieServiceMock.put(
           'apiToken',
-          JSON.stringify({ apiToken: '123', type: 'user', isAnonymous: true, creator: 'pwa' } as ApiTokenCookie),
+          JSON.stringify({
+            apiToken: '123@refresh',
+            type: 'user',
+            isAnonymous: true,
+            creator: 'pwa',
+          } as ApiTokenCookie),
           anything()
         )
       ).once();
@@ -93,24 +133,40 @@ describe('Api Token Service', () => {
       verify(
         cookieServiceMock.put(
           'apiToken',
-          JSON.stringify({ apiToken: '123', type: 'order', orderId: 'orderId', creator: 'pwa' } as ApiTokenCookie),
+          JSON.stringify({
+            apiToken: '123@refresh',
+            type: 'order',
+            orderId: 'orderId',
+            creator: 'pwa',
+          } as ApiTokenCookie),
           anything()
         )
       ).once();
     });
 
-    it('should update apiToken information in cookie when apiToken changes', () => {
-      apiTokenService.setApiToken('new-api-token');
+    it('should save the new refresh token as apiToken in the cookie when the tokens change', () => {
+      apiTokenService.setApiToken('new-access-token', undefined, 'new-refresh-token');
 
       verify(
-        cookieServiceMock.put('apiToken', JSON.stringify({ apiToken: 'new-api-token' } as ApiTokenCookie), anything())
+        cookieServiceMock.put(
+          'apiToken',
+          JSON.stringify({ apiToken: 'new-refresh-token' } as ApiTokenCookie),
+          anything()
+        )
       ).once();
+    });
+
+    it('should not save an access token without refresh token in the cookie', () => {
+      apiTokenService.setApiToken('new-access-token');
+
+      verify(cookieServiceMock.put('apiToken', anything(), anything())).once();
+      verify(cookieServiceMock.put('apiToken', JSON.stringify({ apiToken: '123@refresh' }), anything())).once();
     });
   });
 
   describe('logout$', () => {
     beforeEach(() => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify({ apiToken: '123' } as ApiTokenCookie));
+      when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
       injectServices();
 
       store.dispatch(
@@ -132,6 +188,7 @@ describe('Api Token Service', () => {
     });
 
     it('should vanish apiToken information when cookie is removed unexpectedly from the outside', done => {
+      apiTokenService.setApiToken(accessToken, undefined, initialApiTokenCookie.apiToken);
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie), undefined);
       combineLatest([apiTokenService.getApiToken$(), apiTokenService.getCookieVanishes$()]).subscribe(
         ([apiToken, cookieVanishes]) => {
@@ -150,15 +207,14 @@ describe('Api Token Service', () => {
       injectServices();
     });
 
-    it('should set correct apiToken when new apiToken is set unexpectedly from the outside', done => {
-      when(cookieServiceMock.get('apiToken')).thenReturn(undefined, JSON.stringify(initialApiTokenCookie));
-      apiTokenService
-        .getApiToken$()
-        .pipe(skip(1))
-        .subscribe(apiToken => {
-          expect(apiToken).toEqual('123@apiToken');
+    it('should restore the session with the refresh token when a user cookie is created by another tab', done => {
+      TestBed.inject(ActionsSubject)
+        .pipe(ofType(loadUserByAPIToken))
+        .subscribe(action => {
+          expect(action.payload.apiToken).toEqual(initialApiTokenCookie.apiToken);
           done();
         });
+      when(cookieServiceMock.get('apiToken')).thenReturn(undefined, JSON.stringify(initialApiTokenCookie));
 
       setTimeout(() => undefined, 3000);
     });
@@ -235,6 +291,7 @@ describe('Api Token Service', () => {
     beforeEach(() => {
       when(cookieServiceMock.get('apiToken')).thenReturn(JSON.stringify(initialApiTokenCookie));
       injectServices();
+      apiTokenService.setApiToken(accessToken, undefined, initialApiTokenCookie.apiToken);
     });
 
     it('should remove the apiToken and its cookie and inform cookieVanishes$ listeners', done => {
@@ -247,9 +304,9 @@ describe('Api Token Service', () => {
       apiTokenService.invalidateApiToken();
     });
 
-    it('should keep the cookie if it contains the apiToken of another tab', done => {
+    it('should keep the cookie if it contains the tokens of another tab', done => {
       when(cookieServiceMock.get('apiToken')).thenReturn(
-        JSON.stringify({ ...initialApiTokenCookie, apiToken: 'other@apiToken' })
+        JSON.stringify({ ...initialApiTokenCookie, apiToken: 'other@refreshToken' })
       );
 
       apiTokenService.getCookieVanishes$().subscribe(() => {
@@ -276,12 +333,40 @@ describe('Api Token Service', () => {
       injectServices();
     });
 
+    describe('authentication header', () => {
+      const expectHeader = (request: HttpRequest<unknown>, expected: string, done: jest.DoneCallback) => {
+        const next: HttpHandler = {
+          handle: req => {
+            expect(req.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(expected);
+            return of(new HttpResponse({ status: 200, url: req.url }));
+          },
+        };
+        apiTokenService.setApiToken(accessToken, undefined, initialApiTokenCookie.apiToken);
+        apiTokenService.intercept(request, next).subscribe(() => done());
+      };
+
+      it('should add the access token to requests', done => {
+        expectHeader(new HttpRequest('GET', 'https://icm/configurations'), accessToken, done);
+      });
+
+      it('should add the access token to the logout request', done => {
+        expectHeader(new HttpRequest('PUT', 'https://icm/token/logout', undefined), accessToken, done);
+      });
+
+      it('should not add the access token to token grants', done => {
+        const body = new HttpParams().set('grant_type', 'refresh_token').set('refresh_token', 'refresh');
+        // eslint-disable-next-line unicorn/no-null
+        expectHeader(new HttpRequest('POST', 'https://icm/token', body), null, done);
+      });
+    });
+
     it.each([
       'Unauthorized ([warn] Verification of token failed.)',
       'Unauthorized ([none] Error when decrypting token)',
     ])(
       'should remove the invalid apiToken and retry the request without it on error %j',
       fakeAsync((error: string) => {
+        apiTokenService.setApiToken(accessToken, undefined, initialApiTokenCookie.apiToken);
         const requests: HttpRequest<unknown>[] = [];
         const next: HttpHandler = {
           handle: request => {
@@ -298,7 +383,7 @@ describe('Api Token Service', () => {
         });
         tick(500);
 
-        expect(requests[0].headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(initialApiTokenCookie.apiToken);
+        expect(requests[0].headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual(accessToken);
         expect(requests[1].headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
         expect(response).toBeInstanceOf(HttpResponse);
         verify(cookieServiceMock.remove('apiToken', anything())).once();
@@ -315,7 +400,7 @@ describe('Api Token Service', () => {
       };
 
       it.each([400, 401])(
-        'should remove the apiToken cookie when the ICM rejects its apiToken with %s',
+        'should remove the apiToken cookie when the ICM rejects its refresh token with %s',
         (status, done) => {
           refresh$(initialApiTokenCookie.apiToken, status).subscribe({
             error: () => {
@@ -336,7 +421,7 @@ describe('Api Token Service', () => {
       });
 
       it('should keep the apiToken cookie when another token is rejected', done => {
-        refresh$('other@apiToken', 401).subscribe({
+        refresh$('other@refreshToken', 401).subscribe({
           error: () => {
             verify(cookieServiceMock.remove('apiToken', anything())).never();
             done();
@@ -358,6 +443,17 @@ describe('Api Token Service', () => {
       verify(cookieServiceMock.remove('apiToken', anything())).once();
       apiTokenService.getApiToken$().subscribe(apiToken => {
         expect(apiToken).toBeUndefined();
+        done();
+      });
+    });
+
+    it('should not restore the discarded session', done => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      apiTokenService.discardApiToken();
+
+      apiTokenService.restore$().subscribe(restored => {
+        expect(restored).toBeTrue();
+        expect(dispatchSpy).not.toHaveBeenCalled();
         done();
       });
     });
