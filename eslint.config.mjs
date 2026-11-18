@@ -849,17 +849,6 @@ export default defineConfig([
       'no-sequences': 'error',
       'no-template-curly-in-string': 'error',
       'no-throw-literal': 'warn',
-      'no-unused-vars': [
-        'warn',
-        {
-          vars: 'all',
-          varsIgnorePattern: '[_]',
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-          ignoreRestSiblings: false,
-          caughtErrors: 'none',
-        },
-      ],
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
       'prefer-object-spread': 'error',
