@@ -982,10 +982,10 @@ export default defineConfig([
         {
           warnUnmatched: false,
           pathPatterns: [
-            '.*/e2e/framework/.*/*\\.ts',
+            '.*/e2e/framework/[^/]*\\.ts$',
             '.*/e2e/pages/.*\\.(module|page|dialog)\\.ts',
             '.*/e2e/specs/\\w+/[^/]*\\.e2e-spec\\.ts',
-            '.*/e2e/cypress.*\\.ts',
+            '.*/e2e/cypress[^/]*\\.ts$',
           ],
         },
       ],
