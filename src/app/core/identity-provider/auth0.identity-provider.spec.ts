@@ -5,12 +5,13 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 import { anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import { getLoggedInCustomer, getUserAuthorized, getUserLoading } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
@@ -37,6 +38,7 @@ describe('Auth0 Identity Provider', () => {
   const oAuthService = mock(OAuthService);
   const apiService = mock(ApiService);
   const apiTokenService = mock(ApiTokenService);
+  const tokenService = mock(TokenService);
   const instanceCreators = spy(InstanceCreators);
   let auth0IdentityProvider: Auth0IdentityProvider;
   let store$: MockStore;
@@ -50,6 +52,7 @@ describe('Auth0 Identity Provider', () => {
         { provide: ApiService, useFactory: () => instance(apiService) },
         { provide: ApiTokenService, useFactory: () => instance(apiTokenService) },
         { provide: APP_BASE_HREF, useValue: baseHref },
+        { provide: TokenService, useFactory: () => instance(tokenService) },
         provideMockStore(),
         provideRouter([
           { path: 'register', children: [] },
@@ -84,6 +87,7 @@ describe('Auth0 Identity Provider', () => {
     beforeEach(() => {
       resetCalls(apiService);
       resetCalls(apiTokenService);
+      resetCalls(tokenService);
       store$.overrideSelector(getLoggedInCustomer, undefined as Customer);
       store$.overrideSelector(getUserLoading, true);
       store$.overrideSelector(getSsoRegistrationRegistered, false);
@@ -99,7 +103,7 @@ describe('Auth0 Identity Provider', () => {
         [User] Load User by API Token:
           
       `);
-      verify(apiTokenService.removeApiToken()).never();
+      verify(apiTokenService.discardApiToken()).never();
     }));
 
     it('should poll for the id token outside the Angular zone and continue registration inside the zone', fakeAsync(() => {
@@ -131,7 +135,7 @@ describe('Auth0 Identity Provider', () => {
       auth0IdentityProvider.init(auth0Config);
       tick(500);
       expect(router.url).toContain('/register');
-      verify(apiTokenService.removeApiToken()).never();
+      verify(apiTokenService.discardApiToken()).never();
     }));
 
     it('should reload user by api token after registration form was submitted', fakeAsync(() => {
@@ -142,7 +146,7 @@ describe('Auth0 Identity Provider', () => {
       tick(500);
 
       verify(storeSpy$.dispatch(anything())).twice();
-      verify(apiTokenService.removeApiToken()).never();
+      verify(apiTokenService.discardApiToken()).never();
     }));
 
     it('should not reload user and navigate to logout after registration form was cancelled', fakeAsync(() => {
@@ -154,17 +158,18 @@ describe('Auth0 Identity Provider', () => {
 
       verify(storeSpy$.dispatch(anything())).once();
       expect(router.url).toContain('/logout');
-      verify(apiTokenService.removeApiToken()).never();
+      verify(apiTokenService.discardApiToken()).never();
     }));
 
-    it('should remove apiToken and navigate to account page after successful registration', fakeAsync(() => {
+    it('should discard the ICM session and navigate to account page after successful registration', fakeAsync(() => {
       store$.overrideSelector(getUserLoading, false);
       store$.overrideSelector(getSsoRegistrationRegistered, true);
       store$.overrideSelector(getUserAuthorized, true);
 
       auth0IdentityProvider.init(auth0Config);
       tick(500);
-      verify(apiTokenService.removeApiToken()).once();
+      verify(apiTokenService.discardApiToken()).once();
+      verify(tokenService.logOut()).once();
       expect(router.url).toContain('/account');
     }));
 
@@ -180,8 +185,19 @@ describe('Auth0 Identity Provider', () => {
       tick(500);
 
       verify(storeSpy$.dispatch(anything())).once();
-      verify(apiTokenService.removeApiToken()).once();
+      verify(apiTokenService.discardApiToken()).once();
+      verify(tokenService.logOut()).once();
       expect(router.url).not.toContain('/account');
+    }));
+
+    it('should discard the ICM session when the id token cannot be processed', fakeAsync(() => {
+      when(apiService.post(anything(), anything())).thenReturn(throwError(() => new Error('processtoken failed')));
+
+      auth0IdentityProvider.init(auth0Config);
+      tick(500);
+
+      verify(apiTokenService.discardApiToken()).once();
+      verify(tokenService.logOut()).once();
     }));
   });
 
