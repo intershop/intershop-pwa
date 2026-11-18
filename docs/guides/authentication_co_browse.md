@@ -47,6 +47,7 @@ identityProviders: {
 > [!NOTE]
 > With this configuration, the `Co-Browse` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the user.
 > To restore the session on a reload during development, add `this.apiTokenService.restore$(['user', 'order']).subscribe(noop);` to the `init()` method of the [`CoBrowseIdentityProvider`](../../src/app/core/identity-provider/co-browse.identity-provider.ts).
+> Its `hasUserSession()` method then has to return `this.apiTokenService.hasUserApiTokenCookie()`, so that personalized content waits for the PGID of the restored user.
 > The session of an existing `apiToken` cookie is then also restored in parallel to a login on the `cobrowse` route.
 
 For production-like deployments, the PWA has to be be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.

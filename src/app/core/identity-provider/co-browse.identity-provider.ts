@@ -34,6 +34,11 @@ export class CoBrowseIdentityProvider implements IdentityProvider {
     };
   }
 
+  // the session of the apiToken cookie is not restored, the user is only logged in with the given access token
+  hasUserSession(): boolean {
+    return false;
+  }
+
   init() {
     this.apiTokenService.getCookieVanishes$().subscribe(type => {
       if (type === 'user') {

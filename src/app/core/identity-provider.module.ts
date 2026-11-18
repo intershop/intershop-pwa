@@ -1,7 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { noop } from 'rxjs';
+import { noop, of } from 'rxjs';
 
 import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
 
@@ -69,6 +69,7 @@ export class IdentityProviderModule {
               triggerInvite: () => true,
               getCapabilities: () => capabilities,
             }),
+            hasUserSession$: () => of(false),
             getType: () => 'ICM',
           },
         },
