@@ -8,7 +8,7 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SparqueConfig } from 'ish-core/models/sparque-config/sparque-config.model';
 import { User } from 'ish-core/models/user/user.model';
 import {
   getCurrentCurrency,

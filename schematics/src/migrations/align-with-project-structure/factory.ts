@@ -14,8 +14,8 @@ export interface MovedFile {
 }
 
 /**
- * Files moved with Intershop PWA 14.0.0 to match the project structure, as `ish-core` import paths, with the exports
- * renamed along with them.
+ * Files moved with Intershop PWA 14.0.0 to match the project structure, with the exports renamed along with them.
+ * Paths are `ish-core` import paths or, for files without a path alias like extensions, project paths.
  */
 export const MOVED_FILES: MovedFile[] = [
   {
@@ -34,6 +34,14 @@ export const MOVED_FILES: MovedFile[] = [
   {
     from: 'ish-core/directives/intersection-observer-util',
     to: 'ish-core/directives/utils/intersection-observer',
+  },
+  {
+    from: 'ish-core/models/sparque/sparque-config.model',
+    to: 'ish-core/models/sparque-config/sparque-config.model',
+  },
+  {
+    from: '/src/app/extensions/rating/models/product-reviews/product-review.model',
+    to: '/src/app/extensions/rating/models/product-review/product-review.model',
   },
 ];
 

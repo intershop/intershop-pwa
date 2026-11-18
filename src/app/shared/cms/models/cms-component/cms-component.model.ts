@@ -1,3 +1,4 @@
+/* eslint-disable ish-custom-rules/project-structure */
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
 
 export interface CMSComponent {

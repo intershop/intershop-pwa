@@ -8,7 +8,7 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
-import { ProductReview } from '../../models/product-reviews/product-review.model';
+import { ProductReview } from '../../models/product-review/product-review.model';
 
 @Component({
   selector: 'ish-product-reviews',

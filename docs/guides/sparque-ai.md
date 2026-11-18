@@ -26,7 +26,7 @@ SPARQUE.AI works as an AI-powered search engine and delivers various types of in
 ## Configuration
 
 To use the SPARQUE search engine, the PWA must be configured accordingly.
-The configuration data is described in the [SPARQUE Config Model](../../src/app/core/models/sparque/sparque-config.model.ts) and contains values required for the interaction with the SPARQUE server.
+The configuration data is described in the [SPARQUE Config Model](../../src/app/core/models/sparque-config/sparque-config.model.ts) and contains values required for the interaction with the SPARQUE server.
 Depending on the PWA setup, you have various options for storing the SPARQUE configuration.
 In any case, the names of the configuration parameters must correspond exactly to the names of the parameters in the SPARQUE config model.
 

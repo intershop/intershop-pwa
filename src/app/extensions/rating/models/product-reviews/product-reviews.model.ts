@@ -1,4 +1,4 @@
-import { ProductReview } from './product-review.model';
+import { ProductReview } from '../product-review/product-review.model';
 
 export interface ProductReviews {
   sku: string;

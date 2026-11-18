@@ -8,7 +8,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
-import { ProductReview } from '../../models/product-reviews/product-review.model';
+import { ProductReview } from '../../models/product-review/product-review.model';
 
 @Component({
   selector: 'ish-product-review-create-dialog',

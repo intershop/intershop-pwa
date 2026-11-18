@@ -34,6 +34,7 @@ Imports starting with `projects/` are now reported as well, import what a projec
 Its options are validated now, so entries in customized configurations need `filePattern`, `name` and `message`, and must not contain other properties than `importNamePattern` and `starImport`.
 The `ish-custom-rules/project-structure` rule checks file paths again, since a catch-all entry in `pathPatterns` had disabled this, so add patterns for own file locations that are reported.
 Its `patterns` now also apply to exported functions and constants, and functional guards like `fooBarGuard` have to be in a `guards/foo-bar.guard.ts` or `pages/<page>/foo-bar.guard.ts` file.
+Model files (`*.model.ts`) are no longer ignored and have to be named after their `models/<name>/` folder like the other model files.
 The `jsdoc/*` rules are based on the `flat/recommended-typescript` config of [`eslint-plugin-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc#configuration) without `jsdoc/require-jsdoc`, `jsdoc/require-param` and `jsdoc/require-returns`, and `jsdoc/require-property-type` has been disabled.
 
 Additionally, the following rules have been enabled.
@@ -100,6 +101,8 @@ The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `i
 The `MetricsDetailLevel` enum has been moved from `ish-core/models/metrics/metrics-detail-level` to `ish-core/configurations/injection-keys`.
 The `PaypalClientConfig` interface has been moved from `ish-core/models/paypal-client-config/paypal-client-config` to `ish-core/models/paypal-config/paypal-config.model`.
 The `fromIntersectionObserver` function and the `IntersectionStatus` type have been moved from `ish-core/directives/intersection-observer-util` to `ish-core/directives/utils/intersection-observer`.
+The `SparqueConfig` interface has been moved from `ish-core/models/sparque/sparque-config.model` to `ish-core/models/sparque-config/sparque-config.model`.
+The `ProductReview` interface and the `ProductReviewCreationType` type of the rating extension have been moved from `models/product-reviews/product-review.model` to `models/product-review/product-review.model`.
 To update the imports in custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
 
 ```bash

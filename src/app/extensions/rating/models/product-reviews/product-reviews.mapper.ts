@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { ProductReview } from './product-review.model';
+import { ProductReview } from '../product-review/product-review.model';
+
 import { ProductReviews } from './product-reviews.model';
 
 @Injectable({ providedIn: 'root' })

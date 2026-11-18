@@ -105,6 +105,23 @@ export const observe = fromIntersectionObserver;
     `);
   });
 
+  it('should update relative imports of a moved extension file', async () => {
+    const content = await migrate(
+      '/src/app/extensions/rating/shared/custom-review/custom-review.component.ts',
+      `import { ProductReview } from '../../models/product-reviews/product-review.model';
+
+export type Review = ProductReview;
+`
+    );
+
+    expect(content).toMatchInlineSnapshot(`
+      "import { ProductReview } from '../../models/product-review/product-review.model';
+
+      export type Review = ProductReview;
+      "
+    `);
+  });
+
   it('should skip a move if the old file still exists', async () => {
     appTree.create('/src/app/core/models/paypal-client-config/paypal-client-config.ts', 'export interface X {}');
     const source = `import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';

@@ -9,7 +9,7 @@ import { displayInfoMessage, displaySuccessMessage } from 'ish-core/store/core/m
 import { loadProduct } from 'ish-core/store/shopping/products';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
-import { ProductReview, ProductReviewCreationType } from '../../models/product-reviews/product-review.model';
+import { ProductReview, ProductReviewCreationType } from '../../models/product-review/product-review.model';
 import { ProductReviews } from '../../models/product-reviews/product-reviews.model';
 import { ReviewsService } from '../../services/reviews/reviews.service';
 

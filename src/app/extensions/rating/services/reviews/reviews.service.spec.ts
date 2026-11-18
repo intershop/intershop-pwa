@@ -6,7 +6,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
-import { ProductReview } from '../../models/product-reviews/product-review.model';
+import { ProductReview } from '../../models/product-review/product-review.model';
 
 import { ReviewsService } from './reviews.service';
 

@@ -1,4 +1,3 @@
-/* eslint-disable ish-custom-rules/project-structure */
 import { Injectable } from '@angular/core';
 
 import { ImageMapper } from 'ish-core/models/image/image.mapper';
