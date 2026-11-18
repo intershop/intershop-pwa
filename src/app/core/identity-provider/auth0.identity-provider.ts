@@ -10,6 +10,7 @@ import { catchError, filter, first, map, switchMap, take, tap } from 'rxjs/opera
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { UserData } from 'ish-core/models/user/user.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
+import { TokenService } from 'ish-core/services/token/token.service';
 import { getSsoRegistrationCancelled, getSsoRegistrationRegistered } from 'ish-core/store/customer/sso-registration';
 import {
   getLoggedInCustomer,
@@ -40,6 +41,7 @@ export class Auth0IdentityProvider implements IdentityProvider {
     private store: Store,
     private router: Router,
     private apiTokenService: ApiTokenService,
+    private tokenService: TokenService,
     private ngZone: NgZone,
     parent: Injector,
     @Inject(APP_BASE_HREF) private baseHref: string
@@ -110,7 +112,10 @@ export class Auth0IdentityProvider implements IdentityProvider {
         })
       )
       .subscribe(() => {
-        this.apiTokenService.removeApiToken();
+        // ICM requests are authenticated with the Auth0 id token, the anonymous ICM session must not be restored or refreshed
+        this.apiTokenService.discardApiToken();
+        this.tokenService.logOut();
+
         if (this.router.url.startsWith('/loading') || this.router.url.startsWith('/register')) {
           this.router.navigateByUrl(this.oauthService.state ? decodeURIComponent(this.oauthService.state) : '/account');
         }
@@ -188,7 +193,6 @@ export class Auth0IdentityProvider implements IdentityProvider {
         ),
         switchMap(() => this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
         catchError((error: HttpError) => {
-          this.apiTokenService.removeApiToken();
           this.triggerLogout();
           return of(error);
         })
@@ -211,7 +215,6 @@ export class Auth0IdentityProvider implements IdentityProvider {
         }),
         switchMap(() => this.store.pipe(select(getUserAuthorized), whenTruthy(), first())),
         catchError((error: HttpError) => {
-          this.apiTokenService.removeApiToken();
           this.triggerLogout();
           return of(error);
         })
