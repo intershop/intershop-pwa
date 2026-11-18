@@ -62,6 +62,8 @@ export class ICMIdentityProvider implements IdentityProvider {
       // on a directly opened /logout route the guard is triggered before the delayed init(),
       // the session of the apiToken cookie is not restored, so it is discarded without revoking its tokens
       this.apiTokenService.discardApiToken();
+      // clean up the remaining session data, e.g. the basket-id of a punchout or co-browse session
+      this.accountFacade.logoutUser({ revokeApiToken: false });
     }
     return this.accountFacade.isLoggedIn$.pipe(
       // wait until the user is logged out before you go to homepage to prevent unnecessary REST calls

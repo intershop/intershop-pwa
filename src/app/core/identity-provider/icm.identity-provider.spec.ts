@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
+import { anything, deepEqual, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -123,6 +123,7 @@ describe('Icm Identity Provider', () => {
 
       (icmIdentityProviderBeforeInit.triggerLogout() as Observable<UrlTree>).subscribe(() => {
         verify(apiTokenService.discardApiToken()).once();
+        verify(accountFacade.logoutUser(deepEqual({ revokeApiToken: false }))).once();
         verify(accountFacade.logoutUser()).never();
         done();
       });

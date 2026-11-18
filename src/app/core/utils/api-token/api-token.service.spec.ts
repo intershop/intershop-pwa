@@ -391,9 +391,9 @@ describe('Api Token Service', () => {
     );
 
     describe('on a failed token refresh', () => {
-      const refresh$ = (refreshToken: string, status: number) => {
+      const refresh$ = (refreshToken: string, status: number, error = 'Unauthorized') => {
         const next: HttpHandler = {
-          handle: () => throwError(() => new HttpErrorResponse({ status, error: 'Unauthorized' })),
+          handle: () => throwError(() => new HttpErrorResponse({ status, error })),
         };
         const body = new HttpParams().set('grant_type', 'refresh_token').set('refresh_token', refreshToken);
         return apiTokenService.intercept(new HttpRequest('POST', 'https://icm/token', body), next);
@@ -410,6 +410,15 @@ describe('Api Token Service', () => {
           });
         }
       );
+
+      it('should remove the apiToken cookie when the ICM rejects its refresh token with an authentication token error', done => {
+        refresh$(initialApiTokenCookie.apiToken, 401, 'Unauthorized ([none] Error when decrypting token)').subscribe({
+          error: () => {
+            verify(cookieServiceMock.remove('apiToken', anything())).once();
+            done();
+          },
+        });
+      });
 
       it('should keep the apiToken cookie on server errors', done => {
         refresh$(initialApiTokenCookie.apiToken, 503).subscribe({

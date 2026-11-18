@@ -313,7 +313,8 @@ export class ApiTokenService {
                 return event;
               }),
               catchError(err => {
-                if (this.isAuthTokenError(err)) {
+                // token grants are sent without authentication header, a rejected one is handled below
+                if (this.isAuthTokenError(err) && !this.isTokenGrant(request)) {
                   this.invalidateApiToken();
 
                   // retry request without auth token
