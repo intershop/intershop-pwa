@@ -213,6 +213,7 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/only-throw-error': 'warn',
       // requires strictNullChecks
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@typescript-eslint/prefer-promise-reject-errors': [
@@ -848,7 +849,6 @@ export default defineConfig([
       ],
       'no-sequences': 'error',
       'no-template-curly-in-string': 'error',
-      'no-throw-literal': 'warn',
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
       'prefer-object-spread': 'error',
@@ -878,8 +878,8 @@ export default defineConfig([
       'unused-imports/no-unused-imports': 'error',
 
       // Security
+      '@typescript-eslint/no-implied-eval': 'error',
       'no-eval': 'error',
-      'no-implied-eval': 'error',
     },
   },
   // facade overrides

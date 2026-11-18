@@ -70,7 +70,8 @@ export class CMSProductListRestComponent implements CMSComponent, OnChanges {
       // a given mapper function can be applied to the REST 'data' to map the data to an Array of SKUs
       // using a mapper function requires the CSP header for 'script-src' to allow 'unsafe-eval'
       let skus: string[] = this.pagelet.hasParam('ProductsRestResponseMapper')
-        ? Function('data', `"use strict"; return ${this.pagelet.stringParam('ProductsRestResponseMapper')}`)(data)
+        ? // eslint-disable-next-line @typescript-eslint/no-implied-eval
+          Function('data', `"use strict"; return ${this.pagelet.stringParam('ProductsRestResponseMapper')}`)(data)
         : data;
 
       // limit the number of rendered products
