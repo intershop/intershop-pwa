@@ -680,7 +680,6 @@ export default defineConfig([
 
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
-      'arrow-parens': ['warn', 'as-needed'],
       complexity: [
         'warn',
         {
@@ -689,7 +688,6 @@ export default defineConfig([
         },
       ],
       curly: 'warn',
-      'dot-notation': 'off',
       eqeqeq: ['error', 'always'],
       'guard-for-in': 'error',
       'id-blacklist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
@@ -707,11 +705,7 @@ export default defineConfig([
         },
       ],
       'no-duplicate-imports': 'error',
-      'no-empty': 'warn',
-      'no-extra-boolean-cast': 'error',
-      'no-irregular-whitespace': 'error',
       'no-lonely-if': 'warn',
-      'no-multiple-empty-lines': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
       'no-restricted-globals': [
@@ -853,7 +847,6 @@ export default defineConfig([
         },
       ],
       'no-sequences': 'error',
-      'no-shadow': 'off',
       'no-template-curly-in-string': 'error',
       'no-throw-literal': 'warn',
       'no-unused-vars': [
@@ -867,10 +860,8 @@ export default defineConfig([
           caughtErrors: 'none',
         },
       ],
-      'no-var': 'warn',
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
-      'prefer-const': 'warn',
       'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
