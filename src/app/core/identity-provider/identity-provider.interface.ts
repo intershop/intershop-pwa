@@ -45,4 +45,11 @@ export interface IdentityProvider<ConfigType = never> {
    * Interceptor for all API requests directed to the ICM
    */
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>>;
+
+  /**
+   * Whether the session of a logged in user exists that is restored (e.g. after a reload),
+   * the personalization of the content waits for the PGID of this user then.
+   * If not provided, a user apiToken cookie indicates such a session.
+   */
+  hasUserSession?(): boolean;
 }

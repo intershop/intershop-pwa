@@ -55,6 +55,12 @@ Custom identity providers no longer need to remove it themselves.
 
 After the Auth0 login, the Auth0 identity provider now removes the `apiToken` cookie and the ICM tokens of the anonymous user, so the anonymous session is no longer restored on a reload or after the logout.
 
+**Personalization status by identity provider**
+
+Before the personalization status is determined, the PWA now asks the identity provider whether a user session is restored, using the new optional `hasUserSession()` method of the `IdentityProvider` interface.
+Identity providers without this method keep the previous behavior based on the user `apiToken` cookie.
+Implement `hasUserSession()` in custom identity providers that do not restore the user session from the `apiToken` cookie, as done by the Auth0, punchout, and co-browse identity providers.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

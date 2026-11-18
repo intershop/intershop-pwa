@@ -69,6 +69,11 @@ export class PunchoutIdentityProvider implements IdentityProvider<PunchoutIdenti
     };
   }
 
+  // the session of the apiToken cookie is not restored, the user is only logged in with the given login parameters
+  hasUserSession(): boolean {
+    return false;
+  }
+
   init() {
     this.apiTokenService.getCookieVanishes$().subscribe(type => {
       if (type === 'user') {

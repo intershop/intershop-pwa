@@ -57,6 +57,11 @@ export class Auth0IdentityProvider implements IdentityProvider {
     };
   }
 
+  // the user session is the id token of Auth0, the ICM tokens and apiToken cookie are only used for anonymous users
+  hasUserSession(): boolean {
+    return this.oauthService.hasValidIdToken();
+  }
+
   init(config: Auth0Config) {
     const effectiveOrigin = this.baseHref === '/' ? window.location.origin : window.location.origin + this.baseHref;
 

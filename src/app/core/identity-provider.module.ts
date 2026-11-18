@@ -1,7 +1,7 @@
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { noop } from 'rxjs';
+import { noop, of } from 'rxjs';
 
 import { PunchoutIdentityProviderModule } from '../extensions/punchout/identity-provider/punchout-identity-provider.module';
 
@@ -55,20 +55,22 @@ export class IdentityProviderModule {
   static forTesting(
     capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }
   ): ModuleWithProviders<IdentityProviderModule> {
+    const identityProvider = {
+      init: noop,
+      intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
+      triggerLogin: () => true,
+      triggerLogout: () => true,
+      triggerInvite: () => true,
+      getCapabilities: () => capabilities,
+    };
     return {
       ngModule: IdentityProviderModule,
       providers: [
         {
           provide: IdentityProviderFactory,
           useValue: {
-            getInstance: () => ({
-              init: noop,
-              intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
-              triggerLogin: () => true,
-              triggerLogout: () => true,
-              triggerInvite: () => true,
-              getCapabilities: () => capabilities,
-            }),
+            getInstance: () => identityProvider,
+            getInstance$: () => of(identityProvider),
             getType: () => 'ICM',
           },
         },
