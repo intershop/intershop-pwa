@@ -35,7 +35,7 @@ interface AddressElement {
 
 interface SubItems {
   Name?: string;
-  // eslint-disable-next-line id-blacklist
+  // eslint-disable-next-line id-denylist
   Number?: string;
   Base?: string;
 }

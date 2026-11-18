@@ -690,7 +690,7 @@ export default defineConfig([
       curly: 'warn',
       eqeqeq: ['error', 'always'],
       'guard-for-in': 'error',
-      'id-blacklist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
+      'id-denylist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
       'max-classes-per-file': ['error', 1],
       'max-lines': [
         'warn',

@@ -24,6 +24,7 @@ Unmaintained plugins and some custom rules have been replaced, so rename them in
 | `ish-custom-rules/no-collapsible-if`                | `unicorn/no-lonely-if`                                                                        |
 | `ish-custom-rules/no-object-literal-type-assertion` | `@typescript-eslint/consistent-type-assertions`                                               |
 | `ish-custom-rules/no-testbed-with-then`             | `no-restricted-syntax`                                                                        |
+| `id-blacklist`                                      | `id-denylist`                                                                                 |
 
 Some of these rules check more cases.
 `prefer-object-spread` only reports `Object.assign` calls with an object literal as first argument, so remove `eslint-disable` comments for other `Object.assign` calls.
