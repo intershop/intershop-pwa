@@ -65,6 +65,10 @@ To add or change the functionality of an identity provider, the following steps 
    }
    ```
 
+   If the identity provider does not restore the user session from the `apiToken` cookie, implement the optional `hasUserSession()` method.
+   It tells the PWA whether a user session is restored on startup, so that personalized content waits for the PGID of this user.
+   Without this method, a user `apiToken` cookie indicates such a session.
+
 > [!NOTE]
 > If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
 > Otherwise, difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.

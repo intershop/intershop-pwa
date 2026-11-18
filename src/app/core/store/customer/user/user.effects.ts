@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from, merge } from 'rxjs';
+import { from, merge, of } from 'rxjs';
 import {
   concatMap,
   delay,
@@ -20,6 +20,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -88,7 +89,8 @@ export class UserEffects {
     private paymentService: PaymentService,
     private router: Router,
     private apiTokenService: ApiTokenService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private identityProviderFactory: IdentityProviderFactory
   ) {}
 
   loginUser$ = createEffect(() =>
@@ -304,7 +306,7 @@ export class UserEffects {
   );
 
   /**
-   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if there is no (longer a) user apiToken cookie.
+   * This effect emits the 'personalizationStatusDetermined' action once a PGID is fetched or changed or if the identity provider has no (longer a) user session to restore.
    * It also emits the 'personalizationStatusChanged' action when the PGID actually changes (this includes changes from an to 'undefined').
    */
   determinePersonalizationStatus$ = createEffect(() => {
@@ -318,7 +320,9 @@ export class UserEffects {
     );
 
     const determined$ = merge(pgid$, pgidOnCookieVanishes$).pipe(
-      map(pgid => !this.apiTokenService.hasUserApiTokenCookie() || pgid),
+      switchMap(pgid =>
+        pgid ? of(true) : this.identityProviderFactory.hasUserSession$().pipe(map(hasUserSession => !hasUserSession))
+      ),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())
