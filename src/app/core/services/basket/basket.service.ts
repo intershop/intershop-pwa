@@ -135,9 +135,10 @@ export class BasketService {
   }
 
   /**
-   * Gets the 'current' default basket for the current user authenticated by the given apiToken.
+   * Gets the 'current' default basket for the user of the given refresh token.
+   * The fetched tokens authenticate the basket request and the subsequent requests.
    *
-   * @param apiToken  The authentication token.
+   * @param apiToken  The refresh token.
    * @returns         The basket.
    */
   getBasketByToken(apiToken: string): Observable<Basket> {
@@ -147,7 +148,7 @@ export class BasketService {
       switchMap(() =>
         this.apiService
           .get<BasketData>(`baskets/current`, {
-            headers: this.basketHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            headers: this.basketHeaders,
             params,
           })
           .pipe(map(BasketMapper.fromData))

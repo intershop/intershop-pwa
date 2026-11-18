@@ -172,10 +172,11 @@ export class OrderService {
   }
 
   /**
-   * Gets an anonymous user's order with the given id using the provided apiToken.
+   * Gets an anonymous user's order with the given id using the provided refresh token.
+   * The fetched tokens authenticate the order request and the subsequent requests.
    *
    * @param orderId  The (uuid) of the order.
-   * @param apiToken The api token of the user's most recent request.
+   * @param apiToken The refresh token of the user's most recent session.
    * @returns        The order
    */
   getOrderByToken(orderId: string, apiToken: string): Observable<Order> {
@@ -193,7 +194,7 @@ export class OrderService {
       switchMap(() =>
         this.apiService
           .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
-            headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            headers: this.orderHeaders,
             params,
             skipApiErrorHandling: true,
           })
