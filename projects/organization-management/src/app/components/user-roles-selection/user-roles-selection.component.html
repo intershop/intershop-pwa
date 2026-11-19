@@ -12,8 +12,7 @@
                   <div class="form-check form-control">
                     <label class="mb-2" [for]="item.key">
                       <input class="form-check-input" type="checkbox" [formControlName]="item.key" [id]="item.key" />
-                      <span>{{ role.displayName }}</span
-                      ><br />
+                      <span>{{ role.displayName }}</span><br />
                       @if (role.description) {
                         <span class="input-help">{{ role.description }}</span>
                       }
