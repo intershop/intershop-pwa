@@ -30,8 +30,7 @@
       <p>
         <span>{{
           (order.recurrence ? 'checkout.order.recurring.number.label' : 'checkout.order.number.label') | translate
-        }}</span
-        >&nbsp;
+        }}</span>&nbsp;
         <strong data-testing-id="order-document-number">
           @if (order.customerNo) {
             <a [routerLink]="['/account', order.recurrence ? 'recurring-orders' : 'orders', order.id]">{{

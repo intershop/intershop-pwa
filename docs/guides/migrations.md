@@ -12,6 +12,7 @@ kb_sync_latest_only
 **ESLint 10 update**
 
 ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0) for breaking changes affecting custom rules and configurations.
+`eslint-plugin-unicorn` (v80) and `eslint-plugin-rxjs-angular-x` (v1) have been updated to major versions supporting ESLint 10.
 The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
 The unmaintained `@smarttools/eslint-plugin-rxjs` is replaced by [`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x), so rename `rxjs/` rules to `rxjs-x/` in customized configurations and `eslint-disable` comments.
 The unmaintained `eslint-plugin-ban` is replaced by the ESLint core rules `no-restricted-properties`, `no-restricted-globals`, and `prefer-object-spread`, which only reports `Object.assign` calls with an object literal as first argument (the outdated `atob`/`btoa` ban has been dropped), so replace or remove `ban/ban` in `eslint-disable` comments accordingly.
