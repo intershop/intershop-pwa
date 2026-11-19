@@ -9,6 +9,10 @@ kb_sync_latest_only
 
 ## From 13.0.0 to 13.1.0
 
+**Node.js 24 update**
+
+The Intershop PWA now uses Node.js 24.22.3 LTS with the corresponding npm version 11.19.1.
+
 **Formly 10 update**
 
 `@ngx-formly/core` has been updated to version 10, which requires Angular 21 or newer.
