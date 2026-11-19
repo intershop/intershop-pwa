@@ -7,6 +7,7 @@ import { COOKIE_CONSENT_VERSION } from 'ish-core/configurations/state-keys';
 import { CoreModule } from 'ish-core/core.module';
 import { PWAUrlSerializer } from 'ish-core/routing/pwa-url.serializer';
 import { ZoneChangeDetectionModule } from 'ish-core/zone-change-detection.module';
+import { ShellModule } from 'ish-shell/shell.module';
 
 import { environment } from '../environments/environment';
 
@@ -23,7 +24,6 @@ import { StoreLocatorRoutingModule } from './extensions/store-locator/pages/stor
 import { WishlistSharingRoutingModule } from './extensions/wishlists/pages/wishlist-sharing-routing.module';
 import { AppLastRoutingModule } from './pages/app-last-routing.module';
 import { AppRoutingModule } from './pages/app-routing.module';
-import { ShellModule } from './shell/shell.module';
 
 @NgModule({
   // Order matters: AppLastRoutingModule must be last because it contains the wildcard route.

@@ -13,10 +13,10 @@ import { writeHeapSnapshot } from 'v8';
 import 'zone.js/node';
 
 import { METRICS_DETAIL_LEVEL, MetricsDetailLevel } from 'ish-core/configurations/injection-keys';
+import { icmCallsCache } from 'ish-core/interceptors/ssr-cache.interceptor';
 import { getLogger } from 'ish-core/utils/ssr-logging/ssr-logging.service';
 import { REQUEST_ID, RESPONSE } from 'ish-core/utils/ssr/ssr.tokens';
 
-import { icmCallsCache } from './src/app/core/interceptors/ssr-cache.interceptor';
 import {
   APP_BASE_HREF,
   AppServerModule,

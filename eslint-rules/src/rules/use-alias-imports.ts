@@ -24,68 +24,67 @@ const useAliasImportsRule: TSESLint.RuleModule<keyof typeof messages> = {
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration) {
         const literalString = node.source.value.toString();
-        const absPath = calculateAbsolutePath(basePath, literalString);
-        if (absPath) {
-          const aliasImports = getAliasImports();
-          aliasImports.forEach(({ pattern, alias }) => {
-            if (new RegExp(pattern).test(absPath)) {
-              context.report({
-                node,
-                messageId: 'noAlias',
-                data: {
-                  alias,
-                },
-                fix: fixer => fixer.replaceText(node.source, `'${alias}${absPath.replace(new RegExp(pattern), '')}'`),
-              });
-            }
-          });
-        }
+        const relative = literalString.startsWith('.');
+        const importPath = relative ? calculateAbsolutePath(basePath, literalString) : literalString;
+        getAliasImports().forEach(({ path, alias }) => {
+          const pattern = new RegExp(`${relative ? '.*/' : '^'}${path}`);
+          // local imports are only reported when they lead into the aliased folder from outside
+          const leavesFolder = !/^\.(\/|$)/.test(literalString) || !pattern.test(`${basePath}/`);
+          if (leavesFolder && pattern.test(importPath)) {
+            context.report({
+              node,
+              messageId: 'noAlias',
+              data: {
+                alias,
+              },
+              fix: fixer => fixer.replaceText(node.source, `'${alias}${importPath.replace(pattern, '')}'`),
+            });
+          }
+        });
       },
     };
   },
 };
 
 /**
- * calculate the absolute path for the given import
+ * calculate the absolute path for the given relative import
  *
  * @param basePath path to the current file, without the filename
- * @param literal path of the import
+ * @param literal relative path of the import
  * @returns the absolute path of the import
  */
 function calculateAbsolutePath(basePath: string, literal: string): string {
-  if (literal.startsWith('..')) {
-    const myPath = basePath.split('/');
-    const otherPath = literal.split('/').reverse();
-    while (otherPath.length && otherPath[otherPath.length - 1] === '..') {
-      otherPath.pop();
+  const myPath = basePath.split('/');
+  for (const el of literal.split('/')) {
+    if (el === '..') {
       myPath.pop();
-    }
-    for (const el of otherPath.reverse()) {
+    } else if (el !== '.') {
       myPath.push(el);
     }
-    return myPath.join('/');
   }
+  return myPath.join('/');
 }
 
 /**
  * get paths with its alias names from the tsconfig.json
  *
- * @returns pairs of path patterns and alias strings, which can be resolved by the tsconfig.json
+ * @returns pairs of paths and alias strings, which can be resolved by the tsconfig.json
  */
-function getAliasImports(): { pattern: string; alias: string }[] {
+function getAliasImports(): { path: string; alias: string }[] {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- revert strongly typed CommentJSONValue (since version 4.2.0)
     const config = parse(fs.readFileSync('./tsconfig.json', { encoding: 'utf-8' })) as any;
     if (config?.compilerOptions?.paths) {
       const paths = config.compilerOptions.paths;
       return Object.keys(paths).map(key => ({
-        pattern: `.*/${paths[key][0].replace(/\/\*$/, '/')}`,
+        path: paths[key][0].replace(/\/\*$/, '/'),
         alias: key.replace(/\/\*$/, '/'),
       }));
     }
   } catch (err) {
     console.warn(err);
   }
+  return [];
 }
 
 export default useAliasImportsRule;

@@ -38,6 +38,7 @@ Its options are validated now, so entries in customized configurations need `fil
 The regular expressions in the `paths` of `no-restricted-imports` never matched, since `paths` only compare exact module names.
 They are `patterns` now and report imports of specific environments, paths with `node_modules` or starting with `app/` or `src/`, and store actions or selectors that bypass the `index.ts` of their store.
 Entries for `lodash`, deep `rxjs` imports and the `ish-core` alias have been removed, since `ish-custom-rules/ban-imports-file-pattern`, `rxjs-x/no-internal` and `ish-custom-rules/use-alias-imports` cover them.
+The `ish-custom-rules/use-alias-imports` rule now also reports imports starting with an aliased path like `src/app/core/` and `./` imports leading into an aliased folder, e.g., `./shell/shell.module` in `src/app`; run `npm run lint -- --fix` to replace them with the alias.
 The `ish-custom-rules/project-structure` rule checks file paths again, since a catch-all entry in `pathPatterns` had disabled this, so add patterns for own file locations that are reported.
 Its `patterns` now also apply to exported functions and constants, and functional guards like `fooBarGuard` have to be in a `guards/foo-bar.guard.ts` or `pages/<page>/foo-bar.guard.ts` file.
 Model files (`*.model.ts`) are no longer ignored and have to be named after their `models/<name>/` folder like the other model files.
