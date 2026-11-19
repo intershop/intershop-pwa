@@ -741,53 +741,32 @@ export default defineConfig([
               message: "This operator is not type safe. Use 'mapToProperty' instead.",
             },
             {
-              name: '(?!.*environments/environment.model)(.*environments/environment).+',
-              message: 'Importing specific environments is not allowed. Use the default one.',
-            },
-            {
               name: '@ngrx/router-store',
               importNames: ['SerializedRouterStateSnapshot'],
               message:
                 "We customized the serialization of the router state. Use 'RouterState' from 'ish-core/store/core/router/router.reducer'.",
             },
             {
-              name: 'lodash.*',
-            },
-            {
               name: 'ts-mockito/lib/ts-mockito',
               message: "use import from 'ts-mockito'",
             },
+          ],
+          patterns: [
             {
-              name: '*/src/.*',
-              message: "Import with 'src' seems to be wrong. Transform into relative import, please.",
+              regex: 'environments/environment\\.(?!model$)[^/]+$',
+              message: 'Importing specific environments is not allowed. Use the default one.',
             },
             {
-              name: '.*node_modules/(.*)',
+              regex: '(^|/)node_modules/',
               message: "import with 'node_modules' seems to be wrong",
             },
             {
-              name: '^(app|src)/.*',
-              message: 'Transform into relative import, please.',
+              regex: '^(app|src)/',
+              message: 'Use an import alias like ish-core, ish-shared or ish-shell, or a relative import instead.',
             },
             {
-              name: '^[\\./]*/core/(.*)$',
-              message: 'Use import alias ish-core',
-            },
-            {
-              name: '(.*)/$',
-              message: "trailing '/' seems to be wrong",
-            },
-            {
-              name: '^\\.\\/(\\..*$)',
-              message: 'unnecessary local folder reference',
-            },
-            {
-              name: '^(.*store\\/)(.*)\\/\\2.(actions|selectors)$',
+              regex: '^(.*store/)(.*)/\\2\\.(actions|selectors)$',
               message: 'use aggregation import instead.',
-            },
-            {
-              name: 'rxjs(?!($|/operators$))',
-              message: "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'",
             },
           ],
         },

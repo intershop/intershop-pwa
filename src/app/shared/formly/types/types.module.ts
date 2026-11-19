@@ -13,10 +13,11 @@ import { FormlyModule as FormlyBaseModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
-import { CaptchaExportsModule } from 'src/app/extensions/captcha/exports/captcha-exports.module';
 
 import { DirectivesModule } from 'ish-core/directives.module';
 import { SpecialValidators, formlyValidation } from 'ish-shared/forms/validators/special-validators';
+
+import { CaptchaExportsModule } from '../../../extensions/captcha/exports/captcha-exports.module';
 
 import { CaptchaFieldComponent } from './captcha-field/captcha-field.component';
 import { CheckboxFieldComponent } from './checkbox-field/checkbox-field.component';

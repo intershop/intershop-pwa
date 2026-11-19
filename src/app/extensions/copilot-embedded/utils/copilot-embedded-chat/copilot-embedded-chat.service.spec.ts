@@ -13,7 +13,7 @@ import { OrderTemplatesFacade } from '../../../order-templates/facades/order-tem
 import { OrderTemplate } from '../../../order-templates/models/order-template/order-template.model';
 import { CopilotEmbeddedConfig } from '../../models/copilot-embedded-config/copilot-embedded-config.model';
 import { CopilotEmbeddedService } from '../../services/copilot-embedded/copilot-embedded.service';
-import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config/copilot-embedded-config.selectors';
+import { getCopilotEmbeddedConfig } from '../../store/copilot-embedded-config';
 
 import { CopilotEmbeddedChatService } from './copilot-embedded-chat.service';
 

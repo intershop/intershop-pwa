@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import type { Environment } from 'src/environments/environment.model';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
+
+import type { Environment } from '../../../../environments/environment.model';
 
 export type FeatureToggleType = Environment['features'][number];
 
