@@ -11,45 +11,48 @@ const _ = {
   route: 'register',
 };
 
+// declared outside of cy.intercept: inline, the `string` in the body type would make `link` resolve to the deprecated String.prototype.link
+const cmsInclude = {
+  definitionQualifiedName: 'app_sf_pwa_cm:include.homepage.content.pagelet2-Include',
+  displayName: 'Homepage Content',
+  id: 'include.homepage.content.pagelet2-Include',
+  link: {
+    title: 'include.homepage.content.pagelet2-Include',
+    type: 'Link',
+    uri: 'inSPIRED-inTRONICS-Site/-/cms/includes/include.homepage.content.pagelet2-Include',
+  },
+  pagelets: [
+    {
+      definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component',
+      link: {
+        type: 'Link',
+        uri: 'inSPIRED-inTRONICS-Site/-/cms/pagelets/test_foo_bar',
+        title: 'test_foo_bar',
+      },
+      displayName: 'test',
+      id: 'test_foo_bar',
+      configurationParameters: {
+        HTML: {
+          value: `
+              <div><a href="product://${_.productSku}@inSPIRED-inTRONICS">product</a></div>
+              <div><a href="category://${_.categoryId}@inSPIRED-Computers">category</a></div>
+              <div><a href="page://${_.pageId}">page</a></div>
+              <div><a href="route://${_.route}">route</a></div>
+              <img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`,
+          definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component-HTML',
+        },
+      },
+    },
+  ],
+};
+
 describe('Server Html', () => {
   beforeEach(() => {
     LoginPage.navigateTo();
 
     cy.intercept('GET', '**/cms/**', {
       statusCode: 200,
-      body: {
-        definitionQualifiedName: 'app_sf_pwa_cm:include.homepage.content.pagelet2-Include',
-        displayName: 'Homepage Content',
-        id: 'include.homepage.content.pagelet2-Include',
-        link: {
-          title: 'include.homepage.content.pagelet2-Include',
-          type: 'Link',
-          uri: 'inSPIRED-inTRONICS-Site/-/cms/includes/include.homepage.content.pagelet2-Include',
-        },
-        pagelets: [
-          {
-            definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component',
-            link: {
-              type: 'Link',
-              uri: 'inSPIRED-inTRONICS-Site/-/cms/pagelets/test_foo_bar',
-              title: 'test_foo_bar',
-            },
-            displayName: 'test',
-            id: 'test_foo_bar',
-            configurationParameters: {
-              HTML: {
-                value: `
-                  <div><a href="product://${_.productSku}@inSPIRED-inTRONICS">product</a></div>
-                  <div><a href="category://${_.categoryId}@inSPIRED-Computers">category</a></div>
-                  <div><a href="page://${_.pageId}">page</a></div>
-                  <div><a href="route://${_.route}">route</a></div>
-                  <img src="https://./?[ismediaobject]isfile://inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png|/INTERSHOP/static/WFS/inSPIRED-Site/inTRONICS-b2c-responsive/inSPIRED-inTRONICS-b2c-responsive/en_US/logo%402x.png[/ismediaobject]" alt="" width="92" height="92" style="width: unset;" />`,
-                definitionQualifiedName: 'app_sf_base_cm:component.common.freeStyle.pagelet2-Component-HTML',
-              },
-            },
-          },
-        ],
-      },
+      body: cmsInclude,
     });
 
     at(LoginPage, page => page.header.gotoHomePage());

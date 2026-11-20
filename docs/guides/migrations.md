@@ -64,6 +64,12 @@ The Brotli modules of the NGINX image are now built from the NGINX source bundle
 If your project builds additional dynamic NGINX modules, build them the same way with the `./configure` arguments read from `openresty -V`, otherwise NGINX workers may crash, see [Brotli Configuration](./nginx-startup.md#brotli-configuration).
 The OpenResty version is now set once with the `OPENRESTY_VERSION` build argument in the NGINX _Dockerfile_.
 
+**Prettier 3.10 and Stylelint 18 update**
+
+Prettier 3.10 formats templates differently, e.g., it no longer breaks the closing tag of an inline element onto the next line.
+Stylelint has been updated to version 18 together with its standard and SCSS configurations, which check values more strictly and can report new findings in project styles.
+Run `npm run format` after the update and fix the remaining Stylelint findings manually, see the [Stylelint 18 migration guide](https://stylelint.io/migration-guide/to-18).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
