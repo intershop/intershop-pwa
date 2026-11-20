@@ -41,11 +41,10 @@ The hard-coded `width: 270px` and `aspect-ratio: 1/1` for category tile images i
 
 **Ignored caching parameters no longer passed to SSR**
 
-NGINX no longer passes the query parameters configured in `CACHING_IGNORE_PARAMS` to the SSR process, because they are not part of the cache key and their values could otherwise be cached for all users.
+NGINX no longer passes the query parameters configured in `CACHING_IGNORE_PARAMS` to the SSR process
+As ignored parameters they are not part of the cache key, not relevant for the server-side rendering result and should not end up in cached rendering results.
 The browser still receives these parameters, so client-side processing is not affected.
 If your project needs one of these parameters during server-side rendering, remove it from the list, see [Ignore Parameters During Caching](./nginx-startup.md#ignore-parameters-during-caching).
-The local NGINX cache starts empty with every new NGINX container, but the shared Redis cache keeps pages cached before the update until they expire after `CACHE_DURATION_NGINX_OK`.
-To remove them immediately, [clear the Redis cache](./nginx-startup.md#clearing-the-redis-cache) after all NGINX instances have been updated.
 
 ## From 12.1.0 to 13.0.0
 
