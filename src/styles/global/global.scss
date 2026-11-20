@@ -145,11 +145,13 @@ h1:focus-visible,
 }
 
 a,
-a:not([href]):not([tabindex]) {
+a:not([href]):not([tabindex]),
+a[callback]:not([href]) {
   color: $CORPORATE-PRIMARY;
 }
 
-a:not([href]):not([tabindex]) {
+a:not([href]):not([tabindex]),
+a[callback]:not([href]) {
   &:hover {
     color: $CORPORATE-SECONDARY;
   }
@@ -192,8 +194,9 @@ a {
 .cookies-banner {
   a {
     &[href],
-    &[routerlink] {
-      // links which navigate are underlined by default
+    &[routerlink],
+    &[callback] {
+      // links which navigate or trigger a callback (ishServerHtml) are underlined by default
       @include hover-underline-none();
     }
 
