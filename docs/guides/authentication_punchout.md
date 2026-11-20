@@ -38,6 +38,11 @@ identityProviders: {
 > This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work.
 > As mentioned above, this configuration example is only relevant for punchout development purposes.
 
+> [!NOTE]
+> With this configuration, the `Punchout` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the punchout user.
+> To restore the session on a reload during development, add `this.apiTokenService.restore$(['user', 'order']).subscribe(noop);` to the `init()` method of the [`PunchoutIdentityProvider`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts).
+> The session of an existing `apiToken` cookie is then also restored in parallel to a login on the punchout route.
+
 For production-like deployments, the PWA has to be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path](../guides/nginx-startup.md#override-identity-providers-by-path)) for the NGINX container.
 Nevertheless, the SSR process needs to be provided with the punchout identity provider configuration as one of the available identity providers.
@@ -161,7 +166,8 @@ When the session is created successfully, the punchout tester will redirect to t
 
 The punchout user is logged in with these query parameters only.
 Before the login, the session of a previous login (the `apiToken` cookie and the tokens of the OAuth library in the local storage) is removed and is not restored, even on a reload of the punchout route.
-After the login, the PWA uses the `apiToken` cookie of the new session, so a reload on any other route restores this session with the default identity provider.
+After the login, the PWA stores the new session in the `apiToken` cookie.
+A reload restores this session only on routes that use another identity provider, like the default ICM identity provider in production-like deployments (see [Configuration](#configuration)).
 
 ## Registration
 

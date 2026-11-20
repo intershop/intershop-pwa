@@ -42,7 +42,7 @@ When the `apiToken` cookie vanishes, the ICM identity provider now routes only u
 
 **Punchout and co-browse login without previous session**
 
-The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters.
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters, so a reload restores the session only on routes that use another identity provider.
 Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
 
 **Session basket removed on every logout**
