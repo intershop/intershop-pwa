@@ -18,6 +18,7 @@
             class="btn btn-primary float-end input-group-text"
             data-testing-id="submit-quote-request"
             type="submit"
+            [disabled]="hasItemQuantityError$ | async"
             (click)="submit()"
           >
             {{ 'quote.edit.button.submit.label' | translate }}

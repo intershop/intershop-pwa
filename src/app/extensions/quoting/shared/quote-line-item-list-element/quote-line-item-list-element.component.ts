@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -25,11 +25,17 @@ export class QuoteLineItemListElementComponent implements OnInit {
 
   constructor(
     private quoteContext: QuoteContextFacade,
-    private productContext: ProductContextFacade
+    private productContext: ProductContextFacade,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit() {
     this.editable$ = this.quoteContext.select('editable');
+
+    this.productContext.hold(this.productContext.select('hasQuantityError'), hasError =>
+      this.quoteContext.setItemQuantityError(this.lineItem?.id, hasError)
+    );
+    this.destroyRef.onDestroy(() => this.quoteContext.setItemQuantityError(this.lineItem?.id, false));
 
     this.productContext.hold(this.productContext.validDebouncedQuantityUpdate$(), quantity => {
       this.quoteContext.updateItem({

@@ -34,6 +34,13 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Quote line items respect the minimum order quantity**
+
+Quote request line items validate quantities in the same way as the product detail page.
+If a quantity is below the product's minimum order quantity, the application shows an error and disables the submit button.
+A quantity of 0 does not remove a line item from a quote request.
+To remove a line item, click the Remove button.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**
