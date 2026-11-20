@@ -26,6 +26,7 @@ import {
   timer,
 } from 'rxjs';
 
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -50,13 +51,6 @@ function httpErrorStatus(error: unknown): number {
 function isTemporaryError(error: unknown): boolean {
   const status = httpErrorStatus(error);
   return status === 0 || status >= 500;
-}
-
-/**
- * the ICM rejects an invalid or expired refresh token
- */
-function isRejectedRefresh(error: unknown): boolean {
-  return [400, 401].includes(httpErrorStatus(error));
 }
 
 function storageFactory(): OAuthStorage {
@@ -177,7 +171,7 @@ export class TokenService {
                 delay: error => (isTemporaryError(error) ? timer(REFRESH_RETRY_DELAY) : throwError(() => error)),
               }),
               catchError(error => {
-                if (isRejectedRefresh(error)) {
+                if (HttpErrorHelper.isRejectedTokenRefresh(httpErrorStatus(error))) {
                   console.warn('Error refreshing token, clearing session:', error);
                   this.apiTokenService.invalidateApiToken(refreshedAccessToken);
                 } else {

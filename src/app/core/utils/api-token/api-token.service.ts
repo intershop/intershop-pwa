@@ -36,6 +36,7 @@ import {
 } from 'rxjs/operators';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
@@ -319,7 +320,11 @@ export class ApiTokenService {
    * network or server errors do not indicate an invalid apiToken
    */
   private getRejectedCookieTokenOfRefresh(req: HttpRequest<unknown>, err: unknown): string {
-    if (!(err instanceof HttpErrorResponse) || ![400, 401].includes(err.status) || !(req.body instanceof HttpParams)) {
+    if (
+      !(err instanceof HttpErrorResponse) ||
+      !HttpErrorHelper.isRejectedTokenRefresh(err.status) ||
+      !(req.body instanceof HttpParams)
+    ) {
       return;
     }
     const refreshToken = req.body.get('grant_type') === 'refresh_token' ? req.body.get('refresh_token') : undefined;

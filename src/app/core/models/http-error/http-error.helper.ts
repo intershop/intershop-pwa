@@ -3,6 +3,11 @@ import { escape, escapeRegExp, uniq } from 'lodash-es';
 import { ErrorFeedback, HttpError } from './http-error.model';
 
 export class HttpErrorHelper {
+  /** the ICM rejects an invalid or expired refresh token with HTTP 400 or 401 */
+  static isRejectedTokenRefresh(status: number): boolean {
+    return [400, 401].includes(status);
+  }
+
   /**
    * Formats all messages of an HTTP error for display: the main messages and their causes are rendered as separate lines.
    * ICM messages are trusted and may contain HTML, but the values of their parameters (e.g. a SKU entered by the user) are HTML-escaped.

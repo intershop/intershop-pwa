@@ -69,11 +69,24 @@ describe('Token Service', () => {
   });
 
   describe('refresh token mechanism', () => {
+    let apiTokenService: ApiTokenService;
+
     // the ICMErrorMapperInterceptor maps the error of the token refresh request
     const httpError = (status: number): Error & HttpError => ({
       name: 'HttpErrorResponse',
       status,
       message: `Http failure response: ${status}`,
+    });
+
+    // the service subscribes to the OAuth events on creation, so each test creates it after setting up its mocks
+    const createTokenService = () =>
+      new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector));
+
+    beforeEach(() => {
+      apiTokenService = mock(ApiTokenService);
+      resetCalls(oAuthService);
+      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
+      jest.spyOn(console, 'warn').mockImplementation(noop);
     });
 
     afterEach(() => {
@@ -83,12 +96,9 @@ describe('Token Service', () => {
     });
 
     it('should invalidate the apiToken if the token refresh is rejected', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
-      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
       when(oAuthService.refreshToken()).thenReject(httpError(400));
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       tick();
 
       verify(apiTokenService.invalidateApiToken('access-token')).once();
@@ -96,13 +106,10 @@ describe('Token Service', () => {
     }));
 
     it('should invalidate the access token of the rejected refresh attempt only', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
-      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
       when(oAuthService.getAccessToken()).thenReturn('old-access-token').thenReturn('new-access-token');
       when(oAuthService.refreshToken()).thenReject(httpError(503)).thenReject(httpError(400));
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       tick(60_000);
 
       verify(apiTokenService.invalidateApiToken('new-access-token')).once();
@@ -110,13 +117,9 @@ describe('Token Service', () => {
     }));
 
     it('should keep the session without retry if the token refresh fails for other reasons', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
-      resetCalls(oAuthService);
-      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
       when(oAuthService.refreshToken()).thenReject(httpError(403));
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       tick(180_000);
 
       verify(oAuthService.refreshToken()).once();
@@ -124,13 +127,9 @@ describe('Token Service', () => {
     }));
 
     it('should retry the token refresh and keep the session on temporary errors', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
-      resetCalls(oAuthService);
-      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
       when(oAuthService.refreshToken()).thenReject(httpError(503)).thenResolve();
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       tick(60_000);
 
       verify(oAuthService.refreshToken()).twice();
@@ -138,13 +137,9 @@ describe('Token Service', () => {
     }));
 
     it('should keep the session if the token refresh fails temporarily after all retries', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
-      resetCalls(oAuthService);
-      when(oAuthService.events).thenReturn(of(new OAuthInfoEvent('token_expires', 'access_token')));
       when(oAuthService.refreshToken()).thenReject(httpError(0));
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       tick(180_000);
 
       verify(oAuthService.refreshToken()).times(4);
@@ -152,14 +147,11 @@ describe('Token Service', () => {
     }));
 
     it('should cancel a pending retry of the token refresh on logout', fakeAsync(() => {
-      const apiTokenService = mock(ApiTokenService);
       const events$ = new Subject<OAuthInfoEvent>();
-      resetCalls(oAuthService);
       when(oAuthService.events).thenReturn(events$);
       when(oAuthService.refreshToken()).thenReject(httpError(503));
-      jest.spyOn(console, 'warn').mockImplementation(noop);
 
-      expect(new TokenService(instance(apiService), instance(apiTokenService), TestBed.inject(Injector))).toBeTruthy();
+      createTokenService();
       events$.next(new OAuthInfoEvent('token_expires', 'access_token'));
       tick();
       events$.next(new OAuthInfoEvent('logout'));
