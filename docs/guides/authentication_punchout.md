@@ -41,6 +41,7 @@ identityProviders: {
 > [!NOTE]
 > With this configuration, the `Punchout` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the punchout user.
 > To restore the session on a reload during development, add `this.apiTokenService.restore$(['user', 'order']).subscribe(noop);` to the `init()` method of the [`PunchoutIdentityProvider`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts).
+> Its `hasUserSession()` method then has to return `this.apiTokenService.hasUserApiTokenCookie()`, so that personalized content waits for the PGID of the restored user.
 > The session of an existing `apiToken` cookie is then also restored in parallel to a login on the punchout route.
 
 For production-like deployments, the PWA has to be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
