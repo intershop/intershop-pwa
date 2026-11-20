@@ -2,10 +2,11 @@ import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { once } from 'lodash-es';
 import { Observable, ReplaySubject, noop } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
 import { getIdentityProvider } from 'ish-core/store/core/configuration';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider } from './identity-provider.interface';
@@ -33,7 +34,8 @@ export class IdentityProviderFactory {
   constructor(
     private store: Store,
     private injector: Injector,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private apiTokenService: ApiTokenService
   ) {
     if (!SSR) {
       this.store.pipe(select(getIdentityProvider), whenTruthy(), first()).subscribe(config => {
@@ -88,10 +90,18 @@ export class IdentityProviderFactory {
   }
 
   /**
-   * @returns the identity provider instance as soon as it is created
+   * Whether the identity provider restores the session of a logged in user, see `IdentityProvider.hasUserSession()`.
+   * Without an own implementation of the identity provider, a user apiToken cookie indicates such a session.
+   *
+   * @returns the result as soon as the identity provider instance is created
    */
-  getInstance$(): Observable<IdentityProvider<unknown>> {
-    return this.instance$.asObservable();
+  hasUserSession$(): Observable<boolean> {
+    return this.instance$.pipe(
+      first(),
+      map(instance =>
+        instance?.hasUserSession ? instance.hasUserSession() : this.apiTokenService.hasUserApiTokenCookie()
+      )
+    );
   }
 
   getType(): string {

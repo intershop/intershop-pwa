@@ -5,11 +5,10 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { cold, hot } from 'jasmine-marbles';
-import { EMPTY, Observable, ReplaySubject, Subject, noop, of, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { IdentityProviderFactory } from 'ish-core/identity-provider/identity-provider.factory';
-import { IdentityProvider } from 'ish-core/identity-provider/identity-provider.interface';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
@@ -74,7 +73,6 @@ import { UserEffects } from './user.effects';
 describe('User Effects', () => {
   let actions$: Observable<Action>;
   let cookieVanishes$: Subject<'order' | 'user'>;
-  let identityProvider$: ReplaySubject<IdentityProvider<unknown>>;
   let effects: UserEffects;
   let store: Store;
   let userServiceMock: UserService;
@@ -132,13 +130,10 @@ describe('User Effects', () => {
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.createUserPayment(anything(), anything())).thenReturn(of({ id: 'paymentInstrumentId' }));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
-    when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(false));
     cookieVanishes$ = new Subject();
     when(apiTokenServiceMock.getCookieVanishes$()).thenReturn(cookieVanishes$);
     when(oAuthServiceMock.events).thenReturn(of());
-    identityProvider$ = new ReplaySubject(1);
-    identityProvider$.next({} as IdentityProvider<unknown>);
-    when(identityProviderFactoryMock.getInstance$()).thenReturn(identityProvider$);
 
     TestBed.configureTestingModule({
       imports: [CoreStoreModule.forTesting(['router', 'serverConfig']), CustomerStoreModule.forTesting('user')],
@@ -715,7 +710,7 @@ describe('User Effects', () => {
     });
 
     it('should dispatch personalizationStatusDetermined when the user API token cookie vanishes before the PGID is set', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
 
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
@@ -723,7 +718,7 @@ describe('User Effects', () => {
       tick(200);
       expect(actions).not.toContainEqual(personalizationStatusDetermined());
 
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(false));
       cookieVanishes$.next('user');
 
       tick(200);
@@ -742,36 +737,7 @@ describe('User Effects', () => {
 
       expect(actions.filter(a => a.type === personalizationStatusDetermined.type)).toHaveLength(1);
     }));
-    it('should dispatch personalizationStatusDetermined when no user API token cookie exists', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
-
-      const actions: Action[] = [];
-      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
-
-      tick(200);
-
-      expect(actions).toContainEqual(personalizationStatusDetermined());
-    }));
-
-    it('should wait for the PGID when the identity provider has a user session without user API token cookie', fakeAsync(() => {
-      identityProvider$.next({ hasUserSession: () => true } as IdentityProvider<unknown>);
-
-      const actions: Action[] = [];
-      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
-
-      tick(200);
-      expect(actions).not.toContainEqual(personalizationStatusDetermined());
-
-      store.dispatch(loginUserSuccess({ customer, user: {} as User, pgid: 'test-pgid' }));
-
-      tick(200);
-      expect(actions).toContainEqual(personalizationStatusDetermined());
-    }));
-
-    it('should dispatch personalizationStatusDetermined when the identity provider has no user session despite a user API token cookie', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
-      identityProvider$.next({ hasUserSession: () => false } as IdentityProvider<unknown>);
-
+    it('should dispatch personalizationStatusDetermined when the identity provider has no user session', fakeAsync(() => {
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
 
@@ -781,7 +747,7 @@ describe('User Effects', () => {
     }));
 
     it('should dispatch personalizationStatusDetermined when PGID is set after login', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
 
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
@@ -800,7 +766,7 @@ describe('User Effects', () => {
     }));
 
     it('should dispatch personalizationStatusChanged when PGID changes', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
 
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
@@ -830,7 +796,7 @@ describe('User Effects', () => {
     }));
 
     it('should dispatch personalizationStatusChanged when PGID is cleared', fakeAsync(() => {
-      when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(true);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
 
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));

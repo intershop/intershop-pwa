@@ -10,7 +10,6 @@ import {
   delay,
   exhaustMap,
   filter,
-  first,
   map,
   mergeMap,
   pairwise,
@@ -320,18 +319,10 @@ export class UserEffects {
       takeUntil(this.actions$.pipe(ofType(personalizationStatusDetermined)))
     );
 
-    // without an own implementation of the identity provider, a user apiToken cookie indicates a user session to restore
-    const hasUserSession$ = this.identityProviderFactory.getInstance$().pipe(
-      first(),
-      map(identityProvider =>
-        identityProvider?.hasUserSession
-          ? identityProvider.hasUserSession()
-          : this.apiTokenService.hasUserApiTokenCookie()
-      )
-    );
-
     const determined$ = merge(pgid$, pgidOnCookieVanishes$).pipe(
-      switchMap(pgid => (pgid ? of(true) : hasUserSession$.pipe(map(hasUserSession => !hasUserSession)))),
+      switchMap(pgid =>
+        pgid ? of(true) : this.identityProviderFactory.hasUserSession$().pipe(map(hasUserSession => !hasUserSession))
+      ),
       whenTruthy(),
       delay(100),
       map(() => personalizationStatusDetermined())

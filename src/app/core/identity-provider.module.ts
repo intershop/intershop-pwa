@@ -55,22 +55,21 @@ export class IdentityProviderModule {
   static forTesting(
     capabilities: IdentityProviderCapabilities = { editEmail: true, editPassword: true, editProfile: true }
   ): ModuleWithProviders<IdentityProviderModule> {
-    const identityProvider = {
-      init: noop,
-      intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
-      triggerLogin: () => true,
-      triggerLogout: () => true,
-      triggerInvite: () => true,
-      getCapabilities: () => capabilities,
-    };
     return {
       ngModule: IdentityProviderModule,
       providers: [
         {
           provide: IdentityProviderFactory,
           useValue: {
-            getInstance: () => identityProvider,
-            getInstance$: () => of(identityProvider),
+            getInstance: () => ({
+              init: noop,
+              intercept: (req: HttpRequest<unknown>, next: HttpHandler) => next.handle(req),
+              triggerLogin: () => true,
+              triggerLogout: () => true,
+              triggerInvite: () => true,
+              getCapabilities: () => capabilities,
+            }),
+            hasUserSession$: () => of(false),
             getType: () => 'ICM',
           },
         },
