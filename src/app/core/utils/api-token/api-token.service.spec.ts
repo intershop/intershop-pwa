@@ -279,6 +279,7 @@ describe('Api Token Service', () => {
     it.each([
       'Unauthorized ([warn] Verification of token failed.)',
       'Unauthorized ([none] Error when decrypting token)',
+      'Unauthorized ([none] Unable to parse token.)',
     ])(
       'should remove the invalid apiToken and retry the request without it on error %j',
       fakeAsync((error: string) => {

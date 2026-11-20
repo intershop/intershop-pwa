@@ -36,9 +36,8 @@ To allow other schemes, configure `hookUrlSchemes` for the punchout identity pro
 
 **Invalid `apiToken` cookie**
 
-The `ApiTokenService` now also recognizes the ICM 11 error messages `Error when decrypting token` and `Verification of token failed` as an invalid token, removes the `apiToken` cookie, and repeats the request without the token instead of showing the error page.
-It also removes the `apiToken` cookie when the ICM rejects the token refresh with the token of the cookie (HTTP 400 or 401), unless this token has already been replaced, e.g., by a login.
-A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](./authentication_icm.md#token-lifetime).
+The `ApiTokenService` now removes an `apiToken` cookie with a token the ICM rejects as invalid and repeats the request without it instead of showing the error page.
+A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
 When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
 
 **Punchout and co-browse login without previous session**

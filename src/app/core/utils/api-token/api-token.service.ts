@@ -67,6 +67,7 @@ const DEFAULT_EXPIRY_TIME = 3600000;
 const AUTH_TOKEN_ERRORS = [
   'AuthenticationToken',
   'Unable to decode token',
+  'Unable to parse token',
   'Error when decrypting token',
   'Verification of token failed',
 ];
