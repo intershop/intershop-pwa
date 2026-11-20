@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Store, select } from '@ngrx/store';
+import { Selector, Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
 import {
@@ -36,6 +36,7 @@ import {
 } from 'rxjs/operators';
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
+import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
@@ -62,21 +63,24 @@ export interface ApiTokenCookie {
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
 
+// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
+const AUTH_TOKEN_ERRORS = [
+  'AuthenticationToken',
+  'Unable to decode token',
+  'Unable to parse token',
+  'Error when decrypting token',
+  'Verification of token failed',
+];
+
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  /**
-   * stores current apiToken information, will be used to add authentication header for each request
-   */
+  /** stores current apiToken information, will be used to add authentication header for each request */
   apiToken$: BehaviorSubject<string>;
 
-  /**
-   * informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab)
-   */
+  /** informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab) */
   private cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
-  /**
-   * cookie options which are used to store apiToken cookie, will be overwritten by setApiToken() method
-   */
+  /** cookie options which are used to store apiToken cookie, will be overwritten by setApiToken() method */
   private cookieOptions: CookieOptions = {};
 
   /**
@@ -85,9 +89,7 @@ export class ApiTokenService {
    */
   private initialCookie$: BehaviorSubject<ApiTokenCookie>;
 
-  /**
-   * informs subscriber whenever an apiToken has been changed
-   */
+  /** informs subscriber whenever an apiToken has been changed */
   private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
 
   constructor(
@@ -121,10 +123,9 @@ export class ApiTokenService {
         });
 
       // remove apiToken cookie on logout
-      // path: '/' is added in order to remove cookie within a multi-site configuration (e.g. configured /en, /fr, /de routes)
       this.logoutUser$()
         .pipe(takeUntilDestroyed(destroyRef))
-        .subscribe(() => this.cookiesService.remove('apiToken', { path: '/' }));
+        .subscribe(() => this.removeApiTokenCookie());
 
       // unset apiToken when cookie vanishes/ has been removed unexpectedly and notify public event stream
       this.tokenVanish$()
@@ -144,15 +145,16 @@ export class ApiTokenService {
   }
 
   /**
-   * removes the current apiToken cookie
+   * removes the current apiToken from memory, so it is no longer sent with requests
+   *
+   * The apiToken cookie is not removed, because it is shared with other tabs.
+   * It is removed on logout, by invalidateApiToken() or by discardApiToken().
    */
   removeApiToken() {
     this.apiToken$.next(undefined);
   }
 
-  /**
-   * sets new apiToken and new apiToken cookie options when available
-   */
+  /** sets new apiToken and new apiToken cookie options when available */
   setApiToken(apiToken: string, options?: CookieOptions) {
     if (options) {
       this.cookieOptions = options;
@@ -165,9 +167,7 @@ export class ApiTokenService {
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  /**
-   * trigger actions to restore store information based on initial apiToken cookie
-   */
+  /** trigger actions to restore store information based on initial apiToken cookie */
   restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (SSR) {
       return of(true);
@@ -181,42 +181,63 @@ export class ApiTokenService {
               if (cookie.isAnonymous) {
                 this.store.dispatch(loadBasketByAPIToken({ apiToken: cookie.apiToken }));
                 // wait until basket infos are loaded
-                return race(
-                  this.store.pipe(
-                    select(getCurrentBasketId),
-                    whenTruthy(),
-                    take(1),
-                    map(() => true)
-                  ),
-                  timer(5000).pipe(map(() => false))
-                );
+                return this.waitForStoreValue$(getCurrentBasketId);
               } else {
                 this.store.dispatch(loadUserByAPIToken({ apiToken: cookie.apiToken }));
                 // wait until user is logged in
-                return race(
-                  this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
-                  timer(5000).pipe(map(() => false))
-                );
+                return this.waitForStoreValue$(getUserAuthorized);
               }
             }
             case 'order': {
               this.store.dispatch(loadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken }));
               // wait until order is loaded
-              return race(
-                this.store.pipe(
-                  select(getOrder(cookie.orderId)),
-                  whenTruthy(),
-                  take(1),
-                  map(() => true)
-                ),
-                timer(5000).pipe(map(() => false))
-              );
+              return this.waitForStoreValue$(getOrder(cookie.orderId));
             }
           }
         }
         return of(true);
       })
     );
+  }
+
+  /**
+   * removes the current apiToken and the apiToken cookie of a previous session without logging out the user on server side,
+   * e.g. before a user is logged in with the login information provided by the identity provider (punchout, co-browse)
+   */
+  discardApiToken() {
+    // the apiToken is removed before the cookie, so that the cookie removal is not handled as an unexpected cookie vanish
+    this.removeApiToken();
+    this.removeApiTokenCookie();
+  }
+
+  /**
+   * removes the current apiToken that is no longer valid (e.g. rejected by the ICM or the token refresh failed)
+   * and informs cookieVanishes$ listeners that the cookie is not working as expected
+   *
+   * @param rejectedApiToken  the apiToken rejected by the ICM, a rejected apiToken that has already been replaced is ignored
+   */
+  invalidateApiToken(rejectedApiToken?: string) {
+    // eslint-disable-next-line rxjs/no-subject-value
+    const apiToken = this.apiToken$.value;
+
+    // the rejected apiToken has already been replaced, e.g. by a login or a token refresh
+    if (rejectedApiToken && rejectedApiToken !== apiToken) {
+      return;
+    }
+
+    const cookie = this.parseCookie();
+
+    this.removeApiToken();
+
+    if (cookie) {
+      // the cookie may already contain a new valid apiToken of another tab
+      if (apiToken && cookie.apiToken === apiToken) {
+        this.removeApiTokenCookie();
+        // the invalid apiToken must not be restored
+        this.initialCookie$.next(undefined);
+      }
+      this.cookieVanishes$.next(cookie.type);
+    }
   }
 
   getCookieVanishes$(): Observable<ApiTokenCookieType> {
@@ -252,14 +273,18 @@ export class ApiTokenService {
               }),
               catchError(err => {
                 if (this.isAuthTokenError(err)) {
-                  this.invalidateApiToken();
+                  this.invalidateApiToken(request.headers.get(ApiService.TOKEN_HEADER_KEY));
 
-                  // retry request without auth token
+                  // retry request without auth token, a replacing apiToken might belong to another user
                   const retryRequest = request.clone({
                     headers: request.headers.delete(ApiService.TOKEN_HEADER_KEY),
                   });
                   // timer introduced for testability
                   return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
+                }
+                const rejectedCookieToken = this.getRejectedCookieTokenOfRefresh(request, err);
+                if (rejectedCookieToken) {
+                  this.invalidateApiToken(rejectedCookieToken);
                 }
                 return throwError(() => err);
               })
@@ -270,25 +295,41 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * will remove apiToken and inform cookieVanishes$ listeners that cookie in not working as expected
-   */
-  private invalidateApiToken() {
-    const cookie = this.parseCookie();
-
-    this.removeApiToken();
-
-    if (cookie) {
-      this.cookieVanishes$.next(cookie?.type);
-    }
+  /** emits true as soon as the selected store value is truthy, or false after a timeout of 5 seconds */
+  private waitForStoreValue$(selector: Selector<object, unknown>): Observable<boolean> {
+    return race(
+      this.store.pipe(
+        select(selector),
+        whenTruthy(),
+        take(1),
+        map(() => true)
+      ),
+      timer(5000).pipe(map(() => false))
+    );
   }
 
   private isAuthTokenError(err: unknown) {
     return (
       err instanceof HttpErrorResponse &&
       typeof err.error === 'string' &&
-      (err.error.includes('AuthenticationToken') || err.error.includes('Unable to decode token')) // possible auth token error codes
+      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
     );
+  }
+
+  /**
+   * returns the apiToken of the cookie if the ICM rejected the token refresh with it (e.g. on restore),
+   * network or server errors do not indicate an invalid apiToken
+   */
+  private getRejectedCookieTokenOfRefresh(req: HttpRequest<unknown>, err: unknown): string {
+    if (
+      !(err instanceof HttpErrorResponse) ||
+      !HttpErrorHelper.isRejectedTokenRefresh(err.status) ||
+      !(req.body instanceof HttpParams)
+    ) {
+      return;
+    }
+    const refreshToken = req.body.get('grant_type') === 'refresh_token' ? req.body.get('refresh_token') : undefined;
+    return refreshToken && refreshToken === this.parseCookie()?.apiToken ? refreshToken : undefined;
   }
 
   /**
@@ -305,9 +346,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * process to trigger action to fetch anonymous user token and wait until apiToken is set in service
-   */
+  /** process to trigger action to fetch anonymous user token and wait until apiToken is set in service */
   private anonymousUserTokenMechanism(): Observable<unknown> {
     return this.apiToken$.pipe(
       switchMap(
@@ -336,9 +375,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * notify subscriber when user has been logged out
-   */
+  /** notify subscriber when user has been logged out */
   private logoutUser$(): Observable<boolean> {
     return this.store.pipe(
       select(getLoggedInUser),
@@ -349,9 +386,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * @returns calculate current apiToken cookie value based on the internal store$ state
-   */
+  /** @returns calculate current apiToken cookie value based on the internal store$ state */
   private calculateApiTokenCookieValueOnChanges$(): Observable<ApiTokenCookie> {
     return combineLatest([
       this.store.pipe(select(getLoggedInUser)),
@@ -366,9 +401,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * @returns previous apiToken cookie type when the cookie vanishes
-   */
+  /** @returns previous apiToken cookie type when the cookie vanishes */
   private tokenVanish$(): Observable<ApiTokenCookieType> {
     // access token vanishes routine
 
@@ -383,17 +416,11 @@ export class ApiTokenService {
    * initialize restore$ mechanism when apiToken cookie is created outside of current PWA context
    *
    * Steps:
-   *
    * (1): stream got notified when 'apiToken' cookie changes
-   *
    * (2): check that a user token cookie was added in comparison to previous cookie value
-   *
    * (3): calculate a current apiToken cookie value of current pwa context
-   *
    * (4): filter stream values when calculated apiToken cookie value is not truthy --> cookie was added from another tab
-   *
    * (5): set new apiToken and initialCookie$ values with information from current apiToken cookie in order to fetch data via restore$
-   *
    */
   private tokenCreatedOnAnotherTab$(): Observable<boolean> {
     // cookie created routine when user is logged in in an another tab
@@ -439,6 +466,13 @@ export class ApiTokenService {
           }
         })
       );
+  }
+
+  /**
+   * removes the apiToken cookie, path: '/' is needed to remove it within a multi-site configuration (e.g. configured /en, /fr, /de routes)
+   */
+  private removeApiTokenCookie() {
+    this.cookiesService.remove('apiToken', { path: '/' });
   }
 
   private parseCookie(): ApiTokenCookie {

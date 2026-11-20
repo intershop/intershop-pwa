@@ -50,17 +50,24 @@ To add or change the functionality of an identity provider, the following steps 
      init() {
        this.apiTokenService.restore$().subscribe(noop);
 
-       this.apiTokenService.cookieVanishes$.subscribe(([type]) => {
-         this.accountFacade.logoutUser({ revokeApiToken: false });
-         if (type === 'user') {
-           this.router.navigate(['/login'], {
-             queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
-           });
-         }
-       });
+       this.apiTokenService
+         .getCookieVanishes$()
+         .pipe(withLatestFrom(this.accountFacade.isLoggedIn$))
+         .subscribe(([, isLoggedIn]) => {
+           this.accountFacade.logoutUser({ revokeApiToken: false });
+           if (isLoggedIn) {
+             this.router.navigate(['/login'], {
+               queryParams: { returnUrl: this.router.url, messageKey: 'session_timeout' },
+             });
+           }
+         });
      }
    }
    ```
+
+   If the identity provider does not restore the user session from the `apiToken` cookie, implement the optional `hasUserSession()` method.
+   It tells the PWA whether a user session is restored on startup, so that personalized content waits for the PGID of this user.
+   Without this method, a user `apiToken` cookie indicates such a session.
 
 > [!NOTE]
 > If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
@@ -91,13 +98,23 @@ If a user opens the PWA and already has a valid apiToken cookie, no new token is
 All these functionalities strongly depend on the implementation of the used identity provider.
 This is described in the appropriate identity provider guides in more detail, see [Further References](#further-references) below.
 
+## Token Lifetime
+
+The ICM, punchout and co-browse identity providers use authentication tokens of the ICM, which have a predefined lifetime.
+That means, the token has to be refreshed to prevent it from expiring.
+Once 50% of the access token's lifetime have passed (configured with `timeoutFactor` in the [`TokenService`](../../src/app/core/services/token/token.service.ts)), an info event is emitted.
+This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the oAuth configuration service and the authentication token will be renewed.
+If the token refresh fails due to network or server errors, it is retried up to three times with a delay of 60 seconds; if the ICM rejects it, the user is logged out.
+Hence, the token will not expire as long as the user keeps the PWA open in the browser.
+
 ## Vanishing of the apiToken Cookie
 
 The PWA needs to react in case the `apiToken` cookie is not available anymore.
-This could happen if a PWA is opened in many tabs and the user logs out, or when users remove the cookie themselves.
-When the cookie vanishes, the PWA emits a new value for the [`cookieVanishes$` subject](../../src/app/core/utils/api-token/api-token.service.ts).
+This could happen if a PWA is opened in many tabs and the user logs out, when users remove the cookie themselves, or when the ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
+When the cookie vanishes, the PWA emits a new value for the [`getCookieVanishes$()` stream](../../src/app/core/utils/api-token/api-token.service.ts).
 The identity provider implementation defines how the application should behave in such a case.
-With the ICM identity provider, for example, the user is automatically logged out and routed to the `/login` page in that case.
+With the ICM identity provider, for example, the user is automatically logged out and, if the user was logged in, routed to the `/login` page.
+An anonymous user continues without login, and the PWA requests a new anonymous token when needed.
 
 ## Further References
 

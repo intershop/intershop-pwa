@@ -34,6 +34,36 @@ The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed 
 By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
 To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
+**Invalid `apiToken` cookie**
+
+The `ApiTokenService` now removes an `apiToken` cookie with a token the ICM rejects as invalid and repeats the request without it instead of showing the error page.
+A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
+When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
+
+**Punchout and co-browse login without previous session**
+
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters, so a reload restores the session only on routes that use another identity provider.
+Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
+
+**Session basket removed on every logout**
+
+The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed on every logout, also when another identity provider is active after a reload.
+Custom identity providers no longer need to remove it themselves.
+
+**Auth0 login removes the anonymous session**
+
+After the Auth0 login, the Auth0 identity provider now removes the `apiToken` cookie and the ICM tokens of the anonymous user, so the anonymous session is no longer restored on a reload or after the logout.
+
+**Personalization status by identity provider**
+
+Before the personalization status is determined, the PWA now asks the identity provider whether a user session is restored, using the new optional `hasUserSession()` method of the `IdentityProvider` interface.
+Identity providers without this method keep the previous behavior based on the user `apiToken` cookie.
+Implement `hasUserSession()` in custom identity providers that do not restore the user session from the `apiToken` cookie, as done by the Auth0, punchout, and co-browse identity providers.
+
+**CMS includes wait for the personalization status**
+
+CMS includes are now loaded only after the personalization status is determined, as already done for content pages, so they are no longer requested without the PGID of a logged-in user.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

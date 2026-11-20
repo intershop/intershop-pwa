@@ -27,7 +27,12 @@ import { getCurrentCurrency } from 'ish-core/store/core/configuration';
 import { mapToRouterState } from 'ish-core/store/core/router';
 import { getCustomFieldsForScope } from 'ish-core/store/core/server-config';
 import { resetOrderErrors } from 'ish-core/store/customer/orders';
-import { getLoggedInCustomer, loginUserSuccess, personalizationStatusDetermined } from 'ish-core/store/customer/user';
+import {
+  getLoggedInCustomer,
+  loginUserSuccess,
+  personalizationStatusDetermined,
+  resetUserData,
+} from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { mapErrorToAction, mapToPayloadProperty, mapToProperty } from 'ish-core/utils/operators';
 
@@ -99,6 +104,21 @@ export class BasketEffects {
       )
     )
   );
+
+  /**
+   * Removes the basket of the browser session (e.g. set by punchout or co-browse) on logout,
+   * a new login gets the current basket from the ICM.
+   */
+  removeSessionBasketOnLogout$ =
+    !SSR &&
+    createEffect(
+      () =>
+        this.actions$.pipe(
+          ofType(resetUserData),
+          map(() => sessionStorage.removeItem('basket-id'))
+        ),
+      { dispatch: false }
+    );
 
   /**
    * Loads a basket with the given id.

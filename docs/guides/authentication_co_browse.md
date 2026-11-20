@@ -44,6 +44,12 @@ identityProviders: {
 > This configuration enables the `Co-Browse` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work.
 > As mentioned above, this configuration example is only relevant for development purposes.
 
+> [!NOTE]
+> With this configuration, the `Co-Browse` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the user.
+> To restore the session on a reload during development, add `this.apiTokenService.restore$(['user', 'order']).subscribe(noop);` to the `init()` method of the [`CoBrowseIdentityProvider`](../../src/app/core/identity-provider/co-browse.identity-provider.ts).
+> Its `hasUserSession()` method then has to return `this.apiTokenService.hasUserApiTokenCookie()`, so that personalized content waits for the PGID of the restored user.
+> The session of an existing `apiToken` cookie is then also restored in parallel to a login on the `cobrowse` route.
+
 For production-like deployments, the PWA has to be be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path](../guides/nginx-startup.md#override-identity-providers-by-path)) for the NGINX container.
 Nevertheless, the SSR process needs to be provided with the co-browse identity provider configuration as one of the available identity providers.
@@ -121,13 +127,14 @@ For this purpose, the query param `access-token` needs to be added to the given 
 When the login is successful the call center agent user is logged in on behalf of a customer.
 The catalogs and products, prices, promotions, content etc. are displayed to the agent in the same way as to the user.
 
+The user is logged in with the `access-token` query param only.
+Before the login, the session of a previous login (the `apiToken` cookie and the tokens of the OAuth library in the local storage) is removed and is not restored, even on a reload of the `/cobrowse` route.
+After the login, the PWA stores the new session in the `apiToken` cookie.
+A reload restores this session only on routes that use another identity provider, like the default ICM identity provider in production-like deployments (see [Configuration](#configuration)).
+
 ## Token Lifetime
 
-Each authentication token has a predefined lifetime.
-That means, the token has to be refreshed to prevent it from expiring.
-Once 75% of the token's lifetime have passed ( this time can be configured in the oAuth library), an info event is emitted.
-This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the oAuth configuration service and the authentication token will be renewed.
-Hence, the token will not expire as long as the user keeps the PWA open in the browser.
+The authentication token is refreshed automatically before it expires, see [Concept - Authentication: Token Lifetime](../concepts/authentication.md#token-lifetime).
 
 ## Logout
 

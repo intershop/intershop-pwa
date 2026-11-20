@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Injector, Type } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { once } from 'lodash-es';
-import { noop } from 'rxjs';
+import { Observable, ReplaySubject, noop } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle.module';
@@ -23,6 +23,8 @@ export const IDENTITY_PROVIDER_IMPLEMENTOR = new InjectionToken<IdentityProvider
 @Injectable({ providedIn: 'root' })
 export class IdentityProviderFactory {
   private instance: IdentityProvider<unknown>;
+  // emits the identity provider instance once it is created after the configuration was loaded, undefined if none was found
+  private instance$ = new ReplaySubject<IdentityProvider<unknown>>(1);
   private config: {
     [key: string]: unknown;
     type?: string;
@@ -42,6 +44,7 @@ export class IdentityProviderFactory {
 
         if (!provider) {
           console.error('did not find identity provider for config', config);
+          this.instance$.next(undefined);
         } else {
           const instance = this.injector.get(provider.implementor);
 
@@ -57,6 +60,7 @@ export class IdentityProviderFactory {
 
           this.instance = instance;
           this.config = config;
+          this.instance$.next(instance);
         }
       });
     } else {
@@ -68,6 +72,7 @@ export class IdentityProviderFactory {
         triggerInvite: () => true,
         getCapabilities: () => ({}),
       };
+      this.instance$.next(this.instance);
     }
   }
 
@@ -80,6 +85,13 @@ export class IdentityProviderFactory {
       this.logNoIdpError();
     }
     return this.instance;
+  }
+
+  /**
+   * @returns the identity provider instance as soon as it is created
+   */
+  getInstance$(): Observable<IdentityProvider<unknown>> {
+    return this.instance$.asObservable();
   }
 
   getType(): string {
