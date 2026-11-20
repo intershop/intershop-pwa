@@ -114,6 +114,8 @@ Often, NGINX receives requests from advertising networks or various user agents 
 These parameters can lead to inefficient caching, because even if the same URL is requested multiple times, the cached version will not be used if the URL is accessed with different query parameters.
 
 To prevent this, you can define any number of blacklisted parameters that will be ignored by NGINX during caching.
+NGINX also removes these parameters from the request to the SSR process, so that a cached page never contains values of another request.
+The browser still receives the full URL and can process them on the client side.
 
 As with multi-site handling, the configuration can be supplied by setting the environment variable `CACHING_IGNORE_PARAMS`. <br>
 Alternatively, the source can be supplied by setting `CACHING_IGNORE_PARAMS_SOURCE` in any [supported format by gomplate](https://docs.gomplate.ca/datasources/).
