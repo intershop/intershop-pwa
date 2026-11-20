@@ -1,8 +1,7 @@
-/* eslint-disable max-lines */
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Store, select } from '@ngrx/store';
+import { Selector, Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
 import {
@@ -73,19 +72,13 @@ const AUTH_TOKEN_ERRORS = [
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  /**
-   * stores current apiToken information, will be used to add authentication header for each request
-   */
+  /** stores current apiToken information, will be used to add authentication header for each request */
   apiToken$: BehaviorSubject<string>;
 
-  /**
-   * informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab)
-   */
+  /** informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab) */
   private cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
-  /**
-   * cookie options which are used to store apiToken cookie, will be overwritten by setApiToken() method
-   */
+  /** cookie options which are used to store apiToken cookie, will be overwritten by setApiToken() method */
   private cookieOptions: CookieOptions = {};
 
   /**
@@ -94,9 +87,7 @@ export class ApiTokenService {
    */
   private initialCookie$: BehaviorSubject<ApiTokenCookie>;
 
-  /**
-   * informs subscriber whenever an apiToken has been changed
-   */
+  /** informs subscriber whenever an apiToken has been changed */
   private cookieChangeEvent$: Observable<[ApiTokenCookie, ApiTokenCookie]>;
 
   constructor(
@@ -161,9 +152,7 @@ export class ApiTokenService {
     this.apiToken$.next(undefined);
   }
 
-  /**
-   * sets new apiToken and new apiToken cookie options when available
-   */
+  /** sets new apiToken and new apiToken cookie options when available */
   setApiToken(apiToken: string, options?: CookieOptions) {
     if (options) {
       this.cookieOptions = options;
@@ -176,9 +165,7 @@ export class ApiTokenService {
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  /**
-   * trigger actions to restore store information based on initial apiToken cookie
-   */
+  /** trigger actions to restore store information based on initial apiToken cookie */
   restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (SSR) {
       return of(true);
@@ -192,36 +179,17 @@ export class ApiTokenService {
               if (cookie.isAnonymous) {
                 this.store.dispatch(loadBasketByAPIToken({ apiToken: cookie.apiToken }));
                 // wait until basket infos are loaded
-                return race(
-                  this.store.pipe(
-                    select(getCurrentBasketId),
-                    whenTruthy(),
-                    take(1),
-                    map(() => true)
-                  ),
-                  timer(5000).pipe(map(() => false))
-                );
+                return this.waitForStoreValue$(getCurrentBasketId);
               } else {
                 this.store.dispatch(loadUserByAPIToken({ apiToken: cookie.apiToken }));
                 // wait until user is logged in
-                return race(
-                  this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
-                  timer(5000).pipe(map(() => false))
-                );
+                return this.waitForStoreValue$(getUserAuthorized);
               }
             }
             case 'order': {
               this.store.dispatch(loadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken }));
               // wait until order is loaded
-              return race(
-                this.store.pipe(
-                  select(getOrder(cookie.orderId)),
-                  whenTruthy(),
-                  take(1),
-                  map(() => true)
-                ),
-                timer(5000).pipe(map(() => false))
-              );
+              return this.waitForStoreValue$(getOrder(cookie.orderId));
             }
           }
         }
@@ -325,6 +293,19 @@ export class ApiTokenService {
     );
   }
 
+  /** emits true as soon as the selected store value is truthy, or false after a timeout of 5 seconds */
+  private waitForStoreValue$(selector: Selector<object, unknown>): Observable<boolean> {
+    return race(
+      this.store.pipe(
+        select(selector),
+        whenTruthy(),
+        take(1),
+        map(() => true)
+      ),
+      timer(5000).pipe(map(() => false))
+    );
+  }
+
   private isAuthTokenError(err: unknown) {
     return (
       err instanceof HttpErrorResponse &&
@@ -359,9 +340,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * process to trigger action to fetch anonymous user token and wait until apiToken is set in service
-   */
+  /** process to trigger action to fetch anonymous user token and wait until apiToken is set in service */
   private anonymousUserTokenMechanism(): Observable<unknown> {
     return this.apiToken$.pipe(
       switchMap(
@@ -390,9 +369,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * notify subscriber when user has been logged out
-   */
+  /** notify subscriber when user has been logged out */
   private logoutUser$(): Observable<boolean> {
     return this.store.pipe(
       select(getLoggedInUser),
@@ -403,9 +380,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * @returns calculate current apiToken cookie value based on the internal store$ state
-   */
+  /** @returns calculate current apiToken cookie value based on the internal store$ state */
   private calculateApiTokenCookieValueOnChanges$(): Observable<ApiTokenCookie> {
     return combineLatest([
       this.store.pipe(select(getLoggedInUser)),
@@ -420,9 +395,7 @@ export class ApiTokenService {
     );
   }
 
-  /**
-   * @returns previous apiToken cookie type when the cookie vanishes
-   */
+  /** @returns previous apiToken cookie type when the cookie vanishes */
   private tokenVanish$(): Observable<ApiTokenCookieType> {
     // access token vanishes routine
 
@@ -437,17 +410,11 @@ export class ApiTokenService {
    * initialize restore$ mechanism when apiToken cookie is created outside of current PWA context
    *
    * Steps:
-   *
    * (1): stream got notified when 'apiToken' cookie changes
-   *
    * (2): check that a user token cookie was added in comparison to previous cookie value
-   *
    * (3): calculate a current apiToken cookie value of current pwa context
-   *
    * (4): filter stream values when calculated apiToken cookie value is not truthy --> cookie was added from another tab
-   *
    * (5): set new apiToken and initialCookie$ values with information from current apiToken cookie in order to fetch data via restore$
-   *
    */
   private tokenCreatedOnAnotherTab$(): Observable<boolean> {
     // cookie created routine when user is logged in in an another tab
