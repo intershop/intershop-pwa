@@ -28,4 +28,13 @@ describe('Highlight Pipe', () => {
   ])(`should transform '%s' with '%s' to '%s'`, (text, search, expected) => {
     expect(pipe.transform(text, search)).toEqual(expected);
   });
+
+  it.each([
+    ['<img src=x onerror=alert(1)>', undefined, '&lt;img src=x onerror=alert(1)&gt;'],
+    ['<img src=x onerror=alert(1)>', 'img', '&lt;<span class="searchTerm">img</span> src=x onerror=alert(1)&gt;'],
+    ['a<b', '<', 'a<span class="searchTerm">&lt;</span>b'],
+    ['Black & Decker', 'amp', 'Black &amp; Decker'],
+  ])(`should encode '%s' and highlight '%s' to '%s'`, (text, search, expected) => {
+    expect(pipe.transform(text, search, true)).toEqual(expected);
+  });
 });

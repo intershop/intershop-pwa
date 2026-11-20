@@ -3,7 +3,11 @@
   <ul>
     @for (term of searchTerms$ | async; track term) {
       <li>
-        <button type="button" [innerHTML]="term | ishHighlight: (inputTerms$ | async)" (click)="submit(term)"></button>
+        <button
+          type="button"
+          [innerHTML]="term | ishHighlight: (inputTerms$ | async) : true"
+          (click)="submit(term)"
+        ></button>
       </li>
     }
   </ul>

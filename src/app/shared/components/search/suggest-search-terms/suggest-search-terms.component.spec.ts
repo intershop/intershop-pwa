@@ -48,4 +48,14 @@ describe('Suggest Search Terms Component', () => {
     expect(savedTermElements[0].textContent).toContain('Term1');
     expect(savedTermElements[1].textContent).toContain('Term2');
   });
+
+  it('should display saved terms with markup as plain text', () => {
+    recentSearchTerms$.next(['<img src=x onerror=alert(1)>']);
+    component.inputTerms$.next('img');
+    fixture.detectChanges();
+    const button = element.querySelector('ul li button');
+    expect(button.querySelector('img')).toBeNull();
+    expect(button.textContent).toEqual('<img src=x onerror=alert(1)>');
+    expect(button.querySelector('.searchTerm').textContent).toEqual('img');
+  });
 });
