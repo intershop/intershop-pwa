@@ -101,12 +101,16 @@ export abstract class QuoteContextFacade extends RxState<{
   }
 
   updateItem(item: LineItemUpdate) {
-    this.store.dispatch(
-      updateQuoteRequest({
-        id: this.get('entity', 'id'),
-        changes: [{ type: 'change-item', itemId: item.itemId, quantity: item.quantity }],
-      })
-    );
+    if (!item.quantity) {
+      this.deleteItem(item.itemId);
+    } else {
+      this.store.dispatch(
+        updateQuoteRequest({
+          id: this.get('entity', 'id'),
+          changes: [{ type: 'change-item', itemId: item.itemId, quantity: item.quantity }],
+        })
+      );
+    }
   }
 
   setItemQuantityError(itemId: string, hasError: boolean) {
