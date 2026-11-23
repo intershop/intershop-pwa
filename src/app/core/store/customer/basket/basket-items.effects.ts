@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, debounceTime, filter, map, mergeMap, switchMap, toArray, window } from 'rxjs/operators';
+import { concatMap, debounceTime, filter, first, map, mergeMap, switchMap, toArray, window } from 'rxjs/operators';
 
 import { CustomFieldDefinition } from 'ish-core/models/custom-field-definition/custom-field-definition.model';
 import { CustomFieldMapper } from 'ish-core/models/custom-field/custom-field.mapper';
@@ -69,25 +69,31 @@ export class BasketItemsEffects {
     this.actions$.pipe(
       ofType(addItemsToBasket),
       mapToPayload(),
-      concatLatestFrom(() => this.store.pipe(select(getCurrentBasketId))),
-      concatMap(([{ items }, basketId]) => {
-        if (basketId) {
-          return this.basketItemsService.addItemsToBasket(items).pipe(
-            map(payload => addItemsToBasketSuccess(payload)),
-            mapErrorToAction(addItemsToBasketFail)
-          );
-        } else {
-          return this.basketService.createBasket().pipe(
-            switchMap(basket =>
-              this.basketItemsService.addItemsToBasket(items).pipe(
-                mergeMap(payload => [createBasketSuccess({ basket }), addItemsToBasketSuccess(payload)]),
+      concatMap(({ items }) =>
+        // the basket is determined only after the previous request is finished, otherwise each action without a basket creates a new one
+        this.store.pipe(
+          select(getCurrentBasketId),
+          first(),
+          concatMap(basketId => {
+            if (basketId) {
+              return this.basketItemsService.addItemsToBasket(items).pipe(
+                map(payload => addItemsToBasketSuccess(payload)),
                 mapErrorToAction(addItemsToBasketFail)
-              )
-            ),
-            mapErrorToAction(createBasketFail)
-          );
-        }
-      })
+              );
+            } else {
+              return this.basketService.createBasket().pipe(
+                switchMap(basket =>
+                  this.basketItemsService.addItemsToBasket(items).pipe(
+                    mergeMap(payload => [createBasketSuccess({ basket }), addItemsToBasketSuccess(payload)]),
+                    mapErrorToAction(addItemsToBasketFail)
+                  )
+                ),
+                mapErrorToAction(createBasketFail)
+              );
+            }
+          })
+        )
+      )
     )
   );
   /**
