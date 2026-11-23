@@ -51,6 +51,7 @@ If your project needs one of these parameters during server-side rendering, remo
 Product contexts with `allowZeroQuantity`, e.g., basket and quote request line items, now validate the product's minimum order quantity and only accept 0 as additional quantity.
 The `minQuantity` of the product context is always the minimum order quantity of the product.
 The decrease button of `ish-product-quantity` stops at this quantity, so users remove a line item by entering 0 or clicking the Remove button.
+Customized versions of `ish-product-quantity` have to allow 0 themselves if zero quantities are allowed.
 The submit button of a quote request is disabled while a line item has an invalid quantity.
 
 ## From 12.1.0 to 13.0.0
