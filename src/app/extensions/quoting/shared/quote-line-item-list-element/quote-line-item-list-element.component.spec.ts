@@ -156,6 +156,13 @@ describe('Quote Line Item List Element Component', () => {
       verify(quoteContext.setItemQuantityError('item123', true)).once();
     });
 
+    it('should clear the quantity error of the line item when the quantity becomes valid', () => {
+      when(productContext.select('hasQuantityError')).thenReturn(of(true, false));
+      fixture.detectChanges();
+
+      verify(quoteContext.setItemQuantityError('item123', false)).once();
+    });
+
     it('should reset the quantity error of the line item when destroyed', () => {
       fixture.detectChanges();
       fixture.destroy();
