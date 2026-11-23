@@ -38,7 +38,10 @@ export class ProductQuantityComponent implements OnInit {
   ngOnInit() {
     this.visible$ = this.context.select('displayProperties', 'quantity');
     this.quantity$ = this.context.select('quantity').pipe(filter(n => typeof n === 'number' && !isNaN(n)));
-    this.min$ = this.context.select('minQuantity');
+    const allowZeroQuantity$ = this.context.select('allowZeroQuantity');
+    this.min$ = combineLatest([this.context.select('minQuantity'), allowZeroQuantity$]).pipe(
+      map(([min, allowZeroQuantity]) => (allowZeroQuantity ? 0 : min))
+    );
     this.max$ = this.context.select('maxQuantity');
     this.step$ = this.context.select('stepQuantity');
     this.hasQuantityError$ = this.context.select('hasQuantityError').pipe(shareReplay(1));
@@ -49,12 +52,19 @@ export class ProductQuantityComponent implements OnInit {
       )
     );
 
-    this.selectValues$ = combineLatest([this.min$, this.max$, this.step$]).pipe(
-      map(([min, max, step]) => range(min, max + 1, step))
+    this.selectValues$ = combineLatest([
+      this.context.select('minQuantity'),
+      this.max$,
+      this.step$,
+      allowZeroQuantity$,
+    ]).pipe(
+      map(([min, max, step, allowZeroQuantity]) => [...(allowZeroQuantity ? [0] : []), ...range(min, max + 1, step)])
     );
 
     this.cannotIncrease$ = combineLatest([this.max$, this.quantity$]).pipe(map(([max, quantity]) => quantity >= max));
-    this.cannotDecrease$ = combineLatest([this.min$, this.quantity$]).pipe(map(([min, quantity]) => quantity <= min));
+    this.cannotDecrease$ = combineLatest([this.context.select('minQuantity'), this.quantity$]).pipe(
+      map(([min, quantity]) => quantity <= min)
+    );
   }
 
   private setValue(value: number) {

@@ -117,6 +117,7 @@ export interface ProductContext {
 
   // quantity
   quantity: number;
+  /** additionally accepts quantity 0, e.g. to remove a line item */
   allowZeroQuantity: boolean;
   minQuantity: number;
   maxQuantity: number;
@@ -207,8 +208,8 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
 
     this.connect(
       'minQuantity',
-      combineLatest([this.select('product'), this.select('allowZeroQuantity')]).pipe(
-        map(([product, allowZeroQuantity]) => (allowZeroQuantity ? 0 : product.minOrderQuantity || 1)),
+      this.select('product').pipe(
+        map(product => product.minOrderQuantity || 1),
         distinctUntilChanged()
       )
     );
@@ -235,12 +236,15 @@ export class ProductContextFacade extends RxState<ProductContext> implements OnD
         this.select('minQuantity'),
         this.select('maxQuantity'),
         this.select('stepQuantity'),
+        this.select('allowZeroQuantity'),
         this.select('quantity').pipe(distinctUntilChanged()),
       ]).pipe(
-        map(([product, minOrderQuantity, maxOrderQuantity, stepQuantity, quantity]) => {
+        map(([product, minOrderQuantity, maxOrderQuantity, stepQuantity, allowZeroQuantity, quantity]) => {
           if (product && !product.failed) {
             if (Number.isNaN(quantity)) {
               return this.translate.instant('product.quantity.integer.text');
+            } else if (allowZeroQuantity && quantity === 0) {
+              return;
             } else if (quantity < minOrderQuantity) {
               return this.translate.instant('product.quantity.greaterthan.text', { 0: minOrderQuantity });
             } else if (quantity > maxOrderQuantity) {
