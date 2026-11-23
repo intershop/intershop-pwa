@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -142,18 +142,16 @@ describe('Quote Line Item List Element Component', () => {
   });
 
   describe('quantity error', () => {
+    beforeEach(() => {
+      when(productContext.hold(anything(), anything())).thenCall(
+        (source$: Observable<unknown>, sideEffect: (value: unknown) => void) => source$.forEach(sideEffect)
+      );
+      when(productContext.validDebouncedQuantityUpdate$()).thenReturn(EMPTY);
+      when(productContext.select('hasQuantityError')).thenReturn(of(true));
+    });
+
     it('should report the quantity error of the line item to the quote context', () => {
-      const hasQuantityError$ = of(true);
-      when(productContext.select('hasQuantityError')).thenReturn(hasQuantityError$);
       fixture.detectChanges();
-
-      const [source$, reportQuantityError] = capture(productContext.hold).first() as unknown as [
-        Observable<boolean>,
-        (hasError: boolean) => void,
-      ];
-      expect(source$).toBe(hasQuantityError$);
-
-      reportQuantityError(true);
 
       verify(quoteContext.setItemQuantityError('item123', true)).once();
     });

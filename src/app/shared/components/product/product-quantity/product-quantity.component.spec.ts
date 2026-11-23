@@ -119,6 +119,9 @@ describe('Product Quantity Component', () => {
 
     beforeEach(() => {
       when(context.select('allowZeroQuantity')).thenReturn(of(true));
+      when(context.select('quantity')).thenReturn(of(3));
+      when(context.select('minQuantity')).thenReturn(of(3));
+      when(context.select('stepQuantity')).thenReturn(of(1));
       when(context.get('minQuantity')).thenReturn(3);
       when(context.get('maxQuantity')).thenReturn(6);
       when(context.get('stepQuantity')).thenReturn(1);
@@ -132,7 +135,13 @@ describe('Product Quantity Component', () => {
     it('should offer 0 as additional select option', () => {
       component.type = 'select';
       fixture.detectChanges();
-      expect(Array.from(element.querySelectorAll('option')).map(option => option.value)).toEqual(['0', '2', '4', '6']);
+      expect(Array.from(element.querySelectorAll('option')).map(option => option.value)).toEqual([
+        '0',
+        '3',
+        '4',
+        '5',
+        '6',
+      ]);
     });
 
     it('should not allow decreasing below the min order quantity', () => {
