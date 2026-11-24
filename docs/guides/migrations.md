@@ -54,6 +54,12 @@ The decrease button of `ish-product-quantity` stops at this quantity, so users r
 Customized versions of `ish-product-quantity` have to allow 0 themselves if zero quantities are allowed.
 The submit button of a quote request is disabled while a line item has an invalid quantity.
 
+**NGINX modules built from the OpenResty source**
+
+The Brotli modules of the NGINX image are now built from the NGINX source bundled with the OpenResty archive instead of the upstream NGINX archive, because OpenResty patches NGINX structures used by dynamic modules.
+If your project builds additional dynamic NGINX modules, build them the same way with the `./configure` arguments read from `openresty -V`, otherwise NGINX workers may crash, see [Brotli Configuration](./nginx-startup.md#brotli-configuration).
+The OpenResty version is now set once with the `OPENRESTY_VERSION` build argument in the NGINX _Dockerfile_.
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

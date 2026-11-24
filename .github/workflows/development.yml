@@ -178,3 +178,6 @@ jobs:
 
       - name: Build Nginx Image
         run: docker compose build nginx
+
+      - name: Test Brotli with Cache
+        run: sh nginx/test/brotli-cache.sh intershophub/intershop-pwa-nginx
