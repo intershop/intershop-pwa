@@ -380,16 +380,11 @@ The two NGINX modules
 - `ngx_http_brotli_filter_module.so` – for compressing responses on-the-fly
 - `ngx_http_brotli_static_module.so` - for serving pre-compressed files
 
-are built in the [`Dockerfile`](../../nginx/Dockerfile) using an NGINX archive in a version which matches the openresty Docker image version and are referenced in [_nginx.conf.tmpl_](../../nginx/nginx.conf.tmpl).
-The archive needs to be used because it includes the `configure` command.
-The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are taken from the current openresty configuration using `nginx -V` (`--add-module` arguments are excluded), see [ngx_brotli
-](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded).
+are built in the [`Dockerfile`](../../nginx/Dockerfile) using the patched NGINX source bundled with the matching OpenResty archive and are referenced in [_nginx.conf.tmpl_](../../nginx/nginx.conf.tmpl).
+The upstream NGINX archive must not be used, because OpenResty's patches can change structures used by the modules.
+The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are read from `openresty -V` of the OpenResty image during the build, without the `--add-module` arguments of the bundled modules, so they always match the OpenResty version.
 
-The modules can also be built using an openresty archive, but in this case the built process is taking longer:
-
-- `wget` the openresty archive version which matches the Docker image version
-- replace `make modules` with `make && make install`
-- the two Brotli modules are built into the folder _/build/nginx-<version>/objs/_
+After building the image, run `sh nginx/test/brotli-cache.sh <image>` to verify Brotli compression on cache misses and hits.
 
 ## Environment Variables
 
