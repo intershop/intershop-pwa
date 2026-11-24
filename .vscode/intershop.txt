@@ -107,6 +107,7 @@ keyvalue
 klausen
 lessthan
 lhci
+libbrotli
 llms
 logformat
 loglevel
