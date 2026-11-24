@@ -21,17 +21,19 @@ RUN if [ -n "$UBUNTU_MIRROR" ]; then \
     fi; \
   fi && \
   apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev wget git gcc make
+  && apt-get install --no-install-recommends --no-install-suggests -y libpcre3 libpcre3-dev zlib1g zlib1g-dev openssl libssl-dev libbrotli-dev wget git gcc make
 
 WORKDIR /app
 # Dynamic modules must use the same patched NGINX source and the same configure arguments as the OpenResty image (bundled --add-module arguments excluded).
+# ngx_brotli expects the Brotli headers in its git submodule; the symlink provides Ubuntu's headers instead.
 RUN wget -q https://openresty.org/download/openresty-${OPENRESTY_VERSION}.tar.gz \
   && echo "71d49935bdc186dafc1f4b0a8ba44dba1bf4abc8ca52d4621f2039ec8fdcc95f  openresty-${OPENRESTY_VERSION}.tar.gz" | sha256sum -c - \
   && tar -zxf openresty-${OPENRESTY_VERSION}.tar.gz \
   && git clone https://github.com/google/ngx_brotli \
   && cd ngx_brotli \
   && git checkout 53e0fb55f250f48fe80c0ddbf6c0f7103cdbaae1 \
-  && git submodule update --init --recursive \
+  && mkdir -p deps/brotli/c \
+  && ln -s /usr/include deps/brotli/c/include \
   && cd .. \
   && cd openresty-${OPENRESTY_VERSION}/bundle/nginx-* \
   && eval "./configure $(openresty -V 2>&1 | sed -n 's/^configure arguments: //p' | sed -E 's/--add-module=[^ ]+//g') --add-dynamic-module=../../../ngx_brotli" \
@@ -52,7 +54,7 @@ RUN if [ -n "$UBUNTU_MIRROR" ]; then \
     fi; \
   fi && \
   apt-get update \
-  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils \
+  && apt-get install --no-install-recommends --no-install-suggests -y apache2-utils libbrotli1 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=nginx:mainline /docker-entrypoint.sh /
