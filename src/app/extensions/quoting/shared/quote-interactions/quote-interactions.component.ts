@@ -17,6 +17,7 @@ export class QuoteInteractionsComponent implements OnInit {
   quote$: Observable<Quote | QuoteRequest>;
   state$: Observable<QuoteStatus>;
   isQuoteValid$: Observable<boolean>;
+  hasItemQuantityError$: Observable<boolean>;
 
   constructor(private context: QuoteContextFacade) {}
 
@@ -24,6 +25,7 @@ export class QuoteInteractionsComponent implements OnInit {
     this.quote$ = this.context.select('entity');
     this.state$ = this.context.select('state');
     this.isQuoteValid$ = this.context.select(isQuoteValid);
+    this.hasItemQuantityError$ = this.context.select('hasItemQuantityError');
   }
 
   reject() {

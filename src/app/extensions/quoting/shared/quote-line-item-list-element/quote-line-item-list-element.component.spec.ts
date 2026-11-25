@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
-import { of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
@@ -139,5 +139,35 @@ describe('Quote Line Item List Element Component', () => {
         "item123",
       ]
     `);
+  });
+
+  describe('quantity error', () => {
+    beforeEach(() => {
+      when(productContext.hold(anything(), anything())).thenCall(
+        (source$: Observable<unknown>, sideEffect: (value: unknown) => void) => source$.forEach(sideEffect)
+      );
+      when(productContext.validDebouncedQuantityUpdate$()).thenReturn(EMPTY);
+      when(productContext.select('hasQuantityError')).thenReturn(of(true));
+    });
+
+    it('should report the quantity error of the line item to the quote context', () => {
+      fixture.detectChanges();
+
+      verify(quoteContext.setItemQuantityError('item123', true)).once();
+    });
+
+    it('should clear the quantity error of the line item when the quantity becomes valid', () => {
+      when(productContext.select('hasQuantityError')).thenReturn(of(true, false));
+      fixture.detectChanges();
+
+      verify(quoteContext.setItemQuantityError('item123', false)).once();
+    });
+
+    it('should reset the quantity error of the line item when destroyed', () => {
+      fixture.detectChanges();
+      fixture.destroy();
+
+      verify(quoteContext.setItemQuantityError('item123', false)).once();
+    });
   });
 });

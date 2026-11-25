@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { instance, mock, when } from 'ts-mockito';
+import { capture, instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
@@ -21,6 +21,7 @@ describe('Product Quantity Component', () => {
     when(context.select('minQuantity')).thenReturn(of(2));
     when(context.select('maxQuantity')).thenReturn(of(6));
     when(context.select('stepQuantity')).thenReturn(of(2));
+    when(context.select('allowZeroQuantity')).thenReturn(of(false));
     const hasQuantityError$ = of(false);
     when(context.select('hasQuantityError')).thenReturn(hasQuantityError$);
 
@@ -108,5 +109,52 @@ describe('Product Quantity Component', () => {
         <option value="6">6</option>
       </select>
     `);
+  });
+
+  describe('with allowed zero quantity', () => {
+    const capturedQuantity = () => {
+      const [key, fn] = capture(context.set).last() as unknown as [string, () => number];
+      return key === 'quantity' ? fn() : undefined;
+    };
+
+    beforeEach(() => {
+      when(context.select('allowZeroQuantity')).thenReturn(of(true));
+      when(context.select('quantity')).thenReturn(of(3));
+      when(context.select('minQuantity')).thenReturn(of(3));
+      when(context.select('stepQuantity')).thenReturn(of(1));
+      when(context.get('minQuantity')).thenReturn(3);
+      when(context.get('maxQuantity')).thenReturn(6);
+      when(context.get('stepQuantity')).thenReturn(1);
+    });
+
+    it('should accept 0 as lowest input value', () => {
+      fixture.detectChanges();
+      expect(element.querySelector('input').getAttribute('min')).toEqual('0');
+    });
+
+    it('should offer 0 as additional select option', () => {
+      component.type = 'select';
+      fixture.detectChanges();
+      expect(Array.from(element.querySelectorAll('option')).map(option => option.value)).toEqual([
+        '0',
+        '3',
+        '4',
+        '5',
+        '6',
+      ]);
+    });
+
+    it('should not allow decreasing below the min order quantity', () => {
+      fixture.detectChanges();
+      expect(
+        element.querySelector<HTMLButtonElement>('[data-testing-id="decrease-quantity-ASDF"]').disabled
+      ).toBeTrue();
+    });
+
+    it('should increase from 0 to the min order quantity', () => {
+      when(context.get('quantity')).thenReturn(0);
+      component.increase();
+      expect(capturedQuantity()).toEqual(3);
+    });
   });
 });

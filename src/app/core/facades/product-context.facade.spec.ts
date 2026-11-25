@@ -287,9 +287,28 @@ describe('Product Context Facade', () => {
             "allowZeroQuantity": true,
             "hasQuantityError": false,
             "maxQuantity": 100,
-            "minQuantity": 0,
+            "minQuantity": 10,
             "quantity": 0,
             "quantityError": undefined,
+            "stepQuantity": 10,
+          }
+        `);
+        discardPeriodicTasks();
+      }));
+
+      it('should go to error with quantity lower than min order if zero quantity is allowed', fakeAsync(() => {
+        context.set('sku', () => '123');
+        tick(DEBOUNCE_TIME);
+        context.set('allowZeroQuantity', () => true);
+        context.set('quantity', () => 5);
+        expect(pickQuantityFields(context)).toMatchInlineSnapshot(`
+          {
+            "allowZeroQuantity": true,
+            "hasQuantityError": true,
+            "maxQuantity": 100,
+            "minQuantity": 10,
+            "quantity": 5,
+            "quantityError": "product.quantity.greaterthan.text",
             "stepQuantity": 10,
           }
         `);

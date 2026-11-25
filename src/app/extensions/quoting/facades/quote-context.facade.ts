@@ -44,9 +44,21 @@ export abstract class QuoteContextFacade extends RxState<{
   state: QuoteStatus;
   editable: boolean;
   justSubmitted: boolean;
+  itemsWithQuantityError: string[];
+  hasItemQuantityError: boolean;
 }> {
   constructor(private store: Store) {
     super();
+    this.set({ itemsWithQuantityError: [] });
+
+    this.connect(
+      'hasItemQuantityError',
+      this.select('itemsWithQuantityError').pipe(
+        map(itemIds => !!itemIds.length),
+        distinctUntilChanged()
+      )
+    );
+
     store.pipe(first()).subscribe(state => {
       if (!isQuotingInitialized(state)) {
         this.store.dispatch(loadQuoting());
@@ -101,6 +113,13 @@ export abstract class QuoteContextFacade extends RxState<{
     }
   }
 
+  setItemQuantityError(itemId: string, hasError: boolean) {
+    this.set('itemsWithQuantityError', state => [
+      ...state.itemsWithQuantityError.filter(id => id !== itemId),
+      ...(hasError ? [itemId] : []),
+    ]);
+  }
+
   deleteItem(itemId: string) {
     this.store.dispatch(
       updateQuoteRequest({
@@ -133,6 +152,9 @@ export abstract class QuoteContextFacade extends RxState<{
   }
 
   submit() {
+    if (this.get('hasItemQuantityError')) {
+      return;
+    }
     this.set('justSubmitted', () => true);
     this.store.dispatch(submitQuoteRequest({ id: this.get('entity', 'id') }));
   }
