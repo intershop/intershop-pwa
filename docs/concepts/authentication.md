@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Implementation and Configuration of Identity Providers](#implementation-and-configuration-of-identity-providers)
 - [PWA Initialization](#pwa-initialization)
 - [Login, Registration, Token Refreshment, Logout](#login-registration-token-refreshment-logout)
+- [Token Lifetime](#token-lifetime)
 - [Vanishing of the apiToken Cookie](#vanishing-of-the-apitoken-cookie)
 - [Further References](#further-references)
 
@@ -104,18 +105,19 @@ This is described in the appropriate identity provider guides in more detail, se
 ## Token Lifetime
 
 The ICM, punchout and co-browse identity providers use authentication tokens of the ICM, which have a predefined lifetime.
-That means, the token has to be refreshed to prevent it from expiring.
+Therefore, the token must be refreshed to prevent it from expiring.
 Once 50% of the access token's lifetime have passed (configured with `timeoutFactor` in the [`TokenService`](../../src/app/core/services/token/token.service.ts)), an info event is emitted.
-This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the oAuth configuration service and the authentication token will be renewed.
-If the token refresh fails due to network or server errors, it is retried up to three times with a delay of 60 seconds; if the ICM rejects it, the user is logged out.
-Hence, the token will not expire as long as the user keeps the PWA open in the browser.
+This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the OAuth configuration service, and the authentication token is renewed.
+If the token refresh fails due to network or server errors, it is retried up to three times with a delay of 60 seconds.
+If ICM rejects it, the user is logged out.
+Hence, the token remains valid as long as the user keeps the PWA open in the browser.
 
 ## Vanishing of the apiToken Cookie
 
-The PWA needs to react in case the `apiToken` cookie is not available anymore.
-This could happen if a PWA is opened in many tabs and the user logs out, when users remove the cookie themselves, or when the ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
+The PWA needs to react if the `apiToken` cookie is no longer available.
+The cookie can vanish if a PWA is opened in multiple tabs and the user logs out, if users remove the cookie themselves, or if ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
 When the cookie vanishes, the PWA emits a new value for the [`getCookieVanishes$()` stream](../../src/app/core/utils/api-token/api-token.service.ts).
-The identity provider implementation defines how the application should behave in such a case.
+The identity provider implementation defines how the application behaves in such a case.
 With the ICM identity provider, for example, the user is automatically logged out and, if the user was logged in, routed to the `/login` page.
 An anonymous user continues without login, and the PWA requests a new anonymous token when needed.
 

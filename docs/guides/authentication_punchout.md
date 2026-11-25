@@ -14,13 +14,13 @@ kb_sync_latest_only
 - [Token Lifetime](#token-lifetime)
 - [Logout](#logout)
 
-This document describes the authentication mechanism if punchout is used as identity provider.
+This document describes the authentication mechanism if punchout is used as the identity provider.
 If you need an introduction to this topic, read the [Authentication Concept](../concepts/authentication.md) first.
 
 ## Configuration
 
 The PWA must be configured in a specific way to use punchout as an identity provider.
-Apart from the enabled `punchout` feature flag, the following configuration can be added to the Angular CLI `environment.ts` files for development purposes:
+Apart from the enabled `punchout` feature flag, the following configuration can be added to the Angular CLI _environment.ts_ files for development purposes:
 
 ```typescript
 features: [
@@ -35,8 +35,9 @@ identityProviders: {
 ```
 
 > [!WARNING]
-> This configuration enables the `Punchout` identity provider as the one and only configured global identity provider, meaning the standard ICM identity provider used for the standard login is no longer configured and the standard login will no longer work.
-> As mentioned above, this configuration example is only relevant for punchout development purposes.
+> This configuration enables the `Punchout` identity provider as only configured global identity provider.
+> The standard ICM identity provider used for the standard login is no longer configured, so the standard login no longer works.
+> As mentioned above, this configuration example is relevant only for punchout development purposes.
 
 > [!NOTE]
 > With this configuration, the `Punchout` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the punchout user.
@@ -46,10 +47,10 @@ identityProviders: {
 
 For production-like deployments, the PWA has to be configured to use the `Punchout` identity provider only when the user enters the `punchout` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path](../guides/nginx-startup.md#override-identity-providers-by-path)) for the NGINX container.
-Nevertheless, the SSR process needs to be provided with the punchout identity provider configuration as one of the available identity providers.
-In this way, the global `identityProvider` configuration is left to be the default ICM configuration.
+However, the SSR process needs to be provided with the punchout identity provider configuration as one of the available identity providers.
+In this way, the global `identityProvider` configuration remains the default ICM configuration.
 
-The following is a sample punchout identity provider configuration for `docker-compose` that enables the punchout identity provider on the `punchout` route only.
+The following is a sample punchout identity provider configuration for `docker-compose` that enables the punchout identity provider on the `punchout` route only:
 
 ```yaml
 pwa:
@@ -66,7 +67,7 @@ nginx:
           type: Punchout
 ```
 
-Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
 app:
@@ -116,9 +117,10 @@ proxy:
 
 ### Hook URL Validation
 
-For the OCI punchout, the PWA submits the basket to the `HOOK_URL` given as query parameter at login.
-To prevent script injection via this form target, the PWA checks the scheme of the `HOOK_URL` before logging in, the same way as the ICM checks the OCI return URL.
-The `HOOK_URL` has to start with an allowed scheme; leading whitespace or control characters are not allowed.
+For the OCI punchout, the PWA submits the basket to the `HOOK_URL` given as a query parameter at login.
+To prevent script injection via this form target, the PWA checks the scheme of the `HOOK_URL` before logging in, in the same way that ICM checks the OCI return URL.
+The `HOOK_URL` must start with an allowed scheme.
+Leading whitespace and control characters are not allowed.
 By default, `http`, `https`, and `sapevent` (used by SAP systems for catalogs embedded in the SAP GUI) are allowed.
 To change the allowed schemes, configure the `hookUrlSchemes` property of the punchout identity provider, e.g., to allow only `https`, so that the basket data is never transferred unencrypted.
 If `hookUrlSchemes` is empty, the default is used.
@@ -135,7 +137,7 @@ pwa:
           - https
 ```
 
-Example for the configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
+Example configuration via [PWA Helm Chart 1.0.0 or later](https://github.com/intershop/helm-charts/tree/main/charts/pwa):
 
 ```yaml
 app:
@@ -159,26 +161,27 @@ app:
 ## Login
 
 A user can log in by navigating to the `/punchout` or `/login` route.
-For this purpose, [specific query params](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) need to be added to the given route depending on whether the OCI or the cXML punchout should be used.
-For the OCI punchout login, the user needs to add the `HOOK_URL`, `USERNAME` and `PASSWORD` as query parameters, while the cXML user has to include the `sid` and `access-token`.
-In addition, the [cXML punchout tester](https://punchoutcommerce.com/tools/cxml-punchout-tester) could be used to log in a cXML punchout user.
+For this purpose, [specific query parameters](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) need to be added to the given route depending on whether the OCI or the cXML punchout should be used.
+For the OCI punchout login, the user needs to add the `HOOK_URL`, `USERNAME`, and `PASSWORD` as query parameters, while the cXML user needs to include the `sid` and `access-token`.
+In addition, the [cXML punchout tester](https://punchoutcommerce.com/tools/cxml-punchout-tester) can be used to log in a cXML punchout user.
 The request [/customers/${CustomersKey}/punchouts/cxml1.2/setuprequest](https://support.intershop.com/kb/index.php/Display/29L952#l1142) to create a new cXML punchout session must be inserted as the URL with the credentials of the cXML punchout user.
-When the session is created successfully, the punchout tester will redirect to the ICM configured PWA deployment `/punchout` route.
+When the session is created successfully, the punchout tester redirects to the `/punchout` route of the PWA deployment configured in ICM.
 
 The punchout user is logged in with these query parameters only.
 Before the login, the session of a previous login (the `apiToken` cookie and the tokens of the OAuth library in the local storage) is removed and is not restored, even on a reload of the punchout route.
 After the login, the PWA stores the new session in the `apiToken` cookie.
-A reload restores this session only on routes that use another identity provider, like the default ICM identity provider in production-like deployments (see [Configuration](#configuration)).
+A reload restores this session only on routes that use another identity provider, such as the default ICM identity provider in production-like deployments (see [Configuration](#configuration)).
 
 ## Registration
 
-There is currently no possibility to register a new punchout user in the PWA.
+The PWA currently does not support the registration of new punchout users.
 
 ## Token Lifetime
 
-The authentication token is refreshed automatically before it expires, see [Concept - Authentication: Token Lifetime](../concepts/authentication.md#token-lifetime).
+The authentication token is refreshed automatically before it expires.
+For more information, see [Concept - Authentication: Token Lifetime](../concepts/authentication.md#token-lifetime).
 
 ## Logout
 
-When the user logs out by clicking the logout link or navigating to the `/logout` route, the configured [`logout()`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) function will be executed, which will call the [`revokeApiToken()`](../../src/app/core/services/user/user.service.ts) user service in order to deactivate the token on server side.
-Besides this, the PWA removes the token and basket-id on browser side, fetches a new anonymous user token, and sets it as `apiToken` cookie.
+When the user logs out by clicking the logout link or navigating to the `/logout` route, the configured [`logout()`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) function is executed, which calls the [`revokeApiToken()`](../../src/app/core/services/user/user.service.ts) user service to deactivate the token on the server side.
+In addition, the PWA removes the token and `basket-id` on the browser side, fetches a new anonymous user token, and sets it as the `apiToken` cookie.
