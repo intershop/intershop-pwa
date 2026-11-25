@@ -25,6 +25,7 @@ import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 
 import { AddressDoctorExportsModule } from '../extensions/address-doctor/exports/address-doctor-exports.module';
+import { AiSearchExportsModule } from '../extensions/ai-search/exports/ai-search-exports.module';
 import { CaptchaExportsModule } from '../extensions/captcha/exports/captcha-exports.module';
 import { CompareExportsModule } from '../extensions/compare/exports/compare-exports.module';
 import { ContactUsExportsModule } from '../extensions/contact-us/exports/contact-us-exports.module';
@@ -171,6 +172,7 @@ import { FormsSharedModule } from './forms/forms.module';
 
 const importExportModules = [
   AddressDoctorExportsModule,
+  AiSearchExportsModule,
   AuthorizationToggleModule,
   CaptchaExportsModule,
   CdkTableModule,

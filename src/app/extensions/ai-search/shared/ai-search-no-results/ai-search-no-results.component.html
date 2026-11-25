@@ -1,0 +1,4 @@
+<!-- UC-001 BR-010: The no-results pointer only when the AI Product Advisor is offered. -->
+@if ('copilotEmbedded' | ishFeature) {
+  <div [ishServerHtml]="'ai_search.no_results.advisor' | translate"></div>
+}

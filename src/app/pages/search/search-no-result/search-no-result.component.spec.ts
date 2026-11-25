@@ -1,11 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
-import { MockComponent, MockPipe } from 'ng-mocks';
+import { MockComponent, MockPipe, ngMocks } from 'ng-mocks';
 
 import { HtmlEncodePipe } from 'ish-core/pipes/html-encode.pipe';
 import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
 import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
 import { SearchBoxComponent } from 'ish-shared/components/search/search-box/search-box.component';
+
+import { LazyAiSearchNoResultsComponent } from '../../../extensions/ai-search/exports/lazy-ai-search-no-results/lazy-ai-search-no-results.component';
 
 import { SearchNoResultComponent } from './search-no-result.component';
 
@@ -21,6 +23,7 @@ describe('Search No Result Component', () => {
       declarations: [
         MockComponent(BreadcrumbComponent),
         MockComponent(ContentIncludeComponent),
+        MockComponent(LazyAiSearchNoResultsComponent),
         MockPipe(HtmlEncodePipe, value => value),
         SearchNoResultComponent,
       ],
@@ -49,5 +52,15 @@ describe('Search No Result Component', () => {
     fixture.detectChanges();
     expect(element.querySelector('.no-search-result-title')).toBeTruthy();
     expect(element.querySelector('.no-search-result-title').textContent).toContain(component.searchTerm);
+  });
+
+  describe('UC-001 Get AI Answer for Search', () => {
+    it('should integrate AI Search for the search query that found no products (A1)', () => {
+      component.searchTerm = 'notebook for gaming';
+      fixture.detectChanges();
+
+      expect(ngMocks.findInstance(LazyAiSearchNoResultsComponent)).toBeTruthy();
+      expect(element.querySelector('ish-lazy-ai-search-answer-box')).toBeFalsy();
+    });
   });
 });

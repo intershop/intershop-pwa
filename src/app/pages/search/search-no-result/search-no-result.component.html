@@ -1,4 +1,4 @@
-<div class="no-search-result" data-testing-id="no-search-result-page">
+﻿<div class="no-search-result" data-testing-id="no-search-result-page">
   <div class="marketing-area">
     <ish-content-include includeId="include.searchnoresult.base.top.pagelet2-Include" />
   </div>
@@ -29,6 +29,7 @@
   </div>
 
   <h2>{{ 'search.noresult.contact.heading' | translate }}</h2>
+  <ish-lazy-ai-search-no-results />
   <div [ishServerHtml]="'search.noresult.contact.message' | translate"></div>
 
   <div class="marketing-area">

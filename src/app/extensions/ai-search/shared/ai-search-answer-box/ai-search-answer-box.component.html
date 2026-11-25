@@ -1,0 +1,42 @@
+@if (answer$ | async; as answer) {
+  <section class="ai-search-answer-box" [attr.aria-label]="'ai_search.answer.label' | translate">
+    @if (answer.loading) {
+      <div aria-busy="true" class="ai-search-placeholder" role="status">
+        <span class="visually-hidden">{{ 'ai_search.answer.loading' | translate }}</span>
+        @for (line of [1, 2, 3, 4, 5]; track line) {
+          <div class="ai-search-placeholder-line"></div>
+        }
+      </div>
+    } @else {
+      <!-- UC-001 BR-007: The AI answer is marked as AI-generated, also machine-readable. -->
+      <div
+        #answerText
+        aria-describedby="ai-search-notice"
+        class="ai-search-answer"
+        data-ai-generated="true"
+        id="ai-search-answer"
+        tabindex="-1"
+        [class.ai-search-answer-collapsed]="!expanded"
+        [innerHTML]="answer.html"
+      ></div>
+      @if (truncated && !expanded) {
+        <button
+          aria-controls="ai-search-answer"
+          aria-expanded="false"
+          class="btn btn-link ai-search-read-more"
+          type="button"
+          (click)="expand()"
+        >
+          {{ 'ai_search.answer.read_more' | translate }}
+        </button>
+      }
+      <p class="ai-search-notice" id="ai-search-notice">{{ 'ai_search.answer.notice' | translate }}</p>
+      <!-- UC-001 BR-010: The AI Product Advisor link only when the AI Product Advisor is offered. -->
+      @if ('copilotEmbedded' | ishFeature) {
+        <a class="ai-search-advisor-link" routerLink="/copilot">
+          <i aria-hidden="true" class="bi bi-forward"></i>{{ 'ai_search.answer.advisor_link' | translate }}
+        </a>
+      }
+    }
+  </section>
+}

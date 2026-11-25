@@ -1,0 +1,12 @@
+// the AI answer is rendered as HTML ([innerHTML]), which the component styles of the answer box cannot reach
+.ai-search-answer {
+  p,
+  ul,
+  ol {
+    margin-bottom: $space-default;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}

@@ -29,6 +29,7 @@
         (totalItems ? 'search.title.text' : 'search.title.short.text') | translate: { '1': searchTerm, '2': totalItems }
       }}
     </h1>
+    <ish-lazy-ai-search-answer-box [searchQuery]="searchTerm" />
     <div class="marketing-area">
       <ish-content-include includeId="include.searchresult.content.top.pagelet2-Include" />
     </div>
