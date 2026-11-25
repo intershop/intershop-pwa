@@ -2,6 +2,7 @@
   "name": "eslint-plugin-ish-custom-rules",
   "description": "A plugin with Intershop's custom eslint rules",
   "version": "0.0.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "files": [
     "dist/**"

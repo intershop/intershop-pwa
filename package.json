@@ -2,7 +2,7 @@
   "name": "intershop-pwa",
   "description": "Intershop Progressive Web App",
   "version": "13.0.0",
-  "license": "Intershop Standard Software End User License Agreement Intershop 7",
+  "license": "MIT",
   "keywords": [
     "intershop"
   ],
@@ -41,8 +41,8 @@
     "check-no-changes": "git diff --exit-code --raw -p --stat",
     "show-ignored-files": "git ls-files . --exclude-standard --others --ignored --directory",
     "changelog": "conventional-changelog --config intershop-changelog.js",
-    "3rd-party-licenses": "npm ci && npx license-checker --csv --out 3rd-party-licenses.txt --customPath 3rd-party-licenses_format.json",
-    "3rd-party-licenses:summary": "npx license-checker --summary",
+    "3rd-party-licenses": "npm ci && npx license-checker --excludePrivatePackages --csv --out 3rd-party-licenses.txt --customPath 3rd-party-licenses_format.json",
+    "3rd-party-licenses:summary": "npx license-checker --excludePrivatePackages --summary",
     "docs": "npx markserv -a localhost docs/README.md",
     "synchronize-lazy-components": "ng g lazy-components",
     "build:watch": "npm run build client -- --watch",
