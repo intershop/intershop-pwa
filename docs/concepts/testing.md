@@ -58,6 +58,7 @@ They do not mock out anything and run the PWA against an ICM with a deployed `a_
 We also use [Cypress](https://www.cypress.io/) here.
 Additionally, all tests from the previous integration step should be composed in a way that they can also be run with real REST responses.
 As a basic rule of thumb we only test happy path functionality or workflows that would be too cumbersome to be mocked in module tests.
+Features that are disabled by default and need a configuration that is not part of the standard code, such as the AI Product Advisor (`copilot`, `copilotEmbedded`) or AI Search (`aiSearch`), have no end-to-end tests; their Jest tests cover them.
 
 ## Test File Locations
 

@@ -10,7 +10,8 @@ applyTo: '**/*.ts'
 
 ### Effect Error Handling
 
-- **Use mapErrorToAction:** Convert HTTP errors to failure actions
+- **Use mapErrorToAction:** Convert HTTP errors to failure actions; it rethrows all other errors
+- **Expected non-HTTP errors:** Map errors the effect provokes itself, e.g. by `timeout`, with `catchError` to the failure action
 - **Handle specific error cases:** Check error status and provide appropriate feedback
 - **Maintain observable stream:** Always return valid actions, never throw in effects
 

@@ -28,6 +28,7 @@ kb_sync_latest_only
 - [Entity State Adapter for Managing Record Collections: @ngrx/entity](#entity-state-adapter-for-managing-record-collections-ngrxentity)
 - [Normalized State](#normalized-state)
 - [State Transfer](#state-transfer)
+- [Where to Keep State](#where-to-keep-state)
 - [Further References](#further-references)
 
 This concept describes how [NgRx](https://ngrx.io/) is integrated into the Intershop Progressive Web App for the application wide state management.
@@ -251,6 +252,24 @@ The accumulated NgRx state is then passed to the client side via state transfer 
 If certain slices of the state should not be passed to the client, you can put an underscore (`_`) in front of the name.
 For reasons of performance, this filtering is limited to a depth of two levels.
 This means feature stores can exclude reducers (in their respective `X-store.module.ts`) and core store slices can exclude properties (in their respective `X.reducer.ts`).
+
+## Where to Keep State
+
+Choose the place for a piece of state by who needs it and how long it has to live.
+Take the first row that fits.
+
+| When the state ...                                                                            | Keep it in                                                           | Examples                                                                           |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| describes what the page shows and should survive sharing a link or a reload                   | the URL (route and query parameters)                                 | product listing filters, sorting, and page                                         |
+| is read by the server on the first request                                                    | a cookie via `CookiesService`                                        | `apiToken`, `cookieConsent`, `preferredLocale`                                     |
+| belongs to one component and its children                                                     | a [context facade](#context-facades), provided by the component      | `ProductContextFacade`                                                             |
+| is shared across components or pages, or rendered on the server                               | the NgRx store                                                       | products, basket, user                                                             |
+| is shared like that and must also survive a reload, a new tab, or closing the browser         | the NgRx store with `dataRetentionMeta` and a `dataRetention` policy | compare, recently viewed, Copilot Embedded chat                                    |
+| bridges one browser flow only, e.g., a redirect to a payment provider or an identity provider | `sessionStorage`, written and removed by the service of that flow    | pending payment redirect in `OrderService`, invite data in `Auth0IdentityProvider` |
+
+For stored store state, make the lifetime configurable with a `dataRetention.<feature>` entry in the _environment.model.ts_: a number of minutes keeps it in `localStorage` with an expiry, `'session'` keeps it for the browser tab in `sessionStorage`, and `'forever'` keeps it in `localStorage` without expiry.
+Start the key of stored state with an underscore (`_`), so it stays out of the [state transfer](#state-transfer).
+Browser storage does not exist during server-side rendering, so access it only in the browser.
 
 ## Further References
 

@@ -8,7 +8,8 @@ applyTo: '**/*.ts'
 - State management is handled through effects and facades.
 - Prefer Action Creators over Action Types for better type safety and maintainability.
 - Generate stores with `ng g store-group <group>` and `ng g store --feature <group> <store>` (`--extension <extension>` for extension stores), see [Customizations](../../docs/guides/customizations.md#ngrx). The generated `index.ts` is the store's public API, see [File Structure](../../docs/concepts/state-management.md#file-structure): code outside the store folder imports its actions and selectors from there.
-- Facades are the thin layer between components and the NgRx store, consumed by components and context facades. Logic beyond store access belongs to a utility service (`utils/[feature]/[feature].service.ts`).
+- Facades are the thin layer between components and the NgRx store, consumed by components and context facades. They select and shape store streams (`map`, `filter`, `distinctUntilChanged`) and dispatch actions; logic that coordinates other facades, services, the Router, or the DOM belongs to a utility service (`utils/[feature]/[feature].service.ts`).
+- Before choosing where to keep state (URL, cookie, context facade, store, store with `dataRetention`, browser storage), follow [Where to Keep State](../../docs/concepts/state-management.md#where-to-keep-state).
 - Component-scoped state lives in a context facade (`RxState`, provided by the component, e.g. `ProductContextFacade`), which may hold the logic of its context, see [Context Facades](../../docs/concepts/state-management.md#context-facades).
 
 ## Examples

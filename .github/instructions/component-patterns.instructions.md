@@ -11,7 +11,7 @@ applyTo: '**/*.component.{ts,html}'
 - Use facades instead of direct service calls where possible
 - Never inject the store directly - use facades instead
 - Implement proper subscription cleanup with `takeUntilDestroyed` pattern
-- Run browser-only DOM work (focus, scrolling, measuring, `window`/`document` listeners) in `afterNextRender` in the constructor; it runs only in the browser after the view is rendered, so no `SSR` check is needed
+- Run browser-only DOM work (focus, scrolling, measuring, observers, `window`/`document` listeners) in `afterNextRender`; it runs only in the browser after the view is rendered, so no `SSR` check is needed. Call it in the constructor, or with `{ injector }` where a change renders new DOM, e.g. inside `@if`, see [CopilotEmbeddedMessagesComponent](../../src/app/extensions/copilot-embedded/pages/copilot-embedded/copilot-embedded-messages/copilot-embedded-messages.component.ts)
 - Use built-in control flow syntax in templates (`@if`, `@for`, etc.)
 - Use native `[class]`/`[style]` bindings instead of `ngClass`/`ngStyle` (exception: `ngClass` object keys with space-separated classes)
 - Keep templates simple - delegate business logic to facades

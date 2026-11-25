@@ -1,6 +1,6 @@
 ---
 name: figma-to-pwa
-description: 'Design-to-code: translate a Figma design into Intershop PWA Angular components. Use when the user shares a figma.com link, asks to implement UI from a Figma design, or to make an existing view match one.'
+description: 'Design-to-code: translate a Figma design into Intershop PWA Angular components. Use when the user shares a figma.com link, asks to implement UI from a Figma design, or to make an existing view match one. For components without a design, use pwa-ui.'
 ---
 
 # Figma → Intershop PWA (design-to-code)
