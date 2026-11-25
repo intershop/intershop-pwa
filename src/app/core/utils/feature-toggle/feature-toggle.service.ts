@@ -36,7 +36,7 @@ export class FeatureToggleService {
    * logic that is not included in the initialization process.
    */
   enabled(feature: 'always' | 'never' | FeatureToggleType): boolean {
-    // eslint-disable-next-line rxjs/no-subject-value
+    // eslint-disable-next-line rxjs-x/no-subject-value
     return checkFeature(this.featureToggles$.value, feature);
   }
 

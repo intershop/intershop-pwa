@@ -10,7 +10,6 @@ const noopStream = new Writable({
 jest.mock('pino', () => {
   const actualPino = jest.requireActual('pino');
   const original = typeof actualPino === 'function' ? actualPino : (actualPino.default ?? actualPino);
-  // eslint-disable-next-line ban/ban
   const mockedPino = Object.assign((...args: unknown[]) => original(args[0], noopStream), original);
   return { ...actualPino, __esModule: true, default: mockedPino };
 });
