@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
-import { Observable, noop, of, throwError } from 'rxjs';
+import { Observable, Subject, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
@@ -134,6 +134,25 @@ describe('Basket Items Effects', () => {
         verify(basketItemsServiceMock.addItemsToBasket(items)).once();
         done();
       });
+    });
+
+    it('should create only one basket for several actions arriving while no basket is present', done => {
+      const createdBasket$ = new Subject<Basket>();
+      when(basketServiceMock.createBasket()).thenReturn(createdBasket$);
+
+      const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
+      actions$ = of(addItemsToBasket({ items }), addItemsToBasket({ items }));
+
+      effects.addItemsToBasket$.subscribe({
+        next: action => store.dispatch(action),
+        complete: () => {
+          verify(basketServiceMock.createBasket()).once();
+          verify(basketItemsServiceMock.addItemsToBasket(items)).twice();
+          done();
+        },
+      });
+      createdBasket$.next({ id: 'BID' } as Basket);
+      createdBasket$.complete();
     });
 
     it('should map to action of type AddItemsToBasketSuccess', () => {
