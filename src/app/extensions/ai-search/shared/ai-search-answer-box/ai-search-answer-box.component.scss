@@ -56,6 +56,20 @@ $answer-line-height: $space-default * 1.6;
   margin: 0 0 $space-default * 0.9 $space-default * 1.35;
   background: $color-tertiary;
   border-radius: divide($space-default, 3);
+  // the lines pulse in a staggered wave while the AI answer is generated
+  animation: ai-search-placeholder-pulse 1.6s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  &:nth-of-type(3n + 2) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-of-type(3n) {
+    animation-delay: 0.4s;
+  }
 
   &::before {
     position: absolute;
@@ -80,5 +94,11 @@ $answer-line-height: $space-default * 1.6;
 
   &:nth-of-type(3) {
     width: 55%;
+  }
+}
+
+@keyframes ai-search-placeholder-pulse {
+  50% {
+    opacity: 0.4;
   }
 }
