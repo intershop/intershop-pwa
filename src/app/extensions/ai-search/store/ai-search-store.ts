@@ -12,3 +12,11 @@ export interface AiSearchState {
 }
 
 export const getAiSearchState = createFeatureSelector<AiSearchState>('aiSearch');
+
+/**
+ * Prefix and key under which `dataRetentionMeta` stores the kept AI answer: `{baseHref}-aiSearch-_keptAnswer`.
+ */
+export const AI_SEARCH_KEPT_ANSWER_STORAGE = { prefix: 'aiSearch', key: '_keptAnswer' } as const satisfies {
+  prefix: string;
+  key: keyof AiSearchState;
+};

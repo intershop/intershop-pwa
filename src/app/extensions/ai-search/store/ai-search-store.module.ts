@@ -4,13 +4,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { ActionReducerMap, StoreConfig, StoreModule } from '@ngrx/store';
 import { pick } from 'lodash-es';
 
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { dataRetentionMeta } from 'ish-core/utils/meta-reducers';
 
 import { AiSearchAnswerEffects } from './ai-search-answer/ai-search-answer.effects';
 import { aiSearchAnswerReducer, aiSearchKeptAnswerReducer } from './ai-search-answer/ai-search-answer.reducer';
 import { AiSearchConfigEffects } from './ai-search-config/ai-search-config.effects';
 import { aiSearchConfigReducer } from './ai-search-config/ai-search-config.reducer';
-import { AiSearchState } from './ai-search-store';
+import { AI_SEARCH_KEPT_ANSWER_STORAGE, AiSearchState } from './ai-search-store';
 
 const aiSearchReducers: ActionReducerMap<AiSearchState> = {
   aiSearchConfig: aiSearchConfigReducer,
@@ -22,10 +24,20 @@ const aiSearchEffects = [AiSearchAnswerEffects, AiSearchConfigEffects];
 
 @Injectable()
 export class DefaultAiSearchStoreConfig implements StoreConfig<AiSearchState> {
-  // UC-001 BR-013: The kept AI answer lives in the session storage of the browser tab.
-  metaReducers = [dataRetentionMeta<AiSearchState>('session', this.appBaseHref, 'aiSearch', '_keptAnswer')];
+  // UC-001 BR-013: The kept AI answer is stored by `dataRetention.aiSearch`, by default for the browser tab.
+  metaReducers = [
+    dataRetentionMeta<AiSearchState>(
+      this.dataRetention.aiSearch,
+      this.appBaseHref,
+      AI_SEARCH_KEPT_ANSWER_STORAGE.prefix,
+      AI_SEARCH_KEPT_ANSWER_STORAGE.key
+    ),
+  ];
 
-  constructor(@Inject(APP_BASE_HREF) private appBaseHref: string) {}
+  constructor(
+    @Inject(APP_BASE_HREF) private appBaseHref: string,
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
+  ) {}
 }
 
 export const AI_SEARCH_STORE_CONFIG = new InjectionToken<StoreConfig<AiSearchState>>('aiSearchStoreConfig');

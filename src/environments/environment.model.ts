@@ -144,7 +144,7 @@ export interface Environment {
     | Auth0Config
   >;
 
-  // enable and configure data persistence for specific features (compare, recently, copilotEmbedded)
+  // enable and configure data persistence for specific features (compare, recently, copilotEmbedded, aiSearch)
   // values: lifetime in minutes (localStorage), 'session' (sessionStorage), 'forever' (localStorage), not set = no persistence
   dataRetention: DataRetentionPolicy;
 
@@ -229,6 +229,7 @@ export const ENVIRONMENT_DEFAULTS: Omit<Environment, 'icmChannel'> = {
     compare: 'session',
     recently: 60 * 24 * 7, // 1 week
     copilotEmbedded: 60 * 24, // 1 day
+    aiSearch: 'session',
   },
   priceUpdate: 'always',
 

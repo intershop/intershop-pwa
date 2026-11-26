@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { routerNavigatedAction } from '@ngrx/router-store';
 import { Action, Store, select } from '@ngrx/store';
-import { EMPTY, Observable, concat, defer, merge, of } from 'rxjs';
+import { Observable, merge, of } from 'rxjs';
 import {
   catchError,
   filter,
@@ -11,21 +9,21 @@ import {
   pairwise,
   startWith,
   switchMap,
-  take,
   takeUntil,
   timeout,
   withLatestFrom,
 } from 'rxjs/operators';
 
-import { selectRouter } from 'ish-core/store/core/router';
-import { RouterState } from 'ish-core/store/core/router/router.reducer';
 import { resetUserData } from 'ish-core/store/customer/user';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { AiSearchAnswerHelper } from '../../models/ai-search-answer/ai-search-answer.helper';
 import { AiSearchAnswer } from '../../models/ai-search-answer/ai-search-answer.model';
+import { PageVisit } from '../../models/page-visit/page-visit.model';
 import { AiSearchService } from '../../services/ai-search/ai-search.service';
+import { AiSearchNavigationService } from '../../utils/ai-search-navigation/ai-search-navigation.service';
+import { AI_SEARCH_KEPT_ANSWER_STORAGE } from '../ai-search-store';
 
 import { aiSearchAnswerInternalActions } from './ai-search-answer.actions';
 import { AiSearchAnswerState } from './ai-search-answer.reducer';
@@ -36,46 +34,13 @@ import { getAiSearchAnswerState, getAiSearchKeptAnswer } from './ai-search-answe
  */
 const ANSWER_TIMEOUT = 15000;
 
-/**
- * Suffix of the storage keys of the kept AI answer; `dataRetentionMeta` stores it as `{baseHref}-aiSearch-_keptAnswer`.
- */
-const KEPT_ANSWER_STORAGE_KEY_SUFFIX = '-aiSearch-_keptAnswer';
-
-const SEARCH_PAGE_URL = /^\/search\//;
-
-/**
- * A page the buyer navigated to.
- */
-interface PageVisit {
-  /** URL path without query parameters and fragment. */
-  path: string;
-  /** The search query, only for a search results page. */
-  searchQuery: string;
-  /** Whether the page is shown again by a reload or by browser back or forward navigation. */
-  restored: boolean;
-}
-
-/**
- * Whether the browser loaded the document by a reload or by browser back or forward navigation.
- */
-function isRestoredDocument(): boolean {
-  const [entry] = (performance?.getEntriesByType?.('navigation') ?? []) as PerformanceNavigationTiming[];
-  return entry?.type === 'reload' || entry?.type === 'back_forward';
-}
-
-function toPageVisit(state: RouterState, restored: boolean): PageVisit {
-  const url = state?.url ?? '';
-  const searchQuery = SEARCH_PAGE_URL.test(url) ? state.params?.searchTerm : undefined;
-  return { path: url.split(/[?#]/)[0], searchQuery, restored };
-}
-
 @Injectable()
 export class AiSearchAnswerEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private router: Router,
-    private aiSearchService: AiSearchService
+    private aiSearchService: AiSearchService,
+    private aiSearchNavigationService: AiSearchNavigationService
   ) {}
 
   // UC-001 BR-002: The AI answer is requested next to the search, which never waits for it.
@@ -108,7 +73,7 @@ export class AiSearchAnswerEffects {
    * after the initial navigation, this effect dispatches for the current page right on subscription.
    */
   triggerAnswer$ = createEffect(() =>
-    this.pageVisits$().pipe(
+    this.aiSearchNavigationService.pageVisits$().pipe(
       startWith(undefined as PageVisit),
       pairwise(),
       withLatestFrom(this.store.pipe(select(getAiSearchAnswerState)), this.store.pipe(select(getAiSearchKeptAnswer))),
@@ -133,8 +98,9 @@ export class AiSearchAnswerEffects {
   );
 
   /**
-   * Removes the kept AI answers under every base href on logout, so the next user of the browser tab cannot see them.
+   * Removes the kept AI answers under every base href on logout, so the next user of the browser cannot see them.
    * The reducer only clears the kept AI answer of the current base href, but the logout applies to the whole site.
+   * Both storages are searched, because `dataRetention.aiSearch` decides where the kept AI answer is stored.
    */
   // UC-001 BR-013: The logout deletes the kept AI answer (OQ-028).
   removeKeptAnswersOnLogout$ = createEffect(
@@ -142,48 +108,17 @@ export class AiSearchAnswerEffects {
       this.actions$.pipe(
         ofType(resetUserData),
         filter(() => !SSR),
-        map(() =>
-          Array.from({ length: sessionStorage.length }, (_, index) => sessionStorage.key(index))
-            .filter(key => key?.endsWith(KEPT_ANSWER_STORAGE_KEY_SUFFIX))
-            .forEach(key => sessionStorage.removeItem(key))
-        )
+        map(() => {
+          const keySuffix = `-${AI_SEARCH_KEPT_ANSWER_STORAGE.prefix}-${AI_SEARCH_KEPT_ANSWER_STORAGE.key}`;
+          [localStorage, sessionStorage].forEach(storage =>
+            Array.from({ length: storage.length }, (_, index) => storage.key(index))
+              .filter(key => key?.endsWith(keySuffix))
+              .forEach(key => storage.removeItem(key))
+          );
+        })
       ),
     { dispatch: false }
   );
-
-  /**
-   * Emits the pages the buyer navigates to in the browser, starting with the current page when the initial navigation
-   * has already ended.
-   */
-  private pageVisits$(): Observable<PageVisit> {
-    return defer(() => {
-      if (SSR) {
-        return EMPTY;
-      }
-      const navigationStarts$ = this.router.events.pipe(
-        filter((event): event is NavigationStart => event instanceof NavigationStart),
-        startWith(undefined as NavigationStart)
-      );
-      const currentPage$ = this.router.navigated
-        ? this.store.pipe(
-            select(selectRouter),
-            take(1),
-            map(router => toPageVisit(router?.state, isRestoredDocument()))
-          )
-        : EMPTY;
-      const navigatedPages$ = this.actions$.pipe(
-        ofType(routerNavigatedAction),
-        withLatestFrom(navigationStarts$),
-        map(([action, lastStart]) => {
-          const { id } = action.payload.event;
-          const restored =
-            id === 1 ? isRestoredDocument() : lastStart?.id === id && lastStart.navigationTrigger === 'popstate';
-          return toPageVisit(action.payload.routerState as unknown as RouterState, restored);
-        })
-      );
-      return concat(currentPage$, navigatedPages$);
-    });
-  }
 
   private nextAction(
     previous: PageVisit,

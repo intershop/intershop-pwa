@@ -5,10 +5,9 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { AiSearchAnswer } from '../models/ai-search-answer/ai-search-answer.model';
 import { AiSearchConfig } from '../models/ai-search-config/ai-search-config.model';
-import { aiSearchAnswerActions } from '../store/ai-search-answer/ai-search-answer.actions';
+import { aiSearchAnswerActions, getAiSearchAnswerState } from '../store/ai-search-answer';
 import { AiSearchAnswerState } from '../store/ai-search-answer/ai-search-answer.reducer';
-import { getAiSearchAnswerState } from '../store/ai-search-answer/ai-search-answer.selectors';
-import { getAiSearchConfig } from '../store/ai-search-config/ai-search-config.selectors';
+import { getAiSearchConfig } from '../store/ai-search-config';
 
 @Injectable({ providedIn: 'root' })
 export class AiSearchFacade {

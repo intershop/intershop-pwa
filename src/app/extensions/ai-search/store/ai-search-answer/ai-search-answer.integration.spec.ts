@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, NEVER, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
@@ -19,6 +20,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { loginUserSuccess, resetUserData } from 'ish-core/store/customer/user';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { DataRetentionPolicy } from 'ish-core/utils/meta-reducers';
 import { ModuleLoaderService } from 'ish-core/utils/module-loader/module-loader.service';
 import { StatePropertiesService } from 'ish-core/utils/state-transfer/state-properties.service';
 
@@ -60,7 +62,11 @@ describe('Ai Search Answer Integration', () => {
   let aiSearchFacade: AiSearchFacade;
   let loggedIn$: BehaviorSubject<boolean>;
 
-  function configure(config: AiSearchConfig, imports: unknown[]) {
+  function configure(
+    config: AiSearchConfig,
+    imports: unknown[],
+    dataRetention: DataRetentionPolicy = { aiSearch: 'session' }
+  ) {
     const statePropertiesService = mock(StatePropertiesService);
     when(statePropertiesService.getStateOrEnvOrDefault(anything(), anything())).thenReturn(of(config));
     loggedIn$ = new BehaviorSubject(false);
@@ -72,6 +78,7 @@ describe('Ai Search Answer Integration', () => {
         { provide: ApiTokenService, useValue: { apiToken$: new BehaviorSubject('icm-user-token') } },
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: AppFacade, useValue: { currentLocale$: of('en_US') } },
+        { provide: DATA_RETENTION_POLICY, useValue: dataRetention },
         { provide: StatePropertiesService, useFactory: () => instance(statePropertiesService) },
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -91,8 +98,8 @@ describe('Ai Search Answer Integration', () => {
     aiSearchFacade = TestBed.inject(AiSearchFacade);
   }
 
-  function setup(config: AiSearchConfig = CONFIG, initialUrl = '/') {
-    configure(config, [AiSearchStoreModule, CoreStoreModule.forTesting(['router'], true)]);
+  function setup(config: AiSearchConfig = CONFIG, initialUrl = '/', dataRetention?: DataRetentionPolicy) {
+    configure(config, [AiSearchStoreModule, CoreStoreModule.forTesting(['router'], true)], dataRetention);
 
     // the browser loads the document at the initial URL, which starts the router's popstate listener
     location.go(initialUrl);
@@ -103,6 +110,7 @@ describe('Ai Search Answer Integration', () => {
   /**
    * Loads AI Search as the storefront does: by its feature toggle while the application starts (C-001).
    *
+   * @param features    The feature toggles the storefront starts with.
    * @param initialUrl  A page the router has already navigated to when AI Search is loaded.
    */
   async function setupWithFeatureToggles(features: FeatureToggleType[], initialUrl?: string) {
@@ -409,6 +417,32 @@ describe('Ai Search Answer Integration', () => {
       store.dispatch(loginUserSuccess({} as CustomerLoginType));
 
       expect(storedAnswer()).toEqual({ searchQuery: QUERY, text: ANSWER_TEXT });
+    }));
+  });
+
+  describe('UC-001 with the kept AI answer stored in the local storage by dataRetention.aiSearch', () => {
+    beforeEach(fakeAsync(() => setup(CONFIG, '/', { aiSearch: 60 })));
+
+    afterEach(() => {
+      httpController.verify();
+      localStorage.clear();
+    });
+
+    it('should keep the AI answer in the local storage and delete the kept AI answers of every base href on logout (BR-013)', fakeAsync(() => {
+      navigate(searchUrl(QUERY));
+      answerAndShow();
+
+      expect(JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY))?.data).toEqual({
+        searchQuery: QUERY,
+        text: ANSWER_TEXT,
+      });
+      expect(sessionStorage.getItem(KEPT_ANSWER_KEY)).toBeNull();
+
+      localStorage.setItem('/de-aiSearch-_keptAnswer', JSON.stringify({ sync: Date.now(), data: {} }));
+      store.dispatch(resetUserData());
+
+      expect(JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY) ?? 'null')?.data?.text).toBeUndefined();
+      expect(localStorage.getItem('/de-aiSearch-_keptAnswer')).toBeNull();
     }));
   });
 
