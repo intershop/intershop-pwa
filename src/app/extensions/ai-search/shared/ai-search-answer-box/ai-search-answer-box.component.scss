@@ -5,95 +5,95 @@ $answer-line-height: $space-default * 1.6;
 
 .ai-search-answer-box {
   padding-bottom: $space-default;
-}
 
-.ai-search-answer {
-  line-height: $answer-line-height;
-}
+  .ai-search-answer {
+    line-height: $answer-line-height;
+  }
 
-// three lines of the AI answer, as the design defines
-.ai-search-answer-collapsed {
-  display: -webkit-box;
-  max-height: $answer-line-height * 3;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
+  // three lines of the AI answer, as the design defines
+  .ai-search-answer-collapsed {
+    display: -webkit-box;
+    max-height: $answer-line-height * 3;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
 
-.ai-search-read-more {
-  padding: 0;
-  line-height: $answer-line-height;
-}
+  .ai-search-read-more {
+    padding: 0;
+    line-height: $answer-line-height;
+  }
 
-.ai-search-notice {
-  margin: divide($space-default, 2) 0 0;
-  color: $text-color-secondary;
-}
+  .ai-search-notice {
+    margin: divide($space-default, 2) 0 0;
+    color: $text-color-secondary;
+  }
 
-.ai-search-advisor-link {
-  display: inline-block;
-  margin-top: $space-default;
-  line-height: $answer-line-height;
+  .ai-search-advisor-link {
+    display: inline-block;
+    margin-top: $space-default;
+    line-height: $answer-line-height;
 
-  .bi {
-    padding-right: divide($space-default, 4);
-    font-size: $answer-line-height;
+    .bi {
+      padding-right: divide($space-default, 4);
+      font-size: $answer-line-height;
 
-    &::before {
-      vertical-align: 0;
+      &::before {
+        vertical-align: 0;
+      }
     }
   }
-}
 
-.ai-search-placeholder {
-  padding-top: divide($space-default, 2);
-}
-
-.ai-search-placeholder-line {
-  position: relative;
-  height: divide($space-default, 1.5);
-  margin: 0 0 $space-default * 0.9 $space-default * 1.35;
-  background: $color-tertiary;
-  border-radius: divide($space-default, 3);
-  // the lines pulse in a staggered wave while the AI answer is generated
-  animation: ai-search-placeholder-pulse 1.6s ease-in-out infinite;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+  .ai-search-placeholder {
+    padding-top: divide($space-default, 2);
   }
 
-  &:nth-of-type(3n + 2) {
-    animation-delay: 0.2s;
-  }
-
-  &:nth-of-type(3n) {
-    animation-delay: 0.4s;
-  }
-
-  &::before {
-    position: absolute;
-    top: 1px;
-    left: -$space-default * 1.35;
-    width: divide($space-default, 2);
-    height: divide($space-default, 2);
-    content: '';
+  .ai-search-placeholder-line {
+    position: relative;
+    height: divide($space-default, 1.5);
+    margin: 0 0 $space-default * 0.9 $space-default * 1.35;
     background: $color-tertiary;
-    border-radius: 50%;
-  }
+    border-radius: divide($space-default, 3);
+    // the lines pulse in a staggered wave while the AI answer is generated
+    animation: ai-search-placeholder-pulse 1.6s ease-in-out infinite;
 
-  &:nth-of-type(1),
-  &:nth-of-type(4) {
-    width: 60%;
-  }
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
 
-  &:nth-of-type(2),
-  &:nth-of-type(5) {
-    width: 70%;
-  }
+    &:nth-of-type(3n + 2) {
+      animation-delay: 0.2s;
+    }
 
-  &:nth-of-type(3) {
-    width: 55%;
+    &:nth-of-type(3n) {
+      animation-delay: 0.4s;
+    }
+
+    &::before {
+      position: absolute;
+      top: 1px;
+      left: -$space-default * 1.35;
+      width: divide($space-default, 2);
+      height: divide($space-default, 2);
+      content: '';
+      background: $color-tertiary;
+      border-radius: 50%;
+    }
+
+    &:nth-of-type(1),
+    &:nth-of-type(4) {
+      width: 60%;
+    }
+
+    &:nth-of-type(2),
+    &:nth-of-type(5) {
+      width: 70%;
+    }
+
+    &:nth-of-type(3) {
+      width: 55%;
+    }
   }
 }
 

@@ -4,9 +4,11 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  Injector,
   Input,
   OnChanges,
   ViewChild,
+  afterNextRender,
   inject,
 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -48,6 +50,7 @@ export class AiSearchAnswerBoxComponent implements OnChanges {
   private answerElement: HTMLElement;
   private resizeObserver: ResizeObserver;
   private destroyRef = inject(DestroyRef);
+  private injector = inject(Injector);
 
   constructor(
     private aiSearchFacade: AiSearchFacade,
@@ -60,18 +63,11 @@ export class AiSearchAnswerBoxComponent implements OnChanges {
   @ViewChild('answerText') set answerText(element: ElementRef<HTMLElement>) {
     this.answerElement = element?.nativeElement;
     this.resizeObserver?.disconnect();
-    if (!element || typeof ResizeObserver === 'undefined') {
-      return;
+    this.resizeObserver = undefined;
+    if (element) {
+      // the AI answer appears inside @if, so it is measured once it is rendered
+      afterNextRender(() => this.observeTruncation(element.nativeElement), { injector: this.injector });
     }
-    this.resizeObserver = new ResizeObserver(() => {
-      const { scrollHeight, clientHeight } = element.nativeElement;
-      const truncated = scrollHeight > clientHeight + 1;
-      if (truncated !== this.truncated) {
-        this.truncated = truncated;
-        this.cd.markForCheck();
-      }
-    });
-    this.resizeObserver.observe(element.nativeElement);
   }
 
   ngOnChanges() {
@@ -88,5 +84,21 @@ export class AiSearchAnswerBoxComponent implements OnChanges {
     this.truncated = false;
     // UC-001 NFR-006: "Read more" disappears, so the keyboard focus continues at the full AI answer.
     this.answerElement?.focus();
+  }
+
+  private observeTruncation(element: HTMLElement) {
+    // the AI answer has been replaced or removed before it was rendered
+    if (element !== this.answerElement) {
+      return;
+    }
+    this.resizeObserver = new ResizeObserver(() => {
+      const { scrollHeight, clientHeight } = element;
+      const truncated = scrollHeight > clientHeight + 1;
+      if (truncated !== this.truncated) {
+        this.truncated = truncated;
+        this.cd.markForCheck();
+      }
+    });
+    this.resizeObserver.observe(element);
   }
 }

@@ -1,4 +1,4 @@
-﻿import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
