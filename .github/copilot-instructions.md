@@ -54,6 +54,7 @@ See [negative patterns instructions](./instructions/negative-patterns.instructio
 - **Angular prefixes:** Components use `ish-`, directives use `ish`
 - **Format command:** `npm run format`
 - **Lint command:** `npm run lint` (auto-fixes issues)
+- **`eslint-disable` comments:** fix the finding in the code instead; before adding one, follow [Disabling ESLint Rules](../docs/guides/eslint.md#disabling-eslint-rules)
 - **Dead code detection:** `npx ts-node scripts/find-dead-code.mts`
 
 ## Build & Test

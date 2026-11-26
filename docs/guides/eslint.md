@@ -8,6 +8,8 @@ kb_sync_latest_only
 # Working with ESLint
 
 - [Configuring ESLint](#configuring-eslint)
+- [Disabling ESLint Rules](#disabling-eslint-rules)
+  - [Examples](#examples)
 - [Custom ESLint Rules](#custom-eslint-rules)
 - [Further Reading](#further-reading)
 
@@ -45,6 +47,46 @@ The value specifies a rule's options and can be structured in two different ways
 Refer to the relevant documentation of the standard ESLint ruleset, various plugins or our custom rules to learn more about what each rule does and how to configure them.
 
 For more information on how to configure every aspect of ESLint, refer to the extensive documentation of [ESLint](https://eslint.org) as well as [`typescript-eslint`](https://typescript-eslint.io) and [`angular-eslint`](https://github.com/angular-eslint/angular-eslint).
+
+## Disabling ESLint Rules
+
+Fix a reported problem in the code instead of disabling the rule with an `eslint-disable` comment.
+Most findings have a better solution, e.g., moving reusable logic of a file that exceeds `max-lines` into a helper, or using the alternative named in the rule message.
+
+Add a disable comment only if there is no useful alternative, e.g., for a false positive or a deliberate exception the rule cannot recognize.
+In that case:
+
+- Name the disabled rule, because a bare `eslint-disable` also hides all other findings.
+- Keep the scope as small as possible: prefer `eslint-disable-next-line` to a file-wide `eslint-disable`.
+- Give the reason after `--`, so reviewers can judge the exception.
+
+### Examples
+
+A file that exceeds the `max-lines` limit configured in `eslint.config.mjs` usually contains logic that can be moved elsewhere, e.g., methods that do not use the state of a service into a helper of the related model, so the rule should not be disabled.
+
+:warning: **Wrong: Disabled Rule Instead of a Fix**
+
+```typescript
+/* eslint-disable max-lines */
+@Injectable({ providedIn: 'root' })
+export class ApiTokenService {
+  // ... exceeds the max-lines limit, including methods without service state like:
+  private isTokenGrant(req: HttpRequest<unknown>) {
+    return req.method === 'POST' && req.url.endsWith('/token') && req.body instanceof HttpParams;
+  }
+}
+```
+
+Variation attribute values can be strings or numbers and must be equal if `'1.0' == 1`, which neither `===` nor a string or number conversion achieves for all values.
+
+:heavy_check_mark: **Justified Exception with Rule, Smallest Scope and Reason**
+
+```typescript
+private static isEqual(obj1: VariationAttribute['value'], obj2: VariationAttribute['value']): boolean {
+  // eslint-disable-next-line eqeqeq -- needed for comparison of string, integers and floats
+  return ProductVariationHelper.toValue(obj1) == ProductVariationHelper.toValue(obj2);
+}
+```
 
 ## Custom ESLint Rules
 
