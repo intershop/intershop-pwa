@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
-import { anything, instance, mock, resetCalls, verify, when } from 'ts-mockito';
+import { anything, deepEqual, instance, mock, resetCalls, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { TokenService } from 'ish-core/services/token/token.service';
@@ -88,26 +88,43 @@ describe('Icm Identity Provider', () => {
     beforeEach(() => {
       when(accountFacade.isLoggedIn$).thenReturn(of(false));
       store$.overrideSelector(selectQueryParam(anything()), undefined);
-      icmIdentityProvider.init();
     });
 
-    it('should remove api token on logout', done => {
-      const logoutTrigger$ = icmIdentityProvider.triggerLogout() as Observable<UrlTree>;
-
-      logoutTrigger$.subscribe(() => {
-        verify(accountFacade.logoutUser()).once();
-        done();
+    // the guard of a directly opened /logout route is triggered before the delayed init()
+    describe('before init', () => {
+      it('should discard the session of the apiToken cookie instead of revoking it when /logout is opened directly', done => {
+        (icmIdentityProvider.triggerLogout() as Observable<UrlTree>).subscribe(() => {
+          verify(apiTokenService.discardApiToken()).once();
+          verify(accountFacade.logoutUser(deepEqual({ revokeApiToken: false }))).once();
+          verify(accountFacade.logoutUser()).never();
+          done();
+        });
       });
     });
 
-    it('should return to home page', done => {
-      const routerSpy = jest.spyOn(router, 'parseUrl');
+    describe('after init', () => {
+      beforeEach(() => {
+        icmIdentityProvider.init();
+      });
 
-      const logoutTrigger$ = icmIdentityProvider.triggerLogout() as Observable<UrlTree>;
+      it('should remove api token on logout', done => {
+        const logoutTrigger$ = icmIdentityProvider.triggerLogout() as Observable<UrlTree>;
 
-      logoutTrigger$.subscribe(() => {
-        expect(routerSpy).toHaveBeenCalledWith('/home');
-        done();
+        logoutTrigger$.subscribe(() => {
+          verify(accountFacade.logoutUser()).once();
+          done();
+        });
+      });
+
+      it('should return to home page', done => {
+        const routerSpy = jest.spyOn(router, 'parseUrl');
+
+        const logoutTrigger$ = icmIdentityProvider.triggerLogout() as Observable<UrlTree>;
+
+        logoutTrigger$.subscribe(() => {
+          expect(routerSpy).toHaveBeenCalledWith('/home');
+          done();
+        });
       });
     });
   });

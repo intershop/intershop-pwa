@@ -737,6 +737,42 @@ describe('User Effects', () => {
 
       expect(actions.filter(a => a.type === personalizationStatusDetermined.type)).toHaveLength(1);
     }));
+
+    it('should dispatch personalizationStatusDetermined when the user session is discarded by a logout before the PGID is set', fakeAsync(() => {
+      const logout$ = new Subject<Action>();
+      actions$ = logout$;
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      tick(200);
+      expect(actions).not.toContainEqual(personalizationStatusDetermined());
+
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(false));
+      logout$.next(resetUserData());
+
+      tick(200);
+      expect(actions).toContainEqual(personalizationStatusDetermined());
+    }));
+
+    it('should dispatch personalizationStatusDetermined only once when the cookie vanish is followed by resetUserData', fakeAsync(() => {
+      const reset$ = new Subject<Action>();
+      actions$ = reset$;
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(true));
+
+      const actions: Action[] = [];
+      effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));
+
+      tick(200);
+      when(identityProviderFactoryMock.hasUserSession$()).thenReturn(of(false));
+      cookieVanishes$.next('user');
+      reset$.next(resetUserData());
+
+      tick(200);
+      expect(actions.filter(a => a.type === personalizationStatusDetermined.type)).toHaveLength(1);
+    }));
+
     it('should dispatch personalizationStatusDetermined when the identity provider has no user session', fakeAsync(() => {
       const actions: Action[] = [];
       effects.determinePersonalizationStatus$.subscribe(action => actions.push(action));

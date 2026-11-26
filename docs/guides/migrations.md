@@ -100,6 +100,13 @@ Implement `hasUserSession()` in custom identity providers that do not restore th
 
 CMS includes are now loaded only after the personalization status is determined, as already done for content pages, so they are no longer requested without the PGID of a logged-in user.
 
+**Refresh token in the `apiToken` cookie**
+
+The `apiToken` field of the `apiToken` cookie now contains the refresh token instead of the access token, and the cookie expires with it.
+Starting with ICM 14.8.0, the ICM accepts only refresh tokens for the token refresh, so existing cookies with an access token stop working and users may have to log in again.
+Custom code that calls `setApiToken()` of the `ApiTokenService` needs to pass the refresh token as third parameter, otherwise no `apiToken` cookie is saved.
+For more information, see [Authentication Concept - PWA Initialization](../concepts/authentication.md#pwa-initialization).
+
 ## From 12.1.0 to 13.0.0
 
 **PWA Helm Chart 1.0.0**

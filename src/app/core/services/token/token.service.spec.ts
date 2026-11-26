@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { OAuthInfoEvent, OAuthService, TokenResponse } from 'angular-oauth2-oidc';
+import { OAuthInfoEvent, OAuthService, OAuthSuccessEvent, TokenResponse } from 'angular-oauth2-oidc';
 import { Subject, firstValueFrom, noop, of } from 'rxjs';
-import { anyString, anything, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
+import { anyString, anything, capture, instance, mock, resetCalls, spy, verify, when } from 'ts-mockito';
 
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -93,6 +93,19 @@ describe('Token Service', () => {
       when(oAuthService.refreshToken()).thenResolve();
       when(oAuthService.getAccessToken()).thenReturn('access-token');
       when(oAuthService.events).thenReturn(of(undefined));
+    });
+
+    it('should set the apiToken with its refresh token and the cookie expiry of the refresh token', () => {
+      when(oAuthService.events).thenReturn(of(new OAuthSuccessEvent('token_received')));
+      when(oAuthService.getRefreshToken()).thenReturn('refresh-token');
+      when(oAuthService.getCustomTokenResponseProperty('refresh_expires_in')).thenReturn(3600);
+      const before = Date.now();
+
+      createTokenService();
+
+      verify(apiTokenService.setApiToken('access-token', anything(), 'refresh-token')).once();
+      const [, options] = capture(apiTokenService.setApiToken).last();
+      expect(options.expires.getTime()).toBeWithin(before + 3600000, Date.now() + 3600001);
     });
 
     it('should invalidate the apiToken if the token refresh is rejected', fakeAsync(() => {

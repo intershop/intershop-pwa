@@ -83,15 +83,18 @@ To add or change the functionality of an identity provider, the following steps 
 A PWA user has to be identified by the ICM server by a unique authentication token, even if it is an anonymous user.
 Once an unknown user creates a basket in the PWA, an anonymous authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
 This happens in the [`apiToken http interceptor`](../../src/app/core/utils/api-token/api-token.service.ts) method.
-Subsequently, this token will be saved as `apiToken` cookie and added to all REST requests in the request header, e.g.:
+Subsequently, this access token is added to all REST requests in the request header, e.g.:
 
 ```typescript
 authentication-token: encryption0@PBEWithMD5AndTripleDES:1D7T8HyFqQ0=|k3PQLgujzUq0tudtw+6HLjWnExiwrd4o9/jVU7ZH74kTfTy3RS7/sYadsg7ODRM2
 ```
 
+The refresh token of the token response is saved as `apiToken` in the `apiToken` cookie, which expires with the refresh token.
 In this way, it is possible to identify users even if they are opening a new browser tab or refreshing the PWA in the browser.
 
-If a user opens the PWA and already has a valid apiToken cookie, no new token is requested by the ICM server but this token is used in the header of the REST requests.
+If a user opens the PWA and already has an `apiToken` cookie, the PWA restores the session of the cookie by requesting new tokens with its refresh token, because the ICM accepts only refresh tokens for a token refresh.
+Until the new tokens are available, the REST requests are sent without the `authentication-token` header.
+A cookie with invalid content or a rejected refresh token is removed.
 
 ## Login, Registration, Token Refreshment, Logout
 
