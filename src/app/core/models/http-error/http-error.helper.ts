@@ -1,11 +1,30 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { escape, escapeRegExp, uniq } from 'lodash-es';
 
 import { ErrorFeedback, HttpError } from './http-error.model';
+
+// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
+const AUTH_TOKEN_ERRORS = [
+  'AuthenticationToken',
+  'Unable to decode token',
+  'Unable to parse token',
+  'Error when decrypting token',
+  'Verification of token failed',
+];
 
 export class HttpErrorHelper {
   /** the ICM rejects an invalid or expired refresh token with HTTP 400 or 401 */
   static isRejectedTokenRefresh(status: number): boolean {
     return [400, 401].includes(status);
+  }
+
+  /** the ICM rejected the authentication token of the request (e.g. of another ICM or an expired one) */
+  static isAuthTokenError(err: unknown): boolean {
+    return (
+      err instanceof HttpErrorResponse &&
+      typeof err.error === 'string' &&
+      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
+    );
   }
 
   /**

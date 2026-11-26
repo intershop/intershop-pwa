@@ -86,7 +86,8 @@ describe('Basket Service', () => {
       verify(apiService.get(anything(), anything())).once();
       const [path, options] = capture<string, { headers: HttpHeaders }>(apiService.get).last();
       expect(path).toEqual('baskets/current');
-      expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toEqual('dummy');
+      // the request is authenticated with the fetched access token, not with the given refresh token
+      expect(options.headers.has(ApiService.TOKEN_HEADER_KEY)).toBeFalse();
       expect(data).toHaveProperty('id', 'test');
       done();
     });

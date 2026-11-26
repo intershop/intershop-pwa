@@ -312,19 +312,30 @@ export class UserEffects {
   determinePersonalizationStatus$ = createEffect(() => {
     const pgid$ = this.store.pipe(select(getPGID));
 
-    // a removed user apiToken cookie (e.g. rejected by the ICM) leaves the PGID unchanged, so the status needs to be re-evaluated
-    const pgidOnCookieVanishes$ = this.apiTokenService.getCookieVanishes$().pipe(
+    // a removed user apiToken cookie (e.g. rejected by the ICM or discarded on a directly opened /logout route) leaves the PGID unchanged,
+    // so the status needs to be re-evaluated
+    const pgidOnSessionEnd$ = merge(
+      this.apiTokenService.getCookieVanishes$(),
+      this.actions$.pipe(
+        // dispatched on every logout, also without revoking the apiToken (e.g. on a directly opened /logout route)
+        ofType(resetUserData),
+        map((): void => undefined)
+      )
+    ).pipe(
       withLatestFrom(pgid$),
       map(([, pgid]) => pgid),
       takeUntil(this.actions$.pipe(ofType(personalizationStatusDetermined)))
     );
 
-    const determined$ = merge(pgid$, pgidOnCookieVanishes$).pipe(
+    const determined$ = merge(pgid$, pgidOnSessionEnd$).pipe(
+      // the delay inside switchMap lets a following notification (e.g. resetUserData after a cookie vanish) replace a pending one
       switchMap(pgid =>
-        pgid ? of(true) : this.identityProviderFactory.hasUserSession$().pipe(map(hasUserSession => !hasUserSession))
+        (pgid
+          ? of(true)
+          : this.identityProviderFactory.hasUserSession$().pipe(map(hasUserSession => !hasUserSession))
+        ).pipe(delay(100))
       ),
       whenTruthy(),
-      delay(100),
       map(() => personalizationStatusDetermined())
     );
 

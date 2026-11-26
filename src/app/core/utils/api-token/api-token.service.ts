@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Selector, Store, select } from '@ngrx/store';
@@ -37,6 +37,7 @@ import {
 
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { HttpErrorHelper } from 'ish-core/models/http-error/http-error.helper';
+import { TokenHelper } from 'ish-core/models/token/token.helper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
@@ -53,6 +54,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 type ApiTokenCookieType = 'order' | 'user';
 
 export interface ApiTokenCookie {
+  // the refresh token, since the ICM accepts only refresh tokens to restore the session after a reload
   apiToken: string;
   type: ApiTokenCookieType;
   isAnonymous?: boolean;
@@ -63,19 +65,13 @@ export interface ApiTokenCookie {
 // If no expiry date is supplied by the token endpoint, this value (in ms) is used
 const DEFAULT_EXPIRY_TIME = 3600000;
 
-// parts of the ICM error responses for an invalid authentication token (e.g. of another ICM or an expired one)
-const AUTH_TOKEN_ERRORS = [
-  'AuthenticationToken',
-  'Unable to decode token',
-  'Unable to parse token',
-  'Error when decrypting token',
-  'Verification of token failed',
-];
-
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  /** stores current apiToken information, will be used to add authentication header for each request */
+  /** stores the current access token, will be used to add authentication header for each request */
   apiToken$: BehaviorSubject<string>;
+
+  /** refresh token belonging to the current access token, will be saved as apiToken in the apiToken cookie */
+  private refreshToken: string;
 
   /** informs subscriber that cookie is unexpectedly removed (e.g. logout from another tab) */
   private cookieVanishes$ = new Subject<ApiTokenCookieType>();
@@ -98,12 +94,18 @@ export class ApiTokenService {
     private appRef: ApplicationRef
   ) {
     // setup initial values
+    // the apiToken of the cookie is a refresh token, requests are sent without authentication until restore$() fetched new tokens
     const initialCookie = this.parseCookie();
     this.initialCookie$ = new BehaviorSubject<ApiTokenCookie>(!SSR ? initialCookie : undefined);
-    this.apiToken$ = new BehaviorSubject<string>(initialCookie?.apiToken);
+    this.apiToken$ = new BehaviorSubject<string>(undefined);
 
     if (!SSR) {
       const destroyRef = inject(DestroyRef);
+
+      // a cookie without apiToken (e.g. with invalid content) cannot be restored
+      if (!initialCookie && this.cookiesService.get('apiToken')) {
+        this.removeApiTokenCookie();
+      }
 
       // multicast apiTokenCookieChange$ to avoid multiple listeners
       this.cookieChangeEvent$ = this.apiTokenCookieChange$().pipe(shareReplay(1));
@@ -151,15 +153,25 @@ export class ApiTokenService {
    * It is removed on logout, by invalidateApiToken() or by discardApiToken().
    */
   removeApiToken() {
+    this.refreshToken = undefined;
     this.apiToken$.next(undefined);
   }
 
-  /** sets new apiToken and new apiToken cookie options when available */
-  setApiToken(apiToken: string, options?: CookieOptions) {
+  /**
+   * sets the tokens of a new token response
+   *
+   * @param accessToken   authenticates the subsequent requests, it is kept in memory only
+   * @param options       options (expires, secure) of the apiToken cookie, without them the previous options are kept
+   * @param refreshToken  saved as apiToken in the apiToken cookie to restore the session after a reload,
+   *                      without it no apiToken cookie is saved
+   */
+  setApiToken(accessToken: string, options?: CookieOptions, refreshToken?: string) {
     if (options) {
       this.cookieOptions = options;
     }
-    this.apiToken$.next(apiToken);
+    this.refreshToken = refreshToken;
+    // the refresh token is set first, since sessionRefreshToken$() reads it on the new access token
+    this.apiToken$.next(accessToken);
   }
 
   hasUserApiTokenCookie() {
@@ -167,7 +179,7 @@ export class ApiTokenService {
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
-  /** trigger actions to restore store information based on initial apiToken cookie */
+  /** trigger actions to restore store information based on initial apiToken cookie, the actions fetch new tokens with the refresh token of the cookie */
   restore$(types: ApiTokenCookieType[] = ['user', 'order']): Observable<boolean> {
     if (SSR) {
       return of(true);
@@ -208,30 +220,35 @@ export class ApiTokenService {
     // the apiToken is removed before the cookie, so that the cookie removal is not handled as an unexpected cookie vanish
     this.removeApiToken();
     this.removeApiTokenCookie();
+    // the discarded session must not be restored
+    this.initialCookie$.next(undefined);
   }
 
   /**
    * removes the current apiToken that is no longer valid (e.g. rejected by the ICM or the token refresh failed)
    * and informs cookieVanishes$ listeners that the cookie is not working as expected
    *
-   * @param rejectedApiToken  the apiToken rejected by the ICM, a rejected apiToken that has already been replaced is ignored
+   * @param rejectedToken  the access or refresh token rejected by the ICM, e.g. the refresh token of the cookie on restore,
+   *                       a rejected token that has already been replaced is ignored
    */
-  invalidateApiToken(rejectedApiToken?: string) {
+  invalidateApiToken(rejectedToken?: string) {
     // eslint-disable-next-line rxjs/no-subject-value
     const apiToken = this.apiToken$.value;
 
-    // the rejected apiToken has already been replaced, e.g. by a login or a token refresh
-    if (rejectedApiToken && rejectedApiToken !== apiToken) {
+    // the rejected token has already been replaced, e.g. by a login or a token refresh
+    if (rejectedToken && (apiToken || this.refreshToken) && ![apiToken, this.refreshToken].includes(rejectedToken)) {
       return;
     }
 
     const cookie = this.parseCookie();
+    // without current tokens (e.g. on restore) the rejected token is the refresh token of the cookie
+    const refreshToken = this.refreshToken ?? rejectedToken;
 
     this.removeApiToken();
 
     if (cookie) {
-      // the cookie may already contain a new valid apiToken of another tab
-      if (apiToken && cookie.apiToken === apiToken) {
+      // the cookie may already contain new valid tokens of another tab
+      if (refreshToken && cookie.apiToken === refreshToken) {
         this.removeApiTokenCookie();
         // the invalid apiToken must not be restored
         this.initialCookie$.next(undefined);
@@ -257,11 +274,7 @@ export class ApiTokenService {
               map(event => {
                 // remove id_token from /token response
                 // TODO: remove http request body adaptions if correct id_tokens are returned
-                if (
-                  event instanceof HttpResponse &&
-                  event.url.endsWith('token') &&
-                  request.body instanceof HttpParams
-                ) {
+                if (event instanceof HttpResponse && TokenHelper.isTokenGrant(request)) {
                   return event.clone({
                     body: {
                       ...event.body,
@@ -272,7 +285,9 @@ export class ApiTokenService {
                 return event;
               }),
               catchError(err => {
-                if (this.isAuthTokenError(err)) {
+                // token grants are sent without authentication header and are not retried,
+                // a rejected refresh with the refresh token of the cookie removes the cookie below
+                if (HttpErrorHelper.isAuthTokenError(err) && !TokenHelper.isTokenGrant(request)) {
                   this.invalidateApiToken(request.headers.get(ApiService.TOKEN_HEADER_KEY));
 
                   // retry request without auth token, a replacing apiToken might belong to another user
@@ -308,37 +323,26 @@ export class ApiTokenService {
     );
   }
 
-  private isAuthTokenError(err: unknown) {
-    return (
-      err instanceof HttpErrorResponse &&
-      typeof err.error === 'string' &&
-      AUTH_TOKEN_ERRORS.some(authTokenError => (err.error as string).includes(authTokenError))
-    );
-  }
-
   /**
-   * returns the apiToken of the cookie if the ICM rejected the token refresh with it (e.g. on restore),
-   * network or server errors do not indicate an invalid apiToken
+   * returns the refresh token of the cookie if the ICM rejected the token refresh with it (e.g. on restore),
+   * network or server errors do not indicate an invalid refresh token
    */
   private getRejectedCookieTokenOfRefresh(req: HttpRequest<unknown>, err: unknown): string {
-    if (
-      !(err instanceof HttpErrorResponse) ||
-      !HttpErrorHelper.isRejectedTokenRefresh(err.status) ||
-      !(req.body instanceof HttpParams)
-    ) {
+    if (!(err instanceof HttpErrorResponse) || !HttpErrorHelper.isRejectedTokenRefresh(err.status)) {
       return;
     }
-    const refreshToken = req.body.get('grant_type') === 'refresh_token' ? req.body.get('refresh_token') : undefined;
+    const refreshToken = TokenHelper.getRefreshToken(req);
     return refreshToken && refreshToken === this.parseCookie()?.apiToken ? refreshToken : undefined;
   }
 
   /**
-   * append authentication header to current request in case an apiToken is available and specific header was not set before
+   * append authentication header to current request in case an apiToken is available and specific header was not set before,
+   * token grants are sent without it, since the access token is not needed to fetch new tokens
    */
   private appendAuthenticationHeader(req: HttpRequest<unknown>): Observable<HttpRequest<unknown>> {
     return this.apiToken$.pipe(
       map(apiToken =>
-        apiToken && !req.headers?.has(ApiService.TOKEN_HEADER_KEY)
+        apiToken && !req.headers?.has(ApiService.TOKEN_HEADER_KEY) && !TokenHelper.isTokenGrant(req)
           ? req.clone({ headers: req.headers.set(ApiService.TOKEN_HEADER_KEY, apiToken) })
           : req
       ),
@@ -392,13 +396,18 @@ export class ApiTokenService {
       this.store.pipe(select(getLoggedInUser)),
       this.store.pipe(select(getCurrentBasket)),
       this.store.pipe(select(getSelectedOrderId)),
-      this.apiToken$,
+      this.sessionRefreshToken$(),
     ]).pipe(
       switchMap(value => of(value)),
       this.mapToApiTokenCookie(),
       filter(apiToken => !!apiToken?.apiToken),
       distinctUntilChanged<ApiTokenCookie>(isEqual)
     );
+  }
+
+  /** the refresh token for the apiToken cookie, emitted with every new access token, undefined without a session */
+  private sessionRefreshToken$(): Observable<string> {
+    return this.apiToken$.pipe(map(accessToken => (accessToken ? this.refreshToken : undefined)));
   }
 
   /** @returns previous apiToken cookie type when the cookie vanishes */
@@ -420,17 +429,17 @@ export class ApiTokenService {
    * (2): check that a user token cookie was added in comparison to previous cookie value
    * (3): calculate a current apiToken cookie value of current pwa context
    * (4): filter stream values when calculated apiToken cookie value is not truthy --> cookie was added from another tab
-   * (5): set new apiToken and initialCookie$ values with information from current apiToken cookie in order to fetch data via restore$
+   * (5): set initialCookie$ value with information from current apiToken cookie in order to fetch new tokens and data via restore$
    */
   private tokenCreatedOnAnotherTab$(): Observable<boolean> {
     // cookie created routine when user is logged in in an another tab
     return this.cookieChangeEvent$.pipe(
-      filter(([previous, current]) => !previous && current?.type === 'user' && !!current?.apiToken), // first time after a login cookie appears
+      filter(([previous, current]) => !previous && current?.type === 'user'), // first time after a login cookie appears
       withLatestFrom(
         this.store.pipe(select(getLoggedInUser)),
         this.store.pipe(select(getCurrentBasket)),
         this.store.pipe(select(getSelectedOrderId)),
-        this.apiToken$
+        this.sessionRefreshToken$()
       ),
       switchMap(([[, current], ...ctx]) =>
         of(ctx).pipe(
@@ -439,10 +448,7 @@ export class ApiTokenService {
           map(() => current)
         )
       ),
-      tap(cookieValue => {
-        this.setApiToken(cookieValue.apiToken);
-        this.initialCookie$.next(cookieValue);
-      }),
+      tap(cookieValue => this.initialCookie$.next(cookieValue)),
       switchMap(() => this.restore$())
     );
   }
@@ -450,19 +456,18 @@ export class ApiTokenService {
   private mapToApiTokenCookie(): OperatorFunction<[User, BasketView, string, string], ApiTokenCookie> {
     return (source$: Observable<[User, BasketView, string, string]>) =>
       source$.pipe(
-        map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
+        map(([user, basket, orderId, refreshToken]): ApiTokenCookie => {
           if (user) {
-            return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
+            return { apiToken: refreshToken, type: 'user', isAnonymous: false, creator: 'pwa' };
           } else if (basket) {
-            return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
+            return { apiToken: refreshToken, type: 'user', isAnonymous: true, creator: 'pwa' };
           } else if (orderId) {
-            return { apiToken, type: 'order', orderId, creator: 'pwa' };
+            return { apiToken: refreshToken, type: 'order', orderId, creator: 'pwa' };
           }
 
-          const apiTokenCookieString = this.cookiesService.get('apiToken');
-          const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
-          if (apiToken && apiTokenCookie) {
-            return { ...apiTokenCookie, apiToken }; // overwrite existing cookie information with new apiToken
+          const apiTokenCookie = this.parseCookie();
+          if (refreshToken && apiTokenCookie) {
+            return { ...apiTokenCookie, apiToken: refreshToken }; // overwrite existing cookie information with new refresh token
           }
         })
       );
@@ -475,11 +480,15 @@ export class ApiTokenService {
     this.cookiesService.remove('apiToken', { path: '/' });
   }
 
+  /**
+   * @returns the apiToken cookie, if it contains an apiToken to restore its session
+   */
   private parseCookie(): ApiTokenCookie {
     const cookieContent = this.cookiesService.get('apiToken');
     if (cookieContent) {
       try {
-        return JSON.parse(cookieContent);
+        const cookie: ApiTokenCookie = JSON.parse(cookieContent);
+        return cookie?.apiToken ? cookie : undefined;
       } catch {
         // ignore
       }

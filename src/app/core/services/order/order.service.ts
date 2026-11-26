@@ -172,28 +172,29 @@ export class OrderService {
   }
 
   /**
-   * Gets an anonymous user's order with the given id using the provided apiToken.
+   * Gets an anonymous user's order with the given id using the provided refresh token.
+   * The fetched tokens authenticate the order request and the subsequent requests.
    *
-   * @param orderId  The (uuid) of the order.
-   * @param apiToken The api token of the user's most recent request.
-   * @returns        The order
+   * @param orderId       The (uuid) of the order.
+   * @param refreshToken  The refresh token of the user's most recent session.
+   * @returns             The order
    */
-  getOrderByToken(orderId: string, apiToken: string): Observable<Order> {
+  getOrderByToken(orderId: string, refreshToken: string): Observable<Order> {
     const params = new HttpParams().set('include', this.allOrderIncludes.join());
 
     if (!orderId) {
       return throwError(() => new Error('getOrderByToken() called without orderId'));
     }
 
-    if (!apiToken) {
-      return throwError(() => new Error('getOrderByToken() called without apiToken'));
+    if (!refreshToken) {
+      return throwError(() => new Error('getOrderByToken() called without refreshToken'));
     }
 
-    return this.tokenService.fetchToken('refresh_token', { refresh_token: apiToken }).pipe(
+    return this.tokenService.fetchToken('refresh_token', { refresh_token: refreshToken }).pipe(
       switchMap(() =>
         this.apiService
           .get<OrderData>(`orders/${this.apiService.encodeResourceId(orderId)}`, {
-            headers: this.orderHeaders.set(ApiService.TOKEN_HEADER_KEY, apiToken),
+            headers: this.orderHeaders,
             params,
             skipApiErrorHandling: true,
           })

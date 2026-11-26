@@ -19,7 +19,7 @@ If you need an introduction to this topic, read the [Authentication Concept](../
 
 If the user wants to login by clicking a login link or navigating to the `/login` route, either a popup or a page is displayed containing a login form.
 After the user has entered the credentials (e-mail/user name and password) and could be verified successfully by the ICM server, a new token is fetched from the ICM `/token` REST endpoint.
-The token of the registered user is saved as `apiToken` cookie and attached to the request header of the subsequent REST requests.
+The refresh token of the registered user is saved in the `apiToken` cookie, and the access token is attached to the request header of the subsequent REST requests.
 After logging in, the pgid of the user is requested from the ICM server (`/personalization` REST call) and the action `personalizationStatusDetermined` will be triggered.
 If you want to request user-specific non-cached data from the ICM server, use the option `sendPGID` or `sendSPGID`, respectively when you call the _get_ method of the `ApiTokenService`.
 
@@ -36,4 +36,5 @@ The authentication token is refreshed automatically before it expires, see [Conc
 ## Logout
 
 When the user logs out by clicking the logout link or navigating to the `/logout` route, the configured [`logout()`](../../src/app/core/identity-provider/icm.identity-provider.ts) function will be executed, which will call the [`revokeApiToken()`](../../src/app/core/services/user/user.service.ts) user service in order to deactivate the token on server side.
-Besides this, the PWA removes the token on browser side, fetches a new anonymous user token, and sets it as `apiToken` cookie.
+Besides this, the PWA removes the tokens and the `apiToken` cookie on browser side; new anonymous user tokens are only fetched when a basket is created.
+If the `/logout` route is opened directly, e.g., by a bookmark, the session of the `apiToken` cookie is not restored but only removed on browser side.

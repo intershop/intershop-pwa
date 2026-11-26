@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 
 import { HttpErrorHelper } from './http-error.helper';
@@ -5,6 +7,21 @@ import { HttpErrorHelper } from './http-error.helper';
 const maliciousSku = '<h1>VULN003</h1><img src=x onerror=alert(document.domain)>';
 
 describe('Http Error Helper', () => {
+  describe('isAuthTokenError', () => {
+    it('should detect an ICM error for an invalid authentication token', () => {
+      const error = new HttpErrorResponse({ status: 401, error: 'Unauthorized ([none] Unable to parse token.)' });
+      expect(HttpErrorHelper.isAuthTokenError(error)).toBeTrue();
+    });
+
+    it.each([
+      ['other ICM errors', new HttpErrorResponse({ status: 401, error: 'Unauthorized' })],
+      ['errors without text', new HttpErrorResponse({ status: 401, error: { message: 'Unable to parse token' } })],
+      ['non-HTTP errors', new Error('Unable to parse token')],
+    ])('should not detect %s', (_, error) => {
+      expect(HttpErrorHelper.isAuthTokenError(error)).toBeFalse();
+    });
+  });
+
   describe('formatMessage', () => {
     it('should return undefined if no error or message is available', () => {
       expect(HttpErrorHelper.formatMessage(undefined)).toBeUndefined();
