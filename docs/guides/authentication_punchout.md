@@ -183,5 +183,5 @@ For more information, see [Concept - Authentication: Token Lifetime](../concepts
 
 ## Logout
 
-When the user logs out by clicking the logout link or navigating to the `/logout` route, the configured [`logout()`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) function is executed, which calls the [`revokeApiToken()`](../../src/app/core/services/user/user.service.ts) user service to deactivate the token on the server side.
-In addition, the PWA removes the token and `basket-id` on the browser side, fetches a new anonymous user token, and sets it as the `apiToken` cookie.
+When the user logs out by clicking the logout link or navigating to the `/logout` route, the [`triggerLogout()`](../../src/app/extensions/punchout/identity-provider/punchout-identity-provider.ts) method of the identity provider is executed, which calls the [`logoutUser()`](../../src/app/core/services/user/user.service.ts) user service to deactivate the token on the server side.
+In addition, the PWA removes the token, the `apiToken` cookie, and the `basket-id` from the session storage on the browser side; new anonymous user tokens are only fetched when a basket is created.
