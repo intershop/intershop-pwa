@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { concatMap, map, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -29,6 +29,13 @@ export class AiSearchApiService {
    * @param body      The request body.
    */
   post<T>(endpoint: string, body: unknown): Observable<T> {
+    if (!endpoint) {
+      return throwError(() => new Error('post() called without endpoint'));
+    }
+    if (!body) {
+      return throwError(() => new Error('post() called without body'));
+    }
+
     return this.url$(endpoint).pipe(concatMap(url => this.httpClient.post<T>(url, body)));
   }
 

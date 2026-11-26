@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, throwError } from 'rxjs';
 import { concatMap, map, take } from 'rxjs/operators';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
@@ -44,6 +44,10 @@ export class AiSearchService {
    * @returns           Emits the AI answer once; the text is empty when the chatflow returns no AI answer.
    */
   getAnswer(searchQuery: string): Observable<AiSearchAnswer> {
+    if (!searchQuery) {
+      return throwError(() => new Error('getAnswer() called without searchQuery'));
+    }
+
     return this.vars$().pipe(
       map((vars): PredictionRequestBody => ({ question: searchQuery, streaming: false, overrideConfig: { vars } })),
       concatMap(body => this.aiSearchApiService.post<AiSearchAnswerData>('prediction', body)),
