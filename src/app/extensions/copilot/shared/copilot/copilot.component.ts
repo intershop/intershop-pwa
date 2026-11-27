@@ -107,6 +107,10 @@ export class CopilotComponent {
     let lastMessage: ChatbotMessage;
     let previousLoading = false;
 
+    if (copilotConfig.imageRoutingEnabled) {
+      this.copilotFacade.enableImageRouting();
+    }
+
     Chatbot.init({
       // general configuration
       chatflowid: copilotConfig.chatflowid,
