@@ -123,9 +123,9 @@ proxy:
 
 ## Login
 
-A user can log in by navigating to the `/cobrowse` route.
+The call center agent logs in by navigating to the `/cobrowse` route.
 For this purpose, the query parameter `access-token` needs to be added to the given route.
-When the login is successful, the call center agent user is logged in on behalf of a customer.
+When the login is successful, the call center agent is logged in on behalf of the user.
 The catalogs and products, prices, promotions, content, and so on are displayed to the call center agent in the same way as to the user.
 
 The user is logged in with the `access-token` query parameter only.
