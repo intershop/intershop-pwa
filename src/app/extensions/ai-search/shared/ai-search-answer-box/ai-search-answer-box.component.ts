@@ -1,9 +1,11 @@
+import { APP_BASE_HREF } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
+  HostListener,
   Injector,
   Input,
   OnChanges,
@@ -11,6 +13,7 @@ import {
   afterNextRender,
   inject,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -51,6 +54,8 @@ export class AiSearchAnswerBoxComponent implements OnChanges {
   private resizeObserver: ResizeObserver;
   private destroyRef = inject(DestroyRef);
   private injector = inject(Injector);
+  private router = inject(Router);
+  private baseHref = inject(APP_BASE_HREF, { optional: true }) ?? '/';
 
   constructor(
     private aiSearchFacade: AiSearchFacade,
@@ -75,7 +80,28 @@ export class AiSearchAnswerBoxComponent implements OnChanges {
     this.answer$ = this.aiSearchFacade.answer$(this.searchQuery).pipe(
       // the AI answer is kept for the browser tab once it is shown
       tap(state => state?.answer && this.aiSearchFacade.keepAnswer(state.answer)),
-      map(state => state && { loading: state.loading, html: AiSearchAnswerHelper.toHtml(state.answer?.text) })
+      map(
+        state =>
+          state && { loading: state.loading, html: AiSearchAnswerHelper.toHtml(state.answer?.text, this.baseHref) }
+      )
+    );
+  }
+
+  /**
+   * Opens the product detail page of a named product within the storefront; a click with a modifier key or another
+   * mouse button keeps the browser's link handling, e.g. to open the page in a new tab.
+   */
+  // UC-001 BR-008: A named product links to its product detail page (A8).
+  @HostListener('click', ['$event'])
+  openNamedProduct(event: MouseEvent) {
+    const link = (event.target as HTMLElement)?.closest?.('.ai-search-answer a[href]');
+    if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    const href = link.getAttribute('href');
+    event.preventDefault();
+    this.router.navigateByUrl(
+      this.baseHref !== '/' && href.startsWith(this.baseHref) ? href.substring(this.baseHref.length) : href
     );
   }
 

@@ -19,6 +19,7 @@ export const aiSearchAnswerInternalActions = createActionGroup({
     'Load Answer Fail': payload<{ searchQuery: string }>(),
     'Show Kept Answer': payload<{ answer: AiSearchAnswer }>(),
     'Discard Answer': payload<{ searchQuery: string }>(),
+    'Delete Kept Answer': emptyProps(),
     'Reset Answer': emptyProps(),
   },
 });

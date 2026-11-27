@@ -6,7 +6,7 @@ import { ApplicationRef, Injector, Type } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { BehaviorSubject, NEVER, of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
@@ -195,12 +195,16 @@ describe('Ai Search Answer Integration', () => {
     }));
 
     describe('BR-001 and A9: search queries that request an AI answer', () => {
+      const WITH_500_CHARACTERS = `${'a'.repeat(249)} ${'b'.repeat(250)}`;
+      const WITH_501_CHARACTERS = `${'a'.repeat(249)} ${'b'.repeat(251)}`;
+
       it.each([
-        ['notebook', 'a single word'],
-        ['ab cdef', '2 words with 7 characters'],
+        ['a single word', 'notebook'],
+        ['2 words with 7 characters', 'ab cdef'],
+        ['2 words with 501 characters', WITH_501_CHARACTERS],
       ])(
-        'should not ask AI Search for "%s" (%s)',
-        fakeAsync((searchQuery: string) => {
+        'should not ask AI Search for a search query of %s',
+        fakeAsync((_: string, searchQuery: string) => {
           navigate(searchUrl(searchQuery));
 
           httpController.expectNone(PREDICTION_URL);
@@ -208,12 +212,20 @@ describe('Ai Search Answer Integration', () => {
         })
       );
 
-      it('should ask AI Search for a search query of 2 words with 8 characters', fakeAsync(() => {
-        navigate(searchUrl('ab cdefg'));
+      it.each([
+        ['2 words with 8 characters', 'ab cdefg'],
+        ['2 words with 500 characters', WITH_500_CHARACTERS],
+      ])(
+        'should ask AI Search for a search query of %s',
+        fakeAsync((_: string, searchQuery: string) => {
+          navigate(searchUrl(searchQuery));
 
-        httpController.expectOne(PREDICTION_URL).flush({ text: ANSWER_TEXT });
-        expect(answerOf('ab cdefg').answer.text).toEqual(ANSWER_TEXT);
-      }));
+          const request = httpController.expectOne(PREDICTION_URL);
+          expect(request.request.body.question).toEqual(searchQuery);
+          request.flush({ text: ANSWER_TEXT });
+          expect(answerOf(searchQuery).answer.text).toEqual(ANSWER_TEXT);
+        })
+      );
     });
 
     it('should show no AI answer when AI Search reports an error (A2)', fakeAsync(() => {
@@ -418,6 +430,60 @@ describe('Ai Search Answer Integration', () => {
 
       expect(storedAnswer()).toEqual({ searchQuery: QUERY, text: ANSWER_TEXT });
     }));
+
+    it('should show the kept AI answer as it was requested after the buyer signed in (BR-004, BR-013, A7)', fakeAsync(() => {
+      navigate(searchUrl(QUERY));
+      answerAndShow();
+      navigate('/login');
+
+      loggedIn$.next(true);
+      store.dispatch(loginUserSuccess({} as CustomerLoginType));
+      location.back();
+      tick();
+
+      httpController.expectNone(PREDICTION_URL);
+      expect(answerOf(QUERY)).toEqual({ loading: false, answer: { searchQuery: QUERY, text: ANSWER_TEXT } });
+    }));
+
+    it('should ask AI Search without asking the buyer for a consent of its own (BR-014)', fakeAsync(() => {
+      expect(document.cookie).not.toContain('cookieConsent');
+
+      navigate(searchUrl(QUERY));
+
+      httpController.expectOne(PREDICTION_URL).flush({ text: ANSWER_TEXT });
+      expect(answerOf(QUERY).answer.text).toEqual(ANSWER_TEXT);
+    }));
+
+    describe('failure postconditions', () => {
+      it.each<[string, () => void]>([
+        [
+          'reports an error (A2)',
+          () => httpController.expectOne(PREDICTION_URL).flush('error', { status: 500, statusText: 'Server Error' }),
+        ],
+        ['returns an empty AI answer (A2)', () => httpController.expectOne(PREDICTION_URL).flush({ text: '' })],
+        [
+          'returns no AI answer within the answer timeout (A3)',
+          () => {
+            httpController.expectOne(PREDICTION_URL);
+            tick(15000);
+          },
+        ],
+      ])(
+        'should leave the product list unchanged and show no error message when AI Search %s (NFR-004)',
+        fakeAsync((_: string, fail: () => void) => {
+          navigate(searchUrl(QUERY));
+          const dispatched: string[] = [];
+          TestBed.inject(ActionsSubject).subscribe(action => dispatched.push(action.type));
+          // the subscription replays the last action, which belongs to the search before the failure
+          dispatched.length = 0;
+
+          fail();
+
+          expect(dispatched).toEqual(['[AI Search Answer Internal] Load Answer Fail']);
+          expect(answerOf(QUERY)).toBeUndefined();
+        })
+      );
+    });
   });
 
   describe('UC-001 with the kept AI answer stored in the local storage by dataRetention.aiSearch', () => {
@@ -443,6 +509,86 @@ describe('Ai Search Answer Integration', () => {
 
       expect(JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY) ?? 'null')?.data?.text).toBeUndefined();
       expect(localStorage.getItem('/de-aiSearch-_keptAnswer')).toBeNull();
+    }));
+
+    describe('BR-013 and C-010: end of the time the shop operator sets', () => {
+      const LIFETIME = 60 * 60 * 1000;
+
+      function keptInLocalStorage(): AiSearchAnswer {
+        return JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY) ?? 'null')?.data;
+      }
+
+      it('should show the kept AI answer on back navigation just before its time ends', fakeAsync(() => {
+        navigate(searchUrl(QUERY));
+        answerAndShow();
+        navigate('/product/201807171');
+
+        tick(LIFETIME - 1);
+        location.back();
+        tick();
+
+        httpController.expectNone(PREDICTION_URL);
+        expect(answerOf(QUERY)).toEqual({ loading: false, answer: { searchQuery: QUERY, text: ANSWER_TEXT } });
+        expect(keptInLocalStorage()).toEqual({ searchQuery: QUERY, text: ANSWER_TEXT });
+
+        tick(1);
+      }));
+
+      it('should delete the kept AI answer when its time ends while the browser tab stays open', fakeAsync(() => {
+        navigate(searchUrl(QUERY));
+        answerAndShow();
+        navigate('/product/201807171');
+
+        tick(LIFETIME);
+
+        expect(keptInLocalStorage()?.text).toBeUndefined();
+
+        location.back();
+        tick();
+
+        httpController.expectOne(PREDICTION_URL).flush({ text: 'A new AI answer.' });
+        expect(answerOf(QUERY).answer.text).toEqual('A new AI answer.');
+      }));
+
+      it('should start the time again when the buyer loads a page of the storefront in another browser tab', fakeAsync(() => {
+        navigate(searchUrl(QUERY));
+        answerAndShow();
+
+        tick(LIFETIME / 2);
+        // the storefront started in another browser tab restores the kept AI answer, which starts its time again
+        localStorage.setItem(
+          KEPT_ANSWER_KEY,
+          JSON.stringify({ sync: Date.now(), data: { searchQuery: QUERY, text: ANSWER_TEXT } })
+        );
+
+        tick(LIFETIME - 1);
+        expect(keptInLocalStorage()).toEqual({ searchQuery: QUERY, text: ANSWER_TEXT });
+
+        tick(1);
+        expect(keptInLocalStorage()?.text).toBeUndefined();
+      }));
+    });
+  });
+
+  describe('UC-001 when the browser restores the search results page with a kept AI answer of limited time', () => {
+    afterEach(() => {
+      httpController.verify();
+      localStorage.clear();
+    });
+
+    it('should delete the restored kept AI answer when its time ends after the start of the storefront (BR-013, C-010)', fakeAsync(() => {
+      // the data retention starts the time again when the storefront starts (OQ-032)
+      localStorage.setItem(
+        KEPT_ANSWER_KEY,
+        JSON.stringify({ sync: Date.now() - 59 * 60 * 1000, data: { searchQuery: QUERY, text: ANSWER_TEXT } })
+      );
+      setup(CONFIG, '/', { aiSearch: 60 });
+
+      tick(60 * 60 * 1000 - 1);
+      expect(JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY))?.data?.text).toEqual(ANSWER_TEXT);
+
+      tick(1);
+      expect(JSON.parse(localStorage.getItem(KEPT_ANSWER_KEY))?.data?.text).toBeUndefined();
     }));
   });
 

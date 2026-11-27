@@ -1,5 +1,7 @@
+import { APP_BASE_HREF } from '@angular/common';
+import { Provider } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterLink, provideRouter } from '@angular/router';
+import { Router, RouterLink, provideRouter } from '@angular/router';
 import { TranslatePipe, TranslateService, provideTranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { anything, capture, deepEqual, instance, mock, verify, when } from 'ts-mockito';
@@ -43,7 +45,15 @@ describe('Ai Search Answer Box Component', () => {
     fixture.detectChanges();
   }
 
-  async function setup(...features: Parameters<typeof FeatureToggleModule.forTesting>) {
+  /** Lets the buyer select the named product link with the given text with the primary mouse button. */
+  function select(text: string): MouseEvent {
+    const link = Array.from(element.querySelectorAll('.ai-search-answer a')).find(a => a.textContent === text);
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 });
+    link.dispatchEvent(event);
+    return event;
+  }
+
+  async function setup(features: Parameters<typeof FeatureToggleModule.forTesting> = [], providers: Provider[] = []) {
     aiSearchFacade = mock(AiSearchFacade);
     answer$ = new BehaviorSubject(undefined);
     when(aiSearchFacade.answer$(anything())).thenReturn(answer$);
@@ -52,6 +62,7 @@ describe('Ai Search Answer Box Component', () => {
       imports: [FeatureToggleModule.forTesting(...features), RouterLink, TranslatePipe],
       declarations: [AiSearchAnswerBoxComponent, FeatureTogglePipe],
       providers: [
+        ...providers,
         { provide: AiSearchFacade, useFactory: () => instance(aiSearchFacade) },
         provideRouter([]),
         provideTranslateService(),
@@ -87,7 +98,7 @@ describe('Ai Search Answer Box Component', () => {
   afterEach(() => delete (global as { ResizeObserver?: unknown }).ResizeObserver);
 
   describe('UC-001 with the AI Product Advisor offered', () => {
-    beforeEach(() => setup('copilotEmbedded'));
+    beforeEach(() => setup(['copilotEmbedded']));
 
     it('should be created', () => {
       expect(component).toBeTruthy();
@@ -151,6 +162,46 @@ describe('Ai Search Answer Box Component', () => {
       const text = element.querySelector('.ai-search-answer');
       expect(text.querySelector('script, img, b, a, [onclick], [onerror]')).toBeFalsy();
       expect(text.textContent).toEqual('Take this one. See the offer or here.');
+    });
+
+    it('should link every named product to its product detail page (step 5, BR-008)', () => {
+      show({
+        loading: false,
+        answer: answerWith(
+          'Take the [**Surface Book 2**](product://201807171) or the [Surface Pro](product://201807172@inSPIRED-inTRONICS).'
+        ),
+      });
+
+      const text = element.querySelector('.ai-search-answer');
+      const links = Array.from(text.querySelectorAll('a'));
+      expect(links.map(a => [a.textContent, a.getAttribute('href')])).toEqual([
+        ['Surface Book 2', '/product/201807171'],
+        ['Surface Pro', '/product/201807172'],
+      ]);
+      expect(links[0].querySelector('strong').textContent).toEqual('Surface Book 2');
+      expect(text.textContent).toEqual('Take the Surface Book 2 or the Surface Pro.');
+    });
+
+    it('should neither show nor execute HTML smuggled into the SKU of a named product (BR-008, NFR-005)', () => {
+      show({
+        loading: false,
+        answer: answerWith('Take the [Surface Book 2](product://2018"onmouseover="alert(1)) now.'),
+      });
+
+      const link = element.querySelector('.ai-search-answer a');
+      expect(link.getAttributeNames()).toEqual(['href']);
+      expect(link.getAttribute('href')).toStartWith('/product/2018%22onmouseover%3D%22alert');
+    });
+
+    it('should show the product detail page when the buyer selects a named product (A8)', () => {
+      const router = TestBed.inject(Router);
+      const navigateByUrl = jest.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+      show({ loading: false, answer: answerWith('Take the [Surface Book 2](product://201807171).') });
+
+      const event = select('Surface Book 2');
+
+      expect(navigateByUrl).toHaveBeenCalledWith('/product/201807171');
+      expect(event.defaultPrevented).toBeTrue();
     });
 
     it('should show the AI-generated notice directly at the AI answer (BR-007)', () => {
@@ -249,6 +300,22 @@ describe('Ai Search Answer Box Component', () => {
 
       expect(element.querySelector('.ai-search-answer')).toBeTruthy();
       expect(element.querySelector('a.ai-search-advisor-link')).toBeFalsy();
+    });
+  });
+
+  describe('UC-001 in a storefront with a base href', () => {
+    beforeEach(() => setup([], [{ provide: APP_BASE_HREF, useValue: '/de' }]));
+
+    it('should link a named product to its product detail page within the storefront (BR-008, A8)', () => {
+      const router = TestBed.inject(Router);
+      const navigateByUrl = jest.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
+      show({ loading: false, answer: answerWith('Take the [Surface Book 2](product://201807171).') });
+
+      expect(element.querySelector('.ai-search-answer a').getAttribute('href')).toEqual('/de/product/201807171');
+
+      select('Surface Book 2');
+
+      expect(navigateByUrl).toHaveBeenCalledWith('/product/201807171');
     });
   });
 

@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store, select } from '@ngrx/store';
-import { Observable, merge, of } from 'rxjs';
+import { isEqual } from 'lodash-es';
+import { EMPTY, Observable, defer, merge, of, timer } from 'rxjs';
 import {
   catchError,
+  distinctUntilChanged,
   filter,
   map,
   pairwise,
@@ -14,8 +17,10 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 
+import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
 import { resetUserData } from 'ish-core/store/customer/user';
 import { setProductListingPages } from 'ish-core/store/shopping/product-listing';
+import { InjectSingle } from 'ish-core/utils/injection';
 import { mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { AiSearchAnswerHelper } from '../../models/ai-search-answer/ai-search-answer.helper';
@@ -40,7 +45,9 @@ export class AiSearchAnswerEffects {
     private actions$: Actions,
     private store: Store,
     private aiSearchService: AiSearchService,
-    private aiSearchNavigationService: AiSearchNavigationService
+    private aiSearchNavigationService: AiSearchNavigationService,
+    @Inject(APP_BASE_HREF) private baseHref: string,
+    @Inject(DATA_RETENTION_POLICY) private dataRetention: InjectSingle<typeof DATA_RETENTION_POLICY>
   ) {}
 
   // UC-001 BR-002: The AI answer is requested next to the search, which never waits for it.
@@ -119,6 +126,45 @@ export class AiSearchAnswerEffects {
       ),
     { dispatch: false }
   );
+
+  /**
+   * Deletes the kept AI answer once the lifetime that `dataRetention.aiSearch` sets in minutes has ended, also while
+   * the browser tab stays open: the data retention checks the lifetime only when the storefront starts.
+   * The lifetime starts when the AI answer is kept, as the data retention records it in the local storage.
+   */
+  // UC-001 BR-013: The end of the time the shop operator sets deletes the kept AI answer.
+  deleteExpiredKeptAnswer$ = createEffect(() =>
+    this.store.pipe(
+      select(getAiSearchKeptAnswer),
+      filter(() => !SSR && typeof this.dataRetention?.aiSearch === 'number'),
+      distinctUntilChanged(isEqual),
+      switchMap(kept =>
+        kept?.text
+          ? this.keptAnswerLifetimeEnded$(this.dataRetention.aiSearch as number).pipe(
+              map(() => aiSearchAnswerInternalActions.deleteKeptAnswer())
+            )
+          : EMPTY
+      )
+    )
+  );
+
+  /**
+   * Emits once the lifetime of the kept AI answer has ended. The storefront started in another browser tab starts the
+   * lifetime again, so the time left is read again when it seems to have ended.
+   */
+  private keptAnswerLifetimeEnded$(lifetimeMinutes: number): Observable<void> {
+    return defer(() => timer(this.keptAnswerLifetimeLeft(lifetimeMinutes))).pipe(
+      switchMap(() =>
+        this.keptAnswerLifetimeLeft(lifetimeMinutes) ? this.keptAnswerLifetimeEnded$(lifetimeMinutes) : of(undefined)
+      )
+    );
+  }
+
+  private keptAnswerLifetimeLeft(lifetimeMinutes: number): number {
+    const item = `${this.baseHref}-${AI_SEARCH_KEPT_ANSWER_STORAGE.prefix}-${AI_SEARCH_KEPT_ANSWER_STORAGE.key}`;
+    const keptAt: number = JSON.parse(localStorage.getItem(item) ?? 'null')?.sync ?? Date.now();
+    return Math.max(keptAt + lifetimeMinutes * 60 * 1000 - Date.now(), 0);
+  }
 
   private nextAction(
     previous: PageVisit,

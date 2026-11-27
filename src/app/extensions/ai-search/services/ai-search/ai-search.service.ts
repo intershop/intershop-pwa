@@ -43,6 +43,7 @@ export class AiSearchService {
    * @param searchQuery The search query of the buyer.
    * @returns           Emits the AI answer once; the text is empty when the chatflow returns no AI answer.
    */
+  // UC-001 BR-014: The AI answer is requested without asking the buyer for a consent of its own.
   getAnswer(searchQuery: string): Observable<AiSearchAnswer> {
     if (!searchQuery) {
       return throwError(() => new Error('getAnswer() called without searchQuery'));

@@ -56,9 +56,9 @@ const initialKeptAnswer: AiSearchAnswer = {
 /**
  * The last AI answer shown to the buyer, stored by `dataRetention.aiSearch`.
  */
-// UC-001 BR-013: Only the last shown AI answer is kept; logout deletes it.
+// UC-001 BR-013: Only the last shown AI answer is kept; logout and the end of its time delete it.
 export const aiSearchKeptAnswerReducer = createReducer(
   initialKeptAnswer,
   on(aiSearchAnswerActions.keepAnswer, (_, action): AiSearchAnswer => action.payload.answer),
-  on(resetUserData, (): AiSearchAnswer => initialKeptAnswer)
+  on(resetUserData, aiSearchAnswerInternalActions.deleteKeptAnswer, (): AiSearchAnswer => initialKeptAnswer)
 );
