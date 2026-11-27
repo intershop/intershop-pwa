@@ -16,7 +16,7 @@ Customized child components of these parts that read form state such as `dirty`,
 
 **`OnPush` change detection for all components**
 
-All PWA components except the payment provider components and the `FormControlFeedbackComponent` now use `ChangeDetectionStrategy.OnPush`.
+All PWA components except the payment provider components now use `ChangeDetectionStrategy.OnPush`.
 Customizations of these components that change displayed state outside of inputs, template events or observables have to call `markForCheck()` themselves.
 The ESLint rule `@angular-eslint/prefer-on-push-component-change-detection` now reports components without `OnPush`, except in `*.spec.ts` and `*.module.ts` files, and replaces the custom rule `ish-custom-rules/use-component-change-detection`.
 Switch custom components to `OnPush` or disable the rule for the affected line with a reason.
