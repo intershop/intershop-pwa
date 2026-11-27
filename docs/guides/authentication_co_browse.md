@@ -41,17 +41,17 @@ identityProviders: {
 ```
 
 > [!WARNING]
-> This configuration enables the `Co-Browse` identity provider as the only configured global identity provider.
+> This configuration enables the `CoBrowse` identity provider as the only configured global identity provider.
 > The standard ICM identity provider used for the standard login is no longer configured, so the standard login no longer works.
 > This configuration example is relevant only for development purposes.
 
 > [!NOTE]
-> With this configuration, the `Co-Browse` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the user.
+> With this configuration, the `CoBrowse` identity provider handles every route and does not restore the session of the `apiToken` cookie, so a reload logs out the user.
 > To restore the session on a reload during development, add `this.apiTokenService.restore$(['user', 'order']).subscribe(noop);` to the `init()` method of the [`CoBrowseIdentityProvider`](../../src/app/core/identity-provider/co-browse.identity-provider.ts).
 > Its `hasUserSession()` method then has to return `this.apiTokenService.hasUserApiTokenCookie()`, so that personalized content waits for the PGID of the restored user.
 > The session of an existing `apiToken` cookie is then also restored in parallel to a login on the `cobrowse` route.
 
-For production-like deployments, the PWA has to be configured to use the `Co-Browse` identity provider only when the user enters the `cobrowse` route.
+For production-like deployments, the PWA has to be configured to use the `CoBrowse` identity provider only when the user enters the `cobrowse` route.
 This can be configured with the `OVERRIDE_IDENTITY_PROVIDERS` environment variable (see [Override Identity Providers by Path](../guides/nginx-startup.md#override-identity-providers-by-path)) for the NGINX container.
 However, the SSR process needs to be provided with the co-browse identity provider configuration as one of the available identity providers.
 In this way, the global `identityProvider` configuration remains the default ICM configuration.
