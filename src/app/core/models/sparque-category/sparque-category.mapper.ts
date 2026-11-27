@@ -28,7 +28,7 @@ export class SparqueCategoryMapper {
   }
 
   private fromData(data: SparqueCategory): { category: Category; categoryTree: CategoryTree } {
-    let parentCategory: Category = undefined;
+    let parentCategory: Category;
     let categoryTree = CategoryTreeHelper.empty();
     let uniqueId = data.categoryID;
 
@@ -68,8 +68,8 @@ export class SparqueCategoryMapper {
     parentCategory: Category;
     categoryTree: CategoryTree;
   } {
-    let category: Category = undefined;
-    let parentCategory: Category = undefined;
+    let category: Category;
+    let parentCategory: Category;
     let categoryTree = CategoryTreeHelper.empty();
     let uniqueId = data.identifier;
 

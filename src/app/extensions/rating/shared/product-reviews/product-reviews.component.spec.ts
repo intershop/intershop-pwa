@@ -15,7 +15,7 @@ import { ErrorMessageComponent } from 'ish-shared/components/common/error-messag
 import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
-import { ProductReview } from '../../models/product-reviews/product-review.model';
+import { ProductReview } from '../../models/product-review/product-review.model';
 import { ProductReviewCreateDialogComponent } from '../product-review-create-dialog/product-review-create-dialog.component';
 
 import { ProductReviewsComponent } from './product-reviews.component';

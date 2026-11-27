@@ -6,6 +6,7 @@ import {
   Injector,
   Input,
   OnInit,
+  Type,
   ViewChild,
   ViewContainerRef,
   createNgModule,
@@ -13,11 +14,18 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { from } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 import { whenTruthy } from 'ish-core/utils/operators';
 
 import { CaptchaFacade, CaptchaTopic } from '../../facades/captcha.facade';
+
+interface LoadedCaptcha {
+  component: Type<unknown>;
+  ngModule: Type<unknown>;
+  inputs: Record<string, unknown>;
+}
 
 /**
  * The Captcha Component
@@ -71,37 +79,40 @@ export class LazyCaptchaComponent implements OnInit, AfterViewInit {
         switchMap(() => this.captchaFacade.captchaVersion$),
         whenTruthy(),
         take(1),
+        switchMap(version => from(version === 3 ? this.loadCaptchaV3() : this.loadCaptchaV2())),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(async version => {
-        if (version === 3) {
-          this.actionFormControl.setValue(this.topic);
+      .subscribe(({ component, ngModule, inputs }) => {
+        const ngModuleRef = createNgModule(ngModule, this.injector);
+        const componentRef = this.anchor.createComponent(component, { ngModuleRef });
 
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV3Component, CaptchaV3ComponentModule } =
-            await import('../../shared/captcha-v3/captcha-v3.component');
-
-          const moduleRef = createNgModule(CaptchaV3ComponentModule, this.injector);
-          const componentRef = this.anchor.createComponent(CaptchaV3Component, { ngModuleRef: moduleRef });
-
-          componentRef.instance.parentForm = this.form as FormGroup;
-          componentRef.changeDetectorRef.markForCheck();
-        } else if (version === 2) {
-          this.formControl.setValidators([Validators.required]);
-          this.formControl.updateValueAndValidity();
-
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { CaptchaV2Component, CaptchaV2ComponentModule } =
-            await import('../../shared/captcha-v2/captcha-v2.component');
-
-          const moduleRef = createNgModule(CaptchaV2ComponentModule, this.injector);
-          const componentRef = this.anchor.createComponent(CaptchaV2Component, { ngModuleRef: moduleRef });
-
-          componentRef.instance.cssClass = this.cssClass;
-          componentRef.instance.parentForm = this.form as FormGroup;
-          componentRef.changeDetectorRef.markForCheck();
-        }
+        Object.entries(inputs).forEach(([name, value]) => componentRef.setInput(name, value));
       });
+  }
+
+  private async loadCaptchaV3(): Promise<LoadedCaptcha> {
+    this.actionFormControl.setValue(this.topic);
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { CaptchaV3Component, CaptchaV3ComponentModule } =
+      await import('../../shared/captcha-v3/captcha-v3.component');
+
+    return { component: CaptchaV3Component, ngModule: CaptchaV3ComponentModule, inputs: { parentForm: this.form } };
+  }
+
+  private async loadCaptchaV2(): Promise<LoadedCaptcha> {
+    this.formControl.setValidators([Validators.required]);
+    this.formControl.updateValueAndValidity();
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { CaptchaV2Component, CaptchaV2ComponentModule } =
+      await import('../../shared/captcha-v2/captcha-v2.component');
+
+    return {
+      component: CaptchaV2Component,
+      ngModule: CaptchaV2ComponentModule,
+      inputs: { cssClass: this.cssClass, parentForm: this.form },
+    };
   }
 
   private sanityCheck() {

@@ -79,7 +79,6 @@ const createView = (data: ProductListingType, itemsPerPage: number): ProductList
     itemCount: data ? data.itemCount : 0,
     sortableAttributes: data ? data.sortableAttributes : [],
     pageIndices: memoize(
-      // eslint-disable-next-line arrow-parens
       (currentPage?) => (data ? calculatePageIndices(currentPage || lastPage, data.itemCount, itemsPerPage) : []),
       identity
     ),

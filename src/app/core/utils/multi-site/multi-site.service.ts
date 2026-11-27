@@ -20,7 +20,6 @@ export class MultiSiteService {
    *
    * @param locale the locale which the new url should fit
    * @param url the current url
-   * @param baseHref the current baseHref which needs to be replaced
    * @returns the modified url
    */
   getLangUpdatedUrl(locale: string, url: string): Observable<string> {

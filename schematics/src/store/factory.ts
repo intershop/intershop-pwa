@@ -56,7 +56,7 @@ export async function determineStoreLocation(
 
   let parent: string;
 
-  let path = options.path;
+  let path: string;
   if (project.root) {
     parent = projectName;
     path = `${project.sourceRoot}/app/store/`;
@@ -112,7 +112,7 @@ function registerStateInStore(options: { parentStorePath?: string; name?: string
         node.parent.kind === ts.SyntaxKind.InterfaceDeclaration
       ) {
         const stateInterface = node.parent;
-        const closingBrace = stateInterface.getChildren().filter(n => n.kind === ts.SyntaxKind.CloseBraceToken)[0];
+        const closingBrace = stateInterface.getChildren().find(n => n.kind === ts.SyntaxKind.CloseBraceToken);
         update.insertLeft(closingBrace.pos, `\n  ${strings.camelize(options.name)}: ${artifactName};`);
       }
     });

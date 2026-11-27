@@ -8,7 +8,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  * * ``string`` : a simple string that will be translated and displayed
  * * ``{ key: string, args: any, class: string}`` : a more complex object containing a translation key
  *    and arguments to be translated as well as a class that will be applied to the information.
- *
  */
 @Component({
   selector: 'ish-information-wrapper',

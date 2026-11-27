@@ -51,6 +51,7 @@ export class FeatureEventService {
 
   /**
    * Will send new notification to event stream. Subscriber (extensions) to this event stream could react accordingly.
+   *
    * @param feature responsible extension
    * @param event event type
    * @param data optional data for event
@@ -64,6 +65,7 @@ export class FeatureEventService {
 
   /**
    * Will send results of event back. Subscriber (event trigger) to this result stream could react accordingly.
+   *
    * @param id identifier of generated even
    * @param event event type
    * @param successful Is result successful?
@@ -75,6 +77,7 @@ export class FeatureEventService {
 
   /**
    * Will append all configured FEATURE_EVENT_RESULT_LISTENER together to be available in the FeatureEventNotifierService
+   *
    * @param injector current injector instance
    */
   setupAvailableResultListener(injector: Injector) {
@@ -96,6 +99,7 @@ export class FeatureEventService {
 
   /**
    * Find correct event result listener
+   *
    * @param feature responsible extension
    * @param event event type
    * @param id id of generated notification event

@@ -60,7 +60,7 @@ export class OrderTemplateService {
   /**
    * Creates a order template for the current user.
    *
-   * @param OrderTemplateDetails   The order template data.
+   * @param orderTemplateData   The order template data.
    * @returns                 The created order template.
    */
   createOrderTemplate(orderTemplateData: OrderTemplateHeader): Observable<OrderTemplate> {
@@ -97,10 +97,10 @@ export class OrderTemplateService {
   /**
    * Adds a product to the order template with the given id and reloads the order template.
    *
-   * @param orderTemplate Id   The order template id.
-   * @param sku           The product sku.
-   * @param quantity      The product quantity (default = 1).
-   * @returns             The changed order template.
+   * @param orderTemplateId  The order template id.
+   * @param sku              The product sku.
+   * @param quantity         The product quantity (default = 1).
+   * @returns                The changed order template.
    */
   addProductToOrderTemplate(orderTemplateId: string, sku: string, quantity: number): Observable<OrderTemplate> {
     if (!orderTemplateId) {
@@ -123,9 +123,9 @@ export class OrderTemplateService {
   /**
    * Removes a product from the order template with the given id. Returns an error observable if parameters are falsy.
    *
-   * @param wishlist Id   The order template id.
-   * @param sku           The product sku.
-   * @returns             The changed order template.
+   * @param orderTemplateId  The order template id.
+   * @param sku              The product sku.
+   * @returns                The changed order template.
    */
   removeProductFromOrderTemplate(orderTemplateId: string, sku: string): Observable<OrderTemplate> {
     if (!orderTemplateId) {

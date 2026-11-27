@@ -2,7 +2,7 @@ import { createAction } from '@ngrx/store';
 
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-import { ProductReview, ProductReviewCreationType } from '../../models/product-reviews/product-review.model';
+import { ProductReview, ProductReviewCreationType } from '../../models/product-review/product-review.model';
 import { ProductReviews } from '../../models/product-reviews/product-reviews.model';
 
 export const loadProductReviews = createAction('[Product Review] Load Product Reviews', payload<{ sku: string }>());

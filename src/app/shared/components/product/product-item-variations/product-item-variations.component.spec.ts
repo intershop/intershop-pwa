@@ -130,9 +130,7 @@ describe('Product Item Variations Component', () => {
       it('should not display anything if variations are not visible except for VariationProductMaster', () => {
         visible$.next(false);
         fixture.detectChanges();
-        productType === 'VariationProductMaster'
-          ? expect(findAllElements(element)).toEqual(['span'])
-          : expect(findAllElements(element)).toBeEmpty();
+        expect(findAllElements(element)).toEqual(productType === 'VariationProductMaster' ? ['span'] : []);
       });
     }
   );

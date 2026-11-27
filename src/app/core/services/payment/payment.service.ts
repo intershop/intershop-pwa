@@ -213,7 +213,7 @@ export class PaymentService {
   /**
    * Updates a payment for the selected basket. Used to set redirect query parameters and status after redirect.
    *
-   * @param redirect          The payment redirect information (parameters and status).
+   * @param params            The payment redirect information (parameters and status).
    * @returns                 The updated payment.
    */
   updateBasketPayment(params: Record<string, string>): Observable<Payment> {

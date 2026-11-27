@@ -64,11 +64,7 @@ describe('Users Service', () => {
   it('should call the getUser of customer API when fetching user', done => {
     usersService.getUser(millersEMail).subscribe(() => {
       verify(apiService.get(anything())).once();
-      expect(capture(apiService.get).last()).toMatchInlineSnapshot(`
-        [
-          "${millersEndpoint}",
-        ]
-      `);
+      expect(capture(apiService.get).last()).toEqual([millersEndpoint]);
       done();
     });
   });
@@ -76,11 +72,7 @@ describe('Users Service', () => {
   it('should call delete method of customer API when delete user', done => {
     usersService.deleteUser(millersEMail).subscribe(() => {
       verify(apiService.delete(anything())).once();
-      expect(capture(apiService.delete).last()).toMatchInlineSnapshot(`
-        [
-          "${millersEndpoint}",
-        ]
-      `);
+      expect(capture(apiService.delete).last()).toEqual([millersEndpoint]);
       done();
     });
   });
@@ -100,7 +92,7 @@ describe('Users Service', () => {
 
     usersService.updateUser(user).subscribe(() => {
       verify(apiService.put(anything(), anything())).once();
-      expect(capture(apiService.put).last()[0]).toMatchInlineSnapshot(`"${millersEndpoint}"`);
+      expect(capture(apiService.put).last()[0]).toEqual(millersEndpoint);
       done();
     });
   });
@@ -115,14 +107,7 @@ describe('Users Service', () => {
         ]
       `);
       verify(apiService.put(anything(), anything())).once();
-      expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
-        [
-          "${millersEndpoint}/roles",
-          {
-            "userRoles": [],
-          },
-        ]
-      `);
+      expect(capture(apiService.put).last()).toEqual([`${millersEndpoint}/roles`, { userRoles: [] }]);
       done();
     });
   });
@@ -139,19 +124,14 @@ describe('Users Service', () => {
       .subscribe(data => {
         expect(data).toMatchInlineSnapshot(`{}`);
         verify(apiService.put(anything(), anything())).once();
-        expect(capture(apiService.put).last()).toMatchInlineSnapshot(`
-          [
-            "${millersEndpoint}/budgets",
-            {
-              "budget": {
-                "currency": "USD",
-                "value": 2000,
-              },
-              "budgetPeriod": "monthly",
-              "orderSpentLimit": undefined,
-            },
-          ]
-        `);
+        expect(capture(apiService.put).last()).toEqual([
+          `${millersEndpoint}/budgets`,
+          {
+            budget: { currency: 'USD', value: 2000 },
+            budgetPeriod: 'monthly',
+            orderSpentLimit: undefined,
+          },
+        ]);
         done();
       });
   });

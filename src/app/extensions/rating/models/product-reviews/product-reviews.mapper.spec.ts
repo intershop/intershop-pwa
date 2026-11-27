@@ -1,4 +1,5 @@
-import { ProductReview } from './product-review.model';
+import { ProductReview } from '../product-review/product-review.model';
+
 import { ProductReviewsMapper } from './product-reviews.mapper';
 
 describe('Product Reviews Mapper', () => {

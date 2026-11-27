@@ -12,7 +12,7 @@ testRule(banImportsFilePatternRule, {
           {
             importNamePattern: 'foo|bar|baz',
             name: '@foobar',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Test Message',
           },
         ],
@@ -31,7 +31,7 @@ testRule(banImportsFilePatternRule, {
           {
             importNamePattern: 'foo|bar|baz',
             name: '@foobar',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Test Message',
           },
         ],
@@ -81,7 +81,7 @@ testRule(banImportsFilePatternRule, {
           {
             starImport: true,
             name: 'foobar',
-            filePattern: '^.*\\.component\\.ts*$',
+            filePattern: '^.*\\.component\\.ts$',
             message: 'Test Star Import.',
           },
         ],

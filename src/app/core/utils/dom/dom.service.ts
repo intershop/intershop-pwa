@@ -5,7 +5,7 @@ import { Inject, Injectable, Renderer2, RendererFactory2, RendererStyleFlags2 } 
  * Utility Service for DOM Manipulations using Angular Renderer2.
  * It allows you to manipulate DOM elements without accessing the DOM directly.
  * While working with SSR DOM manipulations are not possible on server, this is also handled properly.
- **/
+ */
 
 @Injectable({ providedIn: 'root' })
 export class DomService {
@@ -32,7 +32,6 @@ export class DomService {
    * Gets a (unique) element by its id
    *
    * @param id  The element id.
-   * @param el  The html element.
    */
   getElementById(id: string): HTMLElement {
     return this.document.getElementById(id);

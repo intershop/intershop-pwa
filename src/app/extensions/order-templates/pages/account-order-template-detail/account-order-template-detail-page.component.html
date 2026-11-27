@@ -45,13 +45,13 @@
             </div>
           </div>
           <div class="list-body">
-            @for (item of orderTemplate.items; track item.id; let i = $index) {
+            @for (item of orderTemplate.items; track item.id) {
               <div class="list-item-row list-item-row-big">
                 <ish-account-order-template-detail-line-item
                   ishProductContext
                   [currentOrderTemplate]="orderTemplate"
                   [orderTemplateItemData]="item"
-                  [propagateIndex]="i"
+                  [propagateIndex]="$index"
                   [quantity]="item.desiredQuantity.value"
                   [sku]="item.sku"
                   (moveClicked)="showMoveDialog($event)"
@@ -65,7 +65,7 @@
       }
     </div>
     @if (orderTemplate.itemsCount) {
-      <ish-product-add-to-basket [cssClass]="'btn btn-primary float-end'" />
+      <ish-product-add-to-basket cssClass="btn btn-primary float-end" />
     }
   </ng-container>
 }

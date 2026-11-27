@@ -92,7 +92,9 @@ export const PAYPAL_GOOGLE_PAY_BUTTON_STYLING = {
   buttonSizeMode: 'fill',
 };
 
-/** Styling configuration for Apple Pay button.
+/**
+ * Styling configuration for Apple Pay button.
+ *
  * @see https://developer.apple.com/documentation/applepayontheweb/displaying-apple-pay-buttons-using-css
  */
 export const PAYPAL_APPLE_PAY_BUTTON_STYLING = {

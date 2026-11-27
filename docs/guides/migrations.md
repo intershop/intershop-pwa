@@ -11,11 +11,110 @@ kb_sync_latest_only
 
 **ESLint 10 update**
 
-ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0) for breaking changes affecting custom rules and configurations.
+ESLint has been updated to version 10, see the [ESLint v10 migration guide](https://eslint.org/docs/latest/use/migrate-to-10.0.0).
 `eslint-plugin-unicorn` (v80) and `eslint-plugin-rxjs-angular-x` (v1) have been updated to major versions supporting ESLint 10.
-The [`eslint.config.mjs`](../../eslint.config.mjs) no longer uses `FlatCompat`, and the `@angular-eslint/*` dev dependencies are replaced by the `angular-eslint` package, so customized ESLint configurations have to use its native flat configs (e.g., `angular.configs.tsRecommended`) instead of `compat.extends(...)`.
-The unmaintained `@smarttools/eslint-plugin-rxjs` is replaced by [`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x), so rename `rxjs/` rules to `rxjs-x/` in customized configurations and `eslint-disable` comments.
-The unmaintained `eslint-plugin-ban` is replaced by the ESLint core rules `no-restricted-properties`, `no-restricted-globals`, and `prefer-object-spread`, which only reports `Object.assign` calls with an object literal as first argument (the outdated `atob`/`btoa` ban has been dropped), so replace or remove `ban/ban` in `eslint-disable` comments accordingly.
+The [`eslint.config.mjs`](../../eslint.config.mjs) uses the native flat configs of the `angular-eslint` package instead of `FlatCompat`.
+Unmaintained plugins and some custom rules have been replaced, so rename them in customized configurations and `eslint-disable` comments:
+
+| Old rule                                            | New rule                                                                                      |
+| :-------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| `rxjs/*`                                            | `rxjs-x/*` ([`eslint-plugin-rxjs-x`](https://github.com/JasonWeinzierl/eslint-plugin-rxjs-x)) |
+| `ban/ban`                                           | `no-restricted-properties`, `no-restricted-globals`, `prefer-object-spread`                   |
+| `ish-custom-rules/no-return-undefined`              | `unicorn/no-useless-undefined`                                                                |
+| `ish-custom-rules/no-collapsible-if`                | `unicorn/no-lonely-if`                                                                        |
+| `ish-custom-rules/no-object-literal-type-assertion` | `@typescript-eslint/consistent-type-assertions`                                               |
+| `ish-custom-rules/no-testbed-with-then`             | `no-restricted-syntax`                                                                        |
+| `id-blacklist`                                      | `id-denylist`                                                                                 |
+| `no-throw-literal`                                  | `@typescript-eslint/only-throw-error`                                                         |
+| `no-implied-eval`                                   | `@typescript-eslint/no-implied-eval`                                                          |
+
+Some of these rules check more cases.
+`prefer-object-spread` only reports `Object.assign` calls with an object literal as first argument, so remove `eslint-disable` comments for other `Object.assign` calls.
+The `ish-custom-rules/no-initialize-observables-directly` rule has been removed without replacement.
+The `ish-custom-rules/ban-imports-file-pattern` rule now also reports `tap` imported from `rxjs` in effects, not only from `rxjs/operators`.
+It also restricts the Angular `Meta` and `Title` services to the SEO extension, which replaces the obsolete restriction for `@ngx-meta`.
+Imports starting with `projects/` are now reported as well, import what a project provides in its `exports` via its path alias instead, e.g., `requisition-management`.
+Its options are validated now, so entries in customized configurations need `filePattern`, `name` and `message`, and must not contain other properties than `importNamePattern` and `starImport`.
+The regular expressions in the `paths` of `no-restricted-imports` never matched, since `paths` only compare exact module names.
+They are `patterns` now and report imports of specific environments, paths with `node_modules` or starting with `app/` or `src/`, and store actions or selectors that bypass the `index.ts` of their store.
+Entries for `lodash`, deep `rxjs` imports and the `ish-core` alias have been removed, since `ish-custom-rules/ban-imports-file-pattern`, `rxjs-x/no-internal` and `ish-custom-rules/use-alias-imports` cover them.
+The `ish-custom-rules/use-alias-imports` rule now also reports imports starting with an aliased path like `src/app/core/` and `./` imports leading into an aliased folder, e.g., `./shell/shell.module` in `src/app`; run `npm run lint -- --fix` to replace them with the alias.
+The `ish-custom-rules/project-structure` rule checks file paths again, since a catch-all entry in `pathPatterns` had disabled this, so add patterns for own file locations that are reported.
+Its `patterns` now also apply to exported functions and constants, and functional guards like `fooBarGuard` have to be in a `guards/foo-bar.guard.ts` or `pages/<page>/foo-bar.guard.ts` file.
+Model files (`*.model.ts`) are no longer ignored and have to be named after their `models/<name>/` folder like the other model files.
+The `jsdoc/*` rules are based on the `flat/recommended-typescript` config of [`eslint-plugin-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc#configuration) without `jsdoc/require-jsdoc`, `jsdoc/require-param` and `jsdoc/require-returns`, and `jsdoc/require-property-type` has been disabled.
+
+Additionally, the following rules have been enabled.
+There is an auto-fix available (run `npm run lint -- --fix`) for the following rules:
+
+- `no-lonely-if`
+- `rxjs-x/prefer-observer`
+- `@angular-eslint/template/prefer-at-empty`
+- `@angular-eslint/template/prefer-contextual-for-variables`: replace `@for` aliases like `let i = $index` in two-way bindings (`[(…)]`) manually, since the auto-fix crashes there.
+- `@angular-eslint/template/prefer-static-string-properties`
+- `@angular-eslint/template/no-interpolation-in-attributes` with `allowSubstringInterpolation`
+- `jsdoc/multiline-blocks`
+- `jsdoc/no-multi-asterisks` with `allowWhitespace` to keep Markdown lists
+- `jsdoc/no-types`
+- `jsdoc/tag-lines` with one blank line between description and tags
+
+The findings of the following rules have to be fixed manually:
+
+- `@angular-eslint/no-implicit-take-until-destroyed`: pass a `DestroyRef` to `takeUntilDestroyed()` calls outside an injection context, e.g., in `ngOnInit`.
+- `@angular-eslint/computed-must-return`
+- `@angular-eslint/no-duplicates-in-metadata-arrays`
+- `@angular-eslint/no-uncalled-signals`
+- `@angular-eslint/prefer-host-metadata-property`: replace `@HostBinding()` and `@HostListener()` with the [`host` property](https://angular.dev/guide/components/host-elements).
+- `@angular-eslint/template/no-empty-control-flow`
+- `@angular-eslint/template/no-nested-tags`
+- `@angular-eslint/template/conditional-complexity` with `maxComplexity: 3`
+- `@angular-eslint/template/no-any`
+- `rxjs-x/no-async-subscribe`: the lazy component schematic no longer generates `async` subscribe callbacks, the lazy components are regenerated automatically on `npm install`.
+- `rxjs-x/no-ignored-notifier`
+- `rxjs-x/no-ignored-takewhile-value`
+- `rxjs-x/no-index`
+- `rxjs-x/no-redundant-notify`
+- `rxjs-x/no-subscribe-in-pipe`
+- `rxjs-x/no-topromise`
+- `rxjs-x/no-unbound-methods`
+- `@typescript-eslint/default-param-last`: move fallbacks for `undefined` values of leading parameters into the function body, e.g., `customerId ?? '-'`.
+- `@typescript-eslint/no-duplicate-type-constituents`
+- `@typescript-eslint/no-redundant-type-constituents`: e.g., `'a' | 'b' | string` is just `string`.
+- `@typescript-eslint/prefer-promise-reject-errors`: reject promises with `Error` objects, passing on caught errors is allowed.
+- `@typescript-eslint/prefer-find`, `@typescript-eslint/prefer-includes` and `@typescript-eslint/prefer-string-starts-ends-with` of the `typescript-eslint` `stylisticTypeChecked` config, which replaces the `stylistic` config: the latter two have an auto-fix.
+- `jsdoc/check-tag-names` with the custom tags `@defaultWrappers`, `@props` and `@usageNotes`: wrap Angular control flow blocks like `@if` in `@example` tags into a Markdown code block.
+- `jsdoc/check-param-names`: also document the properties of inline object type parameters, e.g., `@param config.key`.
+- `jsdoc/require-param-description` and `jsdoc/require-returns-description`
+- `jsdoc/escape-inline-tags`: wrap code like `@Input()` in backticks or use `{@link …}`.
+
+**`takeUntil(destroy$)` no longer allowed**
+
+The transitional period for the `takeUntil(destroy$)` mechanism, see [From 4.2 to 5.0](#from-42-to-50), has ended.
+ESLint now reports `takeUntil(destroy$)` calls and `destroy$` subject fields, and the `ish-custom-rules/private-destroy-field` rule has been removed.
+Use the [`takeUntilDestroyed`](https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed) operator instead, e.g., with the migration script described there.
+
+**Jest recommended ESLint rules**
+
+Unit tests are now linted with the [recommended rules of `eslint-plugin-jest`](https://github.com/jest-community/eslint-plugin-jest#rules), and Cypress tests with some of them.
+The `jest/*` rules no longer apply to other TypeScript files.
+
+**ESLint `js.configs.recommended` for TypeScript files**
+
+TypeScript files are now also linted with the `js.configs.recommended` config of [`@eslint/js`](https://eslint.org/docs/latest/rules/), in addition to the already used `typescript-eslint` recommended configs.
+
+**Renamed and moved files**
+
+The `CheckoutStepType` enum has been renamed to `CheckoutStep` and moved from `ish-core/models/checkout/checkout-step.type` to `ish-core/models/checkout-step/checkout-step.type`.
+The `MetricsDetailLevel` enum has been moved from `ish-core/models/metrics/metrics-detail-level` to `ish-core/configurations/injection-keys`.
+The `PaypalClientConfig` interface has been moved from `ish-core/models/paypal-client-config/paypal-client-config` to `ish-core/models/paypal-config/paypal-config.model`.
+The `fromIntersectionObserver` function and the `IntersectionStatus` type have been moved from `ish-core/directives/intersection-observer-util` to `ish-core/directives/utils/intersection-observer`.
+The `SparqueConfig` interface has been moved from `ish-core/models/sparque/sparque-config.model` to `ish-core/models/sparque-config/sparque-config.model`.
+The `ProductReview` interface and the `ProductReviewCreationType` type of the rating extension have been moved from `models/product-reviews/product-review.model` to `models/product-review/product-review.model`.
+To update the imports in custom code, run the PWA migration schematics (see [Performing a Migration](./migrations-how-to.md#run-the-provided-migration-schematics)) or run this migration on its own:
+
+```bash
+ng g ./schematics/dist/migrations/migrations.json:align-with-project-structure
+```
 
 ## From 13.0.0 to 13.1.0
 

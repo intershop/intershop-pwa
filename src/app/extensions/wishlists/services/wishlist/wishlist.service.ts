@@ -68,8 +68,8 @@ export class WishlistService {
   /**
    * Creates a wishlists for the current user.
    *
-   * @param wishlistDetails   The wishlist data.
-   * @returns                 The created wishlist.
+   * @param wishlistData   The wishlist data.
+   * @returns              The created wishlist.
    */
   createWishlist(wishlistData: WishlistHeader): Observable<Wishlist> {
     return this.appFacade.customerRestResource$.pipe(
@@ -120,9 +120,9 @@ export class WishlistService {
   /**
    * Adds a product to the wishlist with the given id and reloads the wishlist.
    *
-   * @param wishlist Id   The wishlist id.
-   * @param sku           The product sku.
-   * @returns             The changed wishlist.
+   * @param wishlistId  The wishlist id.
+   * @param sku         The product sku.
+   * @returns           The changed wishlist.
    */
   addProductToWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
     if (!wishlistId) {
@@ -148,9 +148,9 @@ export class WishlistService {
   /**
    * Removes a product from the wishlist with the given id. Returns an error observable if parameters are falsy.
    *
-   * @param wishlist Id   The wishlist id.
-   * @param sku           The product sku.
-   * @returns             The changed wishlist.
+   * @param wishlistId  The wishlist id.
+   * @param sku         The product sku.
+   * @returns           The changed wishlist.
    */
   removeProductFromWishlist(wishlistId: string, sku: string): Observable<Wishlist> {
     if (!wishlistId) {

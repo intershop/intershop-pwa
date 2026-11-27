@@ -6,6 +6,12 @@ const messages = {
   sortTestBedMetadataArrays: '`TestBed` metadata arrays should be sorted in ASC alphabetical order',
 };
 
+/**
+ * Enforces ascending alphabetical order of the metadata arrays (e.g. `declarations`, `imports`, `providers`)
+ * passed to `TestBed.configureTestingModule` in spec files.
+ *
+ * Elements are compared by their source text.
+ */
 const sortTestbedMetadataArraysRule: TSESLint.RuleModule<keyof typeof messages> = {
   meta: {
     type: 'suggestion',

@@ -59,7 +59,7 @@ export class HeaderNavigationComponent implements OnInit {
   /**
    * Indicate if specific category is expanded.
    *
-   * @param category The category item.
+   * @param uniqueId The unique id of the category.
    */
   isOpened(uniqueId: string): boolean {
     return this.openedCategories.includes(uniqueId);
@@ -68,7 +68,7 @@ export class HeaderNavigationComponent implements OnInit {
   /**
    * Toggle category open state.
    *
-   * @param category The category item.
+   * @param uniqueId The unique id of the category.
    */
   toggleOpen(uniqueId: string) {
     const index = this.openedCategories.findIndex(id => id === uniqueId);

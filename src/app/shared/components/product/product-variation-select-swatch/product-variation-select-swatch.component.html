@@ -14,7 +14,7 @@
           ></span>
         }
         @if (group.attributeType === 'swatchImage') {
-          <img alt="{{ option.label }}" [src]="option.metaData" />
+          <img [alt]="option.label" [src]="option.metaData" />
         }
       </a>
     </li>

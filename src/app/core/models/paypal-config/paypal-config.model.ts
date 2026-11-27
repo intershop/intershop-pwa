@@ -10,3 +10,7 @@ export interface PaypalConfig {
     PayLaterMessagingProductDetailsEnabled: boolean;
   };
 }
+
+export interface PaypalClientConfig {
+  googlePayEnvironment: 'PRODUCTION' | 'TEST';
+}

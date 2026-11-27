@@ -34,8 +34,6 @@ function toObservableNumber(days: number | Observable<number>) {
  * @props **inputClass** - class to apply to the input field
  *
  * @defaultWrappers 'form-field-horizontal', 'validation'
- *
- *
  */
 @Component({
   selector: 'ish-date-range-picker-field',

@@ -4,14 +4,14 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, defer, fromEvent, iif, merge } from 'rxjs';
-import { distinctUntilChanged, map, mergeMap, take, takeWhile } from 'rxjs/operators';
+import { distinctUntilChanged, map, mergeMap, take } from 'rxjs/operators';
 
 import { LARGE_BREAKPOINT_WIDTH, MEDIUM_BREAKPOINT_WIDTH } from 'ish-core/configurations/injection-keys';
 import { NGRX_STATE_SK } from 'ish-core/configurations/ngrx-state-transfer';
 import { SSR_LOCALE } from 'ish-core/configurations/state-keys';
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
-import { PaypalClientConfig } from 'ish-core/models/paypal-client-config/paypal-client-config';
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { PaypalClientConfig } from 'ish-core/models/paypal-config/paypal-config.model';
+import { SparqueConfig } from 'ish-core/models/sparque-config/sparque-config.model';
 import { DeviceType } from 'ish-core/models/viewtype/viewtype.types';
 import { LocalizationsService } from 'ish-core/services/localizations/localizations.service';
 import { DomService } from 'ish-core/utils/dom/dom.service';
@@ -42,23 +42,18 @@ export class ConfigurationEffects {
     appRef: ApplicationRef,
     private localizationsService: LocalizationsService
   ) {
-    appRef.isStable
-      .pipe(takeWhile(() => !SSR))
+    if (!SSR) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window can only be used with any here
-      .subscribe(stable => ((window as any).angularStable = stable));
+      appRef.isStable.subscribe(stable => ((window as any).angularStable = stable));
+    }
 
-    store
-      .pipe(
-        takeWhile(() => SSR || isDevMode()),
-        select(getCurrentLocale),
-        whenTruthy(),
-        distinctUntilChanged()
-      )
-      .subscribe(lang => {
+    if (SSR || isDevMode()) {
+      store.pipe(select(getCurrentLocale), whenTruthy(), distinctUntilChanged()).subscribe(lang => {
         this.transferState.set(SSR_LOCALE, lang);
         translateService.use(lang);
         this.domService.setAttributeForSelector('html', 'lang', lang.replace('_', '-'));
       });
+    }
   }
 
   transferEnvironmentProperties$ = createEffect(() =>

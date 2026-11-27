@@ -22,7 +22,6 @@ import { ProductNotification } from '../../models/product-notification/product-n
  *
  * Each form includes it's specific form elements and buttons, see product-notification-edit-form.component.
  *
- *
  * @example
  * <ish-product-notification-edit-dialog
  *   [productNotification]="productNotification"

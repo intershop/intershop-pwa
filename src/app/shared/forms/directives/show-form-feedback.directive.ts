@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 /**
@@ -27,6 +27,7 @@ import { AbstractControl } from '@angular/forms';
 @Directive({
   selector: '[ishShowFormFeedback]',
   standalone: false,
+  host: { '[class.has-error]': 'hasErrors', '[class.has-success]': 'hasSuccess' },
 })
 export class ShowFormFeedbackDirective {
   /**
@@ -37,7 +38,6 @@ export class ShowFormFeedbackDirective {
   /**
    *  If form control is invalid and dirty 'has-error' class is added
    */
-  @HostBinding('class.has-error')
   get hasErrors() {
     return this.determineErrors();
   }
@@ -45,7 +45,6 @@ export class ShowFormFeedbackDirective {
   /**
    *  If form control is valid and dirty 'has-success' class is added
    */
-  @HostBinding('class.has-success')
   get hasSuccess() {
     if (this.control instanceof AbstractControl) {
       return this.control.validator && this.control.valid && this.control.dirty;

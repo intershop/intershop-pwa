@@ -35,10 +35,12 @@ const banImportsFilePatternRule: TSESLint.RuleModule<keyof typeof messages, [Rul
           properties: {
             filePattern: { type: 'string' },
             name: { type: 'string' },
-            importNames: { type: 'array' },
+            importNamePattern: { type: 'string' },
             starImport: { type: 'boolean' },
             message: { type: 'string' },
           },
+          required: ['filePattern', 'name', 'message'],
+          additionalProperties: false,
         },
       },
     ],

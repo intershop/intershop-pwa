@@ -68,7 +68,7 @@ export class OrderService {
   /**
    * Creates an order based on the given basket. If a redirect is necessary for payment, the return URLs will be sent after order creation in case they are required.
    *
-   * @param basket                      The (current) basket.
+   * @param basketId                    The id of the (current) basket.
    * @param termsAndConditionsAccepted  indicates whether the user has accepted terms and conditions
    * @returns                           The order.
    */

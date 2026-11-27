@@ -54,7 +54,7 @@ const noIntelligenceInArtifactsRule: TSESLint.RuleModule<keyof typeof messages, 
     }
 
     function checkNgrx(imp: string, node: TSESTree.ImportDeclaration) {
-      if (rules.ngrx && (/\/store\//.test(imp) || imp.startsWith('@ngrx') || imp.endsWith('/ngrx-testing'))) {
+      if (rules.ngrx && (imp.includes('/store/') || imp.startsWith('@ngrx') || imp.endsWith('/ngrx-testing'))) {
         context.report({
           node,
           data: {
@@ -66,7 +66,7 @@ const noIntelligenceInArtifactsRule: TSESLint.RuleModule<keyof typeof messages, 
     }
 
     function checkFacade(imp: string, node: TSESTree.ImportDeclaration) {
-      if (rules.facade && (/\/facades\//.test(imp) || imp.endsWith('.facade'))) {
+      if (rules.facade && (imp.includes('/facades/') || imp.endsWith('.facade'))) {
         context.report({
           node,
           data: {

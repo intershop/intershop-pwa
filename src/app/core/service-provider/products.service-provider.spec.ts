@@ -13,7 +13,7 @@ describe('Products Service Provider', () => {
   let productsServiceMock: ProductsService;
   let sparqueProductsServiceMock: SparqueProductsService;
 
-  const configureTestBed = (sparqueConfig: unknown = undefined) => {
+  const configureTestBed = (sparqueConfig?: unknown) => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [

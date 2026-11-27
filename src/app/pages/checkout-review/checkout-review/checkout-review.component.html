@@ -135,9 +135,9 @@
             @if (paypalPaymentMethod$ | async; as paypalMethod) {
               <div class="position-relative">
                 <ish-payment-paypal
+                  pageType="checkout"
                   [adapterType]="getPaypalAdapterType(paypalMethod)"
                   [attr.inert]="form.invalid ? '' : null"
-                  [pageType]="'checkout'"
                   [selectedPaymentMethod]="paypalMethod"
                 />
                 @if (form.invalid) {

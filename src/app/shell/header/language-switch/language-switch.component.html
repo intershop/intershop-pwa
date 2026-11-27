@@ -1,6 +1,6 @@
 <!-- keep-localization-pattern: ^locale\..*\.(long|short)$ -->
 @if (languageSwitchData$ | async; as data) {
-  <div class="language-switch" ngbDropdown placement="{{ placement === 'up' ? 'top-right' : 'bottom-right' }}">
+  <div class="language-switch" ngbDropdown [placement]="placement === 'up' ? 'top-right' : 'bottom-right'">
     <button
       aria-haspopup="menu"
       class="language-switch-button btn btn-link"

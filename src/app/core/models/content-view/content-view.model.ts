@@ -48,14 +48,14 @@ export const createContentConfigurationParameterView = (
 ): ContentConfigurationParameterView => ({
   hasParam: memoize(key => Object.keys(params).includes(key)),
   booleanParam: memoize(
-    (key, defaultValue = undefined) =>
+    (key, defaultValue?) =>
       Object.keys(params).includes(key)
         ? typeof params[key] === 'string' && (params[key] as string).toLowerCase().trim() === 'true'
         : defaultValue,
     paramMemoize
   ),
   stringParam: memoize(
-    (key, defaultValue = undefined) =>
+    (key, defaultValue?) =>
       Object.keys(params).includes(key)
         ? typeof params[key] === 'string'
           ? (params[key] as string)

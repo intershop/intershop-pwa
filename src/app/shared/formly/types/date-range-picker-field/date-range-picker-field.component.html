@@ -4,6 +4,7 @@
       <div class="col-6">
         <input
           #d="ngbDatepicker"
+          autoClose="outside"
           class="form-control"
           data-testing-id="date-range-picker"
           name="dp"
@@ -11,7 +12,6 @@
           ngbDatepicker
           outsideDays="collapsed"
           tabindex="-1"
-          [autoClose]="'outside'"
           [class]="props.inputClass"
           [dayTemplate]="t"
           [displayMonths]="2"
@@ -53,8 +53,8 @@
         aria-haspopup="dialog"
         class="btn btn-secondary input-group-text mb-0 me-0"
         data-testing-id="btn-date-picker"
-        title="{{ 'account.date.title' | translate }}"
         type="button"
+        [title]="'account.date.title' | translate"
         (click)="d.toggle()"
       >
         <i class="bi bi-calendar-event-fill text-secondary"></i>
@@ -78,8 +78,8 @@
       aria-expanded="false"
       aria-haspopup="dialog"
       class="btn btn-secondary input-group-text mb-0 me-0"
-      title="{{ 'account.date.title' | translate }}"
       type="button"
+      [title]="'account.date.title' | translate"
       (click)="d.toggle()"
     >
       <i class="bi bi-calendar-event-fill text-secondary"></i>

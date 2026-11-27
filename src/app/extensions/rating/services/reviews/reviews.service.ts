@@ -8,7 +8,7 @@ import { Link } from 'ish-core/models/link/link.model';
 import { ApiService, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
-import { ProductReview, ProductReviewCreationType } from '../../models/product-reviews/product-review.model';
+import { ProductReview, ProductReviewCreationType } from '../../models/product-review/product-review.model';
 import { ProductReviewsMapper } from '../../models/product-reviews/product-reviews.mapper';
 import { ProductReviews } from '../../models/product-reviews/product-reviews.model';
 
@@ -91,8 +91,8 @@ export class ReviewsService {
   /**
    * Deletes a review of the current user for a given product.
    *
-   * @param sku     The product sku.
-   * @param review  The review id.
+   * @param sku       The product sku.
+   * @param reviewId  The review id.
    */
   deleteProductReview(sku: string, reviewId: string) {
     if (!sku) {

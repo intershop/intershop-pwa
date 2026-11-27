@@ -18,7 +18,7 @@ import { InjectSingle } from 'ish-core/utils/injection';
     rel="nofollow"
   >
  *
- * @example:
+ * @example
  * <ish-login-form />
  */
 @Component({

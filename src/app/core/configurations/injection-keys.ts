@@ -1,6 +1,5 @@
 import { InjectionToken } from '@angular/core';
 
-import { MetricsDetailLevel } from 'ish-core/models/metrics/metrics-detail-level';
 import { createEnvironmentInjectionToken } from 'ish-core/utils/injection';
 
 /**
@@ -64,6 +63,14 @@ export const SMALL_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('smallBrea
 export const MEDIUM_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('mediumBreakpointWidth');
 export const LARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('largeBreakpointWidth');
 export const EXTRALARGE_BREAKPOINT_WIDTH = createEnvironmentInjectionToken('extralargeBreakpointWidth');
+
+/**
+ * metrics detail levels for the SSR container's METRICS_DETAIL_LEVEL environment variable
+ */
+export enum MetricsDetailLevel {
+  DEFAULT = 'DEFAULT',
+  DETAILED = 'DETAILED',
+}
 
 /**
  * InjectionToken for the metrics detail level configured via environment variable (not environment.ts)

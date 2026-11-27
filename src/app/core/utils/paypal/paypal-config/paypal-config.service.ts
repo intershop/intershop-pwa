@@ -75,7 +75,6 @@ export class PaypalConfigService {
    * and card-fields components. Otherwise, it loads only the messages component for
    * Pay Later display.
    *
-   * @param nameSpace - Unique namespace for this PayPal integration to avoid conflicts
    * @param pageType - The type of page where PayPal is being loaded (e.g., 'cart', 'checkout', 'product-details')
    * @param paymentMethod - Optional PayPal payment method configuration from ICM
    * @returns Observable that emits the loaded script information

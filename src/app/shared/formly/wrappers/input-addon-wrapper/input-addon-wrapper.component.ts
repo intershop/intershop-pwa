@@ -7,7 +7,6 @@ import { of } from 'rxjs';
  *
  *  @props **addonRight** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the right of the field.
  *  @props **addonLeft** - object of type ``{ text: string }`` or ``{ text: Observable<string> }`` that will be used to render an input addon to the left of the field.
- *
  */
 @Component({
   selector: 'ish-input-addon-wrapper',

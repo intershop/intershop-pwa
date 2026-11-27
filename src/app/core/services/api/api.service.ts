@@ -76,10 +76,11 @@ export class ApiService {
   ) {}
 
   /**
--  * sets the request header for the appropriate captcha service
--  * @param captcha captcha token for captcha V2 and V3
--  * @param captchaAction captcha action for captcha V3
--  */
+   * sets the request header for the appropriate captcha service
+   *
+   * @param captcha captcha token for captcha V2 and V3
+   * @param captchaAction captcha action for captcha V3
+   */
   private appendCaptchaTokenToHeaders(captcha: string, captchaAction: string): MonoTypeOperatorFunction<HttpHeaders> {
     return map(headers =>
       // testing token gets 'null' from captcha service, so we accept it as a valid value here

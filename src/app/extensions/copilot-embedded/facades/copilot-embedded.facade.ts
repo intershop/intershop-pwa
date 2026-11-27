@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 
 import { CopilotEmbeddedChat } from '../models/copilot-embedded-chat/copilot-embedded-chat.model';
 import { CopilotEmbeddedConfig } from '../models/copilot-embedded-config/copilot-embedded-config.model';
-import { copilotEmbeddedChatActions } from '../store/copilot-embedded-chat/copilot-embedded-chat.actions';
-import { getCopilotEmbeddedChat } from '../store/copilot-embedded-chat/copilot-embedded-chat.selectors';
-import { getCopilotEmbeddedConfig } from '../store/copilot-embedded-config/copilot-embedded-config.selectors';
+import { copilotEmbeddedChatActions, getCopilotEmbeddedChat } from '../store/copilot-embedded-chat';
+import { getCopilotEmbeddedConfig } from '../store/copilot-embedded-config';
 
 @Injectable({ providedIn: 'root' })
 export class CopilotEmbeddedFacade {

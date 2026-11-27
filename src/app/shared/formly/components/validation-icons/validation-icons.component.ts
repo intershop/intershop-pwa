@@ -6,7 +6,6 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  *
  * @props **showValidation** - a function of type ``(field: FormlyFieldConfig) => boolean``
  * that can be used to override the check mark display condition.
- *
  */
 @Component({
   selector: 'ish-validation-icons',

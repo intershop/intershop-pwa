@@ -8,7 +8,7 @@ import * as ts from 'typescript';
 /**
  * Type adapter that converts a ts.SourceFile to the Angular schematics SourceFile type.
  * Both types are structurally identical but come from different TypeScript bundlings.
- * This allows seamless use with @schematics/angular utility functions.
+ * This allows seamless use with `@schematics/angular` utility functions.
  */
 export function asSchematicsSourceFile(source: ts.SourceFile): SchematicsSourceFile {
   return source as unknown as SchematicsSourceFile;

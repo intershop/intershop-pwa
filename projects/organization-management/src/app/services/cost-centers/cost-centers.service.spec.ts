@@ -114,7 +114,7 @@ describe('Cost Centers Service', () => {
 
     costCentersService.updateCostCenterBuyer('123', costCenterBuyer).subscribe(() => {
       verify(apiService.patch(anything(), anything())).once();
-      expect(capture(apiService.patch).last()[0]).toMatchInlineSnapshot(`"${millersCostcenterEndpoint}"`);
+      expect(capture(apiService.patch).last()[0]).toEqual(millersCostcenterEndpoint);
       done();
     });
   });
@@ -122,7 +122,7 @@ describe('Cost Centers Service', () => {
   it('should call the deleteCostCenterBuyer of the customer API for deleting a cost center buyer', done => {
     costCentersService.deleteCostCenterBuyer('123', millersEMail).subscribe(() => {
       verify(apiService.delete(anything())).once();
-      expect(capture(apiService.delete).last()[0]).toMatchInlineSnapshot(`"${millersCostcenterEndpoint}"`);
+      expect(capture(apiService.delete).last()[0]).toEqual(millersCostcenterEndpoint);
       done();
     });
   });

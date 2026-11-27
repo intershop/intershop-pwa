@@ -102,7 +102,7 @@ export class TokenService {
   /**
    * Refresh existing tokens, when token is about to expire
    *
-   * @returns {TokenResponse} updated tokens
+   * @returns updated tokens
    */
   private setupRefreshTokenMechanism$(): Observable<TokenResponse> {
     return this.serviceConfigured$.pipe(

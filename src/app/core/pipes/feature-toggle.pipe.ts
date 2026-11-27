@@ -11,9 +11,11 @@ import { FeatureToggleService, FeatureToggleType } from 'ish-core/feature-toggle
  * For the corresponding directive, see {@link FeatureToggleDirective}.
  *
  * @example
+ * ```html
  * @if ('compare' | ishFeature) {
  *   <ish-product-add-to-compare> ...</ish-product-add-to-compare>
  * }
+ * ```
  */
 @Pipe({
   name: 'ishFeature',

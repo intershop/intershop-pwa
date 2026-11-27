@@ -117,21 +117,21 @@
       <td *cdkCellDef="let recurringOrder" cdk-cell class="column-price text-nowrap">
         @if (!recurringOrder.expired) {
           <ish-switch
-            ariaLabel="{{
-              'account.recurring_orders.table.switch.aria_label' | translate: { '0': recurringOrder.documentNo }
-            }}"
             [active]="recurringOrder.active"
+            [ariaLabel]="
+              'account.recurring_orders.table.switch.aria_label' | translate: { '0': recurringOrder.documentNo }
+            "
             [id]="recurringOrder.id"
             (toggleSwitch)="switchActiveStatus($event)"
           />
         }
         <button
           class="btn-tool btn-link"
-          title="{{ 'account.recurring_orders.link.title.remove' | translate: { '0': recurringOrder.documentNo } }}"
           type="button"
           [attr.aria-label]="
             'account.recurring_orders.link.title.remove' | translate: { '0': recurringOrder.documentNo }
           "
+          [title]="'account.recurring_orders.link.title.remove' | translate: { '0': recurringOrder.documentNo }"
           (click)="openDeleteConfirmationDialog(recurringOrder, deleteDialog)"
         >
           <i aria-hidden="true" class="bi bi-trash-fill"></i>

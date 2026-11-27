@@ -3,15 +3,15 @@
 
 @if (wishlist$ | async; as wishlist) {
   <ng-template #WishlistDescription>
-    <span innerHTML="{{ 'account.wishlists.heading.tooltip.content' | translate }}"></span>
+    <span [innerHTML]="'account.wishlists.heading.tooltip.content' | translate"></span>
   </ng-template>
   <div class="float-end pt-3">
     <button
       class="btn-tool btn-link"
       data-testing-id="wishlist-sharing"
-      title="{{ 'account.wishlist.header.send_wishlist.label' | translate }}"
       type="button"
       [attr.aria-label]="'account.wishlist.header.send_wishlist.label' | translate"
+      [title]="'account.wishlist.header.send_wishlist.label' | translate"
       (click)="shareWishlistDialog.show()"
     >
       <i aria-hidden="true" class="bi bi-share-fill"></i>
@@ -20,9 +20,9 @@
       <button
         class="btn-tool btn-link ms-3"
         data-testing-id="wishlist-stop-sharing"
-        title="{{ 'account.wishlist.header.stop_wishlist_sharing.label' | translate }}"
         type="button"
         [attr.aria-label]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
+        [title]="'account.wishlist.header.stop_wishlist_sharing.label' | translate"
         (click)="unshareWishlist(wishlist.id)"
       >
         <i aria-hidden="true" class="bi bi-pause-fill"></i>
@@ -44,9 +44,9 @@
     <button
       class="btn btn-link details-tooltip header-note mt-1"
       placement="bottom-start"
-      popoverTitle="{{ 'account.wishlists.heading.tooltip.headline' | translate }}"
       type="button"
       [ngbPopover]="WishlistDescription"
+      [popoverTitle]="'account.wishlists.heading.tooltip.headline' | translate"
     >
       {{ 'account.wishlists.heading.tooltip.link' | translate }}<i class="bi bi-info-circle-fill"></i>
     </button>

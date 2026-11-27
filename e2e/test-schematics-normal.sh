@@ -66,9 +66,9 @@ npx ng g lazy-component extensions/awesome/shared/dummy/dummy.component.ts
 test -f src/app/extensions/awesome/exports/lazy-dummy/lazy-dummy.component.ts
 grep "LazyDummyComponent" src/app/extensions/awesome/exports/awesome-exports.module.ts
 
-(cd src/app/shared && npx ng g c common/foobar --export)
-test -f src/app/shared/common/foobar/foobar.component.ts
-grep "FoobarComponent" src/app/shared/common/foobar/foobar.component.ts
+(cd src/app/shared/components && npx ng g c common/foobar --export)
+test -f src/app/shared/components/common/foobar/foobar.component.ts
+grep "FoobarComponent" src/app/shared/components/common/foobar/foobar.component.ts
 grep "FoobarComponent" src/app/shared/shared.module.ts
 
 npx ng g s super -e awesome

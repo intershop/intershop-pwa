@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { ProductReview, ProductReviewCreationType } from '../models/product-reviews/product-review.model';
+import { ProductReview, ProductReviewCreationType } from '../models/product-review/product-review.model';
 import {
   createProductReview,
   deleteProductReview,

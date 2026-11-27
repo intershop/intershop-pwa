@@ -149,10 +149,10 @@
                     aria-controls="CollapseBasicEdit"
                     class="btn-tool btn-link"
                     data-testing-id="update-address-button"
-                    title="{{ 'account.addresses.edit_address.button.label' | translate }}"
                     type="button"
                     [attr.aria-expanded]="!isUpdateAddressFormCollapsed(address)"
                     [attr.aria-label]="'account.addresses.edit_address.button.label' | translate"
+                    [title]="'account.addresses.edit_address.button.label' | translate"
                     (click)="showUpdateAddressForm(address)"
                   >
                     <i aria-hidden="true" class="bi bi-pencil-fill"></i>
@@ -162,9 +162,9 @@
                   <button
                     class="btn-tool btn-link"
                     data-testing-id="delete-address-icon"
-                    title="{{ 'account.addresses.delete_address.text' | translate }}"
                     type="button"
                     [attr.aria-label]="'account.addresses.delete_address.text' | translate"
+                    [title]="'account.addresses.delete_address.text' | translate"
                     (click)="modalDialog.show(address)"
                   >
                     <i aria-hidden="true" class="bi bi-trash-fill"></i>

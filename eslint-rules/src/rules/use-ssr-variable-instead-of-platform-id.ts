@@ -1,5 +1,11 @@
 import { TSESLint } from '@typescript-eslint/utils';
 
+/**
+ * Disallows `isPlatformBrowser` and `isPlatformServer` with the injected `PLATFORM_ID`.
+ * Use the `SSR` variable provided by the Intershop PWA instead:
+ *
+ * `isPlatformBrowser(this.platformId)` becomes `!SSR`, `isPlatformServer(this.platformId)` becomes `SSR`
+ */
 const useSsrVariableInsteadOfPlatformIdRule: TSESLint.RuleModule<string> = {
   meta: {
     docs: {

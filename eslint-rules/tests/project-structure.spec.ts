@@ -17,6 +17,13 @@ const options = {
   ignoredFiles: ['foo.ts$'],
 };
 
+const guardPatterns = [
+  {
+    name: '^([a-z].*)Guard$',
+    file: '.*/src/test/<kebab>\\.guard\\.ts$',
+  },
+];
+
 testRule(projectStructureRule, {
   valid: [
     {
@@ -79,6 +86,41 @@ testRule(projectStructureRule, {
         @Component({})
         export class TestB2BComponent {
         }
+        `,
+    },
+    {
+      name: 'should not report if an exported constant is in the correct file',
+      options: [{ ...options, patterns: guardPatterns }],
+      filename: 'path/src/test/foo-bar.guard.ts',
+      code: `
+        export const fooBarGuard = () => true;
+        `,
+    },
+    {
+      name: 'should not report if an exported function is in the correct file',
+      options: [{ ...options, patterns: guardPatterns }],
+      filename: 'path/src/test/foo-bar.guard.ts',
+      code: `
+        export function fooBarGuard() {
+          return true;
+        }
+        `,
+    },
+    {
+      name: 'should not report unmatched exported functions and constants with warnUnmatched',
+      options: [{ ...options, patterns: guardPatterns, warnUnmatched: true }],
+      filename: 'path/src/test/test.component.ts',
+      code: `
+        export const someHelper = () => true;
+        export function otherHelper() {}
+        `,
+    },
+    {
+      name: 'should not report constants that are not exported',
+      options: [{ ...options, patterns: guardPatterns }],
+      filename: 'path/src/test/test.component.ts',
+      code: `
+        const fooBarGuard = () => true;
         `,
     },
   ],
@@ -161,6 +203,40 @@ testRule(projectStructureRule, {
           messageId: 'projectStructureError',
           data: {
             message: `'TestB2BComponent' is not in the correct file (expected '/src\\/test\\/test-b-2-b.component.ts$/')`,
+          },
+        },
+      ],
+    },
+    {
+      name: 'should report if an exported constant is not in the right file',
+      options: [{ ...options, patterns: guardPatterns }],
+      filename: 'path/src/test/test.component.ts',
+      code: `
+        export const fooBarGuard = () => true;
+        `,
+      errors: [
+        {
+          messageId: 'projectStructureError',
+          data: {
+            message: `'fooBarGuard' is not in the correct file (expected '/.*\\/src\\/test\\/foo-bar\\.guard\\.ts$/')`,
+          },
+        },
+      ],
+    },
+    {
+      name: 'should report if an exported function is not in the right file',
+      options: [{ ...options, patterns: guardPatterns }],
+      filename: 'path/src/test/test.component.ts',
+      code: `
+        export function fooBarGuard() {
+          return true;
+        }
+        `,
+      errors: [
+        {
+          messageId: 'projectStructureError',
+          data: {
+            message: `'fooBarGuard' is not in the correct file (expected '/.*\\/src\\/test\\/foo-bar\\.guard\\.ts$/')`,
           },
         },
       ],

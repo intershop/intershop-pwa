@@ -31,7 +31,9 @@
 
       <!-- switch by lineItemViewType -->
       @switch (lineItemViewType) {
-        @case ('simple') {}
+        @case ('simple') {
+          <!-- no inventory, editing, shipment and surcharge information -->
+        }
         @case ('availability') {
           <ish-product-inventory />
         }
@@ -162,21 +164,21 @@
   <div class="offset-2 col-10 d-flex align-items-end list-item-actions">
     @if (editable) {
       <ish-lazy-product-add-to-order-template
+        cssClass="btn-link btn-tool ps-0 add-to-order-template"
         displayType="icon"
-        [cssClass]="'btn-link btn-tool ps-0 add-to-order-template'"
       />
     }
     @if (editable) {
-      <ish-lazy-product-add-to-wishlist displayType="icon" [cssClass]="'btn-link btn-tool'" />
+      <ish-lazy-product-add-to-wishlist cssClass="btn-link btn-tool" displayType="icon" />
     }
     @if (!pli.isFreeGift && editable) {
       <button
         class="btn-tool btn-link"
-        title="{{ 'shopping_cart.remove.item.button.label' | translate }}"
         type="button"
         [attr.aria-label]="'shopping_cart.remove.item.button.label' | translate"
         [attr.data-id]="pli.id"
         [attr.data-testing-id]="'remove-line-item'"
+        [title]="'shopping_cart.remove.item.button.label' | translate"
         (click)="onDeleteItem(pli.id)"
       >
         <i aria-hidden="true" class="bi bi-trash-fill"></i>

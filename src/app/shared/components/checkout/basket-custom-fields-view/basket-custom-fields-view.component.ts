@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Requisition } from 'projects/requisition-management/src/app/models/requisition/requisition.model';
+import { Requisition } from 'requisition-management';
 import { Observable, ReplaySubject, combineLatest, map } from 'rxjs';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';

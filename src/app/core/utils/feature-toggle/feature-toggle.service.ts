@@ -2,22 +2,20 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import type { Environment } from 'src/environments/environment.model';
 
 import { getFeatures } from 'ish-core/store/core/configuration';
 
+import type { Environment } from '../../../../environments/environment.model';
+
 export type FeatureToggleType = Environment['features'][number];
 
-export function checkFeature(
-  features: FeatureToggleType[] = [],
-  feature: 'always' | 'never' | FeatureToggleType
-): boolean {
+export function checkFeature(features: FeatureToggleType[], feature: 'always' | 'never' | FeatureToggleType): boolean {
   if (feature === 'always') {
     return true;
   } else if (feature === 'never') {
     return false;
   } else {
-    return features.includes(feature);
+    return (features ?? []).includes(feature);
   }
 }
 
@@ -30,7 +28,7 @@ export class FeatureToggleService {
   }
 
   /**
-   * Synchronously check if {@param feature} is active.
+   * Synchronously check if `feature` is active.
    *
    * This method should only be used for browser code and only for
    * logic that is not included in the initialization process.
@@ -41,7 +39,7 @@ export class FeatureToggleService {
   }
 
   /**
-   * Asynchronously check if {@param feature} is active.
+   * Asynchronously check if `feature` is active.
    */
   enabled$(feature: 'always' | 'never' | FeatureToggleType): Observable<boolean> {
     return this.featureToggles$.pipe(

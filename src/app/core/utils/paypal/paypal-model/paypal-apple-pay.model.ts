@@ -43,6 +43,7 @@ export interface ApplePayPaymentRequest {
 
 /**
  * Apple Pay Session instance interface.
+ *
  * @see https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession
  */
 export interface ApplePaySessionInstance {
@@ -60,6 +61,7 @@ export interface ApplePaySessionInstance {
 
 /**
  * Apple Pay Session static interface with constructor.
+ *
  * @see https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession
  */
 export interface ApplePaySessionStatic {

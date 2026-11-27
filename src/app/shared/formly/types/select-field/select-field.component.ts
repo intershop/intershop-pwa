@@ -17,7 +17,6 @@ import { SelectOption } from 'ish-core/models/select-option/select-option.model'
  * @usageNotes
  * The select field functionality is coupled with the translate-select-options extension.
  * It reads the ``options`` and ``placeholder`` from the configuration and writes them to ``props.options``.
- *
  */
 @Component({
   selector: 'ish-select-field',

@@ -3,7 +3,7 @@ import { RouterNavigationPayload, routerNavigationAction } from '@ngrx/router-st
 import { ActionReducer } from '@ngrx/store';
 
 import { FeatureToggleType } from 'ish-core/feature-toggle.module';
-import { SparqueConfig } from 'ish-core/models/sparque/sparque-config.model';
+import { SparqueConfig } from 'ish-core/models/sparque-config/sparque-config.model';
 import { applyConfiguration } from 'ish-core/store/core/configuration';
 import { ConfigurationState, configurationReducer } from 'ish-core/store/core/configuration/configuration.reducer';
 import { CoreState } from 'ish-core/store/core/core-store';

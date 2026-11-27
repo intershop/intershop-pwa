@@ -102,7 +102,7 @@ function determineConfiguration(angularJsonConfig: CustomWebpackBrowserSchema, t
   logger = new Logger(targetOptions.target, targetOptions.configuration, angularJsonConfig.progress);
 
   const configurations = targetOptions.configuration.split(',');
-  const theme = configurations.filter(normalConfigTest)[0];
+  const theme = configurations.find(normalConfigTest);
   const production = !!(configurations.includes('production') || angularJsonConfig.buildOptimizer);
 
   return {

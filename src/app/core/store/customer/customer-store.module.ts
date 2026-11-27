@@ -82,6 +82,7 @@ export class CustomerStoreModule {
 
   /**
    * Customer_STORE_CONFIG needs to be provided in test
+   *
    * @example
    * { provide: CUSTOMER_STORE_CONFIG, useClass: CustomerStoreConfig }
    */

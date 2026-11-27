@@ -42,13 +42,8 @@
       }
       @if (showScaledPrices && d.scaledPrices?.length) {
         <div class="scaled-prices" data-testing-id="scaled-prices">
-          @for (
-            scaledPrice of d.scaledPrices;
-            track scaledPrice.minQuantity;
-            let i = $index;
-            let lastScaledPrice = $last
-          ) {
-            @if (lastScaledPrice) {
+          @for (scaledPrice of d.scaledPrices; track scaledPrice.minQuantity) {
+            @if ($last) {
               <div>
                 {{
                   'product.price.scaledPrice.unlimited.text'
@@ -56,14 +51,14 @@
                 }}
               </div>
             } @else {
-              @if (scaledPrice.minQuantity !== d.scaledPrices[i + 1].minQuantity - 1) {
+              @if (scaledPrice.minQuantity !== d.scaledPrices[$index + 1].minQuantity - 1) {
                 <div>
                   {{
                     'product.price.scaledPrice.range.text'
                       | translate
                         : {
                             '0': scaledPrice.minQuantity,
-                            '1': d.scaledPrices[i + 1].minQuantity - 1,
+                            '1': d.scaledPrices[$index + 1].minQuantity - 1,
                             '2': scaledPrice | ishPrice,
                           }
                   }}

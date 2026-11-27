@@ -119,7 +119,7 @@ export class AccountFacade {
   /**
    * Trigger logout action
    *
-   * @param revokeToken option to revoke api token on server side before logout success action is dispatched
+   * @param options option `revokeApiToken` to revoke api token on server side before logout success action is dispatched
    */
   logoutUser(options = { revokeApiToken: true }) {
     options?.revokeApiToken ? this.store.dispatch(logoutUser()) : this.store.dispatch(resetUserData());

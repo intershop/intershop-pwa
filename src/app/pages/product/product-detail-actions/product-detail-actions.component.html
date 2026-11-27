@@ -6,7 +6,7 @@
         <ng-container *ishFeature="'wishlists'">
           @if (configuration$('addToWishlist') | async) {
             <li [attr.data-testing-id]="`wishlist-${product.sku}`">
-              <ish-lazy-product-add-to-wishlist [displayType]="'icon'" />
+              <ish-lazy-product-add-to-wishlist displayType="icon" />
             </li>
           }
         </ng-container>

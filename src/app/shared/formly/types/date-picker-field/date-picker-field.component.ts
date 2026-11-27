@@ -15,8 +15,6 @@ import { Observable, combineLatest, isObservable, map, of } from 'rxjs';
  * @props **inputClass** - class to apply to the input field
  *
  * @defaultWrappers 'form-field-horizontal', 'validation'
- *
- *
  */
 @Component({
   selector: 'ish-date-picker-field',

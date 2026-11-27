@@ -52,7 +52,7 @@ export class CMSService {
   /**
    * Get the content for the given Content Page ID.
    *
-   * @param includeId The page ID.
+   * @param pageId    The page ID.
    * @returns         The content data.
    */
   getContentPage(pageId: string): Observable<{ page: ContentPageletEntryPoint; pagelets: ContentPagelet[] }> {

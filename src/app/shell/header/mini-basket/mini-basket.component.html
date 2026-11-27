@@ -43,12 +43,12 @@
   } @else {
     <a
       #p="ngbPopover"
+      autoClose="outside"
       class="item-count-container position-relative sticky-header-icon"
       placement="bottom-end"
       tabindex="0"
       triggers="manual"
       [attr.aria-label]="'shopping_cart.ministatus.label' | translate: { '0': itemCount }"
-      [autoClose]="'outside'"
       [ngbPopover]="'shopping_cart.ministatus.empty_cart.text' | translate"
       (click)="p.open()"
       (keyup.enter)="p.open()"

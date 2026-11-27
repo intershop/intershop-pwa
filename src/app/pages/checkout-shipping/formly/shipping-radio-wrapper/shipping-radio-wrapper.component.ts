@@ -7,7 +7,6 @@ import { FieldWrapper } from '@ngx-formly/core';
  * @props **shippingMethod** that will have its description displayed.
  * @props **id** that will be used in the label.
  * @props **labelClass* that will be applied to the label.
- *
  */
 @Component({
   selector: 'ish-shipping-radio-wrapper',

@@ -209,7 +209,7 @@ export class ProductVariationHelper {
 
   private static difference(obj1: Record<string, string>, obj2: Record<string, string>): number {
     const keys = Object.keys(obj1);
-    if (keys.length !== Object.keys(obj2).length || keys.some(k => Object.keys(obj2).indexOf(k) < 0)) {
+    if (keys.length !== Object.keys(obj2).length || keys.some(k => !Object.keys(obj2).includes(k))) {
       throw new Error("cannot calculate difference if objects don't have the same keys");
     }
     return keys.reduce((sum, key) => (obj1[key] !== obj2[key] ? sum + 1 : sum), 0);

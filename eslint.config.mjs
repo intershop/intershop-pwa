@@ -34,27 +34,17 @@ export default defineConfig([
     'schematics/dist/**/*',
     'schematics/src/utils/lint-fix-mock.js',
   ]),
-  // TypeScript recommended + stylistic configs from typescript-eslint
-  ...[...tseslint.configs.recommended, ...tseslint.configs.stylistic].map(config => ({
-    ...config,
-    files: ['**/*.ts'],
-    languageOptions: {
-      ...config.languageOptions,
-      parserOptions: {
-        ...config.languageOptions?.parserOptions,
-        projectService: true,
-        tsconfigRootDir: __dirname,
-      },
-    },
-  })),
-  // Angular and Prettier configs
+  // ESLint, TypeScript, Angular, Prettier and project specific configs
   {
     files: ['**/*.ts'],
-    extends: [angular.configs.tsRecommended, prettierRecommended],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      tseslint.configs.stylisticTypeChecked,
+      angular.configs.tsRecommended,
+      prettierRecommended,
+    ],
     processor: angular.processInlineTemplates,
-  },
-  {
-    files: ['**/*.ts'],
     plugins: {
       '@ngrx': ngrx,
       'rxjs-x': rxjsX,
@@ -87,6 +77,7 @@ export default defineConfig([
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/computed-must-return': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -97,14 +88,16 @@ export default defineConfig([
       ],
       // override lint rule, override schematic and dead files detection only support styleUrls arrays
       '@angular-eslint/consistent-component-styles': ['warn', 'array'],
-      '@angular-eslint/no-empty-lifecycle-method': 'warn',
-      '@angular-eslint/no-host-metadata-property': 'off',
+      '@angular-eslint/no-duplicates-in-metadata-arrays': 'error',
+      '@angular-eslint/no-implicit-take-until-destroyed': 'error',
+      '@angular-eslint/no-uncalled-signals': 'error',
       '@angular-eslint/pipe-prefix': [
         'error',
         {
           prefixes: ['ish'],
         },
       ],
+      '@angular-eslint/prefer-host-metadata-property': 'warn',
       '@angular-eslint/prefer-output-readonly': 'warn',
       '@angular-eslint/sort-keys-in-type-decorator': 'warn',
       '@angular-eslint/prefer-standalone': 'off',
@@ -113,20 +106,24 @@ export default defineConfig([
       // NgRx best practices
       ...ngrx.configs.store.rules,
       ...ngrx.configs.effects.rules,
-      ...ngrx.configs['component-store'].rules,
       ...ngrx.configs.operators.rules,
       '@ngrx/avoid-combining-selectors': 'off',
       '@ngrx/avoid-mapping-selectors': 'off',
       '@ngrx/avoid-cyclic-effects': 'warn',
-      '@ngrx/no-multiple-actions-in-effects': 'off',
       '@ngrx/no-store-subscription': 'off',
       '@ngrx/prefer-effect-callback-in-block-statement': 'off',
       '@ngrx/prefix-selectors-with-select': 'off',
       '@ngrx/select-style': ['warn', 'operator'],
 
       // TypeScript best practices
-      '@typescript-eslint/consistent-type-assertions': 'off',
-      '@typescript-eslint/dot-notation': 'warn',
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'never',
+        },
+      ],
+      '@typescript-eslint/default-param-last': 'warn',
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
@@ -179,6 +176,7 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-deprecated': 'warn',
+      '@typescript-eslint/no-duplicate-type-constituents': 'warn',
       '@typescript-eslint/no-empty-interface': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-inferrable-types': [
@@ -187,6 +185,7 @@ export default defineConfig([
           ignoreParameters: true,
         },
       ],
+      '@typescript-eslint/no-redundant-type-constituents': 'warn',
       '@typescript-eslint/no-restricted-types': [
         'error',
         {
@@ -201,8 +200,6 @@ export default defineConfig([
         },
       ],
       '@typescript-eslint/no-shadow': 'warn',
-      // switch off rule that requires strictNullChecks
-      '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
       '@typescript-eslint/no-unused-expressions': [
         'warn',
@@ -216,7 +213,15 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/prefer-optional-chain': 'warn',
+      '@typescript-eslint/only-throw-error': 'warn',
+      // requires strictNullChecks
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/prefer-promise-reject-errors': [
+        'warn',
+        { allowThrowingAny: true, allowThrowingUnknown: true },
+      ],
+      // String#match is as good as RegExp#exec for non-global regexes and more readable
+      '@typescript-eslint/prefer-regexp-exec': 'off',
 
       'perfectionist/sort-arrays': [
         'warn',
@@ -278,12 +283,6 @@ export default defineConfig([
             message: "use omit from 'ish-core/utils/functions'",
           },
           {
-            importNamePattern: 'CookiesService',
-            name: 'ngx-utils-cookies-port',
-            filePattern: '^((?!src/app/core/utils/cookies/cookies\\.service(\\.spec)?\\.ts).)*$',
-            message: 'Use CookiesService from ish-core instead.',
-          },
-          {
             name: '^(?!.*(\\.module|environments\\/environment)$)\\.\\..*$',
             filePattern: '^(?!.*-routing\\.module\\.ts$).*\\.module\\.ts$',
             message: 'Modules should only aggregate deeper lying artifacts.',
@@ -299,7 +298,7 @@ export default defineConfig([
             message: 'Imports from (other) extensions are not allowed here.',
           },
           {
-            name: '.*/projects/.*',
+            name: '(^|/)projects/',
             filePattern: '^((?!(module|spec)\\.ts).)*$',
             message: 'Imports from (other) projects are not allowed here.',
           },
@@ -325,64 +324,52 @@ export default defineConfig([
           {
             importNamePattern: '^(StoreModule|EffectsModule)$',
             name: 'ngrx',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use the testing helpers "*StoreModule.forTesting" in tests instead.',
-          },
-          {
-            importNamePattern: '^Effect$',
-            name: '@ngrx/effects',
-            filePattern: '^.*(\\.spec|\\.effects)\\.ts*$',
-            message: 'The old way of declaring effects is deprecated, use "createEffect".',
-          },
-          {
-            importNamePattern: '^Action$',
-            name: '@ngrx/store',
-            filePattern: '^(?!.*\\.spec\\.ts$).*\\.actions\\.ts*$',
-            message: 'The old way of declaring actions is deprecated, use "createAction".',
           },
           {
             importNamePattern: '^props$',
             name: '@ngrx/store',
-            filePattern: '^.*\\.actions\\.ts*$',
+            filePattern: '^.*\\.actions\\.ts$',
             message:
               'Do not use "props" directly with "createAction", use our helper functions "payload" and "httpError" from "ish-core/utils/action-creators" instead.',
           },
           {
             importNamePattern: '^HttpError$',
             name: '.*http-error.model',
-            filePattern: '^.*\\.actions\\.ts*$',
+            filePattern: '^.*\\.actions\\.ts$',
             message:
               'Do not use "HttpError" explicitly, please use "httpError" from "ish-core/utils/action-creators" instead.',
           },
           {
             importNamePattern: '^FormsSharedModule$',
             name: 'ish-shared/forms/forms.module',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Performance: Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^NO_ERRORS_SCHEMA$',
             name: '@angular/core',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^MockComponents$',
             name: 'ng-mocks',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Use MockComponent for individual components in tests instead.',
           },
           {
             importNamePattern: '^PipesModule$',
             name: 'ish-core/pipes.module',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message: 'Performance: Use MockPipe or declare it individually in tests instead.',
           },
           {
-            importNamePattern: '.*',
-            name: '@ngx-meta.*',
+            importNamePattern: '^(Meta|Title)$',
+            name: '@angular/platform-browser',
             filePattern: '^(?!.*/extensions/seo/.*$).*$',
-            message: 'Imports from @ngx-meta are only allowed in SEO extension.',
+            message: 'Meta and title handling is only allowed in the SEO extension.',
           },
           {
             importNamePattern: '^createProductView$',
@@ -394,28 +381,28 @@ export default defineConfig([
           {
             importNamePattern: 'routerNavigatedAction|routerNavigationAction|ROUTER_NAVIGATED|ROUTER_NAVIGATION',
             name: '@ngrx/router-store',
-            filePattern: '^.*\\.spec\\.ts*$',
+            filePattern: '^.*\\.spec\\.ts$',
             message:
               'We customized the serialization of the router state. Use router actions from "ish-core/utils/dev/routing" in tests.',
           },
           {
             importNamePattern: 'tap',
-            name: 'rxjs/operators',
-            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts*$',
+            name: '^rxjs(/operators)?$',
+            filePattern: '^(?!.*/store/(seo/seo|core/messages/messages|geo/geo)\\.effects\\.ts$).*\\.effects\\.ts$',
             message:
               'The usage of "tap" in effects, if not related to 3rd party integrations, can usually be transformed properly into RxJS stream code.',
           },
           {
             importNamePattern: '^DomService$',
             name: 'ish-core/utils/dom/dom.service',
-            filePattern: '^.*\\.(component|directive)\\.ts*$',
+            filePattern: '^.*\\.(component|directive)\\.ts$',
             message: 'The "DomService" should only be used in injectable classes. Use the Angular "Renderer2" instead.',
           },
           {
             // eslint-disable-next-line @cspell/spellchecker
             importNamePattern: '^(F|f)eatureToggle',
             name: 'ish-core/utils/feature-toggle/feature-toggle.service',
-            filePattern: '^.*\\.ts*$',
+            filePattern: '^.*\\.ts$',
             message: 'Feature toggle related functionality should only be imported from the FeatureToggleModule',
           },
         ],
@@ -425,9 +412,7 @@ export default defineConfig([
       'ish-custom-rules/meaningful-describe-in-tests': 'warn',
       'ish-custom-rules/newline-before-root-members': 'warn',
       'ish-custom-rules/no-assignment-to-inputs': 'error',
-      'ish-custom-rules/no-collapsible-if': 'warn',
       'ish-custom-rules/no-formly-explicit-pseudo-type': 'error',
-      'ish-custom-rules/no-initialize-observables-directly': 'warn',
       'ish-custom-rules/no-intelligence-in-artifacts': [
         'warn',
         {
@@ -445,14 +430,10 @@ export default defineConfig([
           },
         },
       ],
-      'ish-custom-rules/no-object-literal-type-assertion': 'warn',
       'ish-custom-rules/no-optional-inputs': 'warn',
-      'ish-custom-rules/no-return-undefined': 'error',
       'ish-custom-rules/no-star-imports-in-store': 'error',
-      'ish-custom-rules/no-testbed-with-then': 'error',
       'ish-custom-rules/no-var-before-return': 'warn',
       'ish-custom-rules/ordered-imports': 'warn',
-      'ish-custom-rules/private-destroy-field': 'warn',
       'ish-custom-rules/private-destroyRef-field': 'error',
       'ish-custom-rules/project-structure': [
         'warn',
@@ -471,46 +452,47 @@ export default defineConfig([
             '^.*/src/app/core/configurations/.*',
             '^.*/src/app/core/routing/(<name>)/\\1\\.route(<theme>)?\\.ts',
             '^.*/src/app/core/routing/(<name>)/\\1\\-route\\.pipe(<theme>)?\\.ts',
-            '^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(service)s/(<name>)/\\3(\\-<name>)?\\.\\2(<theme>)?\\.ts',
+            '^.*(/src/app/core|/src/app/extensions/<name>|/src/app/pages/<name>|projects/<name>/src/app)/(service)s/(<name>)/\\3(\\-<name>)?\\.\\2(<theme>)?\\.ts',
+            '^.*/src/app/core/service-provider/<name>\\.service-provider(<theme>)?\\.ts$',
+            '^.*/src/app/extensions/<name>/utils/(<name>)/\\1\\.service(<theme>)?\\.ts$',
             '^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/(interceptor|guard|directive|pipe|animation)s/<name>.\\2(<theme>)?\\.ts',
+            '^.*/src/app/core/directives/utils/<name>\\.ts$',
             '^.*projects/<name>/src/app/exports/index.ts',
-            '^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/models/(<name>)/\\2\\.(pipe|helper|interface|mapper|types)(<theme>)?\\.ts$',
+            '^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/models/(<name>)/\\2\\.(pipe|helper|interface|mapper|model|types?)(<theme>)?\\.ts$',
             '^.*(/src/app/core|/src/app/extensions/<name>|projects/<name>/src/app)/facades/(index|<name>\\.facade)(<theme>)?\\.ts$',
             '^.*/store/(<name>/)?(<name>)/\\2(\\-<name>)?\\.(actions|effects|reducer|selectors)(<theme>)?\\.ts',
             '^.*/store/(<name>/)?<name>/index\\.ts',
             '^.*/store/(<name>)/\\1-store(\\.module)?(<theme>)?\\.ts',
             '^.*/(<name>)(/src/app)?/store/\\1-store(\\.module)?(<theme>)?\\.ts',
+            '^.*/src/app/extensions/<name>/store/<name>-store(\\.module)?(<theme>)?\\.ts$',
             '^.*/src/app/core/store/core/router/router\\.(operators|serializer)(<theme>)?\\.ts',
-            '^.*/src/app/core/routing/\\.serializer()?\\.ts',
+            '^.*/src/app/core/routing/<name>\\.serializer(<theme>)?\\.ts$',
             '^.*/src/app/app[\\w\\.\\-]+\\.ts$',
             '^.*/src/app/shell/(header|footer|application)/(<name>)/\\2\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/shell/<name>/configurations/.*\\.ts$',
             '^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/(<name>)/\\2-page\\.(module|component|guard)(<theme>)?\\.ts$',
-            '^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/<name>/(<name>)/\\2\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/extensions/(<name>)/pages/\\1(.*)-routing\\.module(<theme>)?\\.ts$',
+            '^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/<name>/<name>\\.guard(<theme>)?\\.ts$',
+            '^.*(/src/app|/src/app/extensions/<name>|projects/<name>/src/app)/pages/<name>/(<name>)/\\2\\.(component|items)(<theme>)?\\.ts$',
+            '^.*/src/app/extensions/<name>/pages/<name>-routing\\.module(<theme>)?\\.ts$',
             '^.*/projects/(<name>)/src/app/pages/\\1-routing\\.module(<theme>)?\\.ts$',
             '^.*/src/app/pages/app(-<name>)*-routing\\.module(<theme>)?\\.ts$',
             '^.*/src/app/extensions/<name>/shared/(<name>)/\\1\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/extensions/<name>/shared/formly/(<name>)/\\1\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$',
+            '^.*/src/app/extensions/<name>(/shared)?/formly/(<name>)/\\2\\.component(<theme>)?\\.ts$',
             '^.*/src/app/shared/components/<name>/(<name>)/\\1\\.component(<theme>)?\\.ts$',
             '^.*/src/app/shared/(<name>)/\\1\\.module(<theme>)?\\.ts$',
             '^.*/src/app/shared/<name>/(configurations|pipes|utils|validators|directives)/.*$',
             '^.*/src/app/shared/<name>/components/(<name>)/\\1\\.component(<theme>)?\\.ts$',
             '^.*/projects/<name>/src/app/components/(<name>)/\\1\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/shared/address-forms/components/(<name>)/\\1\\.factory(<theme>)?\\.ts$',
-            '^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev)/.*$',
-            '^.*/src/app/pages/<name>/formly/.*$',
-            '^.*/src/app/core/identity-provider/.*$',
+            '^.*/src/app/shared/formly/(components|wrappers|types|extensions|utils|dev|field-library)/.*$',
+            '^.*(/src/app|/src/app/extensions/<name>)/pages/<name>/formly/.*$',
+            '^.*/src/app(/core|/extensions/<name>)/identity-provider/.*$',
             '^.*/src/app/(shell|shared)/\\1\\.module(<theme>)?\\.ts$',
             '^.*/src/app/extensions/(<name>)/\\1\\.module(<theme>)?\\.ts$',
             '^.*/projects/(<name>)/src/app/\\1\\.module(<theme>)?\\.ts$',
             '^.*(src/app/extensions/<name>/exports|projects/<name>/src/app/exports|src/app/shell/shared)/(lazy-<name>)/\\2\\.component(<theme>)?\\.ts$',
-            '^.*/src/app/extensions/(<name>)/exports/\\1-product-context-display-properties/\\1-product-context-display-properties\\.service(<theme>)?\\.ts$',
             '^.*/src/app/extensions/(<name>)/exports/\\1-exports\\.module(<theme>)?\\.ts$',
             '^.*/src/app/extensions/<name>/exports/(<name>)/\\1\\.service(<theme>)?\\.ts$',
             '^.*/projects/(<name>)/src/app/exports/\\1-exports\\.module(<theme>)?\\.ts$',
-            '^.*[/eslint\\-rules/src/rules/].*\\.ts$',
+            '^.*/jest(-<name>)?\\.config\\.ts$',
           ],
           patterns: [
             {
@@ -534,24 +516,8 @@ export default defineConfig([
               file: '.*/core/routing/<kebab>/<kebab>-route\\.pipe(<theme>)?\\.ts$',
             },
             {
-              name: '^generate([A-Z].*)Url$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
-              name: '^match([A-Z].*)Route$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
-              name: '^of([A-Z].*)Route$',
-              file: '.*/core/routing/<kebab>/<kebab>.route(<theme>)?\\.ts$',
-            },
-            {
               name: '^([A-Z].*)PageComponent$',
               file: '.*/pages/<kebab>/<kebab>-page\\.component(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(Test|Dummy)Component$',
-              file: '.*.ts$',
             },
             {
               name: '^([A-Z].*)Component$',
@@ -562,12 +528,8 @@ export default defineConfig([
               file: '.*/directives/<kebab>\\.directive(<theme>)?\\.ts$',
             },
             {
-              name: '^([A-Z].*)PageGuard$',
-              file: '.*/pages/<kebab>/<kebab>-page\\.guard(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*)Guard$',
-              file: '.*/guards/<kebab>\\.guard(<theme>)?\\.ts$',
+              name: '^([a-z].*)Guard$',
+              file: '.*/(guards/<kebab>|pages/<name>/<kebab>)\\.guard(<theme>)?\\.ts$',
             },
             {
               name: '^([A-Z].*)Interceptor$',
@@ -618,20 +580,12 @@ export default defineConfig([
               file: '.*(/<kebab>/<kebab>|/projects/<kebab>/src/app/<kebab>|/core/<name>)\\.module(<theme>)?\\.ts$',
             },
             {
-              name: '^(.*)Routes$',
-              file: '.*/<kebab>\\.module(<theme>)?\\.ts$',
-            },
-            {
               name: '^([A-Z].*)Helper$',
               file: '.*/models/<kebab>/<kebab>\\.helper(<theme>)?\\.ts$',
             },
             {
               name: '^([A-Z].*)Mapper$',
               file: '.*/models/<kebab>/<kebab>\\.mapper(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*)BaseData$',
-              file: '.*/models/<kebab>/<kebab>\\.interface\\.ts$',
             },
             {
               name: '^([A-Z].*)Data$',
@@ -646,54 +600,19 @@ export default defineConfig([
               file: '.*/store/(<name>/)?<name>/<kebab>\\.effects(<theme>)?\\.ts$',
             },
             {
-              name: '^([a-z].*)Effects$',
-              file: '.*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^get(.*?)(Internal)?State$',
-              file: '.*/store/(<name>/)?(<kebab>/<kebab>\\.selectors|<kebab>-store)(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([A-Z].*?)(Internal)?State$',
-              file: '.*/store/(<name>/)?(<kebab>/<kebab>\\.reducer|(<kebab>/)?<kebab>-store)(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(initialState)$',
-              file: '.*/store/.*\\.reducer(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([a-z].*)Reducer$',
-              file: '.*/store/(<name>/)?<kebab>/<kebab>\\.reducer(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(metaReducers|[a-z]+MetaReducers)$',
-              file: '.*\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^([a-z].*)Reducers$',
-              file: '.*/store/(<kebab>/)?<kebab>-store\\.module(<theme>)?\\.ts$',
-            },
-            {
-              name: '^(environment)$',
-              file: 'src/environments/environment(\\.[a-z]+)?\\.ts$',
-            },
-            {
               name: '^([A-Z].*)Configuration$',
               file: 'src/app/shared/(formly-address-forms|formly/field-library)/configurations/(.+/)*<kebab>.configuration.ts$',
             },
           ],
           ignoredFiles: [
-            'server.ts$',
+            '/server\\.ts$',
             'src/ssr/.*.ts',
             'src/[^/]*.ts$',
             '.*.spec.ts$',
-            'tslint-rules/',
-            'scripts/',
-            'templates/',
-            'utils/dev/',
+            '/scripts/',
+            '/templates/webpack/webpack\\.custom\\.ts$',
             'core/utils/',
-            '.*.actions.ts$',
-            '.*.model.ts$',
+            'core/models/product-variation/',
             'store-devtools.module',
           ],
           allowedNumberWords: ['b2b', 'v2', 'v3', 'auth0'],
@@ -710,33 +629,17 @@ export default defineConfig([
       'ish-custom-rules/use-ssr-variable-instead-of-platform-id': 'warn',
       'ish-custom-rules/use-type-safe-injection-token': 'warn',
 
-      // Jest best practices
-      'jest/no-commented-out-tests': 'warn',
-      'jest/no-disabled-tests': 'warn',
-      'jest/no-focused-tests': 'warn',
-      'jest/valid-title': [
-        'warn',
-        {
-          mustMatch: {
-            it: '^should',
-            test: '[sS]*',
-          },
-        },
-      ],
-
       // JSDoc best practices
-      'jsdoc/check-alignment': 'warn',
-      'jsdoc/check-types': 'warn',
-      'jsdoc/check-values': 'warn',
-      'jsdoc/empty-tags': 'warn',
-      'jsdoc/implements-on-classes': 'warn',
-      'jsdoc/require-property-description': 'warn',
-      'jsdoc/require-property-name': 'warn',
-      'jsdoc/require-property-type': 'warn',
-      'jsdoc/require-property': 'warn',
-      'jsdoc/valid-types': 'warn',
+      ...jsdoc.configs['flat/recommended-typescript'].rules,
+      'jsdoc/check-tag-names': ['warn', { definedTags: ['defaultWrappers', 'props', 'usageNotes'], typed: true }],
+      'jsdoc/no-multi-asterisks': ['warn', { allowWhitespace: true }],
+      'jsdoc/require-jsdoc': 'off',
+      'jsdoc/require-param': 'off',
+      'jsdoc/require-returns': 'off',
+      'jsdoc/tag-lines': ['warn', 'any', { startLines: 1 }],
 
       // RxJS best practices
+      ...rxjsX.configs.recommended.rules,
       'rxjs-angular/prefer-takeuntil': [
         'error',
         {
@@ -760,16 +663,12 @@ export default defineConfig([
           },
         },
       ],
-      'rxjs-x/no-create': 'error',
-      'rxjs-x/no-ignored-replay-buffer': 'error',
       'rxjs-x/no-ignored-subscribe': 'error',
-      'rxjs-x/no-internal': 'error',
-      'rxjs-x/no-nested-subscribe': 'warn',
+      'rxjs-x/no-implicit-any-catch': 'off',
+      'rxjs-x/no-sharereplay': 'off',
       'rxjs-x/no-subclass': 'error',
-      'rxjs-x/no-subject-unsubscribe': 'error',
       'rxjs-x/no-subject-value': 'error',
       'rxjs-x/no-unsafe-catch': 'error',
-      'rxjs-x/no-unsafe-subject-next': 'error',
       'rxjs-x/no-unsafe-switchmap': 'error',
       'rxjs-x/no-unsafe-takeuntil': [
         'error',
@@ -777,10 +676,11 @@ export default defineConfig([
           alias: ['takeUntilDestroyed'],
         },
       ],
+      'rxjs-x/prefer-root-operators': 'off',
+      'rxjs-x/throw-error': 'off',
 
       // JavaScript best practices
       'arrow-body-style': ['warn', 'as-needed'],
-      'arrow-parens': ['warn', 'as-needed'],
       complexity: [
         'warn',
         {
@@ -789,10 +689,9 @@ export default defineConfig([
         },
       ],
       curly: 'warn',
-      'dot-notation': 'off',
       eqeqeq: ['error', 'always'],
       'guard-for-in': 'error',
-      'id-blacklist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
+      'id-denylist': ['error', 'any', 'Number', 'String', 'string', 'Boolean', 'boolean', 'Undefined', 'undefined'],
       'max-classes-per-file': ['error', 1],
       'max-lines': [
         'warn',
@@ -807,10 +706,7 @@ export default defineConfig([
         },
       ],
       'no-duplicate-imports': 'error',
-      'no-empty': 'warn',
-      'no-extra-boolean-cast': 'error',
-      'no-irregular-whitespace': 'error',
-      'no-multiple-empty-lines': 'warn',
+      'no-lonely-if': 'warn',
       'no-new-wrappers': 'error',
       'no-param-reassign': 'error',
       'no-restricted-globals': [
@@ -845,53 +741,32 @@ export default defineConfig([
               message: "This operator is not type safe. Use 'mapToProperty' instead.",
             },
             {
-              name: '(?!.*environments/environment.model)(.*environments/environment).+',
-              message: 'Importing specific environments is not allowed. Use the default one.',
-            },
-            {
               name: '@ngrx/router-store',
               importNames: ['SerializedRouterStateSnapshot'],
               message:
                 "We customized the serialization of the router state. Use 'RouterState' from 'ish-core/store/core/router/router.reducer'.",
             },
             {
-              name: 'lodash.*',
-            },
-            {
               name: 'ts-mockito/lib/ts-mockito',
               message: "use import from 'ts-mockito'",
             },
+          ],
+          patterns: [
             {
-              name: '*/src/.*',
-              message: "Import with 'src' seems to be wrong. Transform into relative import, please.",
+              regex: 'environments/environment\\.(?!model$)[^/]+$',
+              message: 'Importing specific environments is not allowed. Use the default one.',
             },
             {
-              name: '.*node_modules/(.*)',
+              regex: '(^|/)node_modules/',
               message: "import with 'node_modules' seems to be wrong",
             },
             {
-              name: '^(app|src)/.*',
-              message: 'Transform into relative import, please.',
+              regex: '^(app|src)/',
+              message: 'Use an import alias like ish-core, ish-shared or ish-shell, or a relative import instead.',
             },
             {
-              name: '^[\\./]*/core/(.*)$',
-              message: 'Use import alias ish-core',
-            },
-            {
-              name: '(.*)/$',
-              message: "trailing '/' seems to be wrong",
-            },
-            {
-              name: '^\\.\\/(\\..*$)',
-              message: 'unnecessary local folder reference',
-            },
-            {
-              name: '^(.*store\\/)(.*)\\/\\2.(actions|selectors)$',
+              regex: '^(.*store/)(.*)/\\2\\.(actions|selectors)$',
               message: 'use aggregation import instead.',
-            },
-            {
-              name: 'rxjs(?!($|/operators$))',
-              message: "deep import from rxjs seems to be wrong, use 'rxjs' or 'rxjs/operators'",
             },
           ],
         },
@@ -935,33 +810,42 @@ export default defineConfig([
             'MethodDefinition[key.name="ngOnChanges"] TSTypeReference[typeName.name="SimpleChanges"]:not([typeArguments])',
           message: 'Use typed `SimpleChanges<T>` with the component or directive class as `T`.',
         },
-      ],
-      'no-sequences': 'error',
-      'no-shadow': 'off',
-      'no-template-curly-in-string': 'error',
-      'no-throw-literal': 'warn',
-      'no-unused-vars': [
-        'warn',
         {
-          vars: 'all',
-          varsIgnorePattern: '[_]',
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-          ignoreRestSiblings: false,
-          caughtErrors: 'none',
+          selector:
+            'CallExpression[callee.name="takeUntil"]:matches([arguments.0.name=/^destroy\\$?$/], [arguments.0.property.name=/^destroy\\$?$/])',
+          message: 'Use takeUntilDestroyed() instead of takeUntil(destroy$)!',
+        },
+        {
+          selector: 'PropertyDefinition[key.name=/^destroy\\$?$/][value.callee.name="Subject"]',
+          message: 'Use takeUntilDestroyed() or DestroyRef instead of a destroy$ subject!',
+        },
+        {
+          selector:
+            'MemberExpression[property.name="then"]:has(MemberExpression[object.name="TestBed"][property.name="configureTestingModule"])',
+          message:
+            'Chaining off TestBed.configureTestingModule can be replaced by adding another beforeEach block without async.',
         },
       ],
-      'no-var': 'warn',
+      'no-sequences': 'error',
+      'no-template-curly-in-string': 'error',
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'warn',
-      'prefer-const': 'warn',
       'prefer-object-spread': 'error',
       'prefer-template': 'warn',
       'prettier/prettier': 'warn',
+      // not the same as core eslint rule 'no-lonely-if'
+      'unicorn/no-lonely-if': 'warn',
       'unicorn/no-null': [
         'warn',
         {
           checkStrictEquality: true,
+        },
+      ],
+      'unicorn/no-useless-undefined': [
+        'error',
+        {
+          checkArguments: false,
+          checkArrowFunctionBody: false,
         },
       ],
       'unicorn/prefer-switch': [
@@ -973,8 +857,8 @@ export default defineConfig([
       'unused-imports/no-unused-imports': 'error',
 
       // Security
+      '@typescript-eslint/no-implied-eval': 'error',
       'no-eval': 'error',
-      'no-implied-eval': 'error',
     },
   },
   // facade overrides
@@ -992,6 +876,38 @@ export default defineConfig([
       '@cspell/spellchecker': 'off',
       'max-classes-per-file': 'off',
       'max-lines': 'off',
+    },
+  },
+  // Jest unit test rules
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      ...jest.configs['flat/recommended'].rules,
+      'jest/expect-expect': 'off',
+      // conflicts with ish-custom-rules/use-async-synchronization-in-tests
+      'jest/no-done-callback': 'off',
+      'jest/valid-title': [
+        'error',
+        {
+          mustMatch: {
+            it: '^should',
+            test: '[sS]*',
+          },
+        },
+      ],
+    },
+  },
+  // allow type assertions on object literals in test code
+  {
+    files: ['**/*spec.ts', '**/dev/**/*.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-assertions': [
+        'warn',
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
     },
   },
   // e2e test overrides
@@ -1025,14 +941,20 @@ export default defineConfig([
         {
           warnUnmatched: false,
           pathPatterns: [
-            '.*/e2e/framework/.*/*\\.ts',
+            '.*/e2e/framework/[^/]*\\.ts$',
             '.*/e2e/pages/.*\\.(module|page|dialog)\\.ts',
             '.*/e2e/specs/\\w+/[^/]*\\.e2e-spec\\.ts',
-            '.*/e2e/cypress.*\\.ts',
+            '.*/e2e/cypress[^/]*\\.ts$',
           ],
         },
       ],
-      'jest/valid-title': 'off',
+      'jest/no-commented-out-tests': 'warn',
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-export': 'error',
+      'jest/no-focused-tests': 'warn',
+      'jest/no-identical-title': 'error',
+      'jest/no-test-prefixes': 'error',
+      'jest/valid-describe-callback': 'error',
     },
   },
   // schematics overrides
@@ -1140,13 +1062,21 @@ export default defineConfig([
     rules: {
       '@angular-eslint/template/attributes-order': ['warn', { alphabetical: true }],
       '@angular-eslint/template/button-has-type': 'warn',
+      '@angular-eslint/template/conditional-complexity': ['warn', { maxComplexity: 3 }],
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 20 }],
       '@angular-eslint/template/eqeqeq': 'error',
+      '@angular-eslint/template/no-any': 'warn',
+      '@angular-eslint/template/no-empty-control-flow': 'warn',
+      '@angular-eslint/template/no-interpolation-in-attributes': ['warn', { allowSubstringInterpolation: true }],
+      '@angular-eslint/template/no-nested-tags': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
       '@angular-eslint/template/prefer-at-else': 'warn',
+      '@angular-eslint/template/prefer-at-empty': 'warn',
       '@angular-eslint/template/prefer-built-in-pipes': 'warn',
+      '@angular-eslint/template/prefer-contextual-for-variables': 'warn',
       '@angular-eslint/template/prefer-control-flow': 'warn',
       '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-static-string-properties': ['warn', { ignore: ['slot'] }],
       '@angular-eslint/template/prefer-template-literal': 'warn',
     },
   },

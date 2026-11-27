@@ -63,8 +63,8 @@
         }
         @if (preferredPaymentInstrument) {
           <div class="panel">
-            <input class="form-check-input" formControlName="id" type="radio" value="" [id]="'paymentOption_empty'" />
-            <label class="form-check-label" [for]="'paymentOption_empty'">
+            <input class="form-check-input" formControlName="id" id="paymentOption_empty" type="radio" value="" />
+            <label class="form-check-label" for="paymentOption_empty">
               {{ 'account.payment.no_preferred_method' | translate }}
             </label>
           </div>

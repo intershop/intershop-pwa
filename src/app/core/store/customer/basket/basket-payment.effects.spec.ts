@@ -7,7 +7,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { BasketValidation } from 'ish-core/models/basket-validation/basket-validation.model';
 import { Basket } from 'ish-core/models/basket/basket.model';
-import { CheckoutStepType } from 'ish-core/models/checkout/checkout-step.type';
+import { CheckoutStep } from 'ish-core/models/checkout-step/checkout-step.type';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
 import { PaymentMethod } from 'ish-core/models/payment-method/payment-method.model';
@@ -276,7 +276,7 @@ describe('Basket Payment Effects', () => {
 
     // skipped: jsdom 21+ makes window.location non-configurable, preventing location.assign mocking
     // eslint-disable-next-line jest/no-disabled-tests
-    xit('should start redirect in case of successful sending the redirect urls', fakeAsync(() => {
+    it.skip('should start redirect in case of successful sending the redirect urls', fakeAsync(() => {
       const action = startRedirectBeforeCheckout();
       actions$ = of(action);
 
@@ -666,7 +666,7 @@ describe('Basket Payment Effects', () => {
 
       const action = updatePaypalCreditCardPaymentInstrument({ paymentInstrument });
       const completion1 = updatePaymentInstrument({ paymentInstrument: updatedPaymentInstrument });
-      const completion2 = continueCheckout({ targetStep: CheckoutStepType.Review });
+      const completion2 = continueCheckout({ targetStep: CheckoutStep.Review });
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-(cd)', { c: completion1, d: completion2 });
 
@@ -984,7 +984,7 @@ describe('Basket Payment Effects', () => {
 
     // skipped: jsdom 21+ makes window.location non-configurable, preventing location.assign mocking
     // eslint-disable-next-line jest/no-disabled-tests
-    xit('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
+    it.skip('should start redirect in case of successful payment instrument assignment', fakeAsync(() => {
       const action = continueWithFastCheckout({
         targetRoute: undefined,
         basketValidation,
