@@ -16,79 +16,92 @@ The Intershop PWA now uses Node.js 24.22.3 LTS with the corresponding npm versio
 **Formly 10 update**
 
 `@ngx-formly/core` has been updated to version 10, which requires Angular 21 or newer.
-Valid forms now emit an initial `statusChanges` notification, so check custom subscribers that assume otherwise.
+Valid forms now emit an initial `statusChanges` notification.
+Check custom subscribers that assume otherwise.
 `formly-form` now emits each build asynchronously via its new `fieldChange` output, so component tests that expect a `modelChange` right after the initial rendering may have to `await fixture.whenStable()` first.
 For further breaking changes, e.g., for string expressions and JSON schema forms, see the [Formly 10 upgrade guide](https://github.com/ngx-formly/ngx-formly/blob/v10.0.0/UPGRADE-10.0.md).
 
 **Component styles as `styleUrls` array**
 
 The ESLint rule `@angular-eslint/consistent-component-styles` has been activated in `array` mode, so components have to reference their styles with `styleUrls: ['./x.component.scss']` instead of `styleUrl`.
-PWA tooling like the override lint rule `ish-custom-rules/use-correct-component-overrides`, the override schematic, and the dead files detection only supports the array notation.
+PWA tooling such as the override lint rule `ish-custom-rules/use-correct-component-overrides`, the override schematic, and the dead file detection supports only the array notation.
 Run `npm run lint` to fix existing occurrences automatically.
 
 **Design View restricted to known IAP origins**
 
-The Design View now only exchanges messages with an Intershop Administration Portal (IAP) whose origin is listed in `designViewOrigins` in the [_environment.model.ts_](../../src/environments/environment.model.ts) file.
-If your project uses the Design View with an IAP on a different origin, adapt `designViewOrigins` in your environment configuration, otherwise the Design View is disabled.
+The Design View now exchanges messages only with an Intershop Administration Portal (IAP) whose origin is listed in `designViewOrigins` in the [_environment.model.ts_](../../src/environments/environment.model.ts) file.
+If your project uses the Design View with an IAP on a different origin, adapt `designViewOrigins` in your environment configuration.
+Otherwise, the Design View is disabled.
 For more information, see [CMS Integration - Design View](../concepts/cms-integration.md#design-view).
 
 **OCI punchout `HOOK_URL` validation**
 
 The OCI punchout login rejects a `HOOK_URL` that does not start with an allowed scheme and shows the error page instead.
-By default, only `http`, `https`, and `sapevent` are allowed; script schemes like `javascript` are never allowed.
-To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
+By default, only `http`, `https`, and `sapevent` are allowed.
+Script schemes such as `javascript` are never allowed.
+To allow other schemes, configure `hookUrlSchemes` for the punchout identity provider.
+For more information, see [Hook URL Validation](./authentication_punchout.md#hook-url-validation).
 
 **Category and product list images sized by their dimensions**
 
-To avoid layout shifts, category and product list images now reserve their space from the `width` and `height` attributes provided by the ICM image data (`imageActualWidth`, `imageActualHeight`).
-The hard-coded `width: 270px` and `aspect-ratio: 1/1` for category tile images in `category-page.scss` and the `width: auto` for product tile images in `product-list.scss` have been removed.
+To avoid layout shifts, category and product list images now reserve their space based on the `width` and `height` attributes provided by the ICM image data (`imageActualWidth`, `imageActualHeight`).
+The hard-coded `width: 270px` and `aspect-ratio: 1/1` for category tile images in _category-page.scss_ and the `width: auto` for product tile images in _product-list.scss_ have been removed.
 
 **Ignored caching parameters no longer passed to SSR**
 
-NGINX no longer passes the query parameters configured in `CACHING_IGNORE_PARAMS` to the SSR process
-As ignored parameters they are not part of the cache key, not relevant for the server-side rendering result and should not end up in cached rendering results.
+NGINX no longer passes the query parameters configured in `CACHING_IGNORE_PARAMS` to the server-side rendering (SSR) process.
+As ignored parameters, they are not part of the cache key, not relevant for the server-side rendering result, and do not belong in cached rendering results.
 The browser still receives these parameters, so client-side processing is not affected.
-If your project needs one of these parameters during server-side rendering, remove it from the list, see [Ignore Parameters During Caching](./nginx-startup.md#ignore-parameters-during-caching).
+If your project needs one of these parameters during server-side rendering, remove it from the list.
+For more information, see [Ignore Parameters During Caching](./nginx-startup.md#ignore-parameters-during-caching).
 
 **Minimum order quantity with `allowZeroQuantity`**
 
-Product contexts with `allowZeroQuantity`, e.g., basket and quote request line items, now validate the product's minimum order quantity and only accept 0 as additional quantity.
+Product contexts with `allowZeroQuantity`, e.g., basket and quote request line items, now validate the product's minimum order quantity and accept only 0 as an additional quantity.
 The `minQuantity` of the product context is always the minimum order quantity of the product.
-The decrease button of `ish-product-quantity` stops at this quantity, so users remove a line item by entering 0 or clicking the Remove button.
+The decrease button of `ish-product-quantity` stops at this quantity, so users remove a line item by entering 0 or clicking the _Remove_ button.
 Customized versions of `ish-product-quantity` have to allow 0 themselves if zero quantities are allowed.
 The submit button of a quote request is disabled while a line item has an invalid quantity.
 
 **NGINX modules built from the OpenResty source**
 
 The Brotli modules of the NGINX image are now built from the NGINX source bundled with the OpenResty archive instead of the upstream NGINX archive, because OpenResty patches NGINX structures used by dynamic modules.
-If your project builds additional dynamic NGINX modules, build them the same way with the `./configure` arguments read from `openresty -V`, otherwise NGINX workers may crash, see [Brotli Configuration](./nginx-startup.md#brotli-configuration).
+If your project builds additional dynamic NGINX modules, build them the same way with the `./configure` arguments read from `openresty -V`.
+Otherwise, NGINX workers can crash.
+For more information, see [Brotli Configuration](./nginx-startup.md#brotli-configuration).
 The OpenResty version is now set once with the `OPENRESTY_VERSION` build argument in the NGINX _Dockerfile_.
 
 **Prettier 3.10 and Stylelint 18 update**
 
 Prettier 3.10 formats templates differently, e.g., it no longer breaks the closing tag of an inline element onto the next line.
 Stylelint has been updated to version 18 together with its standard and SCSS configurations, which check values more strictly and can report new findings in project styles.
-Run `npm run format` after the update and fix the remaining Stylelint findings manually, see the [Stylelint 18 migration guide](https://stylelint.io/migration-guide/to-18).
+Run `npm run format` after the update and fix the remaining Stylelint findings manually.
+For more information, see the [Stylelint 18 migration guide](https://stylelint.io/migration-guide/to-18).
 
 **Invalid `apiToken` cookie**
 
-The `ApiTokenService` now removes an `apiToken` cookie with a token the ICM rejects as invalid and repeats the request without it instead of showing the error page.
-A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
-When the `apiToken` cookie vanishes, the ICM identity provider now routes only users who were logged in to the login page.
+The `ApiTokenService` now removes an `apiToken` cookie if the ICM rejects its token as invalid.
+It then repeats the request without it instead of showing the error page.
+A rejected automatic token refresh now logs out the user, while network or server errors are retried and keep the session.
+For more information, see [Token Lifetime](../concepts/authentication.md#token-lifetime).
+If the `apiToken` cookie disappears, the ICM identity provider now routes only users who were logged in to the login page.
 
-**Punchout and co-browse login without previous session**
+**Punchout and co-browse login without a previous session**
 
-The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie, they only log in the user with the login information given as query parameters, so a reload restores the session only on routes that use another identity provider.
-Before this login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
+The punchout and co-browse identity providers no longer restore the session of the `apiToken` cookie.
+They only log in users with the login information given as query parameters.
+A reload therefore restores the session only on routes that use a different identity provider.
+Before the login, an existing `apiToken` cookie and the tokens of the OAuth library in the local storage are removed.
 
 **Session basket removed on every logout**
 
-The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed on every logout, also when another identity provider is active after a reload.
+The `basket-id` in the session storage, which keeps punchout and co-browse sessions on their basket, is now removed on every logout, even if another identity provider is active after a reload.
 Custom identity providers no longer need to remove it themselves.
 
 **Auth0 login removes the anonymous session**
 
-After the Auth0 login, the Auth0 identity provider now removes the `apiToken` cookie and the ICM tokens of the anonymous user, so the anonymous session is no longer restored on a reload or after the logout.
+After the Auth0 login, the Auth0 identity provider now removes the `apiToken` cookie and the ICM tokens of the anonymous user.
+Therefore, the anonymous session is no longer restored on a reload or after a logout.
 
 **Personalization status by identity provider**
 
@@ -98,12 +111,12 @@ Implement `hasUserSession()` in custom identity providers that do not restore th
 
 **CMS includes wait for the personalization status**
 
-CMS includes are now loaded only after the personalization status is determined, as already done for content pages, so they are no longer requested without the PGID of a logged-in user.
+CMS includes are now loaded only after the personalization status is determined, as already done for content pages, so that they are no longer requested without the PGID of a logged-in user.
 
 **Refresh token in the `apiToken` cookie**
 
 The `apiToken` field of the `apiToken` cookie now contains the refresh token instead of the access token, and the cookie expires with it.
-Starting with ICM 14.8.0, the ICM accepts only refresh tokens for the token refresh, so existing cookies with an access token stop working and users may have to log in again.
+Starting with ICM 14.8.0, the ICM accepts only refresh tokens for the token refresh, so existing cookies with an access token stop working and users might need to log in again.
 Custom code that calls `setApiToken()` of the `ApiTokenService` needs to pass the refresh token as third parameter, otherwise no `apiToken` cookie is saved.
 For more information, see [Authentication Concept - PWA Initialization](../concepts/authentication.md#pwa-initialization).
 

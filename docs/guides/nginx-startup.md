@@ -383,7 +383,8 @@ The two NGINX modules
 are built in the [`Dockerfile`](../../nginx/Dockerfile) using the patched NGINX source bundled with the matching OpenResty archive and are referenced in [_nginx.conf.tmpl_](../../nginx/nginx.conf.tmpl).
 The upstream NGINX archive must not be used, because OpenResty's patches can change structures used by the modules.
 The `./configure` [arguments](https://github.com/google/ngx_brotli?tab=readme-ov-file#dynamically-loaded) are read from `openresty -V` of the OpenResty image during the build, without the `--add-module` arguments of the bundled modules, so they always match the OpenResty version.
-The filter module uses the Brotli library of the Ubuntu base image (`libbrotli-dev` for the build, `libbrotli1` at runtime), so Brotli security fixes are applied with Ubuntu package updates.
+The filter module uses the Brotli library of the Ubuntu base image (`libbrotli-dev` for the build, `libbrotli1` at runtime).
+Brotli security fixes are applied with Ubuntu package updates.
 The Brotli git submodule of `ngx_brotli` is not used.
 
 After building the image, run `sh nginx/test/brotli-cache.sh <image>` to verify Brotli compression on cache misses and hits.

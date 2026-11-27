@@ -112,11 +112,11 @@ This route can be linked to from anywhere within the application.
 
 ## PWA Required Cookies
 
-| Name            | Expiration | Provider      | Description                                                       | Category    |
-| --------------- | ---------- | ------------- | ----------------------------------------------------------------- | ----------- |
-| apiToken        | 1 hour     | Intershop PWA | The API token used by the Intershop Commerce Management REST API. | First Party |
-| cookieConsent   | 1 year     | Intershop PWA | Saves the user's cookie consent settings.                         | First Party |
-| preferredLocale | 1 year     | Intershop PWA | Saves the user's language selection.                              | First Party |
+| Name            | Expiration                        | Provider      | Description                                                                              | Category    |
+| --------------- | --------------------------------- | ------------- | ---------------------------------------------------------------------------------------- | ----------- |
+| apiToken        | Lifetime of the ICM refresh token | Intershop PWA | The ICM refresh token that restores the session (user, basket, or order) after a reload. | First Party |
+| cookieConsent   | 1 year                            | Intershop PWA | Saves the user's cookie consent settings.                                                | First Party |
+| preferredLocale | 1 year                            | Intershop PWA | Saves the user's language selection.                                                     | First Party |
 
 ## Disabling the Integrated Cookie Consent Handling
 

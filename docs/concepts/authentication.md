@@ -12,6 +12,7 @@ kb_sync_latest_only
 - [Implementation and Configuration of Identity Providers](#implementation-and-configuration-of-identity-providers)
 - [PWA Initialization](#pwa-initialization)
 - [Login, Registration, Token Refreshment, Logout](#login-registration-token-refreshment-logout)
+- [Token Lifetime](#token-lifetime)
 - [Vanishing of the apiToken Cookie](#vanishing-of-the-apitoken-cookie)
 - [Further References](#further-references)
 
@@ -21,7 +22,7 @@ Several ICM REST operations require an authenticated user.
 Authentication also assures enterprise information security.
 In the PWA a user can be verified with the help of an identity provider.
 An identity provider (IdP) is a service that stores and manages digital identities.
-The following identity providers are supported: The default [ICM server](../guides/authentication_icm.md), the [SSO Auth0](../guides/authentication_sso.md) and the [Punchout](../guides/authentication_punchout.md) identity provider.
+The following identity providers are supported: The default [ICM server](../guides/authentication_icm.md), the [SSO Auth0](../guides/authentication_sso.md), the [Punchout](../guides/authentication_punchout.md), and the [Co-Browse](../guides/authentication_co_browse.md) identity provider.
 
 ## Library angular-oauth2-oidc
 
@@ -70,23 +71,23 @@ To add or change the functionality of an identity provider, the following steps 
    Without this method, a user `apiToken` cookie indicates such a session.
 
 > [!NOTE]
-> If an identity provider is using the OAuthService for authentication, the identity provider have to inject the OAuthService with a new instance.
+> If an identity provider uses the OAuthService for authentication, it has to create its own OAuthService instance with `InstanceCreators.getOAuthServiceInstance()` instead of injecting the OAuthService.
 > Otherwise, difficult side effects with the [TokenService](../../src/app/core/services/token/token.service.ts) will occur.
 > Please checkout the [Auth0IdentityProvider](../../src/app/core/identity-provider/auth0.identity-provider.ts) for an example.
 
-2. Register the `<idp>.identity-provider.ts` in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts). The `APP_INITIALIZER` injection token is used to configure and initialize the identity provider before app initialization.
+2. Register the `<idp>.identity-provider.ts` with its type in the [`IdentityProviderModule`](../../src/app/core/identity-provider.module.ts) as a multi provider of the `IDENTITY_PROVIDER_IMPLEMENTOR` injection token. The [`IdentityProviderFactory`](../../src/app/core/identity-provider/identity-provider.factory.ts) creates the identity provider of the configured type and calls its `init()` method with the configuration once the configuration is loaded.
 
-3. Set the environment variables `IdentityProviders` and `IdentityProvider` accordingly.
+3. Configure the identity provider with the `identityProviders` and `identityProvider` properties of the Angular CLI _environment.ts_ files or the `IDENTITY_PROVIDERS` and `IDENTITY_PROVIDER` environment variables of the SSR process (see [Building and Running Server-Side Rendering](../guides/ssr-startup.md)).
 
 ## PWA Initialization
 
 A PWA user has to be identified by the ICM server by a unique authentication token, even if it is an anonymous user.
 Once an unknown user creates a basket in the PWA, an anonymous authentication token is requested by the [ICM Token REST endpoint](https://support.intershop.com/kb/index.php?c=Display&q1=U29770&q2=Text).
 This happens in the [`apiToken http interceptor`](../../src/app/core/utils/api-token/api-token.service.ts) method.
-Subsequently, this access token is added to all REST requests in the request header, e.g.:
+Subsequently, this access token, a JSON Web Token (JWT), is added to all REST requests in the request header, e.g. (shortened):
 
-```typescript
-authentication-token: encryption0@PBEWithMD5AndTripleDES:1D7T8HyFqQ0=|k3PQLgujzUq0tudtw+6HLjWnExiwrd4o9/jVU7ZH74kTfTy3RS7/sYadsg7ODRM2
+```text
+authentication-token: eyJqa3UiOiJodHRwczovL2lj.eyJhdWQiOiJJQ01DbGllbnQi.x7Qk2fZ9mP_c4Lw8
 ```
 
 The refresh token of the token response is saved as `apiToken` in the `apiToken` cookie, which expires with the refresh token.
@@ -104,18 +105,19 @@ This is described in the appropriate identity provider guides in more detail, se
 ## Token Lifetime
 
 The ICM, punchout and co-browse identity providers use authentication tokens of the ICM, which have a predefined lifetime.
-That means, the token has to be refreshed to prevent it from expiring.
+Therefore, the token must be refreshed to prevent it from expiring.
 Once 50% of the access token's lifetime have passed (configured with `timeoutFactor` in the [`TokenService`](../../src/app/core/services/token/token.service.ts)), an info event is emitted.
-This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the oAuth configuration service and the authentication token will be renewed.
-If the token refresh fails due to network or server errors, it is retried up to three times with a delay of 60 seconds; if the ICM rejects it, the user is logged out.
-Hence, the token will not expire as long as the user keeps the PWA open in the browser.
+This event is used to call the [refresh mechanism `setupRefreshTokenMechanism$`](../../src/app/core/services/token/token.service.ts) of the OAuth configuration service, and the authentication token is renewed.
+If the token refresh fails due to network or server errors, it is retried up to three times with a delay of 60 seconds.
+If ICM rejects it, the user is logged out.
+Hence, the token remains valid as long as the user keeps the PWA open in the browser.
 
 ## Vanishing of the apiToken Cookie
 
-The PWA needs to react in case the `apiToken` cookie is not available anymore.
-This could happen if a PWA is opened in many tabs and the user logs out, when users remove the cookie themselves, or when the ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
+The PWA needs to react if the `apiToken` cookie is no longer available.
+The cookie can vanish if a PWA is opened in multiple tabs and the user logs out, if users remove the cookie themselves, or if ICM rejects the token of the cookie as invalid, e.g., when the session of the cookie is restored after a reload.
 When the cookie vanishes, the PWA emits a new value for the [`getCookieVanishes$()` stream](../../src/app/core/utils/api-token/api-token.service.ts).
-The identity provider implementation defines how the application should behave in such a case.
+The identity provider implementation defines how the application behaves in such a case.
 With the ICM identity provider, for example, the user is automatically logged out and, if the user was logged in, routed to the `/login` page.
 An anonymous user continues without login, and the PWA requests a new anonymous token when needed.
 
@@ -123,4 +125,5 @@ An anonymous user continues without login, and the PWA requests a new anonymous 
 
 - [Guide - ICM Identity Provider](../guides/authentication_icm.md)
 - [Guide - Punchout Identity Provider](../guides/authentication_punchout.md)
+- [Guide - Co-Browse Identity Provider](../guides/authentication_co_browse.md)
 - [Guide - Single Sign-On (SSO) Identity Provider](../guides/authentication_sso.md)
