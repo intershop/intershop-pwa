@@ -22,7 +22,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-horizontal-checkbox-wrapper',
   standalone: false,
   templateUrl: './horizontal-checkbox-wrapper.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalCheckboxWrapperComponent extends FieldWrapper {
   dprops = {

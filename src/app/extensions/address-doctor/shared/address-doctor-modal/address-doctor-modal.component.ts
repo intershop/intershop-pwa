@@ -22,7 +22,7 @@ import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-di
   selector: 'ish-address-doctor-modal',
   standalone: false,
   templateUrl: './address-doctor-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressDoctorModalComponent {
   @Input() options: ModalOptions;

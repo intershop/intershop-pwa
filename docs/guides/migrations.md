@@ -7,6 +7,20 @@ kb_sync_latest_only
 
 # Migration Notes
 
+## From 13.1.0 to 14.0.0
+
+**`OnPush` change detection for Formly components**
+
+All Formly field types, wrappers and validation components of the PWA now use `ChangeDetectionStrategy.OnPush`, since Formly triggers their change detection on form control and form submit events.
+Customized child components of these parts that read form state such as `dirty`, `errors` or `submitted` have to trigger their change detection themselves, see the [`ValidationIconsComponent`](../../src/app/shared/formly/components/validation-icons/validation-icons.component.ts) for an example.
+
+**`OnPush` change detection for all components**
+
+All PWA components except the payment provider components now use `ChangeDetectionStrategy.OnPush`.
+Customizations of these components that change displayed state outside of inputs, template events or observables have to call `markForCheck()` themselves.
+The ESLint rule `@angular-eslint/prefer-on-push-component-change-detection` now reports components without `OnPush`, except in `*.spec.ts` and `*.module.ts` files, and replaces the custom rule `ish-custom-rules/use-component-change-detection`.
+Switch custom components to `OnPush` or disable the rule for the affected line with a reason.
+
 ## From 13.0.0 to 13.1.0
 
 **Node.js 24 update**

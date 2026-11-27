@@ -23,11 +23,11 @@ describe('Form Control Feedback Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
 
-    component.control = new FormControl('', [Validators.required, Validators.minLength(3)]);
-    component.messages = {
+    fixture.componentRef.setInput('control', new FormControl('', [Validators.required, Validators.minLength(3)]));
+    fixture.componentRef.setInput('messages', {
       required: 'requiredkey',
       minlength: 'lengthkey',
-    };
+    });
   });
 
   function getErrorDisplay() {
@@ -68,6 +68,20 @@ describe('Form Control Feedback Component', () => {
     component.control.markAsDirty();
     fixture.detectChanges();
     expect(getErrorDisplay()).toHaveLength(1);
+  });
+
+  it('should display an error set on a dirty control without any other change', () => {
+    component.control.setValue('abcd');
+    component.control.markAsDirty();
+    fixture.detectChanges();
+    expect(getErrorDisplay()).toBeEmpty();
+
+    component.control.setErrors({ customError: 'customkey' });
+    fixture.detectChanges();
+    const elements = getErrorDisplay();
+
+    expect(elements).toHaveLength(1);
+    expect(elements[0].nativeElement.textContent).toContain('customkey');
   });
 
   function getIcon() {

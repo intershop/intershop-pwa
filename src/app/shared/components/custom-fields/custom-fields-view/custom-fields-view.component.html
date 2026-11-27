@@ -1,4 +1,5 @@
-@if (data$ | async; as data) {
+@let data = data$ | async;
+@if (data?.length) {
   <dl class="custom-fields-view">
     @for (field of data; track field.name) {
       <div class="custom-field">

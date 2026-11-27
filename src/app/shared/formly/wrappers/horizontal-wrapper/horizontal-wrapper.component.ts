@@ -18,7 +18,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'ish-horizontal-wrapper',
   standalone: false,
   templateUrl: './horizontal-wrapper.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalWrapperComponent extends FieldWrapper {
   dprops = {

@@ -6,7 +6,7 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 @Component({
   standalone: false,
   templateUrl: './checkout-page.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckoutPageComponent implements OnInit {
   checkoutStep$: Observable<number>;
